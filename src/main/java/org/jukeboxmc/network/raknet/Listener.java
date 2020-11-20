@@ -1,0 +1,187 @@
+package org.jukeboxmc.network.raknet;
+
+import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.DatagramPacket;
+import io.netty.channel.socket.nio.NioDatagramChannel;
+import lombok.Getter;
+import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.raknet.protocol.*;
+import org.jukeboxmc.network.raknet.utils.ServerName;
+
+import java.net.InetSocketAddress;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class Listener {
+
+    private Channel channel;
+    private NioEventLoopGroup group;
+    @Getter
+    private InetSocketAddress address;
+    @Getter
+    private ServerName serverName;
+    @Getter
+    private long serverId;
+    @Getter
+    private boolean isRunning = false;
+
+    private ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
+
+    public Listener() {
+        this.serverName = new ServerName( this );
+        this.serverId = UUID.randomUUID().getMostSignificantBits();
+    }
+
+    public boolean listen( String address, int port ) {
+        this.address = new InetSocketAddress( address, port );
+        try {
+            Bootstrap socket = new Bootstrap();
+            socket.group( this.group = new NioEventLoopGroup() );
+            socket.option( ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT );
+            socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
+            socket.handler( new ChannelInboundHandlerAdapter() {
+                @Override
+                public void channelRead( ChannelHandlerContext ctx, Object msg ) {
+                    DatagramPacket packet = (DatagramPacket) msg;
+                    InetSocketAddress senderAddress = packet.sender();
+                    Listener.this.handle( packet, senderAddress );
+                }
+            } );
+
+            this.channel = socket.bind( address, port ).sync().channel();
+            this.isRunning = true;
+            this.tick();
+        } catch ( Exception e ) {
+            this.isRunning = false;
+        }
+        return this.isRunning;
+    }
+
+    public void handle( DatagramPacket datagramPacket, InetSocketAddress sender ) {
+        try {
+            ByteBuf buffer = datagramPacket.content();
+            int packetId = buffer.getUnsignedByte( 0 );
+
+            if ( packetId == Protocol.QUERY ) {
+                return;
+            }
+
+            String token = sender.getHostName() + ":" + sender.getPort();
+            if ( this.connections.containsKey( token ) ) {
+                Connection connection = this.connections.get( token );
+                connection.receive( buffer );
+            } else {
+                if ( packetId == Protocol.UNCONNECTED_PING ) {
+                    this.handleUnconnectedPing( buffer, sender );
+                } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_1 ) {
+                    this.handleOpenConnectionRequest1( buffer, sender );
+                } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_2 ) {
+                    this.handleOpenConnectionRequest2( buffer, sender );
+                }
+            }
+        } finally {
+            datagramPacket.release();
+        }
+    }
+
+    private void handleUnconnectedPing( ByteBuf buffer, InetSocketAddress address ) {
+        UnconnectedPing decodedPacket = new UnconnectedPing();
+        decodedPacket.buffer = buffer;
+        decodedPacket.read();
+
+        UnconnectedPong packet = new UnconnectedPong();
+        packet.setTime( System.currentTimeMillis() );
+        packet.setServerGUID( this.serverId );
+        packet.setServerID( this.serverName.toString() );
+
+        this.sendPacket( packet, address );
+    }
+
+    private void handleOpenConnectionRequest1( ByteBuf buffer, InetSocketAddress sender ) {
+        OpenConnectionRequest1 decodedPacket = new OpenConnectionRequest1();
+        decodedPacket.buffer = buffer;
+        decodedPacket.read();
+
+        if ( decodedPacket.getProtocol() != 10 ) {
+            IncompatibleProtocolVersion packet = new IncompatibleProtocolVersion();
+            packet.setProtocol( (byte) 10 );
+            packet.setServerGUID( this.serverId );
+            this.sendPacket( packet, sender );
+        }
+
+        OpenConnectionReply1 packet = new OpenConnectionReply1();
+        packet.setServerGUID( this.serverId );
+        packet.setMtu( decodedPacket.getMtu() );
+        this.sendPacket( packet, sender );
+    }
+
+    private void handleOpenConnectionRequest2( ByteBuf buffer, InetSocketAddress sender ) {
+        OpenConnectionRequest2 decodedPacket = new OpenConnectionRequest2();
+        decodedPacket.buffer = buffer;
+        decodedPacket.read();
+
+        OpenConnectionReply2 packet = new OpenConnectionReply2();
+        packet.setServerGUID( this.serverId );
+        packet.setMtu( decodedPacket.getMtu() );
+        packet.setAddress( sender );
+        this.sendPacket( packet, sender );
+
+        String token = sender.getHostName() + ":" + sender.getPort();
+        if ( !this.connections.containsKey( token ) ) {
+            this.connections.put( token, new Connection( this, decodedPacket.getMtu(), sender ) );
+        }
+    }
+
+    private void tick() {
+        Timer timer = new Timer();
+        timer.schedule( new TimerTask() {
+            @Override
+            public void run() {
+                if ( isRunning ) {
+                    for ( Connection connection : connections.values() ) {
+                        connection.update( System.currentTimeMillis() );
+                    }
+                } else {
+                    this.cancel();
+                }
+            }
+        }, 0, 10 ); //Raknet tick
+    }
+
+    private void sendPacket( Packet packet, InetSocketAddress address ) {
+        if ( this.channel != null ) {
+            packet.write();
+            this.channel.writeAndFlush( new DatagramPacket( packet.buffer, address ) );
+        }
+    }
+
+    public void sendBuffer( ByteBuf buffer, InetSocketAddress address ) {
+        if ( this.channel != null ) {
+            this.channel.writeAndFlush( new DatagramPacket( buffer, address ) );
+        }
+    }
+
+    public void removeConnection( Connection connection, String reason ) {
+        String token = connection.getSender().getHostName() + ":" + connection.getSender().getPort();
+        if ( this.connections.containsKey( token ) ) {
+            this.connections.get( token ).close();
+            this.connections.remove( token );
+            System.out.println( "Reason: " + reason );
+        }
+    }
+}
