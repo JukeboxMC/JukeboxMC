@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
  */
 public class LoginPacket extends Packet {
 
+    private int protocol;
+
     @Override
     public int getPacketId() {
         return 0x01;
@@ -23,38 +25,29 @@ public class LoginPacket extends Packet {
 
     @Override
     public void read() {
-        int i = this.buffer.readInt();
+        this.protocol = this.readInt();
 
-        BinaryStream binaryStream = new BinaryStream( this.buffer );
-        this.buffer = this.buffer.readBytes( binaryStream.readUnsignedVarInt() );
+        this.setBuffer( this.readBytes( new BinaryStream( this.getBuffer() ).readUnsignedVarInt() ) );
 
-        byte[] bytes = new byte[this.buffer.readIntLE()];
-        this.buffer.readBytes( bytes );
-        String chainToken = new String( bytes );
+        String chainToken = this.readString();
 
         Gson gson = new Gson();
         Map map = gson.fromJson( chainToken, Map.class );
-        List<String> chains = ((List<?>) map.get( "chain" )).stream().map( Object::toString ).collect( Collectors.toList());
+        List<String> chains = ( (List<?>) map.get( "chain" ) ).stream().map( Object::toString ).collect( Collectors.toList() );
         for ( String token : chains ) {
-            System.out.println( this.readToken( token ) );
+            //System.out.println( this.readToken( token ) );
         }
 
-        bytes = new byte[this.buffer.readIntLE()];
-        this.buffer.readBytes( bytes );
-        String skinToken = new String( bytes );
+        String skinToken = this.readString();
 
-        System.out.println( this.readToken( skinToken ) );
+       // System.out.println( this.readToken( skinToken ) );
     }
 
-    private String readToken(String token) {
-        String[] base = token.split("\\.");
-        if (base.length < 2)
+    private String readToken( String token ) {
+        String[] base = token.split( "\\." );
+        if ( base.length < 2 )
             return null;
         return new String( Base64.getDecoder().decode( base[1] ) );
     }
 
-    @Override
-    public void write() {
-
-    }
 }

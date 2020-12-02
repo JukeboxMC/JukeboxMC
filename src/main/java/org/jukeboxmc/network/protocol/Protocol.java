@@ -10,6 +10,7 @@ public interface Protocol {
     String MINECRAFT_VERSION = "1.16.100";
 
     //Minecraft
+    int BATCH_PACKET = 0xfe;
     byte LOGIN_PACKET = 0x01;
 
     //Raknet

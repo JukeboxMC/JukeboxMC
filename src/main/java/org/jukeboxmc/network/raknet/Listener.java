@@ -3,6 +3,7 @@ package org.jukeboxmc.network.raknet;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -18,6 +19,7 @@ import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.ServerName;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -73,29 +75,25 @@ public class Listener {
     }
 
     public void handle( DatagramPacket datagramPacket, InetSocketAddress sender ) {
-        try {
-            ByteBuf buffer = datagramPacket.content();
-            int packetId = buffer.getUnsignedByte( 0 );
+        ByteBuf buffer = datagramPacket.content();
+        int packetId = buffer.getUnsignedByte( 0 );
 
-            if ( packetId == Protocol.QUERY ) {
-                return;
-            }
+        if ( packetId == Protocol.QUERY ) {
+            return;
+        }
 
-            String token = sender.getHostName() + ":" + sender.getPort();
-            if ( this.connections.containsKey( token ) ) {
-                Connection connection = this.connections.get( token );
-                connection.receive( buffer );
-            } else {
-                if ( packetId == Protocol.UNCONNECTED_PING ) {
-                    this.handleUnconnectedPing( buffer, sender );
-                } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_1 ) {
-                    this.handleOpenConnectionRequest1( buffer, sender );
-                } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_2 ) {
-                    this.handleOpenConnectionRequest2( buffer, sender );
-                }
+        String token = sender.getHostName() + ":" + sender.getPort();
+        if ( this.connections.containsKey( token ) ) {
+            Connection connection = this.connections.get( token );
+            connection.receive( buffer );
+        } else {
+            if ( packetId == Protocol.UNCONNECTED_PING ) {
+                this.handleUnconnectedPing( buffer, sender );
+            } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_1 ) {
+                this.handleOpenConnectionRequest1( buffer, sender );
+            } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_2 ) {
+                this.handleOpenConnectionRequest2( buffer, sender );
             }
-        } finally {
-            datagramPacket.release();
         }
     }
 
@@ -172,7 +170,10 @@ public class Listener {
 
     public void sendBuffer( ByteBuf buffer, InetSocketAddress address ) {
         if ( this.channel != null ) {
-            this.channel.writeAndFlush( new DatagramPacket( buffer, address ) );
+            ByteBuf duplicate = buffer.duplicate();
+            byte[] array = new byte[duplicate.readableBytes()];
+            duplicate.readBytes( array );
+            this.channel.writeAndFlush( new DatagramPacket( Unpooled.wrappedBuffer( array ), address ) );
         }
     }
 

@@ -22,12 +22,10 @@ public abstract class Packet {
     }
 
     public void read() {
-        this.buffer.retain();
         this.packetId = this.buffer.readUnsignedByte();
     }
 
     public void write() {
-        this.buffer.retain();
         this.buffer.writeByte( this.packetId );
     }
 

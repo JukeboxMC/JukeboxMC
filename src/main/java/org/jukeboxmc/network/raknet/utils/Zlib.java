@@ -1,5 +1,7 @@
 package org.jukeboxmc.network.raknet.utils;
 
+import lombok.SneakyThrows;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
@@ -12,27 +14,23 @@ import java.util.zip.Inflater;
  */
 public class Zlib {
 
-    private static final ThreadLocal<Inflater> INFLATER_RAW = ThreadLocal.withInitial( () -> new Inflater( true ) );
-    private static final ThreadLocal<Deflater> DEFLATER_RAW = ThreadLocal.withInitial( () -> new Deflater( 7, true ) );
-    private static final ThreadLocal<byte[]> BUFFER = ThreadLocal.withInitial( () -> new byte[2 * 1024 * 1024] );
-
+    @SneakyThrows
     public static byte[] compress( byte[] input ) {
-        final Deflater deflater = new Deflater();
-        deflater.setInput( input );
-        deflater.finish();
-        final ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        byte[] readBuffer = new byte[2 * 1024 * 1024];
-        int readCount;
-
-        while ( !deflater.finished() ) {
-            readCount = deflater.deflate( readBuffer );
-            if ( readCount > 0 ) {
-                bao.write( readBuffer, 0, readCount );
+        Deflater deflater = new Deflater( 7, true );
+        try {
+            deflater.setInput( input );
+            deflater.finish();
+            FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
+            outputStream.reset();
+            byte[] buffer = new byte[2 * 1024 * 1024];
+            while ( !deflater.finished() ) {
+                int i = deflater.deflate( buffer );
+                outputStream.write( buffer, 0, i );
             }
+            return outputStream.toByteArray();
+        } finally {
+            deflater.reset();
         }
-
-        deflater.end();
-        return bao.toByteArray();
     }
 
     public static byte[] infalte( byte[] input ) throws DataFormatException, IOException {

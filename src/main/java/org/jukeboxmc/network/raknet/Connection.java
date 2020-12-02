@@ -1,17 +1,23 @@
 package org.jukeboxmc.network.raknet;
 
+import com.google.common.primitives.UnsignedInteger;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import org.jukeboxmc.network.protocol.Protocol;
 import org.jukeboxmc.network.protocol.packet.BatchPacket;
 import org.jukeboxmc.network.protocol.packet.LoginPacket;
+import org.jukeboxmc.network.protocol.packet.PlayStatusPacket;
+import org.jukeboxmc.network.protocol.packet.ResourcePacksInfoPacket;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
+import org.jukeboxmc.player.PlayerConnection;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,7 +43,9 @@ public class Connection {
 
     private LinkedList<DataPacket> packetToSend = new LinkedList<>();
 
-    private DataPacket sendQueue = new DataPacket();
+    //private Queue<DataPacket> sendQueue = new ConcurrentLinkedQueue<>();
+    //private DataPacket sendQueue;
+    private List<DataPacket> sendQueue = new LinkedList<>();
 
     private ConcurrentHashMap<Integer, Map<Integer, EncapsulatedPacket>> splitPackets = new ConcurrentHashMap<>();
 
@@ -132,7 +140,6 @@ public class Connection {
         this.sendQueue();
     }
 
-
     public void receive( ByteBuf buffer ) {
         this.isActive = true;
         this.lastUpdate = System.currentTimeMillis();
@@ -146,7 +153,12 @@ public class Connection {
         } else if ( ( packetId & BitFlags.NACK ) != 0 ) {
             this.handleNack( buffer );
         } else {
-            this.handleDatagram( buffer.asReadOnly() );
+            ByteBuf duplicate = buffer.duplicate();
+            byte[] array = new byte[duplicate.readableBytes()];
+            duplicate.readBytes( array );
+            //System.out.println( Arrays.toString( array ) );
+            System.out.println( "Datagram -> " + packetId );
+            this.handleDatagram( buffer );
         }
     }
 
@@ -185,7 +197,7 @@ public class Connection {
 
         for ( Object packet : dataPacket.getPackets() ) {
             if ( packet instanceof EncapsulatedPacket ) {
-                this.receivePacket( (EncapsulatedPacket) packet ); //Hier könnte was falsch sein
+                this.receivePacket( (EncapsulatedPacket) packet );
             }
         }
     }
@@ -238,6 +250,8 @@ public class Connection {
         }
         int id = packet.getBuffer().getUnsignedByte( 0 );
 
+        System.out.println( "ID: " + id + " Byte; " + packet.getBuffer().getByte( 0 ));
+
         if ( id < 0x80 ) {
             if ( this.state == Status.CONNECTING ) {
                 if ( id == Protocol.CONNECTION_REQUEST ) {
@@ -258,13 +272,14 @@ public class Connection {
             }
         } else if ( this.state == Status.CONNECTED ) {
             ByteBuf buffer = packet.getBuffer();
-            if ( id == 0xfe ) {
+            if ( id == Protocol.BATCH_PACKET ) {
                 buffer.readerIndex( 1 );
                 BatchPacket batchPacket = new BatchPacket();
-                batchPacket.buffer = buffer;
+                batchPacket.setBuffer( buffer );
                 batchPacket.read();
-
                 this.packets.offer( batchPacket );
+            } else {
+                System.out.println( "ElseID: " + id );
             }
 
             org.jukeboxmc.network.protocol.packet.Packet dataPacket;
@@ -276,9 +291,22 @@ public class Connection {
         }
     }
 
-    private BinaryStream getPacketBinaryStream(ByteBuf byteBuf) {
+    private BinaryStream getPacketBinaryStream( ByteBuf byteBuf ) {
         int packetLength = new BinaryStream( byteBuf ).readUnsignedVarInt();
         return new BinaryStream( byteBuf.readBytes( packetLength ) );
+    }
+
+    //Step 2
+    public void sendPacket( org.jukeboxmc.network.protocol.packet.Packet packet ) {
+        BatchPacket batchPacket = new BatchPacket();
+        batchPacket.addPacket( packet );
+        batchPacket.write();
+
+        EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
+        encapsulatedPacket.reliability = 0;
+        encapsulatedPacket.buffer = Unpooled.wrappedBuffer( batchPacket.getArray() );
+
+        this.addEncapsulatedToQueue( encapsulatedPacket, Priority.NORMAL );
     }
 
     private void processBatch( BatchPacket packet ) {
@@ -295,17 +323,28 @@ public class Connection {
 
         while ( buffer.readableBytes() > 0 ) {
             BinaryStream binaryStream = this.getPacketBinaryStream( buffer );
-                byte packetId = (byte) binaryStream.readUnsignedVarInt();
+            byte packetId = (byte) binaryStream.readUnsignedVarInt();
 
-                if(packetId == 0x01) {
-                    System.out.println( "LoginPacket" );
-                    LoginPacket loginPacket = new LoginPacket();
-                    loginPacket.buffer = binaryStream.buffer;
-                    loginPacket.read();
-                }
+            System.out.println( "PacketID: " + packetId );
 
+            if ( packetId == 0x01 ) {
+                System.out.println( "LoginPacket" );
+                LoginPacket loginPacket = new LoginPacket();
+                loginPacket.setBuffer( binaryStream.getBuffer() );
+                loginPacket.read();
+
+                //Step 1
+                PlayStatusPacket playStatusPacket = new PlayStatusPacket();
+                playStatusPacket.setStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
+              //  this.sendPacket( playStatusPacket );
+
+                ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
+                resourcePacksInfoPacket.setScripting( false );
+                resourcePacksInfoPacket.setForceAccept( false );
+                //this.sendPacket( resourcePacksInfoPacket );
             }
         }
+    }
 
     private void handleSplit( EncapsulatedPacket packet ) {
         if ( this.splitPackets.containsKey( packet.splitID ) ) {
@@ -326,8 +365,9 @@ public class Connection {
                 stream.writeBytes( packets.getBuffer() );
             }
             this.splitPackets.remove( packet.splitID );
+
             encapsulatedPacket.buffer = stream;
-            this.receivePacket( encapsulatedPacket ); //Oder hier ist was falsch
+            this.receivePacket( encapsulatedPacket );
         }
     }
 
@@ -345,7 +385,6 @@ public class Connection {
         EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
         encapsulatedPacket.reliability = 0;
         encapsulatedPacket.buffer = packet.buffer;
-
         this.addToQueue( encapsulatedPacket, Priority.IMMEDIATE );
     }
 
@@ -361,9 +400,9 @@ public class Connection {
 
         EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
         encapsulatedPacket.reliability = 0;
-        encapsulatedPacket.buffer = buffer;
+        encapsulatedPacket.buffer = packet.buffer;
 
-        this.addToQueue( encapsulatedPacket, Priority.IMMEDIATE );
+        this.addToQueue( encapsulatedPacket, Priority.NORMAL );
     }
 
     private void handleAck( ByteBuf buffer ) {
@@ -398,13 +437,12 @@ public class Connection {
         this.listener.removeConnection( this, timeout );
     }
 
-    private void addEncapsulatedToQueue( EncapsulatedPacket packet, int flags ) {
+    //Step 3
+    public void addEncapsulatedToQueue( EncapsulatedPacket packet, int flags ) {
         if ( packet.reliability == 2 || packet.reliability == 3 || packet.reliability == 4 || packet.reliability == 6 || packet.reliability == 7 ) {
             packet.messageIndex = this.messageIndex++;
             if ( packet.reliability == 3 ) {
-                Integer orderChannel = this.channelIndex.get( packet.orderIndex );
-                orderChannel++;
-                packet.orderChannel = orderChannel;
+                packet.orderChannel = this.channelIndex.get( packet.orderIndex ) + 1;
             }
         }
 
@@ -419,6 +457,7 @@ public class Connection {
 
             int splitID = ++this.splitID % 65536;
             buffers.forEach( ( count, buffer ) -> {
+                System.out.println( "TRY SEND ENCAPSULATED PACKET" );
                 EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
                 encapsulatedPacket.splitID = splitID;
                 encapsulatedPacket.split = true;
@@ -442,30 +481,40 @@ public class Connection {
         }
     }
 
-    private void addToQueue( EncapsulatedPacket encapsulatedPacket, int flags ) {
-        int priority = flags & 0b1;
+    //Step 4
+    private void addToQueue( EncapsulatedPacket encapsulatedPacket, int priority ) {
         if ( priority == Priority.IMMEDIATE ) {
             DataPacket packet = new DataPacket();
+            packet.sequenceNumber = this.sendSequenceNumber++;
             packet.getPackets().add( encapsulatedPacket.toBinary() );
             this.sendPacket( packet );
             packet.sendTime = System.currentTimeMillis();
             this.recoveryQueue.put( packet.sequenceNumber, packet );
             return;
         }
-        int length = this.sendQueue.length();
-        if ( length + encapsulatedPacket.getTotalLength() > this.mtuSize ) {
-            this.sendQueue();
+
+        if ( this.sendQueue.size() > 0 ) {
+            for ( DataPacket dataPacket : this.sendQueue ) {
+                if ( dataPacket.length() + encapsulatedPacket.getTotalLength() > this.mtuSize ) {
+                    this.sendQueue();
+                }
+            }
         }
-        this.sendQueue.getPackets().add( encapsulatedPacket.toBinary() );
+
+        DataPacket dataPacket = new DataPacket();
+        dataPacket.getPackets().add( encapsulatedPacket.toBinary() );
+        this.sendQueue.add( dataPacket );
     }
 
     private void sendQueue() {
-        if ( this.sendQueue.getPackets().size() > 0 ) {
-            this.sendQueue.setSequenceNumber( this.sendSequenceNumber++ );
-            this.sendPacket( this.sendQueue );
-            this.sendQueue.sendTime = System.currentTimeMillis();
-            this.recoveryQueue.put( this.sendQueue.getSequenceNumber(), this.sendQueue );
-            this.sendQueue = new DataPacket();
+        if ( this.sendQueue.size() > 0 ) {
+            for ( int index = 0; index < this.sendQueue.size(); index++ ) {
+                DataPacket dataPacket = this.sendQueue.get( index );
+                dataPacket.setSequenceNumber( this.sendSequenceNumber++ );
+                this.sendPacket( dataPacket );
+                this.recoveryQueue.put( dataPacket.sequenceNumber, dataPacket );
+                this.sendQueue.remove( index );
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -44,7 +45,7 @@ public class DataPacket extends Packet {
             if ( object instanceof EncapsulatedPacket ) {
                 EncapsulatedPacket encapsulatedPacket = (EncapsulatedPacket) object;
                 this.buffer.writeBytes( encapsulatedPacket.toBinary() );
-            } else if ( object instanceof byte[] ) {
+            } else {
                 byte[] buffer = (byte[]) object;
                 this.buffer.writeBytes( buffer );
             }

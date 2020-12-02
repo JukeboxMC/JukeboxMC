@@ -3,31 +3,34 @@ package org.jukeboxmc.network.raknet.protocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.jukeboxmc.network.raknet.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Reliability;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-@ToString(exclude = "buffer")
+@ToString ( exclude = "buffer" )
 public class EncapsulatedPacket {
 
     @Getter
-    public ByteBuf buffer;
+    @Setter
+    public ByteBuf buffer = Unpooled.buffer( 0 );
 
     public int reliability;
 
     public int messageIndex = -1;
     public int sequenceIndex = -1;
     public int orderIndex = -1;
-    public int orderChannel = 0;
+    public int orderChannel;
 
     public boolean split = false;
 
-    public int splitCount = 0;
-    public int splitIndex = 0;
-    public int splitID = 0;
+    public int splitCount;
+    public int splitIndex;
+    public int splitID;
 
     public boolean needACK = false;
 
@@ -41,6 +44,7 @@ public class EncapsulatedPacket {
 
         if ( Reliability.reliable( value ) ) {
             packet.messageIndex = buffer.readUnsignedMediumLE();
+            System.out.println( "Nr; " + packet.messageIndex );
         }
 
         if ( Reliability.sequenced( value ) ) {
@@ -63,39 +67,46 @@ public class EncapsulatedPacket {
     }
 
     public byte[] toBinary() {
-        ByteBuf stream = Unpooled.buffer( 0 );
+        BinaryStream stream = new BinaryStream();
         int value = this.reliability << 5;
-        if ( split ) {
-            value |= 0b00010000;
+        if ( this.split ) {
+            value |= 0x10;
         }
         stream.writeByte( value ); // flags
-        stream.writeShort( (short) ( buffer.readableBytes() << 3 ) ); // size
+        stream.writeShort( (short) ( this.buffer.readableBytes() << 3 ) ); // size
 
-        if ( Reliability.reliable( value ) ) {
-            stream.writeMediumLE( this.messageIndex );
+        if ( Reliability.reliable( this.reliability ) ) {
+            stream.writeLTried( this.messageIndex );
         }
 
-        if ( Reliability.sequenced( value ) ) {
-            stream.writeMediumLE( this.sequenceIndex );
+        if ( Reliability.sequenced( this.reliability ) ) {
+            stream.writeLTried( this.sequenceIndex );
         }
 
-        if ( Reliability.sequencedOrOrdered( value ) ) {
-            stream.writeMediumLE( orderIndex );
-            stream.writeByte( orderChannel );
+        if ( Reliability.sequencedOrOrdered( this.reliability ) ) {
+            stream.writeLTried( this.orderIndex );
+            stream.writeByte( this.orderChannel );
         }
 
-        if ( split ) {
-            stream.writeInt( splitCount );
-            stream.writeShort( (short) splitID );
-            stream.writeInt( splitIndex );
+        if ( this.split ) {
+            stream.writeInt( this.splitCount );
+            stream.writeShort( (short) this.splitID );
+            stream.writeInt( this.splitIndex );
         }
 
-        stream.writeBytes( this.buffer, this.buffer.readerIndex(), this.buffer.readableBytes() );
-        return stream.array();
+        stream.writeBuffer( this.buffer );
+        return stream.getArray();
+    }
+
+    public byte[] getArray() {
+        ByteBuf duplicate = this.buffer.duplicate();
+        byte[] array = new byte[duplicate.readableBytes()];
+        duplicate.readBytes( array );
+        return array;
     }
 
     public int getTotalLength() {
-        return 3 + this.buffer.capacity() + (this.messageIndex != -1 ? 3: 0) + (this.orderIndex != -1 ? 4: 0) + (this.split ? 10 : 0);
+        return 3 + this.getArray().length + ( this.messageIndex != -1 ? 3 : 0 ) + ( this.orderIndex != -1 ? 4 : 0 ) + ( this.split ? 10 : 0 );
     }
 
 }
