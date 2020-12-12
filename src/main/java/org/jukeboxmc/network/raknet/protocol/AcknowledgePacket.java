@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author LucGamesYT
@@ -16,7 +18,7 @@ import java.util.LinkedList;
 @Setter
 public class AcknowledgePacket extends Packet {
 
-    private LinkedList<Integer> packets = new LinkedList<>();
+    private List<Integer> packets = new CopyOnWriteArrayList<>();
 
     public AcknowledgePacket( byte packetId ) {
         super( packetId );

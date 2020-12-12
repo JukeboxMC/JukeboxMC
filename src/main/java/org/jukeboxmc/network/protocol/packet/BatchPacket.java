@@ -1,10 +1,9 @@
 package org.jukeboxmc.network.protocol.packet;
 
+import io.netty.buffer.Unpooled;
 import lombok.ToString;
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
-
-import java.util.Arrays;
 
 /**
  * @author LucGamesYT
@@ -28,8 +27,8 @@ public class BatchPacket extends Packet {
 
     @Override
     public void write() {
-        super.write();
-        byte[] buf = Zlib.compress( this.payload ); //Old [120, -38, 99, 101, 98, 0, 2, 0, 0, 46, 0, 8] -> New [99, 101, 98, 0, 2, 0]
+        this.writeByte( this.getPacketId() & 0xFF );
+        byte[] buf = Zlib.compress( this.payload );
         this.writeBytes( buf );
     }
 

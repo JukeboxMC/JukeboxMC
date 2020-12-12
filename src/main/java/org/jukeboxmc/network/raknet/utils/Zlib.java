@@ -2,7 +2,6 @@ package org.jukeboxmc.network.raknet.utils;
 
 import lombok.SneakyThrows;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -22,7 +21,7 @@ public class Zlib {
             deflater.finish();
             FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
             outputStream.reset();
-            byte[] buffer = new byte[2 * 1024 * 1024];
+            byte[] buffer = new byte[1024];
             while ( !deflater.finished() ) {
                 int i = deflater.deflate( buffer );
                 outputStream.write( buffer, 0, i );

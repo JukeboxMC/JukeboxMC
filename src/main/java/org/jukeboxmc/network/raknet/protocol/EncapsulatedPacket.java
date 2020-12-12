@@ -44,7 +44,6 @@ public class EncapsulatedPacket {
 
         if ( Reliability.reliable( value ) ) {
             packet.messageIndex = buffer.readUnsignedMediumLE();
-            System.out.println( "Nr; " + packet.messageIndex );
         }
 
         if ( Reliability.sequenced( value ) ) {

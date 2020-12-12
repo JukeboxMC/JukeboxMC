@@ -4,12 +4,10 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -32,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Listener {
 
     private Channel channel;
-    private NioEventLoopGroup group;
+    private EventLoopGroup group;
     @Getter
     private InetSocketAddress address;
     @Getter
@@ -49,11 +47,11 @@ public class Listener {
         this.serverId = UUID.randomUUID().getMostSignificantBits();
     }
 
-    public boolean listen( String address, int port ) {
-        this.address = new InetSocketAddress( address, port );
+    public boolean listen( InetSocketAddress socketAddress ) {
+        this.address = socketAddress;
         try {
             Bootstrap socket = new Bootstrap();
-            socket.group( this.group = new NioEventLoopGroup() );
+            socket.group( this.group = (Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup()) );
             socket.option( ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT );
             socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
             socket.handler( new ChannelInboundHandlerAdapter() {
@@ -65,10 +63,11 @@ public class Listener {
                 }
             } );
 
-            this.channel = socket.bind( address, port ).sync().channel();
+            this.channel = socket.bind( this.address ).sync().channel();
             this.isRunning = true;
             this.tick();
         } catch ( Exception e ) {
+            e.printStackTrace();
             this.isRunning = false;
         }
         return this.isRunning;
@@ -158,7 +157,7 @@ public class Listener {
                     this.cancel();
                 }
             }
-        }, 0, 10 ); //Raknet tick
+        }, 0, 1 ); //Raknet tick
     }
 
     private void sendPacket( Packet packet, InetSocketAddress address ) {

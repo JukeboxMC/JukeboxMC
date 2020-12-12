@@ -28,6 +28,5 @@ public class ResourcePacksInfoPacket extends Packet {
         this.writeBoolean( this.scripting );
         this.writeLShort( 0 ); // Resource Packs amount = 0, weil keine Resource Packs
         this.writeLShort( 0 ); // Behavior Packs amount = 0, weil keine Behavior Packs
-
     }
 }

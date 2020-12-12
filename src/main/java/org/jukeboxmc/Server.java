@@ -28,7 +28,7 @@ public class Server {
         this.address = address;
 
         this.listener = new Listener();
-        if ( !this.listener.listen( this.address.getHostName(), this.address.getPort() ) ) {
+        if ( !this.listener.listen( address ) ) {
             System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
             return false;
         }
