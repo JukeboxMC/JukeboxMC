@@ -1,8 +1,9 @@
-package org.jukeboxmc.network.protocol.packet;
+package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.jukeboxmc.network.Protocol;
 
 /**
  * @author LucGamesYT
@@ -18,7 +19,7 @@ public class ResourcePacksInfoPacket extends Packet {
 
     @Override
     public int getPacketId() {
-        return 0x06;
+        return Protocol.RESOURCE_PACKS_INFO_PACKET;
     }
 
     @Override

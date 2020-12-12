@@ -1,4 +1,4 @@
-package org.jukeboxmc.network.protocol;
+package org.jukeboxmc.network;
 
 /**
  * @author LucGamesYT
@@ -12,6 +12,9 @@ public interface Protocol {
     //Minecraft
     int BATCH_PACKET = 0xfe;
     byte LOGIN_PACKET = 0x01;
+    byte PLAY_STATUS_PACKET = 0x02;
+    byte RESOURCE_PACKS_INFO_PACKET = 0x06;
+    byte RESOURCE_PACK_RESPONSE_PACKET = 0x08;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

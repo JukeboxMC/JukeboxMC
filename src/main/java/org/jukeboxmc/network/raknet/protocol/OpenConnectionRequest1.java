@@ -2,7 +2,7 @@ package org.jukeboxmc.network.raknet.protocol;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 
 /**
  * @author LucGamesYT
@@ -10,7 +10,7 @@ import org.jukeboxmc.network.protocol.Protocol;
  */
 @Getter
 @Setter
-public class OpenConnectionRequest1 extends Packet {
+public class OpenConnectionRequest1 extends RakNetPacket {
 
     private byte protocol = 10;
     private short mtu;

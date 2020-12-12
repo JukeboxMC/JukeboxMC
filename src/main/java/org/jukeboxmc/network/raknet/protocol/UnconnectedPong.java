@@ -2,7 +2,7 @@ package org.jukeboxmc.network.raknet.protocol;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 
 /**
  * @author LucGamesYT
@@ -10,7 +10,7 @@ import org.jukeboxmc.network.protocol.Protocol;
  */
 @Getter
 @Setter
-public class UnconnectedPong extends Packet {
+public class UnconnectedPong extends RakNetPacket {
 
     private long time;
     private long serverGUID;

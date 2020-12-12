@@ -12,12 +12,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.Getter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
+import org.jukeboxmc.network.raknet.event.RakNetEventManager;
 import org.jukeboxmc.network.raknet.protocol.*;
-import org.jukeboxmc.network.raknet.utils.ServerName;
+import org.jukeboxmc.network.raknet.utils.ServerInfo;
 
 import java.net.InetSocketAddress;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -34,7 +34,9 @@ public class Listener {
     @Getter
     private InetSocketAddress address;
     @Getter
-    private ServerName serverName;
+    private ServerInfo serverInfo;
+    @Getter
+    private RakNetEventManager rakNetEventManager;
     @Getter
     private long serverId;
     @Getter
@@ -43,7 +45,8 @@ public class Listener {
     private ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
 
     public Listener() {
-        this.serverName = new ServerName( this );
+        this.serverInfo = new ServerInfo( this );
+        this.rakNetEventManager = new RakNetEventManager();
         this.serverId = UUID.randomUUID().getMostSignificantBits();
     }
 
@@ -104,7 +107,7 @@ public class Listener {
         UnconnectedPong packet = new UnconnectedPong();
         packet.setTime( System.currentTimeMillis() );
         packet.setServerGUID( this.serverId );
-        packet.setServerID( this.serverName.toString() );
+        packet.setServerID( this.serverInfo.toString() );
 
         this.sendPacket( packet, address );
     }
@@ -160,10 +163,10 @@ public class Listener {
         }, 0, 1 ); //Raknet tick
     }
 
-    private void sendPacket( Packet packet, InetSocketAddress address ) {
+    private void sendPacket( RakNetPacket rakNetPacket, InetSocketAddress address ) {
         if ( this.channel != null ) {
-            packet.write();
-            this.channel.writeAndFlush( new DatagramPacket( packet.buffer, address ) );
+            rakNetPacket.write();
+            this.channel.writeAndFlush( new DatagramPacket( rakNetPacket.buffer, address ) );
         }
     }
 

@@ -2,7 +2,7 @@ package org.jukeboxmc.network.raknet.protocol;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 
 import java.net.InetSocketAddress;
 
@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
  */
 @Getter
 @Setter
-public class OpenConnectionReply1 extends Packet {
+public class OpenConnectionReply1 extends RakNetPacket {
 
     private long serverGUID;
     private InetSocketAddress address;

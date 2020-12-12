@@ -1,22 +1,22 @@
 package org.jukeboxmc.network.raknet;
 
-import com.google.common.primitives.UnsignedInteger;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
-import lombok.Data;
 import lombok.Getter;
-import org.jukeboxmc.network.protocol.Protocol;
-import org.jukeboxmc.network.protocol.packet.*;
+import org.jukeboxmc.JukeboxMC;
+import org.jukeboxmc.Server;
+import org.jukeboxmc.network.Protocol;
+import org.jukeboxmc.network.packet.*;
+import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
+import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
-import org.jukeboxmc.network.raknet.protocol.Packet;
+import org.jukeboxmc.network.raknet.protocol.RakNetPacket;
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
-import org.jukeboxmc.player.PlayerConnection;
+import org.jukeboxmc.player.Player;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -38,12 +38,12 @@ public class Connection {
     private LinkedList<Integer> nackQueue = new LinkedList<>();
     private LinkedList<Integer> ackQueue = new LinkedList<>();
 
-    private ConcurrentHashMap<Integer, DataPacket> recoveryQueue = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, DataRakNetPacket> recoveryQueue = new ConcurrentHashMap<>();
 
-    private LinkedList<DataPacket> packetToSend = new LinkedList<>();
+    private LinkedList<DataRakNetPacket> packetToSend = new LinkedList<>();
 
     // private DataPacket sendQueue = new DataPacket();
-    private Queue<DataPacket> sendQueue = new ConcurrentLinkedQueue<>();
+    private Queue<DataRakNetPacket> sendQueue = new ConcurrentLinkedQueue<>();
 
     private ConcurrentHashMap<Integer, Map<Integer, EncapsulatedPacket>> splitPackets = new ConcurrentHashMap<>();
 
@@ -67,7 +67,7 @@ public class Connection {
     private long lastUpdate;
     private boolean isActive = false;
 
-    private final Queue<org.jukeboxmc.network.protocol.packet.Packet> packets = new ConcurrentLinkedQueue<>();
+    private final Queue<Packet> packets = new ConcurrentLinkedQueue<>();
 
     public Connection( Listener listener, short mtuSize, InetSocketAddress sender ) {
         this.listener = listener;
@@ -104,7 +104,7 @@ public class Connection {
 
         if ( this.packetToSend.size() > 0 ) {
             int limit = 16;
-            for ( DataPacket dataPacket : this.packetToSend ) {
+            for ( DataRakNetPacket dataPacket : this.packetToSend ) {
                 dataPacket.sendTime = timestap;
                 dataPacket.write();
                 this.recoveryQueue.put( dataPacket.sequenceNumber, dataPacket );
@@ -151,17 +151,12 @@ public class Connection {
         } else if ( ( packetId & BitFlags.NACK ) != 0 ) {
             this.handleNack( buffer );
         } else {
-            ByteBuf duplicate = buffer.duplicate();
-            byte[] array = new byte[duplicate.readableBytes()];
-            duplicate.readBytes( array );
-            //System.out.println( Arrays.toString( array ) );
-            //System.out.println( "Datagram [" + packetId + "] -> " + Arrays.toString( array ) );
             this.handleDatagram( buffer );
         }
     }
 
     private void handleDatagram( ByteBuf buffer ) {
-        DataPacket dataPacket = new DataPacket();
+        DataRakNetPacket dataPacket = new DataRakNetPacket();
         dataPacket.buffer = buffer;
         dataPacket.read();
 
@@ -253,6 +248,7 @@ public class Connection {
 
                     if ( dataPacket.getAddress().getPort() == this.listener.getAddress().getPort() ) {
                         this.state = Status.CONNECTED;
+                        this.listener.getRakNetEventManager().callEvent( new PlayerConnectionSuccessEvent( this ) );
                     }
                 }
             } else if ( id == Protocol.DISCONNECT_NOTIFICATION ) {
@@ -268,11 +264,9 @@ public class Connection {
                 batchPacket.setBuffer( buffer );
                 batchPacket.read();
                 this.packets.offer( batchPacket );
-            } else {
-                System.out.println( "ElseID: " + id );
             }
 
-            org.jukeboxmc.network.protocol.packet.Packet dataPacket;
+            Packet dataPacket;
             while ( ( dataPacket = this.packets.poll() ) != null ) {
                 if ( dataPacket instanceof BatchPacket ) {
                     this.processBatch( (BatchPacket) dataPacket );
@@ -286,23 +280,10 @@ public class Connection {
         return new BinaryStream( byteBuf.readBytes( packetLength ) );
     }
 
-    //Step 2
-    public void sendPacket( org.jukeboxmc.network.protocol.packet.Packet packet ) {
-        BatchPacket batchPacket = new BatchPacket();
-        batchPacket.addPacket( packet );
-        batchPacket.write();
-
-        EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
-        encapsulatedPacket.reliability = 0;
-        encapsulatedPacket.buffer = batchPacket.getBuffer();
-
-        this.addEncapsulatedToQueue( encapsulatedPacket, Priority.NORMAL );
-    }
-
-    private void processBatch( BatchPacket packet ) {
+    private void processBatch( BatchPacket batchPacket ) {
         byte[] data;
         try {
-            byte[] payload = packet.payload;
+            byte[] payload = batchPacket.payload;
             data = Zlib.infalte( payload );
         } catch ( DataFormatException | IOException e ) {
             e.printStackTrace();
@@ -317,24 +298,11 @@ public class Connection {
 
             System.out.println( "PacketID: " + packetId );
 
-            if ( packetId == 0x01 ) {
-                System.out.println( "LoginPacket" );
-                LoginPacket loginPacket = new LoginPacket();
-                loginPacket.setBuffer( binaryStream.getBuffer() );
-                loginPacket.read();
-
-                PlayStatusPacket playStatusPacket = new PlayStatusPacket();
-                playStatusPacket.setStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
-                this.sendPacket( playStatusPacket );
-
-                ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
-                resourcePacksInfoPacket.setScripting( false );
-                resourcePacksInfoPacket.setForceAccept( false );
-                this.sendPacket( resourcePacksInfoPacket );
-            } else if ( packetId == 0x08 ) {
-                ResourcePackResponsePacket resourcePackResponsePacket = new ResourcePackResponsePacket();
-                resourcePackResponsePacket.setBuffer( binaryStream.getBuffer() );
-                resourcePackResponsePacket.read();
+            Packet packet = PacketRegistry.getPacket( packetId );
+            if ( packet != null ) {
+                packet.setBuffer( binaryStream.getBuffer() );
+                packet.read();
+                this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
             }
         }
     }
@@ -360,32 +328,6 @@ public class Connection {
 
             this.handlePacket( encapsulatedPacket );
         }
-
-        /*
-                if ( this.splitPackets.containsKey( packet.splitID ) ) {
-            Map<Integer, EncapsulatedPacket> value = this.splitPackets.get( packet.splitID );
-            value.put( packet.splitIndex, packet );
-            this.splitPackets.put( packet.splitID, value );
-        } else {
-            Map<Integer, EncapsulatedPacket> value = new HashMap<>();
-            value.put( packet.splitID, packet );
-            this.splitPackets.put( packet.splitIndex, value );
-        }
-
-        Map<Integer, EncapsulatedPacket> localSplits = this.splitPackets.get( packet.splitID );
-        if ( localSplits.size() == packet.splitCount ) {
-            EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
-            ByteBuf stream = Unpooled.buffer( 0 );
-            for ( EncapsulatedPacket packets : localSplits.values() ) {
-                stream.writeBytes( packets.getBuffer() );
-            }
-            this.splitPackets.remove( packet.splitID );
-
-            encapsulatedPacket.buffer = stream;
-            this.receivePacket( encapsulatedPacket );
-        }
-
-         */
     }
 
     private void handleConnectionRequest( ByteBuf buffer ) {
@@ -420,7 +362,6 @@ public class Connection {
         encapsulatedPacket.buffer = packet.buffer;
 
         this.addToQueue( encapsulatedPacket, Priority.NORMAL );
-        System.out.println( "ping" );
     }
 
     private void handleAck( ByteBuf buffer ) {
@@ -440,7 +381,7 @@ public class Connection {
 
         for ( Integer seq : packet.getPackets() ) {
             if ( this.recoveryQueue.containsKey( seq ) ) {
-                DataPacket dataPacket = this.recoveryQueue.get( seq );
+                DataRakNetPacket dataPacket = this.recoveryQueue.get( seq );
                 dataPacket.setSequenceNumber( this.sendSequenceNumber++ );
                 dataPacket.setSendTime( System.currentTimeMillis() );
                 dataPacket.write();
@@ -455,7 +396,6 @@ public class Connection {
         this.listener.removeConnection( this, timeout );
     }
 
-    //Step 3
     public void addEncapsulatedToQueue( EncapsulatedPacket packet, int flags ) {
         if ( packet.reliability == 2 || packet.reliability == 3 || packet.reliability == 4 || packet.reliability == 6 || packet.reliability == 7 ) {
             packet.messageIndex = this.messageIndex++;
@@ -501,10 +441,9 @@ public class Connection {
         }
     }
 
-    //Step 4
     private void addToQueue( EncapsulatedPacket encapsulatedPacket, int priority ) {
         if ( priority == Priority.IMMEDIATE ) {
-            DataPacket packet = new DataPacket();
+            DataRakNetPacket packet = new DataRakNetPacket();
             packet.sequenceNumber = this.sendSequenceNumber++;
             packet.getPackets().add( encapsulatedPacket.toBinary() );
             this.sendPacket( packet );
@@ -513,45 +452,32 @@ public class Connection {
             return;
         }
 
-        for ( DataPacket dataPacket : this.sendQueue ) {
+        for ( DataRakNetPacket dataPacket : this.sendQueue ) {
             int length = dataPacket.length();
             if ( length + encapsulatedPacket.getTotalLength() > this.mtuSize ) {
                 this.sendQueue();
             }
         }
 
-        DataPacket dataPacket = new DataPacket();
+        DataRakNetPacket dataPacket = new DataRakNetPacket();
         dataPacket.getPackets().add( encapsulatedPacket.toBinary() );
         this.sendQueue.add( dataPacket );
-        System.out.println( "ADD" );
     }
 
     private void sendQueue() {
         if ( !this.sendQueue.isEmpty() ) {
-            DataPacket dataPacket;
+            DataRakNetPacket dataPacket;
             while ( ( dataPacket = this.sendQueue.poll() ) != null ) {
                 dataPacket.setSequenceNumber( this.sendSequenceNumber++ );
                 this.sendPacket( dataPacket );
                 this.recoveryQueue.put( dataPacket.sequenceNumber, dataPacket );
-                System.out.println( "Send Packet..." );
             }
         }
-
-        /*
-                if ( !this.sendQueue.getPackets().isEmpty() ) {
-            this.sendQueue.sequenceNumber = this.sendSequenceNumber++;
-            this.sendPacket( this.sendQueue );
-            this.sendQueue.sendTime = System.currentTimeMillis();
-            this.recoveryQueue.put( this.sendQueue.sequenceNumber, this.sendQueue );
-            this.sendQueue = new DataPacket();
-            System.out.println( "Send" );
-        }
-         */
     }
 
-    public void sendPacket( Packet packet ) {
-        packet.write();
-        this.listener.sendBuffer( packet.buffer, this.sender );
+    public void sendPacket( RakNetPacket rakNetPacket ) {
+        rakNetPacket.write();
+        this.listener.sendBuffer( rakNetPacket.buffer, this.sender );
     }
 
     public void close() {

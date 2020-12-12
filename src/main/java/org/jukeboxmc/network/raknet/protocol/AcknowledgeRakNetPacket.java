@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -16,11 +15,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Getter
 @Setter
-public class AcknowledgePacket extends Packet {
+public class AcknowledgeRakNetPacket extends RakNetPacket {
 
     private List<Integer> packets = new CopyOnWriteArrayList<>();
 
-    public AcknowledgePacket( byte packetId ) {
+    public AcknowledgeRakNetPacket( byte packetId ) {
         super( packetId );
     }
 

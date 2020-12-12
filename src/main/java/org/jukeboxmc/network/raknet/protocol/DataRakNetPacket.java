@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -15,14 +14,14 @@ import java.util.LinkedList;
 @Getter
 @Setter
 @ToString
-public class DataPacket extends Packet {
+public class DataRakNetPacket extends RakNetPacket {
 
     private LinkedList<Object> packets = new LinkedList<>();
 
     public int sequenceNumber;
     public long sendTime = System.currentTimeMillis();
 
-    public DataPacket() {
+    public DataRakNetPacket() {
         super( BitFlags.VALID );
     }
 

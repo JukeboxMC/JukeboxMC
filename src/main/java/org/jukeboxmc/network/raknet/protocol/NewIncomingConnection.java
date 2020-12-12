@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.raknet.protocol;
 
 import lombok.Getter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 
 import java.net.InetSocketAddress;
 
@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
  * @author LucGamesYT
  * @version 1.0
  */
-public class NewIncomingConnection extends Packet {
+public class NewIncomingConnection extends RakNetPacket {
 
     @Getter
     private InetSocketAddress address;

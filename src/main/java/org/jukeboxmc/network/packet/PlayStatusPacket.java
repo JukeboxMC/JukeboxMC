@@ -1,8 +1,9 @@
-package org.jukeboxmc.network.protocol.packet;
+package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.jukeboxmc.network.Protocol;
 
 /**
  * @author LucGamesYT
@@ -17,7 +18,7 @@ public class PlayStatusPacket extends Packet {
 
     @Override
     public int getPacketId() {
-        return 0x02;
+        return Protocol.PLAY_STATUS_PACKET;
     }
 
     @Override

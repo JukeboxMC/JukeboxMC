@@ -3,7 +3,7 @@ package org.jukeboxmc.network.raknet.protocol;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 
 /**
  * @author LucGamesYT
@@ -12,7 +12,7 @@ import org.jukeboxmc.network.protocol.Protocol;
 @Getter
 @Setter
 @ToString
-public class ConnectionRequest extends Packet {
+public class ConnectionRequest extends RakNetPacket {
 
     private long clientGUID;
     private long requestTimestamp;

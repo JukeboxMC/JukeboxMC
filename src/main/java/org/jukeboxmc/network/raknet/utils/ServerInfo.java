@@ -3,7 +3,7 @@ package org.jukeboxmc.network.raknet.utils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jukeboxmc.network.protocol.Protocol;
+import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.Listener;
 import org.jukeboxmc.player.GameMode;
 
@@ -17,7 +17,7 @@ import java.util.StringJoiner;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ServerName {
+public class ServerInfo {
 
     private String motd = "§bJukeboxMC";
     private String name = "Line 2";
@@ -26,7 +26,7 @@ public class ServerName {
     private GameMode gameMode = GameMode.SURVIVAL;
     private long serverId;
 
-    public ServerName( Listener listener ) {
+    public ServerInfo( Listener listener ) {
         this.serverId = listener.getServerId();
     }
 

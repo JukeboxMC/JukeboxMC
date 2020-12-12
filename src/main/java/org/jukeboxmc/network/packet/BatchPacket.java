@@ -1,7 +1,7 @@
-package org.jukeboxmc.network.protocol.packet;
+package org.jukeboxmc.network.packet;
 
-import io.netty.buffer.Unpooled;
 import lombok.ToString;
+import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
 
@@ -16,7 +16,7 @@ public class BatchPacket extends Packet {
 
     @Override
     public int getPacketId() {
-        return 0xfe;
+        return Protocol.BATCH_PACKET;
     }
 
     @Override

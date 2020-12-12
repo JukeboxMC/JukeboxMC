@@ -1,10 +1,9 @@
-package org.jukeboxmc.network.protocol.packet;
+package org.jukeboxmc.network.packet;
 
 import com.google.gson.Gson;
-import io.netty.buffer.ByteBuf;
+import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class LoginPacket extends Packet {
 
     @Override
     public int getPacketId() {
-        return 0x01;
+        return Protocol.LOGIN_PACKET;
     }
 
     @Override

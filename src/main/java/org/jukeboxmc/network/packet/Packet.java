@@ -1,4 +1,4 @@
-package org.jukeboxmc.network.protocol.packet;
+package org.jukeboxmc.network.packet;
 
 import org.jukeboxmc.network.raknet.utils.BinaryStream;
 

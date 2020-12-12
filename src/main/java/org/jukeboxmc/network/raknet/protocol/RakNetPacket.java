@@ -11,13 +11,13 @@ import java.net.InetSocketAddress;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class Packet {
+public abstract class RakNetPacket {
 
     public ByteBuf buffer = Unpooled.buffer( 0 );
 
     public int packetId;
 
-    public Packet( byte packetId ) {
+    public RakNetPacket( byte packetId ) {
         this.packetId = packetId;
     }
 

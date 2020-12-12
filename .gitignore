@@ -1,2 +1,80 @@
-# Project exclude paths
-/target/
+### Visual Studio Code #############################
+.vscode/
+
+
+### Java #############################
+*.class
+
+
+### Mobile Tools for Java (J2ME) #############################
+.mtj.tmp/
+
+
+### Package Files #############################
+*.jar
+*.war
+*.ear
+
+
+### Virtual machine crash logs #############################
+hs_err_pid*
+
+
+### Maven #############################
+**/target
+**/dependency-reduced-pom.xml
+
+
+### OS X #############################
+**/.DS_Store
+
+
+### JetBrains IDEs #############################
+*.iml
+.idea/
+*.ipr
+*.iws
+dependency-reduced-pom.xml
+
+#IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+
+
+### Lib folder #############################
+libs/
+
+
+### Eclipse #############################
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.idea
+*~.nib
+local.properties
+**/.classpath
+**/.project
+.settings/
+.loadpath
+.recommenders
+.recommenders/
+.apt_generated/
+.factorypath
+.externalToolBuilders/
+*.launch
+.target
+.cache-main
+.scala_dependencies
