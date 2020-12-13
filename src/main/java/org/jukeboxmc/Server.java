@@ -1,10 +1,6 @@
 package org.jukeboxmc;
 
 import lombok.NoArgsConstructor;
-import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.network.handler.LoginHandler;
-import org.jukeboxmc.network.handler.PacketHandler;
-import org.jukeboxmc.network.packet.LoginPacket;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.Connection;
@@ -75,7 +71,6 @@ public class Server {
     public void setDefaultGamemode( GameMode defaultGamemode ) {
         this.listener.getServerInfo().setGameMode( defaultGamemode );
     }
-
 
     public GameMode getDefaultGamemode() {
         return this.listener.getServerInfo().getGameMode();

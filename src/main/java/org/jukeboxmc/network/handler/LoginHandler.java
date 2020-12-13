@@ -18,7 +18,11 @@ public class LoginHandler implements PacketHandler{
         PlayerConnection playerConnection = player.getPlayerConnection();
         LoginPacket loginPacket = (LoginPacket) packet;
 
-        //TODO Handle ChainData
+        player.setName( loginPacket.getUsername() );
+        player.setXuid( loginPacket.getXuid() );
+        player.setUUID( loginPacket.getUuid() );
+        player.setSkin( loginPacket.getSkin() );
+        player.setDeviceInfo( loginPacket.getDeviceInfo() );
 
         PlayStatusPacket playStatusPacket = new PlayStatusPacket();
         playStatusPacket.setStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
