@@ -3,7 +3,6 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.network.packet.LoginPacket;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayStatusPacket;
-import org.jukeboxmc.network.packet.ResourcePacksInfoPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.PlayerConnection;
 
@@ -24,13 +23,7 @@ public class LoginHandler implements PacketHandler{
         player.setSkin( loginPacket.getSkin() );
         player.setDeviceInfo( loginPacket.getDeviceInfo() );
 
-        PlayStatusPacket playStatusPacket = new PlayStatusPacket();
-        playStatusPacket.setStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
-        playerConnection.sendPacket( playStatusPacket );
-
-        ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
-        resourcePacksInfoPacket.setScripting( false );
-        resourcePacksInfoPacket.setForceAccept( false );
-        playerConnection.sendPacket( resourcePacksInfoPacket );
+        playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
+        playerConnection.sendResourceInfo();
     }
 }

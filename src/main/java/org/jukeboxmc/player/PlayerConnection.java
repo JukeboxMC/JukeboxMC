@@ -2,6 +2,8 @@ package org.jukeboxmc.player;
 
 import org.jukeboxmc.network.packet.BatchPacket;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.network.packet.PlayStatusPacket;
+import org.jukeboxmc.network.packet.ResourcePacksInfoPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
 
@@ -27,6 +29,19 @@ public class PlayerConnection {
         encapsulatedPacket.buffer = batchPacket.getBuffer();
 
         this.connection.addEncapsulatedToQueue( encapsulatedPacket, Connection.Priority.NORMAL );
+    }
+
+    public void sendStatus( PlayStatusPacket.Status status ) {
+        PlayStatusPacket playStatusPacket = new PlayStatusPacket();
+        playStatusPacket.setStatus( status );
+        this.sendPacket( playStatusPacket );
+    }
+
+    public void sendResourceInfo() {
+        ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
+        resourcePacksInfoPacket.setScripting( false );
+        resourcePacksInfoPacket.setForceAccept( false );
+        this.sendPacket( resourcePacksInfoPacket );
     }
 
 }
