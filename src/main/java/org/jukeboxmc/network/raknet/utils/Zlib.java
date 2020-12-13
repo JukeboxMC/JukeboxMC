@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.raknet.utils;
 
 import lombok.SneakyThrows;
+import org.jukeboxmc.utils.FastByteArrayOutputStream;
 
 import java.io.IOException;
 import java.util.zip.DataFormatException;

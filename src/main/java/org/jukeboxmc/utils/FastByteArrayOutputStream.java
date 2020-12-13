@@ -1,4 +1,4 @@
-package org.jukeboxmc.network.raknet.utils;
+package org.jukeboxmc.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;

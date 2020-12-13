@@ -1,15 +1,19 @@
 package org.jukeboxmc.network.packet;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.network.raknet.utils.BinaryStream;
+import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@Data
 @ToString
+@EqualsAndHashCode ( callSuper = true )
 public class BatchPacket extends Packet {
 
     public byte[] payload = new byte[0];

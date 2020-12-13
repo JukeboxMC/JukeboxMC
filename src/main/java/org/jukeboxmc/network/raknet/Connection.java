@@ -3,17 +3,14 @@ package org.jukeboxmc.network.raknet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
-import org.jukeboxmc.JukeboxMC;
-import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
 import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.protocol.RakNetPacket;
-import org.jukeboxmc.network.raknet.utils.BinaryStream;
+import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
-import org.jukeboxmc.player.Player;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

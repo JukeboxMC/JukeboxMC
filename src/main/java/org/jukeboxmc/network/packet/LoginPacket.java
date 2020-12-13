@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.network.raknet.utils.BinaryStream;
+import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.GUIScale;
@@ -21,8 +22,9 @@ import java.util.stream.Collectors;
  * @author LucGamesYT
  * @version 1.0
  */
-@Getter
+@Data
 @ToString
+@EqualsAndHashCode ( callSuper = true )
 public class LoginPacket extends Packet {
 
     private int protocol;

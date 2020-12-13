@@ -1,7 +1,9 @@
-package org.jukeboxmc.network.raknet.utils;
+package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author LucGamesYT
@@ -169,6 +171,12 @@ public class BinaryStream {
 
     public int readUnsignedLTried() {
         return this.buffer.readUnsignedMediumLE();
+    }
+
+    public void writeString( String value ) {
+        byte[] ascii = value.getBytes();
+        this.writeUnsignedVarInt( ascii.length );
+        this.buffer.writeBytes( ascii );
     }
 
     public String readString() {

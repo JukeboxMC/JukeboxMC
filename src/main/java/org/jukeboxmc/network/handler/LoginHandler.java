@@ -24,6 +24,6 @@ public class LoginHandler implements PacketHandler{
         player.setDeviceInfo( loginPacket.getDeviceInfo() );
 
         playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
-        playerConnection.sendResourceInfo();
+        playerConnection.sendResourcePackInfo();
     }
 }

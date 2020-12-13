@@ -14,6 +14,7 @@ public interface Protocol {
     byte LOGIN_PACKET = 0x01;
     byte PLAY_STATUS_PACKET = 0x02;
     byte RESOURCE_PACKS_INFO_PACKET = 0x06;
+    byte RESOURCE_PACK_STACK_PACKET = 0x07;
     byte RESOURCE_PACK_RESPONSE_PACKET = 0x08;
 
     //Raknet

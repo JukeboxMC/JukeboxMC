@@ -5,7 +5,7 @@ import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jukeboxmc.network.raknet.utils.BinaryStream;
+import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Reliability;
 
 /**

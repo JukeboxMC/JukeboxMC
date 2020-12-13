@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.packet;
 
-import org.jukeboxmc.network.raknet.utils.BinaryStream;
+import org.jukeboxmc.utils.BinaryStream;
 
 /**
  * @author LucGamesYT
