@@ -6,11 +6,13 @@ import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.PlayerConnection;
 
+import java.util.Locale;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class LoginHandler implements PacketHandler{
+public class LoginHandler implements PacketHandler {
 
     @Override
     public void handle( Packet packet, Player player ) {
@@ -22,6 +24,7 @@ public class LoginHandler implements PacketHandler{
         player.setUUID( loginPacket.getUuid() );
         player.setSkin( loginPacket.getSkin() );
         player.setDeviceInfo( loginPacket.getDeviceInfo() );
+        player.setLocale( loginPacket.getLanguageCode() != null ? Locale.forLanguageTag( loginPacket.getLanguageCode().replace( "_", "-" ) ) : Locale.US );
 
         playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
         playerConnection.sendResourcePackInfo();

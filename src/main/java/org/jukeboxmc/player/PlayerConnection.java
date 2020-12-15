@@ -10,13 +10,19 @@ import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
  */
 public class PlayerConnection {
 
+    private Player player;
     private Connection connection;
 
-    public PlayerConnection( Connection connection ) {
+    public PlayerConnection( Player player, Connection connection ) {
+        this.player = player;
         this.connection = connection;
     }
 
     public void sendPacket( Packet packet ) {
+        this.sendPacket( packet, false );
+    }
+
+    public void sendPacket( Packet packet, boolean direct ) {
         BatchPacket batchPacket = new BatchPacket();
         batchPacket.addPacket( packet );
         batchPacket.write();
@@ -25,7 +31,7 @@ public class PlayerConnection {
         encapsulatedPacket.reliability = 0;
         encapsulatedPacket.buffer = batchPacket.getBuffer();
 
-        this.connection.addEncapsulatedToQueue( encapsulatedPacket, Connection.Priority.NORMAL );
+        this.connection.addEncapsulatedToQueue( encapsulatedPacket, direct ? Connection.Priority.IMMEDIATE : Connection.Priority.NORMAL );
     }
 
     public void sendStatus( PlayStatusPacket.Status status ) {
@@ -47,4 +53,17 @@ public class PlayerConnection {
         this.sendPacket( resourcePackStackPacket );
     }
 
+    public void setViewDistance( int distance ) {
+        ChunkRadiusUpdatedPacket chunkRadiusUpdatedPacket = new ChunkRadiusUpdatedPacket();
+        chunkRadiusUpdatedPacket.setChunkRadius( distance );
+        this.sendPacket( chunkRadiusUpdatedPacket );
+    }
+
+    public void sendNetworkChunkPublisher() {
+        NetworkChunkPublisherUpdatePacket publisherUpdatePacket = new NetworkChunkPublisherUpdatePacket();
+        publisherUpdatePacket.setX( (int) Math.floor( this.player.getLocation().getX() ) );
+        publisherUpdatePacket.setY( (int) Math.floor( this.player.getLocation().getY() ) );
+        publisherUpdatePacket.setZ( (int) Math.floor( this.player.getLocation().getZ() ) );
+        publisherUpdatePacket.setRadius( this.player.getViewDistance() << 4 );
+    }
 }

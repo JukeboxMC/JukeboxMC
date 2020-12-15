@@ -42,6 +42,7 @@ public class BatchPacket extends Packet {
         stream.writeUnsignedVarInt( packet.getArray().length );
         stream.writeBuffer( packet.getBuffer() );
         this.payload = stream.getArray();
+        stream.release();
     }
 
 }

@@ -94,6 +94,7 @@ public class EncapsulatedPacket {
         }
 
         stream.writeBuffer( this.buffer );
+        stream.release();
         return stream.getArray();
     }
 

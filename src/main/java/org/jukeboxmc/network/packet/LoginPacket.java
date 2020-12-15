@@ -158,7 +158,6 @@ public class LoginPacket extends Packet {
                 this.skin.getPersonaPieceTints().add( this.getPersonaPieceTint( jsonElement.getAsJsonObject() ) );
             }
         }
-        System.out.println( this.skin.toString() );
     }
 
     private Image getImage( JsonObject skinMap, String name ) {

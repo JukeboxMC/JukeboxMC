@@ -1,6 +1,8 @@
 package org.jukeboxmc;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.Connection;
@@ -9,6 +11,7 @@ import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
 import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -19,23 +22,31 @@ import java.util.function.Consumer;
  * @author LucGamesYT
  * @version 1.0
  */
-@NoArgsConstructor
 public class Server {
+
+    @Getter @Setter
+    private static Server instance;
 
     private InetSocketAddress address;
     private Listener listener;
+
+    private World defaultWorld;
+
+    private int viewDistance = 16;
 
     private boolean isShutdown = false;
 
     private Map<InetSocketAddress, Player> players = new HashMap<>();
 
-    public boolean startServer( InetSocketAddress address ) {
+    public Server( InetSocketAddress address ) {
+        Server.setInstance( this );
+
         this.address = address;
 
         this.listener = new Listener();
         if ( !this.listener.listen( address ) ) {
             System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
-            return false;
+            return;
         }
 
         this.listener.getRakNetEventManager().onEvent( ReciveMinecraftPacketEvent.class, (Consumer<ReciveMinecraftPacketEvent>) event -> {
@@ -48,12 +59,13 @@ public class Server {
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {
             Connection connection = event.getConnection();
 
-            Player player = new Player( connection );
+            Player player = new Player( this, connection );
             this.players.put( player.getAddress(), player );
             this.setOnlinePlayers( this.players.size() );
         } );
 
-        return true;
+        //Load worlds
+        this.defaultWorld = this.getWorld( "world" );
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {
@@ -86,6 +98,18 @@ public class Server {
 
     public String getHostname() {
         return this.address.getHostName();
+    }
+
+    public World getWorld( String name ) {
+        return new World( name );
+    }
+
+    public World getDefaultWorld() {
+        return this.defaultWorld;
+    }
+
+    public int getViewDistance() {
+        return this.viewDistance;
     }
 
     public boolean isShutdown() {

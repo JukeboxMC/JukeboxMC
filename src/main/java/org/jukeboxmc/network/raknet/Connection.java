@@ -273,7 +273,9 @@ public class Connection {
     }
 
     private BinaryStream getPacketBinaryStream( ByteBuf byteBuf ) {
-        int packetLength = new BinaryStream( byteBuf ).readUnsignedVarInt();
+        BinaryStream stream = new BinaryStream( byteBuf );
+        int packetLength = stream.readUnsignedVarInt();
+        stream.release();
         return new BinaryStream( byteBuf.readBytes( packetLength ) );
     }
 
@@ -301,6 +303,7 @@ public class Connection {
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
             }
+            binaryStream.release();
         }
     }
 
@@ -324,6 +327,7 @@ public class Connection {
             this.splitPackets.remove( packet.splitID );
 
             this.handlePacket( encapsulatedPacket );
+            stream.release();
         }
     }
 

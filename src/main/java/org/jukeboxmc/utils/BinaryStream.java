@@ -2,8 +2,10 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.jukeboxmc.world.GameRule;
 
-import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
+import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -15,14 +17,21 @@ public class BinaryStream {
 
     public BinaryStream() {
         this.buffer = Unpooled.buffer( 0 );
+        this.buffer.retain();
     }
 
     public BinaryStream( ByteBuf buffer ) {
         this.buffer = buffer;
+        this.buffer.retain();
     }
 
     public BinaryStream( int maxSize ) {
         this.buffer = Unpooled.buffer( 0, maxSize );
+    }
+
+    public BinaryStream release() {
+        this.buffer.release();
+        return this;
     }
 
     public ByteBuf getBuffer() {
@@ -118,7 +127,7 @@ public class BinaryStream {
     }
 
     public void writeLFloat( float value ) {
-        this.buffer.writeFloatLE( value );
+        this.writeLInt( Float.floatToRawIntBits( value ) );
     }
 
     public double readDouble() {
@@ -210,6 +219,27 @@ public class BinaryStream {
         this.buffer.writeByte( (byte) ( value & 0x7F ) );
     }
 
+    public void writeSignedVarLong( long value ) {
+        this.writeVarBigInteger( this.encodeZigZag64( value ) );
+    }
+
+    public void writeUnsignedVarLong( long value ) {
+        while ( ( value & 0xFFFFFFFFFFFFFF80L ) != 0L ) {
+            this.writeByte( (byte) ( ( (int) value & 0x7F ) | 0x80 ) );
+            value >>>= 7;
+        }
+
+        this.writeByte( (byte) ( (int) value & 0x7F ) );
+    }
+
+    public int readSignedVarInt() {
+        return this.decodeZigZag32( this.readUnsignedVarInt() );
+    }
+
+    public void writeSignedVarInt( int value ) {
+        this.writeUnsignedVarInt( this.encodeZigZag32( value ) );
+    }
+
     public int readableBytes() {
         return this.buffer.readableBytes();
     }
@@ -221,8 +251,52 @@ public class BinaryStream {
         return array;
     }
 
-    public BinaryStream readSlice(int size){
+    public BinaryStream readSlice( int size ) {
         this.buffer.readSlice( size );
         return this;
+    }
+
+    private void writeVarBigInteger( BigInteger value ) {
+        BigInteger UNSIGNED_LONG_MAX_VALUE = new BigInteger( "FFFFFFFFFFFFFFFF", 16 );
+        if ( value.compareTo( UNSIGNED_LONG_MAX_VALUE ) > 0 ) {
+            throw new IllegalArgumentException( "The value is too big" );
+        }
+
+        value = value.and( UNSIGNED_LONG_MAX_VALUE );
+        BigInteger i = BigInteger.valueOf( -128 );
+        BigInteger x7f = BigInteger.valueOf( 0x7f );
+        BigInteger x80 = BigInteger.valueOf( 0x80 );
+
+        while ( !value.and( i ).equals( BigInteger.ZERO ) ) {
+            this.writeByte( value.and( x7f ).or( x80 ).byteValue() );
+            value = value.shiftRight( 7 );
+        }
+
+        this.writeByte( value.byteValue() );
+    }
+
+    private BigInteger encodeZigZag64( long value ) {
+        BigInteger origin = BigInteger.valueOf( value );
+        BigInteger left = origin.shiftLeft( 1 );
+        BigInteger right = origin.shiftRight( 63 );
+        return left.xor( right );
+    }
+
+    private int encodeZigZag32(int value) {
+        return value << 1 ^ value >> 31;
+    }
+
+    private int decodeZigZag32(int v) {
+        return v >> 1 ^ -(v & 1);
+    }
+
+    //Minecraft
+
+    public void writeGameRules( Map<String, GameRule> gamerules ) {
+        this.writeUnsignedVarInt( gamerules.size() );
+
+        gamerules.forEach( (name, value) -> {
+
+        } );
     }
 }

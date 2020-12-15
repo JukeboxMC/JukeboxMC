@@ -2,6 +2,7 @@ package org.jukeboxmc.network.raknet;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -16,6 +17,7 @@ import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.event.RakNetEventManager;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.ServerInfo;
+import org.jukeboxmc.utils.BinaryStream;
 
 import java.net.InetSocketAddress;
 import java.util.Timer;
@@ -55,14 +57,16 @@ public class Listener {
         try {
             Bootstrap socket = new Bootstrap();
             socket.group( this.group = (Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup()) );
-            socket.option( ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT );
+            socket.option(ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT);
             socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
             socket.handler( new ChannelInboundHandlerAdapter() {
                 @Override
                 public void channelRead( ChannelHandlerContext ctx, Object msg ) {
                     DatagramPacket packet = (DatagramPacket) msg;
+                    BinaryStream stream = new BinaryStream( packet.content() );
                     InetSocketAddress senderAddress = packet.sender();
-                    Listener.this.handle( packet, senderAddress );
+                    Listener.this.handle( stream, senderAddress );
+                    stream.release();
                 }
             } );
 
@@ -76,8 +80,8 @@ public class Listener {
         return this.isRunning;
     }
 
-    public void handle( DatagramPacket datagramPacket, InetSocketAddress sender ) {
-        ByteBuf buffer = datagramPacket.content();
+    public void handle( BinaryStream datagramPacket, InetSocketAddress sender ) {
+        ByteBuf buffer = datagramPacket.getBuffer();
         int packetId = buffer.getUnsignedByte( 0 );
 
         if ( packetId == Protocol.QUERY ) {

@@ -1,9 +1,7 @@
 package org.jukeboxmc.network.packet;
 
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.network.handler.LoginHandler;
-import org.jukeboxmc.network.handler.PacketHandler;
-import org.jukeboxmc.network.handler.ResourcePackResponseHandler;
+import org.jukeboxmc.network.handler.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +17,7 @@ public class PacketRegistry {
     static {
         handler.put( LoginPacket.class, new LoginHandler() );
         handler.put( ResourcePackResponsePacket.class, new ResourcePackResponseHandler() );
+        handler.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -35,6 +34,18 @@ public class PacketRegistry {
                 return new ResourcePacksInfoPacket();
             case Protocol.RESOURCE_PACK_RESPONSE_PACKET:
                 return new ResourcePackResponsePacket();
+            case Protocol.START_GAME_PACKET:
+                return new StartGamePacket();
+            case Protocol.BIOME_DEFINITION_LIST_PACKET:
+                return new BiomeDefinitionListPacket();
+            case Protocol.CREATIVE_CONTENT_PACKET:
+                return new CreativeContentPacket();
+            case Protocol.REQUEST_CHUNK_RADIUS_PACKET:
+                return new RequestChunkRadiusPacket();
+            case Protocol.CHUNK_RADIUS_UPDATE_PACKET:
+                return new ChunkRadiusUpdatedPacket();
+            case Protocol.NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET:
+                return new NetworkChunkPublisherUpdatePacket();
             default:
                 return null;
         }

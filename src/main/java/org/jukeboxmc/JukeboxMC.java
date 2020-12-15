@@ -28,14 +28,12 @@ public class JukeboxMC {
     private JukeboxMC() {
         System.out.println( "Server wird gestartet...." );
 
-        this.server = new Server();
         this.address = new InetSocketAddress( "127.0.0.1", 19132 );
+        this.server = new Server( this.address );
 
         TerminalConsole terminalConsole = new TerminalConsole( this.server );
         terminalConsole.getConsoleThread().start();
 
-        if ( this.server.startServer( this.address ) ) {
-            System.out.println( "JukeboxMC läuft nun auf dem Port " + this.address.getPort() );
-        }
+        System.out.println( "JukeboxMC läuft nun auf dem Port " + this.address.getPort() );
     }
 }

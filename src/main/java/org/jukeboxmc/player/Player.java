@@ -1,10 +1,13 @@
 package org.jukeboxmc.player;
 
+import org.jukeboxmc.Server;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 
 import java.net.InetSocketAddress;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -18,13 +21,21 @@ public class Player {
     private UUID uuid;
     private Skin skin;
 
+    private int viewDistance = 16;
+
+    private Locale locale;
+    private Location location;
+
+    private Server server;
     private DeviceInfo deviceInfo;
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
 
-    public Player( Connection connection ) {
+    public Player( Server server, Connection connection ) {
+        this.server = server;
+        this.location = new Location( server.getDefaultWorld(), 0, 0, 0, 0, 0 );
         this.address = connection.getSender();
-        this.playerConnection = new PlayerConnection( connection );
+        this.playerConnection = new PlayerConnection( this, connection );
     }
 
     public String getName() {
@@ -59,6 +70,26 @@ public class Player {
         this.skin = skin;
     }
 
+    public void setLocale( Locale locale ) {
+        this.locale = locale;
+    }
+
+    public Locale getLocale() {
+        return this.locale;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation( Location location ) {
+        this.location = location;
+    }
+
+    public Server getServer() {
+        return this.server;
+    }
+
     public DeviceInfo getDeviceInfo() {
         return this.deviceInfo;
     }
@@ -77,5 +108,16 @@ public class Player {
 
     public void setPlayerConnection( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
+    }
+
+    //Other
+
+    public int getViewDistance() {
+        return this.viewDistance;
+    }
+
+    public void setViewDistance( int viewDistance ) {
+        this.viewDistance = viewDistance;
+        this.playerConnection.setViewDistance( viewDistance );
     }
 }
