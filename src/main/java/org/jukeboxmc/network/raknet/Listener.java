@@ -15,6 +15,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.Getter;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.event.RakNetEventManager;
+import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.ServerInfo;
 import org.jukeboxmc.utils.BinaryStream;
@@ -188,5 +189,6 @@ public class Listener {
             this.connections.get( token ).close();
             this.connections.remove( token );
         }
+        this.getRakNetEventManager().callEvent( new PlayerCloseConnectionEvent( connection ) );
     }
 }

@@ -7,6 +7,7 @@ import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.Listener;
+import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
 import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
@@ -24,7 +25,8 @@ import java.util.function.Consumer;
  */
 public class Server {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private static Server instance;
 
     private InetSocketAddress address;
@@ -62,6 +64,14 @@ public class Server {
             Player player = new Player( this, connection );
             this.players.put( player.getAddress(), player );
             this.setOnlinePlayers( this.players.size() );
+        } );
+
+        this.listener.getRakNetEventManager().onEvent( PlayerCloseConnectionEvent.class, (Consumer<PlayerCloseConnectionEvent>) event -> {
+            Connection connection = event.getConnection();
+            Player player = this.players.get( connection.getSender() );
+            if ( player != null ) {
+                System.out.println( player.getName() + " left the game" );
+            }
         } );
 
         //Load worlds
