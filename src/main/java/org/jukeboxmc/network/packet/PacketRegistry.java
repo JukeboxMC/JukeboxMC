@@ -46,6 +46,8 @@ public class PacketRegistry {
                 return new ChunkRadiusUpdatedPacket();
             case Protocol.NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET:
                 return new NetworkChunkPublisherUpdatePacket();
+            case Protocol.DISCONNECT_PACKET:
+                return new DisconnectPacket();
             default:
                 return null;
         }

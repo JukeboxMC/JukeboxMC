@@ -393,8 +393,8 @@ public class Connection {
         }
     }
 
-    public void disconnect( String timeout ) {
-        this.listener.removeConnection( this, timeout );
+    public void disconnect( String value ) {
+        this.listener.removeConnection( this, value );
     }
 
     public void addEncapsulatedToQueue( EncapsulatedPacket packet, int flags ) {

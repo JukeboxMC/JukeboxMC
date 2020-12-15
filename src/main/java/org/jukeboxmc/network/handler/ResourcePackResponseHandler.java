@@ -19,9 +19,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
         System.out.println( status.name() );
 
         if ( status == ResourcePackResponsePacket.Status.STATUS_REFUSED ) {
-            //Disconnect
-        } else if ( status == ResourcePackResponsePacket.Status.STATUS_SEND_PACKS ) {
-
+            player.getPlayerConnection().disconnect( "STATUS_REFUSED" );
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_HAVE_ALL_PACKS ) {
            player.getPlayerConnection().sendResourcePackStack();
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_COMPLETED ) {

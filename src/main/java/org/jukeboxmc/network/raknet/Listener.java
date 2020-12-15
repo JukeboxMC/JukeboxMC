@@ -188,7 +188,6 @@ public class Listener {
         if ( this.connections.containsKey( token ) ) {
             this.connections.get( token ).close();
             this.connections.remove( token );
-            System.out.println( "Reason: " + reason );
         }
     }
 }

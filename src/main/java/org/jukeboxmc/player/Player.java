@@ -120,4 +120,8 @@ public class Player {
         this.viewDistance = viewDistance;
         this.playerConnection.setViewDistance( viewDistance );
     }
+
+    public void disconnect( String message ) {
+        this.playerConnection.disconnect( message );
+    }
 }

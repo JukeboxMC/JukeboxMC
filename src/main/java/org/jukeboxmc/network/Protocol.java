@@ -38,6 +38,7 @@ public interface Protocol {
     int PACKET_VIOLATION_WARNING_PACKET = 0x9C;
     byte CHUNK_RADIUS_UPDATE_PACKET = 0x46;
     byte NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET = 0x79;
+    byte DISCONNECT_PACKET = 0x05;
 
     byte ACKNOWLEDGE_PACKET = (byte) 0xc0;
     byte NACKNOWLEDGE_PACKET = (byte) 0xa0;

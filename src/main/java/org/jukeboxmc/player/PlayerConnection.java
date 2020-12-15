@@ -66,4 +66,11 @@ public class PlayerConnection {
         publisherUpdatePacket.setZ( (int) Math.floor( this.player.getLocation().getZ() ) );
         publisherUpdatePacket.setRadius( this.player.getViewDistance() << 4 );
     }
+
+    public void disconnect( String message ) {
+        DisconnectPacket disconnectPacket = new DisconnectPacket();
+        disconnectPacket.setMessage( message );
+        this.sendPacket( disconnectPacket );
+        this.connection.disconnect( message );
+    }
 }
