@@ -66,7 +66,6 @@ public class Listener {
                     BinaryStream stream = new BinaryStream( packet.content() );
                     InetSocketAddress senderAddress = packet.sender();
                     Listener.this.handle( stream, senderAddress );
-                    stream.release();
                 }
             } );
 

@@ -1,5 +1,6 @@
 package org.jukeboxmc;
 
+import io.netty.util.ResourceLeakDetector;
 import lombok.Getter;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.network.raknet.utils.Zlib;
@@ -28,6 +29,7 @@ public class JukeboxMC {
     private JukeboxMC() {
         System.out.println( "Server wird gestartet...." );
 
+        ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
         this.address = new InetSocketAddress( "127.0.0.1", 19132 );
         this.server = new Server( this.address );
 

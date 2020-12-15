@@ -29,11 +29,6 @@ public class BinaryStream {
         this.buffer = Unpooled.buffer( 0, maxSize );
     }
 
-    public BinaryStream release() {
-        this.buffer.release();
-        return this;
-    }
-
     public ByteBuf getBuffer() {
         return this.buffer;
     }
