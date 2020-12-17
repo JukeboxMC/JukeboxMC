@@ -1,9 +1,12 @@
 package org.jukeboxmc.player.info;
 
+import lombok.ToString;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class DeviceInfo {
 
     private String deviceName;
