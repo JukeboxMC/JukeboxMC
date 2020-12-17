@@ -15,6 +15,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
 import java.net.InetSocketAddress;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -128,6 +129,10 @@ public class Server {
 
     public void shutdown() {
         this.isShutdown = true;
+    }
+
+    public Collection<Player> getOnlinePlayers() {
+       return this.players.values();
     }
 
 }

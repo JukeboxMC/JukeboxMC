@@ -295,13 +295,15 @@ public class Connection {
 
             int packetId = binaryStream.readUnsignedVarInt();
 
-            System.out.println( "PacketID: " + packetId );
 
             Packet packet = PacketRegistry.getPacket( packetId );
             if ( packet != null ) {
                 packet.setBuffer( binaryStream.getBuffer() );
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
+                System.out.println( "PacketID: " + packetId + " " + packet.getClass().getSimpleName());
+            } else {
+                System.out.println( "PacketID: " + packetId );
             }
         }
     }

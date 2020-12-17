@@ -21,7 +21,13 @@ public class Player {
     private UUID uuid;
     private Skin skin;
 
+    private long entityId;
+
+    private float headYaw;
+
     private int viewDistance = 16;
+
+    private boolean isOnGround;
 
     private Locale locale;
     private Location location;
@@ -70,6 +76,14 @@ public class Player {
         this.skin = skin;
     }
 
+    public boolean isOnGround() {
+        return isOnGround;
+    }
+
+    public void setOnGround( boolean onGround ) {
+        isOnGround = onGround;
+    }
+
     public void setLocale( Locale locale ) {
         this.locale = locale;
     }
@@ -108,6 +122,22 @@ public class Player {
 
     public void setPlayerConnection( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
+    }
+
+    public long getEntityId() {
+        return this.entityId;
+    }
+
+    public void setEntityId( long entityId ) {
+        this.entityId = entityId;
+    }
+
+    public float getHeadYaw() {
+        return this.headYaw;
+    }
+
+    public void setAddress( InetSocketAddress address ) {
+        this.address = address;
     }
 
     //Other

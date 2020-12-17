@@ -118,7 +118,7 @@ public class BinaryStream {
     }
 
     public float readLFloat() {
-        return this.buffer.readFloatLE();
+        return Float.intBitsToFloat( this.readLInt() );
     }
 
     public void writeLFloat( float value ) {
@@ -139,6 +139,23 @@ public class BinaryStream {
 
     public void writeLDouble( double value ) {
         this.buffer.writeDoubleLE( value );
+    }
+
+    public long readUnsignedVarLong() {
+        long value = 0L;
+        int i = 0;
+
+        do {
+            long b;
+            if ( ( ( b = this.buffer.readByte() ) & 128L ) == 0L ) {
+                return value | b << i;
+            }
+
+            value |= ( b & 127L ) << i;
+            i += 7;
+        } while ( i <= 63 );
+
+        throw new RuntimeException( "VerLong too big" );
     }
 
     public long readLong() {
@@ -277,12 +294,12 @@ public class BinaryStream {
         return left.xor( right );
     }
 
-    private int encodeZigZag32(int value) {
+    private int encodeZigZag32( int value ) {
         return value << 1 ^ value >> 31;
     }
 
-    private int decodeZigZag32(int v) {
-        return v >> 1 ^ -(v & 1);
+    private int decodeZigZag32( int v ) {
+        return v >> 1 ^ -( v & 1 );
     }
 
     //Minecraft
@@ -290,7 +307,7 @@ public class BinaryStream {
     public void writeGameRules( Map<String, GameRule> gamerules ) {
         this.writeUnsignedVarInt( gamerules.size() );
 
-        gamerules.forEach( (name, value) -> {
+        gamerules.forEach( ( name, value ) -> {
 
         } );
     }

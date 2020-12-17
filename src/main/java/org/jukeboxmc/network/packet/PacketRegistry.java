@@ -18,6 +18,7 @@ public class PacketRegistry {
         handler.put( LoginPacket.class, new LoginHandler() );
         handler.put( ResourcePackResponsePacket.class, new ResourcePackResponseHandler() );
         handler.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
+        handler.put( PlayerMovePacket.class, new PlayerMoveHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -48,6 +49,8 @@ public class PacketRegistry {
                 return new NetworkChunkPublisherUpdatePacket();
             case Protocol.DISCONNECT_PACKET:
                 return new DisconnectPacket();
+            case Protocol.PLAYER_MOVE_PACKET:
+                return new PlayerMovePacket();
             default:
                 return null;
         }
