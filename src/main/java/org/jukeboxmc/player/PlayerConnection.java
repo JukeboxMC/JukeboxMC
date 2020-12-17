@@ -18,6 +18,10 @@ public class PlayerConnection {
         this.connection = connection;
     }
 
+    public void update( long timestamp ) {
+        //System.out.println( "Player: " + this.player.getName() + " Tick: " + timestap );
+    }
+
     public void sendPacket( Packet packet ) {
         this.sendPacket( packet, false );
     }

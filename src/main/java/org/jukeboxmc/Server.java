@@ -1,7 +1,6 @@
 package org.jukeboxmc;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
@@ -18,6 +17,8 @@ import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
@@ -71,12 +72,18 @@ public class Server {
             Connection connection = event.getConnection();
             Player player = this.players.get( connection.getSender() );
             if ( player != null ) {
+                player.getLocation().getWorld().removePlayer( player );
                 System.out.println( player.getName() + " left the game" );
             }
         } );
 
         //Load worlds
         this.defaultWorld = this.getWorld( "world" );
+
+        AtomicLong startTime = new AtomicLong();
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
+            this.defaultWorld.update( startTime.getAndIncrement() );
+       }, 0, 20, TimeUnit.MILLISECONDS );
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {

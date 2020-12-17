@@ -6,6 +6,7 @@ import org.jukeboxmc.world.GameRule;
 
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author LucGamesYT
@@ -310,5 +311,9 @@ public class BinaryStream {
         gamerules.forEach( ( name, value ) -> {
 
         } );
+    }
+
+    public UUID readUUID() {
+        return new UUID( this.readLLong(), this.readLLong() );
     }
 }

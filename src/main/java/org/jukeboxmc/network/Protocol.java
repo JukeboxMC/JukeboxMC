@@ -25,6 +25,10 @@ public interface Protocol {
     byte NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET = 0x79;
     byte DISCONNECT_PACKET = 0x05;
     byte PLAYER_MOVE_PACKET = 0x13;
+    byte TICK_SYNC_PACKET = 0x17;
+    byte INTERACT_PACKET = 0x21;
+    int EMOTE_LIST_PACKET = 0x98;
+    byte SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET = 0x71;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

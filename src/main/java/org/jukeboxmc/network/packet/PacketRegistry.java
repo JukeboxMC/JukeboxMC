@@ -19,6 +19,7 @@ public class PacketRegistry {
         handler.put( ResourcePackResponsePacket.class, new ResourcePackResponseHandler() );
         handler.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
         handler.put( PlayerMovePacket.class, new PlayerMoveHandler() );
+        handler.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -51,6 +52,14 @@ public class PacketRegistry {
                 return new DisconnectPacket();
             case Protocol.PLAYER_MOVE_PACKET:
                 return new PlayerMovePacket();
+            case Protocol.TICK_SYNC_PACKET:
+                return new TickSyncPacket();
+            case Protocol.INTERACT_PACKET:
+                return new InteractPacket();
+            case Protocol.EMOTE_LIST_PACKET:
+                return new EmoteListPacket();
+            case Protocol.SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET:
+                return new SetLocalPlayerAsInitializedPacket();
             default:
                 return null;
         }
