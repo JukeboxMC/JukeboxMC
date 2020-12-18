@@ -26,7 +26,7 @@ public class World {
 
     public void update( long timestamp ) {
         for ( Player player : this.players.values() ) {
-            if ( player != null ) {
+            if ( player != null && player.isSpawned()) {
                 player.getPlayerConnection().update( timestamp );
             }
         }

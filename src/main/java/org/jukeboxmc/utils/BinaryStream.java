@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import org.jukeboxmc.world.GameRule;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
@@ -202,9 +203,9 @@ public class BinaryStream {
     }
 
     public String readString() {
-        byte[] bytes = new byte[this.readLInt()];
+        byte[] bytes = new byte[this.readUnsignedVarInt()];
         this.buffer.readBytes( bytes );
-        return new String( bytes );
+        return new String( bytes, StandardCharsets.UTF_8 );
     }
 
     public int readUnsignedVarInt() {

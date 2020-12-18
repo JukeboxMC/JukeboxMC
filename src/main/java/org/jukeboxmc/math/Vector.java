@@ -1,9 +1,12 @@
 package org.jukeboxmc.math;
 
+import lombok.ToString;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class Vector {
 
     private float x;

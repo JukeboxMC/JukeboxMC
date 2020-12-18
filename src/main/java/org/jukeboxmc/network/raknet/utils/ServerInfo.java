@@ -23,7 +23,7 @@ public class ServerInfo {
     private String name = "Line 2";
     private int onlinePlayers = 0;
     private int maxPlayers = 20;
-    private GameMode gameMode = GameMode.SURVIVAL;
+    private GameMode gameMode = GameMode.CREATIVE;
     private long serverId;
 
     public ServerInfo( Listener listener ) {

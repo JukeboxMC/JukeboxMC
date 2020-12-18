@@ -27,5 +27,8 @@ public class PlayerMoveHandler implements PacketHandler {
                 onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
             }
         }
+
+
+        System.out.println( player.getChunkX() + ":" + player.getChunkZ() );
     }
 }

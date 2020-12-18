@@ -26,11 +26,13 @@ public class ResourcePackResponseHandler implements PacketHandler {
             StartGamePacket startGamePacket = new StartGamePacket();
             startGamePacket.setEntityId( 1 );
             startGamePacket.setEntityRuntimeId( 1 );
-            startGamePacket.setGameMode( GameMode.SURVIVAL );
+            startGamePacket.setGameMode( GameMode.CREATIVE );
             startGamePacket.setPosition( player.getLocation() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
             startGamePacket.setWorldSpawn( new Vector( 0, 0,0 ) );
             player.getPlayerConnection().sendPacket( startGamePacket );
+
+            player.getPlayerConnection().sendTime( 1000 );
 
             BiomeDefinitionListPacket biomeDefinitionListPacket = new BiomeDefinitionListPacket();
             player.getPlayerConnection().sendPacket( biomeDefinitionListPacket );

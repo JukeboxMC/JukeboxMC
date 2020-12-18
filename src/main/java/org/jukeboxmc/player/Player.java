@@ -1,10 +1,13 @@
 package org.jukeboxmc.player;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.world.World;
 
 import java.net.InetSocketAddress;
 import java.util.Locale;
@@ -28,6 +31,8 @@ public class Player {
     private int viewDistance = 16;
 
     private boolean isOnGround;
+    @Getter @Setter
+    private boolean isSpawned;
 
     private Locale locale;
     private Location location;
@@ -39,7 +44,7 @@ public class Player {
 
     public Player( Server server, Connection connection ) {
         this.server = server;
-        this.location = new Location( server.getDefaultWorld(), 0, 0, 0, 0, 0 );
+        this.location = new Location( server.getDefaultWorld(), 0, 7, 0, 0, 0 );
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, connection );
     }
@@ -94,6 +99,38 @@ public class Player {
 
     public Location getLocation() {
         return this.location;
+    }
+
+    public World getWorld() {
+        return this.location.getWorld();
+    }
+
+    public float getX() {
+        return this.getLocation().getX();
+    }
+
+    public float getY() {
+        return this.location.getY();
+    }
+
+    public float getZ() {
+        return this.location.getZ();
+    }
+
+    public float getYaw() {
+        return this.location.getYaw();
+    }
+
+    public float getPitch() {
+        return this.location.getPitch();
+    }
+
+    public int getChunkX() {
+        return (int) this.location.getX() >> 4;
+    }
+
+    public int getChunkZ() {
+        return (int) this.location.getZ() >> 4;
     }
 
     public void setLocation( Location location ) {
@@ -153,5 +190,9 @@ public class Player {
 
     public void disconnect( String message ) {
         this.playerConnection.disconnect( message );
+    }
+
+    public void sendMessage( String message ) {
+        this.playerConnection.sendMessage( message );
     }
 }

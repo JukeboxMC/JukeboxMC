@@ -46,4 +46,16 @@ public class Location extends Vector {
     public void setPitch( float pitch ) {
         this.pitch = pitch;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "world=" + this.getWorld().getName() +
+                ", x=" + this.getX() +
+                ", y=" + this.getY() +
+                ", z=" + this.getZ() +
+                ", yaw=" + this.getY() +
+                ", pitch=" + this.getPitch() +
+                '}';
+    }
 }

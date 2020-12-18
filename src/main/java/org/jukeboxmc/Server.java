@@ -73,6 +73,8 @@ public class Server {
             Player player = this.players.get( connection.getSender() );
             if ( player != null ) {
                 player.getLocation().getWorld().removePlayer( player );
+                this.players.remove( player.getAddress() );
+                this.setOnlinePlayers( this.players.size() );
                 System.out.println( player.getName() + " left the game" );
             }
         } );
@@ -82,8 +84,12 @@ public class Server {
 
         AtomicLong startTime = new AtomicLong();
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
-            this.defaultWorld.update( startTime.getAndIncrement() );
-       }, 0, 20, TimeUnit.MILLISECONDS );
+            try {
+                this.defaultWorld.update( startTime.getAndIncrement() );
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+        }, 0, 20, TimeUnit.MILLISECONDS );
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {
@@ -126,6 +132,10 @@ public class Server {
         return this.defaultWorld;
     }
 
+    public void setViewDistance( int viewDistance ) {
+        this.viewDistance = viewDistance;
+    }
+
     public int getViewDistance() {
         return this.viewDistance;
     }
@@ -139,7 +149,7 @@ public class Server {
     }
 
     public Collection<Player> getOnlinePlayers() {
-       return this.players.values();
+        return this.players.values();
     }
 
 }

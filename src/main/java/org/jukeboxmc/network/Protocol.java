@@ -29,6 +29,8 @@ public interface Protocol {
     byte INTERACT_PACKET = 0x21;
     int EMOTE_LIST_PACKET = 0x98;
     byte SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET = 0x71;
+    byte LEVEL_CHUNK_PACKET = 0x3a;
+    byte SET_TIME_PACKET = 0x0a;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
@@ -48,4 +50,5 @@ public interface Protocol {
     byte NACKNOWLEDGE_PACKET = (byte) 0xa0;
     byte QUERY = (byte) 0xfe;
 
+    byte TEXT_PACKET = 0x09;
 }

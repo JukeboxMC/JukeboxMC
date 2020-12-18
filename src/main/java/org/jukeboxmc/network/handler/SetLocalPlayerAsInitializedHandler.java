@@ -1,7 +1,6 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.SetLocalPlayerAsInitializedPacket;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -12,8 +11,14 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
 
     @Override
     public void handle( Packet packet, Player player ) {
-        SetLocalPlayerAsInitializedPacket initializedPacket = (SetLocalPlayerAsInitializedPacket) packet;
+        player.setSpawned( true );
 
-
+        /*
+        for ( int sendChunkX = -16; sendChunkX <= 16; sendChunkX++ ) {
+            for ( int sendChunkZ = -16; sendChunkZ <= 16; sendChunkZ++ ) {
+                player.getPlayerConnection().sendChunk( new Chunk( sendChunkX, sendChunkZ ) );
+            }
+        }
+         */
     }
 }

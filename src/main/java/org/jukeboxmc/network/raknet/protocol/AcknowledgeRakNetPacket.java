@@ -56,7 +56,7 @@ public class AcknowledgeRakNetPacket extends RakNetPacket {
 
         short records = 0;
         ByteBuf stream = Unpooled.buffer( 0 );
-        this.packets.sort( Collections.reverseOrder() );
+        //this.packets.sort( Collections.reverseOrder() );
         int count = this.packets.size();
 
         if ( count > 0 ) {

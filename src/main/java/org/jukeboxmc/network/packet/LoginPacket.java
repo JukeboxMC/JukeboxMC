@@ -209,4 +209,10 @@ public class LoginPacket extends Packet {
         return new String( Base64.getDecoder().decode( base[1] ), StandardCharsets.UTF_8 );
     }
 
+    @Override
+    public String readString() {
+        byte[] bytes = new byte[this.readLInt()];
+        this.readBytes( bytes );
+        return new String( bytes );
+    }
 }

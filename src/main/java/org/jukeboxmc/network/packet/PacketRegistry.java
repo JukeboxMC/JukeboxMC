@@ -20,6 +20,7 @@ public class PacketRegistry {
         handler.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
         handler.put( PlayerMovePacket.class, new PlayerMoveHandler() );
         handler.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
+        handler.put( TextPacket.class, new TextHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -60,6 +61,8 @@ public class PacketRegistry {
                 return new EmoteListPacket();
             case Protocol.SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET:
                 return new SetLocalPlayerAsInitializedPacket();
+            case Protocol.TEXT_PACKET:
+                return new TextPacket();
             default:
                 return null;
         }

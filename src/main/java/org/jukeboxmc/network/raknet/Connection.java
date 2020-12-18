@@ -418,7 +418,6 @@ public class Connection {
 
             int splitID = ++this.splitID % 65536;
             buffers.forEach( ( count, buffer ) -> {
-                System.out.println( "TRY SEND ENCAPSULATED PACKET" );
                 EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
                 encapsulatedPacket.splitID = splitID;
                 encapsulatedPacket.split = true;
