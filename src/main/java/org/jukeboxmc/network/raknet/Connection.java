@@ -301,7 +301,6 @@ public class Connection {
                 packet.setBuffer( binaryStream.getBuffer() );
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
-                System.out.println( "PacketID: " + packetId + " " + packet.toString());
             } else {
                 System.out.println( "PacketID: " + packetId );
             }

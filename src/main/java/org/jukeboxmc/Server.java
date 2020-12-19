@@ -36,7 +36,7 @@ public class Server {
 
     private World defaultWorld;
 
-    private int viewDistance = 16;
+    private int viewDistance = 32;
 
     private boolean isShutdown = false;
 

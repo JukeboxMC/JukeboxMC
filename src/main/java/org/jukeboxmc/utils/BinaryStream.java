@@ -2,7 +2,7 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.jukeboxmc.world.GameRule;
+import org.jukeboxmc.world.GameRules;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -306,11 +306,23 @@ public class BinaryStream {
 
     //Minecraft
 
-    public void writeGameRules( Map<String, GameRule> gamerules ) {
+    public void writeGameRules( Map<String, GameRules<?>> gamerules ) {
         this.writeUnsignedVarInt( gamerules.size() );
 
         gamerules.forEach( ( name, value ) -> {
-
+            this.writeString( name );
+            this.writeUnsignedVarInt( value.getType() );
+            switch ( value.getType() ) {
+                case 1:
+                    this.writeBoolean( (Boolean) value.getValue() );
+                    break;
+                case 2:
+                    this.writeUnsignedVarInt((Integer) value.getValue()  );
+                    break;
+                case 3:
+                    this.writeLFloat( (Float) value.getValue() );
+                    break;
+            }
         } );
     }
 

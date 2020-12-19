@@ -26,7 +26,7 @@ public class PlayerConnection {
     private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
 
-    private int bedrock, dirt, grass;
+    private int bedrock, dirt, grass, blue_wool;
 
     public PlayerConnection( Player player, Connection connection ) {
         this.player = player;
@@ -35,6 +35,7 @@ public class PlayerConnection {
         this.bedrock = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:bedrock" ) && blockMap.getCompound( "states" ).getByte( "infiniburn_bit" ) == 0 ) );
         this.dirt = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:dirt" ) && blockMap.getCompound( "states" ).getString( "dirt_type" ).equals( "normal" ) ) );
         this.grass = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:grass" ) ) );
+        this.blue_wool = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:wool" ) && blockMap.getCompound( "states" ).getString( "color" ).equals( "light_blue" ) ) );
     }
 
     public void update( long timestamp ) {
@@ -71,7 +72,7 @@ public class PlayerConnection {
         this.loadingChunks.remove( hash );
     }
 
-    private void needNewChunks( boolean forceResendEntities ) {
+    public void needNewChunks( boolean forceResendEntities ) {
         try {
             int currentXChunk = Utils.blockToChunk( (int) this.player.getX() );
             int currentZChunk = Utils.blockToChunk( (int) this.player.getZ() );
@@ -173,6 +174,7 @@ public class PlayerConnection {
                 chunk.setBlock( x, 2, z, 0, this.dirt );
                 chunk.setBlock( x, 3, z, 0, this.dirt );
                 chunk.setBlock( x, 4, z, 0, this.grass );
+                chunk.setBlock( x, 16, z, 0, this.blue_wool );
             }
         }
         this.chunkSendQueue.offer( chunk );
@@ -256,9 +258,9 @@ public class PlayerConnection {
         this.sendPacket( setTimePacket );
     }
 
-    public void sendMessage( String message ) {
+    public void sendMessage( String message, TextPacket.Type type ) {
         TextPacket textPacket = new TextPacket();
-        textPacket.setType( TextPacket.Type.RAW );
+        textPacket.setType( type );
         textPacket.setMessage( message );
         textPacket.setLocalized( false );
         textPacket.setXuid( this.player.getXuid() );

@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.player.GameMode;
-import org.jukeboxmc.world.GameRule;
+import org.jukeboxmc.world.GameRules;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class StartGamePacket extends Packet {
     private String worldName;
     private Vector worldSpawn;
 
-    private Map<String, GameRule> gamerules = new HashMap<>();
+    private Map<String, GameRules<?>> gamerules = new HashMap<>();
 
     @Override
     public int getPacketId() {

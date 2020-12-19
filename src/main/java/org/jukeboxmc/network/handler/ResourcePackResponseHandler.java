@@ -4,6 +4,8 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.GameRule;
+import org.jukeboxmc.world.GameRules;
 
 /**
  * @author LucGamesYT
@@ -30,6 +32,8 @@ public class ResourcePackResponseHandler implements PacketHandler {
             startGamePacket.setPosition( player.getLocation() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
             startGamePacket.setWorldSpawn( new Vector( 0, 0,0 ) );
+            for ( GameRules<?> gameRules : GameRule.getAll() )
+                startGamePacket.getGamerules().put( gameRules.getName(), gameRules );
             player.getPlayerConnection().sendPacket( startGamePacket );
 
             player.getPlayerConnection().sendTime( 1000 );

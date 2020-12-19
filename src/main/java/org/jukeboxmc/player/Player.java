@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
@@ -109,12 +110,24 @@ public class Player {
         return this.getLocation().getX();
     }
 
+    public int getFloorX() {
+        return (int) Math.floor( this.getLocation().getX() );
+    }
+
     public float getY() {
         return this.location.getY();
     }
 
+    public int getFloorY() {
+        return (int) Math.floor( this.getLocation().getY() );
+    }
+
     public float getZ() {
         return this.location.getZ();
+    }
+
+    public int getFloorZ() {
+        return (int) Math.floor( this.getLocation().getZ() );
     }
 
     public float getYaw() {
@@ -193,6 +206,10 @@ public class Player {
     }
 
     public void sendMessage( String message ) {
-        this.playerConnection.sendMessage( message );
+        this.playerConnection.sendMessage( message, TextPacket.Type.RAW );
+    }
+
+    public void sendTip( String message ) {
+        this.playerConnection.sendMessage( message, TextPacket.Type.TIP );
     }
 }

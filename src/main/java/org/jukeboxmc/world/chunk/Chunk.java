@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jukeboxmc.utils.BinaryStream;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -29,7 +32,7 @@ public class Chunk {
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
         int subY = y >> 4;
         this.checkOrCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( x, y, z, layer, runtimeId );
+        this.subChunks[subY].setBlock( x, y & 15, z, layer, runtimeId );
     }
 
     private void checkOrCreateSubChunks( int subY ) {
@@ -40,9 +43,6 @@ public class Chunk {
     }
 
     public void writeTo( BinaryStream binaryStream ) {
-        binaryStream.writeByte( 8 );
-        binaryStream.writeByte( CHUNK_LAYERS );
-
         for ( SubChunk subChunk : this.subChunks )
             if ( subChunk != null )
                 subChunk.writeTo( binaryStream );
@@ -56,16 +56,11 @@ public class Chunk {
 
         binaryStream.writeUnsignedVarInt( biomeIds.length );
         binaryStream.writeBytes( biomeIds );
-
-        binaryStream.writeUnsignedVarInt( 0 ); //TODO: Block Entities
+        binaryStream.writeUnsignedVarInt( 0 ); //Extradata
     }
 
     public int getAvailableSubChunks() {
-        int subChunks = 0;
-        for ( SubChunk subChunk : this.subChunks )
-            if ( subChunk != null )
-                subChunks++;
-        return subChunks;
+        return Arrays.stream( this.subChunks ).mapToInt( o -> o == null ? 0 : 1 ).sum();
     }
 
     public int getChunkX() {

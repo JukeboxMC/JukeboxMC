@@ -2,7 +2,6 @@ package org.jukeboxmc.world.chunk;
 
 import lombok.Getter;
 import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * @author LucGamesYT
@@ -46,6 +44,9 @@ public class SubChunk {
     }
 
     public void writeTo( BinaryStream binaryStream ) {
+        binaryStream.writeByte( 8 );
+        binaryStream.writeByte( Chunk.CHUNK_LAYERS );
+
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
             Integer[] layerBlocks = this.blocks[layer];
             Integer foundIndex = 0;
