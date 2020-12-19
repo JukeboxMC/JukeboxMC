@@ -2,6 +2,7 @@ package org.jukeboxmc.world.chunk;
 
 import lombok.Getter;
 import lombok.ToString;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.utils.BinaryStream;
 
 import java.util.Arrays;
@@ -29,10 +30,10 @@ public class Chunk {
         this.subChunks = new SubChunk[16];
     }
 
-    public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
+    public void setBlock( int x, int y, int z, int layer, Block block ) {
         int subY = y >> 4;
         this.checkOrCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( x, y & 15, z, layer, runtimeId );
+        this.subChunks[subY].setBlock( x, y & 15, z, layer, block );
     }
 
     private void checkOrCreateSubChunks( int subY ) {

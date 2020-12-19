@@ -1,7 +1,9 @@
 package org.jukeboxmc.world.chunk;
 
 import lombok.Getter;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
@@ -17,8 +19,6 @@ import java.util.Map;
  */
 public class SubChunk {
 
-    private static final int RUNTIME_AIR = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:air" ) ) );
-
     @Getter
     private int y;
     private Integer[][] blocks;
@@ -31,12 +31,12 @@ public class SubChunk {
             for ( int x = 0; x < 16; x++ )
                 for ( int z = 0; z < 16; z++ )
                     for ( int y = 0; y < 16; y++ )
-                        this.blocks[layer][this.getIndex( x, y, z )] = RUNTIME_AIR;
+                        this.blocks[layer][this.getIndex( x, y, z )] = BlockType.AIR.getBlock().getRuntimeId();
         }
     }
 
-    public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
-        this.blocks[layer][this.getIndex( x, y, z )] = runtimeId;
+    public void setBlock( int x, int y, int z, int layer, Block block ) {
+        this.blocks[layer][this.getIndex( x, y, z )] = block.getRuntimeId();
     }
 
     private int getIndex( int x, int y, int z ) {

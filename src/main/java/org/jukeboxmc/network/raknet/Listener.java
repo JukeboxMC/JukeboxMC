@@ -19,12 +19,15 @@ import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.ServerInfo;
 import org.jukeboxmc.utils.BinaryStream;
+import org.jukeboxmc.utils.CopyOnWriteQueue;
+import org.jukeboxmc.utils.ThreadCheckMap;
 
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.net.SocketException;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author LucGamesYT
@@ -45,7 +48,11 @@ public class Listener {
     @Getter
     private boolean isRunning = false;
 
-    private ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
+    //TEST
+    private DatagramSocket socket;
+
+    private Map<String, Connection> connections = new ConcurrentHashMap<>();
+    private Queue<DatagramPacket> packets = new ConcurrentLinkedQueue<>();
 
     public Listener() {
         this.serverInfo = new ServerInfo( this );
@@ -53,20 +60,44 @@ public class Listener {
         this.serverId = UUID.randomUUID().getMostSignificantBits();
     }
 
+    public boolean listenTest(InetSocketAddress socketAddress ) {
+        this.address = socketAddress;
+        try {
+            this.socket = new DatagramSocket( socketAddress );
+            Thread socketThread = new Thread( () -> {
+                byte[] defaultBuffer = new byte[65535];
+                while ( !this.socket.isClosed() ) {
+                    java.net.DatagramPacket datagramPacket = new java.net.DatagramPacket( defaultBuffer, defaultBuffer.length );
+                    try {
+                        this.socket.receive( datagramPacket );
+                        byte[] buffer = Arrays.copyOfRange( datagramPacket.getData(), 0, datagramPacket.getLength() );
+                        BinaryStream stream = new BinaryStream( Unpooled.wrappedBuffer( buffer ) );
+                        this.handle( stream, (InetSocketAddress) datagramPacket.getSocketAddress() );
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            } );
+            socketThread.setName( "RakNet-Thread" );
+            socketThread.start();
+            this.tick(); // tick sessions
+            return true;
+        } catch ( SocketException e ) {
+            return false;
+        }
+    }
+
     public boolean listen( InetSocketAddress socketAddress ) {
         this.address = socketAddress;
         try {
             Bootstrap socket = new Bootstrap();
-            socket.group( this.group = (Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup()) );
-            socket.option(ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT);
+            socket.group( this.group = ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
+            socket.option( ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT );
             socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
             socket.handler( new ChannelInboundHandlerAdapter() {
                 @Override
                 public void channelRead( ChannelHandlerContext ctx, Object msg ) {
-                    DatagramPacket packet = (DatagramPacket) msg;
-                    BinaryStream stream = new BinaryStream( packet.content() );
-                    InetSocketAddress senderAddress = packet.sender();
-                    Listener.this.handle( stream, senderAddress );
+                    Listener.this.packets.offer( (DatagramPacket) msg );
                 }
             } );
 
@@ -146,35 +177,58 @@ public class Listener {
         this.sendPacket( packet, sender );
 
         String token = sender.getHostName() + ":" + sender.getPort();
+        System.out.println( token );
         if ( !this.connections.containsKey( token ) ) {
             this.connections.put( token, new Connection( this, decodedPacket.getMtu(), sender ) );
         }
     }
 
     private void tick() {
-        Timer timer = new Timer();
-        timer.schedule( new TimerTask() {
-            @Override
-            public void run() {
-                if ( isRunning ) {
-                    for ( Connection connection : connections.values() ) {
-                        connection.update( System.currentTimeMillis() );
-                    }
-                } else {
-                    this.cancel();
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
+            try {
+                DatagramPacket packet;
+                while ( ( packet = this.packets.poll() ) != null ) {
+                    this.handle( new BinaryStream( packet.content() ), packet.sender() );
                 }
+
+                for ( Connection connection : connections.values() ) {
+                    connection.update( System.currentTimeMillis() );
+                }
+            } catch ( Exception e ) {
+                e.printStackTrace();
             }
-        }, 0, 1 ); //Raknet tick
+        }, 0, 10, TimeUnit.MILLISECONDS );
     }
 
     private void sendPacket( RakNetPacket rakNetPacket, InetSocketAddress address ) {
+      /*
+        rakNetPacket.write();
+
+        try {
+            this.socket.send( new java.net.DatagramPacket( rakNetPacket.buffer.array(), rakNetPacket.buffer.writerIndex(), address ) );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+       */
+
+
         if ( this.channel != null ) {
             rakNetPacket.write();
             this.channel.writeAndFlush( new DatagramPacket( rakNetPacket.buffer, address ) );
         }
     }
 
+
     public void sendBuffer( ByteBuf buffer, InetSocketAddress address ) {
+/*
+
+        try {
+            this.socket.send( new java.net.DatagramPacket( buffer.array(), buffer.writerIndex(), address ) );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+ */
+
         if ( this.channel != null ) {
             ByteBuf duplicate = buffer.duplicate();
             byte[] array = new byte[duplicate.readableBytes()];
@@ -189,6 +243,7 @@ public class Listener {
             this.connections.get( token ).close();
             this.connections.remove( token );
         }
+        System.out.println( reason );
         this.getRakNetEventManager().callEvent( new PlayerCloseConnectionEvent( connection ) );
     }
 }

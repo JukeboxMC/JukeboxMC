@@ -39,6 +39,7 @@ public class BatchPacket extends Packet {
     public void addPacket( Packet packet ) {
         packet.write();
         BinaryStream stream = new BinaryStream();
+        stream.writeBytes( this.payload );
         stream.writeUnsignedVarInt( packet.getArray().length );
         stream.writeBuffer( packet.getBuffer() );
         this.payload = stream.getArray();

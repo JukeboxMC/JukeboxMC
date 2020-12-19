@@ -7,11 +7,10 @@ import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.nbt.NbtUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -23,6 +22,7 @@ public class BlockPalette {
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
 
     static {
+        System.out.println( "Loading block states..." );
         try ( NBTInputStream nbtReader = NbtUtils.createReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
             for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) )
@@ -30,8 +30,7 @@ public class BlockPalette {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-
-        System.out.println("LOAD " + BLOCK_PALETTE.size() + " BLOCK STATES");
+        System.out.println( "Block states loading successfully" );
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
@@ -44,6 +43,10 @@ public class BlockPalette {
 
     public static NbtMap searchBlock( Predicate<NbtMap> predicate ) {
         return BLOCK_PALETTE.values().stream().filter( predicate ).findFirst().orElseThrow( () -> new RuntimeException( "Block was not found" ) );
+    }
+
+    public static Set<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
+        return BLOCK_PALETTE.values().stream().filter( predicate ).collect( Collectors.toSet() );
     }
 
 }

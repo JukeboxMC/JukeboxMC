@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.zip.DataFormatException;
 
 /**
@@ -37,7 +38,7 @@ public class Connection {
 
     private ConcurrentHashMap<Integer, DataRakNetPacket> recoveryQueue = new ConcurrentHashMap<>();
 
-    private LinkedList<DataRakNetPacket> packetToSend = new LinkedList<>();
+    private ConcurrentLinkedQueue<DataRakNetPacket> packetToSend = new ConcurrentLinkedQueue<>();
 
     // private DataPacket sendQueue = new DataPacket();
     private Queue<DataRakNetPacket> sendQueue = new ConcurrentLinkedQueue<>();
@@ -83,7 +84,6 @@ public class Connection {
             this.disconnect( "timeout" );
             return;
         }
-        this.isActive = false;
 
         if ( this.ackQueue.size() > 0 ) {
             ACK packet = new ACK();
@@ -301,8 +301,9 @@ public class Connection {
                 packet.setBuffer( binaryStream.getBuffer() );
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
+                System.out.println( packet.toString() );
             } else {
-                System.out.println( "PacketID: " + packetId );
+                //System.out.println( "PacketID: " + packetId );
             }
         }
     }
@@ -407,37 +408,48 @@ public class Connection {
         }
 
         if ( packet.getTotalLength() + 4 > this.mtuSize ) {
-            Map<Integer, ByteBuf> buffers = new HashMap<>();
-            int i = 0;
-            int splitIndex = 0;
-
-            while ( i < packet.buffer.capacity() ) {
-                buffers.put( ( splitIndex += 1 ) - 1, packet.buffer.slice( i, ( i += this.mtuSize - 60 ) ) );
-            }
-
+            byte[][] buffers = this.splitBytes(packet.buffer, this.mtuSize - 34);
             int splitID = ++this.splitID % 65536;
-            buffers.forEach( ( count, buffer ) -> {
+            for (int count = 0; count < buffers.length; count++) {
+                byte[] buffer = buffers[count];
                 EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
                 encapsulatedPacket.splitID = splitID;
                 encapsulatedPacket.split = true;
-                encapsulatedPacket.splitCount = buffers.size();
+                encapsulatedPacket.splitCount = buffers.length;
                 encapsulatedPacket.reliability = packet.reliability;
                 encapsulatedPacket.splitIndex = count;
-                encapsulatedPacket.buffer = buffer;
-                if ( count > 0 ) {
+                encapsulatedPacket.buffer = Unpooled.wrappedBuffer( buffer );
+                if (count > 0) {
                     encapsulatedPacket.messageIndex = this.messageIndex++;
                 } else {
                     encapsulatedPacket.messageIndex = packet.messageIndex;
                 }
-                if ( encapsulatedPacket.reliability == 3 ) {
+                if (encapsulatedPacket.reliability == 3) {
                     encapsulatedPacket.orderChannel = packet.orderChannel;
                     encapsulatedPacket.orderIndex = packet.orderIndex;
                 }
-                this.addToQueue( encapsulatedPacket, flags | Priority.IMMEDIATE );
-            } );
+                this.addToQueue(encapsulatedPacket, flags | Priority.IMMEDIATE);
+            }
         } else {
             this.addToQueue( packet, flags );
         }
+    }
+
+    private byte[][] splitBytes(ByteBuf byteBuf, int chunkSize) {
+        byte[] bytes = byteBuf.array();
+        byte[][] splits = new byte[(bytes.length + chunkSize - 1) / chunkSize][chunkSize];
+        int chunks = 0;
+
+        for (int i = 0; i < bytes.length; i += chunkSize) {
+            if ((bytes.length - i) > chunkSize) {
+                splits[chunks] = Arrays.copyOfRange(bytes, i, i + chunkSize);
+            } else {
+                splits[chunks] = Arrays.copyOfRange(bytes, i, bytes.length);
+            }
+            chunks++;
+        }
+
+        return splits;
     }
 
     private void addToQueue( EncapsulatedPacket encapsulatedPacket, int priority ) {

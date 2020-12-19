@@ -12,6 +12,6 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
 
     @Override
     public void handle( Packet packet, Player player ) {
-        player.setSpawned( true );
+        //Ignore
     }
 }

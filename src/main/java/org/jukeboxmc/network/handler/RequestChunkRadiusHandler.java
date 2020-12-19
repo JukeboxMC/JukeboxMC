@@ -20,6 +20,7 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         player.getPlayerConnection().needNewChunks( false );
         if(!player.isSpawned()) {
             //TODO implement doFirstSpawn
+            player.setSpawned( true );
 
             player.getPlayerConnection().sendNetworkChunkPublisher();
             player.getPlayerConnection().sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );

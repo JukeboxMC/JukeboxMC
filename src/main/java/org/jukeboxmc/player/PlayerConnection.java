@@ -1,6 +1,9 @@
 package org.jukeboxmc.player;
 
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockDirt;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
@@ -23,23 +26,22 @@ public class PlayerConnection {
     private Connection connection;
 
     private Queue<Chunk> chunkSendQueue = new ConcurrentLinkedQueue<>();
+    private Queue<Packet> sendQueue = new ConcurrentLinkedQueue<>();
     private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
-
-    private int bedrock, dirt, grass, blue_wool;
 
     public PlayerConnection( Player player, Connection connection ) {
         this.player = player;
         this.connection = connection;
-
-        this.bedrock = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:bedrock" ) && blockMap.getCompound( "states" ).getByte( "infiniburn_bit" ) == 0 ) );
-        this.dirt = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:dirt" ) && blockMap.getCompound( "states" ).getString( "dirt_type" ).equals( "normal" ) ) );
-        this.grass = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:grass" ) ) );
-        this.blue_wool = BlockPalette.getRuntimeId( BlockPalette.searchBlock( blockMap -> blockMap.getString( "name" ).equals( "minecraft:wool" ) && blockMap.getCompound( "states" ).getString( "color" ).equals( "light_blue" ) ) );
     }
 
     public void update( long timestamp ) {
-        if ( this.chunkSendQueue.size() > 0 ) {
+        if ( !this.sendQueue.isEmpty() ) {
+            this.batchPackets( new ArrayList<>( this.sendQueue ), false );
+            this.sendQueue.clear();
+        }
+
+        if ( !this.chunkSendQueue.isEmpty() ) {
             Chunk chunk;
             while ( ( chunk = this.chunkSendQueue.poll() ) != null ) {
                 long hash = Utils.toLong( chunk.getChunkX(), chunk.getChunkZ() );
@@ -54,7 +56,7 @@ public class PlayerConnection {
 
     public void sendChunk( Chunk chunk ) {
         try {
-            System.out.println( "SendChunk" );
+            // System.out.println( "SendChunk" );
             LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
             levelChunkPacket.setChunkX( chunk.getChunkX() );
             levelChunkPacket.setChunkZ( chunk.getChunkZ() );
@@ -132,7 +134,7 @@ public class PlayerConnection {
                 } else {
                     this.loadingChunks.add( hash );
                     this.requestChunk( chunk.getFirst(), chunk.getSecond() );
-                    System.out.println( "RequestChunk-> " + chunk.getFirst() + ":" + chunk.getSecond() + " [" + this.chunkSendQueue.size() + "]" );
+                    //    System.out.println( "RequestChunk-> " + chunk.getFirst() + ":" + chunk.getSecond() + " [" + this.chunkSendQueue.size() + "]" );
                 }
             }
 
@@ -169,12 +171,11 @@ public class PlayerConnection {
         Chunk chunk = new Chunk( chunkX, chunkZ );
         for ( int x = 0; x < 16; x++ ) {
             for ( int z = 0; z < 16; z++ ) {
-                chunk.setBlock( x, 0, z, 0, this.bedrock );
-                chunk.setBlock( x, 1, z, 0, this.dirt );
-                chunk.setBlock( x, 2, z, 0, this.dirt );
-                chunk.setBlock( x, 3, z, 0, this.dirt );
-                chunk.setBlock( x, 4, z, 0, this.grass );
-                chunk.setBlock( x, 16, z, 0, this.blue_wool );
+                chunk.setBlock( x, 0, z, 0, BlockType.BEDROCK.getBlock() );
+                chunk.setBlock( x, 1, z, 0, BlockType.DIRT.getBlock() );
+                chunk.setBlock( x, 2, z, 0, BlockType.DIRT.getBlock() );
+                chunk.setBlock( x, 3, z, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
+                chunk.setBlock( x, 4, z, 0, BlockType.GRASS.getBlock() );
             }
         }
         this.chunkSendQueue.offer( chunk );
@@ -185,8 +186,19 @@ public class PlayerConnection {
     }
 
     public void sendPacket( Packet packet, boolean direct ) {
+        if ( !direct && this.player.isSpawned() ) {
+            this.sendQueue.offer( packet );
+            return;
+        }
+
+        this.batchPackets( Collections.singletonList( packet ), true );
+    }
+
+    public void batchPackets( List<Packet> packets, boolean direct ) {
         BatchPacket batchPacket = new BatchPacket();
-        batchPacket.addPacket( packet );
+        for ( Packet packet : packets ) {
+            batchPacket.addPacket( packet );
+        }
         batchPacket.write();
 
         EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();

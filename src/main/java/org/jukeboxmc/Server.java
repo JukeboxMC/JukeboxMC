@@ -2,6 +2,7 @@ package org.jukeboxmc;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.Connection;
@@ -57,8 +58,13 @@ public class Server {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
             Player player = this.players.get( connection.getSender() );
-            PacketRegistry.getHandler( packet.getClass() ).handle( packet, player );
-        } );
+            PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
+            if ( handler != null ) {
+                handler.handle( packet, player );
+            } else {
+                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is null");
+            }
+         } );
 
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {
             Connection connection = event.getConnection();
@@ -89,7 +95,7 @@ public class Server {
             } catch ( Exception e ) {
                 e.printStackTrace();
             }
-        }, 0, 20, TimeUnit.MILLISECONDS );
+        }, 0, 50, TimeUnit.MILLISECONDS );
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {
