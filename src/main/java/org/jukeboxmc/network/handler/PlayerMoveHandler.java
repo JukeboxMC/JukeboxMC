@@ -18,16 +18,11 @@ public class PlayerMoveHandler implements PacketHandler {
         Location to = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - 1.62f, playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
         player.setLocation( to );
 
-        if ( from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ() ) {
-            player.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.RESET ); //Maybe wrong
-        }
-
         for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
             if ( onlinePlayer != player ) {
                 onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
             }
         }
-
 
         player.sendTip( "X: " + player.getFloorX() + " Y: " + player.getFloorY() + " Z: " + player.getFloorZ() + " ChunkX: " + player.getChunkX() + " ChunkZ: " + player.getChunkZ() );
     }
