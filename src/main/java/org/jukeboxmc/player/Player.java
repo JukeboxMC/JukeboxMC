@@ -198,6 +198,10 @@ public class Player {
         return this.viewDistance;
     }
 
+    public float getEyeHeight() {
+        return 1.62f;
+    }
+
     public void setViewDistance( int viewDistance ) {
         this.viewDistance = viewDistance;
         this.playerConnection.setViewDistance( viewDistance );

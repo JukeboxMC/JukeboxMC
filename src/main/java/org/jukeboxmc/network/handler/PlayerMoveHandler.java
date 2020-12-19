@@ -14,9 +14,9 @@ public class PlayerMoveHandler implements PacketHandler {
     @Override
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
-        Location from = player.getLocation();
-        Location to = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - 1.62f, playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
-        player.setLocation( to );
+        Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
+        player.setLocation( toLocation );
+        player.setOnGround( playerMovePacket.isOnGround() );
 
         for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
             if ( onlinePlayer != player ) {
@@ -24,6 +24,6 @@ public class PlayerMoveHandler implements PacketHandler {
             }
         }
 
-        player.sendTip( "X: " + player.getFloorX() + " Y: " + player.getFloorY() + " Z: " + player.getFloorZ() + " ChunkX: " + player.getChunkX() + " ChunkZ: " + player.getChunkZ() );
+        player.sendTip( " §bChunkX§7: §f" + player.getChunkX() + " §bChunkZ§7: §f" + player.getChunkZ() );
     }
 }

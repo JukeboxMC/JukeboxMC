@@ -253,7 +253,7 @@ public class PlayerConnection {
         PlayerMovePacket playerMovePacket = new PlayerMovePacket();
         playerMovePacket.setEntityRuntimeId( player.getEntityId() );
         playerMovePacket.setX( player.getLocation().getX() );
-        playerMovePacket.setY( player.getLocation().getY() + 1.62f );
+        playerMovePacket.setY( player.getLocation().getY() );
         playerMovePacket.setZ( player.getLocation().getZ() );
         playerMovePacket.setYaw( player.getLocation().getYaw() );
         playerMovePacket.setPitch( player.getLocation().getPitch() );
