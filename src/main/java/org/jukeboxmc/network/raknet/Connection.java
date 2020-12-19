@@ -183,7 +183,8 @@ public class Connection {
 
         for ( Object packet : dataPacket.getPackets() ) {
             if ( packet instanceof EncapsulatedPacket ) {
-                this.receivePacket( (EncapsulatedPacket) packet );
+                EncapsulatedPacket encapsulatedPacket = (EncapsulatedPacket) packet;
+                this.receivePacket( encapsulatedPacket );
             }
         }
     }
@@ -408,9 +409,9 @@ public class Connection {
         }
 
         if ( packet.getTotalLength() + 4 > this.mtuSize ) {
-            byte[][] buffers = this.splitBytes(packet.buffer, this.mtuSize - 34);
+            byte[][] buffers = this.splitBytes( packet.buffer, this.mtuSize - 34 );
             int splitID = ++this.splitID % 65536;
-            for (int count = 0; count < buffers.length; count++) {
+            for ( int count = 0; count < buffers.length; count++ ) {
                 byte[] buffer = buffers[count];
                 EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
                 encapsulatedPacket.splitID = splitID;
@@ -419,32 +420,32 @@ public class Connection {
                 encapsulatedPacket.reliability = packet.reliability;
                 encapsulatedPacket.splitIndex = count;
                 encapsulatedPacket.buffer = Unpooled.wrappedBuffer( buffer );
-                if (count > 0) {
+                if ( count > 0 ) {
                     encapsulatedPacket.messageIndex = this.messageIndex++;
                 } else {
                     encapsulatedPacket.messageIndex = packet.messageIndex;
                 }
-                if (encapsulatedPacket.reliability == 3) {
+                if ( encapsulatedPacket.reliability == 3 ) {
                     encapsulatedPacket.orderChannel = packet.orderChannel;
                     encapsulatedPacket.orderIndex = packet.orderIndex;
                 }
-                this.addToQueue(encapsulatedPacket, flags | Priority.IMMEDIATE);
+                this.addToQueue( encapsulatedPacket, flags | Priority.IMMEDIATE );
             }
         } else {
             this.addToQueue( packet, flags );
         }
     }
 
-    private byte[][] splitBytes(ByteBuf byteBuf, int chunkSize) {
+    private byte[][] splitBytes( ByteBuf byteBuf, int chunkSize ) {
         byte[] bytes = byteBuf.array();
-        byte[][] splits = new byte[(bytes.length + chunkSize - 1) / chunkSize][chunkSize];
+        byte[][] splits = new byte[( bytes.length + chunkSize - 1 ) / chunkSize][chunkSize];
         int chunks = 0;
 
-        for (int i = 0; i < bytes.length; i += chunkSize) {
-            if ((bytes.length - i) > chunkSize) {
-                splits[chunks] = Arrays.copyOfRange(bytes, i, i + chunkSize);
+        for ( int i = 0; i < bytes.length; i += chunkSize ) {
+            if ( ( bytes.length - i ) > chunkSize ) {
+                splits[chunks] = Arrays.copyOfRange( bytes, i, i + chunkSize );
             } else {
-                splits[chunks] = Arrays.copyOfRange(bytes, i, bytes.length);
+                splits[chunks] = Arrays.copyOfRange( bytes, i, bytes.length );
             }
             chunks++;
         }

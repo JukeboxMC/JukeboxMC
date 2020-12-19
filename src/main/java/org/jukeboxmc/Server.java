@@ -62,7 +62,7 @@ public class Server {
             if ( handler != null ) {
                 handler.handle( packet, player );
             } else {
-                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is null");
+                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing");
             }
          } );
 

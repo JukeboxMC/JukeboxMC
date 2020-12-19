@@ -36,7 +36,6 @@ import java.util.concurrent.*;
 public class Listener {
 
     private Channel channel;
-    private EventLoopGroup group;
     @Getter
     private InetSocketAddress address;
     @Getter
@@ -48,10 +47,8 @@ public class Listener {
     @Getter
     private boolean isRunning = false;
 
-    //TEST
-    private DatagramSocket socket;
 
-    private Map<String, Connection> connections = new ConcurrentHashMap<>();
+    private Map<InetSocketAddress, Connection> connections = new ConcurrentHashMap<>();
     private Queue<DatagramPacket> packets = new ConcurrentLinkedQueue<>();
 
     public Listener() {
@@ -60,44 +57,25 @@ public class Listener {
         this.serverId = UUID.randomUUID().getMostSignificantBits();
     }
 
-    public boolean listenTest(InetSocketAddress socketAddress ) {
-        this.address = socketAddress;
-        try {
-            this.socket = new DatagramSocket( socketAddress );
-            Thread socketThread = new Thread( () -> {
-                byte[] defaultBuffer = new byte[65535];
-                while ( !this.socket.isClosed() ) {
-                    java.net.DatagramPacket datagramPacket = new java.net.DatagramPacket( defaultBuffer, defaultBuffer.length );
-                    try {
-                        this.socket.receive( datagramPacket );
-                        byte[] buffer = Arrays.copyOfRange( datagramPacket.getData(), 0, datagramPacket.getLength() );
-                        BinaryStream stream = new BinaryStream( Unpooled.wrappedBuffer( buffer ) );
-                        this.handle( stream, (InetSocketAddress) datagramPacket.getSocketAddress() );
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
-                    }
-                }
-            } );
-            socketThread.setName( "RakNet-Thread" );
-            socketThread.start();
-            this.tick(); // tick sessions
-            return true;
-        } catch ( SocketException e ) {
-            return false;
-        }
-    }
-
     public boolean listen( InetSocketAddress socketAddress ) {
         this.address = socketAddress;
         try {
             Bootstrap socket = new Bootstrap();
-            socket.group( this.group = ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
+            socket.group( ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
             socket.option( ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT );
             socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
             socket.handler( new ChannelInboundHandlerAdapter() {
                 @Override
                 public void channelRead( ChannelHandlerContext ctx, Object msg ) {
-                    Listener.this.packets.offer( (DatagramPacket) msg );
+                    DatagramPacket datagramPacket = (DatagramPacket) msg;
+                    InetSocketAddress sender = datagramPacket.sender();
+
+                    if ( Listener.this.connections.containsKey( sender ) ) {
+                        Connection connection = Listener.this.connections.get( sender );
+                        connection.receive( datagramPacket.content() );
+                    } else {
+                        Listener.this.handle( new BinaryStream( datagramPacket.content() ), datagramPacket.sender() );
+                    }
                 }
             } );
 
@@ -111,26 +89,16 @@ public class Listener {
         return this.isRunning;
     }
 
-    public void handle( BinaryStream datagramPacket, InetSocketAddress sender ) {
-        ByteBuf buffer = datagramPacket.getBuffer();
+    public void handle( BinaryStream stream, InetSocketAddress sender ) {
+        ByteBuf buffer = stream.getBuffer();
         int packetId = buffer.getUnsignedByte( 0 );
 
-        if ( packetId == Protocol.QUERY ) {
-            return;
-        }
-
-        String token = sender.getHostName() + ":" + sender.getPort();
-        if ( this.connections.containsKey( token ) ) {
-            Connection connection = this.connections.get( token );
-            connection.receive( buffer );
-        } else {
-            if ( packetId == Protocol.UNCONNECTED_PING ) {
-                this.handleUnconnectedPing( buffer, sender );
-            } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_1 ) {
-                this.handleOpenConnectionRequest1( buffer, sender );
-            } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_2 ) {
-                this.handleOpenConnectionRequest2( buffer, sender );
-            }
+        if ( packetId == Protocol.UNCONNECTED_PING ) {
+            this.handleUnconnectedPing( buffer, sender );
+        } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_1 ) {
+            this.handleOpenConnectionRequest1( buffer, sender );
+        } else if ( packetId == Protocol.OPEN_CONNECTION_REQUEST_2 ) {
+            this.handleOpenConnectionRequest2( buffer, sender );
         }
     }
 
@@ -143,7 +111,6 @@ public class Listener {
         packet.setTime( System.currentTimeMillis() );
         packet.setServerGUID( this.serverId );
         packet.setServerID( this.serverInfo.toString() );
-
         this.sendPacket( packet, address );
     }
 
@@ -175,21 +142,20 @@ public class Listener {
         packet.setMtu( decodedPacket.getMtu() );
         packet.setAddress( sender );
         this.sendPacket( packet, sender );
-
-        String token = sender.getHostName() + ":" + sender.getPort();
-        System.out.println( token );
-        if ( !this.connections.containsKey( token ) ) {
-            this.connections.put( token, new Connection( this, decodedPacket.getMtu(), sender ) );
+        if ( !this.connections.containsKey( sender ) ) {
+            this.connections.put( sender, new Connection( this, decodedPacket.getMtu(), sender ) );
         }
     }
 
     private void tick() {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
             try {
+               /*
                 DatagramPacket packet;
                 while ( ( packet = this.packets.poll() ) != null ) {
                     this.handle( new BinaryStream( packet.content() ), packet.sender() );
                 }
+                */
 
                 for ( Connection connection : connections.values() ) {
                     connection.update( System.currentTimeMillis() );
@@ -201,17 +167,6 @@ public class Listener {
     }
 
     private void sendPacket( RakNetPacket rakNetPacket, InetSocketAddress address ) {
-      /*
-        rakNetPacket.write();
-
-        try {
-            this.socket.send( new java.net.DatagramPacket( rakNetPacket.buffer.array(), rakNetPacket.buffer.writerIndex(), address ) );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-       */
-
-
         if ( this.channel != null ) {
             rakNetPacket.write();
             this.channel.writeAndFlush( new DatagramPacket( rakNetPacket.buffer, address ) );
@@ -220,15 +175,6 @@ public class Listener {
 
 
     public void sendBuffer( ByteBuf buffer, InetSocketAddress address ) {
-/*
-
-        try {
-            this.socket.send( new java.net.DatagramPacket( buffer.array(), buffer.writerIndex(), address ) );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
- */
-
         if ( this.channel != null ) {
             ByteBuf duplicate = buffer.duplicate();
             byte[] array = new byte[duplicate.readableBytes()];
@@ -238,10 +184,10 @@ public class Listener {
     }
 
     public void removeConnection( Connection connection, String reason ) {
-        String token = connection.getSender().getHostName() + ":" + connection.getSender().getPort();
-        if ( this.connections.containsKey( token ) ) {
-            this.connections.get( token ).close();
-            this.connections.remove( token );
+        InetSocketAddress sender = connection.getSender();
+        if ( this.connections.containsKey( sender ) ) {
+            this.connections.get( sender ).close();
+            this.connections.remove( sender );
         }
         System.out.println( reason );
         this.getRakNetEventManager().callEvent( new PlayerCloseConnectionEvent( connection ) );

@@ -14,8 +14,11 @@ public class TextHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         TextPacket textPacket = (TextPacket) packet;
 
-        for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
-            onlinePlayer.sendMessage( "<" + player.getName() + "> " + textPacket.getMessage() );
+        if ( textPacket.getType() == TextPacket.Type.CHAT ) {
+            for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
+                onlinePlayer.sendMessage( "<" + player.getName() + "> " + textPacket.getMessage() );
+                System.out.println( "Sending to -> " + onlinePlayer.getName() );
+            }
         }
     }
 }

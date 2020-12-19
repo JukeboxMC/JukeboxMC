@@ -25,7 +25,9 @@ public class Player {
     private UUID uuid;
     private Skin skin;
 
-    private long entityId;
+    public static long entityCount = 1;
+
+    private long entityId = 0;
 
     private float headYaw;
 
@@ -45,7 +47,7 @@ public class Player {
 
     public Player( Server server, Connection connection ) {
         this.server = server;
-        this.location = new Location( server.getDefaultWorld(), 0, 7, 0, 0, 0 );
+        this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 );
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, connection );
     }

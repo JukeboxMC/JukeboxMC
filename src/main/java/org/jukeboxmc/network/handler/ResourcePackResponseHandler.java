@@ -26,8 +26,8 @@ public class ResourcePackResponseHandler implements PacketHandler {
            player.getPlayerConnection().sendResourcePackStack();
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_COMPLETED ) {
             StartGamePacket startGamePacket = new StartGamePacket();
-            startGamePacket.setEntityId( 1 );
-            startGamePacket.setEntityRuntimeId( 1 );
+            startGamePacket.setEntityId( player.getEntityId() );
+            startGamePacket.setEntityRuntimeId( player.getEntityId() );
             startGamePacket.setGameMode( GameMode.CREATIVE );
             startGamePacket.setPosition( player.getLocation() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
