@@ -1,7 +1,5 @@
 package org.jukeboxmc.player;
 
-import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.network.packet.*;
@@ -168,17 +166,7 @@ public class PlayerConnection {
     }
 
     private void requestChunk( int chunkX, int chunkZ ) {
-        Chunk chunk = new Chunk( chunkX, chunkZ );
-        for ( int x = 0; x < 16; x++ ) {
-            for ( int z = 0; z < 16; z++ ) {
-                chunk.setBlock( x, 0, z, 0, BlockType.BEDROCK.getBlock() );
-                chunk.setBlock( x, 1, z, 0, BlockType.DIRT.getBlock() );
-                chunk.setBlock( x, 2, z, 0, BlockType.DIRT.getBlock() );
-                chunk.setBlock( x, 3, z, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
-                chunk.setBlock( x, 4, z, 0, BlockType.GRASS.getBlock() );
-            }
-        }
-        this.chunkSendQueue.offer( chunk );
+        this.chunkSendQueue.offer( this.player.getLocation().getWorld().getChunk( chunkX, chunkZ ) );
     }
 
     public void sendPacket( Packet packet ) {
@@ -316,5 +304,9 @@ public class PlayerConnection {
         adventureSettings.setAttackPlayers( gameMode.ordinal() < 2 );
         adventureSettings.setNoPvP( gameMode.ordinal() == 3 );
         adventureSettings.update();
+    }
+
+    public boolean knowsChunk( int chunkX, int chunkZ ) {
+        return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
     }
 }

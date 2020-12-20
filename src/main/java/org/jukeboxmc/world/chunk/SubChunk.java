@@ -39,6 +39,10 @@ public class SubChunk {
         this.blocks[layer][this.getIndex( x, y, z )] = block.getRuntimeId();
     }
 
+    public Block getBlock( int x, int y, int z, int layer ) {
+        return BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer][this.getIndex( x, y, z )] );
+    }
+
     private int getIndex( int x, int y, int z ) {
         return ( x << 8 ) + ( z << 4 ) + y;
     }

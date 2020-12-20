@@ -14,4 +14,8 @@ public class BlockBedrock extends Block {
         return this.states( "infiniburn_bit", infiniBurn ? (byte) 1 : (byte) 0 );
     }
 
+    public boolean isInfiniBurn() {
+        return this.states.containsKey( "infiniburn_bit" ) && this.states.getByte( "infiniburn_bit" ) == 1;
+    }
+
 }

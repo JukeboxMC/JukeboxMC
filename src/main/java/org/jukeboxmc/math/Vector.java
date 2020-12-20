@@ -23,12 +23,20 @@ public class Vector {
         return this.x;
     }
 
+    public int getFloorX() {
+        return (int) Math.floor( this.x );
+    }
+
     public void setX( float x ) {
         this.x = x;
     }
 
     public float getY() {
         return this.y;
+    }
+
+    public int getFloorY() {
+        return (int) Math.floor( this.y );
     }
 
     public void setY( float y ) {
@@ -39,7 +47,12 @@ public class Vector {
         return this.z;
     }
 
+    public int getFloorZ() {
+        return (int) Math.floor( this.z );
+    }
+
     public void setZ( float z ) {
         this.z = z;
     }
+
 }

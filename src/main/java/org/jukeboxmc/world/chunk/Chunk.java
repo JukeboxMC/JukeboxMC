@@ -1,12 +1,14 @@
 package org.jukeboxmc.world.chunk;
 
-import lombok.Getter;
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.BinaryStream;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author LucGamesYT
@@ -18,11 +20,12 @@ public class Chunk {
 
     public static final int CHUNK_LAYERS = 2;
 
+    private SubChunk[] subChunks;
+
     private int chunkX;
     private int chunkZ;
 
-    @Getter
-    private SubChunk[] subChunks;
+    private List<Player> players = new CopyOnWriteArrayList<>();
 
     public Chunk( int chunkX, int chunkZ ) {
         this.chunkX = chunkX;
@@ -33,7 +36,13 @@ public class Chunk {
     public void setBlock( int x, int y, int z, int layer, Block block ) {
         int subY = y >> 4;
         this.checkOrCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( x, y & 15, z, layer, block );
+        this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
+    }
+
+    public Block getBlock( int x, int y, int z, int layer ) {
+        int subY = y >> 4;
+        this.checkOrCreateSubChunks( subY );
+        return this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
     }
 
     private void checkOrCreateSubChunks( int subY ) {
@@ -70,5 +79,21 @@ public class Chunk {
 
     public int getChunkZ() {
         return this.chunkZ;
+    }
+
+    public SubChunk[] getSubChunks() {
+        return this.subChunks;
+    }
+
+    public void addPlayer( Player player ) {
+        this.players.add( player );
+    }
+
+    public void removePlayer( Player player ) {
+        this.players.remove( player );
+    }
+
+    public Collection<Player> getPlayers() {
+        return this.players;
     }
 }

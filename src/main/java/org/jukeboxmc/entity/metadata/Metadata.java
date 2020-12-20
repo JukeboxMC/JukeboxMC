@@ -72,12 +72,10 @@ public class Metadata {
                 byte flags = this.getByte( firstFlag );
                 flags ^= 1 << secondFlag.getId();
                 this.setByte( firstFlag, flags );
-                System.out.println( 1 );
             } else {
                 long flags = this.getLong( firstFlag );
                 flags ^= 1L << secondFlag.getId();
                 this.setLong( firstFlag, flags );
-                System.out.println( 2 );
             }
         }
     }

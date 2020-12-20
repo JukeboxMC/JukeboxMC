@@ -19,7 +19,7 @@ public class Block {
     @Getter
     private int runtimeId;
     private String name;
-    private NbtMap states;
+    protected NbtMap states;
 
     public Block( String name ) {
         this( name, null );
@@ -33,6 +33,18 @@ public class Block {
             for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.name ) ) )
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             STATES.put( this.name, toRuntimeId );
+            for ( NbtMap map : toRuntimeId.keySet() ) {
+                try {
+                    int runtimeId = toRuntimeId.get( map );
+                    Block block = this.getClass().newInstance();
+                    block.runtimeId = runtimeId;
+                    block.name = name;
+                    block.states = map;
+                    BlockPalette.RUNTIME_TO_BLOCK.put( runtimeId, block );
+                } catch ( InstantiationException | IllegalAccessException e ) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         if ( nbtMap == null )

@@ -22,6 +22,7 @@ public class PacketRegistry {
         handler.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
         handler.put( TextPacket.class, new TextHandler() );
         handler.put( AdventureSettingsPacket.class, new AdventureSettingsHandler() );
+        handler.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -68,6 +69,8 @@ public class PacketRegistry {
                 return new ClientCacheStatusPacket();
             case Protocol.ADVENTURER_SETTINGS_PACKET:
                 return new AdventureSettingsPacket();
+            case Protocol.LEVEL_SOUND_EVENT_PACKET:
+                return new LevelSoundEventPacket();
             default:
                 return null;
         }

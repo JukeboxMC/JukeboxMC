@@ -14,12 +14,17 @@ import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
@@ -161,6 +166,10 @@ public class Player extends EntityHuman {
         return (int) this.location.getZ() >> 4;
     }
 
+    public Chunk getChunk() {
+        return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ() );
+    }
+
     public void setLocation( Location location ) {
         this.location = location;
     }
@@ -242,6 +251,10 @@ public class Player extends EntityHuman {
 
         this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
+
+        Executors.newSingleThreadScheduledExecutor().schedule( () -> {
+            this.getWorld().playSound( this.getLocation(), LevelSound.BEACON_ACTIVATE );
+        }, 5, TimeUnit.SECONDS );
     }
 
     public int getViewDistance() {
