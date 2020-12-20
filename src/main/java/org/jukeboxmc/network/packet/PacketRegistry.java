@@ -21,6 +21,7 @@ public class PacketRegistry {
         handler.put( PlayerMovePacket.class, new PlayerMoveHandler() );
         handler.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
         handler.put( TextPacket.class, new TextHandler() );
+        handler.put( AdventureSettingsPacket.class, new AdventureSettingsHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
