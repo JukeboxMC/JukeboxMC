@@ -7,6 +7,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelSoundEventPacket;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -79,20 +80,27 @@ public class World {
         return this.chunkMap.get( chunkHash );
     }
 
-    public Block getBlock( Location location, int layer ) {
+    public Block getBlock( Vector location, int layer ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
         return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorX(), layer );
     }
 
-    public void setBlock( Location location, Block block ) {
+    public void setBlock( Vector location, Block block ) {
         this.setBlock( location, block, 0 );
     }
 
-    public void setBlock( Location location, Block block, int layer ) {
+    public void setBlock( Vector location, Block block, int layer ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
         chunk.setBlock( location.getFloorX(), location.getFloorY(), location.getFloorX() & 15, layer, block );
 
-        //TODO UpdateBlockPacket
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setPosition( location );
+        updateBlockPacket.setBlockId( block.getRuntimeId() );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setLayer( layer );
+        for ( Player player : this.getPlayers() ) {
+            player.getPlayerConnection().sendPacket( updateBlockPacket );
+        }
     }
 
     public void playSound( Player player, LevelSound levelSound ) {

@@ -3,18 +3,21 @@ package org.jukeboxmc.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.world.LevelSound;
+import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -253,7 +256,7 @@ public class Player extends EntityHuman {
         this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
 
         Executors.newSingleThreadScheduledExecutor().schedule( () -> {
-            this.getWorld().playSound( this.getLocation(), LevelSound.BEACON_ACTIVATE );
+            //Tests
         }, 5, TimeUnit.SECONDS );
     }
 
@@ -288,5 +291,21 @@ public class Player extends EntityHuman {
 
     public void sendattribute( Attribute attribute ) {
         this.playerConnection.sendattribute( attribute );
+    }
+
+    public void playSound( Sound sound ) {
+        this.playSound( this.location, sound, 1, 1 );
+    }
+
+    public void playSound( Sound sound, float volume, float pitch ) {
+        this.playSound( this.location, sound, volume, pitch );
+    }
+
+    public void playSound( Vector position, Sound sound ) {
+        this.playSound( position, sound, 1, 1 );
+    }
+
+    public void playSound( Vector position, Sound sound, float volume, float pitch ) {
+        this.playerConnection.playSound( position, sound, volume, pitch );
     }
 }

@@ -37,6 +37,8 @@ public interface Protocol {
     byte SET_ENTITY_DATA_PACKET = 0x27;
     byte ADVENTURER_SETTINGS_PACKET = 0x37;
     byte LEVEL_SOUND_EVENT_PACKET = 0x7b;
+    byte PLAY_SOUND_PACKET = 0x56;
+    byte UPDATE_BLOCK_PACKET = 0x15;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

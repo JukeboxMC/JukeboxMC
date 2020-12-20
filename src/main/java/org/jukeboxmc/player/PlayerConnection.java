@@ -2,12 +2,15 @@ package org.jukeboxmc.player;
 
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Pair;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.*;
@@ -304,6 +307,15 @@ public class PlayerConnection {
         adventureSettings.setAttackPlayers( gameMode.ordinal() < 2 );
         adventureSettings.setNoPvP( gameMode.ordinal() == 3 );
         adventureSettings.update();
+    }
+
+    public void playSound( Vector position, Sound sound, float volume, float pitch ) {
+        PlaySoundPacket playSoundPacket = new PlaySoundPacket();
+        playSoundPacket.setSound( sound );
+        playSoundPacket.setPosition( position );
+        playSoundPacket.setVolume( volume );
+        playSoundPacket.setPitch( pitch );
+        this.sendPacket( playSoundPacket );
     }
 
     public boolean knowsChunk( int chunkX, int chunkZ ) {
