@@ -3,7 +3,13 @@ package org.jukeboxmc.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.entity.adventure.AdventureSettings;
+import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.entity.attribute.Attributes;
+import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -11,6 +17,7 @@ import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.world.World;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -18,7 +25,7 @@ import java.util.UUID;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Player {
+public class Player extends EntityHuman {
 
     private String name;
     private String xuid;
@@ -34,20 +41,26 @@ public class Player {
     private int viewDistance = 16;
 
     private boolean isOnGround;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean isSpawned;
 
     private Locale locale;
     private Location location;
 
     private Server server;
+    private Attributes attributes;
+    private AdventureSettings adventureSettings;
+    private GameMode gameMode = GameMode.CREATIVE;
     private DeviceInfo deviceInfo;
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
 
     public Player( Server server, Connection connection ) {
         this.server = server;
-        this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 );
+        this.attributes = new Attributes();
+        this.adventureSettings = new AdventureSettings( this );
+        this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 ); //Need form saved file
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, connection );
     }
@@ -156,6 +169,26 @@ public class Player {
         return this.server;
     }
 
+    public Attributes getAttributes() {
+        return attributes;
+    }
+
+    public Attribute getAttribute( AttributeType attributeType ) {
+        return this.attributes.getAttributes().stream().filter( attribute -> attribute.getAttributeType() == attributeType ).findFirst().orElse( null );
+    }
+
+    public AdventureSettings getAdventureSettings() {
+        return this.adventureSettings;
+    }
+
+    public GameMode getGameMode() {
+        return this.gameMode;
+    }
+
+    public void setGameMode( GameMode gameMode ) {
+        this.gameMode = gameMode;
+    }
+
     public DeviceInfo getDeviceInfo() {
         return this.deviceInfo;
     }
@@ -188,11 +221,28 @@ public class Player {
         return this.headYaw;
     }
 
+    public void setHeadYaw( float headYaw ) {
+        this.headYaw = headYaw;
+    }
+
     public void setAddress( InetSocketAddress address ) {
         this.address = address;
     }
 
     //Other
+
+    public void firstSpawn() {
+        this.setSpawned( true );
+        this.playerConnection.sendNetworkChunkPublisher();
+
+        this.playerConnection.sendTime( 1000 );
+        this.playerConnection.sendAdventureSettings();
+        this.playerConnection.sendAttributes( this.attributes.getAttributes() );
+        this.playerConnection.sendMetadata();
+
+        this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+        this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
+    }
 
     public int getViewDistance() {
         return this.viewDistance;
@@ -217,5 +267,13 @@ public class Player {
 
     public void sendTip( String message ) {
         this.playerConnection.sendMessage( message, TextPacket.Type.TIP );
+    }
+
+    public void sendAttributes( List<Attribute> attributes ) {
+        this.playerConnection.sendAttributes( attributes );
+    }
+
+    public void sendattribute( Attribute attribute ) {
+        this.playerConnection.sendattribute( attribute );
     }
 }

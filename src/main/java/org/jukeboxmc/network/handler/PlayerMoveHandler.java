@@ -15,6 +15,7 @@ public class PlayerMoveHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
         Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
+        player.setHeadYaw( playerMovePacket.getHeadYaw() );
         player.setLocation( toLocation );
         player.setOnGround( playerMovePacket.isOnGround() );
 

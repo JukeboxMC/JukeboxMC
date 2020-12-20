@@ -63,6 +63,10 @@ public class PacketRegistry {
                 return new SetLocalPlayerAsInitializedPacket();
             case Protocol.TEXT_PACKET:
                 return new TextPacket();
+            case Protocol.CLIENT_CACHE_STATUS_PACKET:
+                return new ClientCacheStatusPacket();
+            case Protocol.ADVENTURER_SETTINGS_PACKET:
+                return new AdventureSettingsPacket();
             default:
                 return null;
         }

@@ -28,7 +28,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             StartGamePacket startGamePacket = new StartGamePacket();
             startGamePacket.setEntityId( player.getEntityId() );
             startGamePacket.setEntityRuntimeId( player.getEntityId() );
-            startGamePacket.setGameMode( GameMode.CREATIVE );
+            startGamePacket.setGameMode( player.getGameMode() );
             startGamePacket.setPosition( player.getLocation() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
             startGamePacket.setWorldSpawn( new Vector( 0, 0,0 ) );
@@ -37,10 +37,8 @@ public class ResourcePackResponseHandler implements PacketHandler {
             }
             player.getPlayerConnection().sendPacket( startGamePacket );
 
-            player.getPlayerConnection().sendTime( 1000 );
-
-            BiomeDefinitionListPacket biomeDefinitionListPacket = new BiomeDefinitionListPacket();
-            player.getPlayerConnection().sendPacket( biomeDefinitionListPacket );
+            player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
+            player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );
 
             CreativeContentPacket creativeContentPacket = new CreativeContentPacket();
             player.getPlayerConnection().sendPacket( creativeContentPacket );

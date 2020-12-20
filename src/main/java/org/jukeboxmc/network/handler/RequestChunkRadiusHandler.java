@@ -19,12 +19,7 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         player.setViewDistance( radius );
         player.getPlayerConnection().needNewChunks( false );
         if(!player.isSpawned()) {
-            //TODO implement doFirstSpawn
-            player.setSpawned( true );
-
-            player.getPlayerConnection().sendNetworkChunkPublisher();
-            player.getPlayerConnection().sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
-            System.out.println( player.getName() + " has joined the game" );
+            player.firstSpawn();
         }
     }
 }

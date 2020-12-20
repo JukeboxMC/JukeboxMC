@@ -2,6 +2,9 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.jukeboxmc.entity.metadata.Metadata;
+import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.world.GameRules;
 
 import java.math.BigInteger;
@@ -317,10 +320,37 @@ public class BinaryStream {
                     this.writeBoolean( (Boolean) value.getValue() );
                     break;
                 case 2:
-                    this.writeUnsignedVarInt((Integer) value.getValue()  );
+                    this.writeUnsignedVarInt( (Integer) value.getValue() );
                     break;
                 case 3:
                     this.writeLFloat( (Float) value.getValue() );
+                    break;
+            }
+        } );
+    }
+
+    public void writeEntityMetadata( Map<MetadataFlag, MetadataValue> metadata ) {
+        this.writeUnsignedVarInt( metadata.size() ); //CHECK
+        metadata.forEach( ( flag, value ) -> {
+            this.writeUnsignedVarInt( flag.getId() ); //CHECK
+            this.writeUnsignedVarInt( value.getFlagType().ordinal() ); //CHECK
+            switch ( value.getFlagType() ) {
+                case BYTE:
+                    this.writeByte( (Byte) value.getValue() );
+                    break;
+                case FLOAT:
+                    this.writeLFloat( (Float) value.getValue() );
+                    break;
+                case LONG:
+                    this.writeSignedVarLong( (Long) value.getValue() );
+                    break;
+                case STRING:
+                    this.writeString( (String) value.getValue() );
+                    break;
+                case SHORT:
+                    this.writeLShort( (Short) value.getValue() );
+                    break;
+                default:
                     break;
             }
         } );

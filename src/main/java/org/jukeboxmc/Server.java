@@ -81,7 +81,7 @@ public class Server {
                 player.getLocation().getWorld().removePlayer( player );
                 this.players.remove( player.getAddress() );
                 this.setOnlinePlayers( this.players.size() );
-                System.out.println( player.getName() + " left the game" );
+                this.broadcastMessage( "§e" + player.getName() + " left the game" );
             }
         } );
 
@@ -156,6 +156,13 @@ public class Server {
 
     public Collection<Player> getOnlinePlayers() {
         return this.players.values();
+    }
+
+    public void broadcastMessage( String message ) {
+        for ( Player onlinePlayers : this.players.values() ) {
+            onlinePlayers.sendMessage( message );
+        }
+        System.out.println( "[Broadcast] " + message );
     }
 
 }

@@ -314,7 +314,7 @@ public class Connection {
                 this.put( packet.splitIndex, packet );
             }} );
         } else {
-            this.splitPackets.get( packet.splitID ).put( (int) packet.splitIndex, packet );
+            this.splitPackets.get( packet.splitID ).put( packet.splitIndex, packet );
         }
 
         if ( this.splitPackets.get( packet.splitID ).size() == packet.splitCount ) {

@@ -1,9 +1,9 @@
 package org.jukeboxmc.player;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.entity.adventure.AdventureSettings;
+import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
@@ -278,5 +278,43 @@ public class PlayerConnection {
         textPacket.setXuid( this.player.getXuid() );
         textPacket.setDeviceId( this.player.getDeviceInfo().getDeviceId() );
         this.sendPacket( textPacket );
+    }
+
+    public void sendAttributes( List<Attribute> attributes ) {
+        UpdateAttributesPacket attributesPacket = new UpdateAttributesPacket();
+        attributesPacket.setEntityId( this.player.getEntityId() );
+        attributesPacket.setAttributes( attributes );
+        attributesPacket.setTick( 0 ); //TODO
+        this.sendPacket( attributesPacket );
+    }
+
+    public void sendattribute( Attribute attribute ) {
+        UpdateAttributesPacket attributesPacket = new UpdateAttributesPacket();
+        attributesPacket.setEntityId( this.player.getEntityId() );
+        attributesPacket.setAttributes( Collections.singletonList( attribute ) );
+        attributesPacket.setTick( 0 ); //TODO
+        this.sendPacket( attributesPacket );
+    }
+
+    public void sendMetadata() {
+        SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
+        setEntityDataPacket.setEntityId( this.player.getEntityId() );
+        setEntityDataPacket.setMetadata( this.player.getMetadata() );
+        setEntityDataPacket.setTick( 0 );
+        this.sendPacket( setEntityDataPacket );
+    }
+
+    public void sendAdventureSettings() {
+        GameMode gameMode = this.player.getGameMode();
+
+        AdventureSettings adventureSettings = this.player.getAdventureSettings();
+        adventureSettings.setWorldImmutable( gameMode.ordinal() == 3 );
+        adventureSettings.setCanFly( gameMode.ordinal() > 0 );
+        adventureSettings.setNoClip( gameMode.ordinal() == 3 );
+        adventureSettings.setFlying( gameMode.ordinal() == 3 );
+        adventureSettings.setAttackMobs( gameMode.ordinal() < 2 );
+        adventureSettings.setAttackPlayers( gameMode.ordinal() < 2 );
+        adventureSettings.setNoPvP( gameMode.ordinal() == 3 );
+        adventureSettings.update();
     }
 }
