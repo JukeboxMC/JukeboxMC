@@ -16,7 +16,9 @@ public enum BlockType {
     AIR( BlockAir.class ),
     GRASS( BlockGrass.class ),
     DIRT( BlockDirt.class ),
-    BEDROCK( BlockBedrock.class );
+    BEDROCK( BlockBedrock.class ),
+    TALL_GRASS( BlockTallGrass.class ),
+    DOUBLE_PLANT( BlockDoublePlant.class );
 
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
 

@@ -6,6 +6,7 @@ import org.jukeboxmc.nbt.NbtMapBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -29,9 +30,10 @@ public class Block {
         this.name = name;
 
         if ( !STATES.containsKey( this.name ) ) {
-            Map<NbtMap, Integer> toRuntimeId = new HashMap<>();
-            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.name ) ) )
+            Map<NbtMap, Integer> toRuntimeId = new LinkedHashMap<>();
+            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.name ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
+            }
             STATES.put( this.name, toRuntimeId );
             for ( NbtMap map : toRuntimeId.keySet() ) {
                 try {
@@ -47,8 +49,9 @@ public class Block {
             }
         }
 
-        if ( nbtMap == null )
+        if ( nbtMap == null ) {
             nbtMap = new ArrayList<>( STATES.get( this.name ).keySet() ).get( 0 );
+        }
         this.states = nbtMap;
         this.runtimeId = STATES.get( this.name ).get( this.states );
     }
@@ -59,11 +62,13 @@ public class Block {
         return (B) this;
     }
 
-    public <B extends Block> B states( String state, Object value ) {
-        if ( !this.states.containsKey( state ) )
+    public <B extends Block> B setStates( String state, Object value ) {
+        if ( !this.states.containsKey( state ) ) {
             throw new AssertionError( "State " + state + " was not found in block " + this.name );
-        if ( this.states.get( state ).getClass() != value.getClass() )
+        }
+        if ( this.states.get( state ).getClass() != value.getClass() ) {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
+        }
         NbtMapBuilder nbtMapBuilder = this.states.toBuilder();
         nbtMapBuilder.put( state, value );
         for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.name ).entrySet() ) {

@@ -1,9 +1,6 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.math.Location;
+import org.jukeboxmc.block.*;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelSoundEventPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -12,11 +9,10 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import javax.rmi.CORBA.Util;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
+import java.util.Random;
 
 /**
  * @author LucGamesYT
@@ -44,7 +40,7 @@ public class World {
             if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().update( timestamp );
 
-                if(this.currentTick % ( 20 * 5 * 60 ) == 0) {
+                if ( this.currentTick % ( 20 * 5 * 60 ) == 0 ) {
                     player.getPlayerConnection().sendTime( this.currentTick );
                 }
             }
@@ -79,6 +75,10 @@ public class World {
                     chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.getBlock() );
                     chunk.setBlock( blockX, 3, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
                     chunk.setBlock( blockX, 4, blockZ, 0, BlockType.GRASS.getBlock() );
+                    if ( new Random().nextInt( 5 ) == 1 ) {
+                        chunk.setBlock( blockX, 6, blockZ, 0, BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setUpperBlock( true ) );
+                        chunk.setBlock( blockX, 5, blockZ, 0, BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setUpperBlock( false ) );
+                    }
                 }
             }
             this.chunkMap.put( chunkHash, chunk ); //TODO this.loadChunk;

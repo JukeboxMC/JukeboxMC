@@ -11,7 +11,7 @@ public class BlockBedrock extends Block {
     }
 
     public BlockBedrock setInfiniBurn( boolean infiniBurn ) {
-        return this.states( "infiniburn_bit", infiniBurn ? (byte) 1 : (byte) 0 );
+        return this.setStates( "infiniburn_bit", infiniBurn ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isInfiniBurn() {

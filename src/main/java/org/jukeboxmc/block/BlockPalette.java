@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public class BlockPalette {
 
-    private static final Map<Integer, NbtMap> BLOCK_PALETTE = new HashMap<>();
-    public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new HashMap<>();
+    private static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
+    public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
 
     static {
@@ -46,8 +46,8 @@ public class BlockPalette {
         return BLOCK_PALETTE.values().stream().filter( predicate ).findFirst().orElseThrow( () -> new RuntimeException( "Block was not found" ) );
     }
 
-    public static Set<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
-        return BLOCK_PALETTE.values().stream().filter( predicate ).collect( Collectors.toSet() );
+    public static List<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
+        return BLOCK_PALETTE.values().stream().filter( predicate ).collect( Collectors.toList() );
     }
 
 }

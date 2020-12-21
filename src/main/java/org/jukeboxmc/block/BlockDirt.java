@@ -11,7 +11,11 @@ public class BlockDirt extends Block {
     }
 
     public BlockDirt setDirtType( DirtType dirtType ) {
-        return this.states( "dirt_type", dirtType.name().toLowerCase() );
+        return this.setStates( "dirt_type", dirtType.name().toLowerCase() );
+    }
+
+    public DirtType getDirtType() {
+        return this.states.containsKey( "dirt_type" ) ? DirtType.valueOf(  this.states.getString( "dirt_type" ).toUpperCase() ) : DirtType.NORMAL;
     }
 
     public enum DirtType {
