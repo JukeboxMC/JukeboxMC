@@ -24,6 +24,7 @@ public class PacketRegistry {
         handler.put( AdventureSettingsPacket.class, new AdventureSettingsHandler() );
         handler.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
         handler.put( EmoteListPacket.class, new EmoteListHandler() );
+        handler.put( InteractPacket.class, new InteractHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {

@@ -2,6 +2,7 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
 /**
@@ -9,11 +10,12 @@ import org.jukeboxmc.network.Protocol;
  * @version 1.0
  */
 @Data
-@EqualsAndHashCode( callSuper =  true )
+@EqualsAndHashCode ( callSuper = true )
 public class InteractPacket extends Packet {
 
     private Action action;
     private long target;
+    private Vector position;
 
     @Override
     public int getPacketId() {
@@ -25,6 +27,12 @@ public class InteractPacket extends Packet {
         super.read();
         this.action = Action.values()[this.readByte() + 1];
         this.target = this.readUnsignedVarLong();
+
+        if ( this.action == Action.MOUSEOVER ) {
+            if ( this.getBuffer().readableBytes() > 0 ) {
+                this.position = new Vector( this.readLFloat(), this.readLFloat(), this.readLFloat() );
+            }
+        }
     }
 
     public enum Action {

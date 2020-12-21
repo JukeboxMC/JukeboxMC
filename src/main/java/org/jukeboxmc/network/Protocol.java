@@ -59,4 +59,5 @@ public interface Protocol {
     byte QUERY = (byte) 0xfe;
 
     byte TEXT_PACKET = 0x09;
+    byte CONTAINER_OPEN_PACKET = 0x2e;
 }
