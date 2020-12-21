@@ -42,6 +42,7 @@ public interface Protocol {
     byte TEXT_PACKET = 0x09;
     byte CONTAINER_OPEN_PACKET = 0x2e;
     byte PLAYER_ACTION_PACKET = 0x24;
+    byte ANIMATE_PACKET = 0x2c;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
