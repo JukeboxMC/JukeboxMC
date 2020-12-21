@@ -39,6 +39,9 @@ public interface Protocol {
     byte LEVEL_SOUND_EVENT_PACKET = 0x7b;
     byte PLAY_SOUND_PACKET = 0x56;
     byte UPDATE_BLOCK_PACKET = 0x15;
+    byte TEXT_PACKET = 0x09;
+    byte CONTAINER_OPEN_PACKET = 0x2e;
+    byte PLAYER_ACTION_PACKET = 0x24;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
@@ -58,6 +61,4 @@ public interface Protocol {
     byte NACKNOWLEDGE_PACKET = (byte) 0xa0;
     byte QUERY = (byte) 0xfe;
 
-    byte TEXT_PACKET = 0x09;
-    byte CONTAINER_OPEN_PACKET = 0x2e;
 }

@@ -25,6 +25,7 @@ public class PacketRegistry {
         handler.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
         handler.put( EmoteListPacket.class, new EmoteListHandler() );
         handler.put( InteractPacket.class, new InteractHandler() );
+        handler.put( PlayerActionPacket.class, new PlayerActionHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -73,6 +74,8 @@ public class PacketRegistry {
                 return new AdventureSettingsPacket();
             case Protocol.LEVEL_SOUND_EVENT_PACKET:
                 return new LevelSoundEventPacket();
+            case Protocol.PLAYER_ACTION_PACKET:
+                return new PlayerActionPacket();
             default:
                 return null;
         }
