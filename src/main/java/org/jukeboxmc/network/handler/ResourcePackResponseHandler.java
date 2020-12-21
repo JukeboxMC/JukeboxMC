@@ -29,7 +29,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             startGamePacket.setGameMode( player.getGameMode() );
             startGamePacket.setPosition( player.getLocation() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
-            startGamePacket.setWorldSpawn( new Vector( 0, 0,0 ) );
+            startGamePacket.setWorldSpawn( new Vector( 0, 7,0 ) );
             for ( GameRules<?> gameRules : GameRule.getAll() ) {
                 startGamePacket.getGamerules().put( gameRules.getName(), gameRules );
             }

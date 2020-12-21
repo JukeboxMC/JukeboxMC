@@ -257,11 +257,11 @@ public class Player extends EntityHuman {
         this.playerConnection.sendMetadata();
 
         this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
-        this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
-
+        //JoinEvent
         Executors.newSingleThreadScheduledExecutor().schedule( () -> {
             //Tests
         }, 5, TimeUnit.SECONDS );
+        this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
     }
 
     public int getViewDistance() {

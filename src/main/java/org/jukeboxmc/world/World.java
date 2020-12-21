@@ -26,6 +26,8 @@ public class World {
 
     private String name;
 
+    private int currentTick;
+
     private Map<Long, Chunk> chunkMap = new HashMap<>();
     private Map<Long, Player> players = new HashMap<>();
 
@@ -41,8 +43,13 @@ public class World {
         for ( Player player : this.players.values() ) {
             if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().update( timestamp );
+
+                if(this.currentTick % ( 20 * 5 * 60 ) == 0) {
+                    player.getPlayerConnection().sendTime( this.currentTick );
+                }
             }
         }
+        this.currentTick++;
     }
 
     public void addPlayer( Player player ) {
@@ -145,4 +152,7 @@ public class World {
         }
     }
 
+    public int getCurrentTick() {
+        return this.currentTick;
+    }
 }
