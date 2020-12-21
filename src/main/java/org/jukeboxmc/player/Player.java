@@ -3,7 +3,6 @@ package org.jukeboxmc.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -16,16 +15,15 @@ import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +61,8 @@ public class Player extends EntityHuman {
     private DeviceInfo deviceInfo;
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
+
+    private List<UUID> emotes = new ArrayList<>();
 
     public Player( Server server, Connection connection ) {
         this.server = server;
@@ -219,6 +219,10 @@ public class Player extends EntityHuman {
 
     public void setPlayerConnection( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
+    }
+
+    public List<UUID> getEmotes() {
+        return this.emotes;
     }
 
     public long getEntityId() {

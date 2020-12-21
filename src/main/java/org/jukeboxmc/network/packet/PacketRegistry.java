@@ -23,6 +23,7 @@ public class PacketRegistry {
         handler.put( TextPacket.class, new TextHandler() );
         handler.put( AdventureSettingsPacket.class, new AdventureSettingsHandler() );
         handler.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
+        handler.put( EmoteListPacket.class, new EmoteListHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
