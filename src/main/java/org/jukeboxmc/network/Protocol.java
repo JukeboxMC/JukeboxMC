@@ -43,6 +43,8 @@ public interface Protocol {
     byte CONTAINER_OPEN_PACKET = 0x2e;
     byte PLAYER_ACTION_PACKET = 0x24;
     byte ANIMATE_PACKET = 0x2c;
+    byte INVENTORY_TRANSACTION_PACKET = 0x1e;
+    byte CONTAINER_CLOSE_PACKET = 0x2f;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

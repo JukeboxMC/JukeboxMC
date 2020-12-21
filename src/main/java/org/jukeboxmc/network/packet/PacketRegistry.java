@@ -27,6 +27,7 @@ public class PacketRegistry {
         handler.put( InteractPacket.class, new InteractHandler() );
         handler.put( PlayerActionPacket.class, new PlayerActionHandler() );
         handler.put( AnimatePacket.class, new AnimateHandler() );
+        handler.put( ContainerClosePacket.class, new ContainerCloseHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -79,6 +80,8 @@ public class PacketRegistry {
                 return new PlayerActionPacket();
             case Protocol.ANIMATE_PACKET:
                 return new AnimatePacket();
+            case Protocol.CONTAINER_CLOSE_PACKET:
+                return new ContainerClosePacket();
             default:
                 return null;
         }

@@ -18,8 +18,6 @@ public class ResourcePackResponseHandler implements PacketHandler {
         ResourcePackResponsePacket resourcePackResponsePacket = (ResourcePackResponsePacket) packet;
         ResourcePackResponsePacket.Status status = resourcePackResponsePacket.getResponseStatus();
 
-        System.out.println( status.name() );
-
         if ( status == ResourcePackResponsePacket.Status.STATUS_REFUSED ) {
             player.getPlayerConnection().disconnect( "STATUS_REFUSED" );
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_HAVE_ALL_PACKS ) {
@@ -40,10 +38,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
             player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );
 
-            CreativeContentPacket creativeContentPacket = new CreativeContentPacket();
-            player.getPlayerConnection().sendPacket( creativeContentPacket );
-
-            //Do other stuff
+            player.getPlayerConnection().sendPacket( new CreativeContentPacket() );
         }
 
     }

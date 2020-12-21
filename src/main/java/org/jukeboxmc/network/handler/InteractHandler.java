@@ -17,11 +17,11 @@ public class InteractHandler implements PacketHandler {
 
         if ( interactPacket.getAction() == InteractPacket.Action.OPEN_INVENTORY ) {
             ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
-            containerOpenPacket.setWindowId( (byte) 0 );
+            containerOpenPacket.setWindowId( (byte) 0 ); //TODO Implement Inventorys
             containerOpenPacket.setContainerType( (byte) -1 );
             containerOpenPacket.setPosition( player.getLocation() );
             containerOpenPacket.setEntityId( player.getEntityId() );
-            //player.getPlayerConnection().sendPacket( containerOpenPacket );
+            player.getPlayerConnection().sendPacket( containerOpenPacket );
         }
     }
 }

@@ -25,7 +25,7 @@ public class InteractPacket extends Packet {
     @Override
     public void read() {
         super.read();
-        this.action = Action.values()[this.readByte() + 1];
+        this.action = Action.values()[this.readByte()];
         this.target = this.readUnsignedVarLong();
 
         if ( this.action == Action.MOUSEOVER ) {
@@ -36,6 +36,7 @@ public class InteractPacket extends Packet {
     }
 
     public enum Action {
+        NONE,
         INTERACT,
         ATTACK,
         LEAVE_VEHICLE,
