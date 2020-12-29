@@ -13,35 +13,35 @@ import java.util.Map;
  * @author LucGamesYT
  * @version 1.0
  */
+@Getter
 public class Block {
 
     private static final Map<String, Map<NbtMap, Integer>> STATES = new HashMap<>();
 
-    @Getter
     private int runtimeId;
-    private String name;
+    private String identifer;
     protected NbtMap states;
 
-    public Block( String name ) {
-        this( name, null );
+    public Block( String identifer ) {
+        this( identifer, null );
     }
 
-    public Block( String name, NbtMap nbtMap ) {
-        this.name = name;
+    public Block( String identifer, NbtMap nbtMap ) {
+        this.identifer = identifer;
 
-        if ( !STATES.containsKey( this.name ) ) {
+        if ( !STATES.containsKey( this.identifer ) ) {
             Map<NbtMap, Integer> toRuntimeId = new LinkedHashMap<>();
-            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.name ) ) ) {
+            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.identifer ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
-            STATES.put( this.name, toRuntimeId );
-            for ( NbtMap map : toRuntimeId.keySet() ) {
+            STATES.put( this.identifer, toRuntimeId );
+            for ( NbtMap state : toRuntimeId.keySet() ) {
                 try {
-                    int runtimeId = toRuntimeId.get( map );
+                    int runtimeId = toRuntimeId.get( state );
                     Block block = this.getClass().newInstance();
                     block.runtimeId = runtimeId;
-                    block.name = name;
-                    block.states = map;
+                    block.identifer = identifer;
+                    block.states = state;
                     BlockPalette.RUNTIME_TO_BLOCK.put( runtimeId, block );
                 } catch ( InstantiationException | IllegalAccessException e ) {
                     e.printStackTrace();
@@ -50,34 +50,34 @@ public class Block {
         }
 
         if ( nbtMap == null ) {
-            nbtMap = new ArrayList<>( STATES.get( this.name ).keySet() ).get( 0 );
+            nbtMap = new ArrayList<>( STATES.get( this.identifer ).keySet() ).get( 0 );
         }
         this.states = nbtMap;
-        this.runtimeId = STATES.get( this.name ).get( this.states );
+        this.runtimeId = STATES.get( this.identifer ).get( this.states );
     }
 
     public <B extends Block> B setData( int data ) {
-        this.states = new ArrayList<>( STATES.get( this.name ).keySet() ).get( data );
-        this.runtimeId = STATES.get( this.name ).get( this.states );
+        this.states = new ArrayList<>( STATES.get( this.identifer ).keySet() ).get( data );
+        this.runtimeId = STATES.get( this.identifer ).get( this.states );
         return (B) this;
     }
 
     public <B extends Block> B setStates( String state, Object value ) {
         if ( !this.states.containsKey( state ) ) {
-            throw new AssertionError( "State " + state + " was not found in block " + this.name );
+            throw new AssertionError( "State " + state + " was not found in block " + this.identifer );
         }
         if ( this.states.get( state ).getClass() != value.getClass() ) {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
         }
         NbtMapBuilder nbtMapBuilder = this.states.toBuilder();
         nbtMapBuilder.put( state, value );
-        for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.name ).entrySet() ) {
+        for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifer ).entrySet() ) {
             NbtMap blockMap = entry.getKey();
             if ( blockMap.equals( nbtMapBuilder ) ) {
                 this.states = blockMap;
             }
         }
-        this.runtimeId = STATES.get( this.name ).get( this.states );
+        this.runtimeId = STATES.get( this.identifer ).get( this.states );
         return (B) this;
     }
 

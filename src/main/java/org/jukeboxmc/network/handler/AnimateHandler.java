@@ -14,6 +14,6 @@ public class AnimateHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         AnimatePacket animatePacket = (AnimatePacket) packet;
 
-        System.out.println( animatePacket.toString() );
+        //System.out.println( animatePacket.toString() );
     }
 }

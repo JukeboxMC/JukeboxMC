@@ -27,19 +27,21 @@ public abstract class Item implements Cloneable {
     protected int meta;
     protected String customName;
     protected String[] lore;
+    protected NbtMap nbt;
 
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
     public Item( String identifer, int runtimeId ) {
-        this( identifer, runtimeId, 0 );
+        this( identifer, runtimeId, 0, null );
     }
 
-    public Item( String identifer, int runtimeId, int meta ) {
+    public Item( String identifer, int runtimeId, int meta, NbtMap nbt ) {
         this.identifer = identifer;
         this.runtimeId = runtimeId;
         this.amount = 1;
         this.meta = meta;
+        this.nbt = nbt;
         this.canPlaceOn = new ArrayList<>();
         this.canDestroy = new ArrayList<>();
     }
@@ -100,8 +102,9 @@ public abstract class Item implements Cloneable {
         return this.amount;
     }
 
-    public void setAmount( int amount ) {
+    public Item setAmount( int amount ) {
         this.amount = amount;
+        return this;
     }
 
     public int getMeta() {
@@ -112,6 +115,26 @@ public abstract class Item implements Cloneable {
         this.meta = meta;
     }
 
+    public NbtMap getNBT() {
+        return this.nbt;
+    }
+
+    public void setNBT( NbtMap nbt ) {
+        this.nbt = nbt;
+    }
+
+    public int getSlot() {
+        return this.slot;
+    }
+
+    public void setSlot( int slot ) {
+        this.slot = slot;
+    }
+
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
     @Override
     public Item clone() {
         try {
@@ -120,6 +143,8 @@ public abstract class Item implements Cloneable {
             clone.identifer = this.identifer;
             clone.amount = this.amount;
             clone.meta = this.meta;
+            clone.nbt = this.nbt;
+            clone.slot = this.slot;
             clone.customName = this.customName;
             clone.lore = this.lore;
             clone.canPlaceOn = this.canPlaceOn;

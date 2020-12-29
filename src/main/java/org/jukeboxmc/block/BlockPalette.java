@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class BlockPalette {
 
-    private static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
+    public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
     public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
 

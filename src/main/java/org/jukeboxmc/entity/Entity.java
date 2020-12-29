@@ -9,6 +9,8 @@ import org.jukeboxmc.entity.metadata.MetadataFlag;
  */
 public abstract class Entity {
 
+    private long entityId = 0;
+    private long entityCount = 1;
     private Metadata metadata;
 
     public Entity() {
@@ -24,7 +26,19 @@ public abstract class Entity {
 
     public abstract String getEntityType();
 
+    public long getAndIncrementEntityCount() {
+        return this.entityCount++;
+    }
+
     public Metadata getMetadata() {
         return this.metadata;
+    }
+
+    public long getEntityId() {
+        return this.entityId;
+    }
+
+    public void setEntityId( long entityId ) {
+        this.entityId = entityId;
     }
 }

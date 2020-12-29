@@ -57,7 +57,6 @@ public class PlayerConnection {
 
     public void sendChunk( Chunk chunk ) {
         try {
-            // System.out.println( "SendChunk" );
             LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
             levelChunkPacket.setChunkX( chunk.getChunkX() );
             levelChunkPacket.setChunkZ( chunk.getChunkZ() );
@@ -104,17 +103,16 @@ public class PlayerConnection {
                 }
             }
 
-
-            toSendChunks.sort( ( o1, o2 ) -> {
-                if ( Objects.equals( o1.getFirst(), o2.getFirst() ) && Objects.equals( o1.getSecond(), o2.getSecond() ) ) {
+            toSendChunks.sort( ( chunkX, chunkZ ) -> {
+                if ( Objects.equals( chunkX.getFirst(), chunkZ.getFirst() ) && Objects.equals( chunkX.getSecond(), chunkZ.getSecond() ) ) {
                     return 0;
                 }
 
-                int distXFirst = Math.abs( o1.getFirst() - currentXChunk );
-                int distXSecond = Math.abs( o2.getFirst() - currentXChunk );
+                int distXFirst = Math.abs( chunkX.getFirst() - currentXChunk );
+                int distXSecond = Math.abs( chunkZ.getFirst() - currentXChunk );
 
-                int distZFirst = Math.abs( o1.getSecond() - currentZChunk );
-                int distZSecond = Math.abs( o2.getSecond() - currentZChunk );
+                int distZFirst = Math.abs( chunkX.getSecond() - currentZChunk );
+                int distZSecond = Math.abs( chunkZ.getSecond() - currentZChunk );
 
                 if ( distXFirst + distZFirst > distXSecond + distZSecond ) {
                     return 1;
@@ -169,7 +167,12 @@ public class PlayerConnection {
     }
 
     private void requestChunk( int chunkX, int chunkZ ) {
-        this.chunkSendQueue.offer( this.player.getLocation().getWorld().getChunk( chunkX, chunkZ ) );
+        final Chunk chunk = this.player.getLocation().getWorld().getChunk( chunkX, chunkZ );
+        if(chunk != null){
+            this.chunkSendQueue.offer( chunk );
+        } else {
+            System.out.println( "Chunk is null" );
+        }
     }
 
     public void sendPacket( Packet packet ) {

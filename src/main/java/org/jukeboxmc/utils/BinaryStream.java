@@ -2,11 +2,16 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.jukeboxmc.entity.metadata.Metadata;
+import org.jukeboxmc.block.BlockFace;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.metadata.MetadataValue;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.world.GameRules;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -330,10 +335,10 @@ public class BinaryStream {
     }
 
     public void writeEntityMetadata( Map<MetadataFlag, MetadataValue> metadata ) {
-        this.writeUnsignedVarInt( metadata.size() ); //CHECK
+        this.writeUnsignedVarInt( metadata.size() );
         metadata.forEach( ( flag, value ) -> {
-            this.writeUnsignedVarInt( flag.getId() ); //CHECK
-            this.writeUnsignedVarInt( value.getFlagType().ordinal() ); //CHECK
+            this.writeUnsignedVarInt( flag.getId() );
+            this.writeUnsignedVarInt( value.getFlagType().ordinal() );
             switch ( value.getFlagType() ) {
                 case BYTE:
                     this.writeByte( (Byte) value.getValue() );
@@ -358,5 +363,146 @@ public class BinaryStream {
 
     public UUID readUUID() {
         return new UUID( this.readLLong(), this.readLLong() );
+    }
+
+    public void writeItem( Item item ) {
+        int runtimeId = item.getRuntimeId();
+        int meta = item.getMeta();
+        int amount = item.getAmount();
+
+        if ( runtimeId == -158 ) {
+            this.writeSignedVarInt( 0 );
+            return;
+        }
+
+        this.writeSignedVarInt( runtimeId );
+        this.writeSignedVarInt( ( ( meta & 0x7fff ) << 8 ) | amount );
+
+        try {
+            NbtMap nbt = item.getNBT();
+
+            if ( nbt != null ) {
+                this.writeLShort( (short) 0xffff );
+                this.writeByte( 1 );
+
+                FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
+                NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( outputStream );
+                networkWriter.writeTag( nbt );
+                this.writeBytes( outputStream.toByteArray() );
+            } else {
+                this.writeLShort( (short) 0 );
+            }
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+
+        this.writeSignedVarInt( 0 );
+        this.writeSignedVarInt( 0 );
+
+        if ( runtimeId == 355 ) {
+            this.writeSignedVarLong( 0 );
+        }
+    }
+
+    public void writeItem( int runtimeId, int meta, int amount, byte[] nbtData ) {
+        if ( runtimeId == -158 ) {
+            this.writeSignedVarInt( 0 );
+            return;
+        }
+
+        this.writeSignedVarInt( runtimeId );
+        this.writeSignedVarInt( ( ( meta & 0x7fff ) << 8 ) | amount );
+
+        try {
+            if ( nbtData.length > 0 ) {
+                this.writeLShort( (short) 0xffff );
+                this.writeByte( 1 );
+                FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
+                NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( outputStream );
+                ByteArrayInputStream inputStream = new ByteArrayInputStream( nbtData );
+                NBTInputStream readerLE = NbtUtils.createReaderLE( inputStream );
+                networkWriter.writeTag( readerLE.readTag() );
+                this.writeBytes( outputStream.toByteArray() );
+            } else {
+                this.writeLShort( (short) 0 );
+            }
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+
+        this.writeSignedVarInt( 0 );
+        this.writeSignedVarInt( 0 );
+
+        if ( runtimeId == 355 ) {
+            this.writeSignedVarLong( 0 );
+        }
+    }
+
+    public Item readItem() {
+        int networkId = this.readSignedVarInt();
+        if ( networkId == 0 ) {
+            return ItemType.AIR.getItem();
+        }
+
+        int tempData = this.readSignedVarInt();
+        byte amount = (byte) ( tempData & 0xFF );
+        int data = ( tempData >> 8 );
+
+        System.out.println( "NETWORK Id: " + networkId + " Data: " + data + " Count: " + amount );
+
+        short extraLength = this.readShort();
+        NbtMap nbt = null;
+        if ( extraLength == -1 ) {
+            byte version = this.readByte();
+
+            try {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream( this.getArray() );
+                NBTInputStream networkReader = NbtUtils.createNetworkReader( inputStream );
+                nbt = (NbtMap) networkReader.readTag();
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
+
+        int countPlacedOn = this.readSignedVarInt();
+        for ( int i = 0; i < countPlacedOn; i++ ) {
+            this.readString();
+        }
+
+        int countCanBreak = this.readSignedVarInt();
+        for ( int i = 0; i < countCanBreak; i++ ) {
+            this.readString();
+        }
+
+        Item item = ItemType.getItemFormNetworkId( networkId );
+        item.setAmount( amount );
+        item.setMeta( data );
+        item.setNBT( nbt );
+
+        if ( item.getRuntimeId() == 355 ) {
+            this.readUnsignedVarLong();
+        }
+
+        return item;
+    }
+
+    public BlockFace readBlockFace() {
+        int value = this.readSignedVarInt();
+        switch ( value ) {
+            case 0:
+                return BlockFace.DOWN;
+            case 1:
+                return BlockFace.UP;
+            case 2:
+                return BlockFace.NORTH;
+            case 3:
+                return BlockFace.SOUTH;
+            case 4:
+                return BlockFace.WEST;
+            case 5:
+                return BlockFace.EAST;
+            default:
+                return null;
+        }
     }
 }

@@ -8,6 +8,8 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passiv.EntityHuman;
+import org.jukeboxmc.inventory.PlayerInventory;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.PlayStatusPacket;
@@ -20,10 +22,7 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -38,13 +37,9 @@ public class Player extends EntityHuman {
     private UUID uuid;
     private Skin skin;
 
-    public static long entityCount = 1;
-
-    private long entityId = 0;
-
     private float headYaw;
 
-    private int viewDistance = 16;
+    private int viewDistance = 32;
 
     private boolean isOnGround;
     @Getter
@@ -62,6 +57,8 @@ public class Player extends EntityHuman {
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
 
+    private PlayerInventory playerInventory;
+
     private List<UUID> emotes = new ArrayList<>();
 
     public Player( Server server, Connection connection ) {
@@ -71,6 +68,8 @@ public class Player extends EntityHuman {
         this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 ); //Need form saved file
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, connection );
+
+        this.playerInventory = new PlayerInventory( this );
     }
 
     public String getName() {
@@ -225,14 +224,6 @@ public class Player extends EntityHuman {
         return this.emotes;
     }
 
-    public long getEntityId() {
-        return this.entityId;
-    }
-
-    public void setEntityId( long entityId ) {
-        this.entityId = entityId;
-    }
-
     public float getHeadYaw() {
         return this.headYaw;
     }
@@ -243,6 +234,11 @@ public class Player extends EntityHuman {
 
     public void setAddress( InetSocketAddress address ) {
         this.address = address;
+    }
+
+    @Override
+    public PlayerInventory getInventory() {
+        return this.playerInventory;
     }
 
     //Other
@@ -257,11 +253,45 @@ public class Player extends EntityHuman {
         this.playerConnection.sendMetadata();
 
         this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+        this.playerInventory.addViewer( this );
+
         //JoinEvent
-        Executors.newSingleThreadScheduledExecutor().schedule( () -> {
-            //Tests
-        }, 5, TimeUnit.SECONDS );
+
+        new Timer( ).schedule( new TimerTask() {
+            @Override
+            public void run() {
+                Player player = Player.this;
+                player.getInventory().setItem( 1, ItemType.STONE.getItem().setAmount( 2 ) );
+                player.getInventory().setItem( 8, ItemType.STONE.getItem().setAmount( 64 ) );
+                player.sendMessage( "ADD" );
+/*
+                Player.this.getInventory().addItem( ItemType.STONE.getItem() );
+                Player.this.getInventory().addItem( ItemType.BED.getItem() );
+                Player.this.getInventory().addItem( ItemType.SLIME.getItem() );
+ */
+            }
+        }, 1000 * 5);
+
+        new Timer( ).schedule( new TimerTask() {
+            @Override
+            public void run() {
+                Player player = Player.this;
+                player.getInventory().clear();
+                player.sendMessage( "REMOVE" );
+            }
+        }, 1000 * 10);
         this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
+    }
+
+    public void leaveGame() {
+        this.getWorld().removePlayer( this );
+
+        this.playerInventory.removeViewer( this );
+
+        Server server = this.getServer();
+        server.removePlayer( this.getAddress() );
+        server.setOnlinePlayers( server.getOnlinePlayers().size() );
+        server.broadcastMessage( "§e" + this.getName() + " left the game" );
     }
 
     public int getViewDistance() {

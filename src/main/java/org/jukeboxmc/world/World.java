@@ -1,5 +1,6 @@
 package org.jukeboxmc.world;
 
+import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelSoundEventPacket;
@@ -9,10 +10,9 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
@@ -25,6 +25,7 @@ public class World {
     private int currentTick;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
+    private Map<Long, CompletableFuture<Chunk>> chunkFutures = new HashMap<>();
     private Map<Long, Player> players = new HashMap<>();
 
     public World( String name ) {
@@ -76,8 +77,7 @@ public class World {
                     chunk.setBlock( blockX, 3, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
                     chunk.setBlock( blockX, 4, blockZ, 0, BlockType.GRASS.getBlock() );
                     if ( new Random().nextInt( 5 ) == 1 ) {
-                        chunk.setBlock( blockX, 6, blockZ, 0, BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setUpperBlock( true ) );
-                        chunk.setBlock( blockX, 5, blockZ, 0, BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setUpperBlock( false ) );
+                        chunk.setBlock( blockX, 5, blockZ, 0, BlockType.TALL_GRASS.getBlock());
                     }
                 }
             }

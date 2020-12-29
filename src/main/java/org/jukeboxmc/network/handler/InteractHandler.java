@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.network.packet.ContainerOpenPacket;
 import org.jukeboxmc.network.packet.InteractPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -17,8 +18,8 @@ public class InteractHandler implements PacketHandler {
 
         if ( interactPacket.getAction() == InteractPacket.Action.OPEN_INVENTORY ) {
             ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
-            containerOpenPacket.setWindowId( (byte) 0 ); //TODO Implement Inventorys
-            containerOpenPacket.setContainerType( (byte) -1 );
+            containerOpenPacket.setWindowId( WindowId.PLAYER );
+            containerOpenPacket.setWindowType( player.getInventory().getWindowType() );
             containerOpenPacket.setPosition( player.getLocation() );
             containerOpenPacket.setEntityId( player.getEntityId() );
             player.getPlayerConnection().sendPacket( containerOpenPacket );

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemKelpBlock extends Item {
 
     public ItemKelpBlock() {
-        super( "minecraft:item.kelp", -128 );
+        super( "minecraft:item.kelp", -138 );
     }
 
 

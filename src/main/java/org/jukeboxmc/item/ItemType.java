@@ -491,7 +491,7 @@ public enum ItemType {
     BBE_NEST( ItemBeeNest.class ),
     BEEHIVE( ItemBeehive.class ),
     HONEY_BLOCK( ItemHoneyBlock.class ),
-    HONEYCOMB_BLOCK( ItemHoneycomb.class ),
+    HONEYCOMB_BLOCK( ItemHoneycomBlock.class ),
     LODESTONE( ItemLodestone.class ),
     CRIMSON_ROOTS( ItemCrimsonRoots.class ),
     WARPED_ROOTS( ItemWarpedRoots.class ),
@@ -863,7 +863,8 @@ public enum ItemType {
                 return item.getItem();
             }
         }
-        return ItemType.AIR.getItem();
+        //return ItemType.AIR.getItem();
+        return null;
     }
 
     public static List<Map<String, Object>> getCreativeItems() {

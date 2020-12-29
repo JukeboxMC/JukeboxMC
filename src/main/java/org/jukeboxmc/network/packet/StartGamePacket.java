@@ -2,12 +2,16 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.world.GameRules;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +25,7 @@ public class StartGamePacket extends Packet {
     private long entityId;
     private long entityRuntimeId;
     private GameMode gameMode;
-    private Vector position;
+    private Location position;
     private String worldId = "";
     private String worldName;
     private Vector worldSpawn;
@@ -44,8 +48,8 @@ public class StartGamePacket extends Packet {
         this.writeLFloat( this.position.getX() );
         this.writeLFloat( this.position.getY() );
         this.writeLFloat( this.position.getZ() );
-        this.writeLFloat( 0 ); //Pitch
-        this.writeLFloat( 0 ); //Yaw
+        this.writeLFloat( this.position.getPitch() ); //Pitch
+        this.writeLFloat( this.position.getYaw() ); //Yaw
 
         this.writeSignedVarInt( 0 ); //Seed
 
@@ -103,8 +107,8 @@ public class StartGamePacket extends Packet {
         this.writeBoolean( false ); //Only spawn v1 villagers
 
         this.writeString( Protocol.MINECRAFT_VERSION );
-        this.writeInt( 0 ); //Limited world height
-        this.writeInt( 0 ); //Limited world length
+        this.writeInt( 16 ); //Limited world height
+        this.writeInt( 16 ); //Limited world length
         this.writeBoolean( false ); //Has new nether
         this.writeBoolean( false ); //Experimental gameplay
 
@@ -119,7 +123,14 @@ public class StartGamePacket extends Packet {
         this.writeSignedVarInt( 0 ); //Enchantment seed
 
         this.writeUnsignedVarInt( 0 ); //Custom blocks
-        this.writeUnsignedVarInt( 0 ); //Item palette
+
+        List<Map<String, Object>> itemPalette = ItemType.getItemPalette();
+        this.writeUnsignedVarInt( itemPalette.size() ); //Item palette
+        for( Map<String, Object> item : itemPalette ) {
+            this.writeString( (String) item.get( "name" ) );
+            this.writeLShort( (int) (double) item.get( "id" ) );
+            this.writeBoolean( false );
+        }
 
         this.writeString( "" );
         this.writeBoolean( false ); //New inventory system

@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
@@ -33,7 +34,14 @@ public class PlayerMoveHandler implements PacketHandler {
                 onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
             }
         }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append( " §bChunkX§7: §f" ).append( player.getChunkX() ).append( " §bChunkZ§7: §f" ).append( player.getChunkZ() );
 
-        player.sendTip( " §bChunkX§7: §f" + player.getChunkX() + " §bChunkZ§7: §f" + player.getChunkZ() );
+        if(player.getInventory().getItemInHand() != null) {
+            Item itemInHand = player.getInventory().getItemInHand();
+            stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: " ).append( itemInHand.getMeta() ).append( " §7Slot§8: §e" ).append( itemInHand.getSlot() );
+        }
+
+        player.sendTip( stringBuilder.toString() );
     }
 }

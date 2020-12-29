@@ -11,6 +11,11 @@ public class ItemAir extends Item {
     }
 
     @Override
+    public ItemType getItemType() {
+        return ItemType.AIR;
+    }
+
+    @Override
     public int getMaxAmount() {
         return 1;
     }

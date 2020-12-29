@@ -78,10 +78,7 @@ public class Server {
             Connection connection = event.getConnection();
             Player player = this.players.get( connection.getSender() );
             if ( player != null ) {
-                player.getLocation().getWorld().removePlayer( player );
-                this.players.remove( player.getAddress() );
-                this.setOnlinePlayers( this.players.size() );
-                this.broadcastMessage( "§e" + player.getName() + " left the game" );
+                player.leaveGame();
             }
         } );
 
@@ -156,6 +153,10 @@ public class Server {
 
     public Collection<Player> getOnlinePlayers() {
         return this.players.values();
+    }
+
+    public void removePlayer( InetSocketAddress address ) {
+        this.players.remove( address );
     }
 
     public void broadcastMessage( String message ) {

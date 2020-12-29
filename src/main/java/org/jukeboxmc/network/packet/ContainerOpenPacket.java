@@ -2,6 +2,8 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jukeboxmc.inventory.WindowId;
+import org.jukeboxmc.inventory.WindowType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
@@ -13,8 +15,8 @@ import org.jukeboxmc.network.Protocol;
 @EqualsAndHashCode(callSuper = true)
 public class ContainerOpenPacket extends Packet {
 
-    private byte windowId;
-    private byte containerType;
+    private WindowId windowId;
+    private WindowType windowType;
     private Vector position;
     private long entityId;
 
@@ -26,8 +28,8 @@ public class ContainerOpenPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeByte( this.windowId );
-        this.writeByte( this.containerType );
+        this.writeByte( this.windowId.getId() );
+        this.writeByte( this.windowType.getId() );
         this.writeSignedVarInt( this.position.getFloorX() );
         this.writeUnsignedVarInt( this.position.getFloorY() );
         this.writeSignedVarInt( this.position.getFloorZ() );

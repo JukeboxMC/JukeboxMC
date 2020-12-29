@@ -45,6 +45,9 @@ public interface Protocol {
     byte ANIMATE_PACKET = 0x2c;
     byte INVENTORY_TRANSACTION_PACKET = 0x1e;
     byte CONTAINER_CLOSE_PACKET = 0x2f;
+    byte INVENTORY_CONTENT_PACKET =  0x31;
+    byte MOB_EQUIPMENT_PACKET = 0x1f;
+    byte INVENTORY_SLOT_PACKET =  0x32;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
@@ -63,5 +66,4 @@ public interface Protocol {
     byte ACKNOWLEDGE_PACKET = (byte) 0xc0;
     byte NACKNOWLEDGE_PACKET = (byte) 0xa0;
     byte QUERY = (byte) 0xfe;
-
 }

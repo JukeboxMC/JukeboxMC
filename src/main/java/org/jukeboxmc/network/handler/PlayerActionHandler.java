@@ -14,6 +14,6 @@ public class PlayerActionHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         PlayerActionPacket playerActionPacket = (PlayerActionPacket) packet;
 
-        System.out.println( playerActionPacket.toString() );
+        //System.out.println( playerActionPacket.toString() );
     }
 }
