@@ -252,7 +252,7 @@ public class PlayerConnection {
         PlayerMovePacket playerMovePacket = new PlayerMovePacket();
         playerMovePacket.setEntityRuntimeId( player.getEntityId() );
         playerMovePacket.setX( player.getLocation().getX() );
-        playerMovePacket.setY( player.getLocation().getY() );
+        playerMovePacket.setY( player.getLocation().getY() + player.getEyeHeight() );
         playerMovePacket.setZ( player.getLocation().getZ() );
         playerMovePacket.setYaw( player.getLocation().getYaw() );
         playerMovePacket.setPitch( player.getLocation().getPitch() );
@@ -335,7 +335,7 @@ public class PlayerConnection {
         addPlayerPacket.setRuntimeEntityId( player.getEntityId() );
         addPlayerPacket.setPlatformChatId( player.getDeviceInfo().getDeviceId() );
         addPlayerPacket.setX( player.getX() );
-        addPlayerPacket.setY( player.getY() + player.getEyeHeight());
+        addPlayerPacket.setY( player.getY() );
         addPlayerPacket.setZ( player.getZ() );
         addPlayerPacket.setVelocity( new Vector( 0, 0, 0 ) );
         addPlayerPacket.setPitch( player.getPitch() );
@@ -372,9 +372,7 @@ public class PlayerConnection {
         );
         playerListPacket.getEntries().add( playerListEntry );
         this.player.getServer().getPlayerListEntry().put( this.player.getUUID(), playerListEntry );
-        for ( Player onlinePlayer : this.player.getServer().getOnlinePlayers() ) {
-            onlinePlayer.getPlayerConnection().sendPacket( playerListPacket );
-        }
+        this.player.getServer().broadcastPacket( playerListPacket );
     }
 
     public void removeFromList() {
@@ -382,9 +380,6 @@ public class PlayerConnection {
         playerListPacket.setType( PlayerListPacket.Type.REMOVE );
         playerListPacket.getEntries().add( new PlayerListPacket.Entry( this.player.getUUID() ) );
         this.player.getServer().getPlayerListEntry().remove( this.player.getUUID() );
-
-        for ( Player onlinePlayer : this.player.getServer().getOnlinePlayers() ) {
-            onlinePlayer.getPlayerConnection().sendPacket( playerListPacket );
-        }
+        this.player.getServer().broadcastPacket( playerListPacket );
     }
 }

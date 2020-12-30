@@ -255,6 +255,11 @@ public class Player extends EntityHuman {
         this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.playerInventory.addViewer( this );
 
+        this.getPlayerConnection().addPlayerToList();
+
+        if ( this.getServer().getOnlinePlayers().size() > 1 ) {
+            this.getPlayerConnection().sendPlayerList();
+        }
 
         //JoinEvent
 
@@ -265,11 +270,6 @@ public class Player extends EntityHuman {
                 player.getInventory().setItem( 1, ItemType.STONE.getItem().setAmount( 2 ) );
                 player.getInventory().setItem( 8, ItemType.STONE.getItem().setAmount( 64 ) );
                 player.sendMessage( "ADD" );
-/*
-                Player.this.getInventory().addItem( ItemType.STONE.getItem() );
-                Player.this.getInventory().addItem( ItemType.BED.getItem() );
-                Player.this.getInventory().addItem( ItemType.SLIME.getItem() );
- */
             }
         }, 1000 * 5);
 
@@ -281,7 +281,6 @@ public class Player extends EntityHuman {
                 player.sendMessage( "REMOVE" );
             }
         }, 1000 * 10);
-        this.server.broadcastMessage( "§e" + this.name + " has joined the game EID(" + this.getEntityId() + ")" );
     }
 
     public void leaveGame() {

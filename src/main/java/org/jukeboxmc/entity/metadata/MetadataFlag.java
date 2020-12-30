@@ -7,7 +7,10 @@ package org.jukeboxmc.entity.metadata;
 public enum MetadataFlag {
 
     INDEX( 0 ),
+    NAMETAG( 4 ),
     AIR( 7 ),
+    SHOW_NAMETAG( 14 ),
+    SHOW_ALWAYS_NAMETAG( 15 ),
     PLAYER_FLAGS( 26 ),
     SCALE( 38 ),
     MAX_AIR( 42 ),

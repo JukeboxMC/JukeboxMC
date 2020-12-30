@@ -86,7 +86,7 @@ public class StartGamePacket extends Packet {
         this.writeBoolean( true ); //Commands enabed
         this.writeBoolean( false ); //Texture required
 
-        this.writeGameRules( this.gamerules ); //TODO HERE
+        this.writeGameRules( this.gamerules );
 
         this.writeInt( 0 ); //Experiment count
         this.writeBoolean( false ); //Experiments previously toggled?

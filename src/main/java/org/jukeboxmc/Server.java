@@ -177,4 +177,10 @@ public class Server {
         System.out.println( "[Broadcast] " + message );
     }
 
+    public void broadcastPacket( Packet packet ) {
+        for ( Player onlinePlayers : this.players.values() ) {
+            onlinePlayers.getPlayerConnection().sendPacket( packet );
+        }
+    }
+
 }

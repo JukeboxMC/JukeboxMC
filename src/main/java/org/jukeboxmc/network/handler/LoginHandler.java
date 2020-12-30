@@ -27,6 +27,9 @@ public class LoginHandler implements PacketHandler {
         player.setDeviceInfo( loginPacket.getDeviceInfo() );
         player.setLocale( loginPacket.getLanguageCode() != null ? Locale.forLanguageTag( loginPacket.getLanguageCode().replace( "_", "-" ) ) : Locale.US );
         player.setEntityId( Entity.entityCount++ );
+        player.setNameTag( player.getName() );
+        player.setNameTagVisible( true );
+        player.setNameTagAlwaysVisible( true );
         player.getServer().getDefaultWorld().addPlayer( player );
 
         playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );

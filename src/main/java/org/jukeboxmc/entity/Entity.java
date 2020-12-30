@@ -38,4 +38,28 @@ public abstract class Entity {
     public void setEntityId( long entityId ) {
         this.entityId = entityId;
     }
-}
+
+    public void setNameTag( String value ) {
+        this.metadata.setString( MetadataFlag.NAMETAG, value );
+    }
+
+    public String getNameTag() {
+        return this.metadata.getString( MetadataFlag.NAMETAG );
+    }
+
+    public void setNameTagVisible( boolean value ) {
+        this.metadata.setDataFlag( MetadataFlag.INDEX, MetadataFlag.SHOW_NAMETAG, value );
+    }
+
+    public boolean isNameTagVisible() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, MetadataFlag.SHOW_NAMETAG );
+    }
+
+    public void setNameTagAlwaysVisible( boolean value ) {
+        this.metadata.setDataFlag( MetadataFlag.INDEX, MetadataFlag.SHOW_ALWAYS_NAMETAG, value );
+    }
+
+    public boolean isNameTagAlwaysVisible() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, MetadataFlag.SHOW_ALWAYS_NAMETAG );
+    }
+ }

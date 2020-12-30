@@ -20,5 +20,6 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
                 }
             }
         }
+        player.getServer().broadcastMessage( "§e" + player.getName() + " has joined the game" );
     }
 }
