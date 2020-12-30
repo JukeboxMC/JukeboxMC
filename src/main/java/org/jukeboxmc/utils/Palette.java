@@ -1,7 +1,9 @@
 package org.jukeboxmc.utils;
 
-import io.netty.buffer.ByteBuf;
-
+/**
+ * @author geNAZt
+ * @version 1.0
+ */
 public class Palette {
 
     public enum PaletteVersion {
@@ -44,20 +46,11 @@ public class Palette {
     private BinaryStream data;
     private PaletteVersion paletteVersion = null;
 
-    // Output indexes
     private short[] output = null;
 
-    // Input bitset
     private int bits = 0;
     private int wordsWritten = 0;
 
-    /**
-     * Construct a new reader for the given palette version
-     *
-     * @param data    which should be used to read/write
-     * @param version of the palette or the amount of blocks we want to store in one word
-     * @param read    do we read or write to this palette?
-     */
     public Palette( BinaryStream data, int version, boolean read ) {
         this.data = data;
 
@@ -75,7 +68,6 @@ public class Palette {
     }
 
     public void addIndexIDs( int[] indexIDs ) {
-        // Check the shift needed to multiply the words
         int shift;
         switch (this.paletteVersion.getVersionId()) {
             case 1:
@@ -98,20 +90,15 @@ public class Palette {
         }
 
         for ( int id : indexIDs ) {
-            // Check if old input is full and we need a new one
             if ( this.wordsWritten == this.paletteVersion.getAmountOfWords() ) {
-                // Write to output
                 this.data.writeLInt( this.bits );
 
-                // New input
                 this.bits = 0;
                 this.wordsWritten = 0;
             }
 
-            // Write id
             this.bits |= id << (this.wordsWritten << shift);
 
-            // Increment written words
             this.wordsWritten++;
         }
     }
@@ -122,11 +109,9 @@ public class Palette {
     }
 
     public short[] getIndexes() {
-        // Do we need to read first?
         if ( this.output == null ) {
             this.output = new short[4096];
 
-            // We need the amount of iterations
             int iterations = (int) Math.ceil( 4096 / (float) this.paletteVersion.getAmountOfWords() );
             for ( int i = 0; i < iterations; i++ ) {
                 int currentData = this.data.readLInt();
@@ -156,22 +141,22 @@ public class Palette {
     }
 
     public BinaryStream getData() {
-        return data;
+        return this.data;
     }
 
     public PaletteVersion getPaletteVersion() {
-        return paletteVersion;
+        return this.paletteVersion;
     }
 
     public short[] getOutput() {
-        return output;
+        return this.output;
     }
 
     public int getBits() {
-        return bits;
+        return this.bits;
     }
 
     public int getWordsWritten() {
-        return wordsWritten;
+        return this.wordsWritten;
     }
 }
