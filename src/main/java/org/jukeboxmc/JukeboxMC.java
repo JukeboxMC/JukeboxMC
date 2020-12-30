@@ -2,25 +2,16 @@ package org.jukeboxmc;
 
 import io.netty.util.ResourceLeakDetector;
 import lombok.Getter;
-import org.jukeboxmc.block.BlockBedrock;
-import org.jukeboxmc.block.BlockDirt;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.network.packet.CreativeContentPacket;
-import org.jukeboxmc.network.raknet.utils.Zlib;
-import org.jukeboxmc.utils.BinaryStream;
-import org.jukeboxmc.world.chunk.Chunk;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.DataFormatException;
 
 /**
  * @author LucGamesYT
@@ -58,9 +49,11 @@ public class JukeboxMC {
 
             Item item = ItemType.getItemFormNetworkId( id );
             if ( item == null ) {
-                System.out.println( id );
+                //System.out.println( id );
             }
         }
+
+        //System.out.println( "Value: " + new ItemApple().getItemType().name() );
 
         System.out.println( "JukeboxMC läuft nun auf dem Port " + this.address.getPort() );
     }

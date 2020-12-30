@@ -12,6 +12,13 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
 
     @Override
     public void handle( Packet packet, Player player ) {
-        //Ignore
+        for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
+            if ( onlinePlayer != null ) {
+                if ( onlinePlayer != player ) {
+                    onlinePlayer.getPlayerConnection().spawnPlayer( player );
+                    player.getPlayerConnection().spawnPlayer( onlinePlayer );
+                }
+            }
+        }
     }
 }

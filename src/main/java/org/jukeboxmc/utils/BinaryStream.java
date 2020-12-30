@@ -8,6 +8,7 @@ import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.*;
+import org.jukeboxmc.player.skin.*;
 import org.jukeboxmc.world.GameRules;
 
 import java.io.ByteArrayInputStream;
@@ -365,6 +366,11 @@ public class BinaryStream {
         return new UUID( this.readLLong(), this.readLLong() );
     }
 
+    public void writeUUID( UUID uuid ) {
+        this.writeLLong( uuid.getMostSignificantBits() );
+        this.writeLLong( uuid.getLeastSignificantBits() );
+    }
+
     public void writeItem( Item item ) {
         int runtimeId = item.getRuntimeId();
         int meta = item.getMeta();
@@ -503,6 +509,77 @@ public class BinaryStream {
                 return BlockFace.EAST;
             default:
                 return null;
+        }
+    }
+
+    public void writeSkinImage( Image image ) {
+        this.writeLInt( image.getWidth() );
+        this.writeLInt( image.getHeight() );
+        this.writeUnsignedVarInt( image.getData().length );
+        this.writeBytes( image.getData() );
+    }
+
+    public void writeSkin( Skin skin ) {
+        this.writeString( skin.getSkinId() );
+        this.writeString( skin.getResourcePatch() );
+        this.writeSkinImage( skin.getSkinData() );
+
+        if ( skin.getSkinAnimations() != null ) {
+            this.writeLInt( skin.getSkinAnimations().size() );
+
+            for ( SkinAnimation skinAnimation : skin.getSkinAnimations() ) {
+                this.writeSkinImage( skinAnimation.getImage() );
+                this.writeLInt( skinAnimation.getType() );
+                this.writeLFloat( skinAnimation.getFrames() );
+                this.writeLInt( skinAnimation.getExpression() );
+            }
+        } else {
+            this.writeLInt( 0 );
+        }
+
+        this.writeSkinImage( skin.getCapeData() );
+        this.writeString( skin.getGeometryData() );
+        this.writeString( skin.getAnimationData() );
+        this.writeBoolean( skin.isPremium() );
+        this.writeBoolean( skin.isPersona() );
+        this.writeBoolean( skin.isPersona() );
+        this.writeString( skin.getCapeId() );
+        this.writeString( skin.getFullSkinId() );
+        this.writeString( skin.getArmSize() );
+        this.writeString( skin.getSkinColor() );
+
+
+        if ( skin.getPersonaPieces() != null ) {
+            this.writeLInt( skin.getPersonaPieces().size() );
+
+            for ( PersonaPiece personaPiece : skin.getPersonaPieces() ) {
+                this.writeString( personaPiece.getPieceId() );
+                this.writeString( personaPiece.getPieceType() );
+                this.writeString( personaPiece.getPackId() );
+                this.writeBoolean( personaPiece.isDefault() );
+                this.writeString( personaPiece.getProductId() );
+            }
+        } else {
+            this.writeLInt( 0 );
+        }
+
+        if ( skin.getPersonaPieceTints() != null ) {
+            this.writeLInt( skin.getPersonaPieceTints().size() );
+
+            for ( PersonaPieceTint personaPieceTint : skin.getPersonaPieceTints() ) {
+                this.writeString( personaPieceTint.getPieceType() );
+
+                if ( personaPieceTint.getColors() != null ) {
+                    this.writeLInt( personaPieceTint.getColors().size() );
+                    for ( String color : personaPieceTint.getColors() ) {
+                        this.writeString( color );
+                    }
+                } else {
+                    this.writeUnsignedVarInt( 0 );
+                }
+            }
+        } else {
+            this.writeLInt( 0 );
         }
     }
 }

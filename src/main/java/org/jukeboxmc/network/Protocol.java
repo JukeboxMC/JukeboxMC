@@ -48,6 +48,9 @@ public interface Protocol {
     byte INVENTORY_CONTENT_PACKET =  0x31;
     byte MOB_EQUIPMENT_PACKET = 0x1f;
     byte INVENTORY_SLOT_PACKET =  0x32;
+    byte ADD_ENTITY_PACKET =  0x0d;
+    byte PLAYER_LIST_PACKET =  0x3f;
+    byte ADD_PLAYER_PACKET = 0x0c;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

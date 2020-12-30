@@ -12,11 +12,13 @@ public class SkinAnimation {
     private final Image image;
     private final int type;
     private final float frames;
+    private final int expression;
 
-    public SkinAnimation( Image image, int type, float frames ) {
+    public SkinAnimation( Image image, int type, float frames, int expression ) {
         this.image = image;
         this.type = type;
         this.frames = frames;
+        this.expression = expression;
     }
 
     public Image getImage() {
@@ -29,5 +31,9 @@ public class SkinAnimation {
 
     public float getFrames() {
         return this.frames;
+    }
+
+    public int getExpression() {
+        return this.expression;
     }
 }

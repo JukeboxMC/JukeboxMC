@@ -47,6 +47,11 @@ public abstract class Item implements Cloneable {
     }
 
     public ItemType getItemType() {
+        for ( ItemType value : ItemType.values() ) {
+            if ( value.getItemClass() == this.getClass() ) {
+                return value;
+            }
+        }
         return ItemType.AIR;
     }
 

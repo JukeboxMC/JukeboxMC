@@ -38,7 +38,6 @@ public class PlayerInventory extends ContainerInventory {
             inventorySlotPacket.setSlot( slot );
             inventorySlotPacket.setItem( this.contents[slot] );
             player.getPlayerConnection().sendPacket( inventorySlotPacket );
-            System.out.println( "SENDING" );
         }
     }
 

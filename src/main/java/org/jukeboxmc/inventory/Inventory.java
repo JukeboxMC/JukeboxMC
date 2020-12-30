@@ -66,7 +66,6 @@ public abstract class Inventory {
         for ( Player player : this.viewer ) {
             this.sendContents( slot, player, sendContents );
         }
-        System.out.println( "Set item: " + item.getClass().getSimpleName() + " to slot: " + slot );
     }
 
     public Item getItem( int slot ) {

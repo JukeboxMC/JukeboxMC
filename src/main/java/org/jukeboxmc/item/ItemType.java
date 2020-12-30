@@ -890,4 +890,7 @@ public enum ItemType {
         return (B) this.itemClass.newInstance();
     }
 
+    public Class<? extends Item> getItemClass() {
+        return this.itemClass;
+    }
 }

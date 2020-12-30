@@ -11,11 +11,6 @@ public class ItemStone extends Item {
     }
 
     @Override
-    public ItemType getItemType() {
-        return ItemType.STONE;
-    }
-
-    @Override
     public int getMaxAmount() {
         return 64;
     }

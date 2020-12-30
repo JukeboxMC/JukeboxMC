@@ -2,6 +2,7 @@ package org.jukeboxmc.player;
 
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
@@ -168,11 +169,15 @@ public class PlayerConnection {
 
     private void requestChunk( int chunkX, int chunkZ ) {
         final Chunk chunk = this.player.getLocation().getWorld().getChunk( chunkX, chunkZ );
-        if(chunk != null){
+        if ( chunk != null ) {
             this.chunkSendQueue.offer( chunk );
         } else {
             System.out.println( "Chunk is null" );
         }
+    }
+
+    public boolean knowsChunk( int chunkX, int chunkZ ) {
+        return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
     }
 
     public void sendPacket( Packet packet ) {
@@ -251,6 +256,7 @@ public class PlayerConnection {
         playerMovePacket.setZ( player.getLocation().getZ() );
         playerMovePacket.setYaw( player.getLocation().getYaw() );
         playerMovePacket.setPitch( player.getLocation().getPitch() );
+        playerMovePacket.setHeadYaw( player.getHeadYaw() );
         playerMovePacket.setMode( mode );
         playerMovePacket.setOnGround( player.isOnGround() );
         playerMovePacket.setRidingEntityId( 0 );
@@ -321,7 +327,64 @@ public class PlayerConnection {
         this.sendPacket( playSoundPacket );
     }
 
-    public boolean knowsChunk( int chunkX, int chunkZ ) {
-        return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
+    public void spawnPlayer( Player player ) {
+        AddPlayerPacket addPlayerPacket = new AddPlayerPacket();
+        addPlayerPacket.setUuid( player.getUUID() );
+        addPlayerPacket.setName( player.getName() );
+        addPlayerPacket.setEntityId( player.getEntityId() );
+        addPlayerPacket.setRuntimeEntityId( player.getEntityId() );
+        addPlayerPacket.setPlatformChatId( player.getDeviceInfo().getDeviceId() );
+        addPlayerPacket.setX( player.getX() );
+        addPlayerPacket.setY( player.getY() + player.getEyeHeight());
+        addPlayerPacket.setZ( player.getZ() );
+        addPlayerPacket.setVelocity( new Vector( 0, 0, 0 ) );
+        addPlayerPacket.setPitch( player.getPitch() );
+        addPlayerPacket.setHeadYaw( player.getHeadYaw() );
+        addPlayerPacket.setYaw( player.getYaw() );
+        addPlayerPacket.setItem( ItemType.AIR.getItem() );
+        addPlayerPacket.setMetadata( player.getMetadata() );
+        addPlayerPacket.setDeviceInfo( player.getDeviceInfo() );
+        this.sendPacket( addPlayerPacket );
+        System.out.println( "Spawn for " + this.player.getName() );
+    }
+
+    public void sendPlayerList() {
+        PlayerListPacket playerListPacket = new PlayerListPacket();
+        playerListPacket.setType( PlayerListPacket.Type.ADD );
+        this.player.getServer().getPlayerListEntry().forEach( ( uuid, entry ) -> {
+            if ( uuid != this.player.getUUID() ) {
+                playerListPacket.getEntries().add( entry );
+            }
+        } );
+        this.player.getPlayerConnection().sendPacket( playerListPacket );
+    }
+
+    public void addPlayerToList() {
+        PlayerListPacket playerListPacket = new PlayerListPacket();
+        playerListPacket.setType( PlayerListPacket.Type.ADD );
+        PlayerListPacket.Entry playerListEntry = new PlayerListPacket.Entry(
+                this.player.getUUID(),
+                this.player.getEntityId(),
+                this.player.getName(),
+                this.player.getDeviceInfo(),
+                this.player.getXuid(),
+                this.player.getSkin()
+        );
+        playerListPacket.getEntries().add( playerListEntry );
+        this.player.getServer().getPlayerListEntry().put( this.player.getUUID(), playerListEntry );
+        for ( Player onlinePlayer : this.player.getServer().getOnlinePlayers() ) {
+            onlinePlayer.getPlayerConnection().sendPacket( playerListPacket );
+        }
+    }
+
+    public void removeFromList() {
+        PlayerListPacket playerListPacket = new PlayerListPacket();
+        playerListPacket.setType( PlayerListPacket.Type.REMOVE );
+        playerListPacket.getEntries().add( new PlayerListPacket.Entry( this.player.getUUID() ) );
+        this.player.getServer().getPlayerListEntry().remove( this.player.getUUID() );
+
+        for ( Player onlinePlayer : this.player.getServer().getOnlinePlayers() ) {
+            onlinePlayer.getPlayerConnection().sendPacket( playerListPacket );
+        }
     }
 }

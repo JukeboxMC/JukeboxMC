@@ -180,7 +180,8 @@ public class LoginPacket extends Packet {
         int height = animationData.get( "ImageHeight" ).getAsInt();
         float frames = animationData.get( "Frames" ).getAsFloat();
         int type = animationData.get( "Type" ).getAsInt();
-        return new SkinAnimation( new Image( width, height, data ), type, frames );
+        int expression = animationData.get("AnimationExpression").getAsInt();
+        return new SkinAnimation( new Image( width, height, data ), type, frames, expression );
     }
 
     private PersonaPiece getPersonaPiece( JsonObject personaPiece ) {

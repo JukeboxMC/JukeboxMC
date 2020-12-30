@@ -9,8 +9,8 @@ import org.jukeboxmc.entity.metadata.MetadataFlag;
  */
 public abstract class Entity {
 
+    public static long entityCount = 1;
     private long entityId = 0;
-    private long entityCount = 1;
     private Metadata metadata;
 
     public Entity() {
@@ -21,21 +21,18 @@ public abstract class Entity {
         this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_WIDTH, 0.6f );
         this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_HEIGHT, 1.8f );
         this.metadata.setShort( MetadataFlag.AIR, (short) 0 );
+        this.metadata.setDataFlag( MetadataFlag.INDEX, MetadataFlag.HAS_COLLISION, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, MetadataFlag.AFFECTED_BY_GRAVITY, true );
     }
 
     public abstract String getEntityType();
-
-    public long getAndIncrementEntityCount() {
-        return this.entityCount++;
-    }
 
     public Metadata getMetadata() {
         return this.metadata;
     }
 
     public long getEntityId() {
-        return this.entityId;
+        return entityId;
     }
 
     public void setEntityId( long entityId ) {

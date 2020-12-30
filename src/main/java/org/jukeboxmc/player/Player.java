@@ -255,6 +255,7 @@ public class Player extends EntityHuman {
         this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.playerInventory.addViewer( this );
 
+
         //JoinEvent
 
         new Timer( ).schedule( new TimerTask() {
@@ -280,7 +281,7 @@ public class Player extends EntityHuman {
                 player.sendMessage( "REMOVE" );
             }
         }, 1000 * 10);
-        this.server.broadcastMessage( "§e" + this.name + " has joined the game" );
+        this.server.broadcastMessage( "§e" + this.name + " has joined the game EID(" + this.getEntityId() + ")" );
     }
 
     public void leaveGame() {

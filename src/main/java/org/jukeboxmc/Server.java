@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
+import org.jukeboxmc.network.packet.PlayerListPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.Listener;
 import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
@@ -18,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -42,6 +44,7 @@ public class Server {
     private boolean isShutdown = false;
 
     private Map<InetSocketAddress, Player> players = new HashMap<>();
+    private Map<UUID, PlayerListPacket.Entry> playerListEntry = new HashMap<>();
 
     public Server( InetSocketAddress address ) {
         Server.setInstance( this );
@@ -157,6 +160,14 @@ public class Server {
 
     public void removePlayer( InetSocketAddress address ) {
         this.players.remove( address );
+    }
+
+    public Map<UUID, PlayerListPacket.Entry> getPlayerListEntry() {
+        return this.playerListEntry;
+    }
+
+    public void setPlayerListEntry( Map<UUID, PlayerListPacket.Entry> playerListEntry ) {
+        this.playerListEntry = playerListEntry;
     }
 
     public void broadcastMessage( String message ) {

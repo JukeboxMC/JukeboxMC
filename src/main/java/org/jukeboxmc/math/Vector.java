@@ -43,6 +43,10 @@ public class Vector {
         this.y = y;
     }
 
+    public void addY( float y ) {
+        this.y+= y;
+    }
+
     public float getZ() {
         return this.z;
     }

@@ -43,6 +43,12 @@ public class ResourcePackResponseHandler implements PacketHandler {
 
             player.getPlayerConnection().sendPacket( new CreativeContentPacket() );
 
+            player.getPlayerConnection().addPlayerToList();
+
+            if ( player.getServer().getOnlinePlayers().size() > 1 ) {
+                player.getPlayerConnection().sendPlayerList();
+            }
+
         }
 
     }

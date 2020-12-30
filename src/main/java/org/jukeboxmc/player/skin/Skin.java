@@ -4,6 +4,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author LucGamesYT
@@ -22,6 +23,7 @@ public class Skin {
     private String geometryData;
     private String animationData;
     private String capeId;
+    private String fullSkinId = UUID.randomUUID().toString();
     private String skinColor = "#0";
     private String armSize = "wide";
 
@@ -75,6 +77,10 @@ public class Skin {
 
     public void setCapeId( String capeId ) {
         this.capeId = capeId;
+    }
+
+    public String getFullSkinId() {
+        return this.fullSkinId;
     }
 
     public String getSkinColor() {

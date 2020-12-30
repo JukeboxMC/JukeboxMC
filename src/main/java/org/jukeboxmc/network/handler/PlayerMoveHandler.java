@@ -22,6 +22,8 @@ public class PlayerMoveHandler implements PacketHandler {
         player.setHeadYaw( playerMovePacket.getHeadYaw() );
         player.setLocation( toLocation );
         player.setOnGround( playerMovePacket.isOnGround() );
+        System.out.println( toLocation.toString() );
+
         Chunk toChunk = player.getChunk();
 
         if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
