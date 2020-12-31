@@ -67,7 +67,7 @@ public class Player extends EntityHuman {
         this.adventureSettings = new AdventureSettings( this );
         this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 ); //Need form saved file
         this.address = connection.getSender();
-        this.playerConnection = new PlayerConnection( this, connection );
+        this.playerConnection = new PlayerConnection( this, server, connection );
 
         this.playerInventory = new PlayerInventory( this );
     }
@@ -239,59 +239,6 @@ public class Player extends EntityHuman {
     @Override
     public PlayerInventory getInventory() {
         return this.playerInventory;
-    }
-
-    //Other
-
-    public void firstSpawn() {
-        this.setSpawned( true );
-        this.playerConnection.sendNetworkChunkPublisher();
-
-        this.playerConnection.sendTime( 1000 );
-        this.playerConnection.sendAdventureSettings();
-        this.playerConnection.sendAttributes( this.attributes.getAttributes() );
-        this.playerConnection.sendMetadata();
-
-        this.playerConnection.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
-        this.playerInventory.addViewer( this );
-
-        this.getPlayerConnection().addPlayerToList();
-
-        if ( this.getServer().getOnlinePlayers().size() > 1 ) {
-            this.getPlayerConnection().sendPlayerList();
-        }
-
-        //JoinEvent
-
-        new Timer( ).schedule( new TimerTask() {
-            @Override
-            public void run() {
-                Player player = Player.this;
-                player.getInventory().setItem( 1, ItemType.STONE.getItem().setAmount( 2 ) );
-                player.getInventory().setItem( 8, ItemType.STONE.getItem().setAmount( 64 ) );
-                player.sendMessage( "ADD" );
-            }
-        }, 1000 * 5);
-
-        new Timer( ).schedule( new TimerTask() {
-            @Override
-            public void run() {
-                Player player = Player.this;
-                player.getInventory().clear();
-                player.sendMessage( "REMOVE" );
-            }
-        }, 1000 * 10);
-    }
-
-    public void leaveGame() {
-        this.getWorld().removePlayer( this );
-
-        this.playerInventory.removeViewer( this );
-
-        Server server = this.getServer();
-        server.removePlayer( this.getAddress() );
-        server.setOnlinePlayers( server.getOnlinePlayers().size() );
-        server.broadcastMessage( "§e" + this.getName() + " left the game" );
     }
 
     public int getViewDistance() {

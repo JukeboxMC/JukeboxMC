@@ -81,7 +81,7 @@ public class Server {
             Connection connection = event.getConnection();
             Player player = this.players.get( connection.getSender() );
             if ( player != null ) {
-                player.leaveGame();
+                player.getPlayerConnection().leaveGame();
             }
         } );
 

@@ -54,8 +54,9 @@ public class Chunk {
 
     public void writeTo( BinaryStream binaryStream ) {
         for ( SubChunk subChunk : this.subChunks )
-            if ( subChunk != null )
+            if ( subChunk != null ) {
                 subChunk.writeTo( binaryStream );
+            }
 
         byte[] biomeIds = new byte[256];
         for ( int x = 0; x < 16; x++ ) {

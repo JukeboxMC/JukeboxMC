@@ -28,10 +28,13 @@ public class SubChunk {
         this.blocks = new Integer[Chunk.CHUNK_LAYERS][4096];
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
             this.blocks[layer] = new Integer[4096];
-            for ( int x = 0; x < 16; x++ )
-                for ( int z = 0; z < 16; z++ )
-                    for ( int y = 0; y < 16; y++ )
+            for ( int x = 0; x < 16; x++ ) {
+                for ( int z = 0; z < 16; z++ ) {
+                    for ( int y = 0; y < 16; y++ ) {
                         this.blocks[layer][this.getIndex( x, y, z )] = BlockType.AIR.getBlock().getRuntimeId();
+                    }
+                }
+            }
         }
     }
 

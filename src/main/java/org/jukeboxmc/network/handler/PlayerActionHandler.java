@@ -13,7 +13,23 @@ public class PlayerActionHandler implements PacketHandler {
     @Override
     public void handle( Packet packet, Player player ) {
         PlayerActionPacket playerActionPacket = (PlayerActionPacket) packet;
+        PlayerActionPacket.Action action = playerActionPacket.getAction();
 
-        //System.out.println( playerActionPacket.toString() );
+        switch ( action ) {
+            case START_SNEAK:
+                player.setSneaking( true );
+                break;
+            case STOP_SNEAK:
+                player.setSneaking( false );
+                break;
+            case START_SPRINT:
+                player.setSprinting( true );
+                break;
+            case STOP_SPRINT:
+                player.setSprinting( false );
+                break;
+            default:
+                break;
+        }
     }
 }

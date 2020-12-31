@@ -1,7 +1,10 @@
 package org.jukeboxmc.player;
 
+import org.jukeboxmc.Server;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -25,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class PlayerConnection {
 
     private Player player;
+    private Server server;
     private Connection connection;
 
     private Queue<Chunk> chunkSendQueue = new ConcurrentLinkedQueue<>();
@@ -32,8 +36,9 @@ public class PlayerConnection {
     private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
 
-    public PlayerConnection( Player player, Connection connection ) {
+    public PlayerConnection( Player player, Server server, Connection connection ) {
         this.player = player;
+        this.server = server;
         this.connection = connection;
     }
 
@@ -351,7 +356,7 @@ public class PlayerConnection {
     public void sendPlayerList() {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setType( PlayerListPacket.Type.ADD );
-        this.player.getServer().getPlayerListEntry().forEach( ( uuid, entry ) -> {
+        this.server.getPlayerListEntry().forEach( ( uuid, entry ) -> {
             if ( uuid != this.player.getUUID() ) {
                 playerListPacket.getEntries().add( entry );
             }
@@ -371,15 +376,56 @@ public class PlayerConnection {
                 this.player.getSkin()
         );
         playerListPacket.getEntries().add( playerListEntry );
-        this.player.getServer().getPlayerListEntry().put( this.player.getUUID(), playerListEntry );
-        this.player.getServer().broadcastPacket( playerListPacket );
+        this.server.getPlayerListEntry().put( this.player.getUUID(), playerListEntry );
+        this.server.broadcastPacket( playerListPacket );
     }
 
     public void removeFromList() {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setType( PlayerListPacket.Type.REMOVE );
         playerListPacket.getEntries().add( new PlayerListPacket.Entry( this.player.getUUID() ) );
-        this.player.getServer().getPlayerListEntry().remove( this.player.getUUID() );
-        this.player.getServer().broadcastPacket( playerListPacket );
+        this.server.getPlayerListEntry().remove( this.player.getUUID() );
+        this.server.broadcastPacket( playerListPacket );
+    }
+
+    public void despawnEntity( Entity entity ) {
+        RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
+        removeEntityPacket.setEntityId( entity.getEntityId() );
+        this.sendPacket( removeEntityPacket );
+    }
+
+    public void firstSpawn() {
+        this.player.setSpawned( true );
+        this.sendNetworkChunkPublisher();
+
+        this.sendTime( 1000 );
+        this.sendAdventureSettings();
+        this.sendAttributes( this.player.getAttributes().getAttributes() );
+
+        this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+        this.player.getInventory().addViewer( this.player );
+
+        this.addPlayerToList();
+
+        if ( this.server.getOnlinePlayers().size() > 1 ) {
+            this.sendPlayerList();
+        }
+        this.sendMetadata();
+        //JoinEvent
+    }
+
+    public void leaveGame() {
+        this.player.getWorld().removePlayer( this.player );
+
+        this.player.getInventory().removeViewer( this.player );
+
+        this.removeFromList();
+        for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
+            onlinePlayer.getPlayerConnection().despawnEntity( this.player );
+        }
+
+        this.server.removePlayer( this.player.getAddress() );
+        this.server.setOnlinePlayers( this.server.getOnlinePlayers().size() );
+        this.server.broadcastMessage( "§e" + this.player.getName() + " left the game" );
     }
 }

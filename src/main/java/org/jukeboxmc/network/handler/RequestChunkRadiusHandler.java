@@ -19,7 +19,7 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         player.setViewDistance( radius );
         player.getPlayerConnection().needNewChunks( false );
         if(!player.isSpawned()) {
-            player.firstSpawn();
+            player.getPlayerConnection().firstSpawn();
         }
     }
 }

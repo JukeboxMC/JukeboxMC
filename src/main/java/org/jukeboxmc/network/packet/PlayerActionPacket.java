@@ -27,8 +27,7 @@ public class PlayerActionPacket extends Packet {
     public void read() {
         super.read();
         this.entityId = this.readUnsignedVarLong();
-        final int i = this.readSignedVarInt();
-        this.action = Action.values()[i];
+        this.action = Action.values()[this.readSignedVarInt()];
         this.position = new Vector( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
         this.face = this.readSignedVarInt();
     }
