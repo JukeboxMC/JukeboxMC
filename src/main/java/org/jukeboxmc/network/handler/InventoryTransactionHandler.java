@@ -1,5 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.inventory.Inventory;
+import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
@@ -21,7 +23,14 @@ public class InventoryTransactionHandler implements PacketHandler {
                 for ( InventoryTransactionPacket.Transaction transaction : transactionPacket.getTransactions() ) {
                     switch ( transaction.getSourceType() ) {
                         case 0:
-                            player.getInventory().setItem( transaction.getSlot(), transaction.getNewItem(), false );
+                            Item sourceItem = transaction.getOldItem();
+                            Item targetItem = transaction.getNewItem();
+                            int slot = transaction.getSlot();
+
+                            Inventory inventory = this.getInventory( player, transaction.getWindowId() );
+                            if ( inventory != null ) {
+                                inventory.setItem( slot, targetItem, false );
+                            }
                             break;
                         case 2:
                             //DropItem
@@ -42,6 +51,17 @@ public class InventoryTransactionHandler implements PacketHandler {
                 break;
             default:
                 break;
+        }
+    }
+
+    public Inventory getInventory( Player player, int windowId ) {
+        switch ( windowId ) {
+            case 0:
+                return player.getInventory();
+            case 124:
+                return player.getCursorInventory();
+            default:
+                return null;
         }
     }
 }

@@ -40,7 +40,8 @@ public class PlayerMoveHandler implements PacketHandler {
 
         if(player.getInventory().getItemInHand() != null) {
             Item itemInHand = player.getInventory().getItemInHand();
-            stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: " ).append( itemInHand.getMeta() ).append( " §7Slot§8: §e" ).append( itemInHand.getSlot() );
+            stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: " ).append( itemInHand.getMeta() );
+            stringBuilder.append( "\n" ).append( "IndHandSlot: " ).append( player.getInventory().getItemInHandSlot() );
         }
 
         player.sendTip( stringBuilder.toString() );

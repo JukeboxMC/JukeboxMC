@@ -28,13 +28,18 @@ public abstract class Inventory {
         this.holder = holder;
         this.slots = slots;
         this.contents = new Item[slots];
+        for ( int i = 0; i < slots; i++ ) {
+            this.contents[i] = new ItemAir();
+        }
     }
-
-    public abstract WindowType getWindowType();
 
     public abstract void sendContents( Player player );
 
     public abstract void sendContents( int slot, Player player, boolean sendContents );
+
+    public WindowType getWindowType() {
+        return WindowType.INVENTORY;
+    }
 
     public Entity getHolder() {
         return this.holder;
@@ -54,12 +59,8 @@ public abstract class Inventory {
     }
 
     public void setItem( int slot, Item item, boolean sendContents ) {
-
         if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
             this.contents[slot] = ItemType.AIR.getItem();
-            item.setSlot( -1 );
-        } else {
-            item.setSlot( slot );
         }
 
         this.contents[slot] = item;
@@ -115,4 +116,5 @@ public abstract class Inventory {
     public Item[] getContents() {
         return this.contents;
     }
+
 }

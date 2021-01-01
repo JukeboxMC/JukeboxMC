@@ -9,6 +9,7 @@ public enum EntityFlag {
     ONFIRE( 0 ),
     SNEAKING( 1 ),
     SPRINTING( 3 ),
+    ACTION( 4 ),
     SHOW_NAMETAG( 14 ),
     SHOW_ALWAYS_NAMETAG( 15 ),
     HAS_COLLISION( 47 ),

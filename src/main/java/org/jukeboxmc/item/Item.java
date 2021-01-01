@@ -21,8 +21,6 @@ public abstract class Item implements Cloneable {
     private String identifer;
     private int runtimeId;
 
-    protected int slot = -1;
-
     protected int amount;
     protected int meta;
     protected String customName;
@@ -128,16 +126,18 @@ public abstract class Item implements Cloneable {
         this.nbt = nbt;
     }
 
-    public int getSlot() {
-        return this.slot;
-    }
-
-    public void setSlot( int slot ) {
-        this.slot = slot;
-    }
-
     public String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( obj instanceof Item ) {
+            Item item = (Item) obj;
+            return item.getIdentifer().equals( this.getIdentifer() ) && item.getMeta() == this.getMeta();
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -149,7 +149,6 @@ public abstract class Item implements Cloneable {
             clone.amount = this.amount;
             clone.meta = this.meta;
             clone.nbt = this.nbt;
-            clone.slot = this.slot;
             clone.customName = this.customName;
             clone.lore = this.lore;
             clone.canPlaceOn = this.canPlaceOn;

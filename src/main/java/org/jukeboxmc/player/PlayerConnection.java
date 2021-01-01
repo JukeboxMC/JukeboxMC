@@ -139,7 +139,6 @@ public class PlayerConnection {
                 } else {
                     this.loadingChunks.add( hash );
                     this.requestChunk( chunk.getFirst(), chunk.getSecond() );
-                    //    System.out.println( "RequestChunk-> " + chunk.getFirst() + ":" + chunk.getSecond() + " [" + this.chunkSendQueue.size() + "]" );
                 }
             }
 
@@ -403,10 +402,11 @@ public class PlayerConnection {
         this.sendAttributes( this.player.getAttributes().getAttributes() );
 
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+
         this.player.getInventory().addViewer( this.player );
+        this.player.getCursorInventory().addViewer( this.player );
 
         this.addPlayerToList();
-
         if ( this.server.getOnlinePlayers().size() > 1 ) {
             this.sendPlayerList();
         }
@@ -418,6 +418,7 @@ public class PlayerConnection {
         this.player.getWorld().removePlayer( this.player );
 
         this.player.getInventory().removeViewer( this.player );
+        this.player.getCursorInventory().removeViewer( this.player );
 
         this.removeFromList();
         for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {

@@ -2,16 +2,15 @@ package org.jukeboxmc;
 
 import io.netty.util.ResourceLeakDetector;
 import lombok.Getter;
+import lombok.Setter;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.console.TerminalConsole;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.NbtMap;
 
 import java.net.InetSocketAddress;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -19,7 +18,7 @@ import java.util.Map;
  */
 public class JukeboxMC {
 
-    @Getter
+    @Getter @Setter
     private static JukeboxMC instance;
     @Getter
     private Server server;
@@ -27,7 +26,7 @@ public class JukeboxMC {
     private InetSocketAddress address;
 
     public static void main( String[] args ) {
-        instance = new JukeboxMC();
+        JukeboxMC.setInstance( new JukeboxMC() );
     }
 
     private JukeboxMC() {

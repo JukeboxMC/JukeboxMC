@@ -9,10 +9,9 @@ import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.inventory.PlayerInventory;
-import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.item.CursorInventory;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -22,9 +21,10 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.net.InetSocketAddress;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * @author LucGamesYT
@@ -58,6 +58,7 @@ public class Player extends EntityHuman {
     private PlayerConnection playerConnection;
 
     private PlayerInventory playerInventory;
+    private CursorInventory cursorInventory;
 
     private List<UUID> emotes = new ArrayList<>();
 
@@ -70,6 +71,7 @@ public class Player extends EntityHuman {
         this.playerConnection = new PlayerConnection( this, server, connection );
 
         this.playerInventory = new PlayerInventory( this );
+        this.cursorInventory = new CursorInventory( this );
     }
 
     public String getName() {
@@ -239,6 +241,10 @@ public class Player extends EntityHuman {
     @Override
     public PlayerInventory getInventory() {
         return this.playerInventory;
+    }
+
+    public CursorInventory getCursorInventory() {
+        return this.cursorInventory;
     }
 
     public int getViewDistance() {

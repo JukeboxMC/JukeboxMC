@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.item.Item;
@@ -41,9 +42,27 @@ public class PlayerInventory extends ContainerInventory {
         }
     }
 
+    @Override
+    public void setItem( int slot, Item item ) {
+        this.setItem( slot, item, true );
+    }
+
+    @Override
+    public void setItem( int slot, Item item, boolean sendContents ) {
+        super.setItem( slot, item, sendContents );
+
+        if ( slot == this.itemInHandSlot && this.holder instanceof Player ) {
+            this.updateItemInHand();
+        }
+    }
+
     public Item getItemInHand() {
         Item content = this.contents[this.itemInHandSlot];
-        return content != null ? content : ItemType.AIR.getItem();
+        if(content != null) {
+            return content;
+        } else {
+            return ItemType.AIR.getItem();
+        }
     }
 
     public int getItemInHandSlot() {
@@ -51,10 +70,13 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     public void setItemInHandSlot( int itemInHandSlot ) {
-        this.itemInHandSlot = itemInHandSlot;
+        if(itemInHandSlot >= 0 && itemInHandSlot < 9){
+            this.itemInHandSlot = itemInHandSlot;
+            this.updateItemInHand();
+        }
     }
 
-    public MobEquipmentPacket updateItemInHand( EntityHuman entityHuman ) {
+    public MobEquipmentPacket createMobEquipmentPacket( EntityHuman entityHuman ) {
         MobEquipmentPacket mobEquipmentPacket = new MobEquipmentPacket();
         mobEquipmentPacket.setEntityId( entityHuman.getEntityId() );
         mobEquipmentPacket.setItem( this.getItemInHand() );
@@ -62,5 +84,17 @@ public class PlayerInventory extends ContainerInventory {
         mobEquipmentPacket.setHotbarSlot( this.itemInHandSlot );
         mobEquipmentPacket.setInventarSlot( this.itemInHandSlot );
         return mobEquipmentPacket;
+    }
+
+    public void updateItemInHand() {
+        if ( this.holder instanceof EntityHuman ) {
+            EntityHuman entityHuman = (EntityHuman) this.holder;
+
+            MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
+
+            for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
+                onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
+            }
+        }
     }
 }

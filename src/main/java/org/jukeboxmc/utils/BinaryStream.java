@@ -454,8 +454,6 @@ public class BinaryStream {
         byte amount = (byte) ( tempData & 0xFF );
         int data = ( tempData >> 8 );
 
-        System.out.println( "NETWORK Id: " + networkId + " Data: " + data + " Count: " + amount );
-
         short extraLength = this.readShort();
         NbtMap nbt = null;
         if ( extraLength == -1 ) {
