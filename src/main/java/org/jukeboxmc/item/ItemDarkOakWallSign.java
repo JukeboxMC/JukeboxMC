@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDarkOakWallSign extends Item {
 
     public ItemDarkOakWallSign() {
-        super( "minecraft:darkoak_wall_sign", 193 );
+        super( "minecraft:darkoak_wall_sign", -193 );
     }
 
 

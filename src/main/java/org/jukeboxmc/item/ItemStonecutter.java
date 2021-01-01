@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemStonecutter extends Item {
 
     public ItemStonecutter() {
-        super( "minecraft:stonecutter", -197 );
+        super( "minecraft:stonecutter", 245 );
     }
 
 

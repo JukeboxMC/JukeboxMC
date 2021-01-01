@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWitherRose extends Item {
 
     public ItemWitherRose() {
-        super( "minecraft:wither_rose", 216 );
+        super( "minecraft:wither_rose", -216 );
     }
 
 

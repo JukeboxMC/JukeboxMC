@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSandstoneStairs extends Item {
 
     public ItemSandstoneStairs() {
-        super( "minecraft:sandstone_stairs", -177 );
+        super( "minecraft:sandstone_stairs", 128 );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemElement18 extends Item {
 
     public ItemElement18() {
-        super( "minecraft:element_18", -26 );
+        super( "minecraft:element_18", -29 );
     }
 
 

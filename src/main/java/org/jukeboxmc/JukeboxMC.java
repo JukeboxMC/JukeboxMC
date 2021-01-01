@@ -37,23 +37,11 @@ public class JukeboxMC {
         BlockType.init();
         ItemType.init();
 
-        this.address = new InetSocketAddress( "0.0.0.0", 19132 );
+        this.address = new InetSocketAddress( "0.0.0.0", 19500 );
         this.server = new Server( this.address );
 
         TerminalConsole terminalConsole = new TerminalConsole( this.server );
         terminalConsole.getConsoleThread().start();
-
-        //TDOO Implement all not registered items
-        for ( Map<String, Object> stringObjectMap : ItemType.getItemPalette() ) {
-            int id = (int) (double) stringObjectMap.get( "id" );
-
-            Item item = ItemType.getItemFormNetworkId( id );
-            if ( item == null ) {
-                //System.out.println( id );
-            }
-        }
-
-        //System.out.println( "Value: " + new ItemApple().getItemType().name() );
 
         System.out.println( "JukeboxMC läuft nun auf dem Port " + this.address.getPort() );
     }

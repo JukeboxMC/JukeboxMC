@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSaddle extends Item {
 
     public ItemSaddle() {
-        super( "minecraft:saddle", 169 );
+        super( "minecraft:saddle", 369 );
     }
 
 

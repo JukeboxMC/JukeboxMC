@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSpruceTrapdoor extends Item {
 
     public ItemSpruceTrapdoor() {
-        super( "minecraft:spruce_trapdoor", -147 );
+        super( "minecraft:spruce_trapdoor", -149 );
     }
 
 

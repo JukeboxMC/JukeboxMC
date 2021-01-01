@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLadder extends Item {
 
     public ItemLadder() {
-        super( "minecraft:ladder", 85 );
+        super( "minecraft:ladder", 65 );
     }
 
 
