@@ -9,6 +9,14 @@ import lombok.ToString;
 @ToString
 public class Vector {
 
+    public static final Vector UP = new Vector( 0, 1,0  );
+    public static final Vector DOWN = new Vector( 0, -1,0  );
+
+    public static final Vector NORTH = new Vector( 0, 0,-1  );
+    public static final Vector EAST = new Vector( 1, 0,0  );
+    public static final Vector SOUTH = new Vector( 0, 0,1  );
+    public static final Vector WEST = new Vector( -1, 0,0  );
+
     private float x;
     private float y;
     private float z;
@@ -43,10 +51,6 @@ public class Vector {
         this.y = y;
     }
 
-    public void addY( float y ) {
-        this.y+= y;
-    }
-
     public float getZ() {
         return this.z;
     }
@@ -57,6 +61,10 @@ public class Vector {
 
     public void setZ( float z ) {
         this.z = z;
+    }
+
+    public Vector add( float x, float y, float z ) {
+        return new Vector( this.x + x, this.y + y, this.z + z );
     }
 
 }

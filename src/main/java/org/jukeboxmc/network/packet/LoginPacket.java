@@ -50,7 +50,10 @@ public class LoginPacket extends Packet {
         String chainToken = this.readString();
 
         Map chainMap = new Gson().fromJson( chainToken, Map.class );
-        List<String> chains = ( (List<?>) chainMap.get( "chain" ) ).stream().map( Object::toString ).collect( Collectors.toList() );
+        List<String> chains = new ArrayList<>();
+        for ( Object o : ( (List<?>) chainMap.get( "chain" ) ) ) {
+            chains.add( o.toString() );
+        }
         for ( String data : chains ) {
             String chainJson = this.readToken( data );
             JsonObject chainData = new Gson().fromJson( chainJson, JsonObject.class );
@@ -180,7 +183,7 @@ public class LoginPacket extends Packet {
         int height = animationData.get( "ImageHeight" ).getAsInt();
         float frames = animationData.get( "Frames" ).getAsFloat();
         int type = animationData.get( "Type" ).getAsInt();
-        int expression = animationData.get("AnimationExpression").getAsInt();
+        int expression = animationData.get( "AnimationExpression" ).getAsInt();
         return new SkinAnimation( new Image( width, height, data ), type, frames, expression );
     }
 

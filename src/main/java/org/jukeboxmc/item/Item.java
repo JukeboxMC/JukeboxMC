@@ -2,6 +2,7 @@ package org.jukeboxmc.item;
 
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
@@ -58,7 +59,7 @@ public abstract class Item implements Cloneable {
     }
 
     public Block getBlock() {
-        return BlockType.AIR.getBlock();
+        return new BlockAir();
     }
 
     public void setCustomName( String customName ) {

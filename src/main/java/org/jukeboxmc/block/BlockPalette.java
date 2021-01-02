@@ -35,7 +35,12 @@ public class BlockPalette {
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
-        return BLOCK_PALETTE.keySet().stream().filter( runtimeId -> BLOCK_PALETTE.get( runtimeId ).equals( blockMap ) ).findFirst().orElseThrow( () -> new RuntimeException( "Block was not found" ) );
+        for ( Integer runtimeId : BLOCK_PALETTE.keySet() ) {
+            if ( BLOCK_PALETTE.get( runtimeId ).equals( blockMap ) ) {
+                return runtimeId;
+            }
+        }
+        throw new NullPointerException( "Block was not found" );
     }
 
     public static NbtMap getBlockMap( Integer runtimeId ) {
@@ -43,11 +48,22 @@ public class BlockPalette {
     }
 
     public static NbtMap searchBlock( Predicate<NbtMap> predicate ) {
-        return BLOCK_PALETTE.values().stream().filter( predicate ).findFirst().orElseThrow( () -> new RuntimeException( "Block was not found" ) );
+        for ( NbtMap nbtMap : BLOCK_PALETTE.values() ) {
+            if ( predicate.test( nbtMap ) ) {
+                return nbtMap;
+            }
+        }
+        throw new NullPointerException( "Block was not found" );
     }
 
     public static List<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
-        return BLOCK_PALETTE.values().stream().filter( predicate ).collect( Collectors.toList() );
+        List<NbtMap> blocks = new ArrayList<>();
+        for ( NbtMap nbtMap : BLOCK_PALETTE.values() ) {
+            if ( predicate.test( nbtMap ) ) {
+                blocks.add( nbtMap );
+            }
+        }
+        return Collections.unmodifiableList( blocks );
     }
 
 }

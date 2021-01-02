@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class SubChunk {
 
+    private static final int AIR_RUNTIME = BlockType.AIR.getBlock().getRuntimeId();
+
     @Getter
     private int y;
     private Integer[][] blocks;
@@ -31,7 +33,7 @@ public class SubChunk {
             for ( int x = 0; x < 16; x++ ) {
                 for ( int z = 0; z < 16; z++ ) {
                     for ( int y = 0; y < 16; y++ ) {
-                        this.blocks[layer][this.getIndex( x, y, z )] = BlockType.AIR.getBlock().getRuntimeId();
+                        this.blocks[layer][this.getIndex( x, y, z )] = AIR_RUNTIME;
                     }
                 }
             }

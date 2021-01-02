@@ -1,12 +1,16 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.block.BlockFace;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -42,9 +46,27 @@ public class InventoryTransactionHandler implements PacketHandler {
                 System.out.println( "Normal" );
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM:
-                 int type = transactionPacket.getType();
-                 System.out.println( "TYPE: " + type );
-                 break;
+                Vector blockPosition = transactionPacket.getBlockPosition();
+                Vector clickPosition = transactionPacket.getClickPosition();
+                BlockFace blockFace = transactionPacket.getBlockFace();
+
+                switch ( transactionPacket.getActionType() ) {
+                    case 0: //Place
+                        player.getWorld().useItemOn( player, blockPosition, clickPosition, blockFace );
+                        break;
+                    case 1: //Click Air
+                        break;
+                    case 2://Break
+                        if ( player.getGameMode() == GameMode.CREATIVE ) {
+                            player.getWorld().breakBlock( blockPosition, false );
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println( transactionPacket.toString() );
+                break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 System.out.println( "RELEASE" );
                 break;

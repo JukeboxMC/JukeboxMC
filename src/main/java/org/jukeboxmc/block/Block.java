@@ -1,8 +1,11 @@
 package org.jukeboxmc.block;
 
 import lombok.Getter;
+import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +25,9 @@ public class Block {
     private String identifer;
     protected NbtMap states;
 
+    private World world;
+    private Vector position;
+
     public Block( String identifer ) {
         this( identifer, null );
     }
@@ -30,7 +36,7 @@ public class Block {
         this.identifer = identifer;
 
         if ( !STATES.containsKey( this.identifer ) ) {
-            Map<NbtMap, Integer> toRuntimeId = new LinkedHashMap<>();
+            Map<NbtMap, Integer> toRuntimeId = new HashMap<>();
             for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.identifer ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
@@ -79,6 +85,14 @@ public class Block {
         }
         this.runtimeId = STATES.get( this.identifer ).get( this.states );
         return (B) this;
+    }
+
+    public void setPosition( Vector position ) {
+        this.position = position;
+    }
+
+    public void setWorld( World world ) {
+        this.world = world;
     }
 
 }

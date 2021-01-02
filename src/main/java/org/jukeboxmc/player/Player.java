@@ -187,7 +187,12 @@ public class Player extends EntityHuman {
     }
 
     public Attribute getAttribute( AttributeType attributeType ) {
-        return this.attributes.getAttributes().stream().filter( attribute -> attribute.getAttributeType() == attributeType ).findFirst().orElse( null );
+        for ( Attribute attribute : this.attributes.getAttributes() ) {
+            if ( attribute.getAttributeType() == attributeType ) {
+                return attribute;
+            }
+        }
+        return null;
     }
 
     public AdventureSettings getAdventureSettings() {

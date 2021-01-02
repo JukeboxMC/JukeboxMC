@@ -171,7 +171,7 @@ public class PlayerConnection {
         }
     }
 
-    private void requestChunk( int chunkX, int chunkZ ) {
+    public void requestChunk( int chunkX, int chunkZ ) {
         final Chunk chunk = this.player.getLocation().getWorld().getChunk( chunkX, chunkZ );
         if ( chunk != null ) {
             this.chunkSendQueue.offer( chunk );

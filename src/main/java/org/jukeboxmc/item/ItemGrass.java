@@ -1,5 +1,8 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockGrass;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -11,7 +14,7 @@ public class ItemGrass extends Item {
     }
 
     @Override
-    public int getMaxAmount() {
-        return 64;
+    public Block getBlock() {
+        return new BlockGrass();
     }
 }

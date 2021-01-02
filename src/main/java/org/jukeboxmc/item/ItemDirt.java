@@ -21,7 +21,7 @@ public class ItemDirt extends Item {
 
     @Override
     public BlockDirt getBlock() {
-        return BlockType.DIRT.getBlock();
+        return new BlockDirt();
     }
 
     @Override

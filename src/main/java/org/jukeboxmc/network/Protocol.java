@@ -52,6 +52,7 @@ public interface Protocol {
     byte PLAYER_LIST_PACKET =  0x3f;
     byte ADD_PLAYER_PACKET = 0x0c;
     byte REMOVE_ENTITY_PACKET = 0x0e;
+    byte LEVEL_EVENT_PACKET = 0x19;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
