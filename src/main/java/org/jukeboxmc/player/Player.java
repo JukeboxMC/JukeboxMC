@@ -9,7 +9,7 @@ import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.inventory.PlayerInventory;
-import org.jukeboxmc.item.CursorInventory;
+import org.jukeboxmc.inventory.CursorInventory;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.TextPacket;

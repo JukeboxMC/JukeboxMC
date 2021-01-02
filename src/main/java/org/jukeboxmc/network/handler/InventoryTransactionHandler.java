@@ -39,10 +39,12 @@ public class InventoryTransactionHandler implements PacketHandler {
                             break;
                     }
                 }
+                System.out.println( "Normal" );
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM:
-                System.out.println( "USE" );
-                break;
+                 int type = transactionPacket.getType();
+                 System.out.println( "TYPE: " + type );
+                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 System.out.println( "RELEASE" );
                 break;

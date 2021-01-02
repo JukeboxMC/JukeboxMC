@@ -47,8 +47,9 @@ public class Chunk {
 
     private void checkOrCreateSubChunks( int subY ) {
         for ( int y = 0; y <= subY; y++ ) {
-            if ( this.subChunks[y] == null )
+            if ( this.subChunks[y] == null ) {
                 this.subChunks[y] = new SubChunk( y );
+            }
         }
     }
 

@@ -1,8 +1,6 @@
-package org.jukeboxmc.item;
+package org.jukeboxmc.inventory;
 
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.inventory.Inventory;
-import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
