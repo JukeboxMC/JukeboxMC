@@ -10,5 +10,4 @@ public class ItemAcaciaDoorBlock extends Item {
         super( "minecraft:item.acacia_door", 196 );
     }
 
-
 }

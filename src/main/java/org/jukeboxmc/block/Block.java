@@ -113,4 +113,8 @@ public class Block {
         this.world = world;
     }
 
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
 }

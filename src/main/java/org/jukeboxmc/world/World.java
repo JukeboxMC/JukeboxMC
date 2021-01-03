@@ -102,7 +102,6 @@ public class World {
 
     public void setBlock( Vector location, Block block ) {
         this.setBlock( location, block, 0 );
-        System.out.println( "Place: " + location.toString() + " Block: " + block.getClass().getSimpleName() );
     }
 
     public void setBlock( Vector location, Block block, int layer ) {

@@ -65,7 +65,6 @@ public class InventoryTransactionHandler implements PacketHandler {
                     default:
                         break;
                 }
-                System.out.println( transactionPacket.toString() );
                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 System.out.println( "RELEASE" );
