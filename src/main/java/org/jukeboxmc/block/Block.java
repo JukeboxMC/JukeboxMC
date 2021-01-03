@@ -7,10 +7,7 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.world.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -33,11 +30,11 @@ public class Block {
     }
 
     public Block( String identifer, NbtMap nbtMap ) {
-        this.identifer = identifer;
+        this.identifer = identifer.toLowerCase();
 
         if ( !STATES.containsKey( this.identifer ) ) {
             Map<NbtMap, Integer> toRuntimeId = new HashMap<>();
-            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( this.identifer ) ) ) {
+            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifer ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
             STATES.put( this.identifer, toRuntimeId );
@@ -56,8 +53,10 @@ public class Block {
         }
 
         if ( nbtMap == null ) {
-            nbtMap = new ArrayList<>( STATES.get( this.identifer ).keySet() ).get( 0 );
+            List<NbtMap> states = new ArrayList<>( STATES.get( this.identifer ).keySet() );
+            nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get(0);
         }
+
         this.states = nbtMap;
         this.runtimeId = STATES.get( this.identifer ).get( this.states );
     }
