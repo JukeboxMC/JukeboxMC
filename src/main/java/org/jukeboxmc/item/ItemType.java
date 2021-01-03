@@ -136,7 +136,7 @@ public enum ItemType {
     NETHER_BRICK_STAIRS( ItemNetherBrickStairs.class ),
     NETHER_WART_ITEM_BLOCK( ItemNetherWartItemBlock.class ),
     ENCHANTING_TABLE( ItemEnchantingTable.class ),
-    BREWING_STAND_BLOCK( ItemBrewingstandblock.class ),
+    BREWING_STAND_BLOCK( ItemBrewingStandBlock.class ),
     CAULDRON_BLOCK( ItemCauldronBlock.class ),
     END_PORTAL( ItemEndPortal.class ),
     END_PORTAL_FRAME( ItemEndPortalFrame.class ),

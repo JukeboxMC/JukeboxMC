@@ -247,7 +247,7 @@ public enum BlockType {
     RED_GLAZED_TERRACOTTA( BlockRedGlazedTerracotta.class ),
     BLACK_GLAZED_TERRACOTTA( BlockBlackGlazedTerracotta.class ),
     CONCRETE( BlockConcrete.class ),
-    CONRETEPOWDER( BlockConcretepowder.class ),
+    CONRETEPOWDER( BlockConcretePowder.class ),
     CHEMISTRY_TABLE( BlockChemistryTable.class ),
     UNDERWATER_TORCH( BlockUnderwaterTorch.class ),
     CHORUS_PLANT( BlockChorusPlant.class ),

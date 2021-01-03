@@ -4,9 +4,9 @@ package org.jukeboxmc.block;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockConcretepowder extends Block {
+public class BlockConcretePowder extends Block {
 
-    public BlockConcretepowder() {
+    public BlockConcretePowder() {
         super( "minecraft:concretepowder" );
     }
 }
