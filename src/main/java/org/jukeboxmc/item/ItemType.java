@@ -439,7 +439,7 @@ public enum ItemType {
     SCAFFOLDING( ItemScaffolding.class ),
     REAL_DOUBLE_MOSSY_STONE_BRICK_SLAB( ItemRealDoubleMossyStoneBrickSlab.class ),
     DOUBLE_END_STONE_BRICK_SLAB( ItemDoubleEndStoneBrickSlab.class ),
-    DOUBLE_MOSSy_STONE_BRICK_SLAB( ItemDoubleMossyStoneBrickSlab.class ),
+    DOUBLE_MOSSY_STONE_BRICK_SLAB( ItemDoubleMossyStoneBrickSlab.class ),
     GRANITE_STAIRS( ItemGraniteStairs.class ),
     DIORITE_STAIRS( ItemDioriteStairs.class ),
     ANDESITE_STAIRS( ItemAndesiteStairs.class ),
