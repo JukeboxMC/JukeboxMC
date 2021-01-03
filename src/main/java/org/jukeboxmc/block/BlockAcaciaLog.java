@@ -4,9 +4,9 @@ package org.jukeboxmc.block;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLog2 extends Block {
+public class BlockAcaciaLog extends Block {
 
-    public BlockLog2() {
+    public BlockAcaciaLog() {
         super( "minecraft:log2" );
     }
 }

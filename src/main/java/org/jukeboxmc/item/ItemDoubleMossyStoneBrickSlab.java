@@ -4,9 +4,9 @@ package org.jukeboxmc.item;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemDoubleStoneSlab4 extends Item {
+public class ItemDoubleMossyStoneBrickSlab extends Item {
 
-    public ItemDoubleStoneSlab4() {
+    public ItemDoubleMossyStoneBrickSlab() {
         super( "minecraft:double_stone_slab4", -166 );
     }
 

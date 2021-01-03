@@ -4,9 +4,9 @@ package org.jukeboxmc.block;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLeaves2 extends Block {
+public class BlockAcaciaLeaves extends Block {
 
-    public BlockLeaves2() {
+    public BlockAcaciaLeaves() {
         super( "minecraft:leaves2" );
     }
 }

@@ -4,9 +4,9 @@ package org.jukeboxmc.block;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStoneSlab4 extends Block {
+public class BlockMossyStoneBrickSlab extends Block {
 
-    public BlockStoneSlab4() {
+    public BlockMossyStoneBrickSlab() {
         super( "minecraft:stone_slab4" );
     }
 }

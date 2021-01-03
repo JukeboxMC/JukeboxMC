@@ -4,9 +4,9 @@ package org.jukeboxmc.block;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDoubleStoneSlab2 extends Block {
+public class BlockDoubleRedSandstoneSlab extends Block {
 
-    public BlockDoubleStoneSlab2() {
+    public BlockDoubleRedSandstoneSlab() {
         super( "minecraft:double_stone_slab2" );
     }
 }
