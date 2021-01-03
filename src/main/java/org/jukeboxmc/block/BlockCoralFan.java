@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockCoralFan extends Block {
 
-    public BlockCoralFan( String identifer ) {
+    public BlockCoralFan() {
         super( "minecraft:coral_fan" );
     }
 }

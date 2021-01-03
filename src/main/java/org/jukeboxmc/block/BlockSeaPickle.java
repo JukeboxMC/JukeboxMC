@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockSeaPickle extends Block {
 
-    public BlockSeaPickle( String identifer ) {
+    public BlockSeaPickle() {
         super( "minecraft:sea_pickle" );
     }
 }

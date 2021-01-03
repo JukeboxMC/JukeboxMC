@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockDarkOakPressurePlate extends Block {
 
-    public BlockDarkOakPressurePlate( String identifer ) {
+    public BlockDarkOakPressurePlate() {
         super( "minecraft:dark_oak_pressure_plate" );
     }
 }

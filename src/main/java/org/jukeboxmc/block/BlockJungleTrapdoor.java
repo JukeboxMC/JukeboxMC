@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockJungleTrapdoor extends Block {
 
-    public BlockJungleTrapdoor( String identifer ) {
+    public BlockJungleTrapdoor() {
         super( "minecraft:jungle_trapdoor" );
     }
 }

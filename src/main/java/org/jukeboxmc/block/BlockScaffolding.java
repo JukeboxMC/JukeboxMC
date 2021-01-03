@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockScaffolding extends Block {
 
-    public BlockScaffolding( String identifer ) {
+    public BlockScaffolding() {
         super( "minecraft:scaffolding" );
     }
 }

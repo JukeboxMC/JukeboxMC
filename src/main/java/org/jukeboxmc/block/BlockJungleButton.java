@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockJungleButton extends Block {
 
-    public BlockJungleButton( String identifer ) {
+    public BlockJungleButton() {
         super( "minecraft:jungle_button" );
     }
 }

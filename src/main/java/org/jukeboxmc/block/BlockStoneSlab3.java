@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockStoneSlab3 extends Block {
 
-    public BlockStoneSlab3( String identifer ) {
+    public BlockStoneSlab3() {
         super( "minecraft:stone_slab3" );
     }
 }

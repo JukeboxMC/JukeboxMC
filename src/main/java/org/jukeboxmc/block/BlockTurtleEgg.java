@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockTurtleEgg extends Block {
 
-    public BlockTurtleEgg( String identifer ) {
+    public BlockTurtleEgg() {
         super( "minecraft:turtle_egg" );
     }
 }

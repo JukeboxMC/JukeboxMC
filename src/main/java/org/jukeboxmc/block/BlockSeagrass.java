@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockSeagrass extends Block {
 
-    public BlockSeagrass( String identifer ) {
+    public BlockSeagrass() {
         super( "minecraft:seagrass" );
     }
 }

@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockCoralBlock extends Block {
 
-    public BlockCoralBlock( String identifer ) {
+    public BlockCoralBlock() {
         super( "minecraft:coral_block" );
     }
 }

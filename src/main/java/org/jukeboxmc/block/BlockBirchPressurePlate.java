@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockBirchPressurePlate extends Block {
 
-    public BlockBirchPressurePlate( String identifer ) {
+    public BlockBirchPressurePlate() {
         super( "minecraft:birch_pressure_plate" );
     }
 }

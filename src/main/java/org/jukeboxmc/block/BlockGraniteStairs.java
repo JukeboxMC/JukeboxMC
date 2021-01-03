@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockGraniteStairs extends Block {
 
-    public BlockGraniteStairs( String identifer ) {
+    public BlockGraniteStairs() {
         super( "minecraft:granite_stairs" );
     }
 }

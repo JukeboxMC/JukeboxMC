@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockBubbleColumn extends Block {
 
-    public BlockBubbleColumn( String identifer ) {
+    public BlockBubbleColumn() {
         super( "minecraft:bubble_column" );
     }
 }

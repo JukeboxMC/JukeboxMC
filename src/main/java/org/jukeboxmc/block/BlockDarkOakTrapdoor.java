@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockDarkOakTrapdoor extends Block {
 
-    public BlockDarkOakTrapdoor( String identifer ) {
+    public BlockDarkOakTrapdoor() {
         super( "minecraft:dark_oak_trapdoor" );
     }
 }

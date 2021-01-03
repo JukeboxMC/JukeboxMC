@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockBarrier extends Block {
 
-    public BlockBarrier( String identifer ) {
+    public BlockBarrier() {
         super( "minecraft:barrier" );
     }
 }

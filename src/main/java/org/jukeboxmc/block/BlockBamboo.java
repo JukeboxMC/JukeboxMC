@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockBamboo extends Block {
 
-    public BlockBamboo( String identifer ) {
+    public BlockBamboo() {
         super( "minecraft:bamboo" );
     }
 }

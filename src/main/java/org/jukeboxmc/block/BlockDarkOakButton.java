@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockDarkOakButton extends Block {
 
-    public BlockDarkOakButton( String identifer ) {
+    public BlockDarkOakButton() {
         super( "minecraft:dark_oak_button" );
     }
 }

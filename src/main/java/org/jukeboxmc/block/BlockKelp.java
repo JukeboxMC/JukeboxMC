@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockKelp extends Block {
 
-    public BlockKelp( String identifer ) {
+    public BlockKelp() {
         super( "minecraft:kelp" );
     }
 }

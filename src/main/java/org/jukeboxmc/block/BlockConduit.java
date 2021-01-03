@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockConduit extends Block {
 
-    public BlockConduit( String identifer ) {
+    public BlockConduit() {
         super( "minecraft:conduit" );
     }
 }

@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockCarvedPumpkin extends Block {
 
-    public BlockCarvedPumpkin( String identifer ) {
+    public BlockCarvedPumpkin() {
         super( "minecraft:carved_pumpkin" );
     }
 }

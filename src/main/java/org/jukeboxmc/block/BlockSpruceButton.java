@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockSpruceButton extends Block {
 
-    public BlockSpruceButton( String identifer ) {
+    public BlockSpruceButton() {
         super( "minecraft:spruce_button" );
     }
 }

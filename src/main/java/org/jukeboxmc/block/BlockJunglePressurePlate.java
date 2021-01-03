@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockJunglePressurePlate extends Block {
 
-    public BlockJunglePressurePlate( String identifer ) {
+    public BlockJunglePressurePlate() {
         super( "minecraft:jungle_pressure_plate" );
     }
 }

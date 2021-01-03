@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockCoralFanDead extends Block {
 
-    public BlockCoralFanDead( String identifer ) {
+    public BlockCoralFanDead() {
         super( "minecraft:coral_fan_dead" );
     }
 }

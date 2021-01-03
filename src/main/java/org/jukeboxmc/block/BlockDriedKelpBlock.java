@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockDriedKelpBlock extends Block {
 
-    public BlockDriedKelpBlock( String identifer ) {
+    public BlockDriedKelpBlock() {
         super( "minecraft:dried_kelp_block" );
     }
 }

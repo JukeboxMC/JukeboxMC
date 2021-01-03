@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockAcaciaButton extends Block {
 
-    public BlockAcaciaButton( String identifer ) {
+    public BlockAcaciaButton() {
         super( "minecraft:acacia_button" );
     }
 }

@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockAcaciaPressurePlate extends Block {
 
-    public BlockAcaciaPressurePlate( String identifer ) {
+    public BlockAcaciaPressurePlate() {
         super( "minecraft:acacia_pressure_plate" );
     }
 }

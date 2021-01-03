@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockBirchButton extends Block {
 
-    public BlockBirchButton( String identifer ) {
+    public BlockBirchButton() {
         super( "minecraft:birch_button" );
     }
 }

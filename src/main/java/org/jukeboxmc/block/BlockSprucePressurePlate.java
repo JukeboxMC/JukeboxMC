@@ -6,7 +6,7 @@ package org.jukeboxmc.block;
  */
 public class BlockSprucePressurePlate extends Block {
 
-    public BlockSprucePressurePlate( String identifer ) {
+    public BlockSprucePressurePlate() {
         super( "minecraft:spruce_pressure_plate" );
     }
 }
