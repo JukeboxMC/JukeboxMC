@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -22,8 +21,7 @@ public class BlockPalette {
     public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
 
-    static {
-        System.out.println( "Loading block states..." );
+    public static void init() {
         try ( NBTInputStream nbtReader = NbtUtils.createReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
             for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) )
@@ -31,7 +29,6 @@ public class BlockPalette {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Block states loading successfully" );
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {

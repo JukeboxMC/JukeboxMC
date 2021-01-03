@@ -15,7 +15,7 @@ public class BlockDoublePlant extends Block {
     }
 
     public PlantType getPlantType() {
-        return this.states.containsKey( "double_plant_type" ) ? PlantType.valueOf( this.states.getString( "double_plant_type" ).toUpperCase() ) : PlantType.SUNFLOWER;
+        return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ).toUpperCase() ) : PlantType.SUNFLOWER;
     }
 
     public BlockDoublePlant setUpperBlock( boolean value ) {
@@ -23,7 +23,7 @@ public class BlockDoublePlant extends Block {
     }
 
     public boolean isUpperBlock( boolean value ) {
-        return this.states.containsKey( "upper_block_bit" ) && this.states.getByte( "upper_block_bit" ) == 1;
+        return this.stateExists( "upper_block_bit" ) && this.getByteState( "upper_block_bit" ) == 1;
     }
 
     public enum PlantType {

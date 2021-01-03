@@ -567,14 +567,15 @@ public enum BlockType {
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
 
     public static void init() {
+        System.out.println( "Loading blocks..." );
         if ( INITIALIZED.get() ) {
             return;
         }
         INITIALIZED.set( true );
 
-        for ( BlockType value : values() ) {
-            value.getBlock();
-        }
+        BlockPalette.init();
+
+        System.out.println( "Blocks loading successfully" );
     }
 
     private Class<? extends Block> blockClass;

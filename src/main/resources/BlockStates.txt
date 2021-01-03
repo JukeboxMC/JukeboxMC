@@ -1,12 +1,6 @@
 age (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -15,6 +9,12 @@ age (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 age_bit (Integer):
   - 0
   - 1
@@ -25,17 +25,17 @@ attached_bit (Integer):
   - 0
   - 1
 attachment (String):
-  - hanging
-  - multiple
-  - side
   - standing
+  - hanging
+  - side
+  - multiple
 bamboo_leaf_size (String):
-  - large_leaves
   - no_leaves
   - small_leaves
+  - large_leaves
 bamboo_stalk_thickness (String):
-  - thick
   - thin
+  - thick
 bite_counter (Integer):
   - 0
   - 1
@@ -47,12 +47,6 @@ bite_counter (Integer):
 block_light_level (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -61,6 +55,12 @@ block_light_level (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 brewing_stand_slot_a_bit (Integer):
   - 0
   - 1
@@ -74,16 +74,16 @@ button_pressed_bit (Integer):
   - 0
   - 1
 cauldron_liquid (String):
-  - lava
   - water
+  - lava
 chemistry_table_type (String):
   - compound_creator
+  - material_reducer
   - element_constructor
   - lab_table
-  - material_reducer
 chisel_type (String):
-  - chiseled
   - default
+  - chiseled
   - lines
   - smooth
 cluster_count (Integer):
@@ -92,22 +92,22 @@ cluster_count (Integer):
   - 2
   - 3
 color (String):
-  - black
+  - white
+  - orange
+  - magenta
+  - light_blue
+  - yellow
+  - lime
+  - pink
+  - gray
+  - silver
+  - cyan
+  - purple
   - blue
   - brown
-  - cyan
-  - gray
   - green
-  - light_blue
-  - lime
-  - magenta
-  - orange
-  - pink
-  - purple
   - red
-  - silver
-  - white
-  - yellow
+  - black
 color_bit (Integer):
   - 0
   - 1
@@ -145,14 +145,14 @@ covered_bit (Integer):
   - 0
   - 1
 cracked_state (String):
+  - no_cracks
   - cracked
   - max_cracked
-  - no_cracks
 damage (String):
-  - broken
-  - slightly_damaged
   - undamaged
+  - slightly_damaged
   - very_damaged
+  - broken
 dead_bit (Integer):
   - 0
   - 1
@@ -167,8 +167,8 @@ direction (Integer):
   - 2
   - 3
 dirt_type (String):
-  - coarse
   - normal
+  - coarse
 disarmed_bit (Integer):
   - 0
   - 1
@@ -176,12 +176,12 @@ door_hinge_bit (Integer):
   - 0
   - 1
 double_plant_type (String):
-  - fern
-  - grass
-  - paeonia
-  - rose
   - sunflower
   - syringa
+  - grass
+  - fern
+  - rose
+  - paeonia
 drag_down (Integer):
   - 0
   - 1
@@ -210,26 +210,20 @@ fill_level (Integer):
   - 5
   - 6
 flower_type (String):
-  - allium
-  - cornflower
-  - houstonia
-  - lily_of_the_valley
-  - orchid
-  - oxeye
   - poppy
-  - tulip_orange
-  - tulip_pink
+  - orchid
+  - allium
+  - houstonia
   - tulip_red
+  - tulip_orange
   - tulip_white
+  - tulip_pink
+  - oxeye
+  - cornflower
+  - lily_of_the_valley
 ground_sign_direction (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -238,6 +232,12 @@ ground_sign_direction (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 growth (Integer):
   - 0
   - 1
@@ -272,12 +272,6 @@ honey_level (Integer):
 huge_mushroom_bits (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -286,6 +280,12 @@ huge_mushroom_bits (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 in_wall_bit (Integer):
   - 0
   - 1
@@ -298,6 +298,14 @@ item_frame_map_bit (Integer):
 kelp_age (Integer):
   - 0
   - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
   - 10
   - 11
   - 12
@@ -308,38 +316,24 @@ kelp_age (Integer):
   - 17
   - 18
   - 19
-  - 2
   - 20
   - 21
   - 22
   - 23
   - 24
   - 25
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
 lever_direction (String):
   - down_east_west
-  - down_north_south
   - east
-  - north
-  - south
-  - up_east_west
-  - up_north_south
   - west
+  - south
+  - north
+  - up_north_south
+  - up_east_west
+  - down_north_south
 liquid_depth (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -348,6 +342,12 @@ liquid_depth (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 moisturized_amount (Integer):
   - 0
   - 1
@@ -358,12 +358,12 @@ moisturized_amount (Integer):
   - 6
   - 7
 monster_egg_stone_type (String):
-  - chiseled_stone_brick
-  - cobblestone
-  - cracked_stone_brick
-  - mossy_stone_brick
   - stone
+  - cobblestone
   - stone_brick
+  - mossy_stone_brick
+  - cracked_stone_brick
+  - chiseled_stone_brick
 new_leaf_type (String):
   - acacia
   - dark_oak
@@ -377,15 +377,15 @@ occupied_bit (Integer):
   - 0
   - 1
 old_leaf_type (String):
-  - birch
-  - jungle
   - oak
   - spruce
+  - birch
+  - jungle
 old_log_type (String):
-  - birch
-  - jungle
   - oak
   - spruce
+  - birch
+  - jungle
 open_bit (Integer):
   - 0
   - 1
@@ -399,8 +399,8 @@ persistent_bit (Integer):
   - 0
   - 1
 pillar_axis (String):
-  - x
   - y
+  - x
   - z
 portal_axis (String):
   - unknown
@@ -410,9 +410,9 @@ powered_bit (Integer):
   - 0
   - 1
 prismarine_block_type (String):
-  - bricks
-  - dark
   - default
+  - dark
+  - bricks
 rail_data_bit (Integer):
   - 0
   - 1
@@ -430,12 +430,6 @@ rail_direction (Integer):
 redstone_signal (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -444,6 +438,12 @@ redstone_signal (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 repeater_delay (Integer):
   - 0
   - 1
@@ -461,24 +461,24 @@ rotation (Integer):
   - 2
   - 3
 sand_stone_type (String):
-  - cut
   - default
   - heiroglyphs
+  - cut
   - smooth
 sand_type (String):
   - normal
   - red
 sapling_type (String):
-  - acacia
-  - birch
-  - dark_oak
-  - jungle
   - oak
   - spruce
+  - birch
+  - jungle
+  - acacia
+  - dark_oak
 sea_grass_type (String):
   - default
-  - double_bot
   - double_top
+  - double_bot
 sponge_type (String):
   - dry
   - wet
@@ -495,73 +495,73 @@ stability_check (Integer):
   - 0
   - 1
 stone_brick_type (String):
-  - chiseled
-  - cracked
   - default
   - mossy
+  - cracked
+  - chiseled
   - smooth
 stone_slab_type (String):
-  - brick
-  - cobblestone
-  - nether_brick
-  - quartz
-  - sandstone
   - smooth_stone
-  - stone_brick
+  - sandstone
   - wood
+  - cobblestone
+  - brick
+  - stone_brick
+  - quartz
+  - nether_brick
 stone_slab_type_2 (String):
-  - mossy_cobblestone
-  - prismarine_brick
-  - prismarine_dark
-  - prismarine_rough
-  - purpur
-  - red_nether_brick
   - red_sandstone
+  - purpur
+  - prismarine_rough
+  - prismarine_dark
+  - prismarine_brick
+  - mossy_cobblestone
   - smooth_sandstone
+  - red_nether_brick
 stone_slab_type_3 (String):
+  - end_stone_brick
+  - smooth_red_sandstone
+  - polished_andesite
   - andesite
   - diorite
-  - end_stone_brick
-  - granite
-  - polished_andesite
   - polished_diorite
+  - granite
   - polished_granite
-  - smooth_red_sandstone
 stone_slab_type_4 (String):
-  - cut_red_sandstone
-  - cut_sandstone
   - mossy_stone_brick
   - smooth_quartz
   - stone
+  - cut_sandstone
+  - cut_red_sandstone
 stone_type (String):
-  - andesite
-  - andesite_smooth
-  - diorite
-  - diorite_smooth
+  - stone
   - granite
   - granite_smooth
-  - stone
+  - diorite
+  - diorite_smooth
+  - andesite
+  - andesite_smooth
 stripped_bit (Integer):
   - 0
   - 1
 structure_block_type (String):
-  - corner
   - data
-  - export
-  - invalid
-  - load
   - save
+  - load
+  - corner
+  - invalid
+  - export
 structure_void_type (String):
-  - air
   - void
+  - air
 suspended_bit (Integer):
   - 0
   - 1
 tall_grass_type (String):
   - default
+  - tall
   - fern
   - snow
-  - tall
 toggle_bit (Integer):
   - 0
   - 1
@@ -569,23 +569,31 @@ top_slot_bit (Integer):
   - 0
   - 1
 torch_facing_direction (String):
+  - unknown
+  - west
   - east
   - north
   - south
   - top
-  - unknown
-  - west
 triggered_bit (Integer):
   - 0
   - 1
 turtle_egg_count (String):
-  - four_egg
   - one_egg
-  - three_egg
   - two_egg
+  - three_egg
+  - four_egg
 twisting_vines_age (Integer):
   - 0
   - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
   - 10
   - 11
   - 12
@@ -596,20 +604,12 @@ twisting_vines_age (Integer):
   - 17
   - 18
   - 19
-  - 2
   - 20
   - 21
   - 22
   - 23
   - 24
   - 25
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
 update_bit (Integer):
   - 0
   - 1
@@ -622,12 +622,6 @@ upside_down_bit (Integer):
 vine_direction_bits (Integer):
   - 0
   - 1
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
   - 2
   - 3
   - 4
@@ -636,21 +630,27 @@ vine_direction_bits (Integer):
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 wall_block_type (String):
-  - andesite
-  - brick
   - cobblestone
-  - diorite
-  - end_brick
-  - granite
   - mossy_cobblestone
+  - granite
+  - diorite
+  - andesite
+  - sandstone
+  - brick
+  - stone_brick
   - mossy_stone_brick
   - nether_brick
+  - end_brick
   - prismarine
-  - red_nether_brick
   - red_sandstone
-  - sandstone
-  - stone_brick
+  - red_nether_brick
 wall_connection_type_east (String):
   - none
   - short
@@ -673,6 +673,14 @@ wall_post_bit (Integer):
 weeping_vines_age (Integer):
   - 0
   - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
   - 10
   - 11
   - 12
@@ -683,29 +691,21 @@ weeping_vines_age (Integer):
   - 17
   - 18
   - 19
-  - 2
   - 20
   - 21
   - 22
   - 23
   - 24
   - 25
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
 weirdo_direction (Integer):
   - 0
   - 1
   - 2
   - 3
 wood_type (String):
-  - acacia
-  - birch
-  - dark_oak
-  - jungle
   - oak
   - spruce
+  - birch
+  - jungle
+  - acacia
+  - dark_oak

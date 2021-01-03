@@ -937,13 +937,12 @@ public enum ItemType {
     PURPLE_DYE( ItemPurpleDye.class ),
     MOJANG_BANNER_PATTERN( ItemMojangBannerPattern.class );
 
-
-
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
 
     public static void init() {
+        System.out.println( "Loading items..." );
         if ( INITIALIZED.get() ) {
             return;
         }
@@ -958,6 +957,7 @@ public enum ItemType {
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
         List<Map<String, Object>> map = gson.fromJson( parseItem, List.class );
         ItemType.setItemPalette( map );
+        System.out.println( "Items loading successfully" );
     }
 
 
@@ -1005,4 +1005,4 @@ public enum ItemType {
     public Class<? extends Item> getItemClass() {
         return this.itemClass;
     }
-    }
+}

@@ -15,7 +15,7 @@ public class BlockTallGrass extends Block {
     }
 
     public GrassType getGrassType() {
-        return this.states.containsKey( "tall_grass_type" ) ? GrassType.valueOf(  this.states.getString( "tall_grass_type" ).toUpperCase() ) : GrassType.DEFAULT;
+        return this.stateExists( "tall_grass_type" ) ? GrassType.valueOf(  this.getStringState( "tall_grass_type" ).toUpperCase() ) : GrassType.DEFAULT;
     }
 
     public enum GrassType {

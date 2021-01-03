@@ -1,13 +1,16 @@
 package org.jukeboxmc.block;
 
 import lombok.Getter;
-import org.jukeboxmc.math.Location;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -20,7 +23,7 @@ public class Block {
 
     private int runtimeId;
     private String identifer;
-    protected NbtMap states;
+    private NbtMap states;
 
     private World world;
     private Vector position;
@@ -54,7 +57,7 @@ public class Block {
 
         if ( nbtMap == null ) {
             List<NbtMap> states = new ArrayList<>( STATES.get( this.identifer ).keySet() );
-            nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get(0);
+            nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
         }
 
         this.states = nbtMap;
@@ -84,6 +87,22 @@ public class Block {
         }
         this.runtimeId = STATES.get( this.identifer ).get( this.states );
         return (B) this;
+    }
+
+    public boolean stateExists( String value ) {
+        return this.states.containsKey( value );
+    }
+
+    public String getStringState( String value ) {
+        return this.states.getString( value );
+    }
+
+    public byte getByteState( String value ) {
+        return this.states.getByte( value );
+    }
+
+    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
+        world.setBlock( placePosition, this );
     }
 
     public void setPosition( Vector position ) {

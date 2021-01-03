@@ -3,6 +3,7 @@ package org.jukeboxmc.world;
 import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemPlanks;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelEventPacket;
 import org.jukeboxmc.network.packet.LevelSoundEventPacket;
@@ -78,9 +79,6 @@ public class World {
                     chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.getBlock() );
                     chunk.setBlock( blockX, 3, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
                     chunk.setBlock( blockX, 4, blockZ, 0, BlockType.GRASS.getBlock() );
-                    if ( new Random().nextInt( 5 ) == 1 ) {
-                        chunk.setBlock( blockX, 5, blockZ, 0, BlockType.TALL_GRASS.getBlock() );
-                    }
                 }
             }
             this.chunkMap.put( chunkHash, chunk ); //TODO this.loadChunk;
@@ -104,6 +102,7 @@ public class World {
 
     public void setBlock( Vector location, Block block ) {
         this.setBlock( location, block, 0 );
+        System.out.println( "Place: " + location.toString() + " Block: " + block.getClass().getSimpleName() );
     }
 
     public void setBlock( Vector location, Block block, int layer ) {
@@ -189,14 +188,15 @@ public class World {
 
     public void useItemOn( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace ) {
         Vector placePosition = this.getSidePosition( blockPosition, blockFace );
-        Block placedBlock =  player.getInventory().getItemInHand().getBlock();
+        Item itemInHand = player.getInventory().getItemInHand();
+        Block placedBlock = itemInHand.getBlock();
 
-        if ( placedBlock.getIdentifer().equals( "minecraft:air" ) ) {
+        if ( placedBlock instanceof BlockAir ) {
             return;
         }
 
+        placedBlock.placeBlock( this, placePosition, itemInHand );
         this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
-        this.setBlock( placePosition, placedBlock );
     }
 
     private Vector getSidePosition( Vector blockPosition, BlockFace blockFace ) {
