@@ -4,9 +4,9 @@ package org.jukeboxmc.item;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemLog2 extends Item {
+public class ItemAcaciaLog extends Item {
 
-    public ItemLog2() {
+    public ItemAcaciaLog() {
         super( "minecraft:log2", 162 );
     }
 
