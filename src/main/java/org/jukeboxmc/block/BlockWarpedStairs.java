@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockWarpedStairs extends Block {
 
-    public BlockWarpedStairs(String identifer) {
+    public BlockWarpedStairs() {
         super("minecraft:warped_stairs");
     }
 }

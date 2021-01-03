@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCrimsonFence extends Block {
 
-    public BlockCrimsonFence(String identifer) {
+    public BlockCrimsonFence() {
         super("minecraft:crimson_fence");
     }
 }

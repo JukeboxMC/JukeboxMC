@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockWarpedWallSign extends Block {
 
-    public BlockWarpedWallSign(String identifer) {
+    public BlockWarpedWallSign() {
         super("minecraft:warped_wall_sign");
     }
 }

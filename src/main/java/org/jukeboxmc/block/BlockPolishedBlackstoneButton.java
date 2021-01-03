@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockPolishedBlackstoneButton extends Block {
 
-    public BlockPolishedBlackstoneButton(String identifer) {
+    public BlockPolishedBlackstoneButton() {
         super("minecraft:polished_blackstone_button");
     }
 }

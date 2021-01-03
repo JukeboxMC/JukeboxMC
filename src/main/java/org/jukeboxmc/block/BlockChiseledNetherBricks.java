@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockChiseledNetherBricks extends Block {
 
-    public BlockChiseledNetherBricks(String identifer) {
+    public BlockChiseledNetherBricks() {
         super("minecraft:chiseled_nether_bricks");
     }
 }

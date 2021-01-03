@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockBlackstoneSlab extends Block {
 
-    public BlockBlackstoneSlab(String identifer) {
+    public BlockBlackstoneSlab() {
         super("minecraft:blackstone_slab");
     }
 }

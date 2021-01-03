@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockSoulTorch extends Block {
 
-    public BlockSoulTorch(String identifer) {
+    public BlockSoulTorch() {
         super("minecraft:soul_torch");
     }
 }

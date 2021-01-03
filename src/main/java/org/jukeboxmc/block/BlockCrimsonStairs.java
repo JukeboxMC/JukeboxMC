@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCrimsonStairs extends Block {
 
-    public BlockCrimsonStairs(String identifer) {
+    public BlockCrimsonStairs() {
         super("minecraft:crimson_stairs");
     }
 }

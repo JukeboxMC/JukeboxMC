@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockWarpedFenceGate extends Block {
 
-    public BlockWarpedFenceGate(String identifer) {
+    public BlockWarpedFenceGate() {
         super("minecraft:warped_fence_gate");
     }
 }

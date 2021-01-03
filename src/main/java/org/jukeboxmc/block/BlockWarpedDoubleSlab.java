@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockWarpedDoubleSlab extends Block {
 
-    public BlockWarpedDoubleSlab(String identifer) {
+    public BlockWarpedDoubleSlab() {
         super("minecraft:warped_double_slab");
     }
 }

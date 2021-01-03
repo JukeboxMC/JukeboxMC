@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCryingObsidian extends Block {
 
-    public BlockCryingObsidian(String identifer) {
+    public BlockCryingObsidian() {
         super("minecraft:crying_obsidian");
     }
 }

@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockWarpedButton extends Block {
 
-    public BlockWarpedButton(String identifer) {
+    public BlockWarpedButton() {
         super("minecraft:warped_button");
     }
 }

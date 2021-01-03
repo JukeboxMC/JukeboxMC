@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockNetheriteBlock extends Block {
 
-    public BlockNetheriteBlock(String identifer) {
+    public BlockNetheriteBlock() {
         super("minecraft:netherite_block");
     }
 }

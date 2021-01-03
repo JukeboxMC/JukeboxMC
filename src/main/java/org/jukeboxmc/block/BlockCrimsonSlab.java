@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCrimsonSlab extends Block {
 
-    public BlockCrimsonSlab(String identifer) {
+    public BlockCrimsonSlab() {
         super("minecraft:crimson_slab");
     }
 }

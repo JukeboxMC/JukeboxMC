@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockNetherGoldOre extends Block {
 
-    public BlockNetherGoldOre(String identifer) {
+    public BlockNetherGoldOre() {
         super("minecraft:nether_gold_ore");
     }
 }

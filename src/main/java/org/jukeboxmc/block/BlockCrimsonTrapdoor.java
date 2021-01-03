@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCrimsonTrapdoor extends Block {
 
-    public BlockCrimsonTrapdoor(String identifer) {
+    public BlockCrimsonTrapdoor() {
         super("minecraft:crimson_trapdoor");
     }
 }

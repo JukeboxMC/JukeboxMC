@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockSoulCampfire extends Block {
 
-    public BlockSoulCampfire(String identifer) {
+    public BlockSoulCampfire() {
         super("minecraft:soul_campfire");
     }
 }

@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockCrimsonButton extends Block {
 
-    public BlockCrimsonButton(String identifer) {
+    public BlockCrimsonButton() {
         super("minecraft:crimson_button");
     }
 }

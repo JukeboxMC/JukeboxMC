@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 public class BlockTwistingVines extends Block {
 
-    public BlockTwistingVines(String identifer) {
+    public BlockTwistingVines() {
         super("minecraft:twisting_vines");
     }
 }
