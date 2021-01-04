@@ -6,7 +6,7 @@ package org.jukeboxmc.entity.metadata;
  */
 public enum EntityFlag {
 
-    ONFIRE( 0 ),
+    ON_FIRE( 0 ),
     SNEAKING( 1 ),
     SPRINTING( 3 ),
     ACTION( 4 ),

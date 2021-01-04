@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import lombok.Getter;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
@@ -26,7 +27,7 @@ public class Block {
     private NbtMap states;
 
     private World world;
-    private Vector position;
+    private BlockPosition position;
 
     public Block( String identifer ) {
         this( identifer, null );
@@ -101,15 +102,15 @@ public class Block {
         return this.states.getByte( value );
     }
 
-    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
+    public void placeBlock( World world, BlockPosition placePosition, Item itemIndHand ) {
         world.setBlock( placePosition, this );
     }
 
-    public void setPosition( Vector position ) {
-        this.position = position;
+    public World getWorld() {
+        return this.world;
     }
 
-    public void setWorld( World world ) {
+    public void setWorld(World world) {
         this.world = world;
     }
 
@@ -117,4 +118,11 @@ public class Block {
         return this.getClass().getSimpleName();
     }
 
+    public BlockPosition getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(BlockPosition position) {
+        this.position = position;
+    }
 }

@@ -2,8 +2,10 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.utils.BinaryStream;
@@ -27,7 +29,7 @@ public class InventoryTransactionPacket extends Packet {
     private boolean hasNetworkIds;
     private Transaction[] transactions;
     private int actionType;
-    private Vector blockPosition;
+    private BlockPosition blockPosition;
     private BlockFace blockFace;
     private int hotbarSlot;
     private Item itemInHand;
@@ -71,7 +73,7 @@ public class InventoryTransactionPacket extends Packet {
         switch ( this.type ) {
             case TYPE_USE_ITEM:
                 this.actionType = this.readUnsignedVarInt();
-                this.blockPosition = new Vector( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
+                this.blockPosition = new BlockPosition( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
                 this.blockFace = this.readBlockFace();
                 this.hotbarSlot = this.readSignedVarInt();
                 this.itemInHand = this.readItem();

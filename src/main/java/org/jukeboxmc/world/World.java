@@ -4,6 +4,7 @@ import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemPlanks;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelEventPacket;
 import org.jukeboxmc.network.packet.LevelSoundEventPacket;
@@ -87,29 +88,31 @@ public class World {
         return this.chunkMap.get( chunkHash );
     }
 
-    public Block getBlock( Vector location ) {
+    public Block getBlock( BlockPosition location ) {
         return this.getBlock( location, 0 );
     }
 
-    public Block getBlock( Vector location, int layer ) {
-        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
+    public Block getBlock( BlockPosition location, int layer ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        return chunk.getBlock( location.getX(), location.getY(), location.getZ(), layer );
     }
 
     public Block getBlockAt( int x, int y, int z ) {
-        return this.getBlock( new Vector( x, y, z ), 0 );
+        return this.getBlock( new BlockPosition(x, y, z), 0 );
     }
 
-    public void setBlock( Vector location, Block block ) {
+    public void setBlock( BlockPosition location, Block block ) {
         this.setBlock( location, block, 0 );
     }
 
-    public void setBlock( Vector location, Block block, int layer ) {
-        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        chunk.setBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer, block );
+    public void setBlock(BlockPosition location, Block block, int layer ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        chunk.setBlock( location.getX(), location.getY(), location.getZ(), layer, block );
 
-        block.setWorld( this );
-        block.setPosition( location );
+        block.getPosition().setWorld( this );
+        block.getPosition().setX(location.getX());
+        block.getPosition().setY(location.getY());
+        block.getPosition().setZ(location.getZ());
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setPosition( location );
@@ -185,8 +188,8 @@ public class World {
 
     }
 
-    public void useItemOn( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace ) {
-        Vector placePosition = this.getSidePosition( blockPosition, blockFace );
+    public void useItemOn( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace ) {
+        BlockPosition placePosition = this.getSidePosition( blockPosition, blockFace );
         Item itemInHand = player.getInventory().getItemInHand();
         Block placedBlock = itemInHand.getBlock();
 
@@ -195,39 +198,39 @@ public class World {
         }
 
         placedBlock.placeBlock( this, placePosition, itemInHand );
-        this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
+        this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
     }
 
-    private Vector getSidePosition( Vector blockPosition, BlockFace blockFace ) {
+    private BlockPosition getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
         switch ( blockFace ) {
             case DOWN:
-                return this.getRelative( blockPosition, Vector.DOWN );
+                return this.getRelative( blockPosition, BlockPosition.DOWN );
             case UP:
-                return this.getRelative( blockPosition, Vector.UP );
+                return this.getRelative( blockPosition, BlockPosition.UP );
             case NORTH:
-                return this.getRelative( blockPosition, Vector.NORTH );
+                return this.getRelative( blockPosition, BlockPosition.NORTH );
             case SOUTH:
-                return this.getRelative( blockPosition, Vector.SOUTH );
+                return this.getRelative( blockPosition, BlockPosition.SOUTH );
             case WEST:
-                return this.getRelative( blockPosition, Vector.WEST );
+                return this.getRelative( blockPosition, BlockPosition.WEST );
             case EAST:
-                return this.getRelative( blockPosition, Vector.EAST );
+                return this.getRelative( blockPosition, BlockPosition.EAST );
         }
         return null;
     }
 
-    private Vector getRelative( Vector blockPosition, Vector position ) {
-        float x = blockPosition.getX() + position.getX();
-        float y = blockPosition.getY() + position.getY();
-        float z = blockPosition.getZ() + position.getZ();
-        return new Vector( x, y, z );
+    private BlockPosition getRelative( BlockPosition blockPosition, BlockPosition position ) {
+        int x = blockPosition.getX() + position.getX();
+        int y = blockPosition.getY() + position.getY();
+        int z = blockPosition.getZ() + position.getZ();
+        return new BlockPosition( x, y, z );
     }
 
-    public void breakBlock( Vector blockPosition, boolean dropItem ) {
+    public void breakBlock( BlockPosition blockPosition, boolean dropItem ) {
         Block breakBlock = this.getBlock( blockPosition );
 
-        this.playSound( blockPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( blockPosition, 2001, breakBlock.getRuntimeId() );
+        this.playSound( blockPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( blockPosition.toVector(), 2001, breakBlock.getRuntimeId() );
         this.setBlock( blockPosition, new BlockAir() );
 
         if ( dropItem ) {
