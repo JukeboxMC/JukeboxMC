@@ -105,16 +105,15 @@ public class Block {
         world.setBlock( placePosition, this );
     }
 
-    public void setPosition( Vector position ) {
-        this.position = position;
-    }
-
-    public void setWorld( World world ) {
-        this.world = world;
+    public World getWorld() {
+        return this.world;
     }
 
     public String getName() {
         return this.getClass().getSimpleName();
     }
 
+    public Vector getPosition() {
+        return this.position;
+    }
 }
