@@ -36,7 +36,7 @@ public class JukeboxMC {
         BlockType.init();
         ItemType.init();
 
-        this.address = new InetSocketAddress( "0.0.0.0", 19345 );
+        this.address = new InetSocketAddress( "0.0.0.0", 19132 );
         this.server = new Server( this.address );
 
         TerminalConsole terminalConsole = new TerminalConsole( this.server );
