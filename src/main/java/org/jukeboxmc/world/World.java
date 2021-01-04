@@ -1,9 +1,7 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemPlanks;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelEventPacket;
@@ -14,9 +12,10 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
