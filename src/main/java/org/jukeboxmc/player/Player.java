@@ -7,7 +7,7 @@ import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
-import org.jukeboxmc.entity.passiv.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.inventory.PlayerInventory;
 import org.jukeboxmc.inventory.CursorInventory;
 import org.jukeboxmc.math.Location;

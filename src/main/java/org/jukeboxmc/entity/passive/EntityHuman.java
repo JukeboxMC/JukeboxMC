@@ -1,11 +1,9 @@
-package org.jukeboxmc.entity.passiv;
+package org.jukeboxmc.entity.passive;
 
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.metadata.EntityFlag;
-import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.inventory.PlayerInventory;
-import org.jukeboxmc.network.packet.SetEntityDataPacket;
 
 /**
  * @author LucGamesYT
