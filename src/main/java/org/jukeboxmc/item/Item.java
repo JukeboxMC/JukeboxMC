@@ -3,7 +3,6 @@ package org.jukeboxmc.item;
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
@@ -19,7 +18,7 @@ import java.util.List;
 @ToString
 public abstract class Item implements Cloneable {
 
-    private String identifer;
+    private String identifier;
     private int runtimeId;
 
     protected int amount;
@@ -31,12 +30,12 @@ public abstract class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
-    public Item( String identifer, int runtimeId ) {
-        this( identifer, runtimeId, 0, null );
+    public Item(String identifier, int runtimeId ) {
+        this(identifier, runtimeId, 0, null );
     }
 
-    public Item( String identifer, int runtimeId, int meta, NbtMap nbt ) {
-        this.identifer = identifer;
+    public Item(String identifier, int runtimeId, int meta, NbtMap nbt ) {
+        this.identifier = identifier;
         this.runtimeId = runtimeId;
         this.amount = 1;
         this.meta = meta;
@@ -98,8 +97,8 @@ public abstract class Item implements Cloneable {
         return this.runtimeId;
     }
 
-    public String getIdentifer() {
-        return this.identifer;
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     public int getAmount() {
@@ -135,7 +134,7 @@ public abstract class Item implements Cloneable {
     public boolean equals( Object obj ) {
         if ( obj instanceof Item ) {
             Item item = (Item) obj;
-            return item.getIdentifer().equals( this.getIdentifer() ) && item.getMeta() == this.getMeta();
+            return item.getIdentifier().equals( this.getIdentifier() ) && item.getMeta() == this.getMeta();
         } else {
             return false;
         }
@@ -146,7 +145,7 @@ public abstract class Item implements Cloneable {
         try {
             Item clone = (Item) super.clone();
             clone.runtimeId = this.runtimeId;
-            clone.identifer = this.identifer;
+            clone.identifier = this.identifier;
             clone.amount = this.amount;
             clone.meta = this.meta;
             clone.nbt = this.nbt;
@@ -164,7 +163,7 @@ public abstract class Item implements Cloneable {
     public void toNetwork( NbtMapBuilder builder ) {
         builder.putByte( "Count", (byte) this.amount );
         builder.putShort( "Damage", (short) this.meta );
-        builder.putString( "Name", this.identifer );
+        builder.putString( "Name", this.identifier);
         builder.putByte( "WasPickedUp", (byte) 0 );
 
         if ( this.customName != null || this.lore != null ) {
