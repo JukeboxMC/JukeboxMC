@@ -110,11 +110,19 @@ public class Block {
         return this.world;
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
     public String getName() {
         return this.getClass().getSimpleName();
     }
 
     public BlockPosition getPosition() {
         return this.position;
+    }
+
+    public void setPosition(BlockPosition position) {
+        this.position = position;
     }
 }

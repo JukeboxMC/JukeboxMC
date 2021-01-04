@@ -1,7 +1,9 @@
 package org.jukeboxmc.math;
 
+import lombok.ToString;
 import org.jukeboxmc.world.World;
 
+@ToString
 public class BlockPosition {
     public static final BlockPosition UP = new BlockPosition( 0, 1, 0 );
     public static final BlockPosition DOWN = new BlockPosition( 0, -1, 0 );
