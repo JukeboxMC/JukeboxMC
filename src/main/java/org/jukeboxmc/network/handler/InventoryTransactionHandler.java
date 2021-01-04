@@ -5,6 +5,7 @@ import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -46,7 +47,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                 System.out.println( "Normal" );
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM:
-                Vector blockPosition = transactionPacket.getBlockPosition();
+                BlockPosition blockPosition = transactionPacket.getBlockPosition();
                 Vector clickPosition = transactionPacket.getClickPosition();
                 BlockFace blockFace = transactionPacket.getBlockFace();
 

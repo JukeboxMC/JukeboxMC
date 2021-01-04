@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.World;
 
@@ -15,7 +16,7 @@ public class BlockPlanks extends Block {
     }
 
     @Override
-    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
+    public void placeBlock(World world, BlockPosition placePosition, Item itemIndHand ) {
         this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
