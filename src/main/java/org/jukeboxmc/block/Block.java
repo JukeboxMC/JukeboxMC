@@ -3,7 +3,6 @@ package org.jukeboxmc.block;
 import lombok.Getter;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.world.World;
@@ -23,31 +22,31 @@ public class Block {
     private static final Map<String, Map<NbtMap, Integer>> STATES = new HashMap<>();
 
     private int runtimeId;
-    private String identifer;
+    private String identifier;
     private NbtMap states;
 
     private World world;
     private BlockPosition position;
 
-    public Block( String identifer ) {
-        this( identifer, null );
+    public Block( String identifier) {
+        this(identifier, null );
     }
 
-    public Block( String identifer, NbtMap nbtMap ) {
-        this.identifer = identifer.toLowerCase();
+    public Block(String identifier, NbtMap nbtMap ) {
+        this.identifier = identifier.toLowerCase();
 
-        if ( !STATES.containsKey( this.identifer ) ) {
+        if ( !STATES.containsKey( this.identifier) ) {
             Map<NbtMap, Integer> toRuntimeId = new HashMap<>();
-            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifer ) ) ) {
+            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifier) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
-            STATES.put( this.identifer, toRuntimeId );
+            STATES.put( this.identifier, toRuntimeId );
             for ( NbtMap state : toRuntimeId.keySet() ) {
                 try {
                     int runtimeId = toRuntimeId.get( state );
                     Block block = this.getClass().newInstance();
                     block.runtimeId = runtimeId;
-                    block.identifer = identifer;
+                    block.identifier = identifier;
                     block.states = state;
                     BlockPalette.RUNTIME_TO_BLOCK.put( runtimeId, block );
                 } catch ( InstantiationException | IllegalAccessException e ) {
@@ -57,36 +56,36 @@ public class Block {
         }
 
         if ( nbtMap == null ) {
-            List<NbtMap> states = new ArrayList<>( STATES.get( this.identifer ).keySet() );
+            List<NbtMap> states = new ArrayList<>( STATES.get( this.identifier).keySet() );
             nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
         }
 
         this.states = nbtMap;
-        this.runtimeId = STATES.get( this.identifer ).get( this.states );
+        this.runtimeId = STATES.get( this.identifier).get( this.states );
     }
 
     public <B extends Block> B setData( int data ) {
-        this.states = new ArrayList<>( STATES.get( this.identifer ).keySet() ).get( data );
-        this.runtimeId = STATES.get( this.identifer ).get( this.states );
+        this.states = new ArrayList<>( STATES.get( this.identifier).keySet() ).get( data );
+        this.runtimeId = STATES.get( this.identifier).get( this.states );
         return (B) this;
     }
 
     public <B extends Block> B setStates( String state, Object value ) {
         if ( !this.states.containsKey( state ) ) {
-            throw new AssertionError( "State " + state + " was not found in block " + this.identifer );
+            throw new AssertionError( "State " + state + " was not found in block " + this.identifier);
         }
         if ( this.states.get( state ).getClass() != value.getClass() ) {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
         }
         NbtMapBuilder nbtMapBuilder = this.states.toBuilder();
         nbtMapBuilder.put( state, value );
-        for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifer ).entrySet() ) {
+        for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifier).entrySet() ) {
             NbtMap blockMap = entry.getKey();
             if ( blockMap.equals( nbtMapBuilder ) ) {
                 this.states = blockMap;
             }
         }
-        this.runtimeId = STATES.get( this.identifer ).get( this.states );
+        this.runtimeId = STATES.get( this.identifier).get( this.states );
         return (B) this;
     }
 
