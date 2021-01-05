@@ -1,4 +1,4 @@
-package org.jukeboxmc.block;
+package org.jukeboxmc.block.direction;
 
 /**
  * @author LucGamesYT
@@ -8,10 +8,10 @@ public enum BlockFace {
 
     DOWN,
     UP,
-    EAST,
-    WEST,
     NORTH,
-    SOUTH;
+    SOUTH,
+    WEST,
+    EAST;
 
     public BlockFace opposite() {
         switch ( this ) {
@@ -19,12 +19,12 @@ public enum BlockFace {
                 return UP;
             case UP:
                 return DOWN;
-            case EAST:
-                return WEST;
-            case WEST:
-                return EAST;
             case NORTH:
                 return SOUTH;
+            case WEST:
+                return EAST;
+            case EAST:
+                return WEST;
             default:
                 return NORTH;
         }

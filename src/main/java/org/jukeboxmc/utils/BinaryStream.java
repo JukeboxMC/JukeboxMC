@@ -2,7 +2,7 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.jukeboxmc.block.BlockFace;
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.item.Item;

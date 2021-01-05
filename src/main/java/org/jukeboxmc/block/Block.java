@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import lombok.Getter;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.world.World;
@@ -70,7 +71,7 @@ public class Block {
         return (B) this;
     }
 
-    public <B extends Block> B setStates( String state, Object value ) {
+    public <B extends Block> B setState( String state, Object value ) {
         if ( !this.states.containsKey( state ) ) {
             throw new AssertionError( "State " + state + " was not found in block " + this.identifier);
         }
@@ -101,15 +102,19 @@ public class Block {
         return this.states.getByte( value );
     }
 
-    public void placeBlock( World world, BlockPosition placePosition, Item itemIndHand ) {
+    public int getIntState( String value ) {
+        return this.states.getInt( value );
+    }
+
+    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
         world.setBlock( placePosition, this );
     }
 
-    public World getWorld() {
-        return this.world;
+    public void setPosition( BlockPosition position ) {
+        this.position = position;
     }
 
-    public void setWorld(World world) {
+    public void setWorld( World world ) {
         this.world = world;
     }
 
@@ -117,11 +122,4 @@ public class Block {
         return this.getClass().getSimpleName();
     }
 
-    public BlockPosition getPosition() {
-        return this.position;
-    }
-
-    public void setPosition(BlockPosition position) {
-        this.position = position;
-    }
 }

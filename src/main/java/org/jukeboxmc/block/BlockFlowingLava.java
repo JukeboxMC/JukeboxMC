@@ -9,4 +9,12 @@ public class BlockFlowingLava extends Block {
     public BlockFlowingLava() {
         super( "minecraft:flowing_lava" );
     }
+
+    public void setLiquidDepth( int value ) {
+        this.setState( "liquid_depth", value );
+    }
+
+    public int getLiquidDepth() {
+        return this.stateExists( "liquid_depth" ) ? this.getIntState( "liquid_depth" ) : 0;
+    }
 }

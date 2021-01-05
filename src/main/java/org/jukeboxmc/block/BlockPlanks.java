@@ -16,13 +16,13 @@ public class BlockPlanks extends Block {
     }
 
     @Override
-    public void placeBlock(World world, BlockPosition placePosition, Item itemIndHand ) {
+    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
         this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
 
     public void setWoodType( WoodType woodType ) {
-        this.setStates( "wood_type", woodType.name().toLowerCase() );
+        this.setState( "wood_type", woodType.name().toLowerCase() );
     }
 
     public WoodType getWoodType() {

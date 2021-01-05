@@ -11,7 +11,7 @@ public class BlockDirt extends Block {
     }
 
     public BlockDirt setDirtType( DirtType dirtType ) {
-        return this.setStates( "dirt_type", dirtType.name().toLowerCase() );
+        return this.setState( "dirt_type", dirtType.name().toLowerCase() );
     }
 
     public DirtType getDirtType() {

@@ -9,4 +9,28 @@ public class BlockCoralBlock extends Block {
     public BlockCoralBlock() {
         super( "minecraft:coral_block" );
     }
+
+    public void setCoralColor( CoralColor coralColor ) {
+        this.setState( "coral_color", coralColor.name().toLowerCase() );
+    }
+
+    public CoralColor getCoralColor() {
+        return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ).toUpperCase() ) : CoralColor.BLUE;
+    }
+
+    public void setDead( boolean value ) {
+        this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
+    }
+
+    public boolean isDead() {
+        return this.stateExists( "dead_bit" ) && this.getByteState( "dead_bit" ) == 1;
+    }
+
+    public enum CoralColor {
+        BLUE,
+        PINK,
+        PURPLE,
+        RED,
+        YELLOW
+    }
 }

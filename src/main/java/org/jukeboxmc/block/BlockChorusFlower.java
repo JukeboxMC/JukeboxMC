@@ -9,4 +9,12 @@ public class BlockChorusFlower extends Block {
     public BlockChorusFlower() {
         super( "minecraft:chorus_flower" );
     }
+
+    public void setAge( int value ) {
+        this.setState( "age", value );
+    }
+
+    public int getAge() {
+        return this.stateExists( "age" ) ? this.getIntState( "age" ) : 0;
+    }
 }

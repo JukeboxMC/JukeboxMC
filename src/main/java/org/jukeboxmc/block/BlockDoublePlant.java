@@ -11,15 +11,15 @@ public class BlockDoublePlant extends Block {
     }
 
     public BlockDoublePlant setPlantType( PlantType plantType ) {
-        return this.setStates( "double_plant_type", plantType.name().toLowerCase() );
+        return this.setState( "double_plant_type", plantType.name().toLowerCase() );
     }
 
     public PlantType getPlantType() {
         return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ).toUpperCase() ) : PlantType.SUNFLOWER;
     }
 
-    public BlockDoublePlant setUpperBlock( boolean value ) {
-        return this.setStates( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
+    public void setUpperBlock( boolean value ) {
+        this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isUpperBlock( boolean value ) {

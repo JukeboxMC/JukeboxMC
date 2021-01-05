@@ -11,7 +11,7 @@ public class BlockTallGrass extends Block {
     }
 
     public BlockTallGrass setGrassType( GrassType grassType ) {
-        return this.setStates( "tall_grass_type", grassType.name().toLowerCase() );
+        return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }
 
     public GrassType getGrassType() {
