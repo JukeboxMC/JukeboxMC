@@ -34,7 +34,7 @@ public class BlockPosition {
         this.z = z;
     }
 
-    public BlockPosition(Vector vector, World world) {
+    public BlockPosition(World world, Vector vector) {
         this.world = world;
         this.x = vector.getFloorX();
         this.y = vector.getFloorY();
