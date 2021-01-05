@@ -1,6 +1,7 @@
 package org.jukeboxmc.math;
 
 import lombok.ToString;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.world.World;
 
 @ToString
@@ -19,9 +20,25 @@ public class BlockPosition {
     private int z;
 
     public BlockPosition(int x, int y, int z) {
+        this(x, y, z, Server.getInstance().getDefaultWorld());
+    }
+
+    public BlockPosition(Vector vector) {
+        this(vector.getFloorX(), vector.getFloorY(), vector.getFloorZ(), Server.getInstance().getDefaultWorld());
+    }
+
+    public BlockPosition(int x, int y, int z, World world) {
+        this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public BlockPosition(Vector vector, World world) {
+        this.world = world;
+        this.x = vector.getFloorX();
+        this.y = vector.getFloorY();
+        this.z = vector.getFloorZ();
     }
 
     public int getX() {
