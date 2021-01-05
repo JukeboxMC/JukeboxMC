@@ -6,13 +6,13 @@ import org.jukeboxmc.world.World;
 
 @ToString
 public class BlockPosition {
-    public static final BlockPosition UP = new BlockPosition( 0, 1, 0 );
-    public static final BlockPosition DOWN = new BlockPosition( 0, -1, 0 );
+    public static final BlockPosition UP = new BlockPosition(0, 1, 0);
+    public static final BlockPosition DOWN = new BlockPosition(0, -1, 0);
 
-    public static final BlockPosition NORTH = new BlockPosition( 0, 0, -1 );
-    public static final BlockPosition EAST = new BlockPosition( 1, 0, 0 );
-    public static final BlockPosition SOUTH = new BlockPosition( 0, 0, 1 );
-    public static final BlockPosition WEST = new BlockPosition( -1, 0, 0 );
+    public static final BlockPosition NORTH = new BlockPosition(0, 0, -1);
+    public static final BlockPosition EAST = new BlockPosition(1, 0, 0);
+    public static final BlockPosition SOUTH = new BlockPosition(0, 0, 1);
+    public static final BlockPosition WEST = new BlockPosition(-1, 0, 0);
 
     private World world;
     private int x;
@@ -20,14 +20,14 @@ public class BlockPosition {
     private int z;
 
     public BlockPosition(int x, int y, int z) {
-        this(x, y, z, Server.getInstance().getDefaultWorld());
+        this(Server.getInstance().getDefaultWorld(), x, y, z);
     }
 
     public BlockPosition(Vector vector) {
-        this(vector.getFloorX(), vector.getFloorY(), vector.getFloorZ(), Server.getInstance().getDefaultWorld());
+        this(Server.getInstance().getDefaultWorld(), vector.getFloorX(), vector.getFloorY(), vector.getFloorZ());
     }
 
-    public BlockPosition(int x, int y, int z, World world) {
+    public BlockPosition(World world, int x, int y, int z) {
         this.world = world;
         this.x = x;
         this.y = y;
