@@ -6,35 +6,36 @@ import org.jukeboxmc.world.World;
 
 @ToString
 public class BlockPosition {
-    public static final BlockPosition UP = new BlockPosition(0, 1, 0);
-    public static final BlockPosition DOWN = new BlockPosition(0, -1, 0);
 
-    public static final BlockPosition NORTH = new BlockPosition(0, 0, -1);
-    public static final BlockPosition EAST = new BlockPosition(1, 0, 0);
-    public static final BlockPosition SOUTH = new BlockPosition(0, 0, 1);
-    public static final BlockPosition WEST = new BlockPosition(-1, 0, 0);
+    public static final BlockPosition UP = new BlockPosition( 0, 1, 0 );
+    public static final BlockPosition DOWN = new BlockPosition( 0, -1, 0 );
+
+    public static final BlockPosition NORTH = new BlockPosition( 0, 0, -1 );
+    public static final BlockPosition EAST = new BlockPosition( 1, 0, 0 );
+    public static final BlockPosition SOUTH = new BlockPosition( 0, 0, 1 );
+    public static final BlockPosition WEST = new BlockPosition( -1, 0, 0 );
 
     private World world;
     private int x;
     private int y;
     private int z;
 
-    public BlockPosition(int x, int y, int z) {
-        this(Server.getInstance().getDefaultWorld(), x, y, z);
+    public BlockPosition( int x, int y, int z ) {
+        this( Server.getInstance().getDefaultWorld(), x, y, z );
     }
 
-    public BlockPosition(Vector vector) {
-        this(Server.getInstance().getDefaultWorld(), vector.getFloorX(), vector.getFloorY(), vector.getFloorZ());
+    public BlockPosition( Vector vector ) {
+        this( Server.getInstance().getDefaultWorld(), vector.getFloorX(), vector.getFloorY(), vector.getFloorZ() );
     }
 
-    public BlockPosition(World world, int x, int y, int z) {
+    public BlockPosition( World world, int x, int y, int z ) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public BlockPosition(World world, Vector vector) {
+    public BlockPosition( World world, Vector vector ) {
         this.world = world;
         this.x = vector.getFloorX();
         this.y = vector.getFloorY();
@@ -45,7 +46,7 @@ public class BlockPosition {
         return this.x;
     }
 
-    public void setX(int x) {
+    public void setX( int x ) {
         this.x = x;
     }
 
@@ -53,7 +54,7 @@ public class BlockPosition {
         return this.y;
     }
 
-    public void setY(int y) {
+    public void setY( int y ) {
         this.y = y;
     }
 
@@ -61,19 +62,19 @@ public class BlockPosition {
         return this.z;
     }
 
-    public void setZ(int z) {
+    public void setZ( int z ) {
         this.z = z;
     }
 
     public Vector toVector() {
-        return new Vector(this.x, this.y, this.z);
+        return new Vector( this.x, this.y, this.z );
     }
 
     public World getWorld() {
         return world;
     }
 
-    public void setWorld(World world) {
+    public void setWorld( World world ) {
         this.world = world;
     }
 }
