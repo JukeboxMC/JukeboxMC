@@ -70,4 +70,8 @@ public class Vector {
     public Vector subtract(float x, float y, float z) {
         return new Vector(this.x - x, this.y - y, this.z - z);
     }
+
+    public BlockPosition toBlockPosition() {
+        return new BlockPosition(Math.round(x), Math.round(y), Math.round(z));
+    }
 }
