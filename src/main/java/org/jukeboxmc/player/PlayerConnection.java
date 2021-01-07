@@ -394,7 +394,7 @@ public class PlayerConnection {
         this.sendPacket( removeEntityPacket );
     }
 
-    public void firstSpawn() {
+    public void joinGame() {
         this.player.setSpawned( true );
         this.sendNetworkChunkPublisher();
 
@@ -413,20 +413,6 @@ public class PlayerConnection {
         }
         this.sendMetadata();
         //JoinEvent
-
-        Timer timer = new Timer();
-        timer.schedule( new TimerTask() {
-            @Override
-            public void run() {
-                PlayerInventory inventory = player.getInventory();
-                int slot = 0;
-                for ( int i = 0; i <= 15; i ++ ) {
-                    ItemFireworkStar item = new ItemFireworkStar();
-                    item.setMeta( i );
-                    inventory.setItem( slot++, item );
-                }
-            }
-        }, 1000 );
     }
 
     public void leaveGame() {
