@@ -10,5 +10,19 @@ public class ItemStonebrick extends Item {
         super( "minecraft:stonebrick", 98 );
     }
 
+    public void setStoneType( StoneType stoneType ) {
+        this.setMeta( stoneType.ordinal() );
+    }
+
+    public StoneType getStoneType() {
+        return StoneType.values()[this.getMeta()];
+    }
+
+    public enum StoneType {
+        STONE_BRICKS,
+        MOSSY_STONE_BRICKS,
+        CRACKED_STONE_BRICKS,
+        CHISELED_STONE_BRICKS
+    }
 
 }

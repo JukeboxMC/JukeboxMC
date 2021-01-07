@@ -10,5 +10,20 @@ public class ItemWoodenSlab extends Item {
         super( "minecraft:wooden_slab", 158 );
     }
 
+    public void setWoodType( WoodType woodType ) {
+        this.setMeta( woodType.ordinal() );
+    }
 
+    public WoodType getWoodType() {
+        return WoodType.values()[this.getMeta()];
+    }
+
+    public enum WoodType {
+        OAK,
+        SPRUCE,
+        BIRCH,
+        JUNGLE,
+        ACACIA,
+        DARK_OAK
+    }
 }

@@ -10,5 +10,18 @@ public class ItemLog extends Item {
         super( "minecraft:log", 17 );
     }
 
+    public void setLogType( LogType logType ) {
+        this.setMeta( logType.ordinal() );
+    }
 
+    public LogType getLogType() {
+        return LogType.values()[this.getMeta()];
+    }
+
+    public enum LogType {
+        OAK,
+        SPRUCE,
+        BIRCH,
+        JUNGLE
+    }
 }

@@ -951,6 +951,19 @@ public enum ItemType {
 
         InputStream creativeItems = JukeboxMC.class.getClassLoader().getResourceAsStream( "creative_items.json" );
         JsonElement parseCreative = new JsonParser().parse( new InputStreamReader( creativeItems ) );
+        List<Map<String, Object>> creativeItemsList = (List) ( gson.fromJson( parseCreative, Map.class ) ).get( "items" );
+
+        List<Integer> ids = new ArrayList<>();
+        for ( Map<String, Object> map : creativeItemsList ) {
+            if ( map.containsKey( "damage" ) ) {
+                int id = (int) (double) map.get( "id" );
+                if(!ids.contains( id )) {
+                    System.out.println( "ID: " + id );
+                    ids.add( id );
+                }
+            }
+        }
+
         ItemType.setCreativeItems( (List) ( gson.fromJson( parseCreative, Map.class ) ).get( "items" ) );
 
         InputStream itemPalette = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempalette.json" );

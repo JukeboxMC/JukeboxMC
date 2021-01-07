@@ -10,5 +10,17 @@ public class ItemPrismarine extends Item {
         super( "minecraft:prismarine", 168 );
     }
 
+    public void setPrismarineType( PrismarineType prismarineType ) {
+        this.setMeta( prismarineType.ordinal() );
+    }
 
+    public PrismarineType getPrismarineType() {
+        return PrismarineType.values()[this.getMeta()];
+    }
+
+    public enum PrismarineType {
+        PRISMARINE,
+        DARK_PRISMARINE,
+        PRISMARINE_BRICKS
+    }
 }

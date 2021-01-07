@@ -10,8 +10,21 @@ public class ItemStone extends Item {
         super( "minecraft:stone", 1 );
     }
 
-    @Override
-    public int getMaxAmount() {
-        return 64;
+    public void setStoneType( StoneType stoneType ) {
+        this.setMeta( stoneType.ordinal() );
+    }
+
+    public StoneType getStoneType() {
+        return StoneType.values()[this.getMeta()];
+    }
+
+    public enum StoneType {
+        STONE,
+        GRANITE,
+        POLISHED_GRANITE,
+        DIORITE,
+        POLISHED_DIORITE,
+        ANDESITE,
+        POLISHED_ANDESITE
     }
 }

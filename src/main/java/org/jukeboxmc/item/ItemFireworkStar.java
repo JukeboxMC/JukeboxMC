@@ -10,5 +10,5 @@ public class ItemFireworkStar extends Item {
         super( "minecraft:firework_star", 510 );
     }
 
-
+    //TODO Implement NBTs
 }

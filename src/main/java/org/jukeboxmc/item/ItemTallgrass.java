@@ -17,4 +17,25 @@ public class ItemTallgrass extends Item {
     public Block getBlock() {
         return new BlockTallGrass();
     }
+
+    public void setGrassType( GrassType grassType ) {
+        if ( grassType == GrassType.GRASS ) {
+            this.setMeta( 1 );
+        } else {
+            this.setMeta( 2 );
+        }
+    }
+
+    public GrassType getGrassType() {
+        if ( this.getMeta() == 1 ) {
+            return GrassType.GRASS;
+        } else {
+            return GrassType.FERN;
+        }
+    }
+
+    public enum GrassType {
+        GRASS,
+        FERN
+    }
 }

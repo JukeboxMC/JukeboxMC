@@ -10,5 +10,16 @@ public class ItemSand extends Item {
         super( "minecraft:sand", 12 );
     }
 
+    public void setSandType( SandType sandType ) {
+        this.setMeta( sandType.ordinal() );
+    }
 
+    public SandType getSandType() {
+        return SandType.values()[this.getMeta()];
+    }
+
+    public enum SandType {
+        SAND,
+        RED_SAND
+    }
 }

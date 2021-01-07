@@ -10,5 +10,19 @@ public class ItemQuartzBlock extends Item {
         super( "minecraft:quartz_block", 155 );
     }
 
+    public void setQuartzType( QuartzType quartzType ) {
+        this.setMeta( quartzType.ordinal() );
+    }
+
+    public QuartzType getQuartzType() {
+        return QuartzType.values()[this.getMeta()];
+    }
+
+    public enum QuartzType {
+        QUARTZ,
+        CHISELED_QUARTZ,
+        PILLAR_QUARTZ,
+        SMOOTH_QUARTZ
+    }
 
 }

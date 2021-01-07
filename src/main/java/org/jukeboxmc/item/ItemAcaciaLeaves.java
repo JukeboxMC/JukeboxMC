@@ -10,5 +10,17 @@ public class ItemAcaciaLeaves extends Item {
         super( "minecraft:leaves2", 161 );
     }
 
+    public void setLeafType( LeafType leafType ) {
+        this.setMeta( leafType.ordinal() );
+    }
+
+    public LeafType getLeafType() {
+        return LeafType.values()[this.getMeta()];
+    }
+
+    public enum LeafType {
+        ACACIA,
+        DARK_OAK
+    }
 
 }

@@ -50,12 +50,12 @@ public class BlockCobblestoneWall extends Block {
         return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ).toUpperCase() ) : WallConnectionType.NONE;
     }
 
-    public void setWallBlockType( WallBlockType wallBlockType ) {
-        this.setState( "wall_block_type", wallBlockType.name().toLowerCase() );
+    public void setWallBlockType( WallType wallType ) {
+        this.setState( "wall_block_type", wallType.name().toLowerCase() );
     }
 
-    public WallBlockType getWallConnectionType() {
-        return this.stateExists( "wall_block_type" ) ? WallBlockType.valueOf( this.getStringState( "wall_block_type" ).toUpperCase() ) : WallBlockType.COBBLESTONE;
+    public WallType getWallConnectionType() {
+        return this.stateExists( "wall_block_type" ) ? WallType.valueOf( this.getStringState( "wall_block_type" ).toUpperCase() ) : WallType.COBBLESTONE;
     }
 
     public enum WallConnectionType {
@@ -64,7 +64,7 @@ public class BlockCobblestoneWall extends Block {
         TALL
     }
 
-    public enum WallBlockType {
+    public enum WallType {
         COBBLESTONE,
         MOSSY_COBBLESTONE,
         GRANITE,

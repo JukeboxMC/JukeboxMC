@@ -10,5 +10,25 @@ public class ItemRedFlower extends Item {
         super( "minecraft:red_flower", 38 );
     }
 
+    public void setFlowerType( FlowerType flowerType ) {
+        this.setMeta( flowerType.ordinal() );
+    }
 
+    public FlowerType getFlowerType() {
+        return FlowerType.values()[this.getMeta()];
+    }
+
+    public enum FlowerType {
+        POPPY,
+        BLUE_ORCHID,
+        ALLIUM,
+        AZURE_BLUET,
+        RED_TULIP,
+        ORANGE_TULIP,
+        WHITE_TULIP,
+        PINK_TULIP,
+        OXEYE_DAISY,
+        CORN_FLOWER,
+        LILY_OF_THE_VALLEY
+    }
 }

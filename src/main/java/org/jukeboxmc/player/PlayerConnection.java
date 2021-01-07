@@ -5,7 +5,8 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.metadata.Metadata;
-import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.inventory.PlayerInventory;
+import org.jukeboxmc.item.*;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
@@ -412,6 +413,20 @@ public class PlayerConnection {
         }
         this.sendMetadata();
         //JoinEvent
+
+        Timer timer = new Timer();
+        timer.schedule( new TimerTask() {
+            @Override
+            public void run() {
+                PlayerInventory inventory = player.getInventory();
+                int slot = 0;
+                for ( int i = 0; i <= 15; i ++ ) {
+                    ItemFireworkStar item = new ItemFireworkStar();
+                    item.setMeta( i );
+                    inventory.setItem( slot++, item );
+                }
+            }
+        }, 1000 );
     }
 
     public void leaveGame() {

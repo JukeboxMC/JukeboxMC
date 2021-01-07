@@ -17,4 +17,21 @@ public class ItemDoublePlant extends Item {
     public Block getBlock() {
         return new BlockDoublePlant();
     }
+
+    public void setPlantType( PlantType plantType ) {
+        this.setMeta( plantType.ordinal() );
+    }
+
+    public PlantType getPlantType() {
+        return PlantType.values()[this.getMeta()];
+    }
+
+    public enum PlantType {
+        SUNFLOWER,
+        LILAC,
+        DOUBLE_TALLGRASS,
+        LARGE_FERN,
+        ROSE_BUSH,
+        PEONY
+    }
 }

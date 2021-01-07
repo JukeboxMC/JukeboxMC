@@ -10,5 +10,18 @@ public class ItemLeaves extends Item {
         super( "minecraft:leaves", 18 );
     }
 
+    public void setLeafType( LeafType leafType ) {
+        this.setMeta( leafType.ordinal() );
+    }
 
+    public LeafType getLeafType() {
+        return LeafType.values()[this.getMeta()];
+    }
+
+    public enum LeafType {
+        OAK,
+        SPRUCE,
+        BIRCH,
+        JUNGLE
+    }
 }

@@ -10,5 +10,21 @@ public class ItemSkull extends Item {
         super( "minecraft:skull", 506 );
     }
 
+    public void setSkullType( SkullType skullType ) {
+        this.setMeta( skullType.ordinal() );
+    }
+
+    public SkullType getSkullType() {
+        return SkullType.values()[this.getMeta()];
+    }
+
+    public enum SkullType {
+        SKELETON,
+        WITHER,
+        ZOMBIE,
+        STEVE,
+        CREEPER,
+        DRAGON
+    }
 
 }

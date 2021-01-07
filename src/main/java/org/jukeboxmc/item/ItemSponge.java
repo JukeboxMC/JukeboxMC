@@ -10,5 +10,16 @@ public class ItemSponge extends Item {
         super( "minecraft:sponge", 19 );
     }
 
+    public void setSpongeType( SpongeType spongeType ) {
+        this.setMeta( spongeType.ordinal() );
+    }
 
+    public SpongeType getSpongeType() {
+        return SpongeType.values()[this.getMeta()];
+    }
+
+    public enum SpongeType {
+        SPONGE,
+        WET_SPONGE
+    }
 }

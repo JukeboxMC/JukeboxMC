@@ -10,5 +10,20 @@ public class ItemCoralFan extends Item {
         super( "minecraft:coral_fan", -133 );
     }
 
+    public void setCoralType( CoralType coralType ) {
+        this.setMeta( coralType.ordinal() );
+    }
+
+    public CoralType getCoralType() {
+        return CoralType.values()[this.getMeta()];
+    }
+
+    public enum CoralType {
+        TUBE,
+        BRAIN,
+        BUBBLE,
+        FIRE,
+        HORN
+    }
 
 }

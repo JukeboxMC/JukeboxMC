@@ -8,6 +8,7 @@ public enum BlockColor {
 
     WHITE,
     ORANGE,
+    MAGENTA,
     LIGHT_BLUE,
     YELLOW,
     LIME,

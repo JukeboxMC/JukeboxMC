@@ -15,13 +15,22 @@ public class ItemDirt extends Item {
     }
 
     @Override
-    public int getMaxAmount() {
-        return 64;
-    }
-
-    @Override
     public BlockDirt getBlock() {
         return new BlockDirt();
+    }
+
+
+    public void setDirtType( DirtType dirtType ) {
+        this.setMeta( dirtType.ordinal() );
+    }
+
+    public DirtType getDirtType() {
+        return DirtType.values()[this.getMeta()];
+    }
+
+    public enum DirtType {
+        DIRT,
+        COARSA
     }
 
     @Override
