@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockWoodenButton;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemWoodenDoorBlock extends Item {
         super( "minecraft:item.wooden_door", 64 );
     }
 
-
+    @Override
+    public BlockWoodenButton getBlock() {
+        return new BlockWoodenButton();
+    }
 }

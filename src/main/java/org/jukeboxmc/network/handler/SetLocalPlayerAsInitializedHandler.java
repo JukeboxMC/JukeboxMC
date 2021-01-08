@@ -1,7 +1,6 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.player.Player;
 
 /**

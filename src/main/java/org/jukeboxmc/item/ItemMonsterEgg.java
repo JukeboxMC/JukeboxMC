@@ -12,6 +12,11 @@ public class ItemMonsterEgg extends Item {
         super( "minecraft:monster_egg", 97 );
     }
 
+    @Override
+    public BlockMonsterEgg getBlock() {
+        return new BlockMonsterEgg();
+    }
+
     public void setMonsterEggType( MonsterEggStoneType monsterEggType ) {
         this.setMeta( monsterEggType.ordinal() );
     }

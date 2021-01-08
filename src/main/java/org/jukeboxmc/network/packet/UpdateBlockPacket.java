@@ -3,7 +3,6 @@ package org.jukeboxmc.network.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
 /**

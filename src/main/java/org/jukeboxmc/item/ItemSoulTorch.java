@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSoulTorch;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSoulTorch extends Item {
         super( "minecraft:soul_torch", -268 );
     }
 
-
+    @Override
+    public BlockSoulTorch getBlock() {
+        return new BlockSoulTorch();
+    }
 }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSpruceDoor;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSpruceDoorBlock extends Item {
         super( "minecraft:item.spruce_door", 193 );
     }
 
-
+    @Override
+    public BlockSpruceDoor getBlock() {
+        return new BlockSpruceDoor();
+    }
 }

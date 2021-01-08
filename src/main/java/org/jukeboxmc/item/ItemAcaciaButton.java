@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAcaciaButton;
 
 /**
@@ -14,7 +13,7 @@ public class ItemAcaciaButton extends Item {
     }
 
     @Override
-    public Block getBlock() {
+    public BlockAcaciaButton getBlock() {
         return new BlockAcaciaButton();
     }
 }

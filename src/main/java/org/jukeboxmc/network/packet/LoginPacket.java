@@ -8,15 +8,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.GUIScale;
 import org.jukeboxmc.player.skin.*;
+import org.jukeboxmc.utils.BinaryStream;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT

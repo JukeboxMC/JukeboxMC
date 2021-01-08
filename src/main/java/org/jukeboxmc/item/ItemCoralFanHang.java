@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockCoralFanHang;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemCoralFanHang extends Item {
         super( "minecraft:coral_fan_hang", -135 );
     }
 
-
+    @Override
+    public BlockCoralFanHang getBlock() {
+        return new BlockCoralFanHang();
+    }
 }

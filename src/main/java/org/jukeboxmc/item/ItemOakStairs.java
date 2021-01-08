@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockOakStairs;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemOakStairs extends Item {
         super( "minecraft:oak_stairs", 53 );
     }
 
-
+    @Override
+    public BlockOakStairs getBlock() {
+        return new BlockOakStairs();
+    }
 }

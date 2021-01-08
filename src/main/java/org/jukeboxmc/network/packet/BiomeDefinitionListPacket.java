@@ -2,7 +2,6 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.checkerframework.checker.units.qual.C;
 import org.jukeboxmc.network.Protocol;
 
 import java.util.Base64;

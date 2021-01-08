@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockRedstoneWire;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemRedstone extends Item {
         super( "minecraft:redstone", 371 );
     }
 
-
+    @Override
+    public BlockRedstoneWire getBlock() {
+        return new BlockRedstoneWire();
+    }
 }

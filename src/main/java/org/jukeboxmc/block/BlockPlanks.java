@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.World;
 

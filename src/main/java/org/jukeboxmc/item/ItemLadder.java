@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockLadder;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemLadder extends Item {
         super( "minecraft:ladder", 65 );
     }
 
-
+    @Override
+    public BlockLadder getBlock() {
+        return new BlockLadder();
+    }
 }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockCommandBlock;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemCommandBlock extends Item {
         super( "minecraft:command_block", 137 );
     }
 
-
+    @Override
+    public BlockCommandBlock getBlock() {
+        return new BlockCommandBlock();
+    }
 }

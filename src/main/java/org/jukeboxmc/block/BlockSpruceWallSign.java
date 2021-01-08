@@ -6,9 +6,9 @@ import org.jukeboxmc.block.direction.BlockFace;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSpruceeWallSign extends Block {
+public class BlockSpruceWallSign extends Block {
 
-    public BlockSpruceeWallSign() {
+    public BlockSpruceWallSign() {
         super( "minecraft:spruce_wall_sign" );
     }
 

@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.item.Item;
+import org.jukeboxmc.block.BlockPolishedBlackstoneStairs;
 
 /**
  * @author LucGamesYT
@@ -12,5 +12,8 @@ public class ItemPolishedBlackstoneStairs extends Item {
         super( "minecraft:polished_blackstone_stairs", -292 );
     }
 
-
+    @Override
+    public BlockPolishedBlackstoneStairs getBlock() {
+        return new BlockPolishedBlackstoneStairs();
+    }
 }

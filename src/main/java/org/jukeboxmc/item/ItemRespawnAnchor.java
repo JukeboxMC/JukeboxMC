@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockRespawnAnchor;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemRespawnAnchor extends Item {
         super( "minecraft:respawn_anchor", -272 );
     }
 
-
+    @Override
+    public BlockRespawnAnchor getBlock() {
+        return new BlockRespawnAnchor();
+    }
 }

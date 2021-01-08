@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockAcaciaWallSign;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemAcaciaWallSign extends Item {
         super( "minecraft:acacia_wall_sign", -191 );
     }
 
-
+    @Override
+    public BlockAcaciaWallSign getBlock() {
+        return new BlockAcaciaWallSign();
+    }
 }

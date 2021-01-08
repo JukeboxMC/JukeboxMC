@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockBed;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemBedBlock extends Item {
         super( "minecraft:item.bed", 26 );
     }
 
-
+    @Override
+    public BlockBed getBlock() {
+        return new BlockBed();
+    }
 }

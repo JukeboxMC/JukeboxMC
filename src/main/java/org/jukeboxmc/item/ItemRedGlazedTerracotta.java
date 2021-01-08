@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockRedGlazedTerracotta;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemRedGlazedTerracotta extends Item {
         super( "minecraft:red_glazed_terracotta", 234 );
     }
 
-
+    @Override
+    public BlockRedGlazedTerracotta getBlock() {
+        return new BlockRedGlazedTerracotta();
+    }
 }

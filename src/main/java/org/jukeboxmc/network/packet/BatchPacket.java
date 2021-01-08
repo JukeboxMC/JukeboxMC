@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
+import org.jukeboxmc.utils.BinaryStream;
 
 /**
  * @author LucGamesYT

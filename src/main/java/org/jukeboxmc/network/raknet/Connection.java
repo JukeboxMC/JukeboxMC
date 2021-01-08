@@ -4,20 +4,20 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import org.jukeboxmc.network.Protocol;
-import org.jukeboxmc.network.packet.*;
+import org.jukeboxmc.network.packet.BatchPacket;
+import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
 import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
-import org.jukeboxmc.network.raknet.protocol.RakNetPacket;
-import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.network.raknet.utils.Zlib;
+import org.jukeboxmc.utils.BinaryStream;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.zip.DataFormatException;
 
 /**

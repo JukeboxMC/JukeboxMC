@@ -1,6 +1,9 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.block.*;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockDirt;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;

@@ -1,7 +1,5 @@
 package org.jukeboxmc.item;
 
-import java.util.Map;
-
 /**
  * @author LucGamesYT
  * @version 1.0

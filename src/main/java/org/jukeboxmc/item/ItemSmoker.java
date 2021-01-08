@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSmoker;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSmoker extends Item {
         super( "minecraft:smoker", -198 );
     }
 
-
+    @Override
+    public BlockSmoker getBlock() {
+        return new BlockSmoker();
+    }
 }

@@ -1,10 +1,7 @@
 package org.jukeboxmc.network.handler;
 
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
-import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.GameRule;
 import org.jukeboxmc.world.GameRules;

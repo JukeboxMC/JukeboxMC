@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockYellowGlazedTerracotta;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -11,7 +13,7 @@ public class ItemYellowGlazedTerracotta extends Item {
     }
 
     @Override
-    public int getMaxAmount() {
-        return 64;
+    public BlockYellowGlazedTerracotta getBlock() {
+        return new BlockYellowGlazedTerracotta();
     }
 }

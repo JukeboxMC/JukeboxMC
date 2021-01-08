@@ -1,5 +1,8 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockElement71;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +13,8 @@ public class ItemElement71 extends Item {
         super( "minecraft:element_71", -82 );
     }
 
-
+    @Override
+    public Block getBlock() {
+        return new BlockElement71();
+    }
 }

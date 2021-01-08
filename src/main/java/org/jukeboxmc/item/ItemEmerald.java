@@ -10,5 +10,4 @@ public class ItemEmerald extends Item {
         super( "minecraft:emerald", 502 );
     }
 
-
 }

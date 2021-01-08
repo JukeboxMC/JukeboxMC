@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockAnvil;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class ItemAnvil extends Item {
 
     public ItemAnvil() {
         super( "minecraft:anvil", 145 );
+    }
+
+    @Override
+    public BlockAnvil getBlock() {
+        return new BlockAnvil();
     }
 
     public void setAnvilType( AnvilType anvilType ) {

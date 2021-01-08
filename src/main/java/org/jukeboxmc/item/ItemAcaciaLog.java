@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import sun.rmi.runtime.Log;
+import org.jukeboxmc.block.BlockAcaciaLog;
 
 /**
  * @author LucGamesYT
@@ -10,6 +10,11 @@ public class ItemAcaciaLog extends Item {
 
     public ItemAcaciaLog() {
         super( "minecraft:log2", 162 );
+    }
+
+    @Override
+    public BlockAcaciaLog getBlock() {
+        return new BlockAcaciaLog();
     }
 
     public void setLogType( LogType logType ) {

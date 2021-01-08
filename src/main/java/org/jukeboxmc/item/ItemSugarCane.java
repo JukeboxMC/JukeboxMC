@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSugarCane;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSugarCane extends Item {
         super( "minecraft:sugar_cane", 383 );
     }
 
-
+    @Override
+    public BlockSugarCane getBlock() {
+        return new BlockSugarCane();
+    }
 }

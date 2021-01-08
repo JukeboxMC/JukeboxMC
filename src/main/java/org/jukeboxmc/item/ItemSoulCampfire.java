@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSoulCampfire;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSoulCampfire extends Item {
         super( "minecraft:soul_campfire", 610 );
     }
 
-
+    @Override
+    public BlockSoulCampfire getBlock() {
+        return new BlockSoulCampfire();
+    }
 }

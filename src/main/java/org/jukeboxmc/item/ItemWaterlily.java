@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockWaterlily;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemWaterlily extends Item {
         super( "minecraft:waterlily", 111 );
     }
 
-
+    @Override
+    public BlockWaterlily getBlock() {
+        return new BlockWaterlily();
+    }
 }

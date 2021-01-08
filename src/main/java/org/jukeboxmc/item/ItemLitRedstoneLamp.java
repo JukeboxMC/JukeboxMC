@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockGlowningRedstoneLamp;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemLitRedstoneLamp extends Item {
         super( "minecraft:lit_redstone_lamp", 124 );
     }
 
-
+    @Override
+    public BlockGlowningRedstoneLamp getBlock() {
+        return new BlockGlowningRedstoneLamp();
+    }
 }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockRedFlower;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class ItemRedFlower extends Item {
 
     public ItemRedFlower() {
         super( "minecraft:red_flower", 38 );
+    }
+
+    @Override
+    public BlockRedFlower getBlock() {
+        return new BlockRedFlower();
     }
 
     public void setFlowerType( FlowerType flowerType ) {

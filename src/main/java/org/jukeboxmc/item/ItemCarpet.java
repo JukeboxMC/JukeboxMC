@@ -1,5 +1,6 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockCarpet;
 import org.jukeboxmc.block.BlockColor;
 
 /**
@@ -10,6 +11,11 @@ public class ItemCarpet extends Item {
 
     public ItemCarpet() {
         super( "minecraft:carpet", 171 );
+    }
+
+    @Override
+    public BlockCarpet getBlock() {
+        return new BlockCarpet();
     }
 
     public void setColor( BlockColor blockColor ) {

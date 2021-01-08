@@ -445,7 +445,7 @@ public enum BlockType {
     MOSSY_COBBLESTONE_STAIRS( BlockMossyCobblestoneStairs.class ),
     NORMAL_STONE_STAIRS( BlockNormalStoneStairs.class ),
     SPRUCE_STANDING_SIGN( BlockSpruceStandingSign.class ),
-    SPRUCE_WALL_SIGN( BlockSpruceeWallSign.class ),
+    SPRUCE_WALL_SIGN( BlockSpruceWallSign.class ),
     SMOOTH_STONE( BlockSmoothStone.class ),
     RED_NETHER_BRICK_STAIRS( BlockRedNetherBrickStairs.class ),
     SMOOTH_QUARTZ_STAIRS( BlockSmoothQuartzStairs.class ),

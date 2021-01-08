@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockBrewingStand;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemBrewingstandblock extends Item {
         super( "minecraft:brewingstandblock", 117 );
     }
 
-
+    @Override
+    public BlockBrewingStand getBlock() {
+        return new BlockBrewingStand();
+    }
 }

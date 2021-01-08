@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 
-import java.io.*;
-import java.util.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -507,7 +510,7 @@ public enum ItemType {
     POLISHED_BASALT( ItemPolishedBasalt.class ),
     SOUL_SOIL( ItemSoulSoil.class ),
     SOUL_FIRE( ItemSoulFire.class ),
-    NETHER_SPROCUTS( ItemNetherSprouts.class ),
+    NETHER_SPROCUTS( ItemNetherSproutsBlock.class ),
     TARGET( ItemTarget.class ),
     STRIPPED_CRIMSON_STEM( ItemStrippedCrimsonStem.class ),
     STRIPPED_WARPED_STEM( ItemStrippedWarpedStem.class ),
@@ -701,7 +704,7 @@ public enum ItemType {
     EXPERIENCE_BOTTLE( ItemExperienceBottle.class ),
     FIREBALL( ItemFireCharge.class ),
     WRITEABLE_BOOK( ItemWriteableBook.class ),
-    WRITTEN_BOOK( ItemWrittenBoock.class ),
+    WRITTEN_BOOK( ItemWrittenBook.class ),
     EMERALD( ItemEmerald.class ),
     FRAME( ItemFrame.class ),
     FLOWER_POT( ItemFlowerPot.class ),
@@ -824,10 +827,10 @@ public enum ItemType {
     WARPED_FUNGUS_ON_A_STICK( ItemWarpedFungusOnAStick.class ),
     CHAIN( ItemChain.class ),
     RECORD_PIGSTEP( ItemMusicDiscPigstep.class ),
-    NETHER_SPROUTS( ItemNetherSprouts.class ),
+    NETHER_SPROUTS( ItemNetherSproutsBlock.class ),
     SOUL_CAMPFIRE( ItemSoulCampfire.class ),
     WARPED_FUNGUS( ItemWarpedFungus.class ),
-    NETHER_SQROUTS( ItemNetherSqrouts.class ),
+    NETHER_SQROUTS( ItemNetherSprouts.class ),
     BORDURER_INDENTED_BANNER_PATTERN( ItemBordureIndentedBannerPattern.class ),
     PUFFERFISH_SPAWN_EGG( ItemPufferfishSpawnEgg.class ),
     BAT_SPAWN_EGG( ItemBatSpawnEgg.class ),

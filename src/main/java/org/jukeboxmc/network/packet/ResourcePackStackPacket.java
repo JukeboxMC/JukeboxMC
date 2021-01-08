@@ -1,6 +1,5 @@
 package org.jukeboxmc.network.packet;
 
-import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

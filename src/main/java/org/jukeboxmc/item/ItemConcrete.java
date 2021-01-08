@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockConcrete;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class ItemConcrete extends Item {
 
     public ItemConcrete() {
         super( "minecraft:concrete", 236 );
+    }
+
+    @Override
+    public BlockConcrete getBlock() {
+        return new BlockConcrete();
     }
 
     public void setColor( BlockColor blockColor ) {

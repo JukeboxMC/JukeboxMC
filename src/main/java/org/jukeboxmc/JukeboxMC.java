@@ -18,7 +18,8 @@ import java.util.List;
  */
 public class JukeboxMC {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private static JukeboxMC instance;
     @Getter
     private Server server;

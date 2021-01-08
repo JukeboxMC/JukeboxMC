@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockClay;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemClay extends Item {
         super( "minecraft:clay", 82 );
     }
 
-
+    @Override
+    public BlockClay getBlock() {
+        return new BlockClay();
+    }
 }

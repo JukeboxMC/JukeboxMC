@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockRedMushroomBlock;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class ItemRedMushroomBlock extends Item {
 
     public ItemRedMushroomBlock() {
         super( "minecraft:red_mushroom_block", 100 );
+    }
+
+    @Override
+    public BlockRedMushroomBlock getBlock() {
+        return new BlockRedMushroomBlock();
     }
 
     public void setMushroomType( MushroomType mushroomType ) {

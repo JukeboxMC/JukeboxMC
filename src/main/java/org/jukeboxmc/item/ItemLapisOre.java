@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockLapisOre;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemLapisOre extends Item {
         super( "minecraft:lapis_ore", 21 );
     }
 
-
+    @Override
+    public BlockLapisOre getBlock() {
+        return new BlockLapisOre();
+    }
 }

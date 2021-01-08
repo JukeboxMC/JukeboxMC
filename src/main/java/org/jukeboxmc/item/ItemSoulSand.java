@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSoulSand;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemSoulSand extends Item {
         super( "minecraft:soul_sand", 88 );
     }
 
-
+    @Override
+    public BlockSoulSand getBlock() {
+        return new BlockSoulSand();
+    }
 }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockBed;
 import org.jukeboxmc.block.BlockColor;
 
 /**
@@ -10,6 +11,11 @@ public class ItemBed extends Item {
 
     public ItemBed() {
         super( "minecraft:bed", 416 );
+    }
+
+    @Override
+    public BlockBed getBlock() {
+        return new BlockBed();
     }
 
     public void setColor( BlockColor blockColor ) {

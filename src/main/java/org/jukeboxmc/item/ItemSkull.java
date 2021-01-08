@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockSkull;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class ItemSkull extends Item {
 
     public ItemSkull() {
         super( "minecraft:skull", 506 );
+    }
+
+    @Override
+    public BlockSkull getBlock() {
+        return new BlockSkull();
     }
 
     public void setSkullType( SkullType skullType ) {

@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockTrappedChest;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemTrappedChest extends Item {
         super( "minecraft:trapped_chest", 146 );
     }
 
-
+    @Override
+    public BlockTrappedChest getBlock() {
+        return new BlockTrappedChest();
+    }
 }

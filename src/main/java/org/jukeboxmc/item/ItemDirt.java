@@ -1,7 +1,6 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 
 /**
@@ -18,7 +17,6 @@ public class ItemDirt extends Item {
     public BlockDirt getBlock() {
         return new BlockDirt();
     }
-
 
     public void setDirtType( DirtType dirtType ) {
         this.setMeta( dirtType.ordinal() );

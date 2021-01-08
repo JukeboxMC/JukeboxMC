@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockLantern;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemLantern extends Item {
         super( "minecraft:lantern", -208 );
     }
 
-
+    @Override
+    public BlockLantern getBlock() {
+        return new BlockLantern();
+    }
 }

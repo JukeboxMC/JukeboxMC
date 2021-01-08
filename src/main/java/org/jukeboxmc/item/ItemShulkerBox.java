@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockShulkerBox;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class ItemShulkerBox extends Item {
 
     public ItemShulkerBox() {
         super( "minecraft:shulker_box", 218 );
+    }
+
+    @Override
+    public BlockShulkerBox getBlock() {
+        return new BlockShulkerBox();
     }
 
     public void setColor( BlockColor blockColor ) {

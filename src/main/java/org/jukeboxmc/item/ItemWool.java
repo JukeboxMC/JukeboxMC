@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockWool;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class ItemWool extends Item {
 
     public ItemWool() {
         super( "minecraft:wool", 35 );
+    }
+
+    @Override
+    public BlockWool getBlock() {
+        return new BlockWool();
     }
 
     public void setColor( BlockColor blockColor ) {

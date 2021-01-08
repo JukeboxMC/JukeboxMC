@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockJungleStandingSign;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,5 +12,8 @@ public class ItemJungleStandingSign extends Item {
         super( "minecraft:jungle_standing_sign", -188 );
     }
 
-
+    @Override
+    public BlockJungleStandingSign getBlock() {
+        return new BlockJungleStandingSign();
+    }
 }

@@ -1,6 +1,5 @@
 package org.jukeboxmc.network.handler;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.jukeboxmc.network.packet.AnimatePacket;
 import org.jukeboxmc.network.packet.Packet;

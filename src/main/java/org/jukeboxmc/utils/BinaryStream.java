@@ -7,7 +7,10 @@ import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.nbt.*;
+import org.jukeboxmc.nbt.NBTInputStream;
+import org.jukeboxmc.nbt.NBTOutputStream;
+import org.jukeboxmc.nbt.NbtMap;
+import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.player.skin.*;
 import org.jukeboxmc.world.GameRules;
 

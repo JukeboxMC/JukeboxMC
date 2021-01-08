@@ -12,6 +12,11 @@ public class ItemCoral extends Item {
         super( "minecraft:coral", -131 );
     }
 
+    @Override
+    public BlockCoral getBlock() {
+        return new BlockCoral();
+    }
+
     public void setCoralType( CoralType coralType ) {
         switch ( coralType ) {
             case TUBE:

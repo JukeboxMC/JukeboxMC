@@ -4,14 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.metadata.Metadata;
-import org.jukeboxmc.entity.metadata.MetadataFlag;
-import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author LucGamesYT
