@@ -586,4 +586,7 @@ public enum BlockType {
         return (B) this.blockClass.newInstance();
     }
 
+    public Class<? extends Block> getBlockClass() {
+        return this.blockClass;
+    }
 }

@@ -106,8 +106,15 @@ public class Block {
         return this.states.getInt( value );
     }
 
-    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
-        world.setBlock( placePosition, this );
+    //Other
+
+    public BlockType getBlockType() {
+        for ( BlockType value : BlockType.values() ) {
+            if ( value.getBlockClass() == this.getClass() ) {
+                return value;
+            }
+        }
+        return BlockType.AIR;
     }
 
     public void setPosition( BlockPosition position ) {
@@ -122,4 +129,11 @@ public class Block {
         return this.getClass().getSimpleName();
     }
 
+    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
+        if ( this.getBlockType() != BlockType.AIR ) {
+            world.setBlock( placePosition, this );
+        } else {
+            System.out.println( "Try to place block -> " + this.getName() );
+        }
+    }
 }
