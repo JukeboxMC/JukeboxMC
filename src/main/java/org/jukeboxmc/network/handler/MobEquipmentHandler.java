@@ -1,7 +1,5 @@
 package org.jukeboxmc.network.handler;
 
-import org.jukeboxmc.entity.metadata.EntityFlag;
-import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.network.packet.MobEquipmentPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -19,8 +17,7 @@ public class MobEquipmentHandler implements PacketHandler {
         Item item = mobEquipmentPacket.getItem();
 
         player.getInventory().setItemInHandSlot( mobEquipmentPacket.getHotbarSlot() );
-        player.getMetadata().setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, false );
-
+        player.setAction( false );
 
     }
 }

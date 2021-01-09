@@ -10,7 +10,6 @@ import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.inventory.CursorInventory;
 import org.jukeboxmc.inventory.PlayerInventory;
-import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
@@ -47,7 +46,6 @@ public class Player extends EntityHuman {
     private boolean isSpawned;
 
     private Locale locale;
-    private Location location;
 
     private Server server;
     private Attributes attributes;
@@ -66,7 +64,6 @@ public class Player extends EntityHuman {
         this.server = server;
         this.attributes = new Attributes();
         this.adventureSettings = new AdventureSettings( this );
-        this.location = new Location( server.getDefaultWorld(), 0, 10, 0, 0, 0 ); //Need form saved file
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, server, connection );
 
@@ -74,6 +71,7 @@ public class Player extends EntityHuman {
         this.cursorInventory = new CursorInventory( this );
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
@@ -122,10 +120,6 @@ public class Player extends EntityHuman {
         return this.locale;
     }
 
-    public Location getLocation() {
-        return this.location;
-    }
-
     public World getWorld() {
         return this.location.getWorld();
     }
@@ -172,10 +166,6 @@ public class Player extends EntityHuman {
 
     public Chunk getChunk() {
         return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ() );
-    }
-
-    public void setLocation( Location location ) {
-        this.location = location;
     }
 
     public Server getServer() {
@@ -254,10 +244,6 @@ public class Player extends EntityHuman {
 
     public int getViewDistance() {
         return this.viewDistance;
-    }
-
-    public float getEyeHeight() {
-        return 1.62f;
     }
 
     public void setViewDistance( int viewDistance ) {

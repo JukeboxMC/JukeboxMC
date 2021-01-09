@@ -4,6 +4,8 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.math.AxisAlignedBB;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.SetEntityDataPacket;
 import org.jukeboxmc.player.Player;
 
@@ -15,21 +17,36 @@ public abstract class Entity {
 
     public static long entityCount = 1;
     private long entityId = 0;
+    protected Location location;
     protected Metadata metadata;
+    protected AxisAlignedBB boundingBox;
 
     public Entity() {
         this.metadata = new Metadata();
         this.metadata.setLong( MetadataFlag.INDEX, 0 );
         this.metadata.setShort( MetadataFlag.MAX_AIR, (short) 400 );
         this.metadata.setFloat( MetadataFlag.SCALE, 1 );
-        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_WIDTH, 0.6f );
-        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_HEIGHT, 1.8f );
+        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_WIDTH, this.getWidth() );
+        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_HEIGHT, this.getHeight() );
         this.metadata.setShort( MetadataFlag.AIR, (short) 0 );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.AFFECTED_BY_GRAVITY, true );
+
+        this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 10, 0, 0, 0 );
+
+        this.boundingBox = new AxisAlignedBB( 0, 0, 0, 0, 0, 0 );
+        this.recalcBoundingBox();
     }
 
+    public abstract String getName();
+
     public abstract String getEntityType();
+
+    public abstract float getWidth();
+
+    public abstract float getHeight();
+
+    public abstract float getEyeHeight();
 
     public Metadata getMetadata() {
         return this.metadata;
@@ -45,6 +62,19 @@ public abstract class Entity {
 
     public String getNameTag() {
         return this.metadata.getString( MetadataFlag.NAMETAG );
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation( Location location ) {
+        this.location = location;
+        this.recalcBoundingBox();
+    }
+
+    public AxisAlignedBB getBoundingBox() {
+        return this.boundingBox;
     }
 
     public void setNameTag( String value ) {
@@ -79,6 +109,18 @@ public abstract class Entity {
         for ( Player onlinePlayer : Server.getInstance().getOnlinePlayers() ) {
             onlinePlayer.getPlayerConnection().sendPacket( setEntityDataPacket );
         }
+    }
+
+    public void recalcBoundingBox() {
+        Location location = this.getLocation();
+        this.boundingBox.setBounds(
+                location.getX() - ( this.getWidth() / 2 ),
+                location.getY(),
+                location.getZ() - ( this.getWidth() / 2 ),
+                location.getX() + ( this.getWidth() / 2 ),
+                location.getY() + this.getHeight(),
+                location.getZ() + ( this.getWidth() / 2 )
+        );
     }
 
 }

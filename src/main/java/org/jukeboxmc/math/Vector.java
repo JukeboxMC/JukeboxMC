@@ -71,6 +71,41 @@ public class Vector {
         return new Vector( this.x - x, this.y - y, this.z - z );
     }
 
+    public double distanceSquared( Vector vector ) {
+        return Math.pow( this.x - vector.x, 2 ) + Math.pow( this.y - vector.y, 2 ) + Math.pow( this.z - vector.z, 2 );
+    }
+
+    public double distance( Vector vector ) {
+        return Math.sqrt( this.distanceSquared( vector ) );
+    }
+
+    public Vector getVectorWhenXIsOnLine( Vector other, float x ) {
+        float xDiff = other.x - this.x;
+        float yDiff = other.y - this.y;
+        float zDiff = other.z - this.z;
+
+        float f = ( x - this.x ) / xDiff;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+    }
+
+    public Vector getVectorWhenYIsOnLine( Vector other, float y ) {
+        float xDiff = other.x - this.x;
+        float yDiff = other.y - this.y;
+        float zDiff = other.z - this.z;
+
+        float f = ( y - this.y ) / yDiff;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+    }
+
+    public Vector getVectorWhenZIsOnLine( Vector other, float z ) {
+        float xDiff = other.x - this.x;
+        float yDiff = other.y - this.y;
+        float zDiff = other.z - this.z;
+
+        float f = ( z - this.z ) / zDiff;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+    }
+
     public BlockPosition toBlockPosition() {
         return new BlockPosition( this.getFloorX(), this.getFloorY(), this.getFloorZ() );
     }

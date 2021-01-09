@@ -1,11 +1,15 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.item.ItemPlanks;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.math.Vector2;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
@@ -31,8 +35,10 @@ public class PlayerConnection {
 
     private Queue<Chunk> chunkSendQueue = new ConcurrentLinkedQueue<>();
     private Queue<Packet> sendQueue = new ConcurrentLinkedQueue<>();
+
     private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
+    private Set<InventoryTransactionPacket> spamCheck = new HashSet<>();
 
     public PlayerConnection( Player player, Server server, Connection connection ) {
         this.player = player;
@@ -41,6 +47,9 @@ public class PlayerConnection {
     }
 
     public void update( long timestamp ) {
+
+        this.spamCheck.clear();
+
         if ( !this.sendQueue.isEmpty() ) {
             this.batchPackets( new ArrayList<>( this.sendQueue ), false );
             this.sendQueue.clear();
@@ -57,6 +66,10 @@ public class PlayerConnection {
             }
         }
         this.needNewChunks( false );
+    }
+
+    public Set<InventoryTransactionPacket> getSpamCheck() {
+        return this.spamCheck;
     }
 
     public void sendChunk( Chunk chunk ) {
@@ -347,7 +360,6 @@ public class PlayerConnection {
         addPlayerPacket.setMetadata( player.getMetadata() );
         addPlayerPacket.setDeviceInfo( player.getDeviceInfo() );
         this.sendPacket( addPlayerPacket );
-        System.out.println( "Spawn for " + this.player.getName() );
     }
 
     public void sendPlayerList() {
@@ -391,6 +403,17 @@ public class PlayerConnection {
         this.sendPacket( removeEntityPacket );
     }
 
+    public void sendUpdateBlock( BlockPosition blockPosition ) {
+        Block block = this.player.getWorld().getBlock( blockPosition );
+
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setBlockId( block.getRuntimeId() );
+        updateBlockPacket.setPosition( blockPosition );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setLayer( block.getLayer() );
+        this.sendPacket( updateBlockPacket );
+    }
+
     public void joinGame() {
         this.player.setSpawned( true );
         this.sendNetworkChunkPublisher();
@@ -409,11 +432,15 @@ public class PlayerConnection {
             this.sendPlayerList();
         }
         this.sendMetadata();
-        //JoinEvent
+
+        this.player.getChunk().addEntity( this.player );
+
+        this.player.getInventory().setItem( 0, new ItemPlanks() );
     }
 
     public void leaveGame() {
         this.player.getWorld().removePlayer( this.player );
+        this.player.getChunk().removeEntity( this.player );
 
         this.player.getInventory().removeViewer( this.player );
         this.player.getCursorInventory().removeViewer( this.player );
@@ -426,5 +453,26 @@ public class PlayerConnection {
         this.server.removePlayer( this.player.getAddress() );
         this.server.setOnlinePlayers( this.server.getOnlinePlayers().size() );
         this.server.broadcastMessage( "§e" + this.player.getName() + " left the game" );
+    }
+
+
+    //TEST
+    public boolean canInteract( Vector position, int maxDistance ) {
+        // Distance
+        Vector eyePosition = this.player.getLocation().add( 0, this.player.getEyeHeight(), 0 );
+        if ( eyePosition.distanceSquared( position ) > Utils.square( maxDistance ) ) {
+            return false;
+        }
+
+        // Direction
+        Vector playerPosition = this.player.getLocation();
+        Vector2 directionPlane = this.getDirectionPlane();
+        float dot = directionPlane.dot( new Vector2( eyePosition.getX(), eyePosition.getZ() ) );
+        float dot1 = directionPlane.dot( new Vector2( playerPosition.getX(), playerPosition.getZ() ) );
+        return ( dot1 - dot ) >= -( Math.sqrt( 3 ) / 2 );
+    }
+
+    private Vector2 getDirectionPlane() {
+        return ( new Vector2( (float) ( -Math.cos( Math.toRadians( this.player.getYaw() ) - Math.PI / 2 ) ), (float) ( -Math.sin( Math.toRadians( this.player.getYaw() ) - Math.PI / 2 ) ) ) ).normalize();
     }
 }

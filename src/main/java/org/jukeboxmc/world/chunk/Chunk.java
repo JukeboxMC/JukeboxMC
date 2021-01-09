@@ -2,20 +2,21 @@ package org.jukeboxmc.world.chunk;
 
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.player.Player;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.utils.BinaryStream;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
 
-@ToString
+@ToString ( exclude = { "subChunks" } )
 public class Chunk {
 
     public static final int CHUNK_LAYERS = 2;
@@ -25,7 +26,7 @@ public class Chunk {
     private int chunkX;
     private int chunkZ;
 
-    private List<Player> players = new CopyOnWriteArrayList<>();
+    private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
     public Chunk( int chunkX, int chunkZ ) {
         this.chunkX = chunkX;
@@ -50,6 +51,12 @@ public class Chunk {
             if ( this.subChunks[y] == null ) {
                 this.subChunks[y] = new SubChunk( y );
             }
+        }
+    }
+
+    public void iterateEntities( Consumer<Entity> consumer ) {
+        for ( Entity player : this.entitys ) {
+            consumer.accept( player );
         }
     }
 
@@ -87,15 +94,17 @@ public class Chunk {
         return this.subChunks;
     }
 
-    public void addPlayer( Player player ) {
-        this.players.add( player );
+    public void addEntity( Entity entity ) {
+        if ( !this.entitys.contains( entity ) ) {
+            this.entitys.add( entity );
+        }
     }
 
-    public void removePlayer( Player player ) {
-        this.players.remove( player );
+    public void removeEntity( Entity entity ) {
+        this.entitys.remove( entity );
     }
 
-    public Collection<Player> getPlayers() {
-        return this.players;
+    public Collection<Entity> getEntitys() {
+        return this.entitys;
     }
 }

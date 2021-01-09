@@ -18,8 +18,28 @@ public class EntityHuman extends Entity {
     }
 
     @Override
+    public String getName() {
+        return this.getNameTag();
+    }
+
+    @Override
     public String getEntityType() {
         return "minecraft:player";
+    }
+
+    @Override
+    public float getWidth() {
+        return 0.6f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 1.8f;
+    }
+
+    @Override
+    public float getEyeHeight() {
+        return 1.62f;
     }
 
     public PlayerInventory getInventory() {
@@ -43,6 +63,16 @@ public class EntityHuman extends Entity {
     public void setSprinting( boolean value ) {
         if ( value != this.isSprinting() ) {
             this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SPRINTING, value ) );
+        }
+    }
+
+    public boolean isAction() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION );
+    }
+
+    public void setAction( boolean value ) {
+        if ( value != this.isAction() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, value ) );
         }
     }
 }

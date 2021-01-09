@@ -5,7 +5,9 @@ import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockDirt;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.LevelEventPacket;
@@ -16,9 +18,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -91,6 +91,10 @@ public class World {
         return this.chunkMap.get( chunkHash );
     }
 
+    public Block getBlock( BlockPosition location ) {
+        return this.getBlock( location.toVector(), 0 );
+    }
+
     public Block getBlock( Vector location ) {
         return this.getBlock( location, 0 );
     }
@@ -104,6 +108,10 @@ public class World {
         return this.getBlock( new Vector( x, y, z ), 0 );
     }
 
+    public void setBlock( BlockPosition location, Block block ) {
+        this.setBlock( location.toVector(), block, 0 );
+    }
+
     public void setBlock( Vector location, Block block ) {
         this.setBlock( location, block, 0 );
     }
@@ -114,6 +122,7 @@ public class World {
 
         block.setWorld( this );
         block.setPosition( location.toBlockPosition() );
+        block.setLayer( layer );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setPosition( location.toBlockPosition() );
@@ -186,23 +195,65 @@ public class World {
         } else {
             this.sendChunkPacket( position.getFloorX() >> 4, position.getFloorZ() >> 4, levelEventPacket );
         }
-
     }
 
-    public void useItemOn( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace ) {
-        Vector placePosition = this.getSidePosition( blockPosition, blockFace );
+    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb ) {
+        Set targetEntity = new HashSet();
+
+        int minX = (int) Math.floor( ( bb.getMinX() - 2 ) / 16 );
+        int maxX = (int) Math.ceil( ( bb.getMaxX() + 2 ) / 16 );
+        int minZ = (int) Math.floor( ( bb.getMinZ() - 2 ) / 16 );
+        int maxZ = (int) Math.ceil( ( bb.getMaxZ() + 2 ) / 16 );
+
+        for ( int x = minX; x <= maxX; ++x ) {
+            for ( int z = minZ; z <= maxZ; ++z ) {
+                Chunk chunk = this.getChunk( x, z );
+                if ( chunk != null ) {
+                    chunk.iterateEntities( entity -> {
+                        AxisAlignedBB boundingBox = entity.getBoundingBox();
+                        if ( boundingBox.intersectsWith( bb ) ) {
+                            targetEntity.add( entity );
+                        }
+                    } );
+                }
+            }
+        }
+        return targetEntity;
+    }
+
+    //TODO Checken ob ein Spieler nach oben baut
+    public boolean useItemOn( Player player, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
+        Vector vector = placePosition.toVector();
         Item itemInHand = player.getInventory().getItemInHand();
         Block placedBlock = itemInHand.getBlock();
-
+        placedBlock.setPosition( placePosition );
         if ( placedBlock instanceof BlockAir ) {
-            return;
+            return false;
         }
 
-        placedBlock.placeBlock( this, placePosition, itemInHand );
-        this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
+        //Replace
+        if ( this.getBlock( vector ).getBlockType() != BlockType.AIR ) {
+            return false;
+        }
+
+        Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
+        if ( !nearbyEntities.isEmpty() ) {
+            return false;
+        }
+
+        if ( player != null ) {
+            AxisAlignedBB boundingBox = player.getBoundingBox();
+            if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+                return false;
+            }
+        }
+
+        placedBlock.placeBlock( this, vector, itemInHand );
+        this.playSound( vector, LevelSound.PLACE, placedBlock.getRuntimeId() );
+        return true;
     }
 
-    private Vector getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
+    public Vector getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
         switch ( blockFace ) {
             case DOWN:
                 return this.getRelative( blockPosition, Vector.DOWN );
@@ -227,11 +278,11 @@ public class World {
         return new Vector( x, y, z );
     }
 
-    public void breakBlock( Vector blockPosition, boolean dropItem ) {
+    public void breakBlock( BlockPosition blockPosition, boolean dropItem ) {
         Block breakBlock = this.getBlock( blockPosition );
 
-        this.playSound( blockPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( blockPosition, 2001, breakBlock.getRuntimeId() );
+        this.playSound( blockPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( blockPosition.toVector(), 2001, breakBlock.getRuntimeId() );
         this.setBlock( blockPosition, new BlockAir() );
 
         if ( dropItem ) {
