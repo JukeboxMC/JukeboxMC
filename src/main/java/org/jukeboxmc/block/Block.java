@@ -108,6 +108,10 @@ public class Block {
     }
 
     //Other
+    public boolean canBeReplaced() {
+        return false;
+    }
+
     public BlockType getBlockType() {
         for ( BlockType value : BlockType.values() ) {
             if ( value.getBlockClass() == this.getClass() ) {

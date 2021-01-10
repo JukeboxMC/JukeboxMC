@@ -225,14 +225,15 @@ public class World {
     public boolean useItemOn( Player player, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Vector vector = placePosition.toVector();
         Item itemInHand = player.getInventory().getItemInHand();
+        Block replacedBlock = this.getBlock( vector );
         Block placedBlock = itemInHand.getBlock();
         placedBlock.setPosition( placePosition );
+
         if ( placedBlock instanceof BlockAir ) {
             return false;
         }
 
-        //Replace
-        if ( this.getBlock( vector ).getBlockType() != BlockType.AIR ) {
+        if ( !replacedBlock.canBeReplaced()) {
             return false;
         }
 

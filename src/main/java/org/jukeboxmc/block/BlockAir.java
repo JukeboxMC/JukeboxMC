@@ -10,4 +10,8 @@ public class BlockAir extends Block {
         super( "minecraft:air" );
     }
 
+    @Override
+    public boolean canBeReplaced() {
+        return true;
+    }
 }
