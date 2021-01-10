@@ -24,7 +24,7 @@ public class Block {
 
     private int runtimeId;
     private String identifier;
-    private NbtMap states;
+    private NbtMap blockStates;
 
     private World world;
     private BlockPosition position;
@@ -49,7 +49,7 @@ public class Block {
                     Block block = this.getClass().newInstance();
                     block.runtimeId = runtimeId;
                     block.identifier = identifier;
-                    block.states = state;
+                    block.blockStates = state;
                     BlockPalette.RUNTIME_TO_BLOCK.put( runtimeId, block );
                 } catch ( InstantiationException | IllegalAccessException e ) {
                     e.printStackTrace();
@@ -62,49 +62,49 @@ public class Block {
             nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
         }
 
-        this.states = nbtMap;
-        this.runtimeId = STATES.get( this.identifier ).get( this.states );
+        this.blockStates = nbtMap;
+        this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
     }
 
     public <B extends Block> B setData( int data ) {
-        this.states = new ArrayList<>( STATES.get( this.identifier ).keySet() ).get( data );
-        this.runtimeId = STATES.get( this.identifier ).get( this.states );
+        this.blockStates = new ArrayList<>( STATES.get( this.identifier ).keySet() ).get( data );
+        this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
         return (B) this;
     }
 
     public <B extends Block> B setState( String state, Object value ) {
-        if ( !this.states.containsKey( state ) ) {
+        if ( !this.blockStates.containsKey( state ) ) {
             throw new AssertionError( "State " + state + " was not found in block " + this.identifier );
         }
-        if ( this.states.get( state ).getClass() != value.getClass() ) {
+        if ( this.blockStates.get( state ).getClass() != value.getClass() ) {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
         }
-        NbtMapBuilder nbtMapBuilder = this.states.toBuilder();
+        NbtMapBuilder nbtMapBuilder = this.blockStates.toBuilder();
         nbtMapBuilder.put( state, value );
         for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifier ).entrySet() ) {
             NbtMap blockMap = entry.getKey();
             if ( blockMap.equals( nbtMapBuilder ) ) {
-                this.states = blockMap;
+                this.blockStates = blockMap;
             }
         }
-        this.runtimeId = STATES.get( this.identifier ).get( this.states );
+        this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
         return (B) this;
     }
 
     public boolean stateExists( String value ) {
-        return this.states.containsKey( value );
+        return this.blockStates.containsKey( value );
     }
 
     public String getStringState( String value ) {
-        return this.states.getString( value );
+        return this.blockStates.getString( value );
     }
 
     public byte getByteState( String value ) {
-        return this.states.getByte( value );
+        return this.blockStates.getByte( value );
     }
 
     public int getIntState( String value ) {
-        return this.states.getInt( value );
+        return this.blockStates.getInt( value );
     }
 
     //Other
@@ -125,8 +125,8 @@ public class Block {
         return this.identifier;
     }
 
-    public NbtMap getStates() {
-        return this.states;
+    public NbtMap getBlockStates() {
+        return this.blockStates;
     }
 
     public World getWorld() {
