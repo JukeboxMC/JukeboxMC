@@ -138,7 +138,6 @@ public class Connection {
 
     public void receive( ByteBuf buffer ) {
         this.isActive = true;
-        System.out.println( "UPDATE" );
         this.lastUpdate = System.currentTimeMillis();
 
         int packetId = buffer.getUnsignedByte( 0 );
