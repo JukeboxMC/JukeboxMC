@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -34,7 +36,7 @@ public class Block {
         this( identifier, null );
     }
 
-    public Block( String identifier, NbtMap nbtMap ) {
+    public Block( String identifier, NbtMap blockStates ) {
         this.identifier = identifier.toLowerCase();
 
         if ( !STATES.containsKey( this.identifier ) ) {
@@ -57,12 +59,12 @@ public class Block {
             }
         }
 
-        if ( nbtMap == null ) {
+        if ( blockStates == null ) {
             List<NbtMap> states = new ArrayList<>( STATES.get( this.identifier ).keySet() );
-            nbtMap = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
+            blockStates = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
         }
 
-        this.blockStates = nbtMap;
+        this.blockStates = blockStates;
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
     }
 
@@ -79,6 +81,7 @@ public class Block {
         if ( this.blockStates.get( state ).getClass() != value.getClass() ) {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
         }
+
         NbtMapBuilder nbtMapBuilder = this.blockStates.toBuilder();
         nbtMapBuilder.put( state, value );
         for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifier ).entrySet() ) {
@@ -110,6 +113,16 @@ public class Block {
     //Other
     public boolean canBeReplaced() {
         return false;
+    }
+
+    //TODO set the correct meta to item
+    public Item toItem() {
+        for ( Item item : ItemType.getItems() ) {
+            if ( item.getIdentifier().equals( this.identifier ) ) {
+                return item;
+            }
+        }
+        return new ItemAir();
     }
 
     public BlockType getBlockType() {

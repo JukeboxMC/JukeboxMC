@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockMonsterEgg extends Block {
 
     public BlockMonsterEgg() {
         super( "minecraft:monster_egg" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getMonsterEggStoneType().ordinal() );
     }
 
     public void setMonsterEggStoneType( MonsterEggStoneType monsterEggStoneType ) {

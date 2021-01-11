@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockDirt extends Block {
 
     public BlockDirt() {
         super( "minecraft:dirt" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getDirtType().ordinal() );
     }
 
     public BlockDirt setDirtType( DirtType dirtType ) {

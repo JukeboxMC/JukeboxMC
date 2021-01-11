@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockRedSandstoneStairs extends Block {
 
     public BlockRedSandstoneStairs() {
         super( "minecraft:red_sandstone_stairs" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getSandStoneType().ordinal() );
     }
 
     public void setSandStoneType( SandStoneType sandStoneType ) {

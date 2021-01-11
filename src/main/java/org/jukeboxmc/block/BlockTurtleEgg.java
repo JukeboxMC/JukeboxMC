@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockTurtleEgg extends Block {
 
     public BlockTurtleEgg() {
         super( "minecraft:turtle_egg" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getCrackedState().ordinal() );
     }
 
     public void setCrackedState( CrackedState crackedState ) {

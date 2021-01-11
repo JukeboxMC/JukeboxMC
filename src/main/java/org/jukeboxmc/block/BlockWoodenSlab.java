@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockWoodenSlab extends Block {
 
     public BlockWoodenSlab() {
         super( "minecraft:wooden_slab" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getWoodType().ordinal() );
     }
 
     public void setTopSlot( boolean value ) {

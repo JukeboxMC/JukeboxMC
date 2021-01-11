@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockStainedGlass extends Block {
 
     public BlockStainedGlass() {
         super( "minecraft:stained_glass" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getColor().ordinal() );
     }
 
     public void setColor( BlockColor color ) {

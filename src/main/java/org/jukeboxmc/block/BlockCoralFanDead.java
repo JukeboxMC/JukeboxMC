@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RotationDirection;
+import org.jukeboxmc.item.Item;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class BlockCoralFanDead extends Block {
 
     public BlockCoralFanDead() {
         super( "minecraft:coral_fan_dead" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getCoralColor().ordinal() );
     }
 
     public void setCoralDirection( RotationDirection rotationDirection ) {

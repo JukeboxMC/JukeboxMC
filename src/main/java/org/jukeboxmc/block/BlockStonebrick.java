@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockStonebrick extends Block {
 
     public BlockStonebrick() {
         super( "minecraft:stonebrick" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getStoneBrickType().ordinal() );
     }
 
     public void setStoneBrickType( StoneBrickType stoneBrickType ) {

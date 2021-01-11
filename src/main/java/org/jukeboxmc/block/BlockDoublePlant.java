@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockDoublePlant extends Block {
 
     public BlockDoublePlant() {
         super( "minecraft:double_plant" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getPlantType().ordinal() );
     }
 
     public BlockDoublePlant setPlantType( PlantType plantType ) {

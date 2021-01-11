@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockWood extends Block {
 
     public BlockWood() {
         super( "minecraft:wood" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getWoodType().ordinal() );
     }
 
     public void setWoodType( WoodType woodType ) {

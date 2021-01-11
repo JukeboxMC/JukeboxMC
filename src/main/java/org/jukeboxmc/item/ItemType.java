@@ -944,6 +944,8 @@ public enum ItemType {
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
 
+    private static final List<Item> CACHED_ITEMS = new ArrayList<>();
+
     public static void init() {
         System.out.println( "Loading items..." );
         if ( INITIALIZED.get() ) {
@@ -960,15 +962,16 @@ public enum ItemType {
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
         List<Map<String, Object>> map = gson.fromJson( parseItem, List.class );
         ItemType.setItemPalette( map );
+
+        for ( ItemType value : ItemType.values() ) {
+            CACHED_ITEMS.add( value.getItem() );
+        }
+
         System.out.println( "Items loading successfully" );
     }
 
-    public static Item[] getItems( boolean creative ) {
-        ItemType[] itemTypes = values();
-        Item[] items = new Item[creative ? itemTypes.length - 1 : itemTypes.length];
-        for ( int i = creative ? 1 : 0; i < itemTypes.length; i++ )
-            items[i - ( creative ? 1 : 0 )] = itemTypes[i].getItem();
-        return items;
+    public static List<Item> getItems() {
+        return CACHED_ITEMS;
     }
 
     public static Item getItemFormNetworkId( int networkId ) {

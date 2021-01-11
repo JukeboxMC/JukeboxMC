@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockCoralBlock extends Block {
 
     public BlockCoralBlock() {
         super( "minecraft:coral_block" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getCoralColor().ordinal() );
     }
 
     public void setCoralColor( CoralColor coralColor ) {

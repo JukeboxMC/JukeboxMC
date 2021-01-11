@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockLeaves extends Block {
 
     public BlockLeaves() {
         super( "minecraft:leaves" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getLeafType().ordinal() );
     }
 
     public void setPersistent( boolean value ) {

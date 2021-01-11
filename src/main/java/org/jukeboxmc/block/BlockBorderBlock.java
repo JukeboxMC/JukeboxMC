@@ -26,7 +26,7 @@ public class BlockBorderBlock extends Block {
         return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ).toUpperCase() ) : WallConnectionType.NONE;
     }
 
-    public void setWallConnectionTypeSouth( BlockCobblestoneWall.WallConnectionType wallConnectionTypeEast ) {
+    public void setWallConnectionTypeSouth( WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_south", wallConnectionTypeEast.name().toLowerCase() );
     }
 

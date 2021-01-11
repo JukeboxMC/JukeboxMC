@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockLavaCauldron extends Block {
 
     public BlockLavaCauldron() {
         super( "minecraft:lava_cauldron" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getLiquidType().ordinal() );
     }
 
     public void setFillLevel( int value ) { //0-6

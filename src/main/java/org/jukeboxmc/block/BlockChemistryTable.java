@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class BlockChemistryTable extends Block {
 
     public BlockChemistryTable() {
         super( "minecraft:chemistry_table" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getChemistryTableType().ordinal() );
     }
 
     public void setChemistryTableType( ChemistryTableType chemistryTableType ) {

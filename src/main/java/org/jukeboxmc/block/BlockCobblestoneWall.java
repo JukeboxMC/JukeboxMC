@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockCobblestoneWall extends Block {
 
     public BlockCobblestoneWall() {
         super( "minecraft:cobblestone_wall" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getWallConnectionType().ordinal() );
     }
 
     public void setWallPost( boolean value ) {

@@ -30,6 +30,7 @@ public class PacketRegistry {
         handler.put( ContainerClosePacket.class, new ContainerCloseHandler() );
         handler.put( InventoryTransactionPacket.class, new InventoryTransactionHandler() );
         handler.put( MobEquipmentPacket.class, new MobEquipmentHandler() );
+        handler.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -88,6 +89,8 @@ public class PacketRegistry {
                 return new InventoryTransactionPacket();
             case Protocol.MOB_EQUIPMENT_PACKET:
                 return new MobEquipmentPacket();
+            case Protocol.BLOCK_PICK_REQUEST_PACKET:
+                return new BlockPickRequestPacket();
             default:
                 return null;
         }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockTallGrass extends Block {
 
     public BlockTallGrass() {
         super( "minecraft:tallgrass" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getGrassType().ordinal() );
     }
 
     public BlockTallGrass setGrassType( GrassType grassType ) {

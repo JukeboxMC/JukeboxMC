@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockSapling extends Block {
 
     public BlockSapling() {
         super( "minecraft:sapling" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getSaplingType().ordinal() );
     }
 
     public void setSaplingType( SaplingType saplingType ) {

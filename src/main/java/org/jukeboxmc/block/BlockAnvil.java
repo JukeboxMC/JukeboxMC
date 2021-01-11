@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,11 @@ public class BlockAnvil extends Block {
 
     public BlockAnvil() {
         super( "minecraft:anvil" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getDamage().ordinal() );
     }
 
     public void setDamage( Damage damage ) {

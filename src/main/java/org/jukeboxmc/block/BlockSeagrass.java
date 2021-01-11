@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockSeagrass extends Block {
 
     public BlockSeagrass() {
         super( "minecraft:seagrass" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getSeaGrassType().ordinal() );
     }
 
     public void setSeaGrassType( SeaGrassType seaGrassType ) {

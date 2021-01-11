@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockStoneSlab extends Block {
 
     public BlockStoneSlab() {
         super( "minecraft:stone_slab" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getStoneSlabType().ordinal() );
     }
 
     public void setStoneSlabType( StoneSlabType stoneSlabType ) {

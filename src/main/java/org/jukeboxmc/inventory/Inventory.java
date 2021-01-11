@@ -19,15 +19,15 @@ public abstract class Inventory {
     protected Entity holder;
 
     protected Item[] contents;
-    protected int slots;
+    protected int slotSize;
 
     private Set<Player> viewer = new HashSet<>();
 
-    public Inventory( Entity holder, int slots ) {
+    public Inventory( Entity holder, int slotSize ) {
         this.holder = holder;
-        this.slots = slots;
-        this.contents = new Item[slots];
-        for ( int i = 0; i < slots; i++ ) {
+        this.slotSize = slotSize;
+        this.contents = new Item[slotSize];
+        for ( int i = 0; i < slotSize; i++ ) {
             this.contents[i] = new ItemAir();
         }
     }
@@ -73,13 +73,63 @@ public abstract class Inventory {
         return content != null ? content : ItemType.AIR.getItem();
     }
 
-    public boolean addItem( Item item ) { //Does not work
+    public boolean canAddItem( Item item ) {
+        Item clone = item.clone();
 
+        for ( Item content : this.getContents() ) {
+            if ( content instanceof ItemAir ) {
+                return true;
+            } else if ( content.equals( clone ) && content.getAmount() <= content.getMaxAmount() ) {
+                return true;
+            } else {
+                int removeCount = content.getMaxAmount() - content.getAmount();
+                clone.setAmount( clone.getAmount() - removeCount );
+            }
+            if ( clone.getAmount() == 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addItem( Item item ) {
+        if ( this.canAddItem( item ) ) {
+            Item clone = item.clone();
+
+            Item[] contents = this.getContents();
+            for ( int i = 0; i < contents.length; i++ ) {
+                if ( contents[i].equals( clone ) && contents[i].getAmount() <= contents[i].getMaxAmount() ) {
+                    if ( contents[i].getAmount() + clone.getAmount() <= contents[i].getMaxAmount() ) {
+                        contents[i].setAmount( contents[i].getAmount() + clone.getAmount() );
+                        clone.setAmount( 0 );
+                    } else {
+                        int amountToDecrease = contents[i].getMaxAmount() - contents[i].getAmount();
+                        contents[i].setAmount( contents[i].getMaxAmount() );
+                        clone.setAmount( clone.getAmount() - amountToDecrease );
+                    }
+
+                    this.setItem( i, contents[i] );
+
+                    if ( clone.getAmount() == 0 ) {
+                        return true;
+                    }
+                }
+            }
+
+            for ( int i = 0; i < contents.length; i++ ) {
+                if ( contents[i] instanceof ItemAir ) {
+                    this.setItem( i, clone );
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
         return true;
     }
 
     public void removeItem( Item item ) {
-        for ( int i = 0; i < this.slots; i++ ) {
+        for ( int i = 0; i < this.slotSize; i++ ) {
             Item content = this.getItem( i );
 
             if ( content != null && content.getItemType() != ItemType.AIR ) {
@@ -96,7 +146,7 @@ public abstract class Inventory {
     }
 
     public void clear() {
-        for ( int i = 0; i < this.slots; i++ ) {
+        for ( int i = 0; i < this.slotSize; i++ ) {
             Item item = this.getItem( i );
             if ( item != null && item.getItemType() != ItemType.AIR ) {
                 this.clear( i );
@@ -108,8 +158,8 @@ public abstract class Inventory {
         return Arrays.asList( this.contents ).contains( item ); //Iknow its not the best check TODO!
     }
 
-    public int getSlots() {
-        return this.slots;
+    public int getSlotSize() {
+        return this.slotSize;
     }
 
     public Item[] getContents() {

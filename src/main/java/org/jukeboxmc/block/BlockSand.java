@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockSand extends Block {
 
     public BlockSand() {
         super( "minecraft:sand" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getSandType().ordinal() );
     }
 
     public void setSandType( SandType sandType ) {

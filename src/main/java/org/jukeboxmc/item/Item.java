@@ -114,8 +114,9 @@ public abstract class Item implements Cloneable {
         return this.meta;
     }
 
-    public void setMeta( int meta ) {
+    public Item setMeta( int meta ) {
         this.meta = meta;
+        return this;
     }
 
     public NbtMap getNBT() {

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,11 @@ public class BlockStructureBlock extends Block {
 
     public BlockStructureBlock() {
         super( "minecraft:structure_block" );
+    }
+
+    @Override
+    public Item toItem() {
+        return super.toItem().setMeta( this.getStructureBlockType().ordinal() );
     }
 
     public void setStructureBlockType( StructureBlockType structureBlockType ) {
