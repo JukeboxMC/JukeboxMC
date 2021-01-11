@@ -1,6 +1,10 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +14,12 @@ public class BlockSeagrass extends Block {
 
     public BlockSeagrass() {
         super( "minecraft:seagrass" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setSeaGrassType( SeaGrassType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override

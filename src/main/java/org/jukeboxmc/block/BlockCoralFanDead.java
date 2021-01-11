@@ -1,7 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.RotationDirection;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -11,6 +15,12 @@ public class BlockCoralFanDead extends Block {
 
     public BlockCoralFanDead() {
         super( "minecraft:coral_fan_dead" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setCoralColor( CoralColor.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override
@@ -32,13 +42,5 @@ public class BlockCoralFanDead extends Block {
 
     public CoralColor getCoralColor() {
         return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ).toUpperCase() ) : CoralColor.BLUE;
-    }
-
-    public enum CoralColor {
-        BLUE,
-        PINK,
-        PURPLE,
-        RED,
-        YELLOW
     }
 }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.math.Axis;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -24,11 +26,5 @@ public class BlockBoneBlock extends Block {
 
     public Axis getAxis() {
         return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
-    }
-
-    public enum Axis {
-        Y,
-        X,
-        Z
     }
 }

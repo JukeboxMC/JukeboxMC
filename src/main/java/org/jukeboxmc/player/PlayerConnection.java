@@ -5,7 +5,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
-import org.jukeboxmc.item.ItemPlanks;
+import org.jukeboxmc.item.ItemFurnace;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -435,7 +435,7 @@ public class PlayerConnection {
 
         this.player.getChunk().addEntity( this.player );
 
-        this.player.getInventory().setItem( 0, new ItemPlanks() );
+        this.player.getInventory().setItem( 0, new ItemFurnace() );
     }
 
     public void leaveGame() {

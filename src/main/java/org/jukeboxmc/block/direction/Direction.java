@@ -23,4 +23,19 @@ public enum Direction {
                 return NORTH;
         }
     }
+
+    public BlockFace toBlockFace() {
+        switch ( this ) {
+            case SOUTH:
+                return BlockFace.SOUTH;
+            case WEST:
+                return BlockFace.WEST;
+            case NORTH:
+                return BlockFace.NORTH;
+            case EAST:
+                return BlockFace.EAST;
+            default:
+                return null;
+        }
+    }
 }

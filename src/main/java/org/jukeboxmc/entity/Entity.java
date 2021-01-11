@@ -1,6 +1,7 @@
 package org.jukeboxmc.entity;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
@@ -76,6 +77,35 @@ public abstract class Entity {
     public AxisAlignedBB getBoundingBox() {
         return this.boundingBox;
     }
+
+    public Direction getDirection() {
+        double rotation = this.location.getYaw() % 360;
+        if ( rotation < 0 ) {
+            rotation += 360.0;
+        }
+
+        if ( 45 <= rotation && rotation < 135 ) {
+            return Direction.WEST;
+        } else if ( 135 <= rotation && rotation < 225 ) {
+            return Direction.NORTH;
+        } else if ( 225 <= rotation && rotation < 315 ) {
+            return Direction.EAST;
+        } else {
+            return Direction.SOUTH;
+        }
+    }
+
+    //NOT READY ONLY FOR TESTS
+/*
+    public SignDirection getSignDirection() {
+        double rotation = this.location.getYaw() % 360;
+        if ( rotation < 0 ) {
+            rotation += 360.0;
+        }
+
+        return SignDirection.values()[(int) ( ( (int) ( rotation + 22.5F ) / 22.5 ) )];
+    }
+ */
 
     public void setNameTag( String value ) {
         this.metadata.setString( MetadataFlag.NAMETAG, value );

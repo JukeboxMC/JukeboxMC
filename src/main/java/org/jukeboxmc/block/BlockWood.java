@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.Axis;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +15,12 @@ public class BlockWood extends Block {
 
     public BlockWood() {
         super( "minecraft:wood" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override
@@ -39,20 +50,5 @@ public class BlockWood extends Block {
 
     public Axis getAxis() {
         return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
-    }
-
-    public enum WoodType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE,
-        ACACIA,
-        DARK_OAK
-    }
-
-    public enum Axis {
-        Y,
-        X,
-        Z
     }
 }

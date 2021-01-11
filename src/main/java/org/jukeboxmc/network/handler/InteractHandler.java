@@ -15,6 +15,7 @@ public class InteractHandler implements PacketHandler {
     @Override
     public void handle( Packet packet, Player player ) {
         InteractPacket interactPacket = (InteractPacket) packet;
+        System.out.println( interactPacket.toString() );
 
         if ( interactPacket.getAction() == InteractPacket.Action.OPEN_INVENTORY ) {
             ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();

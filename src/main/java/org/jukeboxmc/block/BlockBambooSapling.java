@@ -1,6 +1,10 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +14,12 @@ public class BlockBambooSapling extends Block {
 
     public BlockBambooSapling() {
         super( "minecraft:bamboo_sapling" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setSaplingType( SaplingType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override
@@ -33,12 +43,4 @@ public class BlockBambooSapling extends Block {
         return this.stateExists( "age_bit" ) && this.getByteState( "age_bit" ) == 1;
     }
 
-    public enum SaplingType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE,
-        ACACIA,
-        DARK_OAK
-    }
 }

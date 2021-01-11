@@ -61,6 +61,7 @@ public class Server {
         this.listener.getRakNetEventManager().onEvent( ReciveMinecraftPacketEvent.class, (Consumer<ReciveMinecraftPacketEvent>) event -> {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
+
             Player player = this.players.get( connection.getSender() );
             PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
             if ( handler != null ) {

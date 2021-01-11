@@ -49,7 +49,6 @@ public class Listener {
     @Getter
     private boolean isRunning = false;
 
-
     private Map<InetSocketAddress, Connection> connections = new ConcurrentHashMap<>();
     private Queue<DatagramPacket> packets = new ConcurrentLinkedQueue<>();
 
@@ -68,7 +67,7 @@ public class Listener {
             socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
             socket.handler( new ChannelInboundHandlerAdapter() {
                 @Override
-                public void channelRead( ChannelHandlerContext ctx, Object msg ) {
+                public void channelRead( ChannelHandlerContext ctx, Object msg ) throws Exception {
                     DatagramPacket datagramPacket = (DatagramPacket) msg;
                     InetSocketAddress sender = datagramPacket.sender();
 

@@ -1,7 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -11,6 +15,22 @@ public class BlockAnvil extends Block {
 
     public BlockAnvil() {
         super( "minecraft:anvil" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        switch ( itemIndHand.getMeta() ) {
+            case 4:
+                this.setDamage( Damage.SLIGHTLY_DAMAGED );
+                break;
+            case 8:
+                this.setDamage( Damage.VERY_DAMAGED );
+                break;
+            default:
+                this.setDamage( Damage.UNDAMAGED );
+                break;
+        }
+        world.setBlock( placePosition, this );
     }
 
     @Override

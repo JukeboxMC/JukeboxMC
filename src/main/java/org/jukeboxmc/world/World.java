@@ -108,24 +108,24 @@ public class World {
         return this.getBlock( new Vector( x, y, z ), 0 );
     }
 
-    public void setBlock( BlockPosition location, Block block ) {
-        this.setBlock( location.toVector(), block, 0 );
+    public void setBlock( Vector location, Block block ) {
+        this.setBlock( location.toBlockPosition(), block, 0 );
     }
 
-    public void setBlock( Vector location, Block block ) {
+    public void setBlock( BlockPosition location, Block block ) {
         this.setBlock( location, block, 0 );
     }
 
-    public void setBlock( Vector location, Block block, int layer ) {
-        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        chunk.setBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer, block );
+    public void setBlock( BlockPosition location, Block block, int layer ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        chunk.setBlock( location.getX(), location.getY(), location.getZ(), layer, block );
 
         block.setWorld( this );
-        block.setPosition( location.toBlockPosition() );
+        block.setPosition( location );
         block.setLayer( layer );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setPosition( location.toBlockPosition() );
+        updateBlockPacket.setPosition( location );
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( layer );
@@ -222,39 +222,47 @@ public class World {
     }
 
     //TODO Checken ob ein Spieler nach oben baut
-    public boolean useItemOn( Player player, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
-        Vector vector = placePosition.toVector();
+    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
+        Block clickedBlock = this.getBlock( blockPosition );
+        if ( clickedBlock instanceof BlockAir ) {
+            return false;
+        }
         Item itemInHand = player.getInventory().getItemInHand();
-        Block replacedBlock = this.getBlock( vector );
+        Block replacedBlock = this.getBlock( placePosition );
         Block placedBlock = itemInHand.getBlock();
         placedBlock.setPosition( placePosition );
 
-        if ( placedBlock instanceof BlockAir ) {
-            return false;
+
+        boolean interact = false;
+        if ( !player.isSneaking() ) {
+            interact = clickedBlock.interact( player, clickedPosition, blockFace, itemInHand );
         }
 
-        if ( !replacedBlock.canBeReplaced()) {
-            return false;
-        }
-
-        Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
-        if ( !nearbyEntities.isEmpty() ) {
-            return false;
-        }
-
-        if ( player != null ) {
-            AxisAlignedBB boundingBox = player.getBoundingBox();
-            if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+        if ( ( !interact ) || player.isSneaking() ) {
+            if ( !replacedBlock.canBeReplaced() ) {
                 return false;
             }
+
+            Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
+            if ( !nearbyEntities.isEmpty() ) {
+                return false;
+            }
+
+            if ( player != null ) {
+                AxisAlignedBB boundingBox = player.getBoundingBox();
+                if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+                    return false;
+                }
+            }
+
+            placedBlock.placeBlock( player, this, placePosition, itemInHand, blockFace );
+            this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
         }
 
-        placedBlock.placeBlock( this, vector, itemInHand );
-        this.playSound( vector, LevelSound.PLACE, placedBlock.getRuntimeId() );
-        return true;
+        return interact;
     }
 
-    public Vector getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
+    public BlockPosition getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
         switch ( blockFace ) {
             case DOWN:
                 return this.getRelative( blockPosition, Vector.DOWN );
@@ -272,11 +280,11 @@ public class World {
         return null;
     }
 
-    private Vector getRelative( BlockPosition blockPosition, Vector position ) {
+    private BlockPosition getRelative( BlockPosition blockPosition, Vector position ) {
         float x = blockPosition.getX() + position.getX();
         float y = blockPosition.getY() + position.getY();
         float z = blockPosition.getZ() + position.getZ();
-        return new Vector( x, y, z );
+        return new Vector( x, y, z ).toBlockPosition();
     }
 
     public void breakBlock( BlockPosition blockPosition, boolean dropItem ) {

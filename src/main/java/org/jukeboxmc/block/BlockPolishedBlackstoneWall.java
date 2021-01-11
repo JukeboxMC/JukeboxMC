@@ -45,11 +45,4 @@ public class BlockPolishedBlackstoneWall extends Block {
     public WallConnectionType getWallConnectionTypeNorth() {
         return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ).toUpperCase() ) : WallConnectionType.NONE;
     }
-
-
-    public enum WallConnectionType {
-        NONE,
-        SHORT,
-        TALL
-    }
 }

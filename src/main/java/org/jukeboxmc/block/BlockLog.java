@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.Axis;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +15,12 @@ public class BlockLog extends Block {
 
     public BlockLog() {
         super( "minecraft:log" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setLogType( LogType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override
@@ -38,11 +49,5 @@ public class BlockLog extends Block {
         SPRUCE,
         BIRCH,
         JUNGLE
-    }
-
-    public enum Axis {
-        Y,
-        X,
-        Z
     }
 }

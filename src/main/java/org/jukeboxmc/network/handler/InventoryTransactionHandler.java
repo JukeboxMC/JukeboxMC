@@ -57,9 +57,8 @@ public class InventoryTransactionHandler implements PacketHandler {
                         this.spamCheckTime = System.currentTimeMillis();
 
                         player.setAction( false );
-
-                        BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace ).toBlockPosition();
-                        if ( !player.getWorld().useItemOn( player, placePosition, clickPosition, blockFace ) ) {
+                        BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
+                        if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
                             player.getPlayerConnection().sendUpdateBlock( blockPosition );
                             player.getPlayerConnection().sendUpdateBlock( placePosition );
                             return;

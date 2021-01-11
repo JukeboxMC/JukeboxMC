@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
@@ -8,6 +9,7 @@ import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
 import java.util.ArrayList;
@@ -111,6 +113,19 @@ public class Block {
     }
 
     //Other
+
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        if ( this.getBlockType() != BlockType.AIR ) {
+            world.setBlock( placePosition, this );
+        } else {
+            System.out.println( "Try to place block -> " + this.getName() );
+        }
+    }
+
+    public boolean interact( Player player, Vector clickedPosition, BlockFace blockFace, Item itemInHand ){
+        return false;
+    }
+
     public boolean canBeReplaced() {
         return false;
     }
@@ -183,13 +198,5 @@ public class Block {
                 this.position.getY() + 1,
                 this.position.getZ() + 1
         );
-    }
-
-    public void placeBlock( World world, Vector placePosition, Item itemIndHand ) {
-        if ( this.getBlockType() != BlockType.AIR ) {
-            world.setBlock( placePosition, this );
-        } else {
-            System.out.println( "Try to place block -> " + this.getName() );
-        }
     }
 }

@@ -1,6 +1,10 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +14,12 @@ public class BlockCobblestoneWall extends Block {
 
     public BlockCobblestoneWall() {
         super( "minecraft:cobblestone_wall" );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setWallBlockType( WallType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
     @Override
@@ -63,12 +73,6 @@ public class BlockCobblestoneWall extends Block {
 
     public WallType getWallConnectionType() {
         return this.stateExists( "wall_block_type" ) ? WallType.valueOf( this.getStringState( "wall_block_type" ).toUpperCase() ) : WallType.COBBLESTONE;
-    }
-
-    public enum WallConnectionType {
-        NONE,
-        SHORT,
-        TALL
     }
 
     public enum WallType {

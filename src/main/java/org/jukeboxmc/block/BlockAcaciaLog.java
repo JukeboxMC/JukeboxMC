@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.math.Axis;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -24,12 +26,6 @@ public class BlockAcaciaLog extends Block {
 
     public LogType getLogType() {
         return this.stateExists( "new_log_type" ) ? LogType.valueOf( this.getStringState( "new_log_type" ).toUpperCase() ) : LogType.ACACIA;
-    }
-
-    public enum Axis {
-        Y,
-        X,
-        Z
     }
 
     public enum LogType {
