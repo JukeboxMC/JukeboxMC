@@ -5,6 +5,8 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.inventory.Inventory;
+import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.ItemFurnace;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
@@ -423,6 +425,7 @@ public class PlayerConnection {
         this.sendAttributes( this.player.getAttributes().getAttributes() );
 
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+        this.sendMetadata();
 
         this.player.getInventory().addViewer( this.player );
         this.player.getCursorInventory().addViewer( this.player );
@@ -431,7 +434,6 @@ public class PlayerConnection {
         if ( this.server.getOnlinePlayers().size() > 1 ) {
             this.sendPlayerList();
         }
-        this.sendMetadata();
 
         this.player.getChunk().addEntity( this.player );
 
@@ -455,6 +457,21 @@ public class PlayerConnection {
         this.server.broadcastMessage( "§e" + this.player.getName() + " left the game" );
     }
 
+    public void openInventory( Inventory inventory, BlockPosition position ) {
+        ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
+        containerOpenPacket.setEntityId( this.player.getEntityId() );
+        containerOpenPacket.setWindowType( inventory.getWindowType() );
+        containerOpenPacket.setWindowId( WindowId.OPEN_CONTAINER );
+        containerOpenPacket.setPosition( position );
+        this.sendPacket( containerOpenPacket );
+    }
+
+    public void closeInventory( int windowId, boolean isServerSide ) {
+        ContainerClosePacket containerClosePacket = new ContainerClosePacket();
+        containerClosePacket.setWindowId( windowId );
+        containerClosePacket.setServerInitiated( isServerSide );
+        this.sendPacket( containerClosePacket );
+    }
 
     //TEST
     public boolean canInteract( Vector position, int maxDistance ) {

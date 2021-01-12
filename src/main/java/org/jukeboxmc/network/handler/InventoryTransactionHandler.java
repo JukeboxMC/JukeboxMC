@@ -2,6 +2,7 @@ package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.Inventory;
+import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -31,9 +32,11 @@ public class InventoryTransactionHandler implements PacketHandler {
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
 
-                            Inventory inventory = this.getInventory( player, transaction.getWindowId() );
+                            Inventory inventory = this.getInventory( player, WindowId.getWindowIdById( transaction.getWindowId() ) );
                             if ( inventory != null ) {
                                 inventory.setItem( slot, targetItem, false );
+                            } else {
+                                System.out.println( "Inventory with id " + transaction.getWindowId() + " is missing" );
                             }
                             break;
                         case 2:
@@ -55,7 +58,6 @@ public class InventoryTransactionHandler implements PacketHandler {
                             return;
                         }
                         this.spamCheckTime = System.currentTimeMillis();
-
                         player.setAction( false );
                         BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
                         if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
@@ -92,14 +94,14 @@ public class InventoryTransactionHandler implements PacketHandler {
         return !( System.currentTimeMillis() - this.spamCheckTime < 100 );
     }
 
-    public Inventory getInventory( Player player, int windowId ) {
+    public Inventory getInventory( Player player, WindowId windowId ) {
         switch ( windowId ) {
-            case 0:
+            case PLAYER:
                 return player.getInventory();
-            case 124:
+            case CURSOR_DEPRECATED:
                 return player.getCursorInventory();
             default:
-                return null;
+                return player.getCurrentInventory();
         }
     }
 }

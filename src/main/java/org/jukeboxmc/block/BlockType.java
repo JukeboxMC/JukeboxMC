@@ -563,7 +563,8 @@ public enum BlockType {
     STRIPPED_WARPED_HYPHAE( BlockStrippedWarpedHyphae.class ),
     CHISELED_NETHER_BRICKS( BlockChiseledNetherBricks.class ),
     CRACKED_NETHER_BRICKS( BlockCrackedNetherBricks.class ),
-    QUARTZ_BRICKS( BlockQuartzBricks.class );
+    QUARTZ_BRICKS( BlockQuartzBricks.class ),
+    BEE_HIVE( BlockBeehive.class );
 
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
 

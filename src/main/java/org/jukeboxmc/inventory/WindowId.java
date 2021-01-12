@@ -6,31 +6,40 @@ package org.jukeboxmc.inventory;
  */
 public enum WindowId {
 
-    PLAYER( (byte) 0 ),
-    ARMOR( (byte) 6 ),
-    CONTAINER( (byte) 7 ),
-    COMBINED_INVENTORY( (byte) 12 ),
-    CRAFTING_INPUT( (byte) 13 ),
-    CRAFTING_OUTPUT( (byte) 14 ),
-    ENCHANTMENT_TABLE_INPUT( (byte) 21 ),
-    ENCHANTMENT_TABLE_MATERIAL( (byte) 22 ),
-    HOTBAR( (byte) 27 ),
-    INVENTORY( (byte) 28 ),
-    OFFHAND( (byte) 33 ),
-    CURSOR( (byte) 58 ),
-    CREATED_OUTPUT( (byte) 59 ),
-    OPEN_CONTAINER( (byte) 60 ),
-    OFFHAND_DEPRECATED( (byte) 119 ),
-    ARMOR_DEPRECATED( (byte) 120 ),
-    CURSOR_DEPRECATED( (byte) 124 );
+    PLAYER( 0 ),
+    ARMOR( 6 ),
+    CONTAINER( 7 ),
+    COMBINED_INVENTORY( 12 ),
+    CRAFTING_INPUT( 13 ),
+    CRAFTING_OUTPUT( 14 ),
+    ENCHANTMENT_TABLE_INPUT( 21 ),
+    ENCHANTMENT_TABLE_MATERIAL( 22 ),
+    HOTBAR( 27 ),
+    INVENTORY( 28 ),
+    OFFHAND( 33 ),
+    CURSOR( 58 ),
+    CREATED_OUTPUT( 59 ),
+    OPEN_CONTAINER( 60 ),
+    OFFHAND_DEPRECATED( 119 ),
+    ARMOR_DEPRECATED( 120 ),
+    CURSOR_DEPRECATED( 124 );
 
-    private byte id;
+    private int id;
 
-    WindowId( byte id ) {
+    WindowId( int id ) {
         this.id = id;
     }
 
-    public byte getId() {
+    public int getId() {
         return this.id;
+    }
+
+    public static WindowId getWindowIdById( int windowId ) {
+        for ( WindowId value : values() ) {
+            if ( value.getId() == windowId ) {
+                return value;
+            }
+        }
+        return null;
     }
 }

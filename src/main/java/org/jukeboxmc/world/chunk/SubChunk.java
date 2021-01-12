@@ -4,14 +4,13 @@ import lombok.Getter;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.blockentity.BlockEntity;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -24,10 +23,12 @@ public class SubChunk {
     @Getter
     private int y;
     private Integer[][] blocks;
+    private Map<Integer, BlockEntity> blockEntitys;
 
     public SubChunk( int subChunkY ) {
         this.y = subChunkY;
         this.blocks = new Integer[Chunk.CHUNK_LAYERS][4096];
+        this.blockEntitys = new HashMap<>();
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
             this.blocks[layer] = new Integer[4096];
             for ( int x = 0; x < 16; x++ ) {
@@ -46,6 +47,22 @@ public class SubChunk {
 
     public Block getBlock( int x, int y, int z, int layer ) {
         return BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer][this.getIndex( x, y, z )] );
+    }
+
+    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
+        this.blockEntitys.put( this.getIndex( x, y, z ), blockEntity );
+    }
+
+    public BlockEntity getBlockEntity( int x, int y, int z ) {
+        return this.blockEntitys.get( this.getIndex( x, y, z ) );
+    }
+
+    public void removeBlockEntity( int x, int y, int z ) {
+        this.blockEntitys.remove( this.getIndex( x, y, z ) );
+    }
+
+    private int getIndex( BlockPosition blockPosition ) {
+        return this.getIndex( blockPosition.getX(), blockPosition.getY(), blockPosition.getZ() );
     }
 
     private int getIndex( int x, int y, int z ) {

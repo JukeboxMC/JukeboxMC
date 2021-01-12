@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntity;
+import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -13,6 +15,8 @@ import org.jukeboxmc.world.World;
  */
 public class BlockFurnace extends Block {
 
+    private BlockEntityFurnace blockEntityFurnace;
+
     public BlockFurnace() {
         super( "minecraft:furnace" );
     }
@@ -24,9 +28,25 @@ public class BlockFurnace extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        player.sendMessage( "INTERACT!!!" );
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+        }
         return true;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntity getBlockEntity() {
+        if ( this.blockEntityFurnace == null ) {
+            return this.blockEntityFurnace = new BlockEntityFurnace( this );
+        }
+        return this.world.getBlockEntity( this.position );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

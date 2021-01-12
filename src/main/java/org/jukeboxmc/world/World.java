@@ -5,15 +5,13 @@ import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockDirt;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.LevelEventPacket;
-import org.jukeboxmc.network.packet.LevelSoundEventPacket;
-import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.UpdateBlockPacket;
+import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -101,7 +99,10 @@ public class World {
 
     public Block getBlock( Vector location, int layer ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
+        Block block = chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
+        block.setWorld( this );
+        block.setPosition( new BlockPosition( location.getFloorX(), location.getFloorY(), location.getFloorZ() ) );
+        return block;
     }
 
     public Block getBlockAt( int x, int y, int z ) {
@@ -132,6 +133,31 @@ public class World {
         for ( Player player : this.getPlayers() ) {
             player.getPlayerConnection().sendPacket( updateBlockPacket );
         }
+
+        if ( block.hasBlockEntity() ) {
+            BlockEntity blockEntity = block.getBlockEntity();
+
+            chunk.setBlockEntity( location.getX(), location.getY(), location.getZ(), blockEntity );
+
+            BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
+            blockEntityDataPacket.setBlockPosition( block.getPosition() );
+            blockEntityDataPacket.setNbt( blockEntity.toCompound().build() );
+            for ( Player player : this.getPlayers() ) {
+                player.getPlayerConnection().sendPacket( blockEntityDataPacket );
+            }
+        } else {
+            chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+        }
+    }
+
+    public void setBlockEntity( BlockPosition location, BlockEntity blockEntity ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        chunk.setBlockEntity( location.getX(), location.getY(), location.getZ(), blockEntity );
+    }
+
+    public BlockEntity getBlockEntity( BlockPosition location ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        return chunk.getBlockEntity( location.getX(), location.getY(), location.getZ() );
     }
 
     public void playSound( Player player, LevelSound levelSound ) {
@@ -221,7 +247,6 @@ public class World {
         return targetEntity;
     }
 
-    //TODO Checken ob ein Spieler nach oben baut
     public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
         if ( clickedBlock instanceof BlockAir ) {
@@ -230,12 +255,16 @@ public class World {
         Item itemInHand = player.getInventory().getItemInHand();
         Block replacedBlock = this.getBlock( placePosition );
         Block placedBlock = itemInHand.getBlock();
+        placedBlock.setWorld( placedBlock.getWorld() );
         placedBlock.setPosition( placePosition );
-
 
         boolean interact = false;
         if ( !player.isSneaking() ) {
-            interact = clickedBlock.interact( player, clickedPosition, blockFace, itemInHand );
+            interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+        }
+
+        if ( placedBlock instanceof BlockAir ) {
+            return false;
         }
 
         if ( ( !interact ) || player.isSneaking() ) {

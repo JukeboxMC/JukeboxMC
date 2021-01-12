@@ -2,6 +2,7 @@ package org.jukeboxmc.world.chunk;
 
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.utils.BinaryStream;
 
@@ -44,6 +45,24 @@ public class Chunk {
         int subY = y >> 4;
         this.checkOrCreateSubChunks( subY );
         return this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
+    }
+
+    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
+        int subY = y >> 4;
+        this.checkOrCreateSubChunks( subY );
+        this.subChunks[subY].setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
+    }
+
+    public BlockEntity getBlockEntity( int x, int y, int z ) {
+        int subY = y >> 4;
+        this.checkOrCreateSubChunks( subY );
+        return this.subChunks[subY].getBlockEntity( x & 15, y & 15, z & 15 );
+    }
+
+    public void removeBlockEntity( int x, int y, int z ) {
+        int subY = y >> 4;
+        this.checkOrCreateSubChunks( subY );
+        this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     private void checkOrCreateSubChunks( int subY ) {

@@ -1,6 +1,5 @@
 package org.jukeboxmc.inventory;
 
-import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
@@ -11,7 +10,7 @@ import org.jukeboxmc.player.Player;
  */
 public abstract class ContainerInventory extends Inventory {
 
-    public ContainerInventory( Entity holder, int slots ) {
+    public ContainerInventory( InventoryHolder holder, int slots ) {
         super( holder, slots );
     }
 
@@ -40,7 +39,7 @@ public abstract class ContainerInventory extends Inventory {
 
     @Override
     public void sendContents( int slot, Player player, boolean sendContents ) {
-        if(sendContents) {
+        if ( sendContents ) {
             InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
             inventorySlotPacket.setSlot( slot );

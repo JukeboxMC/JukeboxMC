@@ -3,13 +3,14 @@ package org.jukeboxmc.entity.passive;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.inventory.PlayerInventory;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class EntityHuman extends Entity {
+public class EntityHuman extends Entity implements InventoryHolder {
 
     private PlayerInventory playerInventory;
 

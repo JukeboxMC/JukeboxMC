@@ -60,33 +60,36 @@ public class Listener {
 
     public boolean listen( InetSocketAddress socketAddress ) {
         this.address = socketAddress;
-        try {
-            Bootstrap socket = new Bootstrap();
-            socket.group( ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
-            socket.option( ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT );
-            socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
-            socket.handler( new ChannelInboundHandlerAdapter() {
-                @Override
-                public void channelRead( ChannelHandlerContext ctx, Object msg ) throws Exception {
-                    DatagramPacket datagramPacket = (DatagramPacket) msg;
-                    InetSocketAddress sender = datagramPacket.sender();
+        Bootstrap socket = new Bootstrap();
+        socket.group( ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
+        socket.option( ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT );
+        socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
+        socket.handler( new ChannelInboundHandlerAdapter() {
+            @Override
+            public void channelRead( ChannelHandlerContext ctx, Object msg ) throws Exception {
+                DatagramPacket datagramPacket = (DatagramPacket) msg;
+                InetSocketAddress sender = datagramPacket.sender();
 
-                    if ( Listener.this.connections.containsKey( sender ) ) {
-                        Connection connection = Listener.this.connections.get( sender );
-                        connection.receive( datagramPacket.content() );
-                    } else {
-                        Listener.this.handle( new BinaryStream( datagramPacket.content() ), datagramPacket.sender() );
-                    }
+                if ( Listener.this.connections.containsKey( sender ) ) {
+                    Connection connection = Listener.this.connections.get( sender );
+                    connection.receive( datagramPacket.content() );
+                } else {
+                    Listener.this.handle( new BinaryStream( datagramPacket.content() ), datagramPacket.sender() );
                 }
-            } );
-
+            }
+            @Override
+            public void exceptionCaught( ChannelHandlerContext channelHandlerContext, Throwable throwable ) throws Exception {
+                throwable.printStackTrace();
+            }
+        } );
+        try {
             this.channel = socket.bind( this.address ).sync().channel();
-            this.isRunning = true;
-            this.tick();
-        } catch ( Exception e ) {
+        } catch ( InterruptedException e ) {
             e.printStackTrace();
             this.isRunning = false;
         }
+        this.isRunning = true;
+        this.tick();
         return this.isRunning;
     }
 
@@ -151,13 +154,6 @@ public class Listener {
     private void tick() {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
             try {
-               /*
-                DatagramPacket packet;
-                while ( ( packet = this.packets.poll() ) != null ) {
-                    this.handle( new BinaryStream( packet.content() ), packet.sender() );
-                }
-                */
-
                 for ( Connection connection : connections.values() ) {
                     connection.update( System.currentTimeMillis() );
                 }

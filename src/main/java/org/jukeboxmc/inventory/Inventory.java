@@ -1,6 +1,5 @@
 package org.jukeboxmc.inventory;
 
-import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
@@ -16,14 +15,14 @@ import java.util.Set;
  */
 public abstract class Inventory {
 
-    protected Entity holder;
+    protected InventoryHolder holder;
 
     protected Item[] contents;
     protected int slotSize;
 
     private Set<Player> viewer = new HashSet<>();
 
-    public Inventory( Entity holder, int slotSize ) {
+    public Inventory( InventoryHolder holder, int slotSize ) {
         this.holder = holder;
         this.slotSize = slotSize;
         this.contents = new Item[slotSize];
@@ -40,7 +39,7 @@ public abstract class Inventory {
         return WindowType.INVENTORY;
     }
 
-    public Entity getHolder() {
+    public InventoryHolder getHolder() {
         return this.holder;
     }
 

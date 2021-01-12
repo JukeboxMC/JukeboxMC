@@ -10,6 +10,7 @@ public class BlockBeehive extends Block {
 
     public BlockBeehive() {
         super( "minecraft:beehive" );
+        this.setHoneyLevel( 0 );
     }
 
     public void setHoneyLevel( int value ) { //0-5

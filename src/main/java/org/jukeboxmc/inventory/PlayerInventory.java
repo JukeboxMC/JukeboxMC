@@ -1,7 +1,6 @@
 package org.jukeboxmc.inventory;
 
 import org.jukeboxmc.Server;
-import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -17,7 +16,7 @@ public class PlayerInventory extends ContainerInventory {
 
     private int itemInHandSlot;
 
-    public PlayerInventory( Entity holder ) {
+    public PlayerInventory( InventoryHolder holder ) {
         super( holder, 36 );
     }
 

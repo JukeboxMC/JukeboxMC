@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
@@ -30,9 +31,9 @@ public class Block {
     private String identifier;
     private NbtMap blockStates;
 
-    private World world;
-    private BlockPosition position;
-    private int layer = 0;
+    protected World world;
+    protected BlockPosition position;
+    protected int layer = 0;
 
     public Block( String identifier ) {
         this( identifier, null );
@@ -113,7 +114,6 @@ public class Block {
     }
 
     //Other
-
     public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
@@ -122,7 +122,7 @@ public class Block {
         }
     }
 
-    public boolean interact( Player player, Vector clickedPosition, BlockFace blockFace, Item itemInHand ){
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         return false;
     }
 
@@ -130,7 +130,6 @@ public class Block {
         return false;
     }
 
-    //TODO set the correct meta to item
     public Item toItem() {
         for ( Item item : ItemType.getItems() ) {
             if ( item.getIdentifier().equals( this.identifier ) ) {
@@ -198,5 +197,13 @@ public class Block {
                 this.position.getY() + 1,
                 this.position.getZ() + 1
         );
+    }
+
+    public boolean hasBlockEntity() {
+        return false;
+    }
+
+    public BlockEntity getBlockEntity() {
+        return null;
     }
 }

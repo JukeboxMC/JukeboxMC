@@ -63,6 +63,7 @@ public class PlayerActionPacket extends Packet {
         STOP_GLIDE,
         BUILD_DENIED,
         CONTINUE_BREAK,
+        CHANGE_SKIN,
         SET_ENCHANTMENT_SEED,
         START_SWIMMING,
         STOP_SWIMMING,

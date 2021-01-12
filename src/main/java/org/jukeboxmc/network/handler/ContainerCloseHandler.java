@@ -14,9 +14,6 @@ public class ContainerCloseHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         ContainerClosePacket containerClosePacket = (ContainerClosePacket) packet;
 
-        ContainerClosePacket closePacket = new ContainerClosePacket();
-        closePacket.setWindowId( containerClosePacket.getWindowId() );
-        containerClosePacket.setServerInitiated( false );
-        player.getPlayerConnection().sendPacket( closePacket );
+        player.closeInventory( containerClosePacket.getWindowId(), containerClosePacket.isServerInitiated() );
     }
 }

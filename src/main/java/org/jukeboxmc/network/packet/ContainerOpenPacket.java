@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.inventory.WindowType;
-import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.network.Protocol;
 
 /**
@@ -17,7 +17,7 @@ public class ContainerOpenPacket extends Packet {
 
     private WindowId windowId;
     private WindowType windowType;
-    private Vector position;
+    private BlockPosition position;
     private long entityId;
 
     @Override
@@ -30,9 +30,9 @@ public class ContainerOpenPacket extends Packet {
         super.write();
         this.writeByte( this.windowId.getId() );
         this.writeByte( this.windowType.getId() );
-        this.writeSignedVarInt( this.position.getFloorX() );
-        this.writeUnsignedVarInt( this.position.getFloorY() );
-        this.writeSignedVarInt( this.position.getFloorZ() );
+        this.writeSignedVarInt( this.position.getX() );
+        this.writeUnsignedVarInt( this.position.getY() );
+        this.writeSignedVarInt( this.position.getZ() );
         this.writeSignedVarLong( this.entityId );
     }
 }

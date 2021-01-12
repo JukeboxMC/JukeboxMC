@@ -12,7 +12,7 @@ import org.jukeboxmc.network.Protocol;
 @EqualsAndHashCode ( callSuper = true )
 public class ContainerClosePacket extends Packet {
 
-    private byte windowId;
+    private int windowId;
     private boolean isServerInitiated;
 
     @Override

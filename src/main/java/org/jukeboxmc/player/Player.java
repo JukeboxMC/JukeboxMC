@@ -8,8 +8,8 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
-import org.jukeboxmc.inventory.CursorInventory;
-import org.jukeboxmc.inventory.PlayerInventory;
+import org.jukeboxmc.inventory.*;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
@@ -29,7 +29,7 @@ import java.util.UUID;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Player extends EntityHuman {
+public class Player extends EntityHuman implements InventoryHolder {
 
     private String name;
     private String xuid;
@@ -55,6 +55,7 @@ public class Player extends EntityHuman {
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
 
+    private ContainerInventory currentInventory;
     private PlayerInventory playerInventory;
     private CursorInventory cursorInventory;
 
@@ -233,6 +234,10 @@ public class Player extends EntityHuman {
         this.address = address;
     }
 
+    public ContainerInventory getCurrentInventory() {
+        return this.currentInventory;
+    }
+
     @Override
     public PlayerInventory getInventory() {
         return this.playerInventory;
@@ -285,5 +290,39 @@ public class Player extends EntityHuman {
 
     public void playSound( Vector position, Sound sound, float volume, float pitch ) {
         this.playerConnection.playSound( position, sound, volume, pitch );
+    }
+
+    public void openInventory( Inventory inventory, BlockPosition position ) {
+        if ( inventory instanceof ContainerInventory ) {
+            ContainerInventory containerInventory = (ContainerInventory) inventory;
+
+            if ( this.currentInventory != null ) {
+                this.closeInventory( this.currentInventory );
+            }
+            this.playerConnection.openInventory( containerInventory, position );
+            containerInventory.addViewer( this );
+
+            this.currentInventory = containerInventory;
+        }
+    }
+
+    public void openInventory( Inventory inventory ) {
+        this.openInventory( inventory, this.location.toBlockPosition() );
+    }
+
+    public void closeInventory( int windowId, boolean isServerSide ) {
+        if ( this.currentInventory != null ) {
+            this.currentInventory.removeViewer( this );
+            this.playerConnection.closeInventory( windowId, isServerSide );
+            this.currentInventory = null;
+        }
+    }
+
+    public void closeInventory( Inventory inventory ) {
+        if ( inventory instanceof ContainerInventory ) {
+            if ( this.currentInventory == inventory ) {
+                this.closeInventory( WindowId.OPEN_CONTAINER.getId(), true );
+            }
+        }
     }
 }
