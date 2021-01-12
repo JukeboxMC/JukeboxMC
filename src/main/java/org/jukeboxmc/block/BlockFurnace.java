@@ -15,8 +15,6 @@ import org.jukeboxmc.world.World;
  */
 public class BlockFurnace extends Block {
 
-    private BlockEntityFurnace blockEntityFurnace;
-
     public BlockFurnace() {
         super( "minecraft:furnace" );
     }
@@ -43,10 +41,11 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntity getBlockEntity() {
-        if ( this.blockEntityFurnace == null ) {
-            return this.blockEntityFurnace = new BlockEntityFurnace( this );
+        BlockEntity blockEntity = this.world.getBlockEntity( this.position );
+        if ( blockEntity == null ) {
+            return new BlockEntityFurnace( this );
         }
-        return this.world.getBlockEntity( this.position );
+        return blockEntity;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

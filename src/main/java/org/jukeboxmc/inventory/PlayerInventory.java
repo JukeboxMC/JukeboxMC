@@ -33,11 +33,19 @@ public class PlayerInventory extends ContainerInventory {
     @Override
     public void sendContents( int slot, Player player, boolean sendContents ) {
         if ( sendContents ) {
-            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-            inventorySlotPacket.setWindowId( WindowId.PLAYER );
-            inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot] );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
+            if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this  ) {
+                InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+                inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
+                inventorySlotPacket.setSlot( slot );
+                inventorySlotPacket.setItem( this.contents[slot] );
+                player.getPlayerConnection().sendPacket( inventorySlotPacket );
+            } else {
+                InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+                inventorySlotPacket.setWindowId( WindowId.PLAYER );
+                inventorySlotPacket.setSlot( slot );
+                inventorySlotPacket.setItem( this.contents[slot] );
+                player.getPlayerConnection().sendPacket( inventorySlotPacket );
+            }
         }
     }
 
@@ -57,7 +65,7 @@ public class PlayerInventory extends ContainerInventory {
 
     public Item getItemInHand() {
         Item content = this.contents[this.itemInHandSlot];
-        if(content != null) {
+        if ( content != null ) {
             return content;
         } else {
             return ItemType.AIR.getItem();
@@ -69,7 +77,7 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     public void setItemInHandSlot( int itemInHandSlot ) {
-        if(itemInHandSlot >= 0 && itemInHandSlot < 9){
+        if ( itemInHandSlot >= 0 && itemInHandSlot < 9 ) {
             this.itemInHandSlot = itemInHandSlot;
             this.updateItemInHand();
         }

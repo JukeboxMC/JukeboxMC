@@ -34,7 +34,7 @@ public class InventoryTransactionHandler implements PacketHandler {
 
                             Inventory inventory = this.getInventory( player, WindowId.getWindowIdById( transaction.getWindowId() ) );
                             if ( inventory != null ) {
-                                inventory.setItem( slot, targetItem, false );
+                                inventory.setItem( slot, targetItem );
                             } else {
                                 System.out.println( "Inventory with id " + transaction.getWindowId() + " is missing" );
                             }

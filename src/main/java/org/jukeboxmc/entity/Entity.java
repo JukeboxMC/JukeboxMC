@@ -33,7 +33,7 @@ public abstract class Entity {
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.AFFECTED_BY_GRAVITY, true );
 
-        this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 10, 0, 0, 0 );
+        this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 7, 0, 0, 0 );
 
         this.boundingBox = new AxisAlignedBB( 0, 0, 0, 0, 0, 0 );
         this.recalcBoundingBox();
