@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.RequestChunkRadiusPacket;
 import org.jukeboxmc.player.Player;
 
@@ -17,9 +18,9 @@ public class RequestChunkRadiusHandler implements PacketHandler {
 
         player.setViewDistance( radius );
         player.getPlayerConnection().needNewChunks( false );
-        if(!player.isSpawned()) {
-            player.getPlayerConnection().joinGame();
-        }
+        player.getPlayerConnection().sendNetworkChunkPublisher();
+        player.getPlayerConnection().sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
+
     }
 }
 //

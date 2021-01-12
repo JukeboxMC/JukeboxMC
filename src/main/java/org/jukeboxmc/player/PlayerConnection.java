@@ -418,13 +418,11 @@ public class PlayerConnection {
 
     public void joinGame() {
         this.player.setSpawned( true );
-        this.sendNetworkChunkPublisher();
 
         this.sendTime( 1000 );
         this.sendAdventureSettings();
         this.sendAttributes( this.player.getAttributes().getAttributes() );
 
-        this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.sendMetadata();
 
         this.player.getInventory().addViewer( this.player );
