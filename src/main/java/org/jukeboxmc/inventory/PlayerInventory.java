@@ -33,7 +33,7 @@ public class PlayerInventory extends ContainerInventory {
     @Override
     public void sendContents( int slot, Player player, boolean sendContents ) {
         if ( sendContents ) {
-            if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this  ) {
+            if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
                 InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
                 inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
                 inventorySlotPacket.setSlot( slot );
@@ -100,7 +100,9 @@ public class PlayerInventory extends ContainerInventory {
             MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
 
             for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
-                onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
+                if ( onlinePlayers != entityHuman ) {
+                    onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
+                }
             }
         }
     }
