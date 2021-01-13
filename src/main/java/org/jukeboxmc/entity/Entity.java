@@ -2,6 +2,7 @@ package org.jukeboxmc.entity;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
@@ -96,16 +97,9 @@ public abstract class Entity {
     }
 
     //NOT READY ONLY FOR TESTS
-/*
     public SignDirection getSignDirection() {
-        double rotation = this.location.getYaw() % 360;
-        if ( rotation < 0 ) {
-            rotation += 360.0;
-        }
-
-        return SignDirection.values()[(int) ( ( (int) ( rotation + 22.5F ) / 22.5 ) )];
+        return SignDirection.values()[(int) Math.floor( ( ( this.location.getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f];
     }
- */
 
     public void setNameTag( String value ) {
         this.metadata.setString( MetadataFlag.NAMETAG, value );

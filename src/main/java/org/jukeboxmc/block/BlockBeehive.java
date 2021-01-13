@@ -1,6 +1,15 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.blockentity.BlockEntity;
+import org.jukeboxmc.blockentity.BlockEntityBeehive;
+import org.jukeboxmc.blockentity.BlockEntityFurnace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -11,6 +20,36 @@ public class BlockBeehive extends Block {
     public BlockBeehive() {
         super( "minecraft:beehive" );
         this.setHoneyLevel( 0 );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+    }
+
+    @Override
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityBeehive blockEntityBeehive = (BlockEntityBeehive) this.getBlockEntity();
+        if ( blockEntityBeehive != null ) {
+            blockEntityBeehive.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntity getBlockEntity() {
+        BlockEntity blockEntity = this.world.getBlockEntity( this.position );
+        if ( blockEntity == null ) {
+            return new BlockEntityFurnace( this );
+        }
+        return blockEntity;
     }
 
     public void setHoneyLevel( int value ) { //0-5

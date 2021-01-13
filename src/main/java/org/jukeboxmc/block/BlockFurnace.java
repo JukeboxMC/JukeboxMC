@@ -30,8 +30,9 @@ public class BlockFurnace extends Block {
         BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
