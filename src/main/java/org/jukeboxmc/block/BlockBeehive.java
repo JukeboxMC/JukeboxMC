@@ -2,7 +2,6 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
-import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
@@ -43,8 +42,8 @@ public class BlockBeehive extends Block {
     }
 
     @Override
-    public BlockEntity getBlockEntity() {
-        BlockEntity blockEntity = this.world.getBlockEntity( this.position );
+    public BlockEntityBeehive getBlockEntity() {
+        BlockEntityBeehive blockEntity = (BlockEntityBeehive) this.world.getBlockEntity( this.position );
         if ( blockEntity == null ) {
             return new BlockEntityBeehive( this );
         }

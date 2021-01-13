@@ -266,21 +266,26 @@ public class World {
         if ( placedBlock instanceof BlockAir ) {
             return false;
         }
+        System.out.println( "V: " + placedBlock.isSolid() );
 
         if ( ( !interact ) || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced() ) {
                 return false;
             }
 
-            Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
-            if ( !nearbyEntities.isEmpty() ) {
-                return false;
+            if ( placedBlock.isSolid() ) {
+                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
+                if ( !nearbyEntities.isEmpty() ) {
+                    return false;
+                }
             }
 
             if ( player != null ) {
-                AxisAlignedBB boundingBox = player.getBoundingBox();
-                if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
-                    return false;
+                if ( placedBlock.isSolid() ) {
+                    AxisAlignedBB boundingBox = player.getBoundingBox();
+                    if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+                        return false;
+                    }
                 }
             }
 

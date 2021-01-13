@@ -206,4 +206,8 @@ public class Block {
     public BlockEntity getBlockEntity() {
         return null;
     }
+
+    public boolean isSolid() {
+        return true;
+    }
 }

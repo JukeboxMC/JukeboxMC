@@ -7,7 +7,7 @@ import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
-public class BlockWarpedStandingSign extends Block {
+public class BlockWarpedStandingSign extends BlockSign {
 
     public BlockWarpedStandingSign() {
         super("minecraft:warped_standing_sign");
@@ -25,11 +25,4 @@ public class BlockWarpedStandingSign extends Block {
         }
     }
 
-    public void setSignDirection( SignDirection signDirection ) {
-        this.setState( "ground_sign_direction", signDirection.ordinal() );
-    }
-
-    public SignDirection getSignDirection() {
-        return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
-    }
 }

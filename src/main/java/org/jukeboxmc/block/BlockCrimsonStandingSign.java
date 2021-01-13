@@ -7,7 +7,7 @@ import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
-public class BlockCrimsonStandingSign extends Block {
+public class BlockCrimsonStandingSign extends BlockSign {
 
     public BlockCrimsonStandingSign() {
         super("minecraft:crimson_standing_sign");
@@ -23,13 +23,5 @@ public class BlockCrimsonStandingSign extends Block {
             blockWallSign.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallSign );
         }
-    }
-
-    public void setSignDirection( SignDirection signDirection ) {
-        this.setState( "ground_sign_direction", signDirection.ordinal() );
-    }
-
-    public SignDirection getSignDirection() {
-        return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
     }
 }

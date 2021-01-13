@@ -12,6 +12,11 @@ public class BlockAcaciaWallSign extends Block {
         super( "minecraft:acacia_wall_sign" );
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }

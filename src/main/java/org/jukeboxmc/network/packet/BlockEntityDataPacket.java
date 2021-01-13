@@ -1,9 +1,11 @@
 package org.jukeboxmc.network.packet;
 
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NBTOutputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
@@ -25,6 +27,18 @@ public class BlockEntityDataPacket extends Packet {
     @Override
     public int getPacketId() {
         return Protocol.BLOCK_ENTITY_DATA_PACKET;
+    }
+
+    @Override
+    public void read() {
+        super.read();
+        this.blockPosition = new BlockPosition( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
+        try {
+            NBTInputStream networkReader = NbtUtils.createNetworkReader( new ByteBufInputStream( this.getBuffer() ) );
+            this.nbt = (NbtMap) networkReader.readTag();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
     }
 
     @Override

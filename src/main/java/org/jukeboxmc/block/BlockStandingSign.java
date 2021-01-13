@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStandingSign extends Block {
+public class BlockStandingSign extends BlockSign {
 
     public BlockStandingSign() {
         super( "minecraft:standing_sign" );
@@ -27,13 +27,5 @@ public class BlockStandingSign extends Block {
             blockWallSign.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallSign );
         }
-    }
-
-    public void setSignDirection( SignDirection signDirection ) {
-        this.setState( "ground_sign_direction", signDirection.ordinal() );
-    }
-
-    public SignDirection getSignDirection() {
-        return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
     }
 }

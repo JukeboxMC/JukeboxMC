@@ -16,7 +16,7 @@ import org.jukeboxmc.player.Player;
 public abstract class BlockEntity {
 
     protected Block block;
-    private boolean isMoveable = false;
+    private boolean isMoveable = true;
 
     public BlockEntity( Block block ) {
         this.block = block;

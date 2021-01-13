@@ -12,6 +12,11 @@ public class BlockDarkOakWallSign extends Block {
         super( "minecraft:darkoak_wall_sign" );
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }

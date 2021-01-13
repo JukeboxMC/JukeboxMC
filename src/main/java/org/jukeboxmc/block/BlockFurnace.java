@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
@@ -41,8 +40,8 @@ public class BlockFurnace extends Block {
     }
 
     @Override
-    public BlockEntity getBlockEntity() {
-        BlockEntity blockEntity = this.world.getBlockEntity( this.position );
+    public BlockEntityFurnace getBlockEntity() {
+        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.position );
         if ( blockEntity == null ) {
             return new BlockEntityFurnace( this );
         }

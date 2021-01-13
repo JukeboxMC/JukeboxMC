@@ -12,6 +12,11 @@ public class BlockSpruceWallSign extends Block {
         super( "minecraft:spruce_wall_sign" );
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }

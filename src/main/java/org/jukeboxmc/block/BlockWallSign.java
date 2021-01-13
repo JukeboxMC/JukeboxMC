@@ -12,6 +12,11 @@ public class BlockWallSign extends Block {
         super( "minecraft:wall_sign" );
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
