@@ -47,7 +47,7 @@ public class BlockBeehive extends Block {
     public BlockEntity getBlockEntity() {
         BlockEntity blockEntity = this.world.getBlockEntity( this.position );
         if ( blockEntity == null ) {
-            return new BlockEntityFurnace( this );
+            return new BlockEntityBeehive( this );
         }
         return blockEntity;
     }
