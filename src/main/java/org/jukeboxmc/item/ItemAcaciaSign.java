@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockAcaciaWallSign;
+import org.jukeboxmc.block.BlockAcaciaStandingSign;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemAcaciaSign extends Item {
     }
 
     @Override //TODO Calculate
-    public BlockAcaciaWallSign getBlock() {
-        return new BlockAcaciaWallSign();
+    public BlockAcaciaStandingSign getBlock() {
+        return new BlockAcaciaStandingSign();
     }
 }

@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.direction.SignDirection;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 public class BlockWarpedStandingSign extends Block {
 
@@ -8,46 +13,23 @@ public class BlockWarpedStandingSign extends Block {
         super("minecraft:warped_standing_sign");
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
-        switch ( blockFace ) {
-            case DOWN:
-                this.setState( "facing_direction", 0 );
-                break;
-            case UP:
-                this.setState( "facing_direction", 1 );
-                break;
-            case NORTH:
-                this.setState( "facing_direction", 2 );
-                break;
-            case SOUTH:
-                this.setState( "facing_direction", 3 );
-                break;
-            case WEST:
-                this.setState( "facing_direction", 4 );
-                break;
-            case EAST:
-                this.setState( "facing_direction", 5 );
-                break;
-            default:
-                break;
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+        if ( blockFace == BlockFace.UP ) {
+            this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
+            world.setBlock( placePosition, this );
+        } else {
+            BlockWarpedWallSign blockWallSign = new BlockWarpedWallSign();
+            blockWallSign.setBlockFace( blockFace );
+            world.setBlock( placePosition, blockWallSign );
         }
     }
 
-    public BlockFace getBlockFace() {
-        int value = this.stateExists( "facing_direction" ) ? this.getIntState( "facing_direction" ) : 2;
-        switch ( value ) {
-            case 0:
-                return BlockFace.DOWN;
-            case 1:
-                return BlockFace.UP;
-            case 2:
-                return BlockFace.NORTH;
-            case 3:
-                return BlockFace.SOUTH;
-            case 4:
-                return BlockFace.WEST;
-            default:
-                return BlockFace.EAST;
-        }
+    public void setSignDirection( SignDirection signDirection ) {
+        this.setState( "ground_sign_direction", signDirection.ordinal() );
+    }
+
+    public SignDirection getSignDirection() {
+        return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
     }
 }

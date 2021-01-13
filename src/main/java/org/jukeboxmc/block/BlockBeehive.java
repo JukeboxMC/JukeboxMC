@@ -4,7 +4,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
-import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;

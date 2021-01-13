@@ -22,5 +22,4 @@ public enum SignDirection {
     EAST_SOUTH_EAST,
     SOUTH_EAST,
     SOUTH_SOUTH_EAST
-
 }
