@@ -32,7 +32,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
 
-                            Inventory inventory = this.getInventory( player, WindowId.getWindowIdById( transaction.getWindowId() ) );
+                            Inventory inventory = player.getInventory( WindowId.getWindowIdById( transaction.getWindowId() ) );
                             if ( inventory != null ) {
                                 inventory.setItem( slot, targetItem );
                             } else {
@@ -92,16 +92,5 @@ public class InventoryTransactionHandler implements PacketHandler {
 
     public boolean canInteract() {
         return !( System.currentTimeMillis() - this.spamCheckTime < 100 );
-    }
-
-    public Inventory getInventory( Player player, WindowId windowId ) {
-        switch ( windowId ) {
-            case PLAYER:
-                return player.getInventory();
-            case CURSOR_DEPRECATED:
-                return player.getCursorInventory();
-            default:
-                return player.getCurrentInventory();
-        }
     }
 }

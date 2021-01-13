@@ -23,13 +23,11 @@ public class CursorInventory extends Inventory {
     }
 
     @Override
-    public void sendContents( int slot, Player player, boolean sendContents ) {
-        if ( sendContents ) {
-            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-            inventorySlotPacket.setWindowId( WindowId.CURSOR_DEPRECATED );
-            inventorySlotPacket.setItem( this.contents[slot] );
-            inventorySlotPacket.setSlot( slot );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
-        }
+    public void sendContents( int slot, Player player ) {
+        InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+        inventorySlotPacket.setWindowId( WindowId.CURSOR_DEPRECATED );
+        inventorySlotPacket.setItem( this.contents[slot] );
+        inventorySlotPacket.setSlot( slot );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 }

@@ -325,4 +325,15 @@ public class Player extends EntityHuman implements InventoryHolder {
             }
         }
     }
+
+    public Inventory getInventory( WindowId windowId ) {
+        switch ( windowId ) {
+            case PLAYER:
+                return this.getInventory();
+            case CURSOR_DEPRECATED:
+                return this.getCursorInventory();
+            default:
+                return this.getCurrentInventory();
+        }
+    }
 }

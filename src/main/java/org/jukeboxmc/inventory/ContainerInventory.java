@@ -38,13 +38,11 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void sendContents( int slot, Player player, boolean sendContents ) {
-        if ( sendContents ) {
-            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-            inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
-            inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot] );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
-        }
+    public void sendContents( int slot, Player player ) {
+        InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+        inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
+        inventorySlotPacket.setSlot( slot );
+        inventorySlotPacket.setItem( this.contents[slot] );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 }

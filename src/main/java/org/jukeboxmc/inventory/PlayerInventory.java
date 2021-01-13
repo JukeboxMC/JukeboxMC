@@ -26,37 +26,35 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
+    public void removeViewer( Player player ) {
+
+    }
+
+    @Override
     public void sendContents( Player player ) {
         super.sendContents( player );
     }
 
     @Override
-    public void sendContents( int slot, Player player, boolean sendContents ) {
-        if ( sendContents ) {
-            if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
-                InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-                inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
-                inventorySlotPacket.setSlot( slot );
-                inventorySlotPacket.setItem( this.contents[slot] );
-                player.getPlayerConnection().sendPacket( inventorySlotPacket );
-            } else {
-                InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-                inventorySlotPacket.setWindowId( WindowId.PLAYER );
-                inventorySlotPacket.setSlot( slot );
-                inventorySlotPacket.setItem( this.contents[slot] );
-                player.getPlayerConnection().sendPacket( inventorySlotPacket );
-            }
+    public void sendContents( int slot, Player player ) {
+        if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
+            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+            inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
+            inventorySlotPacket.setSlot( slot );
+            inventorySlotPacket.setItem( this.contents[slot] );
+            player.getPlayerConnection().sendPacket( inventorySlotPacket );
+        } else {
+            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+            inventorySlotPacket.setWindowId( WindowId.PLAYER );
+            inventorySlotPacket.setSlot( slot );
+            inventorySlotPacket.setItem( this.contents[slot] );
+            player.getPlayerConnection().sendPacket( inventorySlotPacket );
         }
     }
 
     @Override
     public void setItem( int slot, Item item ) {
-        this.setItem( slot, item, true );
-    }
-
-    @Override
-    public void setItem( int slot, Item item, boolean sendContents ) {
-        super.setItem( slot, item, sendContents );
+        super.setItem( slot, item );
 
         if ( slot == this.itemInHandSlot && this.holder instanceof Player ) {
             this.updateItemInHand();
@@ -100,9 +98,7 @@ public class PlayerInventory extends ContainerInventory {
             MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
 
             for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
-                if ( onlinePlayers != entityHuman ) {
-                    onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
-                }
+                onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
             }
         }
     }

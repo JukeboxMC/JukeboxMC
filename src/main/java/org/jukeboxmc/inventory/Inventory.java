@@ -33,7 +33,7 @@ public abstract class Inventory {
 
     public abstract void sendContents( Player player );
 
-    public abstract void sendContents( int slot, Player player, boolean sendContents );
+    public abstract void sendContents( int slot, Player player );
 
     public WindowType getWindowType() {
         return WindowType.INVENTORY;
@@ -53,17 +53,13 @@ public abstract class Inventory {
     }
 
     public void setItem( int slot, Item item ) {
-        this.setItem( slot, item, true );
-    }
-
-    public void setItem( int slot, Item item, boolean sendContents ) {
         if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
             this.contents[slot] = ItemType.AIR.getItem();
         }
 
         this.contents[slot] = item;
         for ( Player player : this.viewer ) {
-            this.sendContents( slot, player, sendContents );
+            this.sendContents( slot, player );
         }
     }
 
