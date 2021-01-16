@@ -3,6 +3,9 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -30,6 +33,23 @@ public class BlockSign extends Block {
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    public List<String> getLines() {
+        BlockEntitySign blockEntity = this.getBlockEntity();
+        return blockEntity != null ? new ArrayList<>( blockEntity.getLines() ) : null;
+    }
+
+    public void setLine( int line, String value ) {
+        if ( line > 4 || line < 1 ) {
+            return;
+        }
+
+        BlockEntitySign blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.getLines().set( line - 1, value );
+            blockEntity.updateBlockEntitySign();
+        }
     }
 
     public Block getWallSignBlock() {
