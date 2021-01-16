@@ -14,6 +14,7 @@ import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.leveldb.LevelDB;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class Server {
     private InetSocketAddress address;
     private Listener listener;
 
+    private LevelDB levelDB;
     private World defaultWorld;
 
     private int viewDistance = 32;
@@ -66,9 +68,9 @@ public class Server {
             if ( handler != null ) {
                 handler.handle( packet, player );
             } else {
-                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing");
+                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
             }
-         } );
+        } );
 
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {
             Connection connection = event.getConnection();
@@ -88,6 +90,7 @@ public class Server {
 
         //Load worlds
         this.defaultWorld = this.getWorld( "world" );
+        this.loadWorld();
 
         AtomicLong startTime = new AtomicLong();
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
@@ -184,4 +187,11 @@ public class Server {
         }
     }
 
+    public boolean loadWorld() {
+        this.levelDB = new LevelDB();
+        this.levelDB.loadLevelFile();
+        this.levelDB.open();
+
+        return true;
+    }
 }

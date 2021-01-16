@@ -26,9 +26,11 @@ public class ResourcePackResponseHandler implements PacketHandler {
             startGamePacket.setEntityId( player.getEntityId() );
             startGamePacket.setEntityRuntimeId( player.getEntityId() );
             startGamePacket.setGameMode( player.getGameMode() );
-            startGamePacket.setPosition( player.getLocation() );
+            startGamePacket.setPosition( player.getWorld().getSpawnLocation() );
+            startGamePacket.setYaw( player.getYaw() );
+            startGamePacket.setPitch( player.getPitch() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
-            startGamePacket.setWorldSpawn( new Vector( 0, 7, 0 ) );
+            startGamePacket.setWorldSpawn( player.getWorld().getSpawnLocation() );
             for ( GameRules<?> gameRules : GameRule.getAll() ) {
                 startGamePacket.getGamerules().put( gameRules.getName(), gameRules );
             }

@@ -24,7 +24,9 @@ public class StartGamePacket extends Packet {
     private long entityId;
     private long entityRuntimeId;
     private GameMode gameMode;
-    private Location position;
+    private Vector position;
+    private float yaw;
+    private float pitch;
     private String worldId = "";
     private String worldName;
     private Vector worldSpawn;
@@ -47,8 +49,8 @@ public class StartGamePacket extends Packet {
         this.writeLFloat( this.position.getX() );
         this.writeLFloat( this.position.getY() );
         this.writeLFloat( this.position.getZ() );
-        this.writeLFloat( this.position.getPitch() ); //Pitch
-        this.writeLFloat( this.position.getYaw() ); //Yaw
+        this.writeLFloat( this.pitch );
+        this.writeLFloat( this.yaw );
 
         this.writeSignedVarInt( 0 ); //Seed
 

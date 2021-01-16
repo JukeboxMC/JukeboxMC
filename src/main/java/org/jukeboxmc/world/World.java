@@ -1,5 +1,6 @@
 package org.jukeboxmc.world;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockDirt;
@@ -15,6 +16,7 @@ import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.leveldb.LevelDB;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -23,11 +25,14 @@ import java.util.concurrent.CompletableFuture;
  * @author LucGamesYT
  * @version 1.0
  */
-public class World {
+public class World extends LevelDB {
 
     private String name;
 
     private int currentTick;
+
+    private Difficulty difficulty;
+    private Vector spawnLocation;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
     private Map<Long, CompletableFuture<Chunk>> chunkFutures = new HashMap<>();
@@ -35,6 +40,9 @@ public class World {
 
     public World( String name ) {
         this.name = name;
+
+        this.difficulty = Difficulty.NORMAL;
+        this.spawnLocation = new Vector( 0, 7, 0 );
     }
 
     public String getName() {
@@ -67,7 +75,7 @@ public class World {
     }
 
     public void loadChunk( Chunk chunk ) {
-        //TODO Chunk net gefunden in leveldb = generieren
+
     }
 
     public Chunk getChunk( int chunkX, int chunkZ ) {
@@ -78,9 +86,8 @@ public class World {
                 for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                     chunk.setBlock( blockX, 0, blockZ, 0, BlockType.BEDROCK.getBlock() );
                     chunk.setBlock( blockX, 1, blockZ, 0, BlockType.DIRT.getBlock() );
-                    chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.getBlock() );
-                    chunk.setBlock( blockX, 3, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
-                    chunk.setBlock( blockX, 4, blockZ, 0, BlockType.GRASS.getBlock() );
+                    chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
+                    chunk.setBlock( blockX, 3, blockZ, 0, BlockType.GRASS.getBlock() );
                 }
             }
             this.chunkMap.put( chunkHash, chunk ); //TODO this.loadChunk;
@@ -160,6 +167,11 @@ public class World {
         return chunk.getBlockEntity( location.getX(), location.getY(), location.getZ() );
     }
 
+    public void removeBlockEntity( BlockPosition location ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+    }
+
     public void playSound( Player player, LevelSound levelSound ) {
         this.playSound( player, player.getLocation(), levelSound, -1, ":", false, false );
     }
@@ -204,6 +216,26 @@ public class World {
 
     public int getCurrentTick() {
         return this.currentTick;
+    }
+
+    public void setSpawnLocation( Vector spawnLocation ) {
+        this.spawnLocation = spawnLocation;
+    }
+
+    public Vector getSpawnLocation() {
+        return this.spawnLocation;
+    }
+
+    public void setDifficulty( Difficulty difficulty ) {
+        this.difficulty = difficulty;
+
+        SetDifficultyPacket setDifficultyPacket = new SetDifficultyPacket();
+        setDifficultyPacket.setDifficulty( difficulty );
+        this.sendWorldPacket( setDifficultyPacket );
+    }
+
+    public Difficulty getDifficulty() {
+        return this.difficulty;
     }
 
     public void sendLevelEvent( Vector position, int eventId, int runtimeId ) {
@@ -330,6 +362,12 @@ public class World {
 
         if ( dropItem ) {
             //TODO Drop the item
+        }
+    }
+
+    public void sendWorldPacket( Packet packet ) {
+        for ( Player player : this.getPlayers() ) {
+            player.getPlayerConnection().sendPacket( packet );
         }
     }
 }

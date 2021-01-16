@@ -19,6 +19,7 @@ import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Pair;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Sound;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.*;
@@ -417,7 +418,9 @@ public class PlayerConnection {
     }
 
     public void joinGame() {
-        this.player.setSpawned( true );
+        World world = this.server.getDefaultWorld();
+        world.addPlayer( this.player );
+
         this.sendNetworkChunkPublisher();
 
         this.sendTime( 1000 );
@@ -425,6 +428,7 @@ public class PlayerConnection {
         this.sendAttributes( this.player.getAttributes().getAttributes() );
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.sendMetadata();
+
 
         this.player.getInventory().addViewer( this.player );
         this.player.getCursorInventory().addViewer( this.player );
@@ -437,6 +441,7 @@ public class PlayerConnection {
         this.player.getChunk().addEntity( this.player );
 
         this.player.getInventory().setItem( 0, new ItemFurnace() );
+        this.player.setSpawned( true );
     }
 
     public void leaveGame() {

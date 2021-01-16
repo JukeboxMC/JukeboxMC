@@ -52,8 +52,6 @@ public class BlockEntitySign extends BlockEntity {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getPosition() );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
-        for ( Player player : this.block.getWorld().getPlayers() ) {
-            player.getPlayerConnection().sendPacket( blockEntityDataPacket );
-        }
+        this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
     }
 }
