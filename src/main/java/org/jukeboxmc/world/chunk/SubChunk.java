@@ -22,11 +22,13 @@ public class SubChunk {
 
     @Getter
     private int y;
-    private Integer[][] blocks;
+
+    public Integer[][] blocks;
     private Map<Integer, BlockEntity> blockEntitys;
 
     public SubChunk( int subChunkY ) {
         this.y = subChunkY;
+
         this.blocks = new Integer[Chunk.CHUNK_LAYERS][4096];
         this.blockEntitys = new HashMap<>();
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
@@ -41,12 +43,21 @@ public class SubChunk {
         }
     }
 
+    public void setBlock( int index, int layer, int runtimeId ) {
+        this.blocks[layer][index] = runtimeId;
+    }
+
+    public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
+        this.blocks[layer][this.getIndex( x, y, z )] = runtimeId;
+    }
+
     public void setBlock( int x, int y, int z, int layer, Block block ) {
         this.blocks[layer][this.getIndex( x, y, z )] = block.getRuntimeId();
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        return BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer][this.getIndex( x, y, z )] );
+        Integer runtimeId = this.blocks[layer][this.getIndex( x, y, z )];
+        return BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId );
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {

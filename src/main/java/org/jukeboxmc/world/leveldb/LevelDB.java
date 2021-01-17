@@ -2,15 +2,16 @@ package org.jukeboxmc.world.leveldb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.PooledByteBufAllocator;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
+import org.iq80.leveldb.impl.DbImpl;
 import org.iq80.leveldb.impl.Iq80DBFactory;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
+import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.World;
 
@@ -27,9 +28,11 @@ public class LevelDB {
     private File worldFolder;
     private File worldFile;
 
-    private DB db;
+    protected DbImpl db;
 
     private World world;
+    protected Vector spawnLocation;
+    protected Difficulty difficulty;
 
     public LevelDB() {
         this.world = Server.getInstance().getDefaultWorld();
@@ -53,14 +56,14 @@ public class LevelDB {
             byte[] data = new byte[stream.available()];
             stream.read( data );
 
-            ByteBuf allocate = this.allocate( data );
+            ByteBuf allocate = Utils.allocate( data );
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-               // System.out.println( nbt.toString() );
+                // System.out.println( nbt.toString() );
 
-                this.world.setSpawnLocation( new Vector( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 4 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) ) );
-                this.world.setDifficulty( Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) ) );
+                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), 63 + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
@@ -72,26 +75,43 @@ public class LevelDB {
 
     public void open() {
         try {
-            this.db = Iq80DBFactory.factory.open( this.worldFolder, new Options().createIfMissing( true ) );
+            this.db = (DbImpl) Iq80DBFactory.factory.open( new File( this.worldFolder, "db/" ), new Options().createIfMissing( true ) );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
     }
 
-    public void loadChunk( int x, int z, boolean generate ) {
-
+    public DB getDB() {
+        return this.db;
     }
 
-    public ByteBuf getKey(int chunkX, int chunkZ, byte dataType) {
-        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer(9);
-        return buf.writeIntLE(chunkX).writeIntLE(chunkZ).writeByte(dataType);
+    public byte[] getKey( int chunkX, int chunkZ, byte key ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key
+        };
     }
 
-
-    public ByteBuf allocate( byte[] data ) {
-        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
-        buf.writeBytes( data );
-        return buf;
+    public byte[] getSubChunkKey( int chunkX, int chunkZ, byte key, byte subChunk ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key,
+                subChunk
+        };
     }
 
 }

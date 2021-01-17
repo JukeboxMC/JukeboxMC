@@ -90,7 +90,7 @@ public class Server {
 
         //Load worlds
         this.defaultWorld = this.getWorld( "world" );
-        this.loadWorld();
+        this.loadWorld( this.defaultWorld );
 
         AtomicLong startTime = new AtomicLong();
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
@@ -187,11 +187,9 @@ public class Server {
         }
     }
 
-    public boolean loadWorld() {
-        this.levelDB = new LevelDB();
-        this.levelDB.loadLevelFile();
-        this.levelDB.open();
-
+    public boolean loadWorld( World world ) {
+        world.loadLevelFile();
+        world.open();
         return true;
     }
 }

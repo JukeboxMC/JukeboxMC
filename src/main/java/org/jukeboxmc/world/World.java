@@ -1,10 +1,8 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.Server;
+import lombok.SneakyThrows;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -17,6 +15,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.leveldb.LevelDB;
+import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -30,9 +29,6 @@ public class World extends LevelDB {
     private String name;
 
     private int currentTick;
-
-    private Difficulty difficulty;
-    private Vector spawnLocation;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
     private Map<Long, CompletableFuture<Chunk>> chunkFutures = new HashMap<>();
@@ -74,15 +70,8 @@ public class World extends LevelDB {
         return this.players.values();
     }
 
-    public void loadChunk( Chunk chunk ) {
-
-    }
-
-    public Chunk getChunk( int chunkX, int chunkZ ) {
-        Long chunkHash = Utils.toLong( chunkX, chunkZ );
-        if ( !this.chunkMap.containsKey( chunkHash ) ) {
-            Chunk chunk = new Chunk( chunkX, chunkZ );
-            for ( int blockX = 0; blockX < 16; blockX++ ) {
+    /*
+    for ( int blockX = 0; blockX < 16; blockX++ ) {
                 for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                     chunk.setBlock( blockX, 0, blockZ, 0, BlockType.BEDROCK.getBlock() );
                     chunk.setBlock( blockX, 1, blockZ, 0, BlockType.DIRT.getBlock() );
@@ -90,10 +79,41 @@ public class World extends LevelDB {
                     chunk.setBlock( blockX, 3, blockZ, 0, BlockType.GRASS.getBlock() );
                 }
             }
-            this.chunkMap.put( chunkHash, chunk ); //TODO this.loadChunk;
+     */
+
+    @SneakyThrows
+    public Chunk loadChunk( int chunkX, int chunkZ, boolean generate ) {
+        Long chunkHash = Utils.toLong( chunkX, chunkZ );
+        if ( !this.chunkMap.containsKey( chunkHash ) ) {
+            Chunk chunk = new Chunk( chunkX, chunkZ );
+
+            byte[] version = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2C ) );
+            if ( version != null ) {
+                byte[] finalized = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x36 ) );
+
+                byte chunkVersion = version[0];
+                boolean populated = finalized == null || finalized[0] == 2;
+
+                LevelDBChunk levelDBChunk = new LevelDBChunk( this, chunkX, chunkZ, chunkVersion, populated );
+
+                for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
+                    byte[] chunkData = this.db.get( this.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
+
+                    if ( chunkData != null ) {
+                        chunk.getCheckAndCreateSubChunks( sectionY );
+                        levelDBChunk.load( chunk.subChunks[sectionY], chunkData );
+                    }
+                }
+            }
+
+            this.chunkMap.put( chunkHash, chunk );
             return chunk;
         }
         return this.chunkMap.get( chunkHash );
+    }
+
+    public Chunk getChunk( int chunkX, int chunkZ ) {
+        return this.loadChunk( chunkX, chunkZ, true );
     }
 
     public Block getBlock( BlockPosition location ) {
@@ -298,7 +318,6 @@ public class World extends LevelDB {
         if ( placedBlock instanceof BlockAir ) {
             return false;
         }
-        System.out.println( "V: " + placedBlock.isSolid() );
 
         if ( ( !interact ) || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced() ) {

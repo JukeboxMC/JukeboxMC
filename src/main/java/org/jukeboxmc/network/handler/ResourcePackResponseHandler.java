@@ -1,6 +1,5 @@
 package org.jukeboxmc.network.handler;
 
-import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.GameRule;

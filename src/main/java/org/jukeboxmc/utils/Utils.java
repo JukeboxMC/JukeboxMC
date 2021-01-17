@@ -1,5 +1,8 @@
 package org.jukeboxmc.utils;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -29,5 +32,11 @@ public class Utils {
         y = y * ( 1.5F - ( xhalf * y * y ) );
         y = y * ( 1.5F - ( xhalf * y * y ) );
         return value * y;
+    }
+
+    public static ByteBuf allocate( byte[] data ) {
+        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
+        buf.writeBytes( data );
+        return buf;
     }
 }

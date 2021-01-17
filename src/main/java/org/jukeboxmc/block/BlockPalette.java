@@ -1,5 +1,8 @@
 package org.jukeboxmc.block;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
@@ -17,18 +20,35 @@ import java.util.function.Predicate;
  */
 public class BlockPalette {
 
-    public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
-    public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
 
+    public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
+    public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
+    public static final List<BlockData> BLOCK_DATA = new LinkedList<>();
+
+    @SneakyThrows
     public static void init() {
         try ( NBTInputStream nbtReader = NbtUtils.createReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
-            for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) )
-                BLOCK_PALETTE.put( RUNTIME_COUNTER.getAndIncrement(), blockMap.getCompound( "block" ) );
+            for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) ) {
+                NbtMap block = blockMap.getCompound( "block" );
+                int runtimeId = RUNTIME_COUNTER.getAndIncrement();
+                BLOCK_PALETTE.put( runtimeId, block );
+                BLOCK_DATA.add( new BlockData( block.getString( "name" ), runtimeId, block.getCompound( "states" ) ) );
+            }
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+    }
+
+
+    public static int getRuntimeId( String identifier, NbtMap compound ) {
+        for ( BlockData blockData : BLOCK_DATA ) {
+            if ( blockData.getIdentifier().equals( identifier ) && blockData.getCompound().equals( compound ) ) {
+                return blockData.getRuntimeId();
+            }
+        }
+        return 134;
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
@@ -61,6 +81,16 @@ public class BlockPalette {
             }
         }
         return Collections.unmodifiableList( blocks );
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class BlockData {
+
+        private String identifier;
+        private int runtimeId;
+        private NbtMap compound;
+
     }
 
 }

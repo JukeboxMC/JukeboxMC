@@ -22,7 +22,7 @@ public class Chunk {
 
     public static final int CHUNK_LAYERS = 2;
 
-    private SubChunk[] subChunks;
+    public SubChunk[] subChunks;
 
     private int chunkX;
     private int chunkZ;
@@ -37,35 +37,35 @@ public class Chunk {
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
         int subY = y >> 4;
-        this.checkOrCreateSubChunks( subY );
+        this.getCheckAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
         int subY = y >> 4;
-        this.checkOrCreateSubChunks( subY );
+        this.getCheckAndCreateSubChunks( subY );
         return this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
         int subY = y >> 4;
-        this.checkOrCreateSubChunks( subY );
+        this.getCheckAndCreateSubChunks( subY );
         this.subChunks[subY].setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
     }
 
     public BlockEntity getBlockEntity( int x, int y, int z ) {
         int subY = y >> 4;
-        this.checkOrCreateSubChunks( subY );
+        this.getCheckAndCreateSubChunks( subY );
         return this.subChunks[subY].getBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     public void removeBlockEntity( int x, int y, int z ) {
         int subY = y >> 4;
-        this.checkOrCreateSubChunks( subY );
+        this.getCheckAndCreateSubChunks( subY );
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
-    private void checkOrCreateSubChunks( int subY ) {
+    public void getCheckAndCreateSubChunks( int subY ) {
         for ( int y = 0; y <= subY; y++ ) {
             if ( this.subChunks[y] == null ) {
                 this.subChunks[y] = new SubChunk( y );
