@@ -11,4 +11,6 @@ Example:C:\Maven\bin
 # 6.Go to The Repository's JukeBoxMC Folder And Open Command Prompt on that folder (Non-Elevated)
 # 7.Type mvn clean install
 # 8.When Done Compiling Then Go to Targets Folder And Copy The Jar File to your Server Folder
-# 9.
+# 9.Then Create A text Document And Rename it to start.cmd or start.bat
+# 10.Edit The start.cmd Or start.bat Type "java -Xmx1024M -Xms1024M -jar JukeboxMC-0.0-SNAPSHOT.jar nogui
+# 11.Open The .cmd or .bat file And Voila! The Server Started
