@@ -45,6 +45,8 @@ public class PlayerConnection {
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
     private Set<InventoryTransactionPacket> spamCheck = new HashSet<>();
 
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     public PlayerConnection( Player player, Server server, Connection connection ) {
         this.player = player;
         this.server = server;
@@ -52,7 +54,6 @@ public class PlayerConnection {
     }
 
     public void update( long timestamp ) {
-
         this.spamCheck.clear();
 
         if ( !this.sendQueue.isEmpty() ) {
@@ -79,12 +80,13 @@ public class PlayerConnection {
 
     public void sendChunk( Chunk chunk ) {
         try {
+            BinaryStream binaryStream = new BinaryStream();
+            chunk.writeTo( binaryStream );
+
             LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
             levelChunkPacket.setChunkX( chunk.getChunkX() );
             levelChunkPacket.setChunkZ( chunk.getChunkZ() );
             levelChunkPacket.setSubChunkCount( chunk.getAvailableSubChunks() );
-            BinaryStream binaryStream = new BinaryStream();
-            chunk.writeTo( binaryStream );
             levelChunkPacket.setData( binaryStream.getBuffer() );
             this.sendPacket( levelChunkPacket );
         } catch ( Exception e ) {
@@ -96,7 +98,6 @@ public class PlayerConnection {
         this.loadingChunks.remove( hash );
     }
 
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public void needNewChunks( boolean forceResendEntities ) {
         this.executorService.execute( () -> {
@@ -196,7 +197,7 @@ public class PlayerConnection {
         if ( chunk != null ) {
             this.chunkSendQueue.offer( chunk );
         } else {
-            this.chunkSendQueue.offer( new Chunk( chunkX, chunkZ ) );
+            this.chunkSendQueue.offer( new Chunk( this.player.getWorld(), chunkX, chunkZ ) );
         }
     }
 

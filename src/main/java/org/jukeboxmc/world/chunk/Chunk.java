@@ -1,14 +1,21 @@
 package org.jukeboxmc.world.chunk;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import lombok.ToString;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.utils.BinaryStream;
+import org.jukeboxmc.utils.Palette;
+import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -18,18 +25,22 @@ import java.util.function.Consumer;
  */
 
 @ToString ( exclude = { "subChunks" } )
-public class Chunk {
+public class Chunk extends LevelDBChunk {
 
     public static final int CHUNK_LAYERS = 2;
 
     public SubChunk[] subChunks;
 
+    private World world;
     private int chunkX;
     private int chunkZ;
+    public byte chunkVersion = 21;
 
     private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
-    public Chunk( int chunkX, int chunkZ ) {
+    public Chunk( World world, int chunkX, int chunkZ ) {
+        super( world, chunkX, chunkZ );
+        this.world = world;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.subChunks = new SubChunk[16];
@@ -95,6 +106,88 @@ public class Chunk {
         binaryStream.writeUnsignedVarInt( biomeIds.length );
         binaryStream.writeBytes( biomeIds );
         binaryStream.writeUnsignedVarInt( 0 ); //Extradata
+    }
+
+    public void save( DB db ) {
+        WriteBatch writeBatch = db.createWriteBatch();
+
+        for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+            if ( this.subChunks[subY] == null ) {
+                continue;
+            }
+            this.saveChunkSlice( subY, writeBatch );
+        }
+
+        //ELSE
+        byte[] versionKey = this.world.getKey( this.chunkX, this.chunkZ, (byte) 0x2c );
+        BinaryStream versionBuffer = new BinaryStream();
+        versionBuffer.writeByte( this.chunkVersion );
+        writeBatch.put( versionKey, versionBuffer.getArray() );
+
+        byte[] finalizedKey = this.world.getKey( this.chunkX, this.chunkZ, (byte) 0x36 );
+        ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer( 1 );
+        byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
+        writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getArray() );
+
+        db.write( writeBatch );
+
+        try {
+            writeBatch.close();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveChunkSlice( int subY, WriteBatch writeBatch ) {
+        BinaryStream buffer = new BinaryStream();
+        SubChunk subChunk = this.subChunks[subY];
+
+        buffer.writeByte( (byte) 8 );
+        buffer.writeByte( (byte) Chunk.CHUNK_LAYERS );
+
+        for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
+            Integer[] layerBlocks = subChunk.blocks[layer];
+            int[] blockIds = new int[4096];
+
+            Map<Integer, Integer> indexList = new LinkedHashMap<>();
+            List<Integer> runtimeIds = new ArrayList<>();
+
+            Integer foundIndex = 0;
+            int nextIndex = 0;
+            int lastRuntimeId = -1;
+
+            for ( short blockIndex = 0; blockIndex < layerBlocks.length; blockIndex++ ) {
+                int runtimeId = layerBlocks[blockIndex];
+                if ( runtimeId != lastRuntimeId ) {
+                    foundIndex = indexList.get( runtimeId );
+                    if ( foundIndex == null ) {
+                        runtimeIds.add( runtimeId );
+                        indexList.put( runtimeId, nextIndex );
+                        foundIndex = nextIndex;
+                        nextIndex++;
+                    }
+                    lastRuntimeId = runtimeId;
+                }
+                blockIds[blockIndex] = foundIndex;
+            }
+
+            float numberOfBits = Utils.log2( indexList.size() ) + 1;
+            int amountOfBlocks = (int) Math.floor( 32 / numberOfBits );
+            Palette palette = new Palette( buffer, amountOfBlocks, false );
+
+            System.out.println( palette.getPaletteVersion().toString() );
+
+            byte paletteWord = (byte) ( (byte) ( palette.getPaletteVersion().getVersionId() << 1 ) | 1 );
+            buffer.writeByte( paletteWord );
+            palette.addIndexIDs( blockIds );
+            palette.finish();
+
+            buffer.writeSignedVarInt( runtimeIds.size() );
+            runtimeIds.forEach( buffer::writeSignedVarInt );
+
+            byte[] subChunkKey = this.world.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
+            writeBatch.put( subChunkKey, buffer.getArray() );
+        }
     }
 
     public int getAvailableSubChunks() {

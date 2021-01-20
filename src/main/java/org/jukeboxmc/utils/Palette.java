@@ -41,6 +41,15 @@ public class Palette {
         public byte getAmountOfPadding() {
             return amountOfPadding;
         }
+
+        @Override
+        public String toString() {
+            return "PaletteVersion{" +
+                    "versionId=" + versionId +
+                    ", amountOfWords=" + amountOfWords +
+                    ", amountOfPadding=" + amountOfPadding +
+                    '}';
+        }
     }
 
     private BinaryStream data;

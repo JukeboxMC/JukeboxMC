@@ -1,6 +1,9 @@
 package org.jukeboxmc.world.leveldb;
 
 import io.netty.buffer.ByteBufInputStream;
+import lombok.NoArgsConstructor;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
@@ -24,8 +27,8 @@ public class LevelDBChunk {
     private World world;
     private int chunkX;
     private int chunkZ;
-    private byte chunkVersion;
-    private boolean populated;
+    protected byte chunkVersion;
+    protected boolean populated;
 
     public LevelDBChunk( World world, int chunkX, int chunkZ, byte chunkVersion, boolean populated ) {
         this.world = world;
@@ -33,6 +36,13 @@ public class LevelDBChunk {
         this.chunkZ = chunkZ;
         this.chunkVersion = chunkVersion;
         this.populated = populated;
+    }
+
+    public LevelDBChunk( World world, int chunkX, int chunkZ ) {
+        this.world = world;
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.populated = true;
     }
 
     public void load( SubChunk chunk, byte[] chunkData ) {
@@ -49,6 +59,7 @@ public class LevelDBChunk {
                     byte wordTemplate = (byte) ( data >>> 1 );
 
                     Palette palette = new Palette( buffer, wordTemplate, true );
+                    System.out.println( palette.getPaletteVersion().toString() );
                     short[] indexes = palette.getIndexes();
                     int needed = buffer.readLInt();
 
@@ -79,8 +90,4 @@ public class LevelDBChunk {
         }
     }
 
-
-    private int getIndex( int x, int y, int z ) {
-        return ( x << 8 ) + ( z << 4 ) + y;
-    }
 }

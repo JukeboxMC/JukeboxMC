@@ -3,6 +3,7 @@ package org.jukeboxmc.world;
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockFurnace;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -85,13 +86,14 @@ public class World extends LevelDB {
     public Chunk loadChunk( int chunkX, int chunkZ, boolean generate ) {
         Long chunkHash = Utils.toLong( chunkX, chunkZ );
         if ( !this.chunkMap.containsKey( chunkHash ) ) {
-            Chunk chunk = new Chunk( chunkX, chunkZ );
+            Chunk chunk = new Chunk( this, chunkX, chunkZ );
 
             byte[] version = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2C ) );
             if ( version != null ) {
                 byte[] finalized = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
                 byte chunkVersion = version[0];
+                chunk.chunkVersion = chunkVersion;
                 boolean populated = finalized == null || finalized[0] == 2;
 
                 LevelDBChunk levelDBChunk = new LevelDBChunk( this, chunkX, chunkZ, chunkVersion, populated );
@@ -114,6 +116,17 @@ public class World extends LevelDB {
 
     public Chunk getChunk( int chunkX, int chunkZ ) {
         return this.loadChunk( chunkX, chunkZ, true );
+    }
+
+    public void save() {
+        for ( Chunk chunk : this.chunkMap.values() ) {
+            chunk.save( this.db );
+        }
+        System.out.println( "Save success" );
+    }
+
+    public void closeDB() {
+        this.db.close();
     }
 
     public Block getBlock( BlockPosition location ) {
