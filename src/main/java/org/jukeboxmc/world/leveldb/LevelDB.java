@@ -60,8 +60,6 @@ public class LevelDB {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                // System.out.println( nbt.toString() );
-
                 this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), 63 + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
             } catch ( IOException e ) {
@@ -79,10 +77,6 @@ public class LevelDB {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-    }
-
-    public DB getDB() {
-        return this.db;
     }
 
     public byte[] getKey( int chunkX, int chunkZ, byte key ) {
