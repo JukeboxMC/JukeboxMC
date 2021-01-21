@@ -35,7 +35,7 @@ hs_err_pid*
 *.ipr
 *.iws
 dependency-reduced-pom.xml
-worlds/
+worlds
 
 #IntelliJ
 /out/
