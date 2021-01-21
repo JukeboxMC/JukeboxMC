@@ -41,13 +41,8 @@ public class BlockPalette {
         }
     }
 
-    public static BlockData getBlockData( int runtimeId ) {
-        for ( BlockData blockData : BLOCK_DATA ) {
-            if ( blockData.getRuntimeId() == runtimeId ) {
-                return blockData;
-            }
-        }
-        return null;
+    public static NbtMap getBlockNBT( int runtimeId ) {
+        return BLOCK_PALETTE.get( runtimeId );
     }
 
     public static int getRuntimeId( String identifier, NbtMap compound ) {
