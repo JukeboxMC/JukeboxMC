@@ -187,9 +187,10 @@ public class Chunk extends LevelDBChunk {
             palette.finish();
 
             buffer.writeLInt( indexList.size() );
+
             for ( int runtimeId : runtimeIds ) {
-                NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer.getBuffer() ) );
                 try {
+                    NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer.getBuffer() ) );
                     networkWriter.writeTag( BlockPalette.getBlockNBT( runtimeId ) );
                 } catch ( IOException e ) {
                     e.printStackTrace();
