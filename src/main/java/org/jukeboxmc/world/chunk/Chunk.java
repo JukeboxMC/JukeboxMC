@@ -1,13 +1,19 @@
 package org.jukeboxmc.world.chunk;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.ToString;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.nbt.NBTOutputStream;
+import org.jukeboxmc.nbt.NbtMap;
+import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
@@ -175,19 +181,28 @@ public class Chunk extends LevelDBChunk {
             int amountOfBlocks = (int) Math.floor( 32 / numberOfBits );
             Palette palette = new Palette( buffer, amountOfBlocks, false );
 
-            System.out.println( palette.getPaletteVersion().toString() );
-
             byte paletteWord = (byte) ( (byte) ( palette.getPaletteVersion().getVersionId() << 1 ) | 1 );
             buffer.writeByte( paletteWord );
             palette.addIndexIDs( blockIds );
             palette.finish();
 
-            buffer.writeSignedVarInt( runtimeIds.size() );
-            runtimeIds.forEach( buffer::writeSignedVarInt );
-
-            byte[] subChunkKey = this.world.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
-            writeBatch.put( subChunkKey, buffer.getArray() );
+            buffer.writeLInt( indexList.size() );
+            for ( int runtimeId : runtimeIds ) {
+                BlockPalette.BlockData blockData = BlockPalette.getBlockData( runtimeId );
+                NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer.getBuffer() ) );
+                try {
+                    NbtMapBuilder compound = NbtMap.builder();
+                    compound.putString( "name", blockData.getIdentifier() );
+                    compound.putCompound( "states", blockData.getStates() );
+                    compound.putInt( "version", 17825808 );
+                    networkWriter.writeTag( compound.build() );
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
         }
+        byte[] subChunkKey = this.world.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
+        writeBatch.put( subChunkKey, buffer.getArray() );
     }
 
     public int getAvailableSubChunks() {

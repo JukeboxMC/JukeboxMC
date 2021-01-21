@@ -92,11 +92,10 @@ public class World extends LevelDB {
             if ( version != null ) {
                 byte[] finalized = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
-                byte chunkVersion = version[0];
-                chunk.chunkVersion = chunkVersion;
+                chunk.chunkVersion = version[0];
                 boolean populated = finalized == null || finalized[0] == 2;
 
-                LevelDBChunk levelDBChunk = new LevelDBChunk( this, chunkX, chunkZ, chunkVersion, populated );
+                LevelDBChunk levelDBChunk = new LevelDBChunk( this, chunkX, chunkZ, chunk.chunkVersion, populated );
 
                 for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
                     byte[] chunkData = this.db.get( this.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );

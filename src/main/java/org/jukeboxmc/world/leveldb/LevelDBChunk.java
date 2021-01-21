@@ -59,7 +59,6 @@ public class LevelDBChunk {
                     byte wordTemplate = (byte) ( data >>> 1 );
 
                     Palette palette = new Palette( buffer, wordTemplate, true );
-                    System.out.println( palette.getPaletteVersion().toString() );
                     short[] indexes = palette.getIndexes();
                     int needed = buffer.readLInt();
 
