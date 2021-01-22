@@ -8,6 +8,7 @@ import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.NbtMap;
+import org.jukeboxmc.world.Biome;
 
 import java.net.InetSocketAddress;
 import java.util.List;

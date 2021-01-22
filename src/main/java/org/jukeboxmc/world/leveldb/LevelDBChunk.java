@@ -1,6 +1,8 @@
 package org.jukeboxmc.world.leveldb;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import lombok.NoArgsConstructor;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
@@ -15,6 +17,7 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.SubChunk;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +32,9 @@ public class LevelDBChunk {
     private int chunkZ;
     protected byte chunkVersion;
     protected boolean populated;
+
+    protected byte[] biomes = new byte[255];
+    protected short[] height = new short[16 * 16];
 
     public LevelDBChunk( World world, int chunkX, int chunkZ, byte chunkVersion, boolean populated ) {
         this.world = world;
@@ -89,4 +95,12 @@ public class LevelDBChunk {
         }
     }
 
+    public void loadHeightAndBiomes( byte[] heightAndBiomes ) {
+        ByteBuf buf = Unpooled.wrappedBuffer( heightAndBiomes );
+        for ( int i = 0; i < this.height.length; i++ ) {
+            this.height[i] = buf.readShortLE();
+        }
+        buf.readBytes( this.biomes );
+        System.out.println( Arrays.toString( biomes ) );
+    }
 }

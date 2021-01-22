@@ -105,8 +105,15 @@ public class World extends LevelDB {
                         levelDBChunk.load( chunk.subChunks[sectionY], chunkData );
                     }
                 }
-            }
 
+                byte[] biomes = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2d ) );
+                if ( biomes != null ) {
+                    levelDBChunk.loadHeightAndBiomes( biomes );
+                    System.out.println( 1 );
+                } else {
+
+                }
+            }
             this.chunkMap.put( chunkHash, chunk );
             return chunk;
         }
@@ -216,11 +223,13 @@ public class World extends LevelDB {
         this.playSound( null, position, levelSound, data, entityIdentifier, false, false );
     }
 
-    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby,
+                           boolean isGlobal ) {
         this.playSound( null, position, levelSound, data, entityIdentifier, isBaby, isGlobal );
     }
 
-    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier,
+                           boolean isBaby, boolean isGlobal ) {
         LevelSoundEventPacket levelSoundEventPacket = new LevelSoundEventPacket();
         levelSoundEventPacket.setLevelSound( levelSound );
         levelSoundEventPacket.setPosition( position );
@@ -311,7 +320,8 @@ public class World extends LevelDB {
         return targetEntity;
     }
 
-    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
+    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector
+            clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
         if ( clickedBlock instanceof BlockAir ) {
             return false;

@@ -110,7 +110,7 @@ public class Chunk extends LevelDBChunk {
         }
 
         binaryStream.writeUnsignedVarInt( biomeIds.length );
-        binaryStream.writeBytes( biomeIds );
+        binaryStream.writeBytes( this.biomes );
         binaryStream.writeUnsignedVarInt( 0 ); //Extradata
     }
 
@@ -135,8 +135,10 @@ public class Chunk extends LevelDBChunk {
         byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
         writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getArray() );
 
-        db.write( writeBatch );
 
+
+
+        db.write( writeBatch );
         try {
             writeBatch.close();
         } catch ( IOException e ) {
