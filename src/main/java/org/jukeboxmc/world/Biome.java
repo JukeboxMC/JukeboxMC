@@ -8,24 +8,24 @@ public enum Biome {
 
     PLAINS( 1, "Plains" ),
     DESERT( 2, "Desert" ),
-    EXTREME_HILLS( 3, "Extreme Hills"),
-    FOREST( 4, "Forest"),
-    TAIGA( 5, "Taiga"),
-    SWAMPLAND( 6, "Swampland"),
-    RIVER( 7, "River"),
-    NETHER( 8, "Nether"),
-    END( 9, "End"),
-    FROZEN_OCEAN( 10, "Frozen Ocean"),
-    FROZEN_RIVER( 11, "Frozen River"),
-    ICE_PLAINS( 12, "Ice Plains"),
-    ICE_MOUNTAINS( 13, "Ice Mountains"),
-    MUSHROOM_ISLAND( 14, "Mushroom Island"),
-    MUSHROOM_ISLAND_SHORE( 15, "Mushroom Island Shore"),
-    BEACH( 16, "Beach"),
-    DESERT_HILLS( 17, "Desert Hills"),
-    FOREST_HILLS( 18, "Forest Hills"),
-    TAIGA_HILLS( 19, "Taiga Hills"),
-    EXTREME_HILLS_EDGE( 20, "Extreme Hills Edge"),
+    EXTREME_HILLS( 3, "Extreme Hills" ),
+    FOREST( 4, "Forest" ),
+    TAIGA( 5, "Taiga" ),
+    SWAMPLAND( 6, "Swampland" ),
+    RIVER( 7, "River" ),
+    NETHER( 8, "Nether" ),
+    END( 9, "End" ),
+    FROZEN_OCEAN( 10, "Frozen Ocean" ),
+    FROZEN_RIVER( 11, "Frozen River" ),
+    ICE_PLAINS( 12, "Ice Plains" ),
+    ICE_MOUNTAINS( 13, "Ice Mountains" ),
+    MUSHROOM_ISLAND( 14, "Mushroom Island" ),
+    MUSHROOM_ISLAND_SHORE( 15, "Mushroom Island Shore" ),
+    BEACH( 16, "Beach" ),
+    DESERT_HILLS( 17, "Desert Hills" ),
+    FOREST_HILLS( 18, "Forest Hills" ),
+    TAIGA_HILLS( 19, "Taiga Hills" ),
+    EXTREME_HILLS_EDGE( 20, "Extreme Hills Edge" ),
     JUNGLE( 21, "Jungle" ),
     JUNGLE_HILLS( 22, "Jungle Hills" ),
     JUNGLE_EDGE( 23, "Jungle Edge" ),
@@ -97,5 +97,14 @@ public enum Biome {
 
     public String getName() {
         return this.name;
+    }
+
+    public static Biome findById( int id ) {
+        for ( Biome value : Biome.values() ) {
+            if ( value.id == id ) {
+                return value;
+            }
+        }
+        return null;
     }
 }

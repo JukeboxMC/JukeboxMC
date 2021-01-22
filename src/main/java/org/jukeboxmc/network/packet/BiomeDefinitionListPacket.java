@@ -23,8 +23,8 @@ public class BiomeDefinitionListPacket extends Packet {
         try ( InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "biome_definitions.dat" ) ) {
             this.biomeDifination = ByteStreams.toByteArray( resourceAsStream );
         } catch ( IOException e ) {
-            e.printStackTrace();
-        }
+            e.printStackTrace();//Habe die von gysier da
+        } //`Glaube ich mal nicht` ja sollte die richtige
     }
 
     @Override

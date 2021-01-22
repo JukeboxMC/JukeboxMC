@@ -2,7 +2,6 @@ package org.jukeboxmc.world.leveldb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.DbImpl;
 import org.iq80.leveldb.impl.Iq80DBFactory;

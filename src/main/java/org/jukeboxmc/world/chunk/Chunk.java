@@ -11,12 +11,11 @@ import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.nbt.NBTOutputStream;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
@@ -82,6 +81,10 @@ public class Chunk extends LevelDBChunk {
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
+    public Biome getBiome( int x, int z ) {
+        return Biome.findById( this.biomes[(x << 4) | z] );
+    }
+
     public void getCheckAndCreateSubChunks( int subY ) {
         for ( int y = 0; y <= subY; y++ ) {
             if ( this.subChunks[y] == null ) {
@@ -101,15 +104,6 @@ public class Chunk extends LevelDBChunk {
             if ( subChunk != null ) {
                 subChunk.writeTo( binaryStream );
             }
-
-        byte[] biomeIds = new byte[256];
-        for ( int x = 0; x < 16; x++ ) {
-            for ( int z = 0; z < 16; z++ ) {
-                biomeIds[( x << 4 ) | z] = 0;
-            }
-        }
-
-        binaryStream.writeUnsignedVarInt( biomeIds.length );
         binaryStream.writeBytes( this.biomes );
         binaryStream.writeUnsignedVarInt( 0 ); //Extradata
     }

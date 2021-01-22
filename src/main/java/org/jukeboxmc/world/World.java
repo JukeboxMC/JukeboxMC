@@ -3,7 +3,6 @@ package org.jukeboxmc.world;
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockFurnace;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -16,7 +15,6 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.leveldb.LevelDB;
-import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -93,25 +91,20 @@ public class World extends LevelDB {
                 byte[] finalized = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
                 chunk.chunkVersion = version[0];
-                boolean populated = finalized == null || finalized[0] == 2;
-
-                LevelDBChunk levelDBChunk = new LevelDBChunk( this, chunkX, chunkZ, chunk.chunkVersion, populated );
+                chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
                 for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
                     byte[] chunkData = this.db.get( this.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
 
                     if ( chunkData != null ) {
                         chunk.getCheckAndCreateSubChunks( sectionY );
-                        levelDBChunk.load( chunk.subChunks[sectionY], chunkData );
+                        chunk.load( chunk.subChunks[sectionY], chunkData );
                     }
                 }
 
                 byte[] biomes = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2d ) );
                 if ( biomes != null ) {
-                    levelDBChunk.loadHeightAndBiomes( biomes );
-                    System.out.println( 1 );
-                } else {
-
+                    chunk.loadHeightAndBiomes( biomes );
                 }
             }
             this.chunkMap.put( chunkHash, chunk );
@@ -209,6 +202,16 @@ public class World extends LevelDB {
     public void removeBlockEntity( BlockPosition location ) {
         Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
         chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+    }
+
+    public Biome getBiome( Vector location ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
+        return chunk.getBiome( location.getFloorX() & 15, location.getFloorZ() & 15 );
+    }
+
+    public Biome getBiome( BlockPosition location ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        return chunk.getBiome( location.getX() & 15, location.getZ() & 15 );
     }
 
     public void playSound( Player player, LevelSound levelSound ) {
