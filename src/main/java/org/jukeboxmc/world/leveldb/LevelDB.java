@@ -59,7 +59,7 @@ public class LevelDB {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), 63 + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), 64 + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
             } catch ( IOException e ) {
                 e.printStackTrace();
@@ -76,35 +76,6 @@ public class LevelDB {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-    }
-
-    public byte[] getKey( int chunkX, int chunkZ, byte key ) {
-        return new byte[]{
-                (byte) ( chunkX & 0xff ),
-                (byte) ( ( chunkX >>> 8 ) & 0xff ),
-                (byte) ( ( chunkX >>> 16 ) & 0xff ),
-                (byte) ( ( chunkX >>> 24 ) & 0xff ),
-                (byte) ( chunkZ & 0xff ),
-                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                key
-        };
-    }
-
-    public byte[] getSubChunkKey( int chunkX, int chunkZ, byte key, byte subChunk ) {
-        return new byte[]{
-                (byte) ( chunkX & 0xff ),
-                (byte) ( ( chunkX >>> 8 ) & 0xff ),
-                (byte) ( ( chunkX >>> 16 ) & 0xff ),
-                (byte) ( ( chunkX >>> 24 ) & 0xff ),
-                (byte) ( chunkZ & 0xff ),
-                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                key,
-                subChunk
-        };
     }
 
 }

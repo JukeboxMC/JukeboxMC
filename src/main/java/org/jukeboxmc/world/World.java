@@ -86,15 +86,15 @@ public class World extends LevelDB {
         if ( !this.chunkMap.containsKey( chunkHash ) ) {
             Chunk chunk = new Chunk( this, chunkX, chunkZ );
 
-            byte[] version = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2C ) );
+            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
             if ( version != null ) {
-                byte[] finalized = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x36 ) );
+                byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
                 chunk.chunkVersion = version[0];
                 chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
                 for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
-                    byte[] chunkData = this.db.get( this.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
+                    byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
 
                     if ( chunkData != null ) {
                         chunk.getCheckAndCreateSubChunks( sectionY );
@@ -102,7 +102,7 @@ public class World extends LevelDB {
                     }
                 }
 
-                byte[] biomes = this.db.get( this.getKey( chunkX, chunkZ, (byte) 0x2d ) );
+                byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
                 if ( biomes != null ) {
                     chunk.loadHeightAndBiomes( biomes );
                 }

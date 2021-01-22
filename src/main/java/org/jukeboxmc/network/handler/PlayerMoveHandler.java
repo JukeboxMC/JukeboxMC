@@ -43,7 +43,7 @@ public class PlayerMoveHandler implements PacketHandler {
             stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: §e" ).append( itemInHand.getMeta() );
             stringBuilder.append( "\n" ).append( "§7BlockFace§8: §e" ).append( player.getDirection().name() );
             stringBuilder.append( "\n" ).append( "§7Block§8: §e" ).append( player.getWorld().getBlock( player.getLocation().subtract( 0, 1, 0 ) ).getName() );
-            stringBuilder.append( "\n" ).append( "§7Biome§8: §e" ).append( player.getWorld().getBiome( player.getLocation() ) );
+            stringBuilder.append( "\n" ).append( "§7Biome§8: §e" ).append( player.getWorld().getBiome( player.getLocation() ).getName() );
         }
         player.sendTip( stringBuilder.toString() );
     }

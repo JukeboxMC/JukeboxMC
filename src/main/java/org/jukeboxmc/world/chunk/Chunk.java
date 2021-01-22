@@ -19,6 +19,7 @@ import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -119,18 +120,24 @@ public class Chunk extends LevelDBChunk {
         }
 
         //ELSE
-        byte[] versionKey = this.world.getKey( this.chunkX, this.chunkZ, (byte) 0x2c );
+        byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2c );
         BinaryStream versionBuffer = new BinaryStream();
         versionBuffer.writeByte( this.chunkVersion );
         writeBatch.put( versionKey, versionBuffer.getArray() );
 
-        byte[] finalizedKey = this.world.getKey( this.chunkX, this.chunkZ, (byte) 0x36 );
+        byte[] finalizedKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x36 );
         ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer( 1 );
         byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
         writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getArray() );
 
+        byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2d );
+        BinaryStream biomeBuffer = new BinaryStream();
 
-
+        for ( short height : this.height ) {
+            biomeBuffer.writeLShort( height );
+        }
+        biomeBuffer.writeBytes( this.biomes );
+        writeBatch.put( biomeKey, biomeBuffer.getArray() );
 
         db.write( writeBatch );
         try {
@@ -193,7 +200,7 @@ public class Chunk extends LevelDBChunk {
                 }
             }
         }
-        byte[] subChunkKey = this.world.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
+        byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, buffer.getArray() );
     }
 

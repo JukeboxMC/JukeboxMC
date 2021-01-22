@@ -39,4 +39,33 @@ public class Utils {
         buf.writeBytes( data );
         return buf;
     }
+
+    public static byte[] getKey( int chunkX, int chunkZ, byte key ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key
+        };
+    }
+
+    public static byte[] getSubChunkKey( int chunkX, int chunkZ, byte key, byte subChunk ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key,
+                subChunk
+        };
+    }
 }
