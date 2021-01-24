@@ -41,7 +41,7 @@ public class BlockSign extends Block {
     }
 
     public void setLine( int line, String value ) {
-        if ( line > 4 || line < 1 ) {
+        if ( line > 4 || line < 0 ) {
             return;
         }
 
