@@ -28,7 +28,7 @@ public class GameRule {
     public static final GameRules<Boolean> TNT_EXPLODES = GameRules.booleanValue("tntExplodes", true);
     public static final GameRules<Boolean> SHOW_DEATH_MESSAGE = GameRules.booleanValue("showDeathMessage", true);
 
-    public static GameRules<?>[] getAll() {
+    public static GameRules[] getAll() {
         return new GameRules[] {
                 COMMAND_BLOCK_OUTPUT,
                 DO_DAYLIGHT_CYCLE,

@@ -1,6 +1,12 @@
 package org.jukeboxmc.world;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.PooledByteBufAllocator;
 import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -10,14 +16,18 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.generator.WorldGenerator;
 import org.jukeboxmc.world.leveldb.LevelDB;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author LucGamesYT
@@ -27,20 +37,21 @@ public class World extends LevelDB {
 
     private String name;
 
-    private int currentTick;
+    private WorldGenerator worldGenerator;
+
+    private int worldTime;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
     private Map<Long, Player> players = new HashMap<>();
 
-    public World( String name ) {
+    public World( String name, WorldGenerator worldGenerator ) {
+        super( name );
         this.name = name;
-
+        this.worldGenerator = worldGenerator;
         this.difficulty = Difficulty.NORMAL;
         this.spawnLocation = new Vector( 0, 7, 0 );
-    }
 
-    public String getName() {
-        return this.name;
+        this.saveLevelDatFile();
     }
 
     public void update( long timestamp ) {
@@ -48,12 +59,22 @@ public class World extends LevelDB {
             if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().update( timestamp );
 
-                if ( this.currentTick % ( 20 * 5 * 60 ) == 0 ) {
-                    player.getPlayerConnection().sendTime( this.currentTick );
+                this.worldTime++;
+                while ( this.worldTime >= 24000 ) {
+                    this.worldTime -= 24000;
                 }
+
+                player.getPlayerConnection().sendTime( this.worldTime );
             }
         }
-        this.currentTick++;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public WorldGenerator getWorldGenerator() {
+        return this.worldGenerator;
     }
 
     public void addPlayer( Player player ) {
@@ -68,16 +89,53 @@ public class World extends LevelDB {
         return this.players.values();
     }
 
-    /*
-    for ( int blockX = 0; blockX < 16; blockX++ ) {
-                for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
-                    chunk.setBlock( blockX, 0, blockZ, 0, BlockType.BEDROCK.getBlock() );
-                    chunk.setBlock( blockX, 1, blockZ, 0, BlockType.DIRT.getBlock() );
-                    chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
-                    chunk.setBlock( blockX, 3, blockZ, 0, BlockType.GRASS.getBlock() );
-                }
+    @SneakyThrows
+    private void saveLevelDatFile() {
+        File worldFolder = new File( "./worlds/" + this.name );
+        File levelDat = new File( worldFolder, "level.dat" );
+
+        NbtMapBuilder compound = null;
+        if ( levelDat.exists() ) {
+            FileUtils.copyFile( levelDat, new File( worldFolder, "level.dat_old" ) );
+
+            try ( FileInputStream stream = new FileInputStream( levelDat ) ) {
+                stream.skip( 8 );
+                byte[] data = new byte[stream.available()];
+                stream.read( data );
+                ByteBuf allocate = Utils.allocate( data );
+                NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
+                compound = ( (NbtMap) reader.readTag() ).toBuilder();
             }
-     */
+             levelDat.delete();
+        } else {
+            compound = NbtMap.builder();
+        }
+
+        compound.putInt( "StorageVersion", 8 );
+
+        compound.putInt( "SpawnX", this.spawnLocation.getFloorX() );
+        compound.putInt( "SpawnY", this.spawnLocation.getFloorY() );
+        compound.putInt( "SpawnZ", this.spawnLocation.getFloorZ() );
+        compound.putInt( "Difficulty", this.difficulty.ordinal() );
+
+        compound.putString( "LevelName", this.name );
+        compound.putLong( "Time", this.worldTime );
+
+
+        for ( GameRules gameRules : GameRule.getAll() ) {
+            compound.put( gameRules.getName(), gameRules.toCompoundValue() );
+        }
+
+        try ( FileOutputStream stream = new FileOutputStream( levelDat ) ) {
+            stream.write( new byte[8] );
+
+            ByteBuf data = PooledByteBufAllocator.DEFAULT.heapBuffer();
+            NBTOutputStream writer = NbtUtils.createWriterLE( new ByteBufOutputStream( data ) );
+            writer.writeTag( compound.build() );
+            stream.write( data.array(), data.arrayOffset(), data.readableBytes() );
+            data.release();
+        }
+    }
 
     @SneakyThrows
     public Chunk loadChunk( int chunkX, int chunkZ, boolean generate ) {
@@ -86,7 +144,10 @@ public class World extends LevelDB {
             Chunk chunk = new Chunk( this, chunkX, chunkZ );
 
             byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
-            if ( version != null ) {
+            if ( version == null ) {
+                WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
+                worldGenerator.generate( chunk );
+            } else {
                 byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
                 chunk.chunkVersion = version[0];
@@ -110,7 +171,6 @@ public class World extends LevelDB {
                 if ( biomes != null ) {
                     chunk.loadHeightAndBiomes( biomes );
                 }
-
             }
             this.chunkMap.put( chunkHash, chunk );
             return chunk;
@@ -126,10 +186,12 @@ public class World extends LevelDB {
         for ( Chunk chunk : this.chunkMap.values() ) {
             chunk.save( this.db );
         }
-        System.out.println( "Save success" );
+        this.saveLevelDatFile();
+        System.out.println( this.name + " was successfully saved" );
     }
 
-    public void closeDB() {
+    public void close() {
+        this.save();
         this.db.close();
     }
 
@@ -260,8 +322,8 @@ public class World extends LevelDB {
         }
     }
 
-    public int getCurrentTick() {
-        return this.currentTick;
+    public int getWorldTime() {
+        return this.worldTime;
     }
 
     public void setSpawnLocation( Vector spawnLocation ) {

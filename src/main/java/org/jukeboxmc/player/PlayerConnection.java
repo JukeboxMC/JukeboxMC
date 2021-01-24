@@ -268,6 +268,7 @@ public class PlayerConnection {
 
     public void disconnect( String message ) {
         DisconnectPacket disconnectPacket = new DisconnectPacket();
+        disconnectPacket.setHideDisconnectScreen( false );
         disconnectPacket.setMessage( message );
         this.connection.disconnect( message );
         this.sendPacket( disconnectPacket );

@@ -107,7 +107,6 @@ public class PlayerInventory extends ContainerInventory {
             for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
                 onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
             }
-            System.out.println( "UpdateInHand" );
         }
     }
 }

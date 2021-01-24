@@ -33,9 +33,9 @@ public class LevelDB {
     protected Vector spawnLocation;
     protected Difficulty difficulty;
 
-    public LevelDB() {
+    public LevelDB( String worldName ) {
         this.world = Server.getInstance().getDefaultWorld();
-        this.worldFolder = new File( "./worlds/world/" );
+        this.worldFolder = new File( "./worlds/" + worldName );
         this.worldFile = new File( this.worldFolder, "level.dat" );
 
         if ( !this.worldFolder.exists() ) {
@@ -43,13 +43,9 @@ public class LevelDB {
                 System.out.println( "Worlds folder was created successfully" );
             }
         }
-
-        if ( !this.worldFile.exists() || !this.worldFile.isFile() ) {
-            System.out.println( "level.dat is missing" );
-        }
     }
 
-    public void loadLevelFile() {
+    public boolean loadLevelFile() {
         try ( FileInputStream stream = new FileInputStream( this.worldFile ) ) {
             stream.skip( 8 );
             byte[] data = new byte[stream.available()];
@@ -59,23 +55,26 @@ public class LevelDB {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), 64 + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
+                return true;
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void open() {
+    public boolean open() {
         try {
             this.db = (DbImpl) Iq80DBFactory.factory.open( new File( this.worldFolder, "db/" ), new Options().createIfMissing( true ) );
+            return true;
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+        return false;
     }
 
 }

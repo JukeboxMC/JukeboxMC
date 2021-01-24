@@ -34,7 +34,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             startGamePacket.setPitch( player.getPitch() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
             startGamePacket.setWorldSpawn( worldSpawn );
-            for ( GameRules<?> gameRules : GameRule.getAll() ) {
+            for ( GameRules gameRules : GameRule.getAll() ) {
                 startGamePacket.getGamerules().put( gameRules.getName(), gameRules );
             }
             player.getPlayerConnection().sendPacket( startGamePacket );

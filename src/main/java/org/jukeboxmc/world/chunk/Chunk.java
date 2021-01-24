@@ -99,6 +99,10 @@ public class Chunk extends LevelDBChunk {
         return blockEntities;
     }
 
+    public void setBiome( int x, int z, Biome biome ) {
+        this.biomes[( x << 4 ) | z] = (byte) biome.getId();
+    }
+
     public Biome getBiome( int x, int z ) {
         return Biome.findById( this.biomes[( x << 4 ) | z] );
     }
