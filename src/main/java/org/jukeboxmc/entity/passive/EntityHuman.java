@@ -67,12 +67,12 @@ public class EntityHuman extends Entity implements InventoryHolder {
         }
     }
 
-    public boolean isAction() {
+    public boolean hasAction() {
         return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION );
     }
 
     public void setAction( boolean value ) {
-        if ( value != this.isAction() ) {
+        if ( value != this.hasAction() ) {
             this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, value ) );
         }
     }
