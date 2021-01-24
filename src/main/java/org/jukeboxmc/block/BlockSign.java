@@ -47,7 +47,7 @@ public class BlockSign extends Block {
 
         BlockEntitySign blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
-            blockEntity.getLines().set( line - 1, value );
+            blockEntity.getLines().set( line, value );
             blockEntity.updateBlockEntitySign();
         }
     }

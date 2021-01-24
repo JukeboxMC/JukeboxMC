@@ -41,9 +41,6 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntityFurnace getBlockEntity() {
-        if(this.world == null ) System.out.println( "World is null" );
-        if(this.position == null ) System.out.println( "Position is null" );
-
         BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.position );
         if ( blockEntity == null ) {
             return new BlockEntityFurnace( this );
