@@ -30,7 +30,6 @@ public class World extends LevelDB {
     private int currentTick;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
-    private Map<Long, CompletableFuture<Chunk>> chunkFutures = new HashMap<>();
     private Map<Long, Player> players = new HashMap<>();
 
     public World( String name ) {
@@ -98,14 +97,20 @@ public class World extends LevelDB {
 
                     if ( chunkData != null ) {
                         chunk.getCheckAndCreateSubChunks( sectionY );
-                        chunk.load( chunk.subChunks[sectionY], chunkData );
+                        chunk.loadSection( chunk.subChunks[sectionY], chunkData );
                     }
+                }
+
+                byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x31 ) );
+                if ( blockEntitys != null ) {
+                    chunk.loadBlockEntitys( chunk, blockEntitys );
                 }
 
                 byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
                 if ( biomes != null ) {
                     chunk.loadHeightAndBiomes( biomes );
                 }
+
             }
             this.chunkMap.put( chunkHash, chunk );
             return chunk;

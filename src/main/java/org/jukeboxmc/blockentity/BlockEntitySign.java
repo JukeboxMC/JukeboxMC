@@ -25,6 +25,13 @@ public class BlockEntitySign extends BlockEntity {
     }
 
     @Override
+    public void setCompound( NbtMap compound ) {
+        super.setCompound( compound );
+        String text = compound.getString( "Text", "" );
+        this.lines.addAll( Arrays.asList( text.split( "\n" ) ) );
+    }
+
+    @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
         compound.putString( "id", "Sign" );

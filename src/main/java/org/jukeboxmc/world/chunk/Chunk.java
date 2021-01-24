@@ -10,7 +10,10 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.nbt.NBTOutputStream;
+import org.jukeboxmc.nbt.NbtMap;
+import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
@@ -61,7 +64,10 @@ public class Chunk extends LevelDBChunk {
     public Block getBlock( int x, int y, int z, int layer ) {
         int subY = y >> 4;
         this.getCheckAndCreateSubChunks( subY );
-        return this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
+        Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
+        block.setWorld( this.world );
+        block.setPosition( new BlockPosition( x, y, z ) );
+        return block;
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
@@ -82,8 +88,18 @@ public class Chunk extends LevelDBChunk {
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
+    public List<BlockEntity> getBlockEntitys() {
+        List<BlockEntity> blockEntities = new ArrayList<>();
+        for ( SubChunk subChunk : this.subChunks ) {
+            if ( subChunk != null && subChunk.getBlockEntitys() != null ) {
+                blockEntities.addAll( subChunk.getBlockEntitys() );
+            }
+        }
+        return blockEntities;
+    }
+
     public Biome getBiome( int x, int z ) {
-        return Biome.findById( this.biomes[(x << 4) | z] );
+        return Biome.findById( this.biomes[( x << 4 ) | z] );
     }
 
     public void getCheckAndCreateSubChunks( int subY ) {
@@ -107,6 +123,20 @@ public class Chunk extends LevelDBChunk {
             }
         binaryStream.writeBytes( this.biomes );
         binaryStream.writeUnsignedVarInt( 0 ); //Extradata
+
+        List<BlockEntity> blockEntitys = this.getBlockEntitys();
+        if ( !blockEntitys.isEmpty() ) {
+            NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( binaryStream.getBuffer() ) );
+
+            for ( BlockEntity blockEntity : blockEntitys ) {
+                try {
+                    writer.writeTag( blockEntity.toCompound().build() );
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public void save( DB db ) {
@@ -129,6 +159,24 @@ public class Chunk extends LevelDBChunk {
         ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer( 1 );
         byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
         writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getArray() );
+
+        BinaryStream blockEntityBuffer = new BinaryStream();
+        NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( blockEntityBuffer.getBuffer() ) );
+        for ( BlockEntity blockEntity : this.getBlockEntitys() ) {
+            try {
+                NbtMap build = blockEntity.toCompound().build();
+                networkWriter.writeTag( build );
+                System.out.println( build.toString() );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
+
+        if ( blockEntityBuffer.readableBytes() > 0 ) {
+            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x31 );
+            writeBatch.put( blockEntityKey, blockEntityBuffer.getArray() );
+            System.out.println( "YES" );
+        }
 
         byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2d );
         BinaryStream biomeBuffer = new BinaryStream();

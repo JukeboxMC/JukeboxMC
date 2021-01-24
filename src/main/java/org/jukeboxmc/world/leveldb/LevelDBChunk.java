@@ -1,17 +1,28 @@
 package org.jukeboxmc.world.leveldb;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
+import lombok.SneakyThrows;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.blockentity.BlockEntity;
+import org.jukeboxmc.blockentity.BlockEntitySign;
+import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
+import org.jukeboxmc.network.packet.BlockEntityDataPacket;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +42,6 @@ public class LevelDBChunk {
     protected byte[] biomes = new byte[16 * 16];
     protected short[] height = new short[16 * 16];
 
-    public LevelDBChunk( World world, int chunkX, int chunkZ, byte chunkVersion, boolean populated ) {
-        this.world = world;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
-        this.chunkVersion = chunkVersion;
-        this.populated = populated;
-    }
-
     public LevelDBChunk( World world, int chunkX, int chunkZ ) {
         this.world = world;
         this.chunkX = chunkX;
@@ -46,7 +49,7 @@ public class LevelDBChunk {
         this.populated = true;
     }
 
-    public void load( SubChunk chunk, byte[] chunkData ) {
+    public void loadSection( SubChunk chunk, byte[] chunkData ) {
         BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );
         byte subchunkVersion = buffer.readByte();
         int storages = 1;
@@ -87,6 +90,33 @@ public class LevelDBChunk {
                     }
                 }
                 break;
+        }
+    }
+
+
+    public void loadBlockEntitys( Chunk chunk, byte[] blockEntityData ) {
+        ByteBuf data = Utils.allocate( blockEntityData );
+
+        NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( data ) );
+        while ( data.readableBytes() > 0 ) {
+            try {
+                NbtMap nbtMap = (NbtMap) reader.readTag();
+
+                int x = nbtMap.getInt( "x", 0 );
+                int y = nbtMap.getInt( "y", 0 );
+                int z = nbtMap.getInt( "z", 0 );
+
+                Block block = chunk.getBlock( x, y, z, 0 );
+                if ( block != null && block.hasBlockEntity() ) {
+                    BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
+                    if ( blockEntity != null ) {
+                        blockEntity.setCompound( nbtMap );
+                        chunk.setBlockEntity( x, y, z, blockEntity );
+                    }
+                }
+            } catch ( IOException e ) {
+                break;
+            }
         }
     }
 

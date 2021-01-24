@@ -26,7 +26,7 @@ public class BlockFurnace extends Block {
 
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.getBlockEntity();
+        BlockEntityFurnace blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
             return true;
@@ -41,6 +41,9 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntityFurnace getBlockEntity() {
+        if(this.world == null ) System.out.println( "World is null" );
+        if(this.position == null ) System.out.println( "Position is null" );
+
         BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.position );
         if ( blockEntity == null ) {
             return new BlockEntityFurnace( this );

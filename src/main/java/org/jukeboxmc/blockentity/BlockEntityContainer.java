@@ -1,6 +1,7 @@
 package org.jukeboxmc.blockentity;
 
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 
 /**
@@ -13,6 +14,12 @@ public class BlockEntityContainer extends BlockEntity {
 
     public BlockEntityContainer( Block block ) {
         super( block );
+    }
+
+    @Override
+    public void setCompound( NbtMap compound ) {
+        super.setCompound( compound );
+        this.customName = compound.getString( "CustomName" );
     }
 
     @Override

@@ -26,6 +26,10 @@ public abstract class BlockEntity {
         return false;
     }
 
+    public void setCompound( NbtMap compound ) {
+        this.isMoveable = compound.getBoolean( "isMovable", true );
+    }
+
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = NbtMap.builder();
         BlockPosition position = this.block.getPosition();

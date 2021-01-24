@@ -72,6 +72,10 @@ public class SubChunk {
         this.blockEntitys.remove( this.getIndex( x, y, z ) );
     }
 
+    public Collection<BlockEntity> getBlockEntitys() {
+        return this.blockEntitys.values();
+    }
+
     private int getIndex( BlockPosition blockPosition ) {
         return this.getIndex( blockPosition.getX(), blockPosition.getY(), blockPosition.getZ() );
     }
