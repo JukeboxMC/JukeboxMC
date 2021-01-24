@@ -143,10 +143,7 @@ public class World extends LevelDB {
 
     public Block getBlock( Vector location, int layer ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        Block block = chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
-        block.setWorld( this );
-        block.setPosition( new BlockPosition( location.getFloorX(), location.getFloorY(), location.getFloorZ() ) );
-        return block;
+        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
     }
 
     public Block getBlockAt( int x, int y, int z ) {
