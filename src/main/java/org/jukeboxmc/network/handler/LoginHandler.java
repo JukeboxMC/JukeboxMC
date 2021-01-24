@@ -30,7 +30,6 @@ public class LoginHandler implements PacketHandler {
         player.setNameTag( player.getName() );
         player.setNameTagVisible( true );
         player.setNameTagAlwaysVisible( true );
-        player.getServer().getDefaultWorld().addPlayer( player );
 
         playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
         playerConnection.sendResourcePackInfo();

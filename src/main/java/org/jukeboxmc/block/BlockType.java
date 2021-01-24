@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -568,8 +569,8 @@ public enum BlockType {
 
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
 
+    @SneakyThrows
     public static void init() {
-        System.out.println( "Loading blocks..." );
         if ( INITIALIZED.get() ) {
             return;
         }
@@ -577,17 +578,25 @@ public enum BlockType {
 
         BlockPalette.init();
 
+        Executors.newSingleThreadExecutor().execute( () -> {
+            for ( BlockType value : BlockType.values() ) {
+                value.getBlock();
+            }
+        } );
+
         System.out.println( "Blocks loading successfully" );
     }
 
     private Class<? extends Block> blockClass;
+
+
+    public Class<? extends Block> getBlockClass() {
+        return this.blockClass;
+    }
 
     @SneakyThrows
     public <B extends Block> B getBlock() {
         return (B) this.blockClass.newInstance();
     }
 
-    public Class<? extends Block> getBlockClass() {
-        return this.blockClass;
-    }
 }

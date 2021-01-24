@@ -41,6 +41,7 @@ public class Palette {
         public byte getAmountOfPadding() {
             return amountOfPadding;
         }
+
     }
 
     private BinaryStream data;

@@ -29,7 +29,7 @@ public class Block {
 
     private int runtimeId;
     private String identifier;
-    private NbtMap blockStates;
+    protected NbtMap blockStates;
 
     protected World world;
     protected BlockPosition position;
@@ -209,5 +209,17 @@ public class Block {
 
     public boolean isSolid() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Block{" +
+                "runtimeId=" + runtimeId +
+                ", identifier='" + identifier + '\'' +
+                ", blockStates=" + blockStates.toString() +
+                ", world=" + world +
+                ", position=" + position +
+                ", layer=" + layer +
+                '}';
     }
 }

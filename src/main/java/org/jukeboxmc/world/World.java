@@ -1,9 +1,14 @@
 package org.jukeboxmc.world;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.PooledByteBufAllocator;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockDirt;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -11,34 +16,42 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.generator.WorldGenerator;
+import org.jukeboxmc.world.leveldb.LevelDB;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class World {
+public class World extends LevelDB {
 
     private String name;
 
-    private int currentTick;
+    private WorldGenerator worldGenerator;
+
+    private int worldTime;
 
     private Map<Long, Chunk> chunkMap = new HashMap<>();
-    private Map<Long, CompletableFuture<Chunk>> chunkFutures = new HashMap<>();
     private Map<Long, Player> players = new HashMap<>();
 
-    public World( String name ) {
+    public World( String name, WorldGenerator worldGenerator ) {
+        super( name );
         this.name = name;
-    }
+        this.worldGenerator = worldGenerator;
+        this.difficulty = Difficulty.NORMAL;
+        this.spawnLocation = new Vector( 0, 7, 0 );
 
-    public String getName() {
-        return this.name;
+        this.saveLevelDatFile();
     }
 
     public void update( long timestamp ) {
@@ -46,12 +59,22 @@ public class World {
             if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().update( timestamp );
 
-                if ( this.currentTick % ( 20 * 5 * 60 ) == 0 ) {
-                    player.getPlayerConnection().sendTime( this.currentTick );
+                this.worldTime++;
+                while ( this.worldTime >= 24000 ) {
+                    this.worldTime -= 24000;
                 }
+
+                player.getPlayerConnection().sendTime( this.worldTime );
             }
         }
-        this.currentTick++;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public WorldGenerator getWorldGenerator() {
+        return this.worldGenerator;
     }
 
     public void addPlayer( Player player ) {
@@ -66,27 +89,110 @@ public class World {
         return this.players.values();
     }
 
-    public void loadChunk( Chunk chunk ) {
-        //TODO Chunk net gefunden in leveldb = generieren
+    @SneakyThrows
+    private void saveLevelDatFile() {
+        File worldFolder = new File( "./worlds/" + this.name );
+        File levelDat = new File( worldFolder, "level.dat" );
+
+        NbtMapBuilder compound = null;
+        if ( levelDat.exists() ) {
+            FileUtils.copyFile( levelDat, new File( worldFolder, "level.dat_old" ) );
+
+            try ( FileInputStream stream = new FileInputStream( levelDat ) ) {
+                stream.skip( 8 );
+                byte[] data = new byte[stream.available()];
+                stream.read( data );
+                ByteBuf allocate = Utils.allocate( data );
+                NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
+                compound = ( (NbtMap) reader.readTag() ).toBuilder();
+            }
+             levelDat.delete();
+        } else {
+            compound = NbtMap.builder();
+        }
+
+        compound.putInt( "StorageVersion", 8 );
+
+        compound.putInt( "SpawnX", this.spawnLocation.getFloorX() );
+        compound.putInt( "SpawnY", this.spawnLocation.getFloorY() );
+        compound.putInt( "SpawnZ", this.spawnLocation.getFloorZ() );
+        compound.putInt( "Difficulty", this.difficulty.ordinal() );
+
+        compound.putString( "LevelName", this.name );
+        compound.putLong( "Time", this.worldTime );
+
+
+        for ( GameRules gameRules : GameRule.getAll() ) {
+            compound.put( gameRules.getName(), gameRules.toCompoundValue() );
+        }
+
+        try ( FileOutputStream stream = new FileOutputStream( levelDat ) ) {
+            stream.write( new byte[8] );
+
+            ByteBuf data = PooledByteBufAllocator.DEFAULT.heapBuffer();
+            NBTOutputStream writer = NbtUtils.createWriterLE( new ByteBufOutputStream( data ) );
+            writer.writeTag( compound.build() );
+            stream.write( data.array(), data.arrayOffset(), data.readableBytes() );
+            data.release();
+        }
     }
 
-    public Chunk getChunk( int chunkX, int chunkZ ) {
+    @SneakyThrows
+    public Chunk loadChunk( int chunkX, int chunkZ, boolean generate ) {
         Long chunkHash = Utils.toLong( chunkX, chunkZ );
         if ( !this.chunkMap.containsKey( chunkHash ) ) {
-            Chunk chunk = new Chunk( chunkX, chunkZ );
-            for ( int blockX = 0; blockX < 16; blockX++ ) {
-                for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
-                    chunk.setBlock( blockX, 0, blockZ, 0, BlockType.BEDROCK.getBlock() );
-                    chunk.setBlock( blockX, 1, blockZ, 0, BlockType.DIRT.getBlock() );
-                    chunk.setBlock( blockX, 2, blockZ, 0, BlockType.DIRT.getBlock() );
-                    chunk.setBlock( blockX, 3, blockZ, 0, BlockType.DIRT.<BlockDirt>getBlock().setDirtType( BlockDirt.DirtType.COARSE ) );
-                    chunk.setBlock( blockX, 4, blockZ, 0, BlockType.GRASS.getBlock() );
+            Chunk chunk = new Chunk( this, chunkX, chunkZ );
+
+            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
+            if ( version == null ) {
+                WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
+                worldGenerator.generate( chunk );
+            } else {
+                byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
+
+                chunk.chunkVersion = version[0];
+                chunk.setPopulated( finalized == null || finalized[0] == 2 );
+
+                for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
+                    byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
+
+                    if ( chunkData != null ) {
+                        chunk.getCheckAndCreateSubChunks( sectionY );
+                        chunk.loadSection( chunk.subChunks[sectionY], chunkData );
+                    }
+                }
+
+                byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x31 ) );
+                if ( blockEntitys != null ) {
+                    chunk.loadBlockEntitys( chunk, blockEntitys );
+                }
+
+                byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
+                if ( biomes != null ) {
+                    chunk.loadHeightAndBiomes( biomes );
                 }
             }
-            this.chunkMap.put( chunkHash, chunk ); //TODO this.loadChunk;
+            this.chunkMap.put( chunkHash, chunk );
             return chunk;
         }
         return this.chunkMap.get( chunkHash );
+    }
+
+    public Chunk getChunk( int chunkX, int chunkZ ) {
+        return this.loadChunk( chunkX, chunkZ, true );
+    }
+
+    public void save() {
+        for ( Chunk chunk : this.chunkMap.values() ) {
+            chunk.save( this.db );
+        }
+        this.saveLevelDatFile();
+        System.out.println( this.name + " was successfully saved" );
+    }
+
+    public void close() {
+        this.save();
+        this.db.close();
     }
 
     public Block getBlock( BlockPosition location ) {
@@ -99,10 +205,7 @@ public class World {
 
     public Block getBlock( Vector location, int layer ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        Block block = chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
-        block.setWorld( this );
-        block.setPosition( new BlockPosition( location.getFloorX(), location.getFloorY(), location.getFloorZ() ) );
-        return block;
+        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
     }
 
     public Block getBlockAt( int x, int y, int z ) {
@@ -160,6 +263,21 @@ public class World {
         return chunk.getBlockEntity( location.getX(), location.getY(), location.getZ() );
     }
 
+    public void removeBlockEntity( BlockPosition location ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+    }
+
+    public Biome getBiome( Vector location ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
+        return chunk.getBiome( location.getFloorX() & 15, location.getFloorZ() & 15 );
+    }
+
+    public Biome getBiome( BlockPosition location ) {
+        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
+        return chunk.getBiome( location.getX() & 15, location.getZ() & 15 );
+    }
+
     public void playSound( Player player, LevelSound levelSound ) {
         this.playSound( player, player.getLocation(), levelSound, -1, ":", false, false );
     }
@@ -172,11 +290,13 @@ public class World {
         this.playSound( null, position, levelSound, data, entityIdentifier, false, false );
     }
 
-    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby,
+                           boolean isGlobal ) {
         this.playSound( null, position, levelSound, data, entityIdentifier, isBaby, isGlobal );
     }
 
-    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier,
+                           boolean isBaby, boolean isGlobal ) {
         LevelSoundEventPacket levelSoundEventPacket = new LevelSoundEventPacket();
         levelSoundEventPacket.setLevelSound( levelSound );
         levelSoundEventPacket.setPosition( position );
@@ -202,8 +322,28 @@ public class World {
         }
     }
 
-    public int getCurrentTick() {
-        return this.currentTick;
+    public int getWorldTime() {
+        return this.worldTime;
+    }
+
+    public void setSpawnLocation( Vector spawnLocation ) {
+        this.spawnLocation = spawnLocation;
+    }
+
+    public Vector getSpawnLocation() {
+        return this.spawnLocation;
+    }
+
+    public void setDifficulty( Difficulty difficulty ) {
+        this.difficulty = difficulty;
+
+        SetDifficultyPacket setDifficultyPacket = new SetDifficultyPacket();
+        setDifficultyPacket.setDifficulty( difficulty );
+        this.sendWorldPacket( setDifficultyPacket );
+    }
+
+    public Difficulty getDifficulty() {
+        return this.difficulty;
     }
 
     public void sendLevelEvent( Vector position, int eventId, int runtimeId ) {
@@ -247,7 +387,8 @@ public class World {
         return targetEntity;
     }
 
-    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
+    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector
+            clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
         if ( clickedBlock instanceof BlockAir ) {
             return false;
@@ -266,7 +407,6 @@ public class World {
         if ( placedBlock instanceof BlockAir ) {
             return false;
         }
-        System.out.println( "V: " + placedBlock.isSolid() );
 
         if ( ( !interact ) || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced() ) {
@@ -330,6 +470,12 @@ public class World {
 
         if ( dropItem ) {
             //TODO Drop the item
+        }
+    }
+
+    public void sendWorldPacket( Packet packet ) {
+        for ( Player player : this.getPlayers() ) {
+            player.getPlayerConnection().sendPacket( packet );
         }
     }
 }

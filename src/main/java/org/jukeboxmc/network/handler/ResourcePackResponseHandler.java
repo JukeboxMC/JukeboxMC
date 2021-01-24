@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.player.Player;
@@ -22,18 +23,24 @@ public class ResourcePackResponseHandler implements PacketHandler {
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_HAVE_ALL_PACKS ) {
             player.getPlayerConnection().sendResourcePackStack();
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_COMPLETED ) {
+            Vector worldSpawn = player.getWorld().getSpawnLocation();
+
             StartGamePacket startGamePacket = new StartGamePacket();
             startGamePacket.setEntityId( player.getEntityId() );
             startGamePacket.setEntityRuntimeId( player.getEntityId() );
             startGamePacket.setGameMode( player.getGameMode() );
-            startGamePacket.setPosition( player.getLocation() );
+            startGamePacket.setPosition( worldSpawn );
+            startGamePacket.setYaw( player.getYaw() );
+            startGamePacket.setPitch( player.getPitch() );
             startGamePacket.setWorldName( player.getLocation().getWorld().getName() );
-            startGamePacket.setWorldSpawn( new Vector( 0, 7, 0 ) );
-            for ( GameRules<?> gameRules : GameRule.getAll() ) {
+            startGamePacket.setWorldSpawn( worldSpawn );
+            for ( GameRules gameRules : GameRule.getAll() ) {
                 startGamePacket.getGamerules().put( gameRules.getName(), gameRules );
             }
             player.getPlayerConnection().sendPacket( startGamePacket );
 
+            //Set player new position (Need from file soon)
+            player.setLocation( new Location( player.getWorld(), worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), player.getYaw(), player.getPitch() ) );
 
             player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
             player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );

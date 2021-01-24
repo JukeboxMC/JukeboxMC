@@ -25,6 +25,13 @@ public class BlockEntitySign extends BlockEntity {
     }
 
     @Override
+    public void setCompound( NbtMap compound ) {
+        super.setCompound( compound );
+        String text = compound.getString( "Text", "" );
+        this.lines.addAll( Arrays.asList( text.split( "\n" ) ) );
+    }
+
+    @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
         compound.putString( "id", "Sign" );
@@ -52,8 +59,6 @@ public class BlockEntitySign extends BlockEntity {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getPosition() );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
-        for ( Player player : this.block.getWorld().getPlayers() ) {
-            player.getPlayerConnection().sendPacket( blockEntityDataPacket );
-        }
+        this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
     }
 }

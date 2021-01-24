@@ -55,6 +55,7 @@ public interface Protocol {
     byte LEVEL_EVENT_PACKET = 0x19;
     byte BLOCK_PICK_REQUEST_PACKET = 0x22;
     byte BLOCK_ENTITY_DATA_PACKET = 0x38;
+    byte SET_DIFFICULTY_PACKET = 0x3c;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

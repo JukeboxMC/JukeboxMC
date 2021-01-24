@@ -30,4 +30,12 @@ public class GameRules<T> {
         return new GameRules<>( name, 3, value );
     }
 
+    public Object toCompoundValue() {
+        if ( this.value instanceof Boolean ) {
+            Boolean booleanValue = (Boolean) this.value;
+            return booleanValue ? (byte) 1 : (byte) 0;
+        }
+        return this.value;
+    }
+
 }

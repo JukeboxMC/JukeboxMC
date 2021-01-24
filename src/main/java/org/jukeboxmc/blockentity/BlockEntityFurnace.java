@@ -7,6 +7,7 @@ import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.player.Player;
 
@@ -27,6 +28,12 @@ public class BlockEntityFurnace extends BlockEntityContainer implements Inventor
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.furnaceInventory, blockPosition );
         return true;
+    }
+
+    @Override
+    public void setCompound( NbtMap compound ) {
+        super.setCompound( compound );
+
     }
 
     @Override

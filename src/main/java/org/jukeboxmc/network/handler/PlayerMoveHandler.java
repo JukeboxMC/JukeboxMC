@@ -5,6 +5,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 
 /**
@@ -38,13 +39,14 @@ public class PlayerMoveHandler implements PacketHandler {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append( " §bChunkX§7: §f" ).append( player.getChunkX() ).append( " §bChunkZ§7: §f" ).append( player.getChunkZ() );
 
-        if(player.getInventory().getItemInHand() != null) {
+        if ( player.getInventory().getItemInHand() != null ) {
             Item itemInHand = player.getInventory().getItemInHand();
             stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: §e" ).append( itemInHand.getMeta() );
             stringBuilder.append( "\n" ).append( "§7BlockFace§8: §e" ).append( player.getDirection().name() );
-            //stringBuilder.append( "\n" ).append( "§7SignDirection§8: §e" ).append( player.getSignDirection().name() );
+            stringBuilder.append( "\n" ).append( "§7Block§8: §e" ).append( player.getWorld().getBlock( player.getLocation().subtract( 0, 1, 0 ) ).getName() );
+            Biome biome = player.getWorld().getBiome( player.getLocation() );
+            stringBuilder.append( "\n" ).append( "§7Biome§8: §e" ).append( biome != null ? biome.getName() : "Plains (Null)" );
         }
-
         player.sendTip( stringBuilder.toString() );
     }
 }

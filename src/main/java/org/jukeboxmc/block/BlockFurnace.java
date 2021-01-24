@@ -26,7 +26,7 @@ public class BlockFurnace extends Block {
 
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.getBlockEntity();
+        BlockEntityFurnace blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
             return true;

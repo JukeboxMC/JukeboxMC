@@ -1,5 +1,8 @@
 package org.jukeboxmc.utils;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -29,5 +32,40 @@ public class Utils {
         y = y * ( 1.5F - ( xhalf * y * y ) );
         y = y * ( 1.5F - ( xhalf * y * y ) );
         return value * y;
+    }
+
+    public static ByteBuf allocate( byte[] data ) {
+        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
+        buf.writeBytes( data );
+        return buf;
+    }
+
+    public static byte[] getKey( int chunkX, int chunkZ, byte key ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key
+        };
+    }
+
+    public static byte[] getSubChunkKey( int chunkX, int chunkZ, byte key, byte subChunk ) {
+        return new byte[]{
+                (byte) ( chunkX & 0xff ),
+                (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                (byte) ( chunkZ & 0xff ),
+                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                key,
+                subChunk
+        };
     }
 }

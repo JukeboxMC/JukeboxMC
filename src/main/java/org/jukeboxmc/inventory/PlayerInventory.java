@@ -57,7 +57,7 @@ public class PlayerInventory extends ContainerInventory {
         super.setItem( slot, item );
 
         if ( slot == this.itemInHandSlot && this.holder instanceof Player ) {
-            this.updateItemInHand();
+            this.updateItemInHandForAll();
         }
     }
 
@@ -77,7 +77,7 @@ public class PlayerInventory extends ContainerInventory {
     public void setItemInHandSlot( int itemInHandSlot ) {
         if ( itemInHandSlot >= 0 && itemInHandSlot < 9 ) {
             this.itemInHandSlot = itemInHandSlot;
-            this.updateItemInHand();
+            this.updateItemInHandForAll();
         }
     }
 
@@ -91,7 +91,14 @@ public class PlayerInventory extends ContainerInventory {
         return mobEquipmentPacket;
     }
 
-    public void updateItemInHand() {
+    public void sendItemInHand() {
+        if ( this.holder instanceof Player ) {
+            Player player = (Player) this.holder;
+            player.getPlayerConnection().sendPacket( this.createMobEquipmentPacket( player ) );
+        }
+    }
+
+    public void updateItemInHandForAll() {
         if ( this.holder instanceof EntityHuman ) {
             EntityHuman entityHuman = (EntityHuman) this.holder;
 

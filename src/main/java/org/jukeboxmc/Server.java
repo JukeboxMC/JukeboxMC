@@ -2,6 +2,7 @@ package org.jukeboxmc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
@@ -14,7 +15,10 @@ import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.generator.FlatGenerator;
+import org.jukeboxmc.world.generator.WorldGenerator;
 
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,6 +43,7 @@ public class Server {
     private Listener listener;
 
     private World defaultWorld;
+    private WorldGenerator overWorldGenerator;
 
     private int viewDistance = 32;
 
@@ -46,6 +51,8 @@ public class Server {
 
     private Map<InetSocketAddress, Player> players = new HashMap<>();
     private Map<UUID, PlayerListPacket.Entry> playerListEntry = new HashMap<>();
+    private Map<String, World> worlds = new HashMap<>();
+    private Map<String, WorldGenerator> worldGenerator = new HashMap<>();
 
     public Server( InetSocketAddress address ) {
         Server.setInstance( this );
@@ -66,9 +73,9 @@ public class Server {
             if ( handler != null ) {
                 handler.handle( packet, player );
             } else {
-                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing");
+                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
             }
-         } );
+        } );
 
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {
             Connection connection = event.getConnection();
@@ -86,13 +93,22 @@ public class Server {
             }
         } );
 
+        this.registerGenerator( "Flat", FlatGenerator.class );
+        this.overWorldGenerator = this.worldGenerator.get( "flat" );
+
         //Load worlds
-        this.defaultWorld = this.getWorld( "world" );
+        if ( this.loadWorld( "world" ) ) {
+            this.defaultWorld = this.getWorld( "world" );
+        } else {
+            this.defaultWorld = this.createWorld( "world", this.overWorldGenerator );
+        }
 
         AtomicLong startTime = new AtomicLong();
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
             try {
-                this.defaultWorld.update( startTime.getAndIncrement() );
+                if ( this.defaultWorld != null ) {
+                    this.defaultWorld.update( startTime.getAndIncrement() );
+                }
             } catch ( Exception e ) {
                 e.printStackTrace();
             }
@@ -132,11 +148,20 @@ public class Server {
     }
 
     public World getWorld( String name ) {
-        return new World( name );
+        for ( World world : this.worlds.values() ) {
+            if ( world.getName().equalsIgnoreCase( name ) ) {
+                return world;
+            }
+        }
+        return null;
     }
 
     public World getDefaultWorld() {
         return this.defaultWorld;
+    }
+
+    public WorldGenerator getOverworldGenerator() {
+        return this.overWorldGenerator;
     }
 
     public void setViewDistance( int viewDistance ) {
@@ -167,8 +192,76 @@ public class Server {
         return this.playerListEntry;
     }
 
-    public void setPlayerListEntry( Map<UUID, PlayerListPacket.Entry> playerListEntry ) {
-        this.playerListEntry = playerListEntry;
+    public World createWorld( String worldName, WorldGenerator worldGenerator ) {
+        File worldFolder = new File( "./worlds/" + worldName );
+
+        if ( !worldFolder.exists() ) {
+            if ( !worldFolder.mkdirs() ) {
+                System.out.println( worldName + " could not be created because the folder could not be created" );
+            }
+        }
+
+        File regionFolder = new File( worldFolder, "db" );
+        if ( !regionFolder.mkdir() ) {
+            System.out.println( worldName + " could not be created because the \"db\" folder could not be created" );
+        }
+
+        return new World( worldName, worldGenerator );
+    }
+
+    public boolean loadWorld( String worldName ) {
+        return this.loadWorld( worldName, this.overWorldGenerator );
+    }
+
+    public boolean loadWorld( String worldName, WorldGenerator worldGenerator ) {
+        if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
+            World world = new World( worldName, worldGenerator );
+            if ( world.loadLevelFile() && world.open() ) {
+                this.worlds.put( worldName.toLowerCase(), world );
+                System.out.println( worldName + " was successfully loaded" );
+                return true;
+            } else {
+                System.out.println( "Failed to load world: " + worldName );
+            }
+        } else {
+            System.out.println( worldName + " was already loaded" );
+        }
+        return false;
+    }
+
+    public void unloadWorld( String worldName ) {
+        this.unloadWorld( worldName, player -> {
+            World world = this.getWorld( worldName );
+            if ( world != null ) {
+                if ( world == this.defaultWorld || this.defaultWorld == null ) {
+                    player.disconnect( "World was unloaded" );
+                } else {
+                    player.disconnect( "World was unloaded" );
+                    //TODO Teleport player to default world
+                }
+            } else {
+                System.out.println( "World " + worldName + " was not found" );
+            }
+        } );
+    }
+
+    public void unloadWorld( String worldName, Consumer<Player> consumer ) {
+        World world = this.getWorld( worldName );
+        if ( world != null ) {
+            for ( Player player : world.getPlayers() ) {
+                consumer.accept( player );
+            }
+            world.close();
+        } else {
+            System.out.println( "World " + worldName + " was not found" );
+        }
+    }
+
+    @SneakyThrows
+    public void registerGenerator( String name, Class<? extends WorldGenerator> clazz ) {
+        if ( !this.worldGenerator.containsKey( name ) ) {
+            this.worldGenerator.put( name.toLowerCase(), clazz.newInstance() );
+        }
     }
 
     public void broadcastMessage( String message ) {
@@ -183,5 +276,4 @@ public class Server {
             onlinePlayers.getPlayerConnection().sendPacket( packet );
         }
     }
-
 }
