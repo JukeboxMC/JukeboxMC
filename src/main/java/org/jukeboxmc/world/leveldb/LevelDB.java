@@ -2,17 +2,15 @@ package org.jukeboxmc.world.leveldb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
-import org.iq80.leveldb.impl.DbImpl;
 import org.iq80.leveldb.impl.Iq80DBFactory;
-import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Difficulty;
-import org.jukeboxmc.world.World;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,14 +25,12 @@ public class LevelDB {
     private File worldFolder;
     private File worldFile;
 
-    protected DbImpl db;
+    protected DB db;
 
-    private World world;
     protected Vector spawnLocation;
     protected Difficulty difficulty;
 
     public LevelDB( String worldName ) {
-        this.world = Server.getInstance().getDefaultWorld();
         this.worldFolder = new File( "./worlds/" + worldName );
         this.worldFile = new File( this.worldFolder, "level.dat" );
 
@@ -69,7 +65,7 @@ public class LevelDB {
 
     public boolean open() {
         try {
-            this.db = (DbImpl) Iq80DBFactory.factory.open( new File( this.worldFolder, "db/" ), new Options().createIfMissing( true ) );
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db/" ), new Options().createIfMissing( true ) );
             return true;
         } catch ( IOException e ) {
             e.printStackTrace();
