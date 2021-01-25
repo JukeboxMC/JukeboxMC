@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -8,8 +14,46 @@ import org.jukeboxmc.block.direction.Direction;
  */
 public class BlockFenceGate extends Block {
 
-    public BlockFenceGate() {
-        super( "minecraft:fence_gate" );
+    public BlockFenceGate( String identifier ) {
+        super( identifier );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection() );
+        world.setBlock( placePosition, this );
+    }
+
+    @Override
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        Direction playerDirection = player.getDirection();
+        Direction direction = this.getDirection();
+
+        if ( playerDirection == Direction.NORTH ) {
+            if ( direction == Direction.NORTH || direction == Direction.SOUTH ) {
+                this.setDirection( Direction.NORTH );
+            }
+        } else if ( playerDirection == Direction.EAST ) {
+            if ( direction == Direction.EAST || direction == Direction.WEST ) {
+                this.setDirection( Direction.EAST );
+            }
+        } else if ( playerDirection == Direction.SOUTH ) {
+            if ( direction == Direction.NORTH || direction == Direction.SOUTH ) {
+                this.setDirection( Direction.SOUTH );
+            }
+        } else if ( playerDirection == Direction.WEST ) {
+            if ( direction == Direction.EAST || direction == Direction.WEST ) {
+                this.setDirection( Direction.WEST );
+            }
+        }
+
+        if ( !this.isOpen() ) {
+            this.setOpen( true );
+        } else {
+            this.setOpen( false );
+        }
+
+        return true;
     }
 
     public void setInWall( boolean value ) {
@@ -22,6 +66,8 @@ public class BlockFenceGate extends Block {
 
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.world.sendBlockUpdate( this );
+        this.world.sendLevelEvent( this.position.toVector(), 1003, 0 );
     }
 
     public boolean isOpen() {

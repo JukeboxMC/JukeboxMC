@@ -106,7 +106,7 @@ public class World extends LevelDB {
                 NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 compound = ( (NbtMap) reader.readTag() ).toBuilder();
             }
-             levelDat.delete();
+            levelDat.delete();
         } else {
             compound = NbtMap.builder();
         }
@@ -472,6 +472,15 @@ public class World extends LevelDB {
         if ( dropItem ) {
             //TODO Drop the item
         }
+    }
+
+    public void sendBlockUpdate( Block block ) {
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setBlockId( block.getRuntimeId() );
+        updateBlockPacket.setPosition( block.getPosition() );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
+        updateBlockPacket.setLayer( block.getLayer() );
+        this.sendWorldPacket( updateBlockPacket );
     }
 
     public void sendWorldPacket( Packet packet ) {

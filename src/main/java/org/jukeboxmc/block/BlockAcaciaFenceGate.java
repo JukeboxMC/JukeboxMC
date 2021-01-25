@@ -1,61 +1,13 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.Direction;
-
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockAcaciaFenceGate extends Block {
+public class BlockAcaciaFenceGate extends BlockFenceGate {
 
     public BlockAcaciaFenceGate() {
         super( "minecraft:acacia_fence_gate" );
     }
 
-    public void setInWall( boolean value ) {
-        this.setState( "in_wall_bit", value ? (byte) 1 : (byte) 0 );
-    }
-
-    public boolean isInWall() {
-        return this.stateExists( "in_wall_bit" ) && this.getByteState( "in_wall_bit" ) == 1;
-    }
-
-    public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
-    }
-
-    public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
-    }
-
-    public void setDirection( Direction direction ) {
-        switch ( direction ) {
-            case SOUTH:
-                this.setState( "direction", 0 );
-                break;
-            case WEST:
-                this.setState( "direction", 1 );
-                break;
-            case NORTH:
-                this.setState( "direction", 2 );
-                break;
-            case EAST:
-                this.setState( "direction", 3 );
-                break;
-        }
-    }
-
-    public Direction getDirection() {
-        int value = this.stateExists( "direction" ) ? this.getIntState( "direction" ) : 0;
-        switch ( value ) {
-            case 0:
-                return Direction.SOUTH;
-            case 1:
-                return Direction.WEST;
-            case 2:
-                return Direction.NORTH;
-            default:
-                return Direction.EAST;
-        }
-    }
 }

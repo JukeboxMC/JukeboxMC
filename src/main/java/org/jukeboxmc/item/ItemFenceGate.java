@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockFenceGate;
+import org.jukeboxmc.block.BlockOakFenceGate;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemFenceGate extends Item {
     }
 
     @Override
-    public BlockFenceGate getBlock() {
-        return new BlockFenceGate();
+    public BlockOakFenceGate getBlock() {
+        return new BlockOakFenceGate();
     }
 }

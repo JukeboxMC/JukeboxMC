@@ -7,7 +7,7 @@ import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
-import org.jukeboxmc.item.ItemFurnace;
+import org.jukeboxmc.item.ItemFenceGate;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -415,8 +415,10 @@ public class PlayerConnection {
     }
 
     public void sendUpdateBlock( BlockPosition blockPosition ) {
-        Block block = this.player.getWorld().getBlock( blockPosition );
+        this.sendUpdateBlock( blockPosition, this.player.getWorld().getBlock( blockPosition ) );
+    }
 
+    public void sendUpdateBlock( BlockPosition blockPosition, Block block ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setPosition( blockPosition );
@@ -448,7 +450,7 @@ public class PlayerConnection {
 
         this.player.getChunk().addEntity( this.player );
 
-        this.player.getInventory().setItem( 0, new ItemFurnace() );
+        this.player.getInventory().setItem( 0, new ItemFenceGate() );
         this.player.setSpawned( true );
     }
 
