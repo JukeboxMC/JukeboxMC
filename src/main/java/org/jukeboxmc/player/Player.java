@@ -50,7 +50,7 @@ public class Player extends EntityHuman implements InventoryHolder {
     private Server server;
     private Attributes attributes;
     private AdventureSettings adventureSettings;
-    private GameMode gameMode = GameMode.CREATIVE;
+    private GameMode gameMode;
     private DeviceInfo deviceInfo;
     private InetSocketAddress address;
     private PlayerConnection playerConnection;
@@ -65,6 +65,7 @@ public class Player extends EntityHuman implements InventoryHolder {
         this.server = server;
         this.attributes = new Attributes();
         this.adventureSettings = new AdventureSettings( this );
+        this.gameMode = server.getDefaultGamemode();
         this.address = connection.getSender();
         this.playerConnection = new PlayerConnection( this, server, connection );
 

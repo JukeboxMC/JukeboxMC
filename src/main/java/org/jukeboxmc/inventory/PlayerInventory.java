@@ -8,6 +8,8 @@ import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.network.packet.MobEquipmentPacket;
 import org.jukeboxmc.player.Player;
 
+import java.util.Collection;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -105,7 +107,9 @@ public class PlayerInventory extends ContainerInventory {
             MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
 
             for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
-                onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
+                if(onlinePlayers != entityHuman){
+                    onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
+                }
             }
         }
     }

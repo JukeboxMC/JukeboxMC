@@ -15,6 +15,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.Getter;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.event.RakNetEventManager;
 import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
@@ -52,8 +53,8 @@ public class Listener {
     private Map<InetSocketAddress, Connection> connections = new ConcurrentHashMap<>();
     private Queue<DatagramPacket> packets = new ConcurrentLinkedQueue<>();
 
-    public Listener() {
-        this.serverInfo = new ServerInfo( this );
+    public Listener( Server server ) {
+        this.serverInfo = new ServerInfo( server, this );
         this.rakNetEventManager = new RakNetEventManager();
         this.serverId = UUID.randomUUID().getMostSignificantBits();
     }

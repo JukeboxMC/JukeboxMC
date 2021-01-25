@@ -3,6 +3,7 @@ package org.jukeboxmc.network.raknet.utils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.Listener;
 import org.jukeboxmc.player.GameMode;
@@ -19,15 +20,18 @@ import java.util.StringJoiner;
 @NoArgsConstructor
 public class ServerInfo {
 
-    private String motd = "§bJukeboxMC";
-    private String name = "Line 2";
+    private String motd;
+    private String name;
     private int onlinePlayers = 0;
-    private int maxPlayers = 20;
-    private GameMode gameMode = GameMode.CREATIVE;
+    private int maxPlayers;
+    private GameMode gameMode;
     private long serverId;
 
-    public ServerInfo( Listener listener ) {
+    public ServerInfo( Server server, Listener listener ) {
         this.serverId = listener.getServerId();
+        this.motd = server.getServerConfig().getString( "motd" );
+        this.maxPlayers = server.getServerConfig().getInt( "maxplayers" );
+        this.gameMode = GameMode.valueOf( server.getServerConfig().getString( "gamemode" ).toUpperCase() );
     }
 
     @Override

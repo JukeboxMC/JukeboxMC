@@ -16,6 +16,7 @@ import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.WorldGenerator;
 
@@ -61,7 +62,7 @@ public class Server {
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
-        this.listener = new Listener();
+        this.listener = new Listener( this );
         if ( !this.listener.listen( this.address ) ) {
             System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
             return;
@@ -96,6 +97,7 @@ public class Server {
         } );
 
         this.registerGenerator( "Flat", FlatGenerator.class );
+        this.registerGenerator( "Empty", EmptyGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
         String defaultWorldName = this.serverConfig.getString( "defaultworld" );
@@ -122,6 +124,9 @@ public class Server {
         this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json" );
         this.serverConfig.addDefault( "address", "127.0.0.1" );
         this.serverConfig.addDefault( "port", 19132 );
+        this.serverConfig.addDefault( "maxplayers", 20 );
+        this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
+        this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.save();

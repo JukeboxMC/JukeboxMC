@@ -1,9 +1,6 @@
 package org.jukeboxmc.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 
@@ -11,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -26,7 +24,17 @@ public class Config {
 
     @SneakyThrows
     public Config( File path, String fileName ) {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        GsonBuilder gson = new GsonBuilder();
+        gson.setPrettyPrinting();
+        gson.registerTypeAdapter( Double.class, (JsonSerializer<Double>) ( src, typeOfSrc, context ) -> {
+            if ( src == src.intValue() ) {
+                return new JsonPrimitive( src.intValue() );
+            } else if ( src == src.longValue() ) {
+                return new JsonPrimitive( src.longValue() );
+            }
+            return new JsonPrimitive( src );
+        } );
+        this.gson = gson.create();
         this.file = new File( path, fileName );
 
         if ( !this.file.getParentFile().exists() ) {
@@ -82,7 +90,7 @@ public class Config {
     }
 
     public int getInt( String key ) {
-        return ((Number) this.configMap.get( key )).intValue();
+        return ( (Number) this.configMap.get( key ) ).intValue();
     }
 
     public void addDefault( String key, long value ) {
@@ -97,7 +105,7 @@ public class Config {
     }
 
     public long getLong( String key ) {
-        return ((Number) this.configMap.get( key )).longValue();
+        return ( (Number) this.configMap.get( key ) ).longValue();
     }
 
     public void addDefault( String key, double value ) {
@@ -112,7 +120,7 @@ public class Config {
     }
 
     public double getDouble( String key ) {
-        return ((Number) this.configMap.get( key )).doubleValue();
+        return ( (Number) this.configMap.get( key ) ).doubleValue();
     }
 
     public void addDefault( String key, float value ) {
@@ -127,7 +135,7 @@ public class Config {
     }
 
     public float getFloat( String key ) {
-        return ((Number) this.configMap.get( key )).floatValue();
+        return ( (Number) this.configMap.get( key ) ).floatValue();
     }
 
     public void addDefault( String key, byte value ) {
@@ -142,7 +150,7 @@ public class Config {
     }
 
     public byte getByte( String key ) {
-        return ((Number) this.configMap.get( key )).byteValue();
+        return ( (Number) this.configMap.get( key ) ).byteValue();
     }
 
     public void addDefault( String key, short value ) {
@@ -157,7 +165,7 @@ public class Config {
     }
 
     public short getShort( String key ) {
-        return ((Number) this.configMap.get( key )).shortValue();
+        return ( (Number) this.configMap.get( key ) ).shortValue();
     }
 
     public void addDefault( String key, boolean value ) {
