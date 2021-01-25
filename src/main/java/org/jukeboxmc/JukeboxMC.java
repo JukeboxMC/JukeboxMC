@@ -28,7 +28,7 @@ public class JukeboxMC {
     }
 
     private JukeboxMC() {
-        System.out.println( "Server wird gestartet...." );
+        System.out.println( "Server is started...." );
         ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
 
         BlockType.init();
@@ -39,7 +39,7 @@ public class JukeboxMC {
         TerminalConsole terminalConsole = new TerminalConsole( this.server );
         terminalConsole.getConsoleThread().start();
 
-        System.out.println( "JukeboxMC läuft nun auf dem Port " + this.server.getAddress().getPort() );
+        System.out.println( "JukeboxMC is now running on the port " + this.server.getAddress().getPort() );
     }
 
     private void initDebug() {
