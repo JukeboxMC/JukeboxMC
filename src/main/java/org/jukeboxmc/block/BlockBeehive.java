@@ -21,7 +21,7 @@ public class BlockBeehive extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
     }

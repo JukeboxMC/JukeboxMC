@@ -9,7 +9,6 @@ import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.NbtMap;
 
-import java.net.InetSocketAddress;
 import java.util.List;
 
 /**

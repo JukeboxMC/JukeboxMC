@@ -1,15 +1,32 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.CrossDirection;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStoneStairs extends Block {
+public class BlockStairs extends Block {
 
-    public BlockStoneStairs() {
-        super( "minecraft:stone_stairs" );
+    public BlockStairs( String identifier ) {
+        super( identifier );
+    }
+
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setCrossDirection( player.getDirection().toCrossDirection() );
+
+        if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {
+            this.setUpsideDown( true );
+        }
+
+        world.setBlock( placePosition, this );
     }
 
     public void setUpsideDown( boolean value ) {

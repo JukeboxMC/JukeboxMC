@@ -430,7 +430,7 @@ public class World extends LevelDB {
                 }
             }
 
-            placedBlock.placeBlock( player, this, placePosition, itemInHand, blockFace );
+            placedBlock.placeBlock( player, this, placePosition, clickedPosition, itemInHand, blockFace );
             this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
         }
 

@@ -114,7 +114,7 @@ public class Block {
     }
 
     //Other
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
         } else {

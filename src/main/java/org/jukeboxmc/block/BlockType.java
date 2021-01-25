@@ -82,7 +82,7 @@ public enum BlockType {
     OAK_DOOR( BlockOakDoor.class ),
     LADDER( BlockLadder.class ),
     RAIL( BlockRail.class ),
-    STONE_STAIRS( BlockStoneStairs.class ),
+    STONE_STAIRS( BlockCobblestoneStairs.class ),
     WALL_SIGN( BlockWallSign.class ),
     LEVER( BlockLever.class ),
     STONE_PRESSURE_PLATE( BlockStonePressurePlate.class ),

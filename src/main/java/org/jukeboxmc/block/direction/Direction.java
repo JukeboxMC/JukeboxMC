@@ -38,4 +38,19 @@ public enum Direction {
                 return null;
         }
     }
+
+    public CrossDirection toCrossDirection() {
+        switch ( this ) {
+            case SOUTH:
+                return CrossDirection.SOUTH;
+            case WEST:
+                return CrossDirection.WEST;
+            case NORTH:
+                return CrossDirection.NORTH;
+            case EAST:
+                return CrossDirection.EAST;
+            default:
+                return null;
+        }
+    }
 }

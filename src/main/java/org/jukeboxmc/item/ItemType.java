@@ -89,7 +89,7 @@ public enum ItemType {
     OAK_DOOR( ItemOakDoor.class ),
     LADDER( ItemLadder.class ),
     RAIL( ItemRail.class ),
-    STONE_STAIRS( ItemStoneStairs.class ),
+    STONE_STAIRS( ItemCobblestoneStairs.class ),
     WALL_SIGN( ItemWallSign.class ),
     LEVER( ItemLever.class ),
     STONE_PRESSURE_PLATE( ItemStonePressurePlate.class ),

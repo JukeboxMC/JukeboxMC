@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
@@ -18,7 +19,7 @@ public class BlockQuartzBlock extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setChiselType( ChiselType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
