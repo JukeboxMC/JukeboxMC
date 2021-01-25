@@ -35,7 +35,11 @@ hs_err_pid*
 *.ipr
 *.iws
 dependency-reduced-pom.xml
+
+
+### JukeboxMC Files ###################
 worlds
+properties.json
 
 #IntelliJ
 /out/

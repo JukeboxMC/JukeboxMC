@@ -23,9 +23,6 @@ public class JukeboxMC {
     private static JukeboxMC instance;
     @Getter
     private Server server;
-    @Getter
-    private InetSocketAddress address;
-
     public static void main( String[] args ) {
         JukeboxMC.setInstance( new JukeboxMC() );
     }
@@ -37,13 +34,12 @@ public class JukeboxMC {
         BlockType.init();
         ItemType.init();
 
-        this.address = new InetSocketAddress( "0.0.0.0", 19132 );
-        this.server = new Server( this.address );
+        this.server = new Server();
 
         TerminalConsole terminalConsole = new TerminalConsole( this.server );
         terminalConsole.getConsoleThread().start();
 
-        System.out.println( "JukeboxMC läuft nun auf dem Port " + this.address.getPort() );
+        System.out.println( "JukeboxMC läuft nun auf dem Port " + this.server.getAddress().getPort() );
     }
 
     private void initDebug() {

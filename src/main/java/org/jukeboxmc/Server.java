@@ -3,6 +3,7 @@ package org.jukeboxmc;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jukeboxmc.config.Config;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
@@ -20,10 +21,7 @@ import org.jukeboxmc.world.generator.WorldGenerator;
 
 import java.io.File;
 import java.net.InetSocketAddress;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -42,6 +40,8 @@ public class Server {
     private InetSocketAddress address;
     private Listener listener;
 
+    private Config serverConfig;
+
     private World defaultWorld;
     private WorldGenerator overWorldGenerator;
 
@@ -54,13 +54,15 @@ public class Server {
     private Map<String, World> worlds = new HashMap<>();
     private Map<String, WorldGenerator> worldGenerator = new HashMap<>();
 
-    public Server( InetSocketAddress address ) {
+    public Server() {
         Server.setInstance( this );
 
-        this.address = address;
+        this.initServerConfig();
+
+        this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
         this.listener = new Listener();
-        if ( !this.listener.listen( address ) ) {
+        if ( !this.listener.listen( this.address ) ) {
             System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
             return;
         }
@@ -94,13 +96,13 @@ public class Server {
         } );
 
         this.registerGenerator( "Flat", FlatGenerator.class );
-        this.overWorldGenerator = this.worldGenerator.get( "flat" );
+        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
-        //Load worlds
-        if ( this.loadWorld( "world" ) ) {
-            this.defaultWorld = this.getWorld( "world" );
+        String defaultWorldName = this.serverConfig.getString( "defaultworld" );
+        if ( this.loadWorld( defaultWorldName ) ) {
+            this.defaultWorld = this.getWorld( defaultWorldName );
         } else {
-            this.defaultWorld = this.createWorld( "world", this.overWorldGenerator );
+            this.defaultWorld = this.createWorld( defaultWorldName, this.overWorldGenerator );
         }
 
         AtomicLong startTime = new AtomicLong();
@@ -113,6 +115,24 @@ public class Server {
                 e.printStackTrace();
             }
         }, 0, 50, TimeUnit.MILLISECONDS );
+    }
+
+
+    private void initServerConfig() {
+        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json" );
+        this.serverConfig.addDefault( "address", "127.0.0.1" );
+        this.serverConfig.addDefault( "port", 19132 );
+        this.serverConfig.addDefault( "defaultworld", "world" );
+        this.serverConfig.addDefault( "generator", "flat" );
+        this.serverConfig.save();
+    }
+
+    public InetSocketAddress getAddress() {
+        return this.address;
+    }
+
+    public Config getServerConfig() {
+        return this.serverConfig;
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {

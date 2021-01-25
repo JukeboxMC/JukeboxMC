@@ -190,6 +190,7 @@ public class World extends LevelDB {
         System.out.println( this.name + " was successfully saved" );
     }
 
+    @SneakyThrows
     public void close() {
         this.save();
         this.db.close();
