@@ -17,7 +17,6 @@ public class BlockBeehive extends Block {
 
     public BlockBeehive() {
         super( "minecraft:beehive" );
-        this.setHoneyLevel( 0 );
     }
 
     @Override
@@ -28,7 +27,7 @@ public class BlockBeehive extends Block {
 
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        BlockEntityBeehive blockEntityBeehive = (BlockEntityBeehive) this.getBlockEntity();
+        BlockEntityBeehive blockEntityBeehive = this.getBlockEntity();
         if ( blockEntityBeehive != null ) {
             blockEntityBeehive.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
             return true;

@@ -15,6 +15,7 @@ import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.PlayerConnection;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +98,7 @@ public class Block {
             }
         }
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return (B) this;
     }
 
@@ -211,6 +213,10 @@ public class Block {
     public void setLocation( Location location ) {
         this.world = location.getWorld();
         this.location = location;
+    }
+
+    public Chunk getChunk() {
+        return this.world.getChunk( this.location.getFloorX() >> 4, this.location.getFloorZ() >> 4 );
     }
 
     public Location getLocation() {
