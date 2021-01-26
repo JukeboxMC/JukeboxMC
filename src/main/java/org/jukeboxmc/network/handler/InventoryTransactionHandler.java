@@ -67,13 +67,6 @@ public class InventoryTransactionHandler implements PacketHandler {
 
                             Block replacedBlock = player.getWorld().getBlock( blockPosition ).getSide( blockFace );
                             replacedBlock.sendBlockUpdate( player.getPlayerConnection() );
-
-             /*               for ( BlockFace value : BlockFace.values() ) {
-                                Block replacedSide = replacedBlock.getSide( value );
-                                replacedSide.sendBlockUpdate( player.getPlayerConnection() );
-                            }
-
-              */
                             return;
                         }
                         break;

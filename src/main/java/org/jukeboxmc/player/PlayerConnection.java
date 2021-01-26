@@ -1,7 +1,6 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;

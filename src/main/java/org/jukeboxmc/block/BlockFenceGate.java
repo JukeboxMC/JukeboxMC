@@ -6,6 +6,7 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.LevelEvent;
 import org.jukeboxmc.world.World;
 
 /**
@@ -21,6 +22,7 @@ public class BlockFenceGate extends Block {
     @Override
     public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection() );
+        this.setOpen( false );
         world.setBlock( placePosition, this );
     }
 
@@ -53,7 +55,7 @@ public class BlockFenceGate extends Block {
             this.setOpen( false );
         }
         this.world.sendBlockUpdate( this );
-        this.world.sendLevelEvent( this.location, 1003, 0 );
+        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
     }
 

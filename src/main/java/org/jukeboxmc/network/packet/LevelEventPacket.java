@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
+import org.jukeboxmc.world.LevelEvent;
 
 /**
  * @author LucGamesYT
@@ -13,7 +14,7 @@ import org.jukeboxmc.network.Protocol;
 @EqualsAndHashCode(callSuper = true)
 public class LevelEventPacket extends Packet {
 
-    private int eventId;
+    private LevelEvent levelEvent;
     private Vector position;
     private int data;
 
@@ -25,7 +26,7 @@ public class LevelEventPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeSignedVarInt( this.eventId );
+        this.writeSignedVarInt( this.levelEvent.getId() );
         this.writeLFloat( this.position.getX() );
         this.writeLFloat( this.position.getY() );
         this.writeLFloat( this.position.getZ() );

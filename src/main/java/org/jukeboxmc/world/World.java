@@ -291,13 +291,11 @@ public class World extends LevelDB {
         this.playSound( null, position, levelSound, data, entityIdentifier, false, false );
     }
 
-    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby,
-                           boolean isGlobal ) {
+    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby,boolean isGlobal ) {
         this.playSound( null, position, levelSound, data, entityIdentifier, isBaby, isGlobal );
     }
 
-    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier,
-                           boolean isBaby, boolean isGlobal ) {
+    public void playSound( Player player, Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
         LevelSoundEventPacket levelSoundEventPacket = new LevelSoundEventPacket();
         levelSoundEventPacket.setLevelSound( levelSound );
         levelSoundEventPacket.setPosition( position );
@@ -347,14 +345,14 @@ public class World extends LevelDB {
         return this.difficulty;
     }
 
-    public void sendLevelEvent( Vector position, int eventId, int runtimeId ) {
-        this.sendLevelEvent( null, position, eventId, runtimeId );
+    public void sendLevelEvent( Vector position, LevelEvent levelEvent, int runtimeId ) {
+        this.sendLevelEvent( null, position, levelEvent, runtimeId );
     }
 
-    public void sendLevelEvent( Player player, Vector position, int eventId, int runtimeId ) {
+    public void sendLevelEvent( Player player, Vector position, LevelEvent levelEvent, int runtimeId ) {
         LevelEventPacket levelEventPacket = new LevelEventPacket();
         levelEventPacket.setPosition( position );
-        levelEventPacket.setEventId( eventId );
+        levelEventPacket.setLevelEvent( levelEvent );
         levelEventPacket.setData( runtimeId );
 
         if ( player != null ) {
@@ -470,13 +468,13 @@ public class World extends LevelDB {
         }
 
         this.playSound( breakPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( breakPosition.toVector(), 2001, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( breakPosition.toVector(), LevelEvent.PARTICLE_DESTROY, breakBlock.getRuntimeId() );
     }
 
     public void sendBlockUpdate( Block block ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
-        updateBlockPacket.setPosition( block.getBlockPosition());
+        updateBlockPacket.setPosition( block.getBlockPosition() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
         updateBlockPacket.setLayer( block.getLayer() );
         this.sendWorldPacket( updateBlockPacket );

@@ -20,6 +20,7 @@ public class BlockFence extends Block {
     @Override
     public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
+
         world.setBlock( placePosition, this );
     }
 
