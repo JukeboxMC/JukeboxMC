@@ -53,6 +53,14 @@ public class BlockPosition {
         this.z = z;
     }
 
+    public BlockPosition add( int x, int y, int z ) {
+        return new BlockPosition( this.x + x, this.y + y, this.z + z );
+    }
+
+    public BlockPosition substract( int x, int y, int z ) {
+        return new BlockPosition( this.x - x, this.y - y, this.z - z );
+    }
+
     public Vector toVector() {
         return new Vector( this.x, this.y, this.z );
     }

@@ -188,6 +188,10 @@ public class Server {
         return this.defaultWorld;
     }
 
+    public Collection<World> getWorlds() {
+        return this.worlds.values();
+    }
+
     public WorldGenerator getOverworldGenerator() {
         return this.overWorldGenerator;
     }

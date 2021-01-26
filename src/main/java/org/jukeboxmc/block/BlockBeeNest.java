@@ -42,7 +42,7 @@ public class BlockBeeNest extends Block {
 
     @Override
     public BlockEntityBeehive getBlockEntity() {
-        BlockEntityBeehive blockEntityBeehive = (BlockEntityBeehive) this.world.getBlockEntity( this.position );
+        BlockEntityBeehive blockEntityBeehive = (BlockEntityBeehive) this.world.getBlockEntity( this.getBlockPosition() );
         if ( blockEntityBeehive == null ) {
             return new BlockEntityBeehive( this );
         }

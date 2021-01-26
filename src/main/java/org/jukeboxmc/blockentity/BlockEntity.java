@@ -32,7 +32,7 @@ public abstract class BlockEntity {
 
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = NbtMap.builder();
-        BlockPosition position = this.block.getPosition();
+        BlockPosition position = this.block.getBlockPosition();
         compound.put( "x", position.getX() );
         compound.put( "y", position.getY() );
         compound.put( "z", position.getZ() );

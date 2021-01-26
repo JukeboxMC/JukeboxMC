@@ -11,6 +11,7 @@ import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.nbt.NBTOutputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
@@ -63,8 +64,7 @@ public class Chunk extends LevelDBChunk {
         int subY = y >> 4;
         this.getCheckAndCreateSubChunks( subY );
         Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
-        block.setWorld( this.world );
-        block.setPosition( new BlockPosition( x, y, z ) );
+        block.setLocation( new Location( this.world, new BlockPosition( x, y, z ) ) );
         block.setLayer( layer );
         return block;
     }

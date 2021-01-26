@@ -7,10 +7,13 @@ import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.player.PlayerConnection;
 import org.jukeboxmc.world.World;
 
 import java.util.ArrayList;
@@ -27,12 +30,12 @@ public class Block {
 
     private static final Map<String, Map<NbtMap, Integer>> STATES = new HashMap<>();
 
-    private int runtimeId;
-    private String identifier;
+    protected int runtimeId;
+    protected String identifier;
     protected NbtMap blockStates;
 
     protected World world;
-    protected BlockPosition position;
+    protected Location location;
     protected int layer = 0;
 
     public Block( String identifier ) {
@@ -126,6 +129,21 @@ public class Block {
         return false;
     }
 
+    public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
+        this.world.setBlock( breakPosition, new BlockAir() );
+        System.out.println( "Break 1" );
+        return true;
+    }
+
+    public void sendBlockUpdate( PlayerConnection playerConnection ) {
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setBlockId( this.runtimeId );
+        updateBlockPacket.setPosition( this.location.toBlockPosition() );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setLayer( this.layer );
+        playerConnection.sendPacket( updateBlockPacket );
+    }
+
     public boolean canBeReplaced() {
         return false;
     }
@@ -148,6 +166,32 @@ public class Block {
         return BlockType.AIR;
     }
 
+    public Block getSide( BlockFace blockFace ) {
+        switch ( blockFace ) {
+            case DOWN:
+                return this.getRelative( BlockPosition.DOWN );
+            case UP:
+                return this.getRelative( BlockPosition.UP );
+            case SOUTH:
+                return this.getRelative( BlockPosition.SOUTH );
+            case NORTH:
+                return this.getRelative( BlockPosition.NORTH );
+            case EAST:
+                return this.getRelative( BlockPosition.EAST );
+            case WEST:
+                return this.getRelative( BlockPosition.WEST );
+            default:
+                return null;
+        }
+    }
+
+    private Block getRelative( BlockPosition position ) {
+        int x = this.location.getFloorX() + position.getX();
+        int y = this.location.getFloorY() + position.getY();
+        int z = this.location.getFloorZ() + position.getZ();
+        return this.world.getBlockAt( x, y, z );
+    }
+
     public int getRuntimeId() {
         return this.runtimeId;
     }
@@ -164,8 +208,17 @@ public class Block {
         return this.world;
     }
 
-    public BlockPosition getPosition() {
-        return this.position;
+    public void setLocation( Location location ) {
+        this.world = location.getWorld();
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public BlockPosition getBlockPosition() {
+        return new BlockPosition( this.location );
     }
 
     public int getLayer() {
@@ -174,10 +227,6 @@ public class Block {
 
     public void setLayer( int layer ) {
         this.layer = layer;
-    }
-
-    public void setPosition( BlockPosition position ) {
-        this.position = position;
     }
 
     public void setWorld( World world ) {
@@ -190,12 +239,12 @@ public class Block {
 
     public AxisAlignedBB getBoundingBox() {
         return new AxisAlignedBB(
-                this.position.getX(),
-                this.position.getY(),
-                this.position.getZ(),
-                this.position.getX() + 1,
-                this.position.getY() + 1,
-                this.position.getZ() + 1
+                this.location.getX(),
+                this.location.getY(),
+                this.location.getZ(),
+                this.location.getX() + 1,
+                this.location.getY() + 1,
+                this.location.getZ() + 1
         );
     }
 
@@ -218,7 +267,7 @@ public class Block {
                 ", identifier='" + identifier + '\'' +
                 ", blockStates=" + blockStates.toString() +
                 ", world=" + world +
-                ", position=" + position +
+                ", position=" + location +
                 ", layer=" + layer +
                 '}';
     }

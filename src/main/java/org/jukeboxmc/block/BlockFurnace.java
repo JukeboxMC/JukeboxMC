@@ -41,7 +41,7 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntityFurnace getBlockEntity() {
-        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.position );
+        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.getBlockPosition() );
         if ( blockEntity == null ) {
             return new BlockEntityFurnace( this );
         }

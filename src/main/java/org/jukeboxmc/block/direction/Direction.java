@@ -24,6 +24,21 @@ public enum Direction {
         }
     }
 
+    public Direction getLeftDirection() {
+        switch ( this ) {
+            case NORTH:
+                return WEST;
+            case EAST:
+                return NORTH;
+            case SOUTH:
+                return EAST;
+            case WEST:
+                return SOUTH;
+            default:
+                return null;
+        }
+    }
+
     public BlockFace toBlockFace() {
         switch ( this ) {
             case SOUTH:
@@ -52,5 +67,28 @@ public enum Direction {
             default:
                 return null;
         }
+    }
+
+    public static Direction fromAngle( float value ) {
+        value -= 90;
+        value %= 360;
+
+        if ( value < 0 ) {
+            value += 360.0;
+        }
+
+        if ( ( 0 <= value && value < 45 ) || ( 315 <= value && value < 360 ) ) {
+            return Direction.NORTH;
+        }
+
+        if ( 45 <= value && value < 135 ) {
+            return Direction.EAST;
+        }
+
+        if ( 135 <= value && value < 225 ) {
+            return Direction.SOUTH;
+        }
+
+        return Direction.WEST;
     }
 }

@@ -23,7 +23,7 @@ public class BlockSign extends Block {
 
     @Override
     public BlockEntitySign getBlockEntity() {
-        BlockEntitySign blockEntitySign = (BlockEntitySign) this.world.getBlockEntity( this.position );
+        BlockEntitySign blockEntitySign = (BlockEntitySign) this.world.getBlockEntity( this.getBlockPosition() );
         if ( blockEntitySign == null ) {
             return new BlockEntitySign( this );
         }

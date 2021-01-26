@@ -15,6 +15,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
@@ -225,8 +226,7 @@ public class World extends LevelDB {
         Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
         chunk.setBlock( location.getX(), location.getY(), location.getZ(), layer, block );
 
-        block.setWorld( this );
-        block.setPosition( location );
+        block.setLocation( new Location( this, location ) );
         block.setLayer( layer );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
@@ -244,7 +244,7 @@ public class World extends LevelDB {
             chunk.setBlockEntity( location.getX(), location.getY(), location.getZ(), blockEntity );
 
             BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-            blockEntityDataPacket.setBlockPosition( block.getPosition() );
+            blockEntityDataPacket.setBlockPosition( block.getBlockPosition() );
             blockEntityDataPacket.setNbt( blockEntity.toCompound().build() );
             for ( Player player : this.getPlayers() ) {
                 player.getPlayerConnection().sendPacket( blockEntityDataPacket );
@@ -397,8 +397,7 @@ public class World extends LevelDB {
         Item itemInHand = player.getInventory().getItemInHand();
         Block replacedBlock = this.getBlock( placePosition );
         Block placedBlock = itemInHand.getBlock();
-        placedBlock.setWorld( placedBlock.getWorld() );
-        placedBlock.setPosition( placePosition );
+        placedBlock.setLocation( new Location( this, placePosition ) );
 
         boolean interact = false;
         if ( !player.isSneaking() ) {
@@ -432,6 +431,7 @@ public class World extends LevelDB {
 
             placedBlock.placeBlock( player, this, placePosition, clickedPosition, itemInHand, blockFace );
             this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
+            return true;
         }
 
         return interact;
@@ -462,22 +462,21 @@ public class World extends LevelDB {
         return new Vector( x, y, z ).toBlockPosition();
     }
 
-    public void breakBlock( BlockPosition blockPosition, boolean dropItem ) {
-        Block breakBlock = this.getBlock( blockPosition );
+    public void breakBlock( BlockPosition breakPosition, boolean isCreative ) {
+        Block breakBlock = this.getBlock( breakPosition );
 
-        this.playSound( blockPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( blockPosition.toVector(), 2001, breakBlock.getRuntimeId() );
-        this.setBlock( blockPosition, new BlockAir() );
-
-        if ( dropItem ) {
-            //TODO Drop the item
+        if ( breakBlock.onBlockBreak( breakPosition, isCreative ) ) {
+            //Drop Item
         }
+
+        this.playSound( breakPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( breakPosition.toVector(), 2001, breakBlock.getRuntimeId() );
     }
 
     public void sendBlockUpdate( Block block ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
-        updateBlockPacket.setPosition( block.getPosition() );
+        updateBlockPacket.setPosition( block.getBlockPosition());
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
         updateBlockPacket.setLayer( block.getLayer() );
         this.sendWorldPacket( updateBlockPacket );

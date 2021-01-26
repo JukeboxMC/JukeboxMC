@@ -43,7 +43,7 @@ public class BlockBeehive extends Block {
 
     @Override
     public BlockEntityBeehive getBlockEntity() {
-        BlockEntityBeehive blockEntity = (BlockEntityBeehive) this.world.getBlockEntity( this.position );
+        BlockEntityBeehive blockEntity = (BlockEntityBeehive) this.world.getBlockEntity( this.getBlockPosition() );
         if ( blockEntity == null ) {
             return new BlockEntityBeehive( this );
         }

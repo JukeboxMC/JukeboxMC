@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
@@ -61,8 +62,18 @@ public class InventoryTransactionHandler implements PacketHandler {
                         player.setAction( false );
                         BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
                         if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
-                            player.getPlayerConnection().sendUpdateBlock( blockPosition );
-                            player.getPlayerConnection().sendUpdateBlock( placePosition );
+                            Block blockClicked = player.getWorld().getBlock( blockPosition );
+                            blockClicked.sendBlockUpdate( player.getPlayerConnection() );
+
+                            Block replacedBlock = player.getWorld().getBlock( blockPosition ).getSide( blockFace );
+                            replacedBlock.sendBlockUpdate( player.getPlayerConnection() );
+
+             /*               for ( BlockFace value : BlockFace.values() ) {
+                                Block replacedSide = replacedBlock.getSide( value );
+                                replacedSide.sendBlockUpdate( player.getPlayerConnection() );
+                            }
+
+              */
                             return;
                         }
                         break;
@@ -71,7 +82,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {
-                            player.getWorld().breakBlock( blockPosition, false );
+                            player.getWorld().breakBlock( blockPosition, true );
                             return;
                         }
                         break;

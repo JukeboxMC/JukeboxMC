@@ -52,7 +52,8 @@ public class BlockFenceGate extends Block {
         } else {
             this.setOpen( false );
         }
-
+        this.world.sendBlockUpdate( this );
+        this.world.sendLevelEvent( this.location, 1003, 0 );
         return true;
     }
 
@@ -66,8 +67,6 @@ public class BlockFenceGate extends Block {
 
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
-        this.world.sendBlockUpdate( this );
-        this.world.sendLevelEvent( this.position.toVector(), 1003, 0 );
     }
 
     public boolean isOpen() {

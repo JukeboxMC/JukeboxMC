@@ -48,7 +48,7 @@ public class BlockEntitySign extends BlockEntity {
         this.lines = Arrays.asList( text.split( "\n" ) );
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getPosition() );
+        blockEntityDataPacket.setBlockPosition( this.block.getBlockPosition() );
         blockEntityDataPacket.setNbt( nbt );
         for ( Player player : this.block.getWorld().getPlayers() ) {
             player.getPlayerConnection().sendPacket( blockEntityDataPacket );
@@ -57,7 +57,7 @@ public class BlockEntitySign extends BlockEntity {
 
     public void updateBlockEntitySign() {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getPosition() );
+        blockEntityDataPacket.setBlockPosition( this.block.getBlockPosition() );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
         this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
     }

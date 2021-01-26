@@ -407,19 +407,6 @@ public class PlayerConnection {
         this.sendPacket( removeEntityPacket );
     }
 
-    public void sendUpdateBlock( BlockPosition blockPosition ) {
-        this.sendUpdateBlock( blockPosition, this.player.getWorld().getBlock( blockPosition ) );
-    }
-
-    public void sendUpdateBlock( BlockPosition blockPosition, Block block ) {
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setBlockId( block.getRuntimeId() );
-        updateBlockPacket.setPosition( blockPosition );
-        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setLayer( block.getLayer() );
-        this.sendPacket( updateBlockPacket );
-    }
-
     public void joinGame() {
         World world = this.server.getDefaultWorld();
         world.addPlayer( this.player );
