@@ -43,7 +43,6 @@ public class PlayerConnection {
 
     private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
     private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
-    private Set<InventoryTransactionPacket> spamCheck = new HashSet<>();
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -54,8 +53,6 @@ public class PlayerConnection {
     }
 
     public void update( long timestamp ) {
-        this.spamCheck.clear();
-
         if ( !this.sendQueue.isEmpty() ) {
             this.batchPackets( new ArrayList<>( this.sendQueue ), false );
             this.sendQueue.clear();
@@ -72,10 +69,6 @@ public class PlayerConnection {
             }
         }
         this.needNewChunks( false );
-    }
-
-    public Set<InventoryTransactionPacket> getSpamCheck() {
-        return this.spamCheck;
     }
 
     public void sendChunk( Chunk chunk ) {
@@ -438,7 +431,6 @@ public class PlayerConnection {
         this.sendAttributes( this.player.getAttributes().getAttributes() );
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.sendMetadata();
-
 
         this.player.getInventory().addViewer( this.player );
         this.player.getCursorInventory().addViewer( this.player );
