@@ -291,7 +291,7 @@ public class World extends LevelDB {
         this.playSound( null, position, levelSound, data, entityIdentifier, false, false );
     }
 
-    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby,boolean isGlobal ) {
+    public void playSound( Vector position, LevelSound levelSound, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
         this.playSound( null, position, levelSound, data, entityIdentifier, isBaby, isGlobal );
     }
 

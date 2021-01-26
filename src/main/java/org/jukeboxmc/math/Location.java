@@ -1,6 +1,7 @@
 package org.jukeboxmc.math;
 
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 
 /**
  * @author LucGamesYT
@@ -50,6 +51,10 @@ public class Location extends Vector {
 
     public void setPitch( float pitch ) {
         this.pitch = pitch;
+    }
+
+    public Chunk getChunk() {
+        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4);
     }
 
     @Override

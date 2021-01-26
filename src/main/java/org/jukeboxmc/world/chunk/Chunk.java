@@ -12,6 +12,7 @@ import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTOutputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
@@ -52,6 +53,18 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.subChunks = new SubChunk[16];
+    }
+
+    public void setBlock( Vector location, int layer, int runtimeId ) {
+        int subY = location.getFloorY() >> 4;
+        this.getCheckAndCreateSubChunks( subY );
+        this.subChunks[subY].setBlock( location.getFloorX() & 15, location.getFloorY() & 15, location.getFloorZ() & 15, layer, runtimeId );
+    }
+
+    public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
+        int subY = y >> 4;
+        this.getCheckAndCreateSubChunks( subY );
+        this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
@@ -139,7 +152,6 @@ public class Chunk extends LevelDBChunk {
                 }
             }
         }
-
     }
 
     public void save( DB db ) {
@@ -178,7 +190,6 @@ public class Chunk extends LevelDBChunk {
         if ( blockEntityBuffer.readableBytes() > 0 ) {
             byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x31 );
             writeBatch.put( blockEntityKey, blockEntityBuffer.getArray() );
-            System.out.println( "YES" );
         }
 
         byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2d );
