@@ -1,21 +1,33 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemMossyStoneBrickSlab;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockMossyStoneBrickSlab extends Block {
+public class BlockMossyStoneBrickSlab extends BlockSlab {
 
     public BlockMossyStoneBrickSlab() {
         super( "minecraft:stone_slab4" );
     }
 
-    public void setTopSlot( boolean value ) {
-        this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
+    @Override
+    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
+        this.setStoneSlabType( StoneSlabType.values()[itemIndHand.getMeta()] );
+        world.setBlock( placePosition, this );
     }
 
-    public boolean isTopSlot() {
-        return this.stateExists( "top_slot_bit" ) && this.getByteState( "top_slot_bit" ) == 1;
+    @Override
+    public Item toItem() {
+        return new ItemMossyStoneBrickSlab().setMeta( this.getStoneSlabType().ordinal() );
     }
 
     public void setStoneSlabType( StoneSlabType stoneSlabType ) {

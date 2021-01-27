@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockDoubleStoneSlab;
+import org.jukeboxmc.block.BlockStoneSlab;
 
 /**
  * @author LucGamesYT
@@ -13,8 +13,8 @@ public class ItemStoneSlab extends Item {
     }
 
     @Override
-    public BlockDoubleStoneSlab getBlock() {
-        return new BlockDoubleStoneSlab();
+    public BlockStoneSlab getBlock() {
+        return new BlockStoneSlab();
     }
 
     public void setSlabType( SlabType slabType ) {

@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWoodenSlab extends Block {
+public class BlockWoodenSlab extends BlockSlab {
 
     public BlockWoodenSlab() {
         super( "minecraft:wooden_slab" );
@@ -19,6 +19,7 @@ public class BlockWoodenSlab extends Block {
 
     @Override
     public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
         this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
@@ -26,14 +27,6 @@ public class BlockWoodenSlab extends Block {
     @Override
     public Item toItem() {
         return super.toItem().setMeta( this.getWoodType().ordinal() );
-    }
-
-    public void setTopSlot( boolean value ) {
-        this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
-    }
-
-    public boolean isTopSlot() {
-        return this.stateExists( "top_slot_bit" ) && this.getByteState( "top_slot_bit" ) == 1;
     }
 
     public void setWoodType( WoodType woodType ) {

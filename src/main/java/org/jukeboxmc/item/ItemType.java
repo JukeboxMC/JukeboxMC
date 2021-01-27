@@ -974,14 +974,14 @@ public enum ItemType {
         return CACHED_ITEMS;
     }
 
-    public static Item getItemFormNetworkId( int networkId ) {
-        for ( ItemType item : values() ) {
-            if ( item.getItem().getRuntimeId() == networkId ) {
-                return item.getItem();
+    public static Item getItemFormNetwork( int networkId, int meta ) {
+        for ( ItemType itemType : values() ) {
+            Item item = itemType.getItem();
+            if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
+                return item;
             }
         }
-        //return ItemType.AIR.getItem();
-        return null;
+        return ItemType.AIR.getItem();
     }
 
     public static List<Map<String, Object>> getCreativeItems() {

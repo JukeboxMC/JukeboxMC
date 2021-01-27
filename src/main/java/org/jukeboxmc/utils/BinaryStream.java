@@ -481,9 +481,8 @@ public class BinaryStream {
             this.readString();
         }
 
-        Item item = ItemType.getItemFormNetworkId( networkId );
+        Item item = ItemType.getItemFormNetwork( networkId, data );
         item.setAmount( amount );
-        item.setMeta( data );
         item.setNBT( nbt );
 
         if ( item.getRuntimeId() == 355 ) {
