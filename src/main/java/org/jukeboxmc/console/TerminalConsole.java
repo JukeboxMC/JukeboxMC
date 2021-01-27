@@ -24,6 +24,8 @@ public class TerminalConsole extends SimpleTerminalConsole {
         if ( command.startsWith( "stop" ) ) {
             this.server.unloadWorld( "world" );
             this.server.shutdown();
+        } else if ( command.startsWith( "save" ) ) {
+            this.server.getWorld( "world" ).save();
         }
     }
 

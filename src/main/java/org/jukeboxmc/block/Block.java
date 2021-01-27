@@ -152,7 +152,7 @@ public class Block {
 
     public Item toItem() {
         for ( Item item : ItemType.getItems() ) {
-            if ( item.getIdentifier().contains( this.identifier ) ) {
+            if ( item.getIdentifier().equals( this.identifier ) ) {
                 return item;
             }
         }
