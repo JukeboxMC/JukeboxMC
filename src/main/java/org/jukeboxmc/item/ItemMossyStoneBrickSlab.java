@@ -6,9 +6,9 @@ import org.jukeboxmc.block.BlockDoubleMossyStoneBrickSlab;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemDoubleMossyStoneBrickSlab extends Item {
+public class ItemMossyStoneBrickSlab extends Item {
 
-    public ItemDoubleMossyStoneBrickSlab() {
+    public ItemMossyStoneBrickSlab() {
         super( "minecraft:double_stone_slab4", -166 );
     }
 

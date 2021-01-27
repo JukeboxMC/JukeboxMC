@@ -6,9 +6,9 @@ import org.jukeboxmc.block.BlockDoubleStoneSlab;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemDoubleStoneSlab extends Item {
+public class ItemStoneSlab extends Item {
 
-    public ItemDoubleStoneSlab() {
+    public ItemStoneSlab() {
         super( "minecraft:double_stone_slab", 44 );
     }
 

@@ -6,9 +6,9 @@ import org.jukeboxmc.block.BlockDoubleRedSandstoneSlab;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemDoubleRedSandstoneSlab extends Item {
+public class ItemRedSandstoneSlab extends Item {
 
-    public ItemDoubleRedSandstoneSlab() {
+    public ItemRedSandstoneSlab() {
         super( "minecraft:double_stone_slab2", 182 );
     }
 

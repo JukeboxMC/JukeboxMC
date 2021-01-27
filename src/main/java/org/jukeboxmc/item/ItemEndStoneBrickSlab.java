@@ -6,9 +6,9 @@ import org.jukeboxmc.block.BlockDoubleEndStoneBrickSlab;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemDoubleEndStoneBrickSlab extends Item {
+public class ItemEndStoneBrickSlab extends Item {
 
-    public ItemDoubleEndStoneBrickSlab() {
+    public ItemEndStoneBrickSlab() {
         super( "minecraft:double_stone_slab3", -162 );
     }
 
