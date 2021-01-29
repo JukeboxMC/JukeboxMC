@@ -49,6 +49,7 @@ public class BlockTrapdoor extends Block {
             this.setOpen( false );
         }
         this.world.sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
     }

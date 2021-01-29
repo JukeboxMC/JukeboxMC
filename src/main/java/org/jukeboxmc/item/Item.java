@@ -30,6 +30,10 @@ public abstract class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
+    public Item(String identifier, int runtimeId, int meta ) {
+        this(identifier, runtimeId, meta, null );
+    }
+
     public Item(String identifier, int runtimeId ) {
         this(identifier, runtimeId, 0, null );
     }

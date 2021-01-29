@@ -482,6 +482,7 @@ public class BinaryStream {
         }
 
         Item item = ItemType.getItemFormNetwork( networkId, data );
+        item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );
 

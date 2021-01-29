@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author LucGamesYT
@@ -42,8 +43,8 @@ public class World extends LevelDB {
 
     private int worldTime;
 
-    private Map<Long, Chunk> chunkMap = new HashMap<>();
-    private Map<Long, Player> players = new HashMap<>();
+    private Map<Long, Chunk> chunkMap = new ConcurrentHashMap<>();
+    private Map<Long, Player> players = new ConcurrentHashMap<>();
 
     public World( String name, WorldGenerator worldGenerator ) {
         super( name );
@@ -386,8 +387,7 @@ public class World extends LevelDB {
         return targetEntity;
     }
 
-    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector
-            clickedPosition, BlockFace blockFace ) {
+    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
         if ( clickedBlock instanceof BlockAir ) {
             return false;
@@ -402,7 +402,7 @@ public class World extends LevelDB {
             interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
         }
 
-        if ( placedBlock instanceof BlockAir ) {
+        if ( placedBlock instanceof BlockAir && !interact ) {
             return false;
         }
 
@@ -475,7 +475,7 @@ public class World extends LevelDB {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setPosition( block.getBlockPosition() );
-        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( block.getLayer() );
         this.sendWorldPacket( updateBlockPacket );
     }

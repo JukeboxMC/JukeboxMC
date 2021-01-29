@@ -55,8 +55,13 @@ public class BlockFenceGate extends Block {
             this.setOpen( false );
         }
         this.world.sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
+    }
+
+    private int getIndex( int x, int y, int z ) {
+        return ( x << 8 ) + ( z << 4 ) + y;
     }
 
     public void setInWall( boolean value ) {
@@ -69,6 +74,7 @@ public class BlockFenceGate extends Block {
 
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public boolean isOpen() {

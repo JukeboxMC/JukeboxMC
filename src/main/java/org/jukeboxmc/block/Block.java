@@ -98,7 +98,6 @@ public class Block {
             }
         }
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return (B) this;
     }
 
@@ -133,7 +132,6 @@ public class Block {
 
     public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
         this.world.setBlock( breakPosition, new BlockAir() );
-        System.out.println( "Break 1" );
         return true;
     }
 

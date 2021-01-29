@@ -979,6 +979,8 @@ public enum ItemType {
             Item item = itemType.getItem();
             if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
                 return item;
+            } else if (item.getRuntimeId() == networkId ) {
+                return item;
             }
         }
         return ItemType.AIR.getItem();
