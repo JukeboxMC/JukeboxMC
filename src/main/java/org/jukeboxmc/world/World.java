@@ -28,7 +28,10 @@ import org.jukeboxmc.world.leveldb.LevelDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -56,10 +59,10 @@ public class World extends LevelDB {
         this.saveLevelDatFile();
     }
 
-    public void update( long timestamp ) {
+    public void update( long currentTick ) {
         for ( Player player : this.players.values() ) {
             if ( player != null && player.isSpawned() ) {
-                player.getPlayerConnection().update( timestamp );
+                player.getPlayerConnection().update( currentTick );
 
                 this.worldTime++;
                 while ( this.worldTime >= 24000 ) {
@@ -96,7 +99,7 @@ public class World extends LevelDB {
         File worldFolder = new File( "./worlds/" + this.name );
         File levelDat = new File( worldFolder, "level.dat" );
 
-        NbtMapBuilder compound = null;
+        NbtMapBuilder compound;
         if ( levelDat.exists() ) {
             FileUtils.copyFile( levelDat, new File( worldFolder, "level.dat_old" ) );
 
@@ -206,9 +209,9 @@ public class World extends LevelDB {
         return this.getBlock( location, 0 );
     }
 
-    public Block getBlock( Vector location, int layer ) {
-        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
-        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
+    public Block getBlock( Vector vector, int layer ) {
+        Chunk chunk = this.getChunk( vector.getFloorX() >> 4, vector.getFloorZ() >> 4 );
+        return chunk.getBlock( vector.getFloorX(), vector.getFloorY(), vector.getFloorZ(), layer );
     }
 
     public Block getBlockAt( int x, int y, int z ) {
@@ -235,9 +238,7 @@ public class World extends LevelDB {
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( layer );
-        for ( Player player : this.getPlayers() ) {
-            player.getPlayerConnection().sendPacket( updateBlockPacket );
-        }
+        this.sendWorldPacket( updateBlockPacket );
 
         if ( block.hasBlockEntity() ) {
             BlockEntity blockEntity = block.getBlockEntity();
@@ -247,9 +248,7 @@ public class World extends LevelDB {
             BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
             blockEntityDataPacket.setBlockPosition( block.getBlockPosition() );
             blockEntityDataPacket.setNbt( blockEntity.toCompound().build() );
-            for ( Player player : this.getPlayers() ) {
-                player.getPlayerConnection().sendPacket( blockEntityDataPacket );
-            }
+            this.sendWorldPacket( blockEntityDataPacket );
         } else {
             chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
         }
@@ -475,7 +474,7 @@ public class World extends LevelDB {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setPosition( block.getBlockPosition() );
-        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
         updateBlockPacket.setLayer( block.getLayer() );
         this.sendWorldPacket( updateBlockPacket );
     }

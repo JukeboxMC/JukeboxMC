@@ -60,11 +60,8 @@ public class BlockDoor extends Block {
 
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        if ( !this.isOpen() ) {
-            this.setOpen( true );
-        } else {
-            this.setOpen( false );
-        }
+        this.setOpen( !this.isOpen() );
+
         this.world.sendBlockUpdate( this );
         this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );

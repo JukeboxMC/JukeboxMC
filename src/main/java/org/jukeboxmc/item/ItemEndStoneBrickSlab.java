@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockDoubleEndStoneBrickSlab;
 import org.jukeboxmc.block.BlockEndStoneBrickSlab;
 
 /**

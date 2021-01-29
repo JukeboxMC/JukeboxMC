@@ -5,7 +5,6 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.blockentity.BlockEntity;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
@@ -56,7 +55,8 @@ public class SubChunk {
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        return BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer][this.getIndex( x, y, z )] );
+        int runtimeId = this.blocks[layer][this.getIndex( x, y, z )];
+        return (Block) BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
@@ -73,10 +73,6 @@ public class SubChunk {
 
     public Collection<BlockEntity> getBlockEntitys() {
         return this.blockEntitys.values();
-    }
-
-    private int getIndex( BlockPosition blockPosition ) {
-        return this.getIndex( blockPosition.getX(), blockPosition.getY(), blockPosition.getZ() );
     }
 
     private int getIndex( int x, int y, int z ) {
@@ -116,7 +112,6 @@ public class SubChunk {
 
             float numberOfBits = Utils.log2( indexList.size() ) + 1;
 
-            // Prepare palette
             int amountOfBlocks = (int) Math.floor( 32 / numberOfBits );
             Palette palette = new Palette( binaryStream, amountOfBlocks, false );
 

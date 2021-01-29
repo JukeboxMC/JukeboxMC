@@ -9,6 +9,8 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelEvent;
 import org.jukeboxmc.world.World;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -48,12 +50,8 @@ public class BlockFenceGate extends Block {
                 this.setDirection( Direction.WEST );
             }
         }
+        this.setOpen( !this.isOpen() );
 
-        if ( !this.isOpen() ) {
-            this.setOpen( true );
-        } else {
-            this.setOpen( false );
-        }
         this.world.sendBlockUpdate( this );
         this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
@@ -74,7 +72,6 @@ public class BlockFenceGate extends Block {
 
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public boolean isOpen() {

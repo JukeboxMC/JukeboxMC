@@ -14,7 +14,15 @@ public class Utils {
     }
 
     public static long toLong( int x, int z ) {
-        return ( (long) x << 32 ) + z - Integer.MIN_VALUE;
+        return ( ( (long) x ) << 32 ) | ( z & 0xffffffffL );
+    }
+
+    public static int fromHashX( long hash ) {
+        return (int) ( hash >> 32 );
+    }
+
+    public static int fromHashZ( long hash ) {
+        return (int) hash;
     }
 
     public static int log2( int value ) {

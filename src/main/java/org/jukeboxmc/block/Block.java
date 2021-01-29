@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import lombok.SneakyThrows;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @version 1.0
  */
 
-public class Block {
+public class Block implements Cloneable {
 
     private static final Map<String, Map<NbtMap, Integer>> STATES = new HashMap<>();
 
@@ -275,4 +276,15 @@ public class Block {
                 ", layer=" + layer +
                 '}';
     }
+
+    @Override
+    @SneakyThrows
+    public Object clone() {
+        Block block = (Block) super.clone();
+        block.identifier = this.identifier;
+        block.runtimeId = this.runtimeId;
+        block.blockStates = this.blockStates.toBuilder().build();
+        return block;
+    }
+
 }

@@ -75,12 +75,7 @@ public class Server {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
             Player player = this.players.get( connection.getSender() );
-            PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
-            if ( handler != null ) {
-                handler.handle( packet, player );
-            } else {
-                System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
-            }
+            player.getPlayerConnection().handlePacketSync( packet );
         } );
 
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {
@@ -113,8 +108,12 @@ public class Server {
         AtomicLong startTime = new AtomicLong();
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
             try {
+                long currentTick = startTime.getAndIncrement();
                 if ( this.defaultWorld != null ) {
-                    this.defaultWorld.update( startTime.getAndIncrement() );
+                    this.defaultWorld.update( currentTick );
+                }
+                for ( Player player : this.players.values() ) {
+                    player.getPlayerConnection().updateNetwork( currentTick );
                 }
             } catch ( Exception e ) {
                 e.printStackTrace();
