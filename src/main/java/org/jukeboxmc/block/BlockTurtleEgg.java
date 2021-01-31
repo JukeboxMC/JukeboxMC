@@ -18,7 +18,7 @@ public class BlockTurtleEgg extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setCrackedState( CrackedState.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }

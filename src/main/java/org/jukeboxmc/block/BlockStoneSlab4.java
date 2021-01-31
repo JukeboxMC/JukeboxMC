@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.StoneSlab4Type;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab4;
 import org.jukeboxmc.math.BlockPosition;
@@ -19,9 +20,50 @@ public class BlockStoneSlab4 extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setStoneSlabType( StoneSlabType.values()[itemIndHand.getMeta()] );
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        this.setStoneSlabType( StoneSlab4Type.values()[itemIndHand.getMeta()] );
+
+        Block targetBlock = world.getBlock( blockPosition );
+        Block block = world.getBlock( placePosition );
+
+        if ( blockFace == BlockFace.DOWN ) {
+            if ( targetBlock instanceof BlockStoneSlab4 ) {
+                BlockStoneSlab4 blockSlab = (BlockStoneSlab4) targetBlock;
+                if ( blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab4().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab4 ) {
+                BlockStoneSlab4 blockSlab = (BlockStoneSlab4) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab4().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else if ( blockFace == BlockFace.UP ) {
+            if ( targetBlock instanceof BlockStoneSlab4 ) {
+                BlockStoneSlab4 blockSlab = (BlockStoneSlab4) targetBlock;
+                if ( !blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab4().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab4 ) {
+                BlockStoneSlab4 blockSlab = (BlockStoneSlab4) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab4().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else {
+            if ( block instanceof BlockStoneSlab4 ) {
+                BlockStoneSlab4 blockSlab = (BlockStoneSlab4) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab4().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        }
         world.setBlock( placePosition, this );
     }
 
@@ -30,20 +72,12 @@ public class BlockStoneSlab4 extends BlockSlab {
         return new ItemStoneSlab4().setMeta( this.getStoneSlabType().ordinal() );
     }
 
-    public void setStoneSlabType( StoneSlabType stoneSlabType ) {
+    public void setStoneSlabType( StoneSlab4Type stoneSlabType ) {
         this.setState( "stone_slab_type_4", stoneSlabType.name().toLowerCase() );
     }
 
-    public StoneSlabType getStoneSlabType() {
-        return this.stateExists( "stone_slab_type_4" ) ? StoneSlabType.valueOf( this.getStringState( "stone_slab_type_4" ).toUpperCase() ) : StoneSlabType.STONE;
-    }
-
-    public enum StoneSlabType {
-        MOSSY_STONE_BRICK,
-        SMOOTH_QUARTZ,
-        STONE,
-        CUT_SANDSTONE,
-        CUT_RED_SANDSTONE
+    public StoneSlab4Type getStoneSlabType() {
+        return this.stateExists( "stone_slab_type_4" ) ? StoneSlab4Type.valueOf( this.getStringState( "stone_slab_type_4" ).toUpperCase() ) : StoneSlab4Type.STONE;
     }
 
 }

@@ -119,7 +119,7 @@ public class Block implements Cloneable {
     }
 
     //Other
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
         } else {
@@ -136,13 +136,13 @@ public class Block implements Cloneable {
         return true;
     }
 
-    public void sendBlockUpdate( PlayerConnection playerConnection ) {
+    public void sendBlockUpdate( Player player ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( this.runtimeId );
         updateBlockPacket.setPosition( this.location.toBlockPosition() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( this.layer );
-        playerConnection.sendPacket( updateBlockPacket );
+        player.getPlayerConnection().sendPacket( updateBlockPacket );
     }
 
     public boolean canBeReplaced() {

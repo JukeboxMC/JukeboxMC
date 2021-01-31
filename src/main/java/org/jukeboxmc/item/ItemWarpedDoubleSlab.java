@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockWarpedDoubleSlab;
+import org.jukeboxmc.block.BlockDoubleWarpedSlab;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemWarpedDoubleSlab extends Item {
     }
 
     @Override
-    public BlockWarpedDoubleSlab getBlock() {
-        return new BlockWarpedDoubleSlab();
+    public BlockDoubleWarpedSlab getBlock() {
+        return new BlockDoubleWarpedSlab();
     }
 }

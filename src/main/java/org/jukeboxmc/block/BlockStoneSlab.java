@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.StoneSlabType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.math.BlockPosition;
@@ -19,11 +20,53 @@ public class BlockStoneSlab extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         this.setStoneSlabType( StoneSlabType.values()[itemIndHand.getMeta()] );
+
+        Block targetBlock = world.getBlock( blockPosition );
+        Block block = world.getBlock( placePosition );
+
+        if ( blockFace == BlockFace.DOWN ) {
+            if ( targetBlock instanceof BlockStoneSlab ) {
+                BlockStoneSlab blockSlab = (BlockStoneSlab) targetBlock;
+                if ( blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab ) {
+                BlockStoneSlab blockSlab = (BlockStoneSlab) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else if ( blockFace == BlockFace.UP ) {
+            if ( targetBlock instanceof BlockStoneSlab ) {
+                BlockStoneSlab blockSlab = (BlockStoneSlab) targetBlock;
+                if ( !blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab ) {
+                BlockStoneSlab blockSlab = (BlockStoneSlab) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else {
+            if ( block instanceof BlockStoneSlab ) {
+                BlockStoneSlab blockSlab = (BlockStoneSlab) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( placePosition, new BlockDoubleStoneSlab().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        }
         world.setBlock( placePosition, this );
     }
+
 
     @Override
     public Item toItem() {
@@ -38,14 +81,4 @@ public class BlockStoneSlab extends BlockSlab {
         return this.stateExists( "stone_slab_type" ) ? StoneSlabType.valueOf( this.getStringState( "stone_slab_type" ).toUpperCase() ) : StoneSlabType.SMOOTH_STONE;
     }
 
-    public enum StoneSlabType {
-        SMOOTH_STONE,
-        SANDSTONE,
-        WOOD,
-        COBBLESTONE,
-        BRICK,
-        STONE_BRICK,
-        QUARTZ,
-        NETHER_BRICK
-    }
 }

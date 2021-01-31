@@ -32,10 +32,8 @@ public enum Direction {
                 return NORTH;
             case SOUTH:
                 return EAST;
-            case WEST:
-                return SOUTH;
             default:
-                return null;
+                return SOUTH;
         }
     }
 
@@ -47,10 +45,8 @@ public enum Direction {
                 return BlockFace.WEST;
             case NORTH:
                 return BlockFace.NORTH;
-            case EAST:
-                return BlockFace.EAST;
             default:
-                return null;
+                return BlockFace.EAST;
         }
     }
 
@@ -62,10 +58,8 @@ public enum Direction {
                 return CrossDirection.WEST;
             case NORTH:
                 return CrossDirection.NORTH;
-            case EAST:
-                return CrossDirection.EAST;
             default:
-                return null;
+                return CrossDirection.EAST;
         }
     }
 

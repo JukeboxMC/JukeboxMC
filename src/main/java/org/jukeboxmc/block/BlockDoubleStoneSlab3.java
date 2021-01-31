@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.StoneSlab3Type;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -11,30 +12,25 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDoubleWoodenSlab extends BlockSlab {
+public class BlockDoubleStoneSlab3 extends BlockSlab {
 
-    public BlockDoubleWoodenSlab() {
-        super( "minecraft:double_wooden_slab" );
+    public BlockDoubleStoneSlab3() {
+        super( "minecraft:double_stone_slab3" );
     }
 
     @Override
     public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
+        this.setStoneSlabType( StoneSlab3Type.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
 
-    @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getWoodType().ordinal() );
-    }
-
-    public Block setWoodType( WoodType woodType ) {
-        this.setState( "wood_type", woodType.name().toLowerCase() );
+    public Block setStoneSlabType( StoneSlab3Type stoneSlabType ) {
+        this.setState( "stone_slab_type_3", stoneSlabType.name().toLowerCase() );
         return this;
     }
 
-    public WoodType getWoodType() {
-        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ).toUpperCase() ) : WoodType.OAK;
+    public StoneSlab3Type getStoneSlabType() {
+        return this.stateExists( "stone_slab_type_3" ) ? StoneSlab3Type.valueOf( this.getStringState( "stone_slab_type_3" ).toUpperCase() ) : StoneSlab3Type.END_STONE_BRICK;
     }
 }

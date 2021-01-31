@@ -21,7 +21,7 @@ public class BlockDoor extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( Direction.fromAngle( player.getYaw() ) );
 
         BlockDoor blockAbove = new BlockDoor( this.identifier );

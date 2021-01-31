@@ -7,6 +7,7 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.ItemFenceGate;
+import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -431,7 +432,7 @@ public class PlayerConnection {
 
         this.player.getChunk().addEntity( this.player );
 
-        this.player.getInventory().setItem( 0, new ItemFenceGate() );
+        this.player.getInventory().setItem( 0, new ItemStoneSlab() );
         this.player.setSpawned( true );
     }
 

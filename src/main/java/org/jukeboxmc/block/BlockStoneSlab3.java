@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.StoneSlab2Type;
+import org.jukeboxmc.block.type.StoneSlab3Type;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab3;
 import org.jukeboxmc.math.BlockPosition;
@@ -19,9 +21,50 @@ public class BlockStoneSlab3 extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setStoneSlabType( StoneSlabType.values()[itemIndHand.getMeta()] );
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        this.setStoneSlabType( StoneSlab3Type.values()[itemIndHand.getMeta()] );
+
+        Block targetBlock = world.getBlock( blockPosition );
+        Block block = world.getBlock( placePosition );
+
+        if ( blockFace == BlockFace.DOWN ) {
+            if ( targetBlock instanceof BlockStoneSlab3 ) {
+                BlockStoneSlab3 blockSlab = (BlockStoneSlab3) targetBlock;
+                if ( blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab3 ) {
+                BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else if ( blockFace == BlockFace.UP ) {
+            if ( targetBlock instanceof BlockStoneSlab3 ) {
+                BlockStoneSlab3 blockSlab = (BlockStoneSlab3) targetBlock;
+                if ( !blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            } else if ( block instanceof BlockStoneSlab3 ) {
+                BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        } else {
+            if ( block instanceof BlockStoneSlab3 ) {
+                BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
+                if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
+                    world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
+                    return;
+                }
+            }
+        }
         world.setBlock( placePosition, this );
     }
 
@@ -30,22 +73,11 @@ public class BlockStoneSlab3 extends BlockSlab {
         return new ItemStoneSlab3().setMeta( this.getStoneSlabType().ordinal() );
     }
 
-    public void setStoneSlabType( StoneSlabType stoneSlabType ) {
+    public void setStoneSlabType( StoneSlab3Type stoneSlabType ) {
         this.setState( "stone_slab_type_3", stoneSlabType.name().toLowerCase() );
     }
 
-    public StoneSlabType getStoneSlabType() {
-        return this.stateExists( "stone_slab_type_3" ) ? StoneSlabType.valueOf( this.getStringState( "stone_slab_type_3" ).toUpperCase() ) : StoneSlabType.END_STONE_BRICK;
-    }
-
-    public enum StoneSlabType {
-        END_STONE_BRICK,
-        SMOOTH_RED_SANDSTONE,
-        POLISHED_ANDESITE,
-        ANDESITE,
-        DIORITE,
-        POLISHED_DIORITE,
-        GRANITE,
-        POLISHED_GRANITE
+    public StoneSlab3Type getStoneSlabType() {
+        return this.stateExists( "stone_slab_type_3" ) ? StoneSlab3Type.valueOf( this.getStringState( "stone_slab_type_3" ).toUpperCase() ) : StoneSlab3Type.END_STONE_BRICK;
     }
 }

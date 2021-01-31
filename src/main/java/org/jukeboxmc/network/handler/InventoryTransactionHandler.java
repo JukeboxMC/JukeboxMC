@@ -33,11 +33,14 @@ public class InventoryTransactionHandler implements PacketHandler {
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
 
-                            Inventory inventory = player.getInventory( WindowId.getWindowIdById( transaction.getWindowId() ) );
-                            if ( inventory != null ) {
-                                inventory.setItem( slot, targetItem );
-                            } else {
-                                System.out.println( "Inventory with id " + transaction.getWindowId() + " is missing" );
+                            WindowId windowIdById = WindowId.getWindowIdById( transaction.getWindowId() );
+                            if ( windowIdById != null ) {
+                                Inventory inventory = player.getInventory( windowIdById );
+                                if ( inventory != null ) {
+                                    inventory.setItem( slot, targetItem );
+                                } else {
+                                    System.out.println( "Inventory with id " + transaction.getWindowId() + " is missing" );
+                                }
                             }
                             break;
                         case 2:
@@ -63,15 +66,15 @@ public class InventoryTransactionHandler implements PacketHandler {
                         BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
                         if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
                             Block blockClicked = player.getWorld().getBlock( blockPosition );
-                            blockClicked.sendBlockUpdate( player.getPlayerConnection() );
+                            blockClicked.sendBlockUpdate( player );
 
                             Block replacedBlock = player.getWorld().getBlock( blockPosition ).getSide( blockFace );
-                            replacedBlock.sendBlockUpdate( player.getPlayerConnection() );
+                            replacedBlock.sendBlockUpdate( player );
                             return;
                         }
                         break;
                     case 1: //Click Air
-                        System.out.println( "AIR" );
+                      //  System.out.println( "AIR" );
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {

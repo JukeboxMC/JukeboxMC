@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockPolishedBlackstoneDoubleSlab;
+import org.jukeboxmc.block.BlockDoublePolishedBlackstoneSlab;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemPolishedBlackstoneDoubleSlab extends Item {
     }
 
     @Override
-    public BlockPolishedBlackstoneDoubleSlab getBlock() {
-        return new BlockPolishedBlackstoneDoubleSlab();
+    public BlockDoublePolishedBlackstoneSlab getBlock() {
+        return new BlockDoublePolishedBlackstoneSlab();
     }
 }

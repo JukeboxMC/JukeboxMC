@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockCrimsonDoubleSlab;
+import org.jukeboxmc.block.BlockDoubleCrimsonSlab;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemCrimsonDoubleSlab extends Item {
     }
 
     @Override
-    public BlockCrimsonDoubleSlab getBlock() {
-        return new BlockCrimsonDoubleSlab();
+    public BlockDoubleCrimsonSlab getBlock() {
+        return new BlockDoubleCrimsonSlab();
     }
 }

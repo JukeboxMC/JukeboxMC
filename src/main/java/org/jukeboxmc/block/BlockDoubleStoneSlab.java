@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.StoneSlabType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -18,8 +19,8 @@ public class BlockDoubleStoneSlab extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, placePosition, clickedPosition, itemIndHand, blockFace );
+    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         this.setStoneSlabType( StoneSlabType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
     }
@@ -29,22 +30,12 @@ public class BlockDoubleStoneSlab extends BlockSlab {
         return super.toItem().setMeta( this.getStoneSlabType().ordinal() );
     }
 
-    public void setStoneSlabType( StoneSlabType stoneSlabType ) {
+    public Block setStoneSlabType( StoneSlabType stoneSlabType ) {
         this.setState( "stone_slab_type", stoneSlabType.name().toLowerCase() );
+        return this;
     }
 
     public StoneSlabType getStoneSlabType() {
         return this.stateExists( "stone_slab_type" ) ? StoneSlabType.valueOf( this.getStringState( "stone_slab_type" ).toUpperCase() ) : StoneSlabType.SMOOTH_STONE;
-    }
-
-    public enum StoneSlabType {
-        SMOOTH_STONE,
-        SANDSTONE,
-        WOOD,
-        COBBLESTONE,
-        BRICK,
-        STONE_BRICK,
-        QUARTZ,
-        NETHER_BRICK
     }
 }

@@ -7,10 +7,10 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
-public class BlockPolishedBlackstoneBrickDoubleSlab extends BlockSlab {
+public class BlockDoublePolishedBlackstoneSlab extends BlockSlab {
 
-    public BlockPolishedBlackstoneBrickDoubleSlab() {
-        super("minecraft:polished_blackstone_brick_double_slab");
+    public BlockDoublePolishedBlackstoneSlab() {
+        super("minecraft:polished_blackstone_double_slab");
     }
 
     @Override
@@ -18,4 +18,5 @@ public class BlockPolishedBlackstoneBrickDoubleSlab extends BlockSlab {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
     }
+
 }
