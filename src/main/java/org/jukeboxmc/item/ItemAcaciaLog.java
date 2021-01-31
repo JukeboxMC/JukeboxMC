@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockAcaciaLog;
+import org.jukeboxmc.block.BlockLog2;
 
 /**
  * @author LucGamesYT
@@ -13,8 +13,8 @@ public class ItemAcaciaLog extends Item {
     }
 
     @Override
-    public BlockAcaciaLog getBlock() {
-        return new BlockAcaciaLog();
+    public BlockLog2 getBlock() {
+        return new BlockLog2();
     }
 
     public void setLogType( LogType logType ) {

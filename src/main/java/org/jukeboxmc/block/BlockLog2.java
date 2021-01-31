@@ -6,9 +6,9 @@ import org.jukeboxmc.math.Axis;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockAcaciaLog extends Block {
+public class BlockLog2 extends Block {
 
-    public BlockAcaciaLog() {
+    public BlockLog2() {
         super( "minecraft:log2" );
     }
 

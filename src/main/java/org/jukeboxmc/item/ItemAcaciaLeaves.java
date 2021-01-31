@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockAcaciaLeaves;
+import org.jukeboxmc.block.BlockLeaves2;
 
 /**
  * @author LucGamesYT
@@ -13,8 +13,8 @@ public class ItemAcaciaLeaves extends Item {
     }
 
     @Override
-    public BlockAcaciaLeaves getBlock() {
-        return new BlockAcaciaLeaves();
+    public BlockLeaves2 getBlock() {
+        return new BlockLeaves2();
     }
 
     public void setLeafType( LeafType leafType ) {
