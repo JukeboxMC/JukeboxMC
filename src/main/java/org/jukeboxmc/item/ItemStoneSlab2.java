@@ -1,20 +1,20 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockRedSandstoneSlab;
+import org.jukeboxmc.block.BlockStoneSlab2;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemRedSandstoneSlab extends Item {
+public class ItemStoneSlab2 extends Item {
 
-    public ItemRedSandstoneSlab() {
+    public ItemStoneSlab2() {
         super( "minecraft:double_stone_slab2", 182 );
     }
 
     @Override
-    public BlockRedSandstoneSlab getBlock() {
-        return new BlockRedSandstoneSlab();
+    public BlockStoneSlab2 getBlock() {
+        return new BlockStoneSlab2();
     }
 
     public void setSlabType( SlabType slabType ) {

@@ -1,20 +1,20 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockEndStoneBrickSlab;
+import org.jukeboxmc.block.BlockStoneSlab3;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemEndStoneBrickSlab extends Item {
+public class ItemStoneSlab3 extends Item {
 
-    public ItemEndStoneBrickSlab() {
+    public ItemStoneSlab3() {
         super( "minecraft:double_stone_slab3", -162 );
     }
 
     @Override
-    public BlockEndStoneBrickSlab getBlock() {
-        return new BlockEndStoneBrickSlab();
+    public BlockStoneSlab3 getBlock() {
+        return new BlockStoneSlab3();
     }
 
     public void setSlabType( SlabType slabType ) {

@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemEndStoneBrickSlab;
+import org.jukeboxmc.item.ItemStoneSlab3;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -12,9 +12,9 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEndStoneBrickSlab extends BlockSlab {
+public class BlockStoneSlab3 extends BlockSlab {
 
-    public BlockEndStoneBrickSlab() {
+    public BlockStoneSlab3() {
         super( "minecraft:stone_slab3" );
     }
 
@@ -27,7 +27,7 @@ public class BlockEndStoneBrickSlab extends BlockSlab {
 
     @Override
     public Item toItem() {
-        return new ItemEndStoneBrickSlab().setMeta( this.getStoneSlabType().ordinal() );
+        return new ItemStoneSlab3().setMeta( this.getStoneSlabType().ordinal() );
     }
 
     public void setStoneSlabType( StoneSlabType stoneSlabType ) {

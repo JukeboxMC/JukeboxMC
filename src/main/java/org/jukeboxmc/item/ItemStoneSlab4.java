@@ -1,20 +1,20 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockMossyStoneBrickSlab;
+import org.jukeboxmc.block.BlockStoneSlab4;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemMossyStoneBrickSlab extends Item {
+public class ItemStoneSlab4 extends Item {
 
-    public ItemMossyStoneBrickSlab() {
+    public ItemStoneSlab4() {
         super( "minecraft:double_stone_slab4", -166 );
     }
 
     @Override
-    public BlockMossyStoneBrickSlab getBlock() {
-        return new BlockMossyStoneBrickSlab();
+    public BlockStoneSlab4 getBlock() {
+        return new BlockStoneSlab4();
     }
 
     public void setSlabType( SlabType slabType ) {

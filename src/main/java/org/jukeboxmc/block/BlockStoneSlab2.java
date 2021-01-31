@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemRedSandstoneSlab;
+import org.jukeboxmc.item.ItemStoneSlab2;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -12,9 +12,9 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockRedSandstoneSlab extends BlockSlab {
+public class BlockStoneSlab2 extends BlockSlab {
 
-    public BlockRedSandstoneSlab() {
+    public BlockStoneSlab2() {
         super( "minecraft:stone_slab2" );
     }
 
@@ -27,7 +27,7 @@ public class BlockRedSandstoneSlab extends BlockSlab {
 
     @Override
     public Item toItem() {
-        return new ItemRedSandstoneSlab().setMeta( this.getStoneSlabType().ordinal() );
+        return new ItemStoneSlab2().setMeta( this.getStoneSlabType().ordinal() );
     }
 
     public void setStoneSlabType( StoneSlabType stoneSlabType ) {

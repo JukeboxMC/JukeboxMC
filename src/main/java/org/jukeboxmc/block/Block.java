@@ -34,11 +34,11 @@ public class Block implements Cloneable {
 
     protected int runtimeId;
     protected String identifier;
-    protected NbtMap blockStates;
+    private NbtMap blockStates;
 
     protected World world;
     protected Location location;
-    protected int layer = 0;
+    int layer = 0;
 
     public Block( String identifier ) {
         this( identifier, null );
