@@ -1,11 +1,31 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Axis;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 public class BlockStrippedWarpedHyphae extends Block {
 
     public BlockStrippedWarpedHyphae() {
         super("minecraft:stripped_warped_hyphae");
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
+            this.setAxis( Axis.Y );
+        } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
+            this.setAxis( Axis.Z );
+        } else {
+            this.setAxis( Axis.X );
+        }
+
+        world.setBlock( placePosition, this );
+        return true;
     }
 
     public void setDeprecated( int value ) { //0-3 Idk what it is
