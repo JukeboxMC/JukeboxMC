@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +15,29 @@ public class BlockLadder extends Block {
 
     public BlockLadder() {
         super( "minecraft:ladder" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block targetBlock = world.getBlock( blockPosition );
+
+        if ( !targetBlock.isTransparent() && blockFace != BlockFace.UP && blockFace != BlockFace.DOWN ) {
+            this.setBlockFace( blockFace );
+            world.setBlock( placePosition, this );
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

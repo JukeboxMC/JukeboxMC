@@ -20,16 +20,12 @@ public class BlockSlab extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {
             this.setTopSlot( true );
         } else {
             this.setTopSlot( false );
         }
-    }
-
-    @Override
-    public boolean canBeReplaced() {
         return true;
     }
 

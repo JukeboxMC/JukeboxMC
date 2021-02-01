@@ -15,7 +15,7 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
 
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
 
         Block targetBlock = world.getBlock( blockPosition );
@@ -26,29 +26,30 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
                 BlockPolishedBlackstoneBrickSlab blockSlab = (BlockPolishedBlackstoneBrickSlab) targetBlock;
                 if ( blockSlab.isTopSlot() ) {
                     world.setBlock( blockPosition, new BlockPolishedBlackstoneBrickDoubleSlab() );
-                    return;
+                    return true;
                 }
             } else if ( block instanceof BlockPolishedBlackstoneBrickSlab ) {
                 world.setBlock( placePosition, new BlockPolishedBlackstoneBrickDoubleSlab() );
-                return;
+                return true;
             }
         } else if ( blockFace == BlockFace.UP ) {
             if ( targetBlock instanceof BlockPolishedBlackstoneBrickSlab ) {
                 BlockPolishedBlackstoneBrickSlab blockSlab = (BlockPolishedBlackstoneBrickSlab) targetBlock;
                 if ( !blockSlab.isTopSlot() ) {
                     world.setBlock( blockPosition, new BlockPolishedBlackstoneBrickDoubleSlab() );
-                    return;
+                    return true;
                 }
             } else if ( block instanceof BlockPolishedBlackstoneBrickSlab ) {
                 world.setBlock( placePosition, new BlockPolishedBlackstoneBrickDoubleSlab() );
-                return;
+                return true;
             }
         } else {
             if ( block instanceof BlockPolishedBlackstoneBrickSlab ) {
                 world.setBlock( placePosition, new BlockPolishedBlackstoneBrickDoubleSlab() );
-                return;
+                return true;
             }
         }
         world.setBlock( placePosition, this );
+        return true;
     }
 }

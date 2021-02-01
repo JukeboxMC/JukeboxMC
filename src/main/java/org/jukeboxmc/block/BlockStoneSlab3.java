@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.block.type.StoneSlab2Type;
 import org.jukeboxmc.block.type.StoneSlab3Type;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab3;
@@ -21,7 +20,7 @@ public class BlockStoneSlab3 extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         this.setStoneSlabType( StoneSlab3Type.values()[itemIndHand.getMeta()] );
 
@@ -33,13 +32,13 @@ public class BlockStoneSlab3 extends BlockSlab {
                 BlockStoneSlab3 blockSlab = (BlockStoneSlab3) targetBlock;
                 if ( blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
                     world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
-                    return;
+                    return true;
                 }
             } else if ( block instanceof BlockStoneSlab3 ) {
                 BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
                 if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
                     world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
-                    return;
+                    return true;
                 }
             }
         } else if ( blockFace == BlockFace.UP ) {
@@ -47,13 +46,13 @@ public class BlockStoneSlab3 extends BlockSlab {
                 BlockStoneSlab3 blockSlab = (BlockStoneSlab3) targetBlock;
                 if ( !blockSlab.isTopSlot() && blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
                     world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
-                    return;
+                    return true;
                 }
             } else if ( block instanceof BlockStoneSlab3 ) {
                 BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
                 if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
                     world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
-                    return;
+                    return true;
                 }
             }
         } else {
@@ -61,11 +60,12 @@ public class BlockStoneSlab3 extends BlockSlab {
                 BlockStoneSlab3 blockSlab = (BlockStoneSlab3) block;
                 if ( blockSlab.getStoneSlabType() == this.getStoneSlabType() ) {
                     world.setBlock( blockPosition, new BlockDoubleStoneSlab3().setStoneSlabType( this.getStoneSlabType() ) );
-                    return;
+                    return true;
                 }
             }
         }
         world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

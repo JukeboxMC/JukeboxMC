@@ -19,10 +19,11 @@ public class BlockDoubleStoneSlab2 extends BlockSlab {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         this.setStoneSlabType( StoneSlab2Type.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
+        return true;
     }
 
     public Block setStoneSlabType( StoneSlab2Type stoneSlabType ) {

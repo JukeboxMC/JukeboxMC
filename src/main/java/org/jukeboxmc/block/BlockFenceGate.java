@@ -9,8 +9,6 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelEvent;
 import org.jukeboxmc.world.World;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -22,10 +20,11 @@ public class BlockFenceGate extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection() );
         this.setOpen( false );
         world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

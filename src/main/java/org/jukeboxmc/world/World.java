@@ -415,18 +415,17 @@ public class World extends LevelDB {
                 if ( !nearbyEntities.isEmpty() ) {
                     return false;
                 }
-            }
-
-            if ( placedBlock.isSolid() ) {
                 AxisAlignedBB boundingBox = player.getBoundingBox();
                 if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
                     return false;
                 }
             }
 
-            placedBlock.placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-            this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
-            return true;
+            boolean success = placedBlock.placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+            if ( success ) {
+                this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
+            }
+            return success;
         }
 
         return interact;

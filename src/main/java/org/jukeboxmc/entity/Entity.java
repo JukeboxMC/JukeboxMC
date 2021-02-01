@@ -33,6 +33,7 @@ public abstract class Entity {
         this.metadata.setShort( MetadataFlag.AIR, (short) 0 );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.AFFECTED_BY_GRAVITY, true );
+        this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, true );
 
         this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 7, 0, 0, 0 );
 
@@ -122,6 +123,16 @@ public abstract class Entity {
     public void setNameTagAlwaysVisible( boolean value ) {
         if ( value != this.isNameTagAlwaysVisible() ) {
             this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SHOW_ALWAYS_NAMETAG, value );
+        }
+    }
+
+    public boolean canClimb() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB );
+    }
+
+    public void setCanClimb( boolean value ) {
+        if ( value != this.canClimb() ) {
+            this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, value );
         }
     }
 

@@ -14,4 +14,9 @@ public class BlockAir extends Block {
     public boolean canBeReplaced() {
         return true;
     }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

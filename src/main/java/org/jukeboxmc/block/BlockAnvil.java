@@ -19,7 +19,7 @@ public class BlockAnvil extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         switch ( itemIndHand.getMeta() ) {
             case 4:
                 this.setDamage( Damage.SLIGHTLY_DAMAGED );
@@ -32,6 +32,7 @@ public class BlockAnvil extends Block {
                 break;
         }
         world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

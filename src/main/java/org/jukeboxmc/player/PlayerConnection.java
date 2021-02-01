@@ -6,7 +6,6 @@ import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
-import org.jukeboxmc.item.ItemFenceGate;
 import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;

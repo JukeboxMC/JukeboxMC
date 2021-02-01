@@ -12,6 +12,7 @@ public enum EntityFlag {
     ACTION( 4 ),
     SHOW_NAMETAG( 14 ),
     SHOW_ALWAYS_NAMETAG( 15 ),
+    CAN_CLIMB( 19 ),
     HAS_COLLISION( 47 ),
     AFFECTED_BY_GRAVITY( 48 );
 

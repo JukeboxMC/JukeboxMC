@@ -18,9 +18,10 @@ public class BlockMonsterEgg extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setMonsterEggStoneType( MonsterEggStoneType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class BlockTrapdoor extends Block {
     }
 
     @Override
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Direction playerDirection = player.getDirection();
 
         if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {
@@ -39,6 +39,7 @@ public class BlockTrapdoor extends Block {
         this.setOpen( false );
 
         world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

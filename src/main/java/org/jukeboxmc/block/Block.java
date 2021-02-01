@@ -14,7 +14,6 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.player.PlayerConnection;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -119,12 +118,14 @@ public class Block implements Cloneable {
     }
 
     //Other
-    public void placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
+            return true;
         } else {
             System.out.println( "Try to place block -> " + this.getName() );
         }
+        return false;
     }
 
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
@@ -263,6 +264,10 @@ public class Block implements Cloneable {
 
     public boolean isSolid() {
         return true;
+    }
+
+    public boolean isTransparent() {
+        return false;
     }
 
     @Override
