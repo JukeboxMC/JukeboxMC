@@ -14,7 +14,7 @@ public class ItemTallgrass extends Item {
     }
 
     @Override
-    public Block getBlock() {
+    public BlockTallGrass getBlock() {
         return new BlockTallGrass();
     }
 
