@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -23,6 +24,8 @@ public class BlockBeeNest extends Block {
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
+
+        BlockEntityType.BEEHIVE.<BlockEntityBeehive>createBlockEntity( this ).spawn();
         return true;
     }
 
@@ -43,11 +46,7 @@ public class BlockBeeNest extends Block {
 
     @Override
     public BlockEntityBeehive getBlockEntity() {
-        BlockEntityBeehive blockEntityBeehive = (BlockEntityBeehive) this.world.getBlockEntity( this.getBlockPosition() );
-        if ( blockEntityBeehive == null ) {
-            return new BlockEntityBeehive( this );
-        }
-        return blockEntityBeehive;
+        return (BlockEntityBeehive) this.world.getBlockEntity( this.getBlockPosition() );
     }
 
     public void setHoneyLevel( int value ) { //0-5

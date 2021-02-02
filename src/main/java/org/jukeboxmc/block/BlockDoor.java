@@ -30,7 +30,7 @@ public class BlockDoor extends Block {
         blockAbove.setUpperBlock( true );
         blockAbove.setOpen( false );
 
-        Block blockLeft = world.getBlock( placePosition ).getSide( player.getDirection().getLeftDirection().toBlockFace() );
+        Block blockLeft = world.getBlock( placePosition ).getSide( player.getDirection().getLeftDirection() );
 
         if ( blockLeft.getIdentifier().equalsIgnoreCase( this.identifier ) ) {
             blockAbove.setDoorHinge( true );

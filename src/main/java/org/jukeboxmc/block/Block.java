@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
@@ -166,6 +167,21 @@ public class Block implements Cloneable {
             }
         }
         return BlockType.AIR;
+    }
+
+    public Block getSide( Direction direction ) {
+        switch ( direction ) {
+            case SOUTH:
+                return this.getRelative( BlockPosition.SOUTH );
+            case NORTH:
+                return this.getRelative( BlockPosition.NORTH );
+            case EAST:
+                return this.getRelative( BlockPosition.EAST );
+            case WEST:
+                return this.getRelative( BlockPosition.WEST );
+            default:
+                return null;
+        }
     }
 
     public Block getSide( BlockFace blockFace ) {

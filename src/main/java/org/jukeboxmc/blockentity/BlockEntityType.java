@@ -12,7 +12,9 @@ import org.jukeboxmc.block.Block;
 public enum BlockEntityType {
 
     FURNACE( "Furnace", BlockEntityFurnace.class ),
-    SIGN( "Sign", BlockEntitySign.class );
+    SIGN( "Sign", BlockEntitySign.class ),
+    BED( "Bed", BlockEntityBed.class ),
+    BEEHIVE( "Beehive", BlockEntityBeehive.class );
 
     private String blockEntityId;
     private Class<? extends BlockEntity> blockEntityClass;
@@ -26,14 +28,14 @@ public enum BlockEntityType {
     }
 
     @SneakyThrows
-    public <E extends BlockEntity> E getBlockEntity( Block block ) {
+    public <E extends BlockEntity> E createBlockEntity( Block block ) {
         return (E) this.blockEntityClass.getConstructor( Block.class ).newInstance( block );
     }
 
     public static BlockEntity getBlockEntityById( String blockEntityId, Block block ) {
         for ( BlockEntityType value : BlockEntityType.values() ) {
             if ( value.getBlockEntityId().equals( blockEntityId ) ) {
-                return value.getBlockEntity( block );
+                return value.createBlockEntity( block );
             }
         }
         return null;

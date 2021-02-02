@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityFurnace;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -22,6 +23,8 @@ public class BlockFurnace extends Block {
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
+
+        BlockEntityType.FURNACE.<BlockEntityFurnace>createBlockEntity( this ).spawn();
         return true;
     }
 
@@ -42,11 +45,7 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntityFurnace getBlockEntity() {
-        BlockEntityFurnace blockEntity = (BlockEntityFurnace) this.world.getBlockEntity( this.getBlockPosition() );
-        if ( blockEntity == null ) {
-            return new BlockEntityFurnace( this );
-        }
-        return blockEntity;
+        return (BlockEntityFurnace) this.world.getBlockEntity( this.getBlockPosition() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

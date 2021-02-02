@@ -34,6 +34,16 @@ public class BlockSnowLayer extends Block {
         return true;
     }
 
+    @Override
+    public boolean isSolid() {
+        return true;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return this.getHeight() != 7;
+    }
+
     public void setCovered( boolean value ) {
         this.setState( "covered_bit", value ? (byte) 1 : (byte) 0 );
     }
@@ -42,7 +52,7 @@ public class BlockSnowLayer extends Block {
         return this.stateExists( "covered_bit" ) && this.getByteState( "covered_bit" ) == 1;
     }
 
-    public void setHeight( int value ) { //0-7
+    public void setHeight( int value ) {
         this.setState( "height", value );
     }
 

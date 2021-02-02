@@ -15,8 +15,4 @@ public class BlockAir extends Block {
         return true;
     }
 
-    @Override
-    public boolean isTransparent() {
-        return true;
-    }
 }

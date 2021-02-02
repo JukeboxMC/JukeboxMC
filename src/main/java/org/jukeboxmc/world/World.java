@@ -240,16 +240,7 @@ public class World extends LevelDB {
         updateBlockPacket.setLayer( layer );
         this.sendWorldPacket( updateBlockPacket );
 
-        if ( block.hasBlockEntity() ) {
-            BlockEntity blockEntity = block.getBlockEntity();
-
-            chunk.setBlockEntity( location.getX(), location.getY(), location.getZ(), blockEntity );
-
-            BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-            blockEntityDataPacket.setBlockPosition( block.getBlockPosition() );
-            blockEntityDataPacket.setNbt( blockEntity.toCompound().build() );
-            this.sendWorldPacket( blockEntityDataPacket );
-        } else {
+        if ( !block.hasBlockEntity() ) {
             chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
         }
     }

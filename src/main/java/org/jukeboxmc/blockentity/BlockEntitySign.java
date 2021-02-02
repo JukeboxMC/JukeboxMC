@@ -15,7 +15,7 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntitySign extends BlockEntity {
+public class BlockEntitySign extends BlockEntityContainer {
 
     private List<String> lines;
 
