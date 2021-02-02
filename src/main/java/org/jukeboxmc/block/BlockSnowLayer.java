@@ -26,6 +26,9 @@ public class BlockSnowLayer extends Block {
             if ( blockSnowLayer.getHeight() != 7 ) {
                 this.setHeight( blockSnowLayer.getHeight() + 1 );
                 world.setBlock( blockPosition, this );
+            } else {
+                this.setHeight( 0 );
+                world.setBlock( placePosition, this );
             }
         } else {
             this.setHeight( 0 );
@@ -36,7 +39,7 @@ public class BlockSnowLayer extends Block {
 
     @Override
     public boolean isSolid() {
-        return true;
+        return false;
     }
 
     @Override
