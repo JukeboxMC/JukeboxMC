@@ -6,11 +6,11 @@ package org.jukeboxmc.block.type;
  */
 public enum PlantType {
 
-    FERN,
-    GRASS,
-    PAEONIA,
-    ROSE,
     SUNFLOWER,
-    SYRINGA
+    SYRINGA,
+    GRASS,
+    FERN,
+    ROSE,
+    PAEONIA
 
 }

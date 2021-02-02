@@ -1,7 +1,7 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockDoublePlant;
+import org.jukeboxmc.block.type.PlantType;
 
 /**
  * @author LucGamesYT
@@ -14,7 +14,7 @@ public class ItemDoublePlant extends Item {
     }
 
     @Override
-    public Block getBlock() {
+    public BlockDoublePlant getBlock() {
         return new BlockDoublePlant();
     }
 
@@ -26,12 +26,4 @@ public class ItemDoublePlant extends Item {
         return PlantType.values()[this.getMeta()];
     }
 
-    public enum PlantType {
-        SUNFLOWER,
-        LILAC,
-        DOUBLE_TALLGRASS,
-        LARGE_FERN,
-        ROSE_BUSH,
-        PEONY
-    }
 }
