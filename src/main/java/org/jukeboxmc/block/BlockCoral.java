@@ -19,14 +19,65 @@ public class BlockCoral extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setCoralColor( CoralColor.values()[itemIndHand.getMeta()] );
+        int meta = itemIndHand.getMeta();
+
+        if ( meta < 5 ) {
+            this.setCoralColor( CoralColor.values()[meta] );
+            this.setDead( false );
+        } else {
+            switch ( meta ) {
+                case 8:
+                    this.setCoralColor( CoralColor.BLUE );
+                    break;
+                case 9:
+                    this.setCoralColor( CoralColor.PINK );
+                    break;
+                case 10:
+                    this.setCoralColor( CoralColor.PURPLE );
+                    break;
+                case 11:
+                    this.setCoralColor( CoralColor.RED );
+                    break;
+                case 12:
+                    this.setCoralColor( CoralColor.YELLOW );
+                    break;
+                default:
+                    break;
+            }
+            this.setDead( true );
+        }
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
     public Item toItem() {
-        return super.toItem().setMeta( this.getCoralColor().ordinal() );
+        Item item = super.toItem();
+
+        if ( !this.isDead() ) {
+            item.setMeta( this.getCoralColor().ordinal() );
+        } else {
+            switch ( this.getCoralColor() ) {
+                case BLUE:
+                    item.setMeta( 8 );
+                    break;
+                case PINK:
+                    item.setMeta( 9 );
+                    break;
+                case PURPLE:
+                    item.setMeta( 10 );
+                    break;
+                case RED:
+                    item.setMeta( 11 );
+                    break;
+                case YELLOW:
+                    item.setMeta( 12 );
+                    break;
+                default:
+                    break;
+            }
+        }
+        return item;
     }
 
     public void setCoralColor( CoralColor coralColor ) {

@@ -21,7 +21,6 @@ public class BlockTallGrass extends Block {
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setGrassType( GrassType.values()[itemIndHand.getMeta() - 1] );
         world.setBlock( placePosition, this );
-        System.out.println( this.getGrassType().name() );
         return true;
     }
 
