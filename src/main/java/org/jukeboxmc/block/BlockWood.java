@@ -20,7 +20,27 @@ public class BlockWood extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
+        int meta = itemIndHand.getMeta();
+
+        if ( meta < 6 ) {
+            this.setStripped( false );
+        } else {
+            this.setStripped( true );
+        }
+
+        if ( meta == 0 || meta == 8 ) {
+            this.setWoodType( WoodType.OAK );
+        } else if ( meta == 1 || meta == 9 ) {
+            this.setWoodType( WoodType.SPRUCE );
+        } else if ( meta == 2 || meta == 10 ) {
+            this.setWoodType( WoodType.BIRCH );
+        } else if ( meta == 3 || meta == 11 ) {
+            this.setWoodType( WoodType.JUNGLE );
+        } else if ( meta == 4 || meta == 12 ) {
+            this.setWoodType( WoodType.ACACIA );
+        } else if ( meta == 5 || meta == 13 ) {
+            this.setWoodType( WoodType.DARK_OAK );
+        }
 
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
@@ -48,7 +68,7 @@ public class BlockWood extends Block {
     }
 
     public void setStripped( boolean value ) {
-        this.setState( "stripped_bit", value ? (byte) 1: (byte) 0 );
+        this.setState( "stripped_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isStripped() {
