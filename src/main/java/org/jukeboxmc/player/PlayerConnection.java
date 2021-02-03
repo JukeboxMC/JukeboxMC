@@ -11,6 +11,7 @@ import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.math.Vector2;
 import org.jukeboxmc.network.handler.PacketHandler;
@@ -25,10 +26,7 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @author LucGamesYT
@@ -274,14 +272,46 @@ public class PlayerConnection {
         this.sendPacket( disconnectPacket );
     }
 
+    public void movePlayer( Vector vector, PlayerMovePacket.Mode mode ) {
+        PlayerMovePacket playerMovePacket = new PlayerMovePacket();
+        playerMovePacket.setEntityRuntimeId( this.player.getEntityId() );
+        playerMovePacket.setX( vector.getX() );
+        playerMovePacket.setY( vector.getY() + this.player.getEyeHeight() );
+        playerMovePacket.setZ( vector.getZ() );
+        playerMovePacket.setYaw( this.player.getYaw() );
+        playerMovePacket.setPitch( this.player.getPitch() );
+        playerMovePacket.setHeadYaw( this.player.getYaw() );
+        playerMovePacket.setMode( mode );
+        playerMovePacket.setOnGround( this.player.isOnGround() );
+        playerMovePacket.setRidingEntityId( 0 );
+        playerMovePacket.setTick( 0 );
+        this.sendPacket( playerMovePacket );
+    }
+
+    public void movePlayer( Location location, PlayerMovePacket.Mode mode ) {
+        PlayerMovePacket playerMovePacket = new PlayerMovePacket();
+        playerMovePacket.setEntityRuntimeId( this.player.getEntityId() );
+        playerMovePacket.setX( location.getX() );
+        playerMovePacket.setY( location.getY() + this.player.getEyeHeight() );
+        playerMovePacket.setZ( location.getZ() );
+        playerMovePacket.setYaw( location.getYaw() );
+        playerMovePacket.setPitch( location.getPitch() );
+        playerMovePacket.setHeadYaw( this.player.getYaw() );
+        playerMovePacket.setMode( mode );
+        playerMovePacket.setOnGround( this.player.isOnGround() );
+        playerMovePacket.setRidingEntityId( 0 );
+        playerMovePacket.setTick( 0 );
+        this.sendPacket( playerMovePacket );
+    }
+
     public void movePlayer( Player player, PlayerMovePacket.Mode mode ) {
         PlayerMovePacket playerMovePacket = new PlayerMovePacket();
         playerMovePacket.setEntityRuntimeId( player.getEntityId() );
-        playerMovePacket.setX( player.getLocation().getX() );
-        playerMovePacket.setY( player.getLocation().getY() + player.getEyeHeight() );
-        playerMovePacket.setZ( player.getLocation().getZ() );
-        playerMovePacket.setYaw( player.getLocation().getYaw() );
-        playerMovePacket.setPitch( player.getLocation().getPitch() );
+        playerMovePacket.setX( player.getX() );
+        playerMovePacket.setY( player.getY() + player.getEyeHeight() );
+        playerMovePacket.setZ( player.getZ() );
+        playerMovePacket.setYaw( player.getYaw() );
+        playerMovePacket.setPitch( player.getPitch() );
         playerMovePacket.setHeadYaw( player.getHeadYaw() );
         playerMovePacket.setMode( mode );
         playerMovePacket.setOnGround( player.isOnGround() );
@@ -435,8 +465,6 @@ public class PlayerConnection {
         }
 
         this.player.getChunk().addEntity( this.player );
-
-        this.player.getInventory().setItem( 0, new ItemStoneSlab() );
         this.player.setSpawned( true );
     }
 

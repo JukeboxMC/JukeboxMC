@@ -10,7 +10,9 @@ import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.network.packet.PlayerMovePacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -336,5 +338,31 @@ public class Player extends EntityHuman implements InventoryHolder {
             default:
                 return this.getCurrentInventory();
         }
+    }
+
+    //TODO Implement world teleport
+
+    public void teleport( Player player ) {
+        this.playerConnection.movePlayer( player, PlayerMovePacket.Mode.TELEPORT );
+    }
+
+    public void teleport( Player player, PlayerMovePacket.Mode mode ) {
+        this.playerConnection.movePlayer( player, mode );
+    }
+
+    public void teleport( Location location ) {
+        this.playerConnection.movePlayer( location, PlayerMovePacket.Mode.TELEPORT );
+    }
+
+    public void teleport( Location location, PlayerMovePacket.Mode mode ) {
+        this.playerConnection.movePlayer( location, mode );
+    }
+
+    public void teleport( Vector vector ) {
+        this.playerConnection.movePlayer( vector, PlayerMovePacket.Mode.TELEPORT );
+    }
+
+    public void teleport( Vector vector, PlayerMovePacket.Mode mode ) {
+        this.playerConnection.movePlayer( vector, mode );
     }
 }
