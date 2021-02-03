@@ -3,16 +3,20 @@ package org.jukeboxmc;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.config.Config;
+import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerListPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.Listener;
 import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
-import org.jukeboxmc.network.raknet.event.intern.ReceiveMinecraftPacketEvent;
+import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
@@ -25,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -42,8 +47,12 @@ public class Server {
     private InetSocketAddress address;
     private Listener listener;
 
-    private Config serverConfig;
+    private File pluginFolder;
 
+    private Config serverConfig;
+    private PluginManager pluginManager;
+    private TerminalConsole console;
+    private ScheduledExecutorService scheduledExecutorService;
     private World defaultWorld;
     private WorldGenerator overWorldGenerator;
 
@@ -59,17 +68,46 @@ public class Server {
     public Server() {
         Server.setInstance( this );
 
+        this.pluginFolder = new File( "./plugins" );
+        if ( !this.pluginFolder.exists() ) {
+            this.pluginFolder.mkdirs();
+        }
+
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.initServerConfig();
+
+        BlockType.init();
+        ItemType.init();
+
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins();
+
+        this.console = new TerminalConsole( this );
+        this.console.getConsoleThread().start();
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
+        this.registerGenerator( "Flat", FlatGenerator.class );
+        this.registerGenerator( "Empty", EmptyGenerator.class );
+        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
+
+        String defaultWorldName = this.serverConfig.getString( "defaultworld" );
+        if ( this.loadWorld( defaultWorldName ) ) {
+            this.defaultWorld = this.getWorld( defaultWorldName );
+        } else {
+            this.defaultWorld = this.createWorld( defaultWorldName, this.overWorldGenerator );
+        }
+        Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
+    }
+
+    public void startServer() {
         this.listener = new Listener( this );
         if ( !this.listener.listen( this.address ) ) {
             System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
             return;
         }
 
-        this.listener.getRakNetEventManager().onEvent( ReceiveMinecraftPacketEvent.class, (Consumer<ReceiveMinecraftPacketEvent>) event -> {
+        this.listener.getRakNetEventManager().onEvent( ReciveMinecraftPacketEvent.class, (Consumer<ReciveMinecraftPacketEvent>) event -> {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
             Player player = this.players.get( connection.getSender() );
@@ -92,19 +130,8 @@ public class Server {
             }
         } );
 
-        this.registerGenerator( "Flat", FlatGenerator.class );
-        this.registerGenerator( "Empty", EmptyGenerator.class );
-        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
-
-        String defaultWorldName = this.serverConfig.getString( "defaultworld" );
-        if ( this.loadWorld( defaultWorldName ) ) {
-            this.defaultWorld = this.getWorld( defaultWorldName );
-        } else {
-            this.defaultWorld = this.createWorld( defaultWorldName, this.overWorldGenerator );
-        }
-
         AtomicLong startTime = new AtomicLong();
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
+        this.scheduledExecutorService.scheduleAtFixedRate( () -> {
             try {
                 long currentTick = startTime.getAndIncrement();
                 if ( this.defaultWorld != null ) {
@@ -119,6 +146,22 @@ public class Server {
         }, 0, 50, TimeUnit.MILLISECONDS );
     }
 
+    public void shutdown() {
+        if ( this.isShutdown )
+            return;
+        this.isShutdown = true;
+
+        for ( Player onlinePlayer : this.getOnlinePlayers() ) {
+            onlinePlayer.disconnect( "Server shutdown" );
+        }
+
+        this.pluginManager.disableAllPlugins();
+        this.console.getConsoleThread().interrupt();
+        this.scheduledExecutorService.shutdown();
+        this.listener.shutdown();
+
+        System.out.print( "Shutdown successfully!" );
+    }
 
     private void initServerConfig() {
         this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json" );
@@ -138,6 +181,14 @@ public class Server {
 
     public Config getServerConfig() {
         return this.serverConfig;
+    }
+
+    public PluginManager getPluginManager() {
+        return this.pluginManager;
+    }
+
+    public ScheduledExecutorService getExecutorService() {
+        return scheduledExecutorService;
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {
@@ -203,10 +254,6 @@ public class Server {
 
     public boolean isShutdown() {
         return this.isShutdown;
-    }
-
-    public void shutdown() {
-        this.isShutdown = true;
     }
 
     public Collection<Player> getOnlinePlayers() {
@@ -304,5 +351,9 @@ public class Server {
         for ( Player onlinePlayers : this.players.values() ) {
             onlinePlayers.getPlayerConnection().sendPacket( packet );
         }
+    }
+
+    public File getPluginFolder() {
+        return this.pluginFolder;
     }
 }

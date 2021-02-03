@@ -4,9 +4,6 @@ import io.netty.util.ResourceLeakDetector;
 import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.console.TerminalConsole;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.NbtMap;
 
 import java.util.List;
@@ -30,13 +27,8 @@ public class JukeboxMC {
         System.out.println( "Server is started...." );
         ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
 
-        BlockType.init();
-        ItemType.init();
-
         this.server = new Server();
-
-        TerminalConsole terminalConsole = new TerminalConsole( this.server );
-        terminalConsole.getConsoleThread().start();
+        this.server.startServer();
 
         System.out.println( "JukeboxMC is now running on the port " + this.server.getAddress().getPort() );
     }

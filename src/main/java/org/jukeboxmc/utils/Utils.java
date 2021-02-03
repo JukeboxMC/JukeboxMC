@@ -3,6 +3,11 @@ package org.jukeboxmc.utils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -75,5 +80,25 @@ public class Utils {
                 key,
                 subChunk
         };
+    }
+
+    public static void writeFile( File file, InputStream content) throws IOException {
+        if (content == null) {
+            throw new IllegalArgumentException("Content must not be null!");
+        }
+
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        FileOutputStream stream = new FileOutputStream(file);
+
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = content.read(buffer)) != -1) {
+            stream.write(buffer, 0, length);
+        }
+        content.close();
+        stream.close();
     }
 }

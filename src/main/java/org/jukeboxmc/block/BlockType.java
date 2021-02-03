@@ -2,8 +2,8 @@ package org.jukeboxmc.block;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.jukeboxmc.Server;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -578,7 +578,7 @@ public enum BlockType {
 
         BlockPalette.init();
 
-        Executors.newSingleThreadExecutor().execute( () -> {
+        Server.getInstance().getExecutorService().execute( () -> {
             for ( BlockType value : BlockType.values() ) {
                 value.getBlock();
             }

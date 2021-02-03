@@ -266,6 +266,7 @@ public class PlayerConnection {
         disconnectPacket.setHideDisconnectScreen( false );
         disconnectPacket.setMessage( message );
         this.connection.disconnect( message );
+        this.executorService.shutdown();
         this.sendPacket( disconnectPacket );
     }
 

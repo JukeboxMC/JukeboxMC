@@ -49,6 +49,11 @@ public class TerminalConsole extends SimpleTerminalConsole {
         return super.buildReader( builder );
     }
 
+    @Override
+    public void start() {
+        super.start();
+    }
+
     public ConsoleThread getConsoleThread() {
         return consoleThread;
     }

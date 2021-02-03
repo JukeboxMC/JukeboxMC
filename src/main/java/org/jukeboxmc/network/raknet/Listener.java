@@ -4,10 +4,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
@@ -15,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.raknet.event.RakNetEventManager;
@@ -27,10 +25,7 @@ import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author LucGamesYT
@@ -38,6 +33,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Listener {
 
+    @Getter
+    private EventLoopGroup group;
+    @Getter
     private Channel channel;
     @Getter
     private InetSocketAddress address;
@@ -50,10 +48,13 @@ public class Listener {
     @Getter
     private boolean isRunning = false;
 
+    private ScheduledExecutorService scheduledExecutorService;
+
     private Map<InetSocketAddress, Connection> connections = new ConcurrentHashMap<>();
     private Queue<DatagramPacket> packets = new ConcurrentLinkedQueue<>();
 
     public Listener( Server server ) {
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.serverInfo = new ServerInfo( server, this );
         this.rakNetEventManager = new RakNetEventManager();
         this.serverId = UUID.randomUUID().getMostSignificantBits();
@@ -62,7 +63,8 @@ public class Listener {
     public boolean listen( InetSocketAddress socketAddress ) {
         this.address = socketAddress;
         Bootstrap socket = new Bootstrap();
-        socket.group( ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
+
+        socket.group( this.group = ( Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup() ) );
         socket.option( ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT );
         socket.channel( Epoll.isAvailable() ? EpollDatagramChannel.class : NioDatagramChannel.class );
         socket.handler( new ChannelInboundHandlerAdapter() {
@@ -153,7 +155,7 @@ public class Listener {
     }
 
     private void tick() {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate( () -> {
+        this.scheduledExecutorService.scheduleAtFixedRate( () -> {
             try {
                 for ( Connection connection : connections.values() ) {
                     connection.update( System.currentTimeMillis() );
@@ -189,5 +191,12 @@ public class Listener {
         }
         System.out.println( reason );
         this.getRakNetEventManager().callEvent( new PlayerCloseConnectionEvent( connection ) );
+    }
+
+    @SneakyThrows
+    public void shutdown() {
+        this.channel.close();
+        this.group.shutdownGracefully();
+        this.scheduledExecutorService.shutdown();
     }
 }
