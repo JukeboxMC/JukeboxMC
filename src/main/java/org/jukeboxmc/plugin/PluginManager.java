@@ -84,7 +84,7 @@ public class PluginManager {
             return null;
         }
 
-        this.logger.info( "Loaded plugin " + config.getName() + " Version:" + config.getVersion() + " successfully!" );
+        this.logger.info( "Loaded plugin " + config.getName() + " Version: " + config.getVersion() + " successfully!" );
         this.pluginMap.put( config.getName(), plugin );
 
         plugin.onStartup();

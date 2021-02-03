@@ -127,9 +127,10 @@ public class Server {
 
         this.listener.getRakNetEventManager().onEvent( PlayerCloseConnectionEvent.class, (Consumer<PlayerCloseConnectionEvent>) event -> {
             Connection connection = event.getConnection();
+            String reason = event.getReason();
             Player player = this.players.get( connection.getSender() );
             if ( player != null ) {
-                player.getPlayerConnection().leaveGame();
+                player.getPlayerConnection().leaveGame( reason );
             }
         } );
 

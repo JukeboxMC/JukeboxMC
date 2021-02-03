@@ -25,7 +25,6 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
             Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
-            Server.getInstance().getLogger().info( playerJoinEvent.getJoinMessage() );
         }
     }
 }

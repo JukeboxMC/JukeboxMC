@@ -13,8 +13,11 @@ public class PlayerCloseConnectionEvent extends RakNetEvent {
 
     @Getter
     private Connection connection;
+    @Getter
+    private String reason;
 
-    public PlayerCloseConnectionEvent( Connection connection ) {
+    public PlayerCloseConnectionEvent( Connection connection, String reason ) {
         this.connection = connection;
+        this.reason = reason;
     }
 }

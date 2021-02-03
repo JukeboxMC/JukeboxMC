@@ -287,6 +287,10 @@ public class Block implements Cloneable {
         return false;
     }
 
+    public List<Item> getDrops() {
+        return new ArrayList<>();
+    }
+
     @Override
     public String toString() {
         return "Block{" +

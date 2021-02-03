@@ -456,7 +456,7 @@ public class World extends LevelDB {
     public void breakBlock( Player player, BlockPosition breakPosition, boolean isCreative ) {
         Block breakBlock = this.getBlock( breakPosition );
 
-        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, new ArrayList<>() );
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops() );
         Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
 
         if ( blockBreakEvent.isCancelled() ) {

@@ -440,7 +440,7 @@ public class PlayerConnection {
         this.player.setSpawned( true );
     }
 
-    public void leaveGame() {
+    public void leaveGame( String reason ) {
         this.player.getWorld().removePlayer( this.player );
         this.player.getChunk().removeEntity( this.player );
 
@@ -460,6 +460,7 @@ public class PlayerConnection {
         if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
             this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
         }
+        this.logger.info( this.player.getName() + " logged out reason: " + reason );
     }
 
     public void openInventory( Inventory inventory, BlockPosition position ) {

@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
@@ -46,7 +47,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );
 
             player.getPlayerConnection().sendPacket( new CreativeContentPacket() );
-
+            Server.getInstance().getLogger().info( player.getName() + " logged in with entity id " + player.getEntityId() );
         }
 
     }

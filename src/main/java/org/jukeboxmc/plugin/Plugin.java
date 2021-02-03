@@ -35,7 +35,7 @@ public abstract class Plugin {
         this.logger = server.getLogger();
 
         this.pluginFile = pluginFile;
-        this.dataFolder = new File( server.getPluginFolder() + "/" + description.getName().toLowerCase() + "/" );
+        this.dataFolder = new File( server.getPluginFolder() + "/" + description.getName() + "/" );
         if ( !this.dataFolder.exists() ) {
             this.dataFolder.mkdirs();
         }
