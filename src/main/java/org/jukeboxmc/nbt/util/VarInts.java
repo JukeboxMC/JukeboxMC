@@ -4,6 +4,10 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class VarInts {
     private VarInts() {
     }

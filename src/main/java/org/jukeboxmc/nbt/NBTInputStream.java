@@ -10,7 +10,10 @@ import java.util.Objects;
 
 import static org.jukeboxmc.nbt.NbtUtils.MAX_DEPTH;
 
-
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NBTInputStream implements Closeable {
     private final DataInput input;
     private boolean closed = false;

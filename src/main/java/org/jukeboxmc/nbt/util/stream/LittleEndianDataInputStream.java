@@ -4,6 +4,10 @@ import javax.annotation.Nonnull;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class LittleEndianDataInputStream implements DataInput, Closeable {
     protected final DataInputStream stream;
 

@@ -5,6 +5,10 @@ import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NbtList<E> extends AbstractList<E> {
 
     public static final NbtList<Void> EMPTY = new NbtList<>( NbtType.END );

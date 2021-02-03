@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NetworkDataOutputStream extends LittleEndianDataOutputStream {
 
     public NetworkDataOutputStream( OutputStream stream) {

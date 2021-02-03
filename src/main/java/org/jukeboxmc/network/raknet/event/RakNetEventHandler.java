@@ -22,7 +22,7 @@ public class RakNetEventHandler {
         if ( !this.eventClass.isInstance( rakNetEvent ) ) {
             throw new RuntimeException( "Tried to handle invalid event type!" );
         }
-        for ( Consumer<RakNetEvent> handler : handlers ) {
+        for ( Consumer<RakNetEvent> handler : this.handlers ) {
             handler.accept( rakNetEvent );
         }
     }

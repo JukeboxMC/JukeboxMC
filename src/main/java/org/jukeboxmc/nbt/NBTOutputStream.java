@@ -9,6 +9,10 @@ import java.util.Objects;
 import static org.jukeboxmc.nbt.NbtType.byClass;
 import static org.jukeboxmc.nbt.NbtUtils.MAX_DEPTH;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NBTOutputStream implements Closeable {
 
     private final DataOutput output;

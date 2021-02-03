@@ -13,6 +13,10 @@ import java.util.zip.GZIPOutputStream;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NbtUtils {
     public static final int MAX_DEPTH = 16;
 

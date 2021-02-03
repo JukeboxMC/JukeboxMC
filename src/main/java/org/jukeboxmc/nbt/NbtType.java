@@ -3,6 +3,10 @@ package org.jukeboxmc.nbt;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public final class NbtType<T> {
 
     public static final NbtType<Void> END = new NbtType<>( Void.class, Enum.END );

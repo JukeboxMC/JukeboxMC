@@ -12,6 +12,10 @@ import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
 import java.util.function.LongConsumer;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 @Immutable
 @ParametersAreNonnullByDefault
 public class NbtMap extends AbstractMap<String, Object> {

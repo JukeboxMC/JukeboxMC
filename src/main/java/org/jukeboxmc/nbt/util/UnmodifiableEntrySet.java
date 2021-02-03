@@ -5,6 +5,10 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class UnmodifiableEntrySet<K, V> implements Set<Map.Entry<K, V>>, Collection<Map.Entry<K, V>> {
 
     private final Set<? extends Map.Entry<K, V>> entrySet;

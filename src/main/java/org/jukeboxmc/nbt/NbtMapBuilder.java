@@ -6,6 +6,10 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NbtMapBuilder extends LinkedHashMap<String, Object> {
 
     NbtMapBuilder() {

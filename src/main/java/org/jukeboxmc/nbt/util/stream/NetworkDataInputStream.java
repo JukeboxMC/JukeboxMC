@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Cloudburst
+ * @version 1.0
+ */
 public class NetworkDataInputStream extends LittleEndianDataInputStream {
 
     public NetworkDataInputStream( InputStream stream) {
