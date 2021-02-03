@@ -12,6 +12,8 @@ import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.event.world.BlockBreakEvent;
+import org.jukeboxmc.event.world.BlockPlaceEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
@@ -28,10 +30,7 @@ import org.jukeboxmc.world.leveldb.LevelDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -412,7 +411,14 @@ public class World extends LevelDB {
                 }
             }
 
-            boolean success = placedBlock.placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent( player, placedBlock, replacedBlock, clickedBlock );
+            Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
+
+            if ( blockPlaceEvent.isCancelled() ) {
+                return false;
+            }
+
+            boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
             if ( success ) {
                 this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
             }
@@ -447,8 +453,16 @@ public class World extends LevelDB {
         return new Vector( x, y, z ).toBlockPosition();
     }
 
-    public void breakBlock( BlockPosition breakPosition, boolean isCreative ) {
+    public void breakBlock( Player player, BlockPosition breakPosition, boolean isCreative ) {
         Block breakBlock = this.getBlock( breakPosition );
+
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, new ArrayList<>() );
+        Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
+
+        if ( blockBreakEvent.isCancelled() ) {
+            breakBlock.sendBlockUpdate( player );
+            return;
+        }
 
         if ( breakBlock.onBlockBreak( breakPosition, isCreative ) ) {
             //Drop Item

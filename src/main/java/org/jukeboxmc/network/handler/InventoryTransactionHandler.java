@@ -78,7 +78,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {
-                            player.getWorld().breakBlock( blockPosition, true );
+                            player.getWorld().breakBlock( player, blockPosition, true );
                             return;
                         }
                         break;
