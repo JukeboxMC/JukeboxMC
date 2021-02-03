@@ -216,6 +216,6 @@ public class LoginPacket extends Packet {
     public String readString() {
         byte[] bytes = new byte[this.readLInt()];
         this.readBytes( bytes );
-        return new String( bytes );
+        return new String( bytes, StandardCharsets.UTF_8 );
     }
 }

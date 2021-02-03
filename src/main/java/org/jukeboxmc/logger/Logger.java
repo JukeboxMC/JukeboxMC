@@ -15,6 +15,10 @@ public class Logger {
         return instance;
     }
 
+    public void info( String message ) {
+        log.info( message );
+    }
+
     public void info( Object message ) {
         log.info( message );
     }

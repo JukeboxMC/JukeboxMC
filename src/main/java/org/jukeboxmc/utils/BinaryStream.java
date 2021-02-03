@@ -209,7 +209,7 @@ public class BinaryStream {
     }
 
     public void writeString( String value ) {
-        byte[] ascii = value.getBytes();
+        byte[] ascii = value.getBytes(StandardCharsets.UTF_8);
         this.writeUnsignedVarInt( ascii.length );
         this.buffer.writeBytes( ascii );
     }

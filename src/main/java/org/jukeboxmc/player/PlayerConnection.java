@@ -4,6 +4,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.ItemStoneSlab;
@@ -453,7 +454,12 @@ public class PlayerConnection {
 
         this.server.removePlayer( this.player.getAddress() );
         this.server.setOnlinePlayers( this.server.getOnlinePlayers().size() );
-        this.server.broadcastMessage( "§e" + this.player.getName() + " left the game" );
+
+        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this.player, "§e" + this.player.getName() + " left the game" );
+        Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
+        if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
+            this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
+        }
     }
 
     public void openInventory( Inventory inventory, BlockPosition position ) {

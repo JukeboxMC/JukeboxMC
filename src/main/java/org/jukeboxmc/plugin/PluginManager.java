@@ -3,17 +3,17 @@ package org.jukeboxmc.plugin;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.*;
 import org.jukeboxmc.logger.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -30,6 +30,7 @@ public class PluginManager {
     private final Object2ObjectMap<String, Plugin> pluginMap = new Object2ObjectArrayMap<>();
     private final Object2ObjectMap<String, Class<?>> cachedClasses = new Object2ObjectArrayMap<>();
     final Object2ObjectMap<String, PluginClassLoader> pluginClassLoaders = new Object2ObjectArrayMap<>();
+    final Map<Class<? extends Event>, Map<EventPriority, List<RegisteredListener>>> listeners = new HashMap<>();
 
     public PluginManager( Server server ) {
         this.server = server;
@@ -162,7 +163,7 @@ public class PluginManager {
         }
     }
 
-    public Class<?> getClassFromCache( String className ) {
+    Class<?> getClassFromCache( String className ) {
         Class<?> clazz = this.cachedClasses.get( className );
         if ( clazz != null ) {
             return clazz;
@@ -200,4 +201,39 @@ public class PluginManager {
         return this.server;
     }
 
+    public void registerListener( Listener listener ) {
+        Class<? extends Listener> listenerClass = listener.getClass();
+        Arrays.stream( listenerClass.getDeclaredMethods() ).forEach( method -> {
+            EventHandler eventHandler = method.getAnnotation( EventHandler.class );
+            if ( eventHandler == null ) {
+                return;
+            }
+            EventPriority eventPriority = eventHandler.priority();
+            if ( method.getParameterTypes().length != 1 || !Event.class.isAssignableFrom( method.getParameterTypes()[0] ) ) {
+                return;
+            }
+            Class<? extends Event> eventClass = (Class<? extends Event>) method.getParameterTypes()[0];
+            this.listeners.putIfAbsent( eventClass, new LinkedHashMap<>() );
+            this.listeners.get( eventClass ).putIfAbsent( eventPriority, new ArrayList<>() );
+            this.listeners.get( eventClass ).get( eventPriority ).add( new RegisteredListener( method, listener ) );
+        } );
+    }
+
+    public void callEvent( Event event ) {
+        Map<EventPriority, List<RegisteredListener>> eventPriorityListMap = this.listeners.get( event.getClass() );
+        if ( eventPriorityListMap != null ) {
+            for ( EventPriority eventPriority : EventPriority.values() ) {
+                List<RegisteredListener> methods = eventPriorityListMap.get( eventPriority );
+                if ( methods != null ) {
+                    for ( RegisteredListener registeredListener : methods ) {
+                        try {
+                            registeredListener.getMethod().invoke( registeredListener.getListener(), event );
+                        } catch ( IllegalAccessException | InvocationTargetException e ) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

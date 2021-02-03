@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author LucGamesYT
@@ -48,12 +49,12 @@ public abstract class RakNetPacket {
         short length = this.buffer.readShort();
         byte[] bytes = new byte[length];
         this.buffer.readBytes( buffer );
-        return new String( bytes );
+        return new String( bytes, StandardCharsets.UTF_8 );
     }
 
     public void writeString( String value ) {
         this.buffer.writeShort( value.length() );
-        this.buffer.writeBytes( value.getBytes() );
+        this.buffer.writeBytes( value.getBytes( StandardCharsets.UTF_8 ) );
     }
 
     @SneakyThrows
@@ -65,7 +66,7 @@ public abstract class RakNetPacket {
         } else if ( version == 6 ) {
             size = 16;
         } else {
-            throw new RuntimeException("Version: " + version);
+            throw new RuntimeException( "Version: " + version );
         }
 
         byte[] raw = new byte[size];
