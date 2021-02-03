@@ -1,12 +1,7 @@
 package org.jukeboxmc;
 
 import io.netty.util.ResourceLeakDetector;
-import lombok.Getter;
-import lombok.Setter;
-import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.nbt.NbtMap;
-
-import java.util.List;
+import org.jukeboxmc.logger.Logger;
 
 /**
  * @author LucGamesYT
@@ -14,31 +9,40 @@ import java.util.List;
  */
 public class JukeboxMC {
 
-    @Getter
-    @Setter
     private static JukeboxMC instance;
-    @Getter
+
+    private Logger logger;
     private Server server;
+
     public static void main( String[] args ) {
         JukeboxMC.setInstance( new JukeboxMC() );
     }
 
     private JukeboxMC() {
-        System.out.println( "Server is started...." );
         ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
 
-        this.server = new Server();
+        this.logger = Logger.getInstance();
+        this.logger.info( "Server is started...." );
+
+        this.server = new Server( this.logger );
         this.server.startServer();
 
-        System.out.println( "JukeboxMC is now running on the port " + this.server.getAddress().getPort() );
+        this.logger.info( "JukeboxMC is now running on the port " + this.server.getAddress().getPort() );
     }
 
-    private void initDebug() {
-        final List<NbtMap> blocks = BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).equals( "minecraft:wood" ) );
+    public static JukeboxMC getInstance() {
+        return instance;
+    }
 
-        for ( NbtMap nbtMap : blocks ) {
-            if ( nbtMap.getCompound( "states" ).getString( "wood_type" ).equalsIgnoreCase( "birch" ) && nbtMap.getCompound( "states" ).getString( "pillar_axis" ).equalsIgnoreCase( "y" ) && nbtMap.getInt( "stripped_bit" ) == 0 )
-                System.out.println( blocks.indexOf( nbtMap ) );
-        }
+    public static void setInstance( JukeboxMC instance ) {
+        JukeboxMC.instance = instance;
+    }
+
+    public Server getServer() {
+        return this.server;
+    }
+
+    public Logger getLogger() {
+        return this.logger;
     }
 }

@@ -7,6 +7,7 @@ import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerListPacket;
 import org.jukeboxmc.network.raknet.Connection;
@@ -49,6 +50,7 @@ public class Server {
 
     private File pluginFolder;
 
+    private Logger logger;
     private Config serverConfig;
     private PluginManager pluginManager;
     private TerminalConsole console;
@@ -65,8 +67,9 @@ public class Server {
     private Map<String, World> worlds = new HashMap<>();
     private Map<String, WorldGenerator> worldGenerator = new HashMap<>();
 
-    public Server() {
+    public Server( Logger logger ) {
         Server.setInstance( this );
+        this.logger = logger;
 
         this.pluginFolder = new File( "./plugins" );
         if ( !this.pluginFolder.exists() ) {
@@ -103,7 +106,7 @@ public class Server {
     public void startServer() {
         this.listener = new Listener( this );
         if ( !this.listener.listen( this.address ) ) {
-            System.out.println( "Der Server konnte nicht starten, läuft er bereits auf dem gleichen Port?" );
+            this.logger.error( "The server could not start, is it already running on the same port?" );
             return;
         }
 
@@ -147,8 +150,10 @@ public class Server {
     }
 
     public void shutdown() {
-        if ( this.isShutdown )
+        if ( this.isShutdown ) {
             return;
+        }
+
         this.isShutdown = true;
 
         for ( Player onlinePlayer : this.getOnlinePlayers() ) {
@@ -160,7 +165,7 @@ public class Server {
         this.scheduledExecutorService.shutdown();
         this.listener.shutdown();
 
-        System.out.print( "Shutdown successfully!" );
+        this.logger.info( "Shutdown successfully!" );
     }
 
     private void initServerConfig() {
@@ -179,6 +184,10 @@ public class Server {
         return this.address;
     }
 
+    public Logger getLogger() {
+        return this.logger;
+    }
+
     public Config getServerConfig() {
         return this.serverConfig;
     }
@@ -188,7 +197,7 @@ public class Server {
     }
 
     public ScheduledExecutorService getExecutorService() {
-        return scheduledExecutorService;
+        return this.scheduledExecutorService;
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {
@@ -273,13 +282,13 @@ public class Server {
 
         if ( !worldFolder.exists() ) {
             if ( !worldFolder.mkdirs() ) {
-                System.out.println( worldName + " could not be created because the folder could not be created" );
+                this.logger.error( worldName + " could not be created because the folder could not be created" );
             }
         }
 
         File regionFolder = new File( worldFolder, "db" );
         if ( !regionFolder.mkdir() ) {
-            System.out.println( worldName + " could not be created because the \"db\" folder could not be created" );
+            this.logger.error( worldName + " could not be created because the \"db\" folder could not be created" );
         }
 
         return new World( worldName, worldGenerator );
@@ -294,13 +303,13 @@ public class Server {
             World world = new World( worldName, worldGenerator );
             if ( world.loadLevelFile() && world.open() ) {
                 this.worlds.put( worldName.toLowerCase(), world );
-                System.out.println( worldName + " was successfully loaded" );
+                this.logger.info( "Loading the world \"" + worldName + "\" was successful"  );
                 return true;
             } else {
-                System.out.println( "Failed to load world: " + worldName );
+                this.logger.error( "Failed to load world: " + worldName );
             }
         } else {
-            System.out.println( worldName + " was already loaded" );
+            this.logger.warn( "The world \"" + worldName + "\" was already loaded" );
         }
         return false;
     }
@@ -316,7 +325,7 @@ public class Server {
                     //TODO Teleport player to default world
                 }
             } else {
-                System.out.println( "World " + worldName + " was not found" );
+                this.logger.warn( "The world \"" + worldName + "\" was not found" );
             }
         } );
     }
@@ -329,7 +338,7 @@ public class Server {
             }
             world.close();
         } else {
-            System.out.println( "World " + worldName + " was not found" );
+            this.logger.warn( "The world \"" + worldName + "\" was not found" );
         }
     }
 
@@ -344,7 +353,6 @@ public class Server {
         for ( Player onlinePlayers : this.players.values() ) {
             onlinePlayers.sendMessage( message );
         }
-        System.out.println( "[Broadcast] " + message );
     }
 
     public void broadcastPacket( Packet packet ) {

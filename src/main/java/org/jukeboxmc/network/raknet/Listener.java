@@ -189,7 +189,6 @@ public class Listener {
             this.connections.get( sender ).close();
             this.connections.remove( sender );
         }
-        System.out.println( reason );
         this.getRakNetEventManager().callEvent( new PlayerCloseConnectionEvent( connection ) );
     }
 

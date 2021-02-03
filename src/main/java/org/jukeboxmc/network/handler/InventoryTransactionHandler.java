@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.Inventory;
@@ -39,7 +40,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                                 if ( inventory != null ) {
                                     inventory.setItem( slot, targetItem );
                                 } else {
-                                    System.out.println( "Inventory with id " + transaction.getWindowId() + " is missing" );
+                                    Server.getInstance().getLogger().debug( "Inventory with id " + transaction.getWindowId() + " is missing" );
                                 }
                             }
                             break;
@@ -74,7 +75,6 @@ public class InventoryTransactionHandler implements PacketHandler {
                         }
                         break;
                     case 1: //Click Air
-                      //  System.out.println( "AIR" );
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {
@@ -87,10 +87,10 @@ public class InventoryTransactionHandler implements PacketHandler {
                 }
                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
-                System.out.println( "RELEASE" );
+                Server.getInstance().getLogger().debug( "RELEASE" );
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY:
-                System.out.println( "USE_ON_ENTITY" );
+                Server.getInstance().getLogger().debug( "USE_ON_ENTITY" );
                 break;
             default:
                 break;

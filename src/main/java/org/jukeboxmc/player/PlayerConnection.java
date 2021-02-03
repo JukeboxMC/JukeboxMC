@@ -8,6 +8,7 @@ import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.math.Vector2;
@@ -36,6 +37,7 @@ public class PlayerConnection {
 
     private Player player;
     private Server server;
+    private Logger logger;
     private Connection connection;
 
     private Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
@@ -50,6 +52,7 @@ public class PlayerConnection {
     public PlayerConnection( Player player, Server server, Connection connection ) {
         this.player = player;
         this.server = server;
+        this.logger = server.getLogger();
         this.connection = connection;
     }
 
@@ -81,7 +84,7 @@ public class PlayerConnection {
                 if ( handler != null ) {
                     handler.handle( packet, player );
                 } else {
-                    System.out.println( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
+                    this.logger.debug( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
                 }
             }
         }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
@@ -24,7 +25,7 @@ public class BlockPickRequestHandler implements PacketHandler {
         if ( player.getGameMode() == GameMode.CREATIVE ) {
             Item item = pickedBlock.toItem();
             if ( item instanceof ItemAir ) {
-                System.out.println( "User try to pick air" );
+                Server.getInstance().getLogger().debug( "User try to pick air" );
                 return;
             }
             player.getInventory().addItem( item );

@@ -22,6 +22,5 @@ public class AnimateHandler implements PacketHandler {
             default:
                 break;
         }
-        //System.out.println( animatePacket.toString() );
     }
 }

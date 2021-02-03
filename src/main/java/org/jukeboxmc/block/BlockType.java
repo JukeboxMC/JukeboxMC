@@ -583,8 +583,6 @@ public enum BlockType {
                 value.getBlock();
             }
         } );
-
-        System.out.println( "Blocks loading successfully" );
     }
 
     private Class<? extends Block> blockClass;

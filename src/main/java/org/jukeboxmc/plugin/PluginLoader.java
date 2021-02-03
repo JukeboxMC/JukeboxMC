@@ -1,5 +1,6 @@
 package org.jukeboxmc.plugin;
 
+import org.jukeboxmc.logger.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -16,9 +17,11 @@ import java.util.jar.JarFile;
  */
 public class PluginLoader {
 
+    private final Logger logger;
     private final PluginManager pluginManager;
 
-    public PluginLoader( PluginManager pluginManager ) {
+    public PluginLoader( Logger logger, PluginManager pluginManager ) {
+        this.logger = logger;
         this.pluginManager = pluginManager;
     }
 
@@ -32,7 +35,7 @@ public class PluginLoader {
             loader = new PluginClassLoader( this.pluginManager, this.getClass().getClassLoader(), pluginJar );
             this.pluginManager.pluginClassLoaders.put( pluginConfig.getName(), loader );
         } catch ( MalformedURLException e ) {
-            System.out.println( "Error while creating class loader(plugin=" + pluginConfig.getName() + ")" + e.getMessage() );
+            this.logger.error( "Error while creating class loader(plugin=" + pluginConfig.getName() + ")" + e.getMessage() );
             return null;
         }
 
@@ -47,7 +50,7 @@ public class PluginLoader {
             plugin.init( pluginConfig, this.pluginManager.getServer(), pluginJar );
             return plugin;
         } catch ( Exception e ) {
-            System.out.println( "Error while loading plugin main class(main=" + pluginConfig.getMain() + ",plugin=" + pluginConfig.getName() + ")" + e.getMessage() );
+            this.logger.error( "Error while loading plugin main class(main=" + pluginConfig.getMain() + ",plugin=" + pluginConfig.getName() + ")" + e.getMessage() );
         }
         return null;
     }
@@ -56,7 +59,7 @@ public class PluginLoader {
         try ( JarFile pluginJar = new JarFile( file ) ) {
             JarEntry configEntry = pluginJar.getJarEntry( "plugin.yml" );
             if ( configEntry == null ) {
-                System.out.println( "Jar file " + file.getName() + " doesnt contain a plugin.yml!" );
+                this.logger.warn( "Jar file " + file.getName() + " doesnt contain a plugin.yml!" );
                 return null;
             }
 
@@ -67,9 +70,9 @@ public class PluginLoader {
                     return pluginConfig;
                 }
             }
-            System.out.println( "Invalid plugin.yml for " + file.getName() + ": main and/or name property missing" );
+            this.logger.warn( "Invalid plugin.yml for " + file.getName() + ": main and/or name property missing" );
         } catch ( IOException e ) {
-            System.out.println( "Error while reading plugin directory" + e.getMessage() );
+            this.logger.error( "Error while reading plugin directory" + e );
         }
         return null;
     }

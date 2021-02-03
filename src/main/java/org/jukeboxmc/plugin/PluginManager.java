@@ -3,6 +3,7 @@ package org.jukeboxmc.plugin;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.logger.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
  */
 public class PluginManager {
 
+    private final Logger logger;
     private final Server server;
     private final PluginLoader pluginLoader;
 
@@ -31,7 +33,8 @@ public class PluginManager {
 
     public PluginManager( Server server ) {
         this.server = server;
-        this.pluginLoader = new PluginLoader( this );
+        this.logger = server.getLogger();
+        this.pluginLoader = new PluginLoader( this.logger, this );
         this.loadPluginsIn( this.server.getPluginFolder().toPath() );
     }
 
@@ -46,7 +49,7 @@ public class PluginManager {
                     .filter( PluginLoader::isJarFile )
                     .forEach( jarPath -> this.loadPlugin( jarPath, directStartup ) );
         } catch ( IOException e ) {
-            System.out.println( "Error while filtering plugin files " + e.getMessage() );
+            this.logger.error( "Error while filtering plugin files " + e );
         }
     }
 
@@ -56,7 +59,7 @@ public class PluginManager {
 
     public Plugin loadPlugin( Path path, boolean directStartup ) {
         if ( !Files.isRegularFile( path ) || !PluginLoader.isJarFile( path ) ) {
-            System.out.println( "Cannot load plugin: Provided file is no jar file: " + path.getFileName() );
+            this.logger.warn( "Cannot load plugin: Provided file is no jar file: " + path.getFileName() );
             return null;
         }
 
@@ -71,7 +74,7 @@ public class PluginManager {
         }
 
         if ( this.getPluginByName( config.getName() ) != null ) {
-            System.out.println( "Plugin is already loaded: " + config.getName() );
+            this.logger.warn( "Plugin is already loaded: " + config.getName() );
             return null;
         }
 
@@ -80,7 +83,7 @@ public class PluginManager {
             return null;
         }
 
-        System.out.println( "Loaded plugin " + config.getName() + " successfully! (version=" + config.getVersion() + ",author=" + config.getAuthor() + ")" );
+        this.logger.info( "Loaded plugin " + config.getName() + " Version:" + config.getVersion() + " successfully!" );
         this.pluginMap.put( config.getName(), plugin );
 
         plugin.onStartup();
@@ -88,7 +91,7 @@ public class PluginManager {
             try {
                 plugin.setEnabled( true );
             } catch ( Exception e ) {
-                System.out.println( "Direct startup failed!" + e.getMessage() );
+                this.logger.error( "Direct startup failed!" + e.getMessage() );
             }
         }
         return plugin;
@@ -112,7 +115,7 @@ public class PluginManager {
                     builder.append( ", " );
                 }
             }
-            System.out.println( builder.toString() );
+            this.logger.info( builder.toString() );
         }
     }
 
@@ -123,13 +126,13 @@ public class PluginManager {
         if ( plugin.getDescription().getDepends() != null ) {
             for ( String depend : plugin.getDescription().getDepends() ) {
                 if ( depend.equals( parent ) ) {
-                    System.out.println( "§cCan not enable plugin " + pluginName + " circular dependency " + parent + "!" );
+                    this.logger.warn( "§cCan not enable plugin " + pluginName + " circular dependency " + parent + "!" );
                     return false;
                 }
 
                 Plugin dependPlugin = this.getPluginByName( depend );
                 if ( dependPlugin == null ) {
-                    System.out.println( "§cCan not enable plugin " + pluginName + " missing dependency " + depend + "!" );
+                    this.logger.warn( "§cCan not enable plugin " + pluginName + " missing dependency " + depend + "!" );
                     return false;
                 }
 
@@ -150,7 +153,7 @@ public class PluginManager {
 
     public void disableAllPlugins() {
         for ( Plugin plugin : this.pluginMap.values() ) {
-            System.out.println( "Disabling plugin " + plugin.getName() + "!" );
+            this.logger.info( "Disabling plugin " + plugin.getName() + "..." );
             try {
                 plugin.setEnabled( false );
             } catch ( RuntimeException e ) {

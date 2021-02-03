@@ -35,9 +35,7 @@ public class LevelDB {
         this.worldFile = new File( this.worldFolder, "level.dat" );
 
         if ( !this.worldFolder.exists() ) {
-            if ( this.worldFolder.mkdirs() ) {
-                System.out.println( "Worlds folder was created successfully" );
-            }
+            this.worldFolder.mkdirs();
         }
     }
 

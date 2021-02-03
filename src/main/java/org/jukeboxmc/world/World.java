@@ -192,7 +192,7 @@ public class World extends LevelDB {
             chunk.save( this.db );
         }
         this.saveLevelDatFile();
-        System.out.println( this.name + " was successfully saved" );
+        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
     }
 
     @SneakyThrows

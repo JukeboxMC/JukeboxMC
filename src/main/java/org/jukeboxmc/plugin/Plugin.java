@@ -3,6 +3,7 @@ package org.jukeboxmc.plugin;
 import com.google.common.base.Preconditions;
 import lombok.NoArgsConstructor;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.utils.Utils;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public abstract class Plugin {
     private Server server;
     private File pluginFile;
     private File dataFolder;
-    private File configFile;
+    private Logger logger;
     private boolean initialized = false;
 
     protected final void init( PluginYAML description, Server server, File pluginFile ) {
@@ -31,13 +32,13 @@ public abstract class Plugin {
         this.initialized = true;
         this.description = description;
         this.server = server;
+        this.logger = server.getLogger();
 
         this.pluginFile = pluginFile;
         this.dataFolder = new File( server.getPluginFolder() + "/" + description.getName().toLowerCase() + "/" );
         if ( !this.dataFolder.exists() ) {
             this.dataFolder.mkdirs();
         }
-        this.configFile = new File( this.dataFolder, "config.yml" );
     }
 
     /**
@@ -70,7 +71,7 @@ public abstract class Plugin {
             JarEntry entry = pluginJar.getJarEntry( filename );
             return pluginJar.getInputStream( entry );
         } catch ( IOException e ) {
-            System.out.println( "Can not get plugin resource!" );
+            this.logger.error( "Can not get plugin resource!" );
         }
         return null;
     }
@@ -111,7 +112,7 @@ public abstract class Plugin {
             }
             Utils.writeFile( file, resource );
         } catch ( IOException e ) {
-            System.out.println( "Can not save plugin file!" );
+            this.logger.error( "Can not save plugin file!" );
             return false;
         }
         return true;
@@ -159,4 +160,7 @@ public abstract class Plugin {
         return this.dataFolder;
     }
 
+    public Logger getLogger() {
+        return this.logger;
+    }
 }

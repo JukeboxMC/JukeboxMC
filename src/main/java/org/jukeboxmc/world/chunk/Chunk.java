@@ -181,7 +181,6 @@ public class Chunk extends LevelDBChunk {
             try {
                 NbtMap build = blockEntity.toCompound().build();
                 networkWriter.writeTag( build );
-                System.out.println( build.toString() );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }

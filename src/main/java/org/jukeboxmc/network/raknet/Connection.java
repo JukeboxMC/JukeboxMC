@@ -3,6 +3,7 @@ package org.jukeboxmc.network.raknet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.network.packet.BatchPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -304,7 +305,7 @@ public class Connection {
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
             } else {
-                System.out.println( "Packet is missing: " + packetId );
+                Server.getInstance().getLogger().debug( "Packet is missing: " + packetId );
             }
         }
     }

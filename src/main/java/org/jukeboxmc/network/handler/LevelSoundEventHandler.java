@@ -14,6 +14,5 @@ public class LevelSoundEventHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         LevelSoundEventPacket levelSoundEventPacket = (LevelSoundEventPacket) packet;
 
-       // System.out.println( levelSoundEventPacket.toString() );
     }
 }

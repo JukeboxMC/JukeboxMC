@@ -947,7 +947,6 @@ public enum ItemType {
     private static final List<Item> CACHED_ITEMS = new ArrayList<>();
 
     public static void init() {
-        System.out.println( "Loading items..." );
         if ( INITIALIZED.get() ) {
             return;
         }
@@ -966,8 +965,6 @@ public enum ItemType {
         for ( ItemType value : ItemType.values() ) {
             CACHED_ITEMS.add( value.getItem() );
         }
-
-        System.out.println( "Items loading successfully" );
     }
 
     public static List<Item> getItems() {

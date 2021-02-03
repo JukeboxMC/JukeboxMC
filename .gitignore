@@ -40,6 +40,8 @@ dependency-reduced-pom.xml
 ### JukeboxMC Files ###################
 worlds
 properties.json
+logs
+plugins
 
 #IntelliJ
 /out/

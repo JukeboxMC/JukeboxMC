@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import lombok.SneakyThrows;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -124,7 +125,7 @@ public class Block implements Cloneable {
             world.setBlock( placePosition, this );
             return true;
         } else {
-            System.out.println( "Try to place block -> " + this.getName() );
+            Server.getInstance().getLogger().debug( "Try to place block -> " + this.getName() );
         }
         return false;
     }
