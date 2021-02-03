@@ -22,4 +22,4 @@ Maven:
 GIT: https://git-scm.com/downloads
 
 ## IMPORTANT
-This server software is not yet ready and has currently no plugin support
+This server software is not yet ready!
