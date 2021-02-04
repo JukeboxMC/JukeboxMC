@@ -1,7 +1,6 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
-import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
@@ -397,26 +396,6 @@ public class PlayerConnection {
         this.sendPacket( playSoundPacket );
     }
 
-    public void spawnPlayer( Player player ) {
-        AddPlayerPacket addPlayerPacket = new AddPlayerPacket();
-        addPlayerPacket.setUuid( player.getUUID() );
-        addPlayerPacket.setName( player.getName() );
-        addPlayerPacket.setEntityId( player.getEntityId() );
-        addPlayerPacket.setRuntimeEntityId( player.getEntityId() );
-        addPlayerPacket.setPlatformChatId( player.getDeviceInfo().getDeviceId() );
-        addPlayerPacket.setX( player.getX() );
-        addPlayerPacket.setY( player.getY() );
-        addPlayerPacket.setZ( player.getZ() );
-        addPlayerPacket.setVelocity( new Vector( 0, 0, 0 ) );
-        addPlayerPacket.setPitch( player.getPitch() );
-        addPlayerPacket.setHeadYaw( player.getHeadYaw() );
-        addPlayerPacket.setYaw( player.getYaw() );
-        addPlayerPacket.setItem( ItemType.AIR.getItem() );
-        addPlayerPacket.setMetadata( player.getMetadata() );
-        addPlayerPacket.setDeviceInfo( player.getDeviceInfo() );
-        this.sendPacket( addPlayerPacket );
-    }
-
     public void sendPlayerList() {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setType( PlayerListPacket.Type.ADD );
@@ -452,10 +431,48 @@ public class PlayerConnection {
         this.server.broadcastPacket( playerListPacket );
     }
 
-    public void despawnEntity( Entity entity ) {
+    public void spawnPlayer( Player player ) {
+        if ( this.player != player ) {
+            AddPlayerPacket addPlayerPacket = new AddPlayerPacket();
+            addPlayerPacket.setUuid( player.getUUID() );
+            addPlayerPacket.setName( player.getName() );
+            addPlayerPacket.setEntityId( player.getEntityId() );
+            addPlayerPacket.setRuntimeEntityId( player.getEntityId() );
+            addPlayerPacket.setPlatformChatId( player.getDeviceInfo().getDeviceId() );
+            addPlayerPacket.setX( player.getX() );
+            addPlayerPacket.setY( player.getY() );
+            addPlayerPacket.setZ( player.getZ() );
+            addPlayerPacket.setVelocity( new Vector( 0, 0, 0 ) );
+            addPlayerPacket.setPitch( player.getPitch() );
+            addPlayerPacket.setHeadYaw( player.getHeadYaw() );
+            addPlayerPacket.setYaw( player.getYaw() );
+            addPlayerPacket.setItem( ItemType.AIR.getItem() );
+            addPlayerPacket.setMetadata( player.getMetadata() );
+            addPlayerPacket.setDeviceInfo( player.getDeviceInfo() );
+            this.sendPacket( addPlayerPacket );
+        }
+    }
+
+    public void spawnToAll() {
+        for ( Player players : this.player.getWorld().getPlayers() ) {
+            if ( players != null ) {
+                players.getPlayerConnection().spawnPlayer( this.player );
+                this.player.getPlayerConnection().spawnPlayer( players );
+            }
+        }
+    }
+
+    public void despawn( Player player ) {
         RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
-        removeEntityPacket.setEntityId( entity.getEntityId() );
-        this.sendPacket( removeEntityPacket );
+        removeEntityPacket.setEntityId( this.player.getEntityId() );
+        player.getPlayerConnection().sendPacket( removeEntityPacket );
+    }
+
+    public void despawnForAll() {
+        for ( Player players : this.player.getWorld().getPlayers() ) {
+            this.despawn( players );
+            players.getPlayerConnection().despawn( this.player );
+        }
     }
 
     public void joinGame() {
@@ -490,9 +507,7 @@ public class PlayerConnection {
         this.player.getCursorInventory().removeViewer( this.player );
 
         this.removeFromList();
-        for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
-            onlinePlayer.getPlayerConnection().despawnEntity( this.player );
-        }
+        this.despawnForAll();
 
         this.server.removePlayer( this.player.getAddress() );
         this.server.setOnlinePlayers( this.server.getOnlinePlayers().size() );

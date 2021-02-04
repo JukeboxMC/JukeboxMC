@@ -19,21 +19,25 @@ public class PlayerMoveHandler implements PacketHandler {
     @Override
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
-        Location fromLocation = player.getLocation();
 
+        Location fromLocation = player.getLocation();
+        Chunk fromChunk = player.getChunk();
         Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
-        player.setHeadYaw( playerMovePacket.getHeadYaw() );
-        player.setLocation( toLocation );
-        player.setOnGround( playerMovePacket.isOnGround() );
 
         PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, fromLocation, toLocation );
         Server.getInstance().getPluginManager().callEvent( playerMoveEvent );
+
         if ( playerMoveEvent.isCancelled() ) {
             playerMoveEvent.setTo( fromLocation );
+            player.teleport( fromLocation );
         }
 
-        Chunk fromChunk = playerMoveEvent.getFrom().getChunk();
-        Chunk toChunk = playerMoveEvent.getTo().getChunk();
+        player.setHeadYaw( playerMovePacket.getHeadYaw() );
+        player.setLocation( playerMoveEvent.getTo() );
+        player.setOnGround( playerMovePacket.isOnGround() );
+
+        Chunk toChunk = player.getChunk();
+
         if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
             fromChunk.removeEntity( player );
             toChunk.addEntity( player );
@@ -41,9 +45,10 @@ public class PlayerMoveHandler implements PacketHandler {
 
         for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
             if ( onlinePlayer != player ) {
-                onlinePlayer.getPlayerConnection().movePlayer( playerMoveEvent.getTo(), PlayerMovePacket.Mode.NORMAL );
+                onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
             }
         }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append( " §bChunkX§7: §f" ).append( player.getChunkX() ).append( " §bChunkZ§7: §f" ).append( player.getChunkZ() );
 

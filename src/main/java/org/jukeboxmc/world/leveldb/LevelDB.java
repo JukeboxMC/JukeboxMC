@@ -49,7 +49,7 @@ public class LevelDB {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                this.spawnLocation = new Vector( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 4 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 return true;
             } catch ( IOException e ) {
