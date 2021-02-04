@@ -1,5 +1,6 @@
 package org.jukeboxmc.event.player;
 
+import org.jukeboxmc.event.CancelablePlayerEvent;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.player.Player;
 

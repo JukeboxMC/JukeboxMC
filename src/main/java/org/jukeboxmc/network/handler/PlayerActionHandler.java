@@ -1,5 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
+import org.jukeboxmc.event.player.PlayerToggleSneakEvent;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerActionPacket;
 import org.jukeboxmc.player.Player;
@@ -17,10 +19,22 @@ public class PlayerActionHandler implements PacketHandler {
 
         switch ( action ) {
             case START_SNEAK:
-                player.setSneaking( true );
+                PlayerToggleSneakEvent playerToggleSneakEvent = new PlayerToggleSneakEvent( player, true );
+                Server.getInstance().getPluginManager().callEvent( playerToggleSneakEvent );
+                if ( playerToggleSneakEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setSneaking( true );
+                }
                 break;
             case STOP_SNEAK:
-                player.setSneaking( false );
+                playerToggleSneakEvent = new PlayerToggleSneakEvent( player, false );
+                Server.getInstance().getPluginManager().callEvent( playerToggleSneakEvent );
+                if ( playerToggleSneakEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setSneaking( false );
+                }
                 break;
             case START_SPRINT:
                 player.setSprinting( true );

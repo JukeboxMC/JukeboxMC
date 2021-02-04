@@ -1,7 +1,7 @@
 package org.jukeboxmc.event.world;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.player.CancelablePlayerEvent;
+import org.jukeboxmc.event.CancelablePlayerEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.Player;
 

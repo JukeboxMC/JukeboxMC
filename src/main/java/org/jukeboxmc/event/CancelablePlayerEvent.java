@@ -1,6 +1,5 @@
-package org.jukeboxmc.event.player;
+package org.jukeboxmc.event;
 
-import org.jukeboxmc.event.CancelableEvent;
 import org.jukeboxmc.player.Player;
 
 /**
