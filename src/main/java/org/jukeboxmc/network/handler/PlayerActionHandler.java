@@ -1,8 +1,10 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.player.PlayerToggleGlideEvent;
 import org.jukeboxmc.event.player.PlayerToggleSneakEvent;
 import org.jukeboxmc.event.player.PlayerToggleSprintEvent;
+import org.jukeboxmc.event.player.PlayerToggleSwimEvent;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerActionPacket;
 import org.jukeboxmc.player.Player;
@@ -56,17 +58,40 @@ public class PlayerActionHandler implements PacketHandler {
                 }
                 break;
             case START_SWIMMING:
-
+                PlayerToggleSwimEvent playerToggleSwimEvent = new PlayerToggleSwimEvent( player, true );
+                Server.getInstance().getPluginManager().callEvent( playerToggleSwimEvent );
+                if ( playerToggleSwimEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setSwimming( true );
+                }
                 break;
             case STOP_SWIMMING:
-
+                playerToggleSwimEvent = new PlayerToggleSwimEvent( player, false );
+                Server.getInstance().getPluginManager().callEvent( playerToggleSwimEvent );
+                if ( playerToggleSwimEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setSwimming( false );
+                }
                 break;
             case START_GLIDE:
-
+                PlayerToggleGlideEvent playerToggleGlideEvent = new PlayerToggleGlideEvent( player, true );
+                Server.getInstance().getPluginManager().callEvent( playerToggleGlideEvent );
+                if ( playerToggleGlideEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setGliding( true );
+                }
                 break;
-
             case STOP_GLIDE:
-
+                playerToggleGlideEvent = new PlayerToggleGlideEvent( player, false );
+                Server.getInstance().getPluginManager().callEvent( playerToggleGlideEvent );
+                if ( playerToggleGlideEvent.isCancelled() ) {
+                    player.getPlayerConnection().sendMetadata();
+                } else {
+                    player.setGliding( false );
+                }
                 break;
             default:
                 break;
