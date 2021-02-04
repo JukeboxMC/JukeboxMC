@@ -15,6 +15,10 @@ public class CancelableEvent extends Event {
         this.cancelled = cancelled;
     }
 
+    public void setCancelled() {
+        this.cancelled = true;
+    }
+
     public boolean isCancelled() {
         return this.cancelled;
     }
