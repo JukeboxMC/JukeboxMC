@@ -1,5 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
+import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.Packet;
@@ -17,15 +19,21 @@ public class PlayerMoveHandler implements PacketHandler {
     @Override
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
-        Chunk fromChunk = player.getChunk();
+        Location fromLocation = player.getLocation();
 
         Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
         player.setHeadYaw( playerMovePacket.getHeadYaw() );
         player.setLocation( toLocation );
         player.setOnGround( playerMovePacket.isOnGround() );
 
-        Chunk toChunk = player.getChunk();
+        PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, fromLocation, toLocation );
+        Server.getInstance().getPluginManager().callEvent( playerMoveEvent );
+        if ( playerMoveEvent.isCancelled() ) {
+            playerMoveEvent.setTo( fromLocation );
+        }
 
+        Chunk fromChunk = playerMoveEvent.getFrom().getChunk();
+        Chunk toChunk = playerMoveEvent.getTo().getChunk();
         if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
             fromChunk.removeEntity( player );
             toChunk.addEntity( player );
@@ -33,7 +41,7 @@ public class PlayerMoveHandler implements PacketHandler {
 
         for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
             if ( onlinePlayer != player ) {
-                onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
+                onlinePlayer.getPlayerConnection().movePlayer( playerMoveEvent.getTo(), PlayerMovePacket.Mode.NORMAL );
             }
         }
         StringBuilder stringBuilder = new StringBuilder();
@@ -46,6 +54,7 @@ public class PlayerMoveHandler implements PacketHandler {
             stringBuilder.append( "\n" ).append( "§7Block§8: §e" ).append( player.getWorld().getBlock( player.getLocation().subtract( 0, 1, 0 ) ).getName() );
             Biome biome = player.getWorld().getBiome( player.getLocation() );
             stringBuilder.append( "\n" ).append( "§7Biome§8: §e" ).append( biome != null ? biome.getName() : "Plains (Null)" );
+            stringBuilder.append( "\n" ).append( "§7World§8: §e" ).append( player.getWorld().getName() );
         }
         player.sendTip( stringBuilder.toString() );
     }

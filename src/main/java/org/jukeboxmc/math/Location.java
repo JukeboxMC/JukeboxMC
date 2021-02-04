@@ -17,6 +17,11 @@ public class Location extends Vector {
         super( x, y, z );
     }
 
+    public Location( World world, Vector vector ) {
+        super( vector.getX(), vector.getY(), vector.getZ() );
+        this.world = world;
+    }
+
     public Location( World world, BlockPosition position ) {
         super( position.getX(), position.getY(), position.getZ() );
         this.world = world;

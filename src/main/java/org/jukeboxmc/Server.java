@@ -129,7 +129,7 @@ public class Server {
             Connection connection = event.getConnection();
             String reason = event.getReason();
             Player player = this.players.get( connection.getSender() );
-            if ( player != null ) {
+            if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().leaveGame( reason );
             }
         } );
@@ -138,8 +138,16 @@ public class Server {
         this.scheduledExecutorService.scheduleAtFixedRate( () -> {
             try {
                 long currentTick = startTime.getAndIncrement();
-                if ( this.defaultWorld != null ) {
-                    this.defaultWorld.update( currentTick );
+                for ( Player player : this.players.values() ) {
+                    if(player.isSpawned()) {
+                        player.getPlayerConnection().update( currentTick );
+
+                    }
+                }
+                for ( World world : this.getWorlds() ) {
+                    if ( world != null ) {
+                        world.update( currentTick );
+                    }
                 }
                 for ( Player player : this.players.values() ) {
                     player.getPlayerConnection().updateNetwork( currentTick );
@@ -239,6 +247,7 @@ public class Server {
                 return world;
             }
         }
+        this.logger.warn( "The world \"" + name + "\" is not loaded" );
         return null;
     }
 
@@ -304,7 +313,7 @@ public class Server {
             World world = new World( worldName, worldGenerator );
             if ( world.loadLevelFile() && world.open() ) {
                 this.worlds.put( worldName.toLowerCase(), world );
-                this.logger.info( "Loading the world \"" + worldName + "\" was successful"  );
+                this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;
             } else {
                 this.logger.error( "Failed to load world: " + worldName );

@@ -342,8 +342,26 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     //TODO Implement world teleport
 
+    private void switchWorld( World world ) {
+        World currentWorld = this.getWorld();
+
+        if ( currentWorld != world ) {
+            this.getChunk().removeEntity( this );
+
+            currentWorld.removePlayer( this );
+            this.playerConnection.getChunkLoadQueue().clear();
+            this.playerConnection.getLoadedChunks().clear();
+            this.playerConnection.getLoadingChunks().clear();
+            world.addPlayer( this );
+
+            this.setLocation( new Location( world, world.getSpawnLocation() ) );
+            this.getChunk().addEntity( this );
+            this.playerConnection.needNewChunks();
+        }
+    }
+
     public void teleport( Player player ) {
-        this.playerConnection.movePlayer( player, PlayerMovePacket.Mode.TELEPORT );
+        this.playerConnection.movePlayer( player, PlayerMovePacket.Mode.RESET );
     }
 
     public void teleport( Player player, PlayerMovePacket.Mode mode ) {
@@ -351,15 +369,16 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     public void teleport( Location location ) {
-        this.playerConnection.movePlayer( location, PlayerMovePacket.Mode.TELEPORT );
+        this.teleport( location, PlayerMovePacket.Mode.RESET );
     }
 
     public void teleport( Location location, PlayerMovePacket.Mode mode ) {
+        this.switchWorld( location.getWorld() );
         this.playerConnection.movePlayer( location, mode );
     }
 
     public void teleport( Vector vector ) {
-        this.playerConnection.movePlayer( vector, PlayerMovePacket.Mode.TELEPORT );
+        this.playerConnection.movePlayer( vector, PlayerMovePacket.Mode.RESET );
     }
 
     public void teleport( Vector vector, PlayerMovePacket.Mode mode ) {

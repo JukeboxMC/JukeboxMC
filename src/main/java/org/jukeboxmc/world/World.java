@@ -30,7 +30,10 @@ import org.jukeboxmc.world.leveldb.LevelDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,29 +48,29 @@ public class World extends LevelDB {
 
     private int worldTime;
 
-    private Map<Long, Chunk> chunkMap = new ConcurrentHashMap<>();
-    private Map<Long, Player> players = new ConcurrentHashMap<>();
+    private Map<Long, Chunk> chunkMap;
+    private Map<Long, Player> players;
 
     public World( String name, WorldGenerator worldGenerator ) {
         super( name );
+        this.chunkMap = new ConcurrentHashMap<>();
+        this.players = new ConcurrentHashMap<>();
+
         this.name = name;
         this.worldGenerator = worldGenerator;
         this.difficulty = Difficulty.NORMAL;
-        this.spawnLocation = new Vector( 0, 7, 0 );
-
+        this.spawnLocation = new Vector( 0, 4, 0 );
         this.saveLevelDatFile();
     }
 
     public void update( long currentTick ) {
+        this.worldTime++;
+        while ( this.worldTime >= 24000 ) {
+            this.worldTime -= 24000;
+        }
+
         for ( Player player : this.players.values() ) {
             if ( player != null && player.isSpawned() ) {
-                player.getPlayerConnection().update( currentTick );
-
-                this.worldTime++;
-                while ( this.worldTime >= 24000 ) {
-                    this.worldTime -= 24000;
-                }
-
                 player.getPlayerConnection().sendTime( this.worldTime );
             }
         }
@@ -87,6 +90,10 @@ public class World extends LevelDB {
 
     public void removePlayer( Player player ) {
         this.players.remove( player.getEntityId() );
+    }
+
+    public Map<Long, Chunk> getChunkMap() {
+        return this.chunkMap;
     }
 
     public Collection<Player> getPlayers() {
@@ -315,12 +322,12 @@ public class World extends LevelDB {
         return this.worldTime;
     }
 
-    public void setSpawnLocation( Vector spawnLocation ) {
+    public void setSpawnLocation( Location spawnLocation ) {
         this.spawnLocation = spawnLocation;
     }
 
-    public Vector getSpawnLocation() {
-        return this.spawnLocation;
+    public Location getSpawnLocation() {
+        return new Location( this, this.spawnLocation );
     }
 
     public void setDifficulty( Difficulty difficulty ) {

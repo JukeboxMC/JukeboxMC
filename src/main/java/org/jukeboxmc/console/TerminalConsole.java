@@ -4,6 +4,7 @@ import net.minecrell.terminalconsole.SimpleTerminalConsole;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -22,10 +23,16 @@ public class TerminalConsole extends SimpleTerminalConsole {
     @Override
     protected void runCommand( String command ) {
         if ( command.startsWith( "stop" ) ) {
-            this.server.unloadWorld( "world" );
+            for ( World world : this.server.getWorlds() ) {
+                this.server.unloadWorld( world.getName() );
+            }
             this.server.shutdown();
         } else if ( command.startsWith( "save" ) ) {
-            this.server.getWorld( "world" ).save();
+            for ( World world : this.server.getWorlds() ) {
+                if ( world != null ) {
+                    world.save();
+                }
+            }
         }
     }
 

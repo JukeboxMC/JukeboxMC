@@ -7,7 +7,6 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
-import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.math.BlockPosition;
@@ -26,7 +25,10 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author LucGamesYT
@@ -40,11 +42,11 @@ public class PlayerConnection {
     private Connection connection;
 
     private Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
-    private Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
     private Queue<Packet> sendQueue = new ConcurrentLinkedQueue<>();
+    private Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
 
-    private Set<Long> loadingChunks = new CopyOnWriteArraySet<>();
-    private Set<Long> loadedChunks = new CopyOnWriteArraySet<>();
+    private List<Long> loadingChunks = new CopyOnWriteArrayList<>();
+    private List<Long> loadedChunks = new CopyOnWriteArrayList<>();
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -68,6 +70,18 @@ public class PlayerConnection {
         }
 
         this.needNewChunks();
+    }
+
+    public Queue<Long> getChunkLoadQueue() {
+        return this.chunkLoadQueue;
+    }
+
+    public List<Long> getLoadedChunks() {
+        return this.loadedChunks;
+    }
+
+    public List<Long> getLoadingChunks() {
+        return this.loadingChunks;
     }
 
     public void updateNetwork( long currentTick ) {
