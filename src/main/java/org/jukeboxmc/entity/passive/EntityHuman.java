@@ -76,4 +76,24 @@ public class EntityHuman extends Entity implements InventoryHolder {
             this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, value ) );
         }
     }
+
+    public boolean isSwimming() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.SWIMMING );
+    }
+
+    public void setSwimming( boolean value ) {
+        if ( value != this.isSwimming() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SWIMMING, value ) );
+        }
+    }
+
+    public boolean isGliding() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.GLIDING );
+    }
+
+    public void setGliding( boolean value ) {
+        if ( value != this.isGliding() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.GLIDING, value ) );
+        }
+    }
 }

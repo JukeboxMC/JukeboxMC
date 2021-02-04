@@ -63,10 +63,6 @@ public abstract class Entity {
         this.entityId = entityId;
     }
 
-    public String getNameTag() {
-        return this.metadata.getString( MetadataFlag.NAMETAG );
-    }
-
     public Location getLocation() {
         return this.location;
     }
@@ -102,8 +98,12 @@ public abstract class Entity {
         return SignDirection.values()[(int) Math.floor( ( ( this.location.getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f];
     }
 
+    public String getNameTag() {
+        return this.metadata.getString( MetadataFlag.NAMETAG );
+    }
+
     public void setNameTag( String value ) {
-        this.metadata.setString( MetadataFlag.NAMETAG, value );
+        this.updateMetadata( this.metadata.setString( MetadataFlag.NAMETAG, value ) );
     }
 
     public boolean isNameTagVisible() {
@@ -112,7 +112,7 @@ public abstract class Entity {
 
     public void setNameTagVisible( boolean value ) {
         if ( value != this.isNameTagVisible() ) {
-            this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SHOW_NAMETAG, value );
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SHOW_NAMETAG, value ) );
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class Entity {
 
     public void setNameTagAlwaysVisible( boolean value ) {
         if ( value != this.isNameTagAlwaysVisible() ) {
-            this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SHOW_ALWAYS_NAMETAG, value );
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.SHOW_ALWAYS_NAMETAG, value ) );
         }
     }
 
@@ -132,7 +132,56 @@ public abstract class Entity {
 
     public void setCanClimb( boolean value ) {
         if ( value != this.canClimb() ) {
-            this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, value );
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, value ) );
+        }
+    }
+
+    public boolean isInvisible() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.INVISIBLE );
+    }
+
+    public void setInvisible( boolean value ) {
+        if ( value != this.isInvisible() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.INVISIBLE, value ) );
+        }
+    }
+
+    public boolean isBurning() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.ON_FIRE );
+    }
+
+    public void setBurning( boolean value ) {
+        if ( value != this.isBurning() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ON_FIRE, value ) );
+        }
+    }
+
+    public boolean isImmobile() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.IMMOBILE );
+    }
+
+    public void setImmobile( boolean value ) {
+        if ( value != this.isImmobile() ) {
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.IMMOBILE, value ) );
+        }
+    }
+
+    public float getScale() {
+        return this.metadata.getFloat( MetadataFlag.SCALE );
+    }
+
+    public void setScale( float value ) {
+        this.updateMetadata( this.metadata.setFloat( MetadataFlag.SCALE, value ) );
+        this.recalcBoundingBox();
+    }
+
+    public boolean hasCollision() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION );
+    }
+
+    public void setCollision( boolean value ) {
+        if(this.hasCollision() != value){
+            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, value ) );
         }
     }
 

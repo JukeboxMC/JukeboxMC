@@ -55,6 +55,19 @@ public class PlayerActionHandler implements PacketHandler {
                     player.setSprinting( false );
                 }
                 break;
+            case START_SWIMMING:
+
+                break;
+            case STOP_SWIMMING:
+
+                break;
+            case START_GLIDE:
+
+                break;
+
+            case STOP_GLIDE:
+
+                break;
             default:
                 break;
         }
