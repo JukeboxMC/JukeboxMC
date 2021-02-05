@@ -156,8 +156,13 @@ public class World extends LevelDB {
 
             byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
             if ( version == null ) {
-                WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
-                worldGenerator.generate( chunk );
+                if ( this.worldGenerator != null ) {
+                    WorldGenerator worldGenerator = this.worldGenerator;
+                    worldGenerator.generate( chunk );
+                } else {
+                    WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
+                    worldGenerator.generate( chunk );
+                }
             } else {
                 byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 

@@ -24,7 +24,6 @@ public class FlatGenerator extends WorldGenerator {
 
     @Override
     public void generate( Chunk chunk ) {
-
         for ( int blockX = 0; blockX < 16; blockX++ ) {
             for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                 chunk.setBiome( blockX, blockZ, Biome.PLAINS );

@@ -331,11 +331,8 @@ public class Server {
                 if ( world == this.defaultWorld || this.defaultWorld == null ) {
                     player.disconnect( "World was unloaded" );
                 } else {
-                    player.disconnect( "World was unloaded" );
-                    //TODO Teleport player to default world
+                    player.teleport( this.defaultWorld.getSpawnLocation() );
                 }
-            } else {
-                this.logger.warn( "The world \"" + worldName + "\" was not found" );
             }
         } );
     }
