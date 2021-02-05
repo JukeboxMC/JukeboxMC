@@ -429,16 +429,19 @@ public class World extends LevelDB {
 
         if ( ( !interact ) || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced() ) {
+                System.out.println( 1 );
                 return false;
             }
 
             if ( placedBlock.isSolid() ) {
                 Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
                 if ( !nearbyEntities.isEmpty() ) {
+                    System.out.println( 2 );
                     return false;
                 }
                 AxisAlignedBB boundingBox = player.getBoundingBox();
                 if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+                    System.out.println( 3 );
                     return false;
                 }
             }

@@ -479,8 +479,6 @@ public class PlayerConnection {
         World world = this.server.getDefaultWorld();
         world.addPlayer( this.player );
 
-        this.sendNetworkChunkPublisher();
-
         this.sendTime( 1000 );
         this.sendAdventureSettings();
         this.sendAttributes( this.player.getAttributes().getAttributes() );
@@ -498,6 +496,7 @@ public class PlayerConnection {
         this.player.getChunk().addEntity( this.player );
 
         this.player.setSpawned( true );
+        this.sendNetworkChunkPublisher();
     }
 
     public void leaveGame( String reason ) {
