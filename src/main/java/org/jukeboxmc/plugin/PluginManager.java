@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -203,20 +204,20 @@ public class PluginManager {
 
     public void registerListener( Listener listener ) {
         Class<? extends Listener> listenerClass = listener.getClass();
-        Arrays.stream( listenerClass.getDeclaredMethods() ).forEach( method -> {
+        for ( Method method : listenerClass.getDeclaredMethods() ) {
             EventHandler eventHandler = method.getAnnotation( EventHandler.class );
             if ( eventHandler == null ) {
-                return;
+                continue;
             }
             EventPriority eventPriority = eventHandler.priority();
             if ( method.getParameterTypes().length != 1 || !Event.class.isAssignableFrom( method.getParameterTypes()[0] ) ) {
-                return;
+                continue;
             }
             Class<? extends Event> eventClass = (Class<? extends Event>) method.getParameterTypes()[0];
             this.listeners.putIfAbsent( eventClass, new LinkedHashMap<>() );
             this.listeners.get( eventClass ).putIfAbsent( eventPriority, new ArrayList<>() );
             this.listeners.get( eventClass ).get( eventPriority ).add( new RegisteredListener( method, listener ) );
-        } );
+        }
     }
 
     public void callEvent( Event event ) {
@@ -229,7 +230,12 @@ public class PluginManager {
                         try {
                             registeredListener.getMethod().invoke( registeredListener.getListener(), event );
                         } catch ( IllegalAccessException | InvocationTargetException e ) {
-                            e.printStackTrace();
+                            this.getServer().getLogger().warn( "Plugin listener had exception: " );
+                            if(e.getCause() != null ) {
+                                e.getCause().printStackTrace();
+                            } else {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
