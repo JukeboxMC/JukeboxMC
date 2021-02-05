@@ -82,24 +82,23 @@ public class Server {
         BlockType.init();
         ItemType.init();
 
-        this.pluginManager = new PluginManager( this );
-        this.pluginManager.enableAllPlugins();
-
         this.console = new TerminalConsole( this );
         this.console.getConsoleThread().start();
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
+
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins();
 
         this.registerGenerator( "Flat", FlatGenerator.class );
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
         String defaultWorldName = this.serverConfig.getString( "defaultworld" );
-        if ( this.loadWorld( defaultWorldName ) ) {
+        if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
-        } else {
-            this.defaultWorld = this.createWorld( defaultWorldName, this.overWorldGenerator );
         }
+
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
     }
 
@@ -139,7 +138,7 @@ public class Server {
             try {
                 long currentTick = startTime.getAndIncrement();
                 for ( Player player : this.players.values() ) {
-                    if(player.isSpawned()) {
+                    if ( player.isSpawned() ) {
                         player.getPlayerConnection().update( currentTick );
 
                     }
@@ -247,7 +246,6 @@ public class Server {
                 return world;
             }
         }
-        this.logger.warn( "The world \"" + name + "\" is not loaded" );
         return null;
     }
 
@@ -287,28 +285,11 @@ public class Server {
         return this.playerListEntry;
     }
 
-    public World createWorld( String worldName, WorldGenerator worldGenerator ) {
-        File worldFolder = new File( "./worlds/" + worldName );
-
-        if ( !worldFolder.exists() ) {
-            if ( !worldFolder.mkdirs() ) {
-                this.logger.error( worldName + " could not be created because the folder could not be created" );
-            }
-        }
-
-        File regionFolder = new File( worldFolder, "db" );
-        if ( !regionFolder.mkdir() ) {
-            this.logger.error( worldName + " could not be created because the \"db\" folder could not be created" );
-        }
-
-        return new World( worldName, worldGenerator );
+    public boolean loadOrCreateWorld( String worldName ) {
+        return this.loadOrCreateWorld( worldName, this.overWorldGenerator );
     }
 
-    public boolean loadWorld( String worldName ) {
-        return this.loadWorld( worldName, this.overWorldGenerator );
-    }
-
-    public boolean loadWorld( String worldName, WorldGenerator worldGenerator ) {
+    public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             World world = new World( worldName, worldGenerator );
             if ( world.loadLevelFile() && world.open() ) {
