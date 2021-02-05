@@ -496,6 +496,7 @@ public class PlayerConnection {
         }
 
         this.player.getChunk().addEntity( this.player );
+
         this.player.setSpawned( true );
     }
 

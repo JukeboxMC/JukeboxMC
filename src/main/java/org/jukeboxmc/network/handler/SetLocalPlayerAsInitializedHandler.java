@@ -4,6 +4,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -13,7 +14,7 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
 
     @Override
     public void handle( Packet packet, Player player ) {
-       player.getPlayerConnection().spawnToAll();
+        player.getPlayerConnection().spawnToAll();
 
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( player, "§e" + player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );

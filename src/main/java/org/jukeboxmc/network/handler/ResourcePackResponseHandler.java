@@ -24,7 +24,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_HAVE_ALL_PACKS ) {
             player.getPlayerConnection().sendResourcePackStack();
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_COMPLETED ) {
-            Vector worldSpawn = player.getWorld().getSpawnLocation();
+            Vector worldSpawn = player.getWorld().getSafeSpawnLocation();
 
             StartGamePacket startGamePacket = new StartGamePacket();
             startGamePacket.setEntityId( player.getEntityId() );

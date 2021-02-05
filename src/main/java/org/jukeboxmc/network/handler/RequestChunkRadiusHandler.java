@@ -19,11 +19,8 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         player.getPlayerConnection().needNewChunks();
 
         if ( !player.isSpawned() ) {
-            if(!player.isSpawned()) {
-                player.getPlayerConnection().joinGame();
-            }
+            player.getPlayerConnection().joinGame();
         }
-
     }
 }
 //

@@ -73,6 +73,12 @@ public class Chunk extends LevelDBChunk {
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
     }
 
+    public int getRuntimeId( int x, int y, int z, int layer ) {
+        int subY = y >> 4;
+        this.getCheckAndCreateSubChunks( subY );
+        return this.subChunks[subY].getRuntimeId( x & 15, y & 15, z & 15, layer );
+    }
+
     public Block getBlock( int x, int y, int z, int layer ) {
         int subY = y >> 4;
         this.getCheckAndCreateSubChunks( subY );

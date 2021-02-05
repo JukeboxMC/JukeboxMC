@@ -87,12 +87,12 @@ public class Server {
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
-        this.pluginManager = new PluginManager( this );
-        this.pluginManager.enableAllPlugins();
-
         this.registerGenerator( "Flat", FlatGenerator.class );
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
+
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins();
 
         String defaultWorldName = this.serverConfig.getString( "defaultworld" );
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
@@ -222,6 +222,10 @@ public class Server {
 
     public void setDefaultGamemode( GameMode defaultGamemode ) {
         this.listener.getServerInfo().setGameMode( defaultGamemode );
+    }
+
+    public void setDefaultWorld( World defaultWorld ) {
+        this.defaultWorld = defaultWorld;
     }
 
     public GameMode getDefaultGamemode() {

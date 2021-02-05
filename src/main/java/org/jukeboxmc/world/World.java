@@ -48,6 +48,8 @@ public class World extends LevelDB {
 
     private int worldTime;
 
+    private boolean prepareSpawnLocaion = false;
+
     private Map<Long, Chunk> chunkMap;
     private Map<Long, Player> players;
 
@@ -59,7 +61,7 @@ public class World extends LevelDB {
         this.name = name;
         this.worldGenerator = worldGenerator;
         this.difficulty = Difficulty.NORMAL;
-        this.spawnLocation = new Vector( 0, 4, 0 );
+        this.spawnLocation = new Location( 0, 4 + 1.62f, 0 );
         this.saveLevelDatFile();
     }
 
@@ -98,6 +100,24 @@ public class World extends LevelDB {
 
     public Collection<Player> getPlayers() {
         return this.players.values();
+    }
+
+    public Location getSafeSpawnLocation() {
+        if ( this.prepareSpawnLocaion ) {
+            return this.spawnLocation;
+        }
+        int airRuntimeId = new BlockAir().getRuntimeId();
+        BlockPosition blockPosition = new BlockPosition( this.spawnLocation.getFloorX(), 0, this.spawnLocation.getFloorZ() );
+        Chunk chunk = this.getChunk( this.spawnLocation.getFloorX() >> 4, this.spawnLocation.getFloorX() >> 4 );
+        for ( int i = 255; i > 0; i-- ) {
+            blockPosition.setY( i );
+            if ( chunk.getRuntimeId( blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), 0 ) != airRuntimeId ) {
+                this.spawnLocation.setY( 2.5f + i );
+                break;
+            }
+        }
+        this.prepareSpawnLocaion = true;
+        return this.spawnLocation;
     }
 
     @SneakyThrows
