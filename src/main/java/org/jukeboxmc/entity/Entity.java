@@ -10,6 +10,8 @@ import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.SetEntityDataPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 
 /**
  * @author LucGamesYT
@@ -67,9 +69,85 @@ public abstract class Entity {
         return this.location;
     }
 
+    public World getWorld() {
+        return this.location.getWorld();
+    }
+
+    public float getX() {
+        return this.getLocation().getX();
+    }
+
+    public int getFloorX() {
+        return (int) Math.floor( this.getLocation().getX() );
+    }
+
+    public float getY() {
+        return this.location.getY();
+    }
+
+    public int getFloorY() {
+        return (int) Math.floor( this.getLocation().getY() );
+    }
+
+    public float getZ() {
+        return this.location.getZ();
+    }
+
+    public int getFloorZ() {
+        return (int) Math.floor( this.getLocation().getZ() );
+    }
+
+    public float getHeadYaw() {
+        return this.location.getHeadYaw();
+    }
+
+    public float getYaw() {
+        return this.location.getYaw();
+    }
+
+    public float getPitch() {
+        return this.location.getPitch();
+    }
+
+    public int getChunkX() {
+        return (int) this.location.getX() >> 4;
+    }
+
+    public int getChunkZ() {
+        return (int) this.location.getZ() >> 4;
+    }
+
+    public Chunk getChunk() {
+        return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ() );
+    }
+
     public void setLocation( Location location ) {
         this.location = location;
         this.recalcBoundingBox();
+    }
+
+    public void setX( float x ) {
+        this.location.setX( x );
+    }
+
+    public void setY( float y ) {
+        this.location.setY( y );
+    }
+
+    public void setZ( float z ) {
+        this.location.setZ( z );
+    }
+
+    public void setHeadYaw( float headYaw ) {
+        this.location.setHeadYaw( headYaw );
+    }
+
+    public void setYaw( float yaw ) {
+        this.location.setYaw( yaw );
+    }
+
+    public void setPitch( float pitch ) {
+        this.location.setPitch( pitch );
     }
 
     public AxisAlignedBB getBoundingBox() {
@@ -91,11 +169,6 @@ public abstract class Entity {
         } else {
             return Direction.SOUTH;
         }
-    }
-
-    //NOT READY ONLY FOR TESTS
-    public SignDirection getSignDirection() {
-        return SignDirection.values()[(int) Math.floor( ( ( this.location.getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f];
     }
 
     public String getNameTag() {

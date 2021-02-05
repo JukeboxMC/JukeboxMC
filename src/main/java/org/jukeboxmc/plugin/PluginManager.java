@@ -185,7 +185,7 @@ public class PluginManager {
         this.cachedClasses.putIfAbsent( className, clazz );
     }
 
-    public Map<String, Plugin> getPluginMap() {
+    private Map<String, Plugin> getPluginMap() {
         return this.pluginMap;
     }
 

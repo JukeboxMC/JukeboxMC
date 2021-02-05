@@ -20,47 +20,38 @@ public class PlayerMoveHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
 
-        Location fromLocation = player.getLocation();
-        Chunk fromChunk = player.getChunk();
-        Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
+        Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY(), playerMovePacket.getZ(), playerMovePacket.getHeadYaw(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
 
-        PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, fromLocation, toLocation );
+        PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, player.getLocation(), toLocation );
         Server.getInstance().getPluginManager().callEvent( playerMoveEvent );
 
         if ( playerMoveEvent.isCancelled() ) {
-            playerMoveEvent.setTo( fromLocation );
-            player.teleport( fromLocation );
+            playerMoveEvent.setTo( playerMoveEvent.getFrom() );
         }
 
-        player.setHeadYaw( playerMovePacket.getHeadYaw() );
-        player.setLocation( playerMoveEvent.getTo() );
+        player.setLocation( toLocation );
         player.setOnGround( playerMovePacket.isOnGround() );
 
-        Chunk toChunk = player.getChunk();
+        Location to = playerMoveEvent.getTo();
+        Location fromLocation = player.getLocation();
 
-        if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
-            fromChunk.removeEntity( player );
-            toChunk.addEntity( player );
-        }
+        if ( to.getX() != fromLocation.getX() || to.getY() != fromLocation.getY() || to.getZ() != fromLocation.getZ() || to.getWorld() != fromLocation.getWorld()
+                || to.getHeadYaw() != fromLocation.getHeadYaw() || to.getYaw() != fromLocation.getYaw() || to.getPitch() != fromLocation.getPitch() ) {
+            player.teleport( playerMoveEvent.getFrom() );
+        } else {
+            Chunk fromChunk = fromLocation.getChunk();
+            Chunk toChunk = player.getChunk();
 
-        for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
-            if ( onlinePlayer != player ) {
-                onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
+            if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
+                fromChunk.removeEntity( player );
+                toChunk.addEntity( player );
+            }
+
+            for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
+                if ( onlinePlayer != player ) {
+                    onlinePlayer.getPlayerConnection().movePlayer( toLocation, PlayerMovePacket.Mode.NORMAL );
+                }
             }
         }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append( " §bChunkX§7: §f" ).append( player.getChunkX() ).append( " §bChunkZ§7: §f" ).append( player.getChunkZ() );
-
-        if ( player.getInventory().getItemInHand() != null ) {
-            Item itemInHand = player.getInventory().getItemInHand();
-            stringBuilder.append( "\n" ).append( "§7Item§8: §e" ).append( itemInHand.getClass().getSimpleName() ).append( " §7Meta§8: §e" ).append( itemInHand.getMeta() );
-            stringBuilder.append( "\n" ).append( "§7BlockFace§8: §e" ).append( player.getDirection().name() );
-            stringBuilder.append( "\n" ).append( "§7Block§8: §e" ).append( player.getWorld().getBlock( player.getLocation().subtract( 0, 1, 0 ) ).getName() );
-            Biome biome = player.getWorld().getBiome( player.getLocation() );
-            stringBuilder.append( "\n" ).append( "§7Biome§8: §e" ).append( biome != null ? biome.getName() : "Plains (Null)" );
-            stringBuilder.append( "\n" ).append( "§7World§8: §e" ).append( player.getWorld().getName() );
-        }
-        player.sendTip( stringBuilder.toString() );
     }
 }

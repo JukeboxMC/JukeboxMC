@@ -289,7 +289,7 @@ public class PlayerConnection {
         PlayerMovePacket playerMovePacket = new PlayerMovePacket();
         playerMovePacket.setEntityRuntimeId( this.player.getEntityId() );
         playerMovePacket.setX( vector.getX() );
-        playerMovePacket.setY( vector.getY() + this.player.getEyeHeight() );
+        playerMovePacket.setY( vector.getY() - this.player.getEyeHeight() );
         playerMovePacket.setZ( vector.getZ() );
         playerMovePacket.setYaw( this.player.getYaw() );
         playerMovePacket.setPitch( this.player.getPitch() );
@@ -309,7 +309,7 @@ public class PlayerConnection {
         playerMovePacket.setZ( location.getZ() );
         playerMovePacket.setYaw( location.getYaw() );
         playerMovePacket.setPitch( location.getPitch() );
-        playerMovePacket.setHeadYaw( this.player.getYaw() );
+        playerMovePacket.setHeadYaw( location.getYaw() );
         playerMovePacket.setMode( mode );
         playerMovePacket.setOnGround( this.player.isOnGround() );
         playerMovePacket.setRidingEntityId( 0 );
@@ -325,7 +325,7 @@ public class PlayerConnection {
         playerMovePacket.setZ( player.getZ() );
         playerMovePacket.setYaw( player.getYaw() );
         playerMovePacket.setPitch( player.getPitch() );
-        playerMovePacket.setHeadYaw( player.getHeadYaw() );
+        playerMovePacket.setHeadYaw( player.getHeadYaw());
         playerMovePacket.setMode( mode );
         playerMovePacket.setOnGround( player.isOnGround() );
         playerMovePacket.setRidingEntityId( 0 );

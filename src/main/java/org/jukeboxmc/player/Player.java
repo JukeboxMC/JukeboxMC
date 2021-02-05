@@ -124,54 +124,6 @@ public class Player extends EntityHuman implements InventoryHolder {
         return this.locale;
     }
 
-    public World getWorld() {
-        return this.location.getWorld();
-    }
-
-    public float getX() {
-        return this.getLocation().getX();
-    }
-
-    public int getFloorX() {
-        return (int) Math.floor( this.getLocation().getX() );
-    }
-
-    public float getY() {
-        return this.location.getY();
-    }
-
-    public int getFloorY() {
-        return (int) Math.floor( this.getLocation().getY() );
-    }
-
-    public float getZ() {
-        return this.location.getZ();
-    }
-
-    public int getFloorZ() {
-        return (int) Math.floor( this.getLocation().getZ() );
-    }
-
-    public float getYaw() {
-        return this.location.getYaw();
-    }
-
-    public float getPitch() {
-        return this.location.getPitch();
-    }
-
-    public int getChunkX() {
-        return (int) this.location.getX() >> 4;
-    }
-
-    public int getChunkZ() {
-        return (int) this.location.getZ() >> 4;
-    }
-
-    public Chunk getChunk() {
-        return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ() );
-    }
-
     public Server getServer() {
         return this.server;
     }
@@ -223,14 +175,6 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public List<UUID> getEmotes() {
         return this.emotes;
-    }
-
-    public float getHeadYaw() {
-        return this.headYaw;
-    }
-
-    public void setHeadYaw( float headYaw ) {
-        this.headYaw = headYaw;
     }
 
     public void setAddress( InetSocketAddress address ) {
