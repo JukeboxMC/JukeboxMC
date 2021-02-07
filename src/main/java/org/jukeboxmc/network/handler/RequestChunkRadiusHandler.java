@@ -15,6 +15,7 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         RequestChunkRadiusPacket chunkRadiusPacket = (RequestChunkRadiusPacket) packet;
         int radius = Math.min( chunkRadiusPacket.getRadius(), player.getServer().getViewDistance() );
         player.setViewDistance( radius );
+        player.getPlayerConnection().needNewChunks();
 
         if ( !player.isSpawned() ) {
             player.getPlayerConnection().joinGame();
@@ -22,4 +23,3 @@ public class RequestChunkRadiusHandler implements PacketHandler {
         player.getPlayerConnection().needNewChunks();
     }
 }
-//

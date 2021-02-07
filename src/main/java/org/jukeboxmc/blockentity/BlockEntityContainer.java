@@ -34,18 +34,6 @@ public class BlockEntityContainer extends BlockEntity {
         return compound;
     }
 
-    public void spawn() {
-        World world = this.block.getWorld();
-        BlockPosition location = this.block.getBlockPosition();
-
-        BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( location );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
-        world.sendWorldPacket( blockEntityDataPacket );
-
-        world.setBlockEntity( location, this );
-    }
-
     public String getCustomName() {
         return this.customName;
     }

@@ -7,7 +7,9 @@ import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.network.packet.BlockEntityDataPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -38,6 +40,18 @@ public abstract class BlockEntity {
         compound.put( "z", position.getZ() );
         compound.putBoolean( "isMovable", this.isMoveable );
         return compound;
+    }
+
+    public void spawn() {
+        World world = this.block.getWorld();
+        BlockPosition location = this.block.getBlockPosition();
+
+        BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
+        blockEntityDataPacket.setBlockPosition( location );
+        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        world.sendWorldPacket( blockEntityDataPacket );
+
+        world.setBlockEntity( location, this );
     }
 
     public Block getBlock() {

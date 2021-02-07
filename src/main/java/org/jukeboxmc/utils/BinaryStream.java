@@ -1,6 +1,7 @@
 package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
@@ -111,8 +112,8 @@ public class BinaryStream {
         this.buffer.writeShort( value );
     }
 
-    public short readLShort() {
-        return this.buffer.readShortLE();
+    public int readLShort() {
+        return ( this.readByte() & 255 ) + ( ( this.readByte() & 255 ) << 8 );
     }
 
     public void writeLShort( int value ) {
@@ -209,7 +210,7 @@ public class BinaryStream {
     }
 
     public void writeString( String value ) {
-        byte[] ascii = value.getBytes(StandardCharsets.UTF_8);
+        byte[] ascii = value.getBytes( StandardCharsets.UTF_8 );
         this.writeUnsignedVarInt( ascii.length );
         this.buffer.writeBytes( ascii );
     }
@@ -457,14 +458,16 @@ public class BinaryStream {
         byte amount = (byte) ( tempData & 0xFF );
         int data = ( tempData >> 8 );
 
-        short extraLength = this.readShort();
+        int extraLength = this.readLShort();
         NbtMap nbt = null;
-        if ( extraLength == -1 ) {
+        if ( extraLength < Short.MAX_VALUE ) {
+            byte[] nbts = new byte[0];
+            this.readBytes( nbts );
+        } else {
             byte version = this.readByte();
 
             try {
-                ByteArrayInputStream inputStream = new ByteArrayInputStream( this.getArray() );
-                NBTInputStream networkReader = NbtUtils.createNetworkReader( inputStream );
+                NBTInputStream networkReader = NbtUtils.createNetworkReader( new ByteBufInputStream( this.getBuffer() ) );
                 nbt = (NbtMap) networkReader.readTag();
             } catch ( IOException e ) {
                 e.printStackTrace();

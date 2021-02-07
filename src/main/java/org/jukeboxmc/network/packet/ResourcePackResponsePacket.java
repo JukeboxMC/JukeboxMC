@@ -25,7 +25,7 @@ public class ResourcePackResponsePacket extends Packet {
     public void read() {
         super.read();
         this.responseStatus = Status.getStatus( this.readByte() );
-        short entries = this.readLShort();
+        int entries = this.readLShort();
         for ( int i = 0; i < entries; i++ ) {
             this.readString(); //Ignore
         }

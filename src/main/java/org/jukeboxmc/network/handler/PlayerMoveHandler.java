@@ -49,7 +49,7 @@ public class PlayerMoveHandler implements PacketHandler {
 
             for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
                 if ( onlinePlayer != player ) {
-                    onlinePlayer.getPlayerConnection().movePlayer( toLocation, PlayerMovePacket.Mode.NORMAL );
+                    onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
                 }
             }
         }

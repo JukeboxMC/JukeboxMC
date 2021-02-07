@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntityBanner;
 
 /**
  * @author LucGamesYT
@@ -11,6 +12,17 @@ public class BlockWallBanner extends Block {
     public BlockWallBanner() {
         super( "minecraft:wall_banner" );
     }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityBanner getBlockEntity() {
+        return (BlockEntityBanner) this.world.getBlockEntity( this.getBlockPosition() );
+    }
+
 
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
