@@ -40,7 +40,7 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     private float headYaw;
 
-    private int viewDistance = 32;
+    private int viewDistance = 16;
 
     private boolean isOnGround;
     @Getter
