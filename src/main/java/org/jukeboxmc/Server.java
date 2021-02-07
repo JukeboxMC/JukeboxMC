@@ -1,5 +1,6 @@
 package org.jukeboxmc;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -18,6 +19,8 @@ import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
+import org.jukeboxmc.scheduler.Scheduler;
+import org.jukeboxmc.scheduler.TaskHandler;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
@@ -31,6 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -54,11 +58,18 @@ public class Server {
     private Config serverConfig;
     private PluginManager pluginManager;
     private TerminalConsole console;
-    private ScheduledExecutorService scheduledExecutorService;
+
+    private Scheduler scheduler;
+    private ScheduledFuture<?> tickFuture;
+    private ScheduledExecutorService tickExecutor;
+
     private World defaultWorld;
     private WorldGenerator overWorldGenerator;
 
     private int viewDistance = 32;
+    private int currentTick = 0;
+
+    private long startTime = 0;
 
     private boolean isShutdown = false;
 
@@ -76,14 +87,20 @@ public class Server {
             this.pluginFolder.mkdirs();
         }
 
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.initServerConfig();
-
-        BlockType.init();
-        ItemType.init();
 
         this.console = new TerminalConsole( this );
         this.console.getConsoleThread().start();
+
+        this.scheduler = new Scheduler( this );
+
+        ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
+        builder.setNameFormat("JukeboxMC Tick Executor");
+        this.tickExecutor = Executors.newScheduledThreadPool(1, builder.build());
+        this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
+
+        BlockType.init();
+        ItemType.init();
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
@@ -91,13 +108,13 @@ public class Server {
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
-        this.pluginManager = new PluginManager( this );
-        this.pluginManager.enableAllPlugins();
-
         String defaultWorldName = this.serverConfig.getString( "defaultworld" );
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
+
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins();
 
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
     }
@@ -132,29 +149,6 @@ public class Server {
                 player.getPlayerConnection().leaveGame( reason );
             }
         } );
-
-        AtomicLong startTime = new AtomicLong();
-        this.scheduledExecutorService.scheduleAtFixedRate( () -> {
-            try {
-                long currentTick = startTime.getAndIncrement();
-                for ( Player player : this.players.values() ) {
-                    if ( player.isSpawned() ) {
-                        player.getPlayerConnection().update( currentTick );
-
-                    }
-                }
-                for ( World world : this.getWorlds() ) {
-                    if ( world != null ) {
-                        world.update( currentTick );
-                    }
-                }
-                for ( Player player : this.players.values() ) {
-                    player.getPlayerConnection().updateNetwork( currentTick );
-                }
-            } catch ( Exception e ) {
-                e.printStackTrace();
-            }
-        }, 0, 50, TimeUnit.MILLISECONDS );
     }
 
     public void shutdown() {
@@ -170,10 +164,35 @@ public class Server {
 
         this.pluginManager.disableAllPlugins();
         this.console.getConsoleThread().interrupt();
-        this.scheduledExecutorService.shutdown();
+        this.tickExecutor.shutdown();
+        this.scheduler.shutdown();
         this.listener.shutdown();
 
         this.logger.info( "Shutdown successfully!" );
+    }
+
+    private void tickProcess() {
+        if ( this.isShutdown && !this.tickFuture.isCancelled() ) {
+            this.tickFuture.cancel( false );
+            this.listener.shutdown();
+        }
+
+        this.scheduler.onTick( ++this.currentTick );
+
+        for ( Player player : this.players.values() ) {
+            if ( player.isSpawned() ) {
+                player.getPlayerConnection().update( this.currentTick );
+
+            }
+        }
+        for ( World world : this.getWorlds() ) {
+            if ( world != null ) {
+                world.update( this.currentTick );
+            }
+        }
+        for ( Player player : this.players.values() ) {
+            player.getPlayerConnection().updateNetwork( this.currentTick );
+        }
     }
 
     private void initServerConfig() {
@@ -204,8 +223,12 @@ public class Server {
         return this.pluginManager;
     }
 
-    public ScheduledExecutorService getExecutorService() {
-        return this.scheduledExecutorService;
+    public Scheduler getScheduler() {
+        return this.scheduler;
+    }
+
+    public int getCurrentTick() {
+        return this.currentTick;
     }
 
     public void setOnlinePlayers( int onlinePlayers ) {

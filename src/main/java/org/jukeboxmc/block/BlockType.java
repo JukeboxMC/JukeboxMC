@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.Server;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -567,18 +565,11 @@ public enum BlockType {
     QUARTZ_BRICKS( BlockQuartzBricks.class ),
     BEE_HIVE( BlockBeehive.class );
 
-    private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
-
     @SneakyThrows
     public static void init() {
-        if ( INITIALIZED.get() ) {
-            return;
-        }
-        INITIALIZED.set( true );
-
         BlockPalette.init();
 
-        Server.getInstance().getExecutorService().execute( () -> {
+        Server.getInstance().getScheduler().executeAsync( () -> {
             for ( BlockType value : BlockType.values() ) {
                 value.getBlock();
             }

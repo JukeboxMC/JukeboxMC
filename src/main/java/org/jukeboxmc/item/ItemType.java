@@ -940,17 +940,12 @@ public enum ItemType {
     PURPLE_DYE( ItemPurpleDye.class ),
     MOJANG_BANNER_PATTERN( ItemMojangBannerPattern.class );
 
-    private static final AtomicBoolean INITIALIZED = new AtomicBoolean( false );
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
 
     private static final List<Item> CACHED_ITEMS = new ArrayList<>();
 
     public static void init() {
-        if ( INITIALIZED.get() ) {
-            return;
-        }
-        INITIALIZED.set( true );
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         InputStream creativeItems = JukeboxMC.class.getClassLoader().getResourceAsStream( "creative_items.json" );
