@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -168,54 +169,57 @@ public class World extends LevelDB {
         }
     }
 
-    @SneakyThrows
-    public Chunk loadChunk( int chunkX, int chunkZ, boolean generate ) {
-        Long chunkHash = Utils.toLong( chunkX, chunkZ );
+    public CompletableFuture<Chunk> loadChunk( int chunkX, int chunkZ ) {
+        long chunkHash = Utils.toLong( chunkX, chunkZ );
+
         if ( !this.chunkMap.containsKey( chunkHash ) ) {
-            Chunk chunk = new Chunk( this, chunkX, chunkZ );
+            return CompletableFuture.supplyAsync( () -> {
+                Chunk chunk = new Chunk( this, chunkX, chunkZ );
 
-            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
-            if ( version == null ) {
-                if ( this.worldGenerator != null ) {
-                    WorldGenerator worldGenerator = this.worldGenerator;
-                    worldGenerator.generate( chunk );
+                byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
+                if ( version == null ) {
+                    if ( this.worldGenerator != null ) {
+                        WorldGenerator worldGenerator = this.worldGenerator;
+                        worldGenerator.generate( chunk );
+                    } else {
+                        WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
+                        worldGenerator.generate( chunk );
+                    }
                 } else {
-                    WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
-                    worldGenerator.generate( chunk );
-                }
-            } else {
-                byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
+                    byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
 
-                chunk.chunkVersion = version[0];
-                chunk.setPopulated( finalized == null || finalized[0] == 2 );
+                    chunk.chunkVersion = version[0];
+                    chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
-                for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
-                    byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
+                    for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
+                        byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
 
-                    if ( chunkData != null ) {
-                        chunk.getCheckAndCreateSubChunks( sectionY );
-                        chunk.loadSection( chunk.subChunks[sectionY], chunkData );
+                        if ( chunkData != null ) {
+                            chunk.checkAndCreateSubChunks( sectionY );
+                            chunk.loadSection( chunk.subChunks[sectionY], chunkData );
+                        }
+                    }
+
+                    byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x31 ) );
+                    if ( blockEntitys != null ) {
+                        chunk.loadBlockEntitys( chunk, blockEntitys );
+                    }
+
+                    byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
+                    if ( biomes != null ) {
+                        chunk.loadHeightAndBiomes( biomes );
                     }
                 }
-
-                byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x31 ) );
-                if ( blockEntitys != null ) {
-                    chunk.loadBlockEntitys( chunk, blockEntitys );
-                }
-
-                byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
-                if ( biomes != null ) {
-                    chunk.loadHeightAndBiomes( biomes );
-                }
-            }
-            this.chunkMap.put( chunkHash, chunk );
-            return chunk;
+                this.chunkMap.put( chunkHash, chunk );
+                return chunk;
+            } );
+        } else {
+            return CompletableFuture.completedFuture( this.chunkMap.get( chunkHash ) );
         }
-        return this.chunkMap.get( chunkHash );
     }
 
     public Chunk getChunk( int chunkX, int chunkZ ) {
-        return this.loadChunk( chunkX, chunkZ, true );
+        return this.loadChunk( chunkX, chunkZ ).join();
     }
 
     public void save() {

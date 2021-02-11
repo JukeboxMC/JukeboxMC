@@ -20,7 +20,6 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
-import org.jukeboxmc.scheduler.TaskHandler;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
@@ -36,7 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
@@ -69,8 +67,6 @@ public class Server {
     private int viewDistance = 32;
     private int currentTick = 0;
 
-    private long startTime = 0;
-
     private boolean isShutdown = false;
 
     private Map<InetSocketAddress, Player> players = new HashMap<>();
@@ -95,8 +91,8 @@ public class Server {
         this.scheduler = new Scheduler( this );
 
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
-        builder.setNameFormat("JukeboxMC Tick Executor");
-        this.tickExecutor = Executors.newScheduledThreadPool(1, builder.build());
+        builder.setNameFormat( "JukeboxMC Tick Executor" );
+        this.tickExecutor = Executors.newScheduledThreadPool( Runtime.getRuntime().availableProcessors(), builder.build() );
         this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
 
         BlockType.init();

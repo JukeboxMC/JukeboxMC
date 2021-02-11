@@ -16,7 +16,6 @@ import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
-import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Pair;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Sound;
@@ -41,7 +40,6 @@ public class PlayerConnection {
     private Connection connection;
 
     private Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
-    private Queue<Packet> sendQueue = new ConcurrentLinkedQueue<>();
     private Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
 
     private List<Long> loadingChunks = new CopyOnWriteArrayList<>();
@@ -62,33 +60,18 @@ public class PlayerConnection {
             while ( ( hash = this.chunkLoadQueue.poll() ) != null ) {
                 int chunkX = Utils.fromHashX( hash );
                 int chunkZ = Utils.fromHashZ( hash );
-                this.sendChunk( this.player.getLocation().getWorld().getChunk( chunkX, chunkZ ) );
-            }
 
-            this.sendNetworkChunkPublisher();
+                World world = player.getWorld();
+                world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
+                    this.sendChunk( chunk );
+                } );
+            }
         }
 
         this.needNewChunks();
     }
 
-    public Queue<Long> getChunkLoadQueue() {
-        return this.chunkLoadQueue;
-    }
-
-    public List<Long> getLoadedChunks() {
-        return this.loadedChunks;
-    }
-
-    public List<Long> getLoadingChunks() {
-        return this.loadingChunks;
-    }
-
     public void updateNetwork( long currentTick ) {
-        if ( !this.sendQueue.isEmpty() ) {
-            this.batchPackets( new ArrayList<>( this.sendQueue ), false );
-            this.sendQueue.clear();
-        }
-
         if ( !this.incomingQueue.isEmpty() ) {
             Packet packet;
             while ( ( packet = this.incomingQueue.poll() ) != null ) {
@@ -103,108 +86,107 @@ public class PlayerConnection {
     }
 
     public void sendChunk( Chunk chunk ) {
-        try {
-            BinaryStream binaryStream = new BinaryStream();
-            chunk.writeTo( binaryStream );
-
-            LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
-            levelChunkPacket.setChunkX( chunk.getChunkX() );
-            levelChunkPacket.setChunkZ( chunk.getChunkZ() );
-            levelChunkPacket.setSubChunkCount( chunk.getAvailableSubChunks() );
-            levelChunkPacket.setData( binaryStream.getBuffer() );
-            this.sendPacket( levelChunkPacket );
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
+        this.sendPacket( chunk.createLevelChunkPacket() );
 
         long hash = Utils.toLong( chunk.getChunkX(), chunk.getChunkZ() );
         this.loadedChunks.add( hash );
         this.loadingChunks.remove( hash );
     }
 
-    public void handlePacketSync( Packet packet ) {
-        this.incomingQueue.offer( packet );
-    }
-
     public void needNewChunks() {
-        this.executorService.execute( () -> {
-            try {
-                int currentXChunk = Utils.blockToChunk( (int) this.player.getX() );
-                int currentZChunk = Utils.blockToChunk( (int) this.player.getZ() );
+        try {
+            int currentXChunk = Utils.blockToChunk( (int) this.player.getX() );
+            int currentZChunk = Utils.blockToChunk( (int) this.player.getZ() );
 
-                int viewDistance = this.player.getViewDistance();
+            int viewDistance = this.player.getViewDistance();
 
-                List<Pair<Integer, Integer>> toSendChunks = new ArrayList<>();
+            List<Pair<Integer, Integer>> toSendChunks = new ArrayList<>();
 
-                for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
-                    for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
-                        double distance = Math.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
-                        long chunkDistance = Math.round( distance );
+            for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
+                for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
+                    double distance = Math.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
+                    long chunkDistance = Math.round( distance );
 
-                        if ( chunkDistance <= viewDistance ) {
-                            Pair<Integer, Integer> newChunk = new Pair<>( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
+                    if ( chunkDistance <= viewDistance ) {
+                        Pair<Integer, Integer> newChunk = new Pair<>( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
 
-                            long hash = Utils.toLong( newChunk.getFirst(), newChunk.getSecond() );
-                            if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
-                                toSendChunks.add( newChunk );
-                            }
+                        long hash = Utils.toLong( newChunk.getFirst(), newChunk.getSecond() );
+                        if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
+                            toSendChunks.add( newChunk );
                         }
                     }
                 }
-
-                toSendChunks.sort( ( chunkX, chunkZ ) -> {
-                    if ( Objects.equals( chunkX.getFirst(), chunkZ.getFirst() ) && Objects.equals( chunkX.getSecond(), chunkZ.getSecond() ) ) {
-                        return 0;
-                    }
-
-                    int distXFirst = Math.abs( chunkX.getFirst() - currentXChunk );
-                    int distXSecond = Math.abs( chunkZ.getFirst() - currentXChunk );
-
-                    int distZFirst = Math.abs( chunkX.getSecond() - currentZChunk );
-                    int distZSecond = Math.abs( chunkZ.getSecond() - currentZChunk );
-
-                    if ( distXFirst + distZFirst > distXSecond + distZSecond ) {
-                        return 1;
-                    } else if ( distXFirst + distZFirst < distXSecond + distZSecond ) {
-                        return -1;
-                    }
-
-                    return 0;
-                } );
-
-                for ( Pair<Integer, Integer> chunk : toSendChunks ) {
-                    this.loadingChunks.add( Utils.toLong( chunk.getFirst(), chunk.getSecond() ) );
-                    this.requestChunk( chunk.getFirst(), chunk.getSecond() );
-                }
-
-                boolean unloaded = false;
-
-                for ( long hash : this.loadedChunks ) {
-                    int x = Utils.fromHashX( hash );
-                    int z = Utils.fromHashZ( hash );
-
-                    if ( Math.abs( x - currentXChunk ) > viewDistance || Math.abs( z - currentZChunk ) > viewDistance ) {
-                        unloaded = true;
-                        this.loadedChunks.remove( hash );
-                    }
-                }
-
-                for ( long hash : this.loadingChunks ) {
-                    int x = Utils.fromHashX( hash );
-                    int z = Utils.fromHashZ( hash );
-
-                    if ( Math.abs( x - currentXChunk ) > viewDistance || Math.abs( z - currentZChunk ) > viewDistance ) {
-                        this.loadingChunks.remove( hash );
-                    }
-                }
-
-                if ( unloaded ) {
-                    this.sendNetworkChunkPublisher();
-                }
-            } catch ( Exception e ) {
-                e.printStackTrace();
             }
-        } );
+
+            toSendChunks.sort( ( chunkX, chunkZ ) -> {
+                if ( Objects.equals( chunkX.getFirst(), chunkZ.getFirst() ) && Objects.equals( chunkX.getSecond(), chunkZ.getSecond() ) ) {
+                    return 0;
+                }
+
+                int distXFirst = Math.abs( chunkX.getFirst() - currentXChunk );
+                int distXSecond = Math.abs( chunkZ.getFirst() - currentXChunk );
+
+                int distZFirst = Math.abs( chunkX.getSecond() - currentZChunk );
+                int distZSecond = Math.abs( chunkZ.getSecond() - currentZChunk );
+
+                if ( distXFirst + distZFirst > distXSecond + distZSecond ) {
+                    return 1;
+                } else if ( distXFirst + distZFirst < distXSecond + distZSecond ) {
+                    return -1;
+                }
+
+                return 0;
+            } );
+
+            for ( Pair<Integer, Integer> chunk : toSendChunks ) {
+                this.loadingChunks.add( Utils.toLong( chunk.getFirst(), chunk.getSecond() ) );
+                this.requestChunk( chunk.getFirst(), chunk.getSecond() );
+            }
+
+            boolean unloaded = false;
+
+            for ( long hash : this.loadedChunks ) {
+                int x = Utils.fromHashX( hash );
+                int z = Utils.fromHashZ( hash );
+
+                if ( Math.abs( x - currentXChunk ) > viewDistance || Math.abs( z - currentZChunk ) > viewDistance ) {
+                    unloaded = true;
+                    this.loadedChunks.remove( hash );
+                }
+            }
+
+            for ( long hash : this.loadingChunks ) {
+                int x = Utils.fromHashX( hash );
+                int z = Utils.fromHashZ( hash );
+
+                if ( Math.abs( x - currentXChunk ) > viewDistance || Math.abs( z - currentZChunk ) > viewDistance ) {
+                    this.loadingChunks.remove( hash );
+                }
+            }
+
+            if ( unloaded || !this.chunkLoadQueue.isEmpty() ) {
+                this.sendNetworkChunkPublisher();
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Queue<Long> getChunkLoadQueue() {
+        return this.chunkLoadQueue;
+    }
+
+    public List<Long> getLoadedChunks() {
+        return this.loadedChunks;
+    }
+
+    public List<Long> getLoadingChunks() {
+        return this.loadingChunks;
+    }
+
+    public void handlePacketSync( Packet packet ) {
+        this.incomingQueue.offer( packet );
     }
 
     public void requestChunk( int chunkX, int chunkZ ) {
@@ -220,12 +202,15 @@ public class PlayerConnection {
     }
 
     public void sendPacket( Packet packet, boolean direct ) {
-        if ( !direct && this.player.isSpawned() ) {
-            this.sendQueue.offer( packet );
-            return;
-        }
+        BatchPacket batchPacket = new BatchPacket();
+        batchPacket.addPacket( packet );
+        batchPacket.write();
 
-        this.batchPackets( Collections.singletonList( packet ), true );
+        EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
+        encapsulatedPacket.reliability = 0;
+        encapsulatedPacket.buffer = batchPacket.getBuffer();
+
+        this.connection.addEncapsulatedToQueue( encapsulatedPacket, direct ? Connection.Priority.IMMEDIATE : Connection.Priority.NORMAL );
     }
 
     public void batchPackets( List<Packet> packets, boolean direct ) {
@@ -496,7 +481,6 @@ public class PlayerConnection {
         this.player.getChunk().addEntity( this.player );
 
         this.player.setSpawned( true );
-        this.sendNetworkChunkPublisher();
     }
 
     public void leaveGame( String reason ) {

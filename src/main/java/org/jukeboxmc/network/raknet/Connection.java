@@ -120,12 +120,14 @@ public class Connection {
             }
         }
 
-        this.recoveryQueue.forEach( ( seq, packet ) -> {
+        for ( Map.Entry<Integer, DataRakNetPacket> entry : this.recoveryQueue.entrySet() ) {
+            Integer seq = entry.getKey();
+            DataRakNetPacket packet = entry.getValue();
             if ( packet.sendTime < System.currentTimeMillis() - 8000 ) {
                 this.packetToSend.add( packet );
                 this.recoveryQueue.remove( seq );
             }
-        } );
+        }
 
         for ( Integer seq : this.receivedWindow ) {
             if ( seq < this.windowStart ) {

@@ -16,6 +16,7 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTOutputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
+import org.jukeboxmc.network.packet.LevelChunkPacket;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
@@ -45,6 +46,8 @@ public class Chunk extends LevelDBChunk {
     private int chunkZ;
     public byte chunkVersion = 21;
 
+    private LevelChunkPacket levelChunkPacket;
+
     private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
     public Chunk( World world, int chunkX, int chunkZ ) {
@@ -53,35 +56,39 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.subChunks = new SubChunk[16];
+        this.levelChunkPacket = null;
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
         int subY = location.getFloorY() >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( location.getFloorX() & 15, location.getFloorY() & 15, location.getFloorZ() & 15, layer, runtimeId );
+        this.levelChunkPacket = null;
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
+        this.levelChunkPacket = null;
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
+        this.levelChunkPacket = null;
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         return this.subChunks[subY].getRuntimeId( x & 15, y & 15, z & 15, layer );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
         block.setLocation( new Location( this.world, new BlockPosition( x, y, z ) ) );
         block.setLayer( layer );
@@ -90,19 +97,19 @@ public class Chunk extends LevelDBChunk {
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
     }
 
     public BlockEntity getBlockEntity( int x, int y, int z ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         return this.subChunks[subY].getBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     public void removeBlockEntity( int x, int y, int z ) {
         int subY = y >> 4;
-        this.getCheckAndCreateSubChunks( subY );
+        this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
@@ -118,13 +125,14 @@ public class Chunk extends LevelDBChunk {
 
     public void setBiome( int x, int z, Biome biome ) {
         this.biomes[( x << 4 ) | z] = (byte) biome.getId();
+        this.levelChunkPacket = null;
     }
 
     public Biome getBiome( int x, int z ) {
         return Biome.findById( this.biomes[( x << 4 ) | z] );
     }
 
-    public void getCheckAndCreateSubChunks( int subY ) {
+    public void checkAndCreateSubChunks( int subY ) {
         for ( int y = 0; y <= subY; y++ ) {
             if ( this.subChunks[y] == null ) {
                 this.subChunks[y] = new SubChunk( y );
@@ -138,11 +146,13 @@ public class Chunk extends LevelDBChunk {
         }
     }
 
-    public void writeTo( BinaryStream binaryStream ) {
-        for ( SubChunk subChunk : this.subChunks )
+    public BinaryStream writeChunk() {
+        BinaryStream binaryStream = new BinaryStream();
+        for ( SubChunk subChunk : this.subChunks ) {
             if ( subChunk != null ) {
                 subChunk.writeTo( binaryStream );
             }
+        }
         binaryStream.writeBytes( this.biomes );
         binaryStream.writeUnsignedVarInt( 0 ); //Extradata
 
@@ -158,6 +168,16 @@ public class Chunk extends LevelDBChunk {
                 }
             }
         }
+        return binaryStream;
+    }
+
+    public synchronized LevelChunkPacket createLevelChunkPacket() {
+        LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
+        levelChunkPacket.setChunkX( this.getChunkX() );
+        levelChunkPacket.setChunkZ( this.getChunkZ() );
+        levelChunkPacket.setSubChunkCount( this.getAvailableSubChunks() );
+        levelChunkPacket.setData( this.writeChunk().getBuffer() );
+        return levelChunkPacket;
     }
 
     public void save( DB db ) {
