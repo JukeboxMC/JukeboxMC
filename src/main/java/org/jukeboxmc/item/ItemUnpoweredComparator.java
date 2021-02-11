@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockUnpoweredCompartor;
+import org.jukeboxmc.block.BlockCompartor;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemUnpoweredComparator extends Item {
     }
 
     @Override
-    public BlockUnpoweredCompartor getBlock() {
-        return new BlockUnpoweredCompartor();
+    public BlockCompartor getBlock() {
+        return new BlockCompartor();
     }
 }

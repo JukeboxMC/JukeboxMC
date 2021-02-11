@@ -1,15 +1,37 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockUnpoweredCompartor extends Block {
+public class BlockCompartor extends Block {
 
-    public BlockUnpoweredCompartor() {
+    public BlockCompartor() {
         super( "minecraft:unpowered_comparator" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        this.setOutputSubstract( !this.isOutputSubstract() );
+
+        this.world.sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+        return true;
     }
 
     public void setOutputSubstract( boolean value ) {

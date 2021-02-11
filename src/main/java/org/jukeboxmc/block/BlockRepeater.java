@@ -1,15 +1,43 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockUnpoweredRepeater extends Block {
+public class BlockRepeater extends Block {
 
-    public BlockUnpoweredRepeater() {
+    public BlockRepeater() {
         super( "minecraft:unpowered_repeater" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        int delay = this.getRepeaterDelay();
+
+        if ( delay != 3 ) {
+            this.setRepeaterDelay( delay + 1 );
+        } else {
+            this.setRepeaterDelay( 0 );
+        }
+
+        this.world.sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+        return true;
     }
 
     public void setRepeaterDelay( int value ) { //0-3

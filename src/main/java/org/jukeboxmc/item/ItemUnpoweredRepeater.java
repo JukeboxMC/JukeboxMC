@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockUnpoweredRepeater;
+import org.jukeboxmc.block.BlockRepeater;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemUnpoweredRepeater extends Item {
     }
 
     @Override
-    public BlockUnpoweredRepeater getBlock() {
-        return new BlockUnpoweredRepeater();
+    public BlockRepeater getBlock() {
+        return new BlockRepeater();
     }
 }

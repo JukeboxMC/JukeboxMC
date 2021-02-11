@@ -230,12 +230,7 @@ public class PluginManager {
                         try {
                             registeredListener.getMethod().invoke( registeredListener.getListener(), event );
                         } catch ( IllegalAccessException | InvocationTargetException e ) {
-                            this.getServer().getLogger().warn( "Plugin listener had exception: " );
-                            if(e.getCause() != null ) {
-                                e.getCause().printStackTrace();
-                            } else {
-                                e.printStackTrace();
-                            }
+                            e.printStackTrace();
                         }
                     }
                 }

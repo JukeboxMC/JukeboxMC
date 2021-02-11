@@ -512,7 +512,7 @@ public class World extends LevelDB {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setPosition( block.getBlockPosition() );
-        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL );
+        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( block.getLayer() );
         this.sendWorldPacket( updateBlockPacket );
     }

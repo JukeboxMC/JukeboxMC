@@ -151,7 +151,6 @@ public class Server {
         if ( this.isShutdown ) {
             return;
         }
-
         this.isShutdown = true;
 
         for ( Player onlinePlayer : this.getOnlinePlayers() ) {
