@@ -272,7 +272,6 @@ public class BinaryStream {
     }
 
     public byte[] getArray() {
-        long start = System.currentTimeMillis();
         ByteBuf duplicate = this.buffer.duplicate();
         byte[] array = new byte[duplicate.readableBytes()];
         duplicate.readBytes( array );
