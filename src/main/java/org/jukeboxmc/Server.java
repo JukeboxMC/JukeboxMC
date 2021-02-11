@@ -163,6 +163,9 @@ public class Server {
         this.tickExecutor.shutdown();
         this.scheduler.shutdown();
         this.listener.shutdown();
+        for ( World world : this.getWorlds() ) {
+            world.save();
+        }
 
         this.logger.info( "Shutdown successfully!" );
     }
