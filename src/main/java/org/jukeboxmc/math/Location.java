@@ -37,8 +37,8 @@ public class Location extends Vector implements Cloneable {
         this.pitch = pitch;
     }
 
-    public Location(World world, float x, float y, float z, float headYaw, float yaw, float pitch) {
-        this(world, x, y, z, yaw, pitch);
+    public Location( World world, float x, float y, float z, float headYaw, float yaw, float pitch ) {
+        this( world, x, y, z, yaw, pitch );
         this.headYaw = headYaw;
     }
 
@@ -75,12 +75,12 @@ public class Location extends Vector implements Cloneable {
     }
 
     public Chunk getChunk() {
-        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4);
+        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4 );
     }
 
     @Override
     @SneakyThrows
-    public Location clone(){
+    public Location clone() {
         Location location = (Location) super.clone();
         location.setWorld( this.getWorld() );
         location.setX( this.getX() );

@@ -272,7 +272,7 @@ public abstract class Entity {
         Location location = this.getLocation();
         this.boundingBox.setBounds(
                 location.getX() - ( this.getWidth() / 2 ),
-                location.getY(),
+                location.getY() - this.getEyeHeight(),
                 location.getZ() - ( this.getWidth() / 2 ),
                 location.getX() + ( this.getWidth() / 2 ),
                 location.getY(),
