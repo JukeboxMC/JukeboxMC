@@ -125,7 +125,10 @@ public class SubChunk {
             palette.finish();
 
             binaryStream.writeSignedVarInt( runtimeIds.size() );
-            runtimeIds.forEach( binaryStream::writeSignedVarInt );
+
+            for ( Integer runtimeId : runtimeIds ) {
+                binaryStream.writeSignedVarInt( runtimeId );
+            }
         }
     }
 
