@@ -92,7 +92,7 @@ public class Server {
 
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
         builder.setNameFormat( "JukeboxMC Tick Executor" );
-        this.tickExecutor = Executors.newScheduledThreadPool( Runtime.getRuntime().availableProcessors(), builder.build() );
+        this.tickExecutor = Executors.newScheduledThreadPool( 1, builder.build() );
         this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
 
         BlockType.init();
