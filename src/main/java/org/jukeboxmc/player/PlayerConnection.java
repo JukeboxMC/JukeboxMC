@@ -61,8 +61,8 @@ public class PlayerConnection {
                 int chunkX = Utils.fromHashX( hash );
                 int chunkZ = Utils.fromHashZ( hash );
 
-                World world = player.getWorld();
-                world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
+                World world = this.player.getWorld();
+                world.loadChunk( chunkX, chunkZ ).whenCompleteAsync( ( chunk, throwable ) -> {
                     this.sendChunk( chunk );
                 } );
             }
@@ -172,6 +172,11 @@ public class PlayerConnection {
         }
     }
 
+    public void resetChunks() {
+        this.chunkLoadQueue.clear();
+        this.loadedChunks.clear();
+        this.loadingChunks.clear();
+    }
 
     public Queue<Long> getChunkLoadQueue() {
         return this.chunkLoadQueue;
