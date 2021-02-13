@@ -1,11 +1,8 @@
 package org.jukeboxmc.blockentity;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.network.packet.BlockEntityDataPacket;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT

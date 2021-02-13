@@ -2,12 +2,10 @@ package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 
 /**
@@ -20,7 +18,7 @@ public class PlayerMoveHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         PlayerMovePacket playerMovePacket = (PlayerMovePacket) packet;
 
-        Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY(), playerMovePacket.getZ(), playerMovePacket.getHeadYaw(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
+        Location toLocation = new Location( player.getLocation().getWorld(), playerMovePacket.getX(), playerMovePacket.getY() - player.getEyeHeight(), playerMovePacket.getZ(), playerMovePacket.getHeadYaw(), playerMovePacket.getYaw(), playerMovePacket.getPitch() );
 
         PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, player.getLocation(), toLocation );
         Server.getInstance().getPluginManager().callEvent( playerMoveEvent );

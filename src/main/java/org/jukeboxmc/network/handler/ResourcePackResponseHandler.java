@@ -41,7 +41,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
             player.getPlayerConnection().sendPacket( startGamePacket );
 
             //Set player new position (Need from file soon)
-            player.setLocation( new Location( player.getWorld(), worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), player.getYaw(), player.getPitch() ) );
+            player.setLocation( new Location( player.getWorld(), worldSpawn.getX(), worldSpawn.getY() - player.getEyeHeight(), worldSpawn.getZ(), player.getYaw(), player.getPitch() ) );
 
             player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
             player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );

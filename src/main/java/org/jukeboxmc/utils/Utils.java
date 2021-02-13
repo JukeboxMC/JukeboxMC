@@ -19,7 +19,7 @@ public class Utils {
     }
 
     public static long toLong( int x, int z ) {
-        return ( ( (long) x ) << 32 ) | ( z & 0xffffffffL );
+        return ( (long) x << 32 ) | ( z & 0xffffffffL );
     }
 
     public static int fromHashX( long hash ) {

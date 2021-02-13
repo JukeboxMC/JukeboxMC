@@ -14,41 +14,50 @@ import java.util.zip.Inflater;
  */
 public class Zlib {
 
+    private static final ThreadLocal<Inflater> INFLATER_RAW = ThreadLocal.withInitial( () -> new Inflater( true ) );
+    private static final ThreadLocal<Deflater> DEFLATER_RAW = ThreadLocal.withInitial( () -> new Deflater( 7, true ) );
+    private static final ThreadLocal<byte[]> BUFFER = ThreadLocal.withInitial( () -> new byte[2 * 1024 * 1024] );
+
     @SneakyThrows
     public static byte[] compress( byte[] input ) {
-        Deflater deflater = new Deflater( 7, true );
+        Deflater deflater = DEFLATER_RAW.get();
         try {
             deflater.setInput( input );
             deflater.finish();
-            FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
-            outputStream.reset();
-            byte[] buffer = new byte[1024];
+            FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
+            bos.reset();
+            byte[] buffer = BUFFER.get();
             while ( !deflater.finished() ) {
                 int i = deflater.deflate( buffer );
-                outputStream.write( buffer, 0, i );
+                bos.write( buffer, 0, i );
             }
-            return outputStream.toByteArray();
+
+            return bos.toByteArray();
         } finally {
             deflater.reset();
         }
     }
 
     public static byte[] infalte( byte[] input ) throws DataFormatException, IOException {
-        final Inflater inflater = new Inflater( true );
-        inflater.reset();
-        inflater.setInput( input );
-        inflater.finished();
-        final FastByteArrayOutputStream bao = new FastByteArrayOutputStream();
-        byte[] readBuffer = new byte[1024];
-        int readCount;
-        while ( !inflater.finished() ) {
-            readCount = inflater.inflate( readBuffer );
-            if ( readCount > 0 ) {
-                bao.write( readBuffer, 0, readCount );
+        Inflater inflater = INFLATER_RAW.get();
+        try {
+            inflater.setInput( input );
+            inflater.finished();
+
+            FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
+            bos.reset();
+            byte[] buf = BUFFER.get();
+            while ( !inflater.finished() ) {
+                int i = inflater.inflate( buf );
+                if ( i == 0 ) {
+                    throw new IOException( "Could not decompress the data. Needs input: " + inflater.needsInput() + ", Needs Dictionary: " + inflater.needsDictionary() );
+                }
+                bos.write( buf, 0, i );
             }
+            return bos.toByteArray();
+        } finally {
+            inflater.reset();
         }
-        inflater.end();
-        return bao.toByteArray();
     }
 
 }

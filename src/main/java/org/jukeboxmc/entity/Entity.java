@@ -2,7 +2,6 @@ package org.jukeboxmc.entity;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.Direction;
-import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
@@ -272,7 +271,7 @@ public abstract class Entity {
         Location location = this.getLocation();
         this.boundingBox.setBounds(
                 location.getX() - ( this.getWidth() / 2 ),
-                location.getY() - this.getEyeHeight(),
+                location.getY(),
                 location.getZ() - ( this.getWidth() / 2 ),
                 location.getX() + ( this.getWidth() / 2 ),
                 location.getY(),

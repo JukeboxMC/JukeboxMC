@@ -4,7 +4,6 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT

@@ -46,8 +46,6 @@ public class Chunk extends LevelDBChunk {
     private int chunkZ;
     public byte chunkVersion = 21;
 
-    private LevelChunkPacket levelChunkPacket;
-
     private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
     public Chunk( World world, int chunkX, int chunkZ ) {
@@ -56,28 +54,24 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.subChunks = new SubChunk[16];
-        this.levelChunkPacket = null;
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
         int subY = location.getFloorY() >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( location.getFloorX() & 15, location.getFloorY() & 15, location.getFloorZ() & 15, layer, runtimeId );
-        this.levelChunkPacket = null;
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
-        this.levelChunkPacket = null;
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
-        this.levelChunkPacket = null;
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {
@@ -125,7 +119,6 @@ public class Chunk extends LevelDBChunk {
 
     public void setBiome( int x, int z, Biome biome ) {
         this.biomes[( x << 4 ) | z] = (byte) biome.getId();
-        this.levelChunkPacket = null;
     }
 
     public Biome getBiome( int x, int z ) {
@@ -171,7 +164,7 @@ public class Chunk extends LevelDBChunk {
         return binaryStream;
     }
 
-    public synchronized LevelChunkPacket createLevelChunkPacket() {
+    public LevelChunkPacket createLevelChunkPacket() {
         LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
         levelChunkPacket.setChunkX( this.getChunkX() );
         levelChunkPacket.setChunkZ( this.getChunkZ() );

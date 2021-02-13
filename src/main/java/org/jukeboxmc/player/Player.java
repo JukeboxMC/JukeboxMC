@@ -305,13 +305,16 @@ public class Player extends EntityHuman implements InventoryHolder {
             currentWorld.removePlayer( this );
 
             this.playerConnection.despawnForAll();
+            this.playerConnection.resetChunks();
+
+            this.setLocation( new Location( world, world.getSpawnLocation() ) );
 
             world.addPlayer( this );
-            this.playerConnection.resetChunks();
-            this.setLocation( new Location( world, world.getSpawnLocation() ) );
             this.getChunk().addEntity( this );
+
             this.playerConnection.spawnToAll();
-            this.playerConnection.needNewChunks();
+            this.playerConnection.movePlayer( location, mode );
+            return;
         }
 
         this.playerConnection.movePlayer( location, mode );

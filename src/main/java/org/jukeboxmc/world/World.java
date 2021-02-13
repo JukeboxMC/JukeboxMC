@@ -103,6 +103,26 @@ public class World extends LevelDB {
         return this.players.values();
     }
 
+    public CompletableFuture<Void> prepareSpawnRegion() {
+        return CompletableFuture.supplyAsync( () -> {
+            int spawnRadius = Server.getInstance().getViewDistance();
+
+            if ( spawnRadius == 0 ) {
+                return null;
+            }
+
+            final int chunkX = this.spawnLocation.getFloorX() >> 4;
+            final int chunkZ = this.spawnLocation.getFloorZ() >> 4;
+
+            for ( int i = chunkX - spawnRadius; i <= chunkX + spawnRadius; i++ ) {
+                for ( int j = chunkZ - spawnRadius; j <= chunkZ + spawnRadius; j++ ) {
+                    this.loadChunk( i, j ).join();
+                }
+            }
+            return null;
+        } );
+    }
+
     public Location getSafeSpawnLocation() {
         if ( this.prepareSpawnLocaion ) {
             return this.spawnLocation;
@@ -214,7 +234,7 @@ public class World extends LevelDB {
                 return chunk;
             } );
         } else {
-            return CompletableFuture.completedFuture( this.chunkMap.get( chunkHash ) );
+            return CompletableFuture.supplyAsync( () -> this.chunkMap.get( chunkHash ) );
         }
     }
 

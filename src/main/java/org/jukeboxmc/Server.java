@@ -162,10 +162,6 @@ public class Server {
         this.tickExecutor.shutdown();
         this.scheduler.shutdown();
         this.listener.shutdown();
-        for ( World world : this.getWorlds() ) {
-            world.save();
-        }
-
         this.logger.info( "Shutdown successfully!" );
     }
 
@@ -318,6 +314,7 @@ public class Server {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             World world = new World( worldName, worldGenerator );
             if ( world.loadLevelFile() && world.open() ) {
+                //world.prepareSpawnRegion();
                 this.worlds.put( worldName.toLowerCase(), world );
                 this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;
