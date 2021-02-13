@@ -57,8 +57,7 @@ public class PlayerConnection {
         this.chunkComparator = new ChunkComparator( player );
     }
 
-    //Geht zwar aber noch net perfekt
-        public void update( long currentTick ) {
+    public void update( long currentTick ) {
         if ( !this.chunkQueue.isEmpty() ) {
             Chunk chunk;
             int sendTickAmount = 0;
@@ -66,7 +65,7 @@ public class PlayerConnection {
                 this.sendChunk( chunk );
                 this.sendNetworkChunkPublisher();
 
-                if (sendTickAmount++ <= 16  ) {
+                if ( sendTickAmount++ <= 500 ) {
                     break;
                 }
             }
@@ -83,7 +82,7 @@ public class PlayerConnection {
                 world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
                     this.chunkQueue.offer( chunk );
                 } );
-                if ( loadTickAmount++ <= 16  ) {
+                if ( loadTickAmount++ <= 500 ) {
                     break;
                 }
             }

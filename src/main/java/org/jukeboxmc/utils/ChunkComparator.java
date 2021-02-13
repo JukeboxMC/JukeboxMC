@@ -29,14 +29,6 @@ public class ChunkComparator implements LongComparator {
         int z2 = Utils.fromHashZ(o2);
         int spawnX = this.player.getChunkX();
         int spawnZ = this.player.getChunkZ();
-
-        int diffX1 = Math.abs( x1 - spawnX );
-        int diffZ1 = Math.abs( z1 - spawnZ );
-
-        int diffX2 = Math.abs( x2 - spawnX );
-        int diffZ2 = Math.abs( z2 - spawnZ );
-
-        return Integer.compare( diffX1 + diffZ1, diffX2 + diffZ2 );
-        //return Integer.compare(distance(spawnX, spawnZ, x1, z1), distance(spawnX, spawnZ, x2, z2));
+        return Integer.compare(distance(spawnX, spawnZ, x1, z1), distance(spawnX, spawnZ, x2, z2));
     }
 }

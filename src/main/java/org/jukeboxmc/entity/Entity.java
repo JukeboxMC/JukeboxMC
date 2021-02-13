@@ -274,7 +274,7 @@ public abstract class Entity {
                 location.getY(),
                 location.getZ() - ( this.getWidth() / 2 ),
                 location.getX() + ( this.getWidth() / 2 ),
-                location.getY(),
+                location.getY() + this.getEyeHeight(),
                 location.getZ() + ( this.getWidth() / 2 )
         );
     }
