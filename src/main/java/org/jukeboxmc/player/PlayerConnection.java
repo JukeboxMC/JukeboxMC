@@ -17,17 +17,17 @@ import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.protocol.EncapsulatedPacket;
 import org.jukeboxmc.utils.ChunkComparator;
-import org.jukeboxmc.utils.Pair;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author LucGamesYT
@@ -61,13 +61,12 @@ public class PlayerConnection {
         public void update( long currentTick ) {
         if ( !this.chunkQueue.isEmpty() ) {
             Chunk chunk;
-            int sent = 0;
+            int sendTickAmount = 0;
             while ( ( chunk = this.chunkQueue.poll() ) != null ) {
                 this.sendChunk( chunk );
                 this.sendNetworkChunkPublisher();
-                System.out.println( "SEND" );
 
-                if (sent++ <= 1500000  ) {
+                if (sendTickAmount++ <= 16  ) {
                     break;
                 }
             }
@@ -75,7 +74,7 @@ public class PlayerConnection {
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
             Long hash;
-            int count = 0;
+            int loadTickAmount = 0;
             while ( ( hash = this.chunkLoadQueue.poll() ) != null ) {
                 int chunkX = Utils.fromHashX( hash );
                 int chunkZ = Utils.fromHashZ( hash );
@@ -84,7 +83,7 @@ public class PlayerConnection {
                 world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
                     this.chunkQueue.offer( chunk );
                 } );
-                if ( count++ <= 1000000  ) {
+                if ( loadTickAmount++ <= 16  ) {
                     break;
                 }
             }

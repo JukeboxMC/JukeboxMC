@@ -19,7 +19,6 @@ import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.chunk.Chunk;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
