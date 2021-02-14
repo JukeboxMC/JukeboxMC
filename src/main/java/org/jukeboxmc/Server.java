@@ -312,7 +312,7 @@ public class Server {
 
     public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
-            World world = new World( worldName, worldGenerator );
+            World world = new World( worldName, this, worldGenerator );
             if ( world.loadLevelFile() && world.open() ) {
                 //world.prepareSpawnRegion();
                 this.worlds.put( worldName.toLowerCase(), world );

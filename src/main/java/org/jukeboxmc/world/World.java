@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
@@ -45,7 +47,9 @@ public class World extends LevelDB {
 
     private String name;
 
+    private Server server;
     private WorldGenerator worldGenerator;
+    private BlockUpdateList blockUpdateList;
 
     private int worldTime;
 
@@ -54,13 +58,15 @@ public class World extends LevelDB {
     private Map<Long, Chunk> chunkMap;
     private Map<Long, Player> players;
 
-    public World( String name, WorldGenerator worldGenerator ) {
+    public World( String name, Server server, WorldGenerator worldGenerator ) {
         super( name );
         this.chunkMap = new ConcurrentHashMap<>();
         this.players = new ConcurrentHashMap<>();
 
         this.name = name;
+        this.server = server;
         this.worldGenerator = worldGenerator;
+        this.blockUpdateList = new BlockUpdateList();
         this.difficulty = Difficulty.NORMAL;
         this.spawnLocation = new Location( 0, 4 + 1.62f, 0 );
         this.saveLevelDatFile();
@@ -77,10 +83,30 @@ public class World extends LevelDB {
                 player.getPlayerConnection().sendTime( this.worldTime );
             }
         }
+
+        while ( this.blockUpdateList.getNextTaskTime() < currentTick ) {
+            BlockPosition blockPosition = this.blockUpdateList.getNextElement();
+            if ( blockPosition == null ) {
+                break;
+            }
+
+            Block block = this.getBlock( blockPosition );
+            if ( block != null ) {
+                long nextTime = block.onUpdate( UpdateReason.SCHEDULED );
+
+                if ( nextTime > currentTick ) {
+                    this.blockUpdateList.addElement( nextTime, blockPosition );
+                }
+            }
+        }
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public Server getServer() {
+        return this.server;
     }
 
     public WorldGenerator getWorldGenerator() {
@@ -541,5 +567,11 @@ public class World extends LevelDB {
         for ( Player player : this.getPlayers() ) {
             player.getPlayerConnection().sendPacket( packet );
         }
+    }
+
+    public void scheduleBlockUpdate( Location location, long delay, TimeUnit timeUnit ) {
+        BlockPosition position = location.toBlockPosition();
+        long timeValue = this.server.getCurrentTick() + timeUnit.toMillis( delay ) / 50;
+        this.blockUpdateList.addElement( timeValue, position );
     }
 }

@@ -291,6 +291,10 @@ public class Block implements Cloneable {
         return new ArrayList<>();
     }
 
+    public long onUpdate( UpdateReason updateReason ) {
+        return -1;
+    }
+
     @Override
     public String toString() {
         return "Block{" +
