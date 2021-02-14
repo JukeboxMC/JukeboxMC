@@ -5,6 +5,7 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,12 @@ public class BlockButton extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block block = world.getBlock( blockPosition );
+
+        if ( block.isTransparent() ) {
+            return false;
+        }
+
         this.setBlockFace( blockFace );
         this.setButtonPressed( false );
         world.setBlock( placePosition, this );
@@ -34,7 +41,7 @@ public class BlockButton extends Block {
         }
 
         this.setButtonPressed( true );
-
+        this.world.playSound( this.location, LevelSound.POWER_ON );
         this.world.scheduleBlockUpdate( this.location, 1, TimeUnit.SECONDS );
         return true;
     }
@@ -43,8 +50,19 @@ public class BlockButton extends Block {
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason == UpdateReason.SCHEDULED ) {
             this.setButtonPressed( false );
+            this.world.playSound( this.location, LevelSound.POWER_OFF );
         }
         return -1;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public void setButtonPressed( boolean value ) {

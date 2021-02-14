@@ -351,6 +351,10 @@ public class World extends LevelDB {
         return chunk.getBiome( location.getX() & 15, location.getZ() & 15 );
     }
 
+    public void playSound( Location location, LevelSound levelSound ) {
+        this.playSound( null, location, levelSound, -1, ":", false, false );
+    }
+
     public void playSound( Player player, LevelSound levelSound ) {
         this.playSound( player, player.getLocation(), levelSound, -1, ":", false, false );
     }
