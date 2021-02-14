@@ -16,14 +16,13 @@ public class Attributes {
         this.attributes.add( new Attribute( AttributeType.PLAYER_SATURATION, 0, 20, 20 ) );
         this.attributes.add( new Attribute( AttributeType.PLAYER_EXHAUSTION, 0, 5, 0 ) );
         this.attributes.add( new Attribute( AttributeType.KNOCKBACK_RESISTENCE, 0, 1, 0 ) );
-        this.attributes.add( new Attribute( AttributeType.HEALTH, 0, 20, 20 ) );
-        this.attributes.add( new Attribute( AttributeType.MOVEMENT, 0, Float.MAX_VALUE, 0.1f ) );
+        this.attributes.add( new Attribute( AttributeType.HEALTH, 0, 20, 10 ) );
+        this.attributes.add( new Attribute( AttributeType.MOVEMENT, 0, 1, 0.1f ) );
         this.attributes.add( new Attribute( AttributeType.FOLLOW_RANGE, 0, 2048, 16 ) );
         this.attributes.add( new Attribute( AttributeType.PLAYER_HUNGER, 0, 20, 20 ) );
         this.attributes.add( new Attribute( AttributeType.ATTACK_DAMAGE, 0, Float.MAX_VALUE, 1 ) );
         this.attributes.add( new Attribute( AttributeType.PLAYER_LEVEL, 0, 24791, 0 ) );
         this.attributes.add( new Attribute( AttributeType.PLAYER_EXPERIENCE, 0, 1, 0 ) );
-        this.attributes.add( new Attribute( AttributeType.UNDERWATER_MOVEMENT, 0, Float.MAX_VALUE, 0.2f ) );
         this.attributes.add( new Attribute( AttributeType.LUCK, -1024, 1024, 0 ) );
         this.attributes.add( new Attribute( AttributeType.FALL_DAMAGE, 0, Float.MAX_VALUE, 1 ) );
         this.attributes.add( new Attribute( AttributeType.HORSE_JUMP_STRENGTH, 0, 20, 0.7f ) );
