@@ -39,8 +39,8 @@ public class UpdateAttributesPacket extends Packet {
                 this.writeLFloat( attribute.getMinValue() );
                 this.writeLFloat( attribute.getMaxValue() );
                 this.writeLFloat( attribute.getCurrentValue() );
-                this.writeLFloat( attribute.getCurrentValue() ); //Default
-                this.writeString( attribute.getAttributeType().getName() );
+                this.writeLFloat( attribute.getCurrentValue() );
+                this.writeString( attribute.getKey());
             }
         }
         this.writeUnsignedVarLong( this.tick );

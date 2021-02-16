@@ -6,31 +6,19 @@ package org.jukeboxmc.entity.attribute;
  */
 public enum AttributeType {
 
-    ABSORPTION( "minecraft:absorption" ),
-    PLAYER_SATURATION( "minecraft:player.saturation" ),
-    PLAYER_EXHAUSTION( "minecraft:player.exhaustion" ),
-    KNOCKBACK_RESISTENCE( "minecraft:knockback_resistance" ),
-    HEALTH( "minecraft:health" ),
-    MOVEMENT( "minecraft:movement" ),
-    FOLLOW_RANGE( "minecraft:follow_range" ),
-    PLAYER_HUNGER( "minecraft:player.hunger" ),
-    ATTACK_DAMAGE( "minecraft:attack_damage" ),
-    PLAYER_LEVEL( "minecraft:player.level" ),
-    PLAYER_EXPERIENCE( "minecraft:player.experience" ),
-    UNDERWATER_MOVEMENT( "minecraft:underwater_movement" ),
-    LUCK( "minecraft:luck" ),
-    FALL_DAMAGE( "minecraft:fall_damage" ),
-    HORSE_JUMP_STRENGTH( "minecraft:horse.jump_strength" ),
-    ZOMBIE_SPAWN_RAINFORCEMENTS( "minecraft:zombie.spawn_reinforcements" ),
-    LAVA_MOVEMENT( "minecraft:lava_movement" );
-
-    private String name;
-
-    AttributeType( String name ) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
+    ABSORPTION,
+    PLAYER_SATURATION,
+    PLAYER_EXHAUSTION,
+    KNOCKBACK_RESISTENCE,
+    HEALTH,
+    MOVEMENT,
+    FOLLOW_RANGE,
+    PLAYER_HUNGER,
+    ATTACK_DAMAGE,
+    PLAYER_LEVEL,
+    PLAYER_EXPERIENCE,
+    LUCK,
+    FALL_DAMAGE,
+    HORSE_JUMP_STRENGTH,
+    ZOMBIE_SPAWN_RAINFORCEMENTS;
 }

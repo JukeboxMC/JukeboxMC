@@ -58,7 +58,7 @@ public class AddEntityPacket extends Packet {
         //Attribute
         this.writeUnsignedVarInt( this.attributes.size() );
         for ( Attribute attribute : this.attributes ) {
-            this.writeString( attribute.getAttributeType().getName() );
+            this.writeString( attribute.getKey() );
             this.writeLFloat( attribute.getMinValue() );
             this.writeLFloat( attribute.getCurrentValue() );
             this.writeLFloat( attribute.getMaxValue() );

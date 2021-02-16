@@ -6,20 +6,20 @@ package org.jukeboxmc.entity.attribute;
  */
 public class Attribute {
 
-    private AttributeType attributeType;
+    private String key;
     private float minValue;
     private float maxValue;
     private float currentValue;
 
-    public Attribute( AttributeType attributeType, float minValue, float maxValue, float currentValue ) {
-        this.attributeType = attributeType;
+    public Attribute( String key, float minValue, float maxValue, float currentValue ) {
+        this.key = key;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = currentValue;
     }
 
-    public AttributeType getAttributeType() {
-        return this.attributeType;
+    public String getKey() {
+        return this.key;
     }
 
     public float getMinValue() {

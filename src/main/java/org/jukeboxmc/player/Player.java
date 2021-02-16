@@ -128,16 +128,44 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     public Attributes getAttributes() {
-        return attributes;
+        return this.attributes;
     }
 
     public Attribute getAttribute( AttributeType attributeType ) {
-        for ( Attribute attribute : this.attributes.getAttributes() ) {
-            if ( attribute.getAttributeType() == attributeType ) {
-                return attribute;
-            }
+        return this.attributes.getAttribute( attributeType );
+    }
+
+    public float getHealth() {
+        return this.getAttribute( AttributeType.HEALTH ).getCurrentValue();
+    }
+
+    public void setHealth( float value ) {
+        if ( value > 20 || value < 0 ) {
+            return;
         }
-        return null;
+
+        Attribute attribute = this.getAttribute( AttributeType.HEALTH );
+        attribute.setCurrentValue( value );
+        this.sendattribute( attribute );
+    }
+
+    public boolean isHungry() {
+        Attribute attribute = this.getAttribute( AttributeType.HEALTH );
+        return attribute.getCurrentValue() < attribute.getMaxValue();
+    }
+
+    public float getHunger() {
+        return this.getAttribute( AttributeType.HEALTH ).getCurrentValue();
+    }
+
+    public void setHunger( float value ) {
+        if ( value > 20 || value < 0 ) {
+            return;
+        }
+
+        Attribute attribute = this.getAttribute( AttributeType.PLAYER_HUNGER );
+        attribute.setCurrentValue( value );
+        this.sendattribute( attribute );
     }
 
     public AdventureSettings getAdventureSettings() {

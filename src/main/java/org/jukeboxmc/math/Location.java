@@ -1,6 +1,7 @@
 package org.jukeboxmc.math;
 
 import lombok.SneakyThrows;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -76,6 +77,10 @@ public class Location extends Vector implements Cloneable {
 
     public Chunk getChunk() {
         return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4 );
+    }
+
+    public Block getBlock() {
+        return this.world.getBlock( this );
     }
 
     @Override
