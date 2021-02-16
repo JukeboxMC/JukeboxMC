@@ -295,6 +295,14 @@ public class Block implements Cloneable {
         return -1;
     }
 
+    public void enterBlock() {
+
+    }
+
+    public void leaveBlock() {
+
+    }
+
     @Override
     public String toString() {
         return "Block{" +

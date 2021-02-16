@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.Packet;
@@ -50,6 +51,16 @@ public class PlayerMoveHandler implements PacketHandler {
                     onlinePlayer.getPlayerConnection().movePlayer( player, PlayerMovePacket.Mode.NORMAL );
                 }
             }
+        }
+
+        Location from = playerMoveEvent.getFrom();
+        if ( to.getWorld() != from.getWorld() || from.getFloorX() != to.getFloorX()
+                || from.getFloorY() != to.getFloorY() || from.getFloorZ() != to.getFloorZ() ) {
+            Block block = from.getBlock();
+            block.leaveBlock();
+
+            block = to.getBlock();
+            block.enterBlock();
         }
     }
 }
