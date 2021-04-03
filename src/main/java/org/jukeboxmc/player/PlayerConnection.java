@@ -60,20 +60,13 @@ public class PlayerConnection {
     public void update( long currentTick ) {
         if ( !this.chunkQueue.isEmpty() ) {
             Chunk chunk;
-            int sendTickAmount = 0;
             while ( ( chunk = this.chunkQueue.poll() ) != null ) {
                 this.sendChunk( chunk );
-                this.sendNetworkChunkPublisher();
-
-                if ( sendTickAmount++ <= 500 ) {
-                    break;
-                }
             }
         }
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
             Long hash;
-            int loadTickAmount = 0;
             while ( ( hash = this.chunkLoadQueue.poll() ) != null ) {
                 int chunkX = Utils.fromHashX( hash );
                 int chunkZ = Utils.fromHashZ( hash );
@@ -82,9 +75,6 @@ public class PlayerConnection {
                 world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
                     this.chunkQueue.offer( chunk );
                 } );
-                if ( loadTickAmount++ <= 500 ) {
-                    break;
-                }
             }
         }
         this.needNewChunks();
