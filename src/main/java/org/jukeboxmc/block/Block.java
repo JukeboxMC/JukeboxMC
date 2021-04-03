@@ -19,10 +19,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -39,7 +36,7 @@ public class Block implements Cloneable {
 
     protected World world;
     protected Location location;
-    int layer = 0;
+    protected int layer = 0;
 
     public Block( String identifier ) {
         this( identifier, null );
@@ -119,7 +116,6 @@ public class Block implements Cloneable {
         return this.blockStates.getInt( value );
     }
 
-    //Other
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
@@ -321,6 +317,7 @@ public class Block implements Cloneable {
         Block block = (Block) super.clone();
         block.identifier = this.identifier;
         block.runtimeId = this.runtimeId;
+        block.layer = this.layer;
         block.blockStates = this.blockStates.toBuilder().build();
         return block;
     }

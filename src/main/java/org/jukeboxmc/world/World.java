@@ -439,7 +439,7 @@ public class World extends LevelDB {
     }
 
     public Collection<Entity> getNearbyEntities( AxisAlignedBB bb ) {
-        Set targetEntity = new HashSet();
+        Set<Entity> targetEntity = new HashSet<>();
 
         int minX = (int) Math.floor( ( bb.getMinX() - 2 ) / 16 );
         int maxX = (int) Math.ceil( ( bb.getMaxX() + 2 ) / 16 );

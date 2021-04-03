@@ -28,13 +28,12 @@ public class BlockPalette {
 
     @SneakyThrows
     public static void init() {
-        try ( NBTInputStream nbtReader = NbtUtils.createReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
+        try ( NBTInputStream nbtReader = NbtUtils.createGZIPReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
             for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) ) {
-                NbtMap block = blockMap.getCompound( "block" );
                 int runtimeId = RUNTIME_COUNTER.getAndIncrement();
-                BLOCK_PALETTE.put( runtimeId, block );
-                BLOCK_DATA.add( new BlockData( block.getString( "name" ), runtimeId, block.getCompound( "states" ) ) );
+                BLOCK_PALETTE.put( runtimeId, blockMap );
+                BLOCK_DATA.add( new BlockData( blockMap.getString( "name" ), runtimeId, blockMap.getCompound( "states" ) ) );
             }
         } catch ( IOException e ) {
             e.printStackTrace();

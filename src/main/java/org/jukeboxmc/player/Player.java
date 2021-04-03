@@ -44,7 +44,7 @@ public class Player extends EntityHuman implements InventoryHolder {
     private boolean isOnGround;
     @Getter
     @Setter
-    private boolean isSpawned;
+    private boolean spawned;
 
     private Locale locale;
 

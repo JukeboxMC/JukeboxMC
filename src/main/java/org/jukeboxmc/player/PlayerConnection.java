@@ -92,14 +92,18 @@ public class PlayerConnection {
 
     public void updateNetwork( long currentTick ) {
         if ( !this.incomingQueue.isEmpty() ) {
-            Packet packet;
-            while ( ( packet = this.incomingQueue.poll() ) != null ) {
-                PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
-                if ( handler != null ) {
-                    handler.handle( packet, player );
-                } else {
-                    this.logger.debug( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
+            try {
+                Packet packet;
+                while ( ( packet = this.incomingQueue.poll() ) != null ) {
+                    PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
+                    if ( handler != null ) {
+                        handler.handle( packet, player );
+                    } else {
+                        this.logger.debug( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
+                    }
                 }
+            } catch ( Throwable throwable ) {
+                throwable.printStackTrace();
             }
         }
     }

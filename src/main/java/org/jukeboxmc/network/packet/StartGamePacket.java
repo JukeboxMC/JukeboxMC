@@ -118,6 +118,8 @@ public class StartGamePacket extends Packet {
 
         this.writeBoolean( false ); //Is trial
         this.writeUnsignedVarInt( 0 ); //Server auth movement
+        this.writeSignedVarInt( 0 ); //RewindHistorySize
+        this.writeBoolean( false ); // isServerAuthoritativeBlockBreaking
 
         this.writeLLong( 0 ); //World ticks (for time)
         this.writeSignedVarInt( 0 ); //Enchantment seed

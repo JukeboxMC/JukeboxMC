@@ -179,14 +179,17 @@ public class Server {
 
             }
         }
+
         for ( World world : this.getWorlds() ) {
             if ( world != null ) {
                 world.update( this.currentTick );
             }
         }
+
         for ( Player player : this.players.values() ) {
             player.getPlayerConnection().updateNetwork( this.currentTick );
         }
+
     }
 
     private void initServerConfig() {

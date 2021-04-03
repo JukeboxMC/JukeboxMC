@@ -21,7 +21,7 @@ import java.util.StringJoiner;
 public class ServerInfo {
 
     private String motd;
-    private String name;
+    private String name = "Submotd";
     private int onlinePlayers = 0;
     private int maxPlayers;
     private GameMode gameMode;
@@ -46,6 +46,7 @@ public class ServerInfo {
         stringJoiner.add( Long.toString( this.serverId ) );
         stringJoiner.add( this.name );
         stringJoiner.add( this.gameMode.getGamemode() );
+        stringJoiner.add( "1" );
         return stringJoiner.toString();
     }
 }

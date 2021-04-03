@@ -26,6 +26,7 @@ public class Skin {
     private String fullSkinId = UUID.randomUUID().toString();
     private String skinColor = "#0";
     private String armSize = "wide";
+    private String playFabId = "";
 
     private Image skinData;
     private Image capeData;
@@ -97,6 +98,14 @@ public class Skin {
 
     public void setArmSize( String armSize ) {
         this.armSize = armSize;
+    }
+
+    public String getPlayFabId() {
+        return this.playFabId;
+    }
+
+    public void setPlayFabId( String playFabId ) {
+        this.playFabId = playFabId;
     }
 
     public Image getSkinData() {

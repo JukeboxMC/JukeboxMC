@@ -125,6 +125,10 @@ public class LoginPacket extends Packet {
             this.skin.setArmSize( skinMap.get( "ArmSize" ).getAsString() );
         }
 
+        if ( skinMap.has( "PlayFabID" ) ) {
+            this.skin.setPlayFabId( skinMap.get( "PlayFabID" ).getAsString() );
+        }
+
         this.skin.setSkinData( this.getImage( skinMap, "Skin" ) );
         this.skin.setCapeData( this.getImage( skinMap, "Cape" ) );
 

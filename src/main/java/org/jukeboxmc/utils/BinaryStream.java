@@ -525,6 +525,7 @@ public class BinaryStream {
 
     public void writeSkin( Skin skin ) {
         this.writeString( skin.getSkinId() );
+        this.writeString( skin.getPlayFabId() );
         this.writeString( skin.getResourcePatch() );
         this.writeSkinImage( skin.getSkinData() );
 
