@@ -155,7 +155,7 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     public float getHunger() {
-        return this.getAttribute( AttributeType.HEALTH ).getCurrentValue();
+        return this.getAttribute( AttributeType.PLAYER_HUNGER ).getCurrentValue();
     }
 
     public void setHunger( float value ) {
@@ -344,6 +344,7 @@ public class Player extends EntityHuman implements InventoryHolder {
             return;
         }
 
+        this.setLocation( location );
         this.playerConnection.movePlayer( location, mode );
     }
 

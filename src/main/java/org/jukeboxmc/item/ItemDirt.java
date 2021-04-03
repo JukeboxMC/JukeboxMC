@@ -30,18 +30,4 @@ public class ItemDirt extends Item {
         DIRT,
         COARSA
     }
-
-    @Override
-    public void toNetwork( NbtMapBuilder builder ) {
-        super.toNetwork( builder );
-        /*ByteArrayInputStream inputStream = new ByteArrayInputStream( Base64.getDecoder().decode( "CgAACgkARmlyZXdvcmtzCQoARXhwbG9zaW9ucwoBAAAABw0ARmlyZXdvcmtDb2xvcgEAAAAIBwwARmlyZXdvcmtGYWRlAAAAAAEPAEZpcmV3b3JrRmxpY2tlcgABDQBGaXJld29ya1RyYWlsAAEMAEZpcmV3b3JrVHlwZQAAAQYARmxpZ2h0AQAA" ) );
-        NBTInputStream readerLE = NbtUtils.createReaderLE( inputStream );
-
-        try {
-            ((NbtMap) readerLE.readTag()).forEach( builder::put );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }*/
-    }
-
 }
