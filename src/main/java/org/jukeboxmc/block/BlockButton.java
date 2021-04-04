@@ -42,7 +42,7 @@ public class BlockButton extends Block {
 
         this.setButtonPressed( true );
         this.world.playSound( this.location, LevelSound.POWER_ON );
-        this.world.scheduleBlockUpdate( this.location, 1, TimeUnit.SECONDS );
+        this.world.scheduleBlockUpdate( this.location, 20 );
         return true;
     }
 

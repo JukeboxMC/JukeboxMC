@@ -324,6 +324,14 @@ public class World extends LevelDB {
         if ( !block.hasBlockEntity() ) {
             chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
         }
+
+        long next;
+        for ( BlockFace blockFace : BlockFace.values() ) {
+            Block blockSide = block.getSide( blockFace );
+            if( (next = blockSide.onUpdate( UpdateReason.NEIGHBORS )) > this.server.getCurrentTick() ) {
+                this.scheduleBlockUpdate( blockSide.getLocation(), next );
+            }
+        }
     }
 
     public void setBlockEntity( BlockPosition location, BlockEntity blockEntity ) {
@@ -573,9 +581,7 @@ public class World extends LevelDB {
         }
     }
 
-    public void scheduleBlockUpdate( Location location, long delay, TimeUnit timeUnit ) {
-        BlockPosition position = location.toBlockPosition();
-        long timeValue = this.server.getCurrentTick() + timeUnit.toMillis( delay ) / 50;
-        this.blockUpdateList.addElement( timeValue, position );
+    public void scheduleBlockUpdate( Location location, long delay ) {
+        this.blockUpdateList.addElement( delay, location.toBlockPosition() );
     }
 }

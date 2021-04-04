@@ -6,6 +6,8 @@ package org.jukeboxmc.block;
  */
 public enum UpdateReason {
 
-    SCHEDULED
+    SCHEDULED,
+
+    NEIGHBORS
 
 }

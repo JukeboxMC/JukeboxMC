@@ -94,7 +94,7 @@ public class BlockPressurePlate extends Block {
         }
 
         if ( isPowered ) {
-            this.world.scheduleBlockUpdate( this.location, 1, TimeUnit.SECONDS );
+            this.world.scheduleBlockUpdate( this.location, 20 );
         }
     }
 
