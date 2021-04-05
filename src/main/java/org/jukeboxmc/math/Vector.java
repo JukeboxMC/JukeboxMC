@@ -67,6 +67,10 @@ public class Vector {
         return new Vector( this.x + x, this.y + y, this.z + z );
     }
 
+    public Vector add( Vector vector ) {
+        return new Vector( this.x + vector.x, this.y + vector.y, this.z + vector.z );
+    }
+
     public Vector subtract( float x, float y, float z ) {
         return new Vector( this.x - x, this.y - y, this.z - z );
     }

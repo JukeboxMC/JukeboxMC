@@ -2,9 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
-import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.AxisAlignedBB;
-import org.jukeboxmc.math.Vector;
 
 /**
  * @author LucGamesYT
@@ -56,6 +54,8 @@ public class BlockWall extends Block {
         if ( this.getSide( BlockFace.UP ).isSolid() ) {
             this.setWallPost( true );
         }
+        this.getWorld().sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     @Override
@@ -135,8 +135,6 @@ public class BlockWall extends Block {
 
     public void setWallPost( boolean value ) {
         this.setState( "wall_post_bit", value ? (byte) 1 : (byte) 0 );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public boolean isWallPost() {
@@ -145,8 +143,6 @@ public class BlockWall extends Block {
 
     public void setWallConnectionTypeEast( WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_east", wallConnectionTypeEast.name().toLowerCase() );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public WallConnectionType getWallConnectionTypeEast() {
@@ -155,8 +151,6 @@ public class BlockWall extends Block {
 
     public void setWallConnectionTypeSouth( WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_south", wallConnectionTypeEast.name().toLowerCase() );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public WallConnectionType getWallConnectionTypeSouth() {
@@ -165,8 +159,6 @@ public class BlockWall extends Block {
 
     public void setWallConnectionTypeWest( WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_west", wallConnectionTypeEast.name().toLowerCase() );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public WallConnectionType getWallConnectionTypeWest() {
@@ -175,8 +167,6 @@ public class BlockWall extends Block {
 
     public void setWallConnectionTypeNorth( WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_north", wallConnectionTypeEast.name().toLowerCase() );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public WallConnectionType getWallConnectionTypeNorth() {
