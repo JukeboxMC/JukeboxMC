@@ -30,8 +30,7 @@ public class BlockBanner extends Block {
             blockWallBanner.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallBanner );
         }
-
-        int type = itemIndHand.getNBT().getInt( "Type", 0 );
+        int type = itemIndHand.getNBT() != null ? itemIndHand.getNBT().getInt( "Type", 0 ) : 0;
 
         BlockEntityType.BANNER.<BlockEntityBanner>createBlockEntity( this ).setColor( BlockColor.values()[itemIndHand.getMeta()] ).setType( type ).spawn();
         return true;
