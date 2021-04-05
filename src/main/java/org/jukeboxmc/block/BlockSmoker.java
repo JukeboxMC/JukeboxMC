@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +15,13 @@ public class BlockSmoker extends Block {
 
     public BlockSmoker() {
         super( "minecraft:smoker" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
     }
 
     public void setBlockFace( BlockFace blockFace ) {
