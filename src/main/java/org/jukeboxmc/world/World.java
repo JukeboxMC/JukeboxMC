@@ -581,6 +581,6 @@ public class World extends LevelDB {
     }
 
     public void scheduleBlockUpdate( Location location, long delay ) {
-        this.blockUpdateList.addElement( delay, location.toBlockPosition() );
+        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location.toBlockPosition() );
     }
 }
