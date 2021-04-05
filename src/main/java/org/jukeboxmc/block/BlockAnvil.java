@@ -31,6 +31,7 @@ public class BlockAnvil extends Block {
                 this.setDamage( Damage.UNDAMAGED );
                 break;
         }
+        this.setDirection( player.getDirection().getRightDirection() );
         world.setBlock( placePosition, this );
         return true;
     }
