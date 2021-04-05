@@ -1,4 +1,4 @@
-package org.jukeboxmc.event.world;
+package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.CancelablePlayerEvent;

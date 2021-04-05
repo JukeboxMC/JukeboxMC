@@ -106,13 +106,13 @@ public class Server {
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins();
+
         String defaultWorldName = this.serverConfig.getString( "defaultworld" );
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
-
-        this.pluginManager = new PluginManager( this );
-        this.pluginManager.enableAllPlugins();
 
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
     }
