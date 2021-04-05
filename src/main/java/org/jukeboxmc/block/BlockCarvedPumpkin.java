@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +16,13 @@ public class BlockCarvedPumpkin extends Block {
 
     public BlockCarvedPumpkin() {
         super( "minecraft:carved_pumpkin" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( this.location, this );
+        return true;
     }
 
     public void setDirection( Direction direction ) {
