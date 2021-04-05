@@ -7,6 +7,8 @@ import lombok.SneakyThrows;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.event.world.LoadWorldEvent;
+import org.jukeboxmc.event.world.UnloadWorldEvent;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.packet.Packet;
@@ -316,9 +318,15 @@ public class Server {
     public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             World world = new World( worldName, this, worldGenerator );
-            if ( world.loadLevelFile() && world.open() ) {
-                //world.prepareSpawnRegion();
-                this.worlds.put( worldName.toLowerCase(), world );
+            LoadWorldEvent loadWorldEvent = new LoadWorldEvent( world );
+            this.pluginManager.callEvent( loadWorldEvent );
+
+            if ( loadWorldEvent.isCancelled() ) {
+                return false;
+            }
+
+            if ( loadWorldEvent.getWorld().loadLevelFile() && loadWorldEvent.getWorld().open() ) {
+                this.worlds.put( worldName.toLowerCase(), loadWorldEvent.getWorld() );
                 this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;
             } else {
@@ -345,11 +353,18 @@ public class Server {
 
     public void unloadWorld( String worldName, Consumer<Player> consumer ) {
         World world = this.getWorld( worldName );
-        if ( world != null ) {
-            for ( Player player : world.getPlayers() ) {
+        UnloadWorldEvent unloadWorldEvent = new UnloadWorldEvent( world );
+        this.pluginManager.callEvent( unloadWorldEvent );
+
+        if ( unloadWorldEvent.isCancelled() ) {
+            return;
+        }
+
+        if ( unloadWorldEvent.getWorld() != null ) {
+            for ( Player player : unloadWorldEvent.getWorld().getPlayers() ) {
                 consumer.accept( player );
             }
-            world.close();
+            unloadWorldEvent.getWorld().close();
         } else {
             this.logger.warn( "The world \"" + worldName + "\" was not found" );
         }
