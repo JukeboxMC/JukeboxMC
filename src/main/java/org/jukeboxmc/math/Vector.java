@@ -71,6 +71,11 @@ public class Vector {
         return new Vector( this.x - x, this.y - y, this.z - z );
     }
 
+    public Vector subtract( Vector vector ) {
+        return new Vector( this.x - vector.x, this.y - vector.y, this.z - vector.z );
+    }
+
+
     public double distanceSquared( Vector vector ) {
         return Math.pow( this.x - vector.x, 2 ) + Math.pow( this.y - vector.y, 2 ) + Math.pow( this.z - vector.z, 2 );
     }
