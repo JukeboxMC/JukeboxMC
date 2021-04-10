@@ -2,6 +2,8 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.SignDirection;
+import org.jukeboxmc.blockentity.BlockEntitySign;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -28,6 +30,7 @@ public class BlockJungleStandingSign extends BlockSign {
             blockWallSign.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallSign );
         }
+        BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();
         return true;
     }
 }
