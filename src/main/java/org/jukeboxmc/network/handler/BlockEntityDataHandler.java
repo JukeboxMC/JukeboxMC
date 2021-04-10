@@ -21,7 +21,8 @@ public class BlockEntityDataHandler implements PacketHandler {
 
         if ( blockEntity instanceof BlockEntitySign ) {
             BlockEntitySign blockEntitySign = (BlockEntitySign) blockEntity;
-            blockEntitySign.updateBlockEntitySign( entityDataPacket.getNbt() );
+            System.out.println(entityDataPacket.getNbt().toString());
+            blockEntitySign.updateBlockEntitySign( entityDataPacket.getNbt(), player );
         }
     }
 }

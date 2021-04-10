@@ -1,15 +1,15 @@
 package org.jukeboxmc.blockentity;
 
 import com.google.common.base.Joiner;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.event.block.SignChangeEvent;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.network.packet.BlockEntityDataPacket;
 import org.jukeboxmc.player.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -43,16 +43,27 @@ public class BlockEntitySign extends BlockEntityContainer {
         return this.lines;
     }
 
-    public void updateBlockEntitySign( NbtMap nbt ) {
+    public void updateBlockEntitySign( NbtMap nbt, Player player ) {
         String text = nbt.getString( "Text", "" );
-        this.lines = Arrays.asList( text.split( "\n" ) );
+        String[] splitLine = text.split( "\n" );
+
+        ArrayList<String> lineList = new ArrayList<>();
+        Collections.addAll( lineList, splitLine );
+
+        SignChangeEvent signChangeEvent = new SignChangeEvent( this.block, player, lineList );
+        Server.getInstance().getPluginManager().callEvent( signChangeEvent );
+
+        if ( signChangeEvent.isCancelled() ) {
+            return;
+        }
+
+        NbtMapBuilder nbtMapBuilder = nbt.toBuilder();
+        nbtMapBuilder.putString( "Text", Joiner.on( "\n" ).skipNulls().join( signChangeEvent.getLines() ) );
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getBlockPosition() );
-        blockEntityDataPacket.setNbt( nbt );
-        for ( Player player : this.block.getWorld().getPlayers() ) {
-            player.getPlayerConnection().sendPacket( blockEntityDataPacket );
-        }
+        blockEntityDataPacket.setNbt( nbtMapBuilder.build() );
+        this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
     }
 
     public void updateBlockEntitySign() {
