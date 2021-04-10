@@ -48,10 +48,6 @@ public class BlockSign extends Block {
         }
     }
 
-    public Block getWallSignBlock() {
-        return null;
-    }
-
     public void setSignDirection( SignDirection signDirection ) {
         this.setState( "ground_sign_direction", signDirection.ordinal() );
     }

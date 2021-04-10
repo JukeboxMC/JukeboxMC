@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemJungleStandingSign;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -18,6 +19,11 @@ public class BlockJungleStandingSign extends BlockSign {
 
     public BlockJungleStandingSign() {
         super( "minecraft:jungle_standing_sign" );
+    }
+
+    @Override
+    public Item toItem() {
+        return new ItemJungleStandingSign();
     }
 
     @Override

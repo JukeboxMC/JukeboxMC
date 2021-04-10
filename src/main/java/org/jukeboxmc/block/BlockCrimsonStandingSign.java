@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemCrimsonStandingSign;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -12,6 +13,11 @@ public class BlockCrimsonStandingSign extends BlockSign {
 
     public BlockCrimsonStandingSign() {
         super("minecraft:crimson_standing_sign");
+    }
+
+    @Override
+    public Item toItem() {
+        return new ItemCrimsonStandingSign();
     }
 
     @Override
