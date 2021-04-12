@@ -9,7 +9,7 @@ import org.jukeboxmc.network.packet.BatchPacket;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
-import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
+import org.jukeboxmc.network.raknet.event.intern.ReceiveMinecraftPacketEvent;
 import org.jukeboxmc.network.raknet.protocol.*;
 import org.jukeboxmc.network.raknet.utils.Zlib;
 import org.jukeboxmc.utils.BinaryStream;
@@ -305,7 +305,7 @@ public class Connection {
             if ( packet != null ) {
                 packet.setBuffer( binaryStream.getBuffer() );
                 packet.read();
-                this.listener.getRakNetEventManager().callEvent( new ReciveMinecraftPacketEvent( this, packet ) );
+                this.listener.getRakNetEventManager().callEvent( new ReceiveMinecraftPacketEvent( this, packet ) );
             } else {
                 Server.getInstance().getLogger().debug( "Packet is missing: " + packetId );
             }

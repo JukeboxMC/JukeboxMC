@@ -6,8 +6,8 @@ package org.jukeboxmc.network;
  */
 public interface Protocol {
 
-    int PROTOCOL = 428;
-    String MINECRAFT_VERSION = "1.16.210";
+    int PROTOCOL = 431;
+    String MINECRAFT_VERSION = "1.16.220";
 
     //Minecraft
     int BATCH_PACKET = 0xfe;

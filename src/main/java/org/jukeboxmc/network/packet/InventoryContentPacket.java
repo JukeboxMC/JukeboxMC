@@ -30,7 +30,6 @@ public class InventoryContentPacket extends Packet {
 
         for ( Item item : this.items ) {
             if ( item != null ) {
-                this.writeSignedVarInt( item.getRuntimeId() );
                 this.writeItem( item );
             }
         }

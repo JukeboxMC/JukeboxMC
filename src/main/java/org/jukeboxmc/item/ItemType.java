@@ -1,9 +1,8 @@
 package org.jukeboxmc.item;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
@@ -941,6 +940,7 @@ public enum ItemType {
 
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
+    private static Object2IntMap<String> itemIdByName = new Object2IntOpenHashMap<>();
 
     private static final List<Item> CACHED_ITEMS = new ArrayList<>();
 
@@ -955,6 +955,12 @@ public enum ItemType {
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
         List<Map<String, Object>> map = gson.fromJson( parseItem, List.class );
         ItemType.setItemPalette( map );
+
+        final JsonArray jsonItemPalette = (JsonArray) parseItem;
+        jsonItemPalette.forEach(jsonItemPaletteEntryElement -> {
+            final JsonObject jsonItemPaletteEntry = (JsonObject) jsonItemPaletteEntryElement;
+            itemIdByName.put(jsonItemPaletteEntry.get("name").getAsString(), jsonItemPaletteEntry.get("id").getAsInt());
+        });
 
         for ( ItemType value : ItemType.values() ) {
             CACHED_ITEMS.add( value.getItem() );
@@ -991,6 +997,10 @@ public enum ItemType {
 
     public static void setItemPalette( List<Map<String, Object>> itemPalette ) {
         ItemType.itemPalette = itemPalette;
+    }
+
+    public static int itemIdByName(final String name) {
+        return itemIdByName.getInt(name);
     }
 
     private Class<? extends Item> itemClass;

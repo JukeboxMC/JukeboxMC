@@ -11,7 +11,7 @@ import org.jukeboxmc.network.raknet.event.RakNetEvent;
  * @version 1.0
  */
 @AllArgsConstructor
-public class ReciveMinecraftPacketEvent extends RakNetEvent {
+public class ReceiveMinecraftPacketEvent extends RakNetEvent {
 
     @Getter
     private Connection connection;

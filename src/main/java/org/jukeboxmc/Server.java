@@ -17,7 +17,7 @@ import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.network.raknet.Listener;
 import org.jukeboxmc.network.raknet.event.intern.PlayerCloseConnectionEvent;
 import org.jukeboxmc.network.raknet.event.intern.PlayerConnectionSuccessEvent;
-import org.jukeboxmc.network.raknet.event.intern.ReciveMinecraftPacketEvent;
+import org.jukeboxmc.network.raknet.event.intern.ReceiveMinecraftPacketEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
@@ -124,7 +124,7 @@ public class Server {
             return;
         }
 
-        this.listener.getRakNetEventManager().onEvent( ReciveMinecraftPacketEvent.class, (Consumer<ReciveMinecraftPacketEvent>) event -> {
+        this.listener.getRakNetEventManager().onEvent( ReceiveMinecraftPacketEvent.class, (Consumer<ReceiveMinecraftPacketEvent>) event -> {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
             Player player = this.players.get( connection.getSender() );

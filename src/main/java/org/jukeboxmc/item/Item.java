@@ -1,8 +1,11 @@
 package org.jukeboxmc.item;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
@@ -30,15 +33,19 @@ public abstract class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
-    public Item(String identifier, int runtimeId, int meta ) {
-        this(identifier, runtimeId, meta, null );
+    @Getter
+    @Setter
+    protected int blockRuntimeId;
+
+    public Item(String identifier, int runtimeId, int meta) {
+        this(identifier, runtimeId, meta, null);
     }
 
-    public Item(String identifier, int runtimeId ) {
-        this(identifier, runtimeId, 0, null );
+    public Item(String identifier, int runtimeId) {
+        this(identifier, runtimeId, 0, null);
     }
 
-    public Item(String identifier, int runtimeId, int meta, NbtMap nbt ) {
+    public Item(String identifier, int runtimeId, int meta, NbtMap nbt) {
         this.identifier = identifier;
         this.runtimeId = runtimeId;
         this.amount = 1;
@@ -49,8 +56,8 @@ public abstract class Item implements Cloneable {
     }
 
     public ItemType getItemType() {
-        for ( ItemType value : ItemType.values() ) {
-            if ( value.getItemClass() == this.getClass() ) {
+        for (ItemType value : ItemType.values()) {
+            if (value.getItemClass() == this.getClass()) {
                 return value;
             }
         }
@@ -65,11 +72,15 @@ public abstract class Item implements Cloneable {
         return new BlockAir();
     }
 
-    public void setCustomName( String customName ) {
+    public Block getBlockByBlockRuntimeId() {
+        return BlockPalette.RUNTIME_TO_BLOCK.get(this.blockRuntimeId);
+    }
+
+    public void setCustomName(String customName) {
         this.customName = customName;
     }
 
-    public void setLore( String... lore ) {
+    public void setLore(String... lore) {
         this.lore = lore;
     }
 
@@ -85,7 +96,7 @@ public abstract class Item implements Cloneable {
         return this.canPlaceOn;
     }
 
-    public void setCanPlaceOn( List<Block> canPlaceOn ) {
+    public void setCanPlaceOn(List<Block> canPlaceOn) {
         this.canPlaceOn = canPlaceOn;
     }
 
@@ -93,7 +104,7 @@ public abstract class Item implements Cloneable {
         return this.canDestroy;
     }
 
-    public void setCanDestroy( List<Block> canDestroy ) {
+    public void setCanDestroy(List<Block> canDestroy) {
         this.canDestroy = canDestroy;
     }
 
@@ -109,7 +120,7 @@ public abstract class Item implements Cloneable {
         return this.amount;
     }
 
-    public Item setAmount( int amount ) {
+    public Item setAmount(int amount) {
         this.amount = amount;
         return this;
     }
@@ -118,7 +129,7 @@ public abstract class Item implements Cloneable {
         return this.meta;
     }
 
-    public Item setMeta( int meta ) {
+    public Item setMeta(int meta) {
         this.meta = meta;
         return this;
     }
@@ -127,7 +138,7 @@ public abstract class Item implements Cloneable {
         return this.nbt;
     }
 
-    public void setNBT( NbtMap nbt ) {
+    public void setNBT(NbtMap nbt) {
         this.nbt = nbt;
     }
 
@@ -135,11 +146,12 @@ public abstract class Item implements Cloneable {
         return this.getClass().getSimpleName();
     }
 
+
     @Override
-    public boolean equals( Object obj ) {
-        if ( obj instanceof Item ) {
+    public boolean equals(Object obj) {
+        if (obj instanceof Item) {
             Item item = (Item) obj;
-            return item.getIdentifier().equals( this.getIdentifier() ) && item.getMeta() == this.getMeta();
+            return item.getIdentifier().equals(this.getIdentifier()) && item.getMeta() == this.getMeta();
         } else {
             return false;
         }
@@ -158,28 +170,29 @@ public abstract class Item implements Cloneable {
             clone.lore = this.lore;
             clone.canPlaceOn = this.canPlaceOn;
             clone.canDestroy = this.canDestroy;
+            clone.blockRuntimeId = this.blockRuntimeId;
             return clone;
-        } catch ( CloneNotSupportedException e ) {
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
         return this;
     }
 
-    public void toNetwork( NbtMapBuilder builder ) {
-        builder.putByte( "Count", (byte) this.amount );
-        builder.putShort( "Damage", (short) this.meta );
-        builder.putString( "Name", this.identifier);
-        builder.putByte( "WasPickedUp", (byte) 0 );
+    public void toNetwork(NbtMapBuilder builder) {
+        builder.putByte("Count", (byte) this.amount);
+        builder.putShort("Damage", (short) this.meta);
+        builder.putString("Name", this.identifier);
+        builder.putByte("WasPickedUp", (byte) 0);
 
-        if ( this.customName != null || this.lore != null ) {
+        if (this.customName != null || this.lore != null) {
             NbtMapBuilder displayBuilder = NbtMap.builder();
 
-            if ( this.customName != null )
-                displayBuilder.putString( "Name", this.customName );
-            if ( this.lore != null )
-                displayBuilder.putList( "Lore", NbtType.STRING, Arrays.asList( this.lore ) );
+            if (this.customName != null)
+                displayBuilder.putString("Name", this.customName);
+            if (this.lore != null)
+                displayBuilder.putList("Lore", NbtType.STRING, Arrays.asList(this.lore));
 
-            builder.putCompound( "display", displayBuilder.build() );
+            builder.putCompound("display", displayBuilder.build());
         }
     }
 

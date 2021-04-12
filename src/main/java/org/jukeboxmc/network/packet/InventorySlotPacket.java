@@ -29,7 +29,6 @@ public class InventorySlotPacket extends Packet {
         this.writeUnsignedVarInt( this.windowId.getId() );
         this.writeUnsignedVarInt( this.slot );
 
-        this.writeSignedVarInt( this.item.getRuntimeId() );
         this.writeItem( this.item );
 
     }
