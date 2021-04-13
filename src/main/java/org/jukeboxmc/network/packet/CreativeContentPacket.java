@@ -15,7 +15,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode ( callSuper = true )
 public class CreativeContentPacket extends Packet {
 
     @Override
@@ -27,15 +27,16 @@ public class CreativeContentPacket extends Packet {
     public void write() {
         super.write();
 
-        this.writeUnsignedVarInt(ItemType.getCreativeItems().size());
+        this.writeUnsignedVarInt( ItemType.getCreativeItems().size() );
 
-        for (Map<String, Object> stringObjectMap : ItemType.getCreativeItems()) {
-            int id = ItemType.itemIdByName((String) stringObjectMap.get("id"));
-            int data = (int) (double) stringObjectMap.getOrDefault("damage", 0D);
-            int blockRuntimeId = (int) (double) stringObjectMap.getOrDefault("blockRuntimeId", 0D);
+        int i = 0;
+        for ( Map<String, Object> stringObjectMap : ItemType.getCreativeItems() ) {
+            int id = ItemType.itemIdByName( (String) stringObjectMap.get( "id" ) );
+            int data = (int) (double) stringObjectMap.getOrDefault( "damage", 0D );
+            int blockRuntimeId = (int) (double) stringObjectMap.getOrDefault( "blockRuntimeId", 0D );
 
-            this.writeUnsignedVarInt(0); // NetID
-            this.writeItemInstance(id, data, 1, stringObjectMap.containsKey("nbt_b64") ? Base64.getDecoder().decode(((String) stringObjectMap.get("nbt_b64")).getBytes()) : new byte[0], blockRuntimeId);
+            this.writeUnsignedVarInt( 0 ); // NetID
+            this.writeItemInstance( id, data, 1, stringObjectMap.containsKey( "nbt_b64" ) ? Base64.getDecoder().decode( ( (String) stringObjectMap.get( "nbt_b64" ) ).getBytes() ) : new byte[0], blockRuntimeId );
         }
     }
 }

@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -939,6 +938,7 @@ public enum ItemType {
     MOJANG_BANNER_PATTERN( ItemMojangBannerPattern.class );
 
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
+    private static List<Map<String, Object>> legacyCreativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
     private static Object2IntMap<String> itemIdByName = new Object2IntOpenHashMap<>();
 
@@ -948,8 +948,8 @@ public enum ItemType {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         InputStream creativeItems = JukeboxMC.class.getClassLoader().getResourceAsStream( "creative_items.json" );
-        JsonElement parseCreative = new JsonParser().parse( new InputStreamReader( creativeItems ) );
-        ItemType.setCreativeItems( (List) ( gson.fromJson( parseCreative, Map.class ) ).get( "items" ) );
+        JsonArray parseCreative = new JsonParser().parse( new InputStreamReader( creativeItems ) ).getAsJsonObject().getAsJsonArray("items");
+        ItemType.setCreativeItems( ( gson.fromJson( parseCreative, List.class ) ) );
 
         InputStream itemPalette = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempalette.json" );
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
