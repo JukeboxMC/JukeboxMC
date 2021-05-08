@@ -2,6 +2,8 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.UpdateReason;
+import org.jukeboxmc.block.type.WallConnectionType;
 import org.jukeboxmc.math.AxisAlignedBB;
 
 /**

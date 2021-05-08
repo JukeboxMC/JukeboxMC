@@ -9,14 +9,13 @@ import org.apache.commons.io.FileUtils;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.UpdateReason;
+import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
@@ -479,13 +478,14 @@ public class World extends LevelDB {
 
         Item itemInHand = player.getInventory().getItemInHand();
 
-        if (itemInHand.getItemType().equals(ItemType.AIR)) {
+        if (itemInHand.getRuntimeId() == -158 ) {
             return false;
         }
 
         Block replacedBlock = this.getBlock(placePosition);
         Block placedBlock = itemInHand.getBlock();
         placedBlock.setLocation(new Location(this, placePosition));
+
 
         boolean interact = false;
         if (!player.isSneaking()) {

@@ -1,6 +1,5 @@
 package org.jukeboxmc.utils;
 
-import io.netty.buffer.AbstractByteBufAllocator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -8,7 +7,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.metadata.MetadataValue;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.nbt.util.stream.LittleEndianByteBufInputStream;
@@ -383,7 +381,7 @@ public class BinaryStream {
     }
 
     public void writeItem( Item item ) {
-        if ( item.getItemType().equals( ItemType.AIR ) ) {
+        if ( item.getRuntimeId() == -158 ) {
             this.writeByte( 0 );
             return;
         }
@@ -431,17 +429,16 @@ public class BinaryStream {
         }
     }
 
-    public void writeItemInstance( int runtimeId, int meta, int amount, byte[] nbtData, int blockRuntimeId ) {
-        if ( runtimeId == -158 ) {
+    public void writeItemInstance( int runtimeId, int data, int blockRuntimeId, byte[] nbtData ) {
+        if ( runtimeId == 0 ) {
             this.writeByte( 0 );
             return;
         }
 
         this.writeSignedVarInt( runtimeId );
 
-        this.writeLShort( amount );
-        this.writeUnsignedVarInt( meta );
-        System.out.println( meta );
+        this.writeLShort( 1 ); //Amount
+        this.writeUnsignedVarInt( data ); //Meta
 
         this.writeSignedVarInt( blockRuntimeId ); // put 0 if not in the palette
 
@@ -451,23 +448,14 @@ public class BinaryStream {
         try ( LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream( userData ) ) {
             if ( nbtData.length > 0 ) {
                 stream.writeShort( -1 );
-                stream.writeByte( 1 ); // Hardcoded in current version
+                stream.writeByte( 1 );
+
                 NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream );
                 ByteArrayInputStream inputStream = new ByteArrayInputStream( nbtData );
                 NBTInputStream readerLE = NbtUtils.createReaderLE( inputStream );
-                final NbtMap nbt = (NbtMap) readerLE.readTag();
-                NbtMapBuilder nbtMapBuilder = nbt.toBuilder();
-                nbtMapBuilder.put( "Damage", meta );
-                NbtMap build = nbtMapBuilder.build();
-                networkWriter.writeTag( build );
+                networkWriter.writeTag( readerLE.readTag() );
             } else {
-                stream.writeShort( -1 );
-                stream.writeByte( 1 ); // Hardcoded in current version
-                NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream );
-                NbtMapBuilder nbtMapBuilder = NbtMap.builder();
-                nbtMapBuilder.put( "Damage", meta );
-                NbtMap build = nbtMapBuilder.build();
-                networkWriter.writeTag( build );
+                stream.writeShort( 0 );
             }
 
             userData2.writeLInt( 0 );
@@ -478,7 +466,7 @@ public class BinaryStream {
             }
 
             writeUnsignedVarInt( userData.readableBytes() );
-            buffer.writeBytes( userData );
+            this.buffer.writeBytes( userData );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
@@ -502,30 +490,24 @@ public class BinaryStream {
 
         int blockRuntimeId = this.readSignedVarInt(); // blockRuntimeId
 
+        System.out.println("BID: " +blockRuntimeId);
+
         int value = this.readUnsignedVarInt();
-        System.out.println("L: " + value );
 
         ByteBuf userData = this.readBytes( value );
         BinaryStream userData2 = new BinaryStream( userData );
 
         try ( LittleEndianByteBufInputStream stream = new LittleEndianByteBufInputStream( userData ) ) {
             int nbtSize = stream.readShort();
-            System.out.println( "SIZE: " + nbtSize );
 
             if ( nbtSize > 0 ) {
-                System.out.println( "YAAAA" );
-                nbt = (NbtMap) NbtUtils.createNetworkReader( stream ).readTag();
+                nbt = (NbtMap) NbtUtils.createReaderLE( stream ).readTag();
             } else if ( nbtSize == -1 ) {
-                System.out.println( "YAAAA" );
                 int tagCount = stream.readUnsignedByte();
 
                 if ( tagCount != 1 ) {
                     throw new IllegalArgumentException( "Expected 1 tag but got " + tagCount );
                 }
-
-                nbt = (NbtMap) NbtUtils.createReaderLE( stream ).readTag();
-                data = nbt.getInt( "Damage", 0 );
-                System.out.println(nbt.toString());
             }
         } catch ( IOException e ) {
             e.printStackTrace();
@@ -541,13 +523,13 @@ public class BinaryStream {
             userData2.readString16();
         }
 
-        Item item = ItemType.getItemFormNetwork( networkId, data );
+        Item item = ItemType.getItemFormNetwork( networkId, data, blockRuntimeId );
         item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );
         item.setBlockRuntimeId( blockRuntimeId );
 
-        if ( item.getRuntimeId() == 355 ) {
+        if ( networkId == 355 ) {
             userData2.readLLong();
         }
 

@@ -29,8 +29,9 @@ public class BlockShulkerBox extends Block {
         return super.toItem().setMeta( this.getColor().ordinal() );
     }
 
-    public void setColor( BlockColor color ) {
+    public BlockShulkerBox setColor( BlockColor color ) {
         this.setState( "color", color.name().toLowerCase() );
+        return this;
     }
 
     public BlockColor getColor() {

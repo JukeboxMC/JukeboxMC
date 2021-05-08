@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.type.WallConnectionType;
+
 /**
  * @author LucGamesYT
  * @version 1.0

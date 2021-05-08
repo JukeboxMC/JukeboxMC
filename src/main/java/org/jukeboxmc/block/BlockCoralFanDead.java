@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.RotationDirection;
+import org.jukeboxmc.block.type.CoralColor;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;

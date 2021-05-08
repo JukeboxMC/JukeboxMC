@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;

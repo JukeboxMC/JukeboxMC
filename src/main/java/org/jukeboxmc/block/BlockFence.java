@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemFence;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,18 +21,18 @@ public class BlockFence extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getWoodType().ordinal() );
+    public ItemFence toItem() {
+        return new ItemFence().setWoodType( this.getWoodType() );
     }
 
-    public void setWoodType( WoodType woodType ) {
+    public BlockFence setWoodType( WoodType woodType ) {
         this.setState( "wood_type", woodType.name().toLowerCase() );
+        return this;
     }
 
     public WoodType getWoodType() {

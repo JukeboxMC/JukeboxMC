@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockWoodenSlab;
+import org.jukeboxmc.block.type.WoodType;
 
 /**
  * @author LucGamesYT
@@ -23,14 +24,5 @@ public class ItemWoodenSlab extends Item {
 
     public WoodType getWoodType() {
         return WoodType.values()[this.getMeta()];
-    }
-
-    public enum WoodType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE,
-        ACACIA,
-        DARK_OAK
     }
 }

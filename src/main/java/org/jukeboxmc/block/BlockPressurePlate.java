@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;

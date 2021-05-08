@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 @ToString
-public abstract class Item implements Cloneable {
+public class Item implements Cloneable {
 
     private String identifier;
     private int runtimeId;
@@ -33,19 +33,40 @@ public abstract class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
-    @Getter
-    @Setter
     protected int blockRuntimeId;
 
+    public Item( int runtimeId, int meta, int blockRuntimeId, NbtMap nbt ) {
+        this.runtimeId = runtimeId;
+        this.meta = meta;
+        this.blockRuntimeId = blockRuntimeId;
+        this.amount = 1;
+        this.meta = meta;
+        this.nbt = nbt;
+        this.canPlaceOn = new ArrayList<>();
+        this.canDestroy = new ArrayList<>();
+    }
+
+    public Item( int runtimeId, int meta, int blockRuntimeId ) {
+        this(runtimeId, meta, blockRuntimeId, null);
+    }
+
+    public Item( int runtimeId, int blockRuntimeId ) {
+        this(runtimeId, 0, blockRuntimeId, null);
+    }
+
+
+    @Deprecated
     public Item(String identifier, int runtimeId, int meta) {
         this(identifier, runtimeId, meta, null);
     }
 
-    public Item(String identifier, int runtimeId) {
+    @Deprecated
+    public Item(String identifier, int runtimeId ) {
         this(identifier, runtimeId, 0, null);
     }
 
-    public Item(String identifier, int runtimeId, int meta, NbtMap nbt) {
+    @Deprecated
+    public Item( String identifier, int runtimeId, int meta, NbtMap nbt) {
         this.identifier = identifier;
         this.runtimeId = runtimeId;
         this.amount = 1;
@@ -56,11 +77,6 @@ public abstract class Item implements Cloneable {
     }
 
     public ItemType getItemType() {
-        for (ItemType value : ItemType.values()) {
-            if (value.getItemClass() == this.getClass()) {
-                return value;
-            }
-        }
         return ItemType.AIR;
     }
 
@@ -70,10 +86,6 @@ public abstract class Item implements Cloneable {
 
     public Block getBlock() {
         return new BlockAir();
-    }
-
-    public Block getBlockByBlockRuntimeId() {
-        return BlockPalette.RUNTIME_TO_BLOCK.get(this.blockRuntimeId);
     }
 
     public void setCustomName(String customName) {
@@ -110,6 +122,14 @@ public abstract class Item implements Cloneable {
 
     public int getRuntimeId() {
         return this.runtimeId;
+    }
+
+    public int getBlockRuntimeId() {
+        return this.blockRuntimeId;
+    }
+
+    public void setBlockRuntimeId( int blockRuntimeId ) {
+        this.blockRuntimeId = blockRuntimeId;
     }
 
     public String getIdentifier() {
@@ -151,7 +171,7 @@ public abstract class Item implements Cloneable {
     public boolean equals(Object obj) {
         if (obj instanceof Item) {
             Item item = (Item) obj;
-            return item.getIdentifier().equals(this.getIdentifier()) && item.getMeta() == this.getMeta();
+            return item.getRuntimeId() == this.runtimeId && item.meta == this.meta && item.blockRuntimeId == this.blockRuntimeId;
         } else {
             return false;
         }

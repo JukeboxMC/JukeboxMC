@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
