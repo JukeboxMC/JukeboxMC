@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.type.WallType;
 import org.jukeboxmc.block.type.WoodType;
 
 import java.io.InputStream;
@@ -189,7 +190,22 @@ public enum ItemType {
     JUNGLE_STAIRS( new ItemJungleStairs() ),
     COMMAND_BLOCK( new ItemCommandBlock() ),
     BEACON( new ItemBeacon() ),
-    COBBLESTONE_WALL( new ItemCobblestoneWall() ),
+
+    COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.COBBLESTONE ) ),
+    MOSSY_COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_COBBLESTONE ) ),
+    GRANITE_WALL( new ItemCobblestoneWall().setWallType( WallType.GRANITE ) ),
+    DIORITE_WALL( new ItemCobblestoneWall().setWallType( WallType.DIORITE ) ),
+    ANDESITE_WALL( new ItemCobblestoneWall().setWallType( WallType.ANDESITE ) ),
+    SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.SANDSTONE ) ),
+    RED_SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_SANDSTONE ) ),
+    STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.STONE_BRICK ) ),
+    MOSSY_STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_STONE_BRICK ) ),
+    BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.BRICK ) ),
+    NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.NETHER_BRICK ) ),
+    RED_NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_NETHER_BRICK ) ),
+    ENDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.END_BRICK ) ),
+    PRISMARINE_WALL( new ItemCobblestoneWall().setWallType( WallType.PRISMARINE ) ),
+
     FLOWER_POT_BLOCK( new ItemFlowerPotBlock() ),
     CARROTS( new ItemCarrots() ),
     POTATOES( new ItemPotatoes() ),
@@ -269,22 +285,22 @@ public enum ItemType {
     BONE_BLOCK( new ItemBoneBlock() ),
     STRUCTURE_VOID( new ItemStructureVoid() ),
 
-    WHITE_SHULKER_BOX( new ItemShulkerBox() ),
-    ORANGE_SHULKER_BOX( new ItemShulkerBox() ),
-    MAGENTA_SHULKER_BOX( new ItemShulkerBox() ),
-    LIGHT_BLUE_SHULKER_BOX( new ItemShulkerBox() ),
-    YELLOW_SHULKER_BOX( new ItemShulkerBox() ),
-    LIME_SHULKER_BOX( new ItemShulkerBox() ),
-    PINK_SHULKER_BOX( new ItemShulkerBox() ),
-    GRAY_SHULKER_BOX( new ItemShulkerBox() ),
-    SILVER_SHULKER_BOX( new ItemShulkerBox() ),
-    CYAN_SHULKER_BOX( new ItemShulkerBox() ),
-    PURPLE_SHULKER_BOX( new ItemShulkerBox() ),
-    BLUE_SHULKER_BOX( new ItemShulkerBox() ),
-    BROWN_SHULKER_BOX( new ItemShulkerBox() ),
-    GREEN_SHULKER_BOX( new ItemShulkerBox() ),
-    RED_SHULKER_BOX( new ItemShulkerBox() ),
-    BLACK_SHULKER_BOX( new ItemShulkerBox() ),
+    WHITE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.WHITE ) ),
+    ORANGE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.ORANGE ) ),
+    MAGENTA_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.MAGENTA ) ),
+    LIGHT_BLUE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.LIGHT_BLUE ) ),
+    YELLOW_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.YELLOW ) ),
+    LIME_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.LIME ) ),
+    PINK_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.PINK ) ),
+    GRAY_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.GRAY ) ),
+    SILVER_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.SILVER ) ),
+    CYAN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.CYAN ) ),
+    PURPLE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.PURPLE ) ),
+    BLUE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BLUE ) ),
+    BROWN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BROWN ) ),
+    GREEN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.GREEN ) ),
+    RED_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.RED ) ),
+    BLACK_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BLACK ) ),
 
     PURPLE_GLAZED_TERRACOTTA( new ItemPurpleGlazedTerracotta() ),
     WHITE_GLAZED_TERRACOTTA( new ItemWhiteGlazedTerracotta() ),

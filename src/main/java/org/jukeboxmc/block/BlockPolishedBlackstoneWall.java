@@ -15,7 +15,7 @@ public class BlockPolishedBlackstoneWall extends BlockWall {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.update();
+        this.updateWall();
         world.setBlock( placePosition, this );
         return true;
     }

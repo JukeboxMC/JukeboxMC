@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemShulkerBox;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,14 +20,13 @@ public class BlockShulkerBox extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setColor( BlockColor.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getColor().ordinal() );
+    public ItemShulkerBox toItem() {
+        return new ItemShulkerBox().setColor( this.getColor() );
     }
 
     public BlockShulkerBox setColor( BlockColor color ) {

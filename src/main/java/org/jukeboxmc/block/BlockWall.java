@@ -29,12 +29,12 @@ public class BlockWall extends Block {
     @Override
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason == UpdateReason.NEIGHBORS ) {
-            this.update();
+            this.updateWall();
         }
         return super.onUpdate( updateReason );
     }
 
-    protected void update() {
+    protected void updateWall() {
         for ( Direction value : Direction.values() ) {
             Block block = this.getSide( value );
 
