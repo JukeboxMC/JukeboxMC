@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.type.WallType;
 import org.jukeboxmc.block.type.WoodType;
 
 import java.io.InputStream;
@@ -174,7 +175,22 @@ public enum ItemType {
     JUNGLE_STAIRS( new ItemJungleStairs() ),
     COMMAND_BLOCK( new ItemCommandBlock() ),
     BEACON( new ItemBeacon() ),
-    COBBLESTONE_WALL( new ItemCobblestoneWall() ),
+
+    COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.COBBLESTONE ) ),
+    MOSSY_COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_COBBLESTONE ) ),
+    GRANITE_WALL( new ItemCobblestoneWall().setWallType( WallType.GRANITE ) ),
+    DIORITE_WALL( new ItemCobblestoneWall().setWallType( WallType.DIORITE ) ),
+    ANDESITE_WALL( new ItemCobblestoneWall().setWallType( WallType.ANDESITE ) ),
+    SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.SANDSTONE ) ),
+    RED_SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_SANDSTONE ) ),
+    STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.STONE_BRICK ) ),
+    MOSSY_STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_STONE_BRICK ) ),
+    BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.BRICK ) ),
+    NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.NETHER_BRICK ) ),
+    RED_NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_NETHER_BRICK ) ),
+    ENDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.END_BRICK ) ),
+    PRISMARINE_WALL( new ItemCobblestoneWall().setWallType( WallType.PRISMARINE ) ),
+
     FLOWER_POT_BLOCK( new ItemFlowerPotBlock() ),
     CARROTS( new ItemCarrots() ),
     POTATOES( new ItemPotatoes() ),

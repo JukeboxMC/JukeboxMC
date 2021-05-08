@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.WallType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemCobblestoneWall;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,41 +21,27 @@ public class BlockCobblestoneWall extends BlockWall {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setWallBlockType( WallType.values()[itemIndHand.getMeta()] );
-        this.update();
+        this.updateWall();
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getWallBlockType().ordinal() );
+    public ItemCobblestoneWall toItem() {
+        return new ItemCobblestoneWall().setWallType( this.getWallBlockType() );
     }
 
-    public void setWallBlockType( WallType wallType ) {
+    public BlockCobblestoneWall setWallBlockType( WallType wallType ) {
         this.setState( "wall_block_type", wallType.name().toLowerCase() );
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+        if ( this.getWorld() != null ) {
+            this.getWorld().sendBlockUpdate( this );
+            this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+        }
+        return this;
     }
 
     public WallType getWallBlockType() {
         return this.stateExists( "wall_block_type" ) ? WallType.valueOf( this.getStringState( "wall_block_type" ).toUpperCase() ) : WallType.COBBLESTONE;
     }
 
-    public enum WallType {
-        COBBLESTONE,
-        MOSSY_COBBLESTONE,
-        GRANITE,
-        DIORITE,
-        ANDESITE,
-        SANDSTONE,
-        BRICK,
-        STONE_BRICK,
-        MOSSY_STONE_BRICK,
-        NETHER_BRICK,
-        END_BRICK,
-        PRISMARINE,
-        RED_SANDSTONE,
-        RED_NETHER_BRICK
-    }
 }
