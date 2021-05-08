@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStainedGlass;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,18 +20,18 @@ public class BlockStainedGlass extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setColor( BlockColor.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
     public Item toItem() {
-        return super.toItem().setMeta( this.getColor().ordinal() );
+        return new ItemStainedGlass().setColor(this.getColor());
     }
 
-    public void setColor( BlockColor color ) {
+    public BlockStainedGlass setColor( BlockColor color ) {
         this.setState( "color", color.name().toLowerCase() );
+        return this;
     }
 
     public BlockColor getColor() {
