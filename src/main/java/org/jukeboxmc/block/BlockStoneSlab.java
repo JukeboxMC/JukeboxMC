@@ -68,7 +68,6 @@ public class BlockStoneSlab extends BlockSlab {
         return true;
     }
 
-
     @Override
     public Item toItem() {
         return new ItemStoneSlab().setMeta( this.getStoneSlabType().ordinal() );

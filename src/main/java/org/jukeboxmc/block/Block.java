@@ -20,10 +20,9 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.jukeboxmc.block.BlockType.Companion.*;
 
 /**
  * @author LucGamesYT
@@ -32,11 +31,11 @@ import java.util.Map;
 
 public class Block implements Cloneable {
 
-    private static final Map<String, Map<NbtMap, Integer>> STATES = new HashMap<>();
+    private static final Map<String, Map<NbtMap, Integer>> STATES = new LinkedHashMap<>();
 
     protected int runtimeId;
     protected String identifier;
-    private NbtMap blockStates;
+    protected NbtMap blockStates;
 
     protected World world;
     protected Location location;
@@ -50,7 +49,7 @@ public class Block implements Cloneable {
         this.identifier = identifier.toLowerCase();
 
         if ( !STATES.containsKey( this.identifier ) ) {
-            Map<NbtMap, Integer> toRuntimeId = new HashMap<>();
+            Map<NbtMap, Integer> toRuntimeId = new LinkedHashMap<>();
             for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifier ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
@@ -76,11 +75,15 @@ public class Block implements Cloneable {
 
         this.blockStates = blockStates;
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
+        ;
     }
 
     public <B extends Block> B setData( int data ) {
         this.blockStates = new ArrayList<>( STATES.get( this.identifier ).keySet() ).get( data );
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
+        if ( Server.getInstance().isIniatiating() ) {
+            update( this.runtimeId, this );
+        }
         return (B) this;
     }
 
@@ -101,6 +104,9 @@ public class Block implements Cloneable {
             }
         }
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
+        if ( Server.getInstance().isIniatiating() ) {
+            update( this.runtimeId, this );
+        }
         return (B) this;
     }
 
@@ -162,11 +168,6 @@ public class Block implements Cloneable {
     }
 
     public BlockType getBlockType() {
-        for ( BlockType value : BlockType.values() ) {
-            if ( value.getBlockClass() == this.getClass() ) {
-                return value;
-            }
-        }
         return BlockType.AIR;
     }
 
@@ -317,7 +318,7 @@ public class Block implements Cloneable {
 
     @Override
     @SneakyThrows
-    public Object clone() {
+    public Block clone() {
         Block block = (Block) super.clone();
         block.identifier = this.identifier;
         block.runtimeId = this.runtimeId;

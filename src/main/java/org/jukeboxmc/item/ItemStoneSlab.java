@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStoneSlab;
+import org.jukeboxmc.block.type.StoneSlabType;
 
 /**
  * @author LucGamesYT
@@ -9,7 +10,7 @@ import org.jukeboxmc.block.BlockStoneSlab;
 public class ItemStoneSlab extends Item {
 
     public ItemStoneSlab() {
-        super( "minecraft:double_stone_slab", 44 );
+        super( 44, 5942 );
     }
 
     @Override
@@ -17,23 +18,12 @@ public class ItemStoneSlab extends Item {
         return new BlockStoneSlab();
     }
 
-    public void setSlabType( SlabType slabType ) {
+    public void setSlabType( StoneSlabType slabType ) {
         this.setMeta( slabType.ordinal() );
     }
 
-    public SlabType getSlabType() {
-        return SlabType.values()[this.getMeta()];
-    }
-
-    public enum SlabType {
-        SMOOTH_STONE,
-        SANDSTONE,
-        WOODEN,
-        COBBLESTONE,
-        BRICKS,
-        STONE_BRICKS,
-        QUARTZ,
-        NETHER_BRICK
+    public StoneSlabType getSlabType() {
+        return StoneSlabType.values()[this.getMeta()];
     }
 
 }

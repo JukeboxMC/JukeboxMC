@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockShulkerBox;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.type.WallType;
 import org.jukeboxmc.block.type.WoodType;
 
@@ -285,22 +287,22 @@ public enum ItemType {
     BONE_BLOCK( new ItemBoneBlock() ),
     STRUCTURE_VOID( new ItemStructureVoid() ),
 
-    WHITE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.WHITE ) ),
-    ORANGE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.ORANGE ) ),
-    MAGENTA_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.MAGENTA ) ),
-    LIGHT_BLUE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.LIGHT_BLUE ) ),
-    YELLOW_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.YELLOW ) ),
-    LIME_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.LIME ) ),
-    PINK_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.PINK ) ),
-    GRAY_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.GRAY ) ),
-    SILVER_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.SILVER ) ),
-    CYAN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.CYAN ) ),
-    PURPLE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.PURPLE ) ),
-    BLUE_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BLUE ) ),
-    BROWN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BROWN ) ),
-    GREEN_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.GREEN ) ),
-    RED_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.RED ) ),
-    BLACK_SHULKER_BOX( new ItemShulkerBox().setColor( BlockColor.BLACK ) ),
+    WHITE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    ORANGE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    MAGENTA_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    LIGHT_BLUE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    YELLOW_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    PINK_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.PINK ).toItem() ),
+    GRAY_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    SILVER_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    CYAN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    PURPLE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.PURPLE ).toItem()),
+    BLUE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BLUE ).toItem()),
+    BROWN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    GREEN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    RED_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.RED ).toItem() ),
+    BLACK_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BLACK ).toItem() ),
 
     PURPLE_GLAZED_TERRACOTTA( new ItemPurpleGlazedTerracotta() ),
     WHITE_GLAZED_TERRACOTTA( new ItemWhiteGlazedTerracotta() ),

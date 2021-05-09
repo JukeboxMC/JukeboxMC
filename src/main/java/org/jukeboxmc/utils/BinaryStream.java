@@ -488,9 +488,7 @@ public class BinaryStream {
             this.readSignedVarInt(); // netId
         }
 
-        int blockRuntimeId = this.readSignedVarInt(); // blockRuntimeId
-
-        System.out.println("BID: " +blockRuntimeId);
+        int blockRuntimeId = this.readSignedVarInt();
 
         int value = this.readUnsignedVarInt();
 

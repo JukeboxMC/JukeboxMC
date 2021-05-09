@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
@@ -37,6 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -48,6 +50,8 @@ public class Server {
     @Getter
     @Setter
     private static Server instance;
+
+    private static final AtomicBoolean INITIATING = new AtomicBoolean(true);
 
     private InetSocketAddress address;
     private Listener listener;
@@ -97,8 +101,15 @@ public class Server {
         this.tickExecutor = Executors.newScheduledThreadPool( 1, builder.build() );
         this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
 
-        BlockType.init();
+        INITIATING.set( true );
+        BlockPalette.init(); // ja
+        try {
+            Class.forName( "org.jukeboxmc.block.BlockType" );
+        } catch ( ClassNotFoundException e ) {
+            // load the class
+        }
         ItemType.init();
+        INITIATING.set( false );
 
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
 
@@ -204,6 +215,10 @@ public class Server {
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.save();
+    }
+
+    public boolean isIniatiating() {
+        return INITIATING.get();
     }
 
     public InetSocketAddress getAddress() {

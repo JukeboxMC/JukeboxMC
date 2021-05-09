@@ -26,7 +26,7 @@ public class BlockShulkerBox extends Block {
 
     @Override
     public ItemShulkerBox toItem() {
-        return new ItemShulkerBox().setColor( this.getColor() );
+        return new ItemShulkerBox( this.runtimeId );
     }
 
     public BlockShulkerBox setColor( BlockColor color ) {
