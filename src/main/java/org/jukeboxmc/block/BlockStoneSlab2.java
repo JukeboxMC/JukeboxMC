@@ -61,9 +61,7 @@ public class BlockStoneSlab2 extends BlockSlab {
                 }
             }
         }
-        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
