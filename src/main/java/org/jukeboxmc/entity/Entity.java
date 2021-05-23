@@ -33,7 +33,7 @@ public abstract class Entity {
         this.metadata.setFloat( MetadataFlag.BOUNDING_BOX_HEIGHT, this.getHeight() );
         this.metadata.setShort( MetadataFlag.AIR_SUPPLY, (short) 0 );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, true );
-        this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.AFFECTED_BY_GRAVITY, true );
+        this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_GRAVITY, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, true );
 
         this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 7, 0, 0, 0 );
