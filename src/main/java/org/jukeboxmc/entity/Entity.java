@@ -27,11 +27,11 @@ public abstract class Entity {
     public Entity() {
         this.metadata = new Metadata();
         this.metadata.setLong( MetadataFlag.INDEX, 0 );
-        this.metadata.setShort( MetadataFlag.MAX_AIR, (short) 400 );
+        this.metadata.setShort( MetadataFlag.MAX_AIR_SUPPLY, (short) 400 );
         this.metadata.setFloat( MetadataFlag.SCALE, 1 );
-        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_WIDTH, this.getWidth() );
-        this.metadata.setFloat( MetadataFlag.BOUNDINGBOX_HEIGHT, this.getHeight() );
-        this.metadata.setShort( MetadataFlag.AIR, (short) 0 );
+        this.metadata.setFloat( MetadataFlag.BOUNDING_BOX_WIDTH, this.getWidth() );
+        this.metadata.setFloat( MetadataFlag.BOUNDING_BOX_HEIGHT, this.getHeight() );
+        this.metadata.setShort( MetadataFlag.AIR_SUPPLY, (short) 0 );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.HAS_COLLISION, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.AFFECTED_BY_GRAVITY, true );
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, true );
