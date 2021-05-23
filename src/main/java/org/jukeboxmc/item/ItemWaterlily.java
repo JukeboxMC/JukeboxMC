@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWaterlily;
 public class ItemWaterlily extends Item {
 
     public ItemWaterlily() {
-        super( "minecraft:waterlily", 111 );
+        super( 111 );
     }
 
     @Override

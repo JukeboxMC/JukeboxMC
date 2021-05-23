@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemDaylightDetectorInverted;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockDaylightDetectorInverted extends Block {
 
     public BlockDaylightDetectorInverted() {
         super( "minecraft:daylight_detector_inverted" );
+    }
+
+    @Override
+    public ItemDaylightDetectorInverted toItem() {
+        return new ItemDaylightDetectorInverted();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.DAYLIGHT_DETECTOR_INVERTED;
     }
 
     public void setRedstoneSignal( int value ) {

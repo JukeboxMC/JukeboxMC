@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNormalStoneStairs;
 public class ItemNormalStoneStairs extends Item {
 
     public ItemNormalStoneStairs() {
-        super( "minecraft:normal_stone_stairs", -180 );
+        super( -180 );
     }
 
     @Override

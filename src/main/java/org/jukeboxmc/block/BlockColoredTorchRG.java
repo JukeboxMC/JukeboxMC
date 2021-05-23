@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.TorchFacing;
+import org.jukeboxmc.item.ItemColoredTorchRG;
 
 /**
  * @author LucGamesYT
@@ -12,12 +13,22 @@ public class BlockColoredTorchRG extends Block {
         super( "minecraft:colored_torch_rg" );
     }
 
+    @Override
+    public ItemColoredTorchRG toItem() {
+        return new ItemColoredTorchRG();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.COLORED_TORCH_RG;
+    }
+
     public void setTorchFacing( TorchFacing torchFacing ) {
         this.setState( "torch_facing_direction", torchFacing.name().toLowerCase() );
     }
 
     public TorchFacing getTorchFacing() {
-        return this.stateExists( "torch_facing_direction" ) ? TorchFacing.valueOf( this.getStringState( "torch_facing_direction" ).toUpperCase() ) : TorchFacing.TOP;
+        return this.stateExists( "torch_facing_direction" ) ? TorchFacing.valueOf( this.getStringState( "torch_facing_direction" ) ) : TorchFacing.TOP;
     }
 
     public void setColor( boolean value ) {

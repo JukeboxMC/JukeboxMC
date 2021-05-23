@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockComposter;
 public class ItemComposter extends Item {
 
     public ItemComposter() {
-        super( "minecraft:composter", -213 );
+        super(  -213 );
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemSpruceWallSign;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,17 @@ public class BlockSpruceWallSign extends Block {
 
     public BlockSpruceWallSign() {
         super( "minecraft:spruce_wall_sign" );
+    }
+
+
+    @Override
+    public ItemSpruceWallSign toItem() {
+        return new ItemSpruceWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SPRUCE_WALL_SIGN;
     }
 
     @Override

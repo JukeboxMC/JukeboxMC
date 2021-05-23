@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemPistonarmcollision;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockPistonarmcollision extends Block {
 
     public BlockPistonarmcollision() {
         super( "minecraft:pistonarmcollision" );
+    }
+
+    @Override
+    public ItemPistonarmcollision toItem() {
+        return new ItemPistonarmcollision();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.PISTONARMCOLLISION;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

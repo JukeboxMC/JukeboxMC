@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemElytra extends Item {
 
     public ItemElytra() {
-        super( "minecraft:elytra", 554 );
+        super( 554 );
     }
 
 

@@ -13,7 +13,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFenceGate extends Block {
+public abstract class BlockFenceGate extends Block {
 
     public BlockFenceGate( String identifier ) {
         super( identifier );
@@ -51,8 +51,6 @@ public class BlockFenceGate extends Block {
         }
         this.setOpen( !this.isOpen() );
 
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
     }
@@ -107,4 +105,5 @@ public class BlockFenceGate extends Block {
                 return Direction.EAST;
         }
     }
+
 }

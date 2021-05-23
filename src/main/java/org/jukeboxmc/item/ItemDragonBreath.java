@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDragonBreath extends Item {
 
     public ItemDragonBreath() {
-        super( "minecraft:dragon_breath", 550 );
+        super( 550 );
     }
 
 

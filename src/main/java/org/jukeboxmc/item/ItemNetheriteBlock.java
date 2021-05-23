@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetheriteBlock;
 public class ItemNetheriteBlock extends Item {
 
     public ItemNetheriteBlock() {
-        super( "minecraft:netherite_block", -270 );
+        super( -270 );
     }
 
     @Override

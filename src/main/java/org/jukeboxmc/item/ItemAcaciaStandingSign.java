@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaStandingSign;
 public class ItemAcaciaStandingSign extends Item {
 
     public ItemAcaciaStandingSign() {
-        super( "minecraft:acacia_standing_sign", -190 );
+        super(  -190 );
     }
 
     @Override

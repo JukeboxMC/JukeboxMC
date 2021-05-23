@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscStrad extends Item {
 
     public ItemMusicDiscStrad() {
-        super( "minecraft:music_disc_strad", 532 );
+        super( 532 );
     }
 
 

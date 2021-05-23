@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemEndRod;
 
 /**
  * @author LucGamesYT
@@ -12,6 +13,16 @@ public class BlockEndRod extends Block {
         super( "minecraft:end_rod" );
     }
 
+    @Override
+    public ItemEndRod toItem() {
+        return new ItemEndRod();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.END_ROD;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
@@ -19,4 +30,5 @@ public class BlockEndRod extends Block {
     public BlockFace getBlockFace() {
         return this.stateExists( "facing_direction" ) ? BlockFace.values()[this.getIntState( "facing_direction" )] : BlockFace.NORTH;
     }
+
 }

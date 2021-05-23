@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSeaPickle;
 public class ItemSeaPickle extends Item {
 
     public ItemSeaPickle() {
-        super( "minecraft:sea_pickle", -156 );
+        super( -156 );
     }
 
     @Override

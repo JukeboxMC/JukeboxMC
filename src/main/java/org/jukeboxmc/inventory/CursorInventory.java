@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
@@ -12,6 +13,10 @@ public class CursorInventory extends Inventory {
 
     public CursorInventory( InventoryHolder holder ) {
         super( holder, 1 );
+    }
+
+    public void setItem( Item item ) {
+       this.setItem( 0, item );
     }
 
     @Override

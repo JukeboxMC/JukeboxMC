@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJungleStandingSign;
 public class ItemJungleSign extends Item {
 
     public ItemJungleSign() {
-        super( "minecraft:jungle_sign", 568 );
+        super( 568 );
     }
 
     @Override

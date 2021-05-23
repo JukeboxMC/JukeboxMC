@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchFenceGate;
 public class ItemBirchFenceGate extends Item {
 
     public ItemBirchFenceGate() {
-        super( "minecraft:birch_fence_gate", 184 );
+        super( 184 );
     }
 
     @Override

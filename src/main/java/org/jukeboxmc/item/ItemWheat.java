@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWheat;
 public class ItemWheat extends Item {
 
     public ItemWheat() {
-        super( "minecraft:wheat", 334 );
+        super( 334 );
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockRedMushroomBlock;
+import org.jukeboxmc.block.BlockType;
 
 /**
  * @author LucGamesYT
@@ -8,34 +9,12 @@ import org.jukeboxmc.block.BlockRedMushroomBlock;
  */
 public class ItemRedMushroomBlock extends Item {
 
-    public ItemRedMushroomBlock() {
-        super( "minecraft:red_mushroom_block", 100 );
+    public ItemRedMushroomBlock( int blockRuntimeId ) {
+        super( 100, blockRuntimeId );
     }
 
     @Override
     public BlockRedMushroomBlock getBlock() {
-        return new BlockRedMushroomBlock();
+        return (BlockRedMushroomBlock) BlockType.getBlock( this.blockRuntimeId );
     }
-
-    public void setMushroomType( MushroomType mushroomType ) {
-        if ( mushroomType == MushroomType.MUSHROOM_BROWN ) {
-            this.setMeta( 0 );
-        } else {
-            this.setMeta( 14 );
-        }
-    }
-
-    public MushroomType getMushroomType() {
-        if ( this.getMeta() == 0 ) {
-            return MushroomType.MUSHROOM_BROWN;
-        } else {
-            return MushroomType.MUSHROOM_RED;
-        }
-    }
-
-    public enum MushroomType {
-        MUSHROOM_BROWN,
-        MUSHROOM_RED
-    }
-
 }

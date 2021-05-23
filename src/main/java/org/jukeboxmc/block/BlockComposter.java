@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemComposter;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockComposter extends Block {
 
     public BlockComposter() {
         super( "minecraft:composter" );
+    }
+
+    @Override
+    public ItemComposter toItem() {
+        return new ItemComposter();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.COMPOSTER;
     }
 
     public void setComposterFillLevel( int value ) {

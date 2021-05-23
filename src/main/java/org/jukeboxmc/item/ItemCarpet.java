@@ -1,7 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockCarpet;
-import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT
@@ -9,21 +10,18 @@ import org.jukeboxmc.block.BlockColor;
  */
 public class ItemCarpet extends Item {
 
-    public ItemCarpet() {
-        super( "minecraft:carpet", 171 );
+    public ItemCarpet( int blockRuntimeId ) {
+        super( 171, blockRuntimeId );
     }
 
     @Override
     public BlockCarpet getBlock() {
-        return new BlockCarpet();
+        return (BlockCarpet) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setColor( BlockColor blockColor ) {
-        this.setMeta( blockColor.ordinal() );
-    }
 
     public BlockColor getColor() {
-        return BlockColor.values()[this.getMeta()];
+        return this.getBlock().getColor();
     }
 
 }

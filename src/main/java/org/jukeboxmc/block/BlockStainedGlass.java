@@ -1,12 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.item.ItemStainedGlass;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -18,15 +13,16 @@ public class BlockStainedGlass extends Block {
         super( "minecraft:stained_glass" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemStainedGlass toItem() {
+        return new ItemStainedGlass( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return new ItemStainedGlass().setColor(this.getColor());
+    public BlockType getBlockType() {
+        return BlockType.STAINED_GLASS;
     }
 
     public BlockStainedGlass setColor( BlockColor color ) {
@@ -35,6 +31,6 @@ public class BlockStainedGlass extends Block {
     }
 
     public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ).toUpperCase() ) : BlockColor.WHITE;
+        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

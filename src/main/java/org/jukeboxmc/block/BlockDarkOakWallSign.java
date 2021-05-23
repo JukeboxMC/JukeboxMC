@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemDarkOakWallSign;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockDarkOakWallSign extends Block {
 
     public BlockDarkOakWallSign() {
         super( "minecraft:darkoak_wall_sign" );
+    }
+
+    @Override
+    public ItemDarkOakWallSign toItem() {
+        return new ItemDarkOakWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.DARK_OAK_WALL_SIGN;
     }
 
     @Override

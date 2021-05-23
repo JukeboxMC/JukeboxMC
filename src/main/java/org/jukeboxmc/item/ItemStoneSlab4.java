@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStoneSlab4;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.StoneSlab4Type;
 
 /**
  * @author LucGamesYT
@@ -8,29 +10,17 @@ import org.jukeboxmc.block.BlockStoneSlab4;
  */
 public class ItemStoneSlab4 extends Item {
 
-    public ItemStoneSlab4() {
-        super( "minecraft:double_stone_slab4", -166 );
+    public ItemStoneSlab4( int blockRuntimeId ) {
+        super( -166, blockRuntimeId );
     }
 
     @Override
     public BlockStoneSlab4 getBlock() {
-        return new BlockStoneSlab4();
+        return (BlockStoneSlab4) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setSlabType( SlabType slabType ) {
-        this.setMeta( slabType.ordinal() );
-    }
-
-    public SlabType getSlabType() {
-        return SlabType.values()[this.getMeta()];
-    }
-
-    public enum SlabType {
-        MOSSY_STONE_BRICK,
-        SMOOTH_QUARTZ,
-        STONE_SLAB,
-        CUT_SANDSTONE,
-        CUT_RED_SANDSTONE
+    public StoneSlab4Type getSlabType() {
+        return this.getBlock().getStoneSlabType();
     }
 
 }

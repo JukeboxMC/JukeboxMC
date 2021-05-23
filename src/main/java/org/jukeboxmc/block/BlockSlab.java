@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSlab extends Block {
+public abstract class BlockSlab extends Block {
 
     public BlockSlab( String identifier ) {
         super( identifier );
@@ -21,11 +21,7 @@ public class BlockSlab extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {
-            this.setTopSlot( true );
-        } else {
-            this.setTopSlot( false );
-        }
+        this.setTopSlot( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN );
         return true;
     }
 
@@ -52,6 +48,11 @@ public class BlockSlab extends Block {
         }
     }
 
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        return block instanceof BlockSlab;
+    }
+
     public void setTopSlot( boolean value ) {
         this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
     }
@@ -59,4 +60,5 @@ public class BlockSlab extends Block {
     public boolean isTopSlot() {
         return this.stateExists( "top_slot_bit" ) && this.getByteState( "top_slot_bit" ) == 1;
     }
+
 }

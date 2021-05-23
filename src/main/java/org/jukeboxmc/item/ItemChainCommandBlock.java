@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChainCommandBlock;
 public class ItemChainCommandBlock extends Item {
 
     public ItemChainCommandBlock() {
-        super( "minecraft:chain_command_block", 189 );
+        super( 189 );
     }
 
     @Override

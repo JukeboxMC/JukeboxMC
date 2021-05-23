@@ -1,11 +1,6 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.item.ItemSeagrass;
 
 /**
  * @author LucGamesYT
@@ -17,16 +12,16 @@ public class BlockSeagrass extends Block {
         super( "minecraft:seagrass" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setSeaGrassType( SeaGrassType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemSeagrass toItem() {
+        return new ItemSeagrass();
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getSeaGrassType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.SEAGRASS;
     }
 
     public void setSeaGrassType( SeaGrassType seaGrassType ) {
@@ -34,7 +29,7 @@ public class BlockSeagrass extends Block {
     }
 
     public SeaGrassType getSeaGrassType() {
-        return this.stateExists( "sea_grass_type" ) ? SeaGrassType.valueOf( this.getStringState( "sea_grass_type" ).toUpperCase() ) : SeaGrassType.DEFAULT;
+        return this.stateExists( "sea_grass_type" ) ? SeaGrassType.valueOf( this.getStringState( "sea_grass_type" ) ) : SeaGrassType.DEFAULT;
     }
 
     public enum SeaGrassType {

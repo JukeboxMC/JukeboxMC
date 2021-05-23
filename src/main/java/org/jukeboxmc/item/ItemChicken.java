@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemChicken extends Item {
 
     public ItemChicken() {
-        super( "minecraft:chicken", 275 );
+        super( 275 );
     }
 
 

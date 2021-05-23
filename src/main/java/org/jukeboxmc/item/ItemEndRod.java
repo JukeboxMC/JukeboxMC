@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEndRod extends Item {
 
     public ItemEndRod() {
-        super( "minecraft:end_rod", 208 );
+        super( 208 );
     }
 
 

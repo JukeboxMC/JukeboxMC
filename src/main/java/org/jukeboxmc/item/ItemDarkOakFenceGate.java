@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDarkOakFenceGate;
 public class ItemDarkOakFenceGate extends Item {
 
     public ItemDarkOakFenceGate() {
-        super( "minecraft:dark_oak_fence_gate", 186 );
+        super( 186 );
     }
 
     @Override

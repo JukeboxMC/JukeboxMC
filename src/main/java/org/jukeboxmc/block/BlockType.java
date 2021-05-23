@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.item.Item;
 
 import static org.jukeboxmc.block.BlockType.Companion.runtimeIdToBlock;
 
@@ -16,7 +17,6 @@ public enum BlockType {
     GRASS( new BlockGrass() ),
     DIRT( new BlockDirt() ),
     BEDROCK( new BlockBedrock() ),
-    TALL_GRASS( new BlockTallGrass() ),
     DOUBLE_PLANT( new BlockDoublePlant() ),
     STONE( new BlockStone() ),
     COBBLESTONE( new BlockCobblestone() ),
@@ -52,15 +52,12 @@ public enum BlockType {
     WOOL( new BlockWool() ),
     ELEMENT_0( new BlockElement0() ),
     YELLOW_FLOWER( new BlockYellowFlower() ),
+
     RED_FLOWER( new BlockRedFlower() ),
     BROWN_MUSHROOM( new BlockBrownMushroom() ),
     RED_MUSHROOM( new BlockRedMushroom() ),
     GOLD_BLOCK( new BlockGoldBlock() ),
     IRON_BLOCK( new BlockIronBlock() ),
-    DOUBLE_STONE_SLAB( new BlockDoubleStoneSlab() ),
-
-    STONE_SLAB( new BlockStoneSlab() ),
-
     BRICK_BLOCK( new BlockBrickBlock() ),
     TNT( new BlockTnt() ),
     BOOKSHELF( new BlockBookshelf() ),
@@ -103,7 +100,7 @@ public enum BlockType {
     JUKEBOX( new BlockJukebox() ),
     FENCE( new BlockFence() ),
     PUMPKIN( new BlockPumpkin() ),
-    NETHERRACK( new BlockNeterrack() ),
+    NETHERRACK( new BlockNetherrack() ),
     SOUL_SAND( new BlockSoulSand() ),
     GLOWSTONE( new BlockGlowstone() ),
     PORTAL( new BlockPortal() ),
@@ -111,9 +108,9 @@ public enum BlockType {
     CAKE( new BlockCake() ),
     UNPOWERED_REPEATER( new BlockRepeater() ),
     POWERED_REPEATER( new BlockPoweredRepeater() ),
-    INVISIBLEBEDROCK( new BlockInvisiblebedrock() ),
+    INVISIBLE_BEDROCK( new BlockInvisiblebedrock() ),
     WOODEN_TRAPDOOR( new BlockWoodenTrapdoor() ),
-    MONSTER_EGG( new BlockMonsterEgg() ),
+    INFESTED_STONE( new BlockInfestedStone() ),
     STONEBRICK( new BlockStonebrick() ),
     BROWN_MUSHROOM_BLOCK( new BlockBrownMushroomBlock() ),
     RED_MUSHROOM_BLOCK( new BlockRedMushroomBlock() ),
@@ -123,6 +120,7 @@ public enum BlockType {
     PUMPKIN_STEM( new BlockPumpkinStem() ),
     MELON_STEM( new BlockMelonStem() ),
     VINE( new BlockVine() ),
+    TRIPWIRE( new BlockTripwire() ),
     FENCE_GATE( new BlockOakFenceGate() ),
     BRICK_STAIRS( new BlockBrickStairs() ),
     STONE_BRICK_STAIRS( new BlockStoneBrickStairs() ),
@@ -149,7 +147,7 @@ public enum BlockType {
     ENDER_CHEST( new BlockEnderChest() ),
     TRIPWIRE_HOOK( new BlockTripwireHook() ),
     EMERALD_BLOCK( new BlockEmeraldBlock() ),
-    SPURCE_STAIRS( new BlockSpruceStairs() ),
+    SPRUCE_STAIRS( new BlockSpruceStairs() ),
     BIRCH_STAIRS( new BlockBirchStairs() ),
     JUNGLE_STAIRS( new BlockJungleStairs() ),
     COMMAND_BLOCK( new BlockCommandBlock() ),
@@ -172,12 +170,11 @@ public enum BlockType {
     HOPPER( new BlockHopper() ),
     QUARTZ_BLOCK( new BlockQuartzBlock() ),
     QUARTZ_STAIRS( new BlockQuartzStairs() ),
-    DOUBLE_WOODEN_SLAB( new BlockDoubleStoneSlab() ),
     WOODEN_SLAB( new BlockWoodenSlab() ),
     STAINED_HARDENED_CLAY( new BlockStainedHardenedClay() ),
     STAINED_GLASS_PANE( new BlockStainedGlassPane() ),
-    ACACIA_LEAVES( new BlockLeaves2() ),
-    ACACIA_LOG( new BlockLog2() ),
+    LEAVES2( new BlockLeaves2() ),
+    LOG2( new BlockLog2() ),
     ACACIA_STAIRS( new BlockAcaciaStairs() ),
     DARK_OAK_STAIRS( new BlockDarkOakStairs() ),
     SLIME( new BlockSlime() ),
@@ -194,8 +191,6 @@ public enum BlockType {
     DAYLIGHT_DETECTOR_INVERTED( new BlockDaylightDetectorInverted() ),
     RED_SANDSTONE( new BlockRedSandstone() ),
     RED_SANDSTONE_STAIRS( new BlockRedSandstoneStairs() ),
-    DOUBLE_RED_SANDSTONE_SLAB( new BlockDoubleStoneSlab2() ),
-    RED_SANDSTONE_SLAB( new BlockStoneSlab2() ),
     SPRUCE_FENCE_GATE( new BlockSpruceFenceGate() ),
     BIRCH_FENCE_GATE( new BlockBirchFenceGate() ),
     JUNGLE_FENCE_GATE( new BlockJungleFenceGate() ),
@@ -249,7 +244,7 @@ public enum BlockType {
     RED_GLAZED_TERRACOTTA( new BlockRedGlazedTerracotta() ),
     BLACK_GLAZED_TERRACOTTA( new BlockBlackGlazedTerracotta() ),
     CONCRETE( new BlockConcrete() ),
-    CONRETEPOWDER( new BlockConcretepowder() ),
+    CONCRETEPOWDER( new BlockConcretePowder() ),
     CHEMISTRY_TABLE( new BlockChemistryTable() ),
     UNDERWATER_TORCH( new BlockUnderwaterTorch() ),
     CHORUS_PLANT( new BlockChorusPlant() ),
@@ -262,7 +257,7 @@ public enum BlockType {
     NETHERREACTOR( new BlockNetherreactor() ),
     INFO_UPDATE( new BlockInfoUpdate() ),
     INFO_UPDATE2( new BlockInfoUpdate2() ),
-    MOVINGBLOCK( new BlockMovingblock() ),
+    MOVING_BLOCK( new BlockMovingblock() ),
     OBSERVER( new BlockObserver() ),
     STRUCTURE_BLOCK( new BlockStructureBlock() ),
     HARD_GLASS( new BlockHardGlass() ),
@@ -405,7 +400,7 @@ public enum BlockType {
     CORAL_FAN_HANG2( new BlockCoralFanHang2() ),
     CORAL_FAN_HANG3( new BlockCoralFanHang3() ),
     KELP( new BlockKelp() ),
-    DRIED_HELP_BLOCK( new BlockDriedKelpBlock() ),
+    DRIED_KELP_BLOCK( new BlockDriedKelpBlock() ),
     ACACIA_BUTTON( new BlockAcaciaButton() ),
     BIRCH_BUTTON( new BlockBirchButton() ),
     DARK_OAK_BUTTON( new BlockDarkOakButton() ),
@@ -427,13 +422,20 @@ public enum BlockType {
     TURTLE_EGG( new BlockTurtleEgg() ),
     BUBBLE_COLUMN( new BlockBubbleColumn() ),
     BARRIER( new BlockBarrier() ),
-    END_STONE_BRICK_SLAB( new BlockStoneSlab3() ),
     BAMBOO( new BlockBamboo() ),
     BAMBOO_SAPLING( new BlockBambooSapling() ),
     SCAFFOLDING( new BlockScaffolding() ),
-    MOSSY_STONE_BRICK_SLAB( new BlockStoneSlab4() ),
-    DOUBLE_END_STONE_BRICK_SLAB( new BlockDoubleStoneSlab3() ),
-    DOUBLE_MOSSY_STONE_BRICK_SLAB( new BlockDoubleStoneSlab4() ),
+
+    STONE_SLAB( new BlockStoneSlab() ),
+    STONE_SLAB2( new BlockStoneSlab2() ),
+    STONE_SLAB3( new BlockStoneSlab3() ),
+    STONE_SLAB4( new BlockStoneSlab4() ),
+
+    DOUBLE_STONE_SLAB( new BlockDoubleStoneSlab() ),
+    DOUBLE_STONE_SLAB2( new BlockDoubleStoneSlab2() ),
+    DOUBLE_STONE_SLAB3( new BlockDoubleStoneSlab3() ),
+    DOUBLE_STONE_SLAB4( new BlockDoubleStoneSlab4() ),
+
     GRANITE_STAIRS( new BlockGraniteStairs() ),
     DIORITE_STAIRS( new BlockDioriteStairs() ),
     ANDESITE_STAIRS( new BlockAndesiteStairs() ),
@@ -464,7 +466,7 @@ public enum BlockType {
     BLAST_FURNACE( new BlockBlastFurnace() ),
     STONECUTTER_BLOCK( new BlockStonecutterBlock() ),
     SMOKER( new BlockSmoker() ),
-    GLOWING_SMOKER( new BlockGlowingSmoker() ),
+    LIT_SMOKER( new BlockGlowingSmoker() ),
     CARTOGRAPGHY_TABLE( new BlockCartographyTableBlock() ),
     FLETCHING_TABLE( new BlockFletchingTable() ),
     SMITHING_TABLE( new BlockSmithingTable() ),
@@ -536,13 +538,13 @@ public enum BlockType {
     RESPAWN_ANCHOR( new BlockRespawnAnchor() ),
     BLACKSTONE( new BlockBlackstone() ),
     POLISHED_BLACKSTONE_BRICKS( new BlockPolishedBlackstoneBricks() ),
-    PLOISHED_BLACKSTONE_BRICK_STAIRS( new BlockPolishedBlackstoneBrickStairs() ),
+    POLISHED_BLACKSTONE_BRICK_STAIRS( new BlockPolishedBlackstoneBrickStairs() ),
     BLACKSTONE_STAIRS( new BlockBlackstoneStairs() ),
     BLACKSTONE_WALL( new BlockBlackstoneWall() ),
     POLISHED_BLACKSTONE_BRICK_WALL( new BlockPolishedBlackstoneBrickWall() ),
     CHISELED_POLISHED_BLACKSTONE( new BlockChiseledPolishedBlackstone() ),
     CRACKED_POLISHED_BLACKSTONE_BRICKS( new BlockCrackedPolishedBlackstoneBricks() ),
-    GILDED_BLACKSTONE( new BlockGildedBlackstone() ),
+    GLIDED_BLACKSTONE( new BlockGildedBlackstone() ),
     BLACKSTONE_SLAB( new BlockBlackstoneSlab() ),
     BLACKSTONE_DOUBLE_SLAB( new BlockDoubleBlackstoneSlab() ),
     POLISHED_BLACKSTONE_BRICK_SLAB( new BlockPolishedBlackstoneBrickSlab() ),
@@ -566,7 +568,7 @@ public enum BlockType {
     CHISELED_NETHER_BRICKS( new BlockChiseledNetherBricks() ),
     CRACKED_NETHER_BRICKS( new BlockCrackedNetherBricks() ),
     QUARTZ_BRICKS( new BlockQuartzBricks() ),
-    BEE_HIVE( new BlockBeehive() );
+    BEEHIVE( new BlockBeehive() );
 
     private Block block;
 
@@ -576,7 +578,11 @@ public enum BlockType {
     }
 
     public <B extends Block> B getBlock() {
-        return (B) this.block;
+        return (B) this.block.clone();
+    }
+
+    public Item toItem() {
+        return this.block.toItem();
     }
 
     public static Block getBlock( int runtimeId ) {

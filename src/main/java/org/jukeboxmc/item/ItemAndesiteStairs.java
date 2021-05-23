@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAndesiteStairs;
 public class ItemAndesiteStairs extends Item {
 
     public ItemAndesiteStairs() {
-        super( "minecraft:andesite_stairs", -171 );
+        super(  -171 );
     }
 
     @Override

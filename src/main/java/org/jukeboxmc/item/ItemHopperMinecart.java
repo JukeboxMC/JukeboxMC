@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemHopperMinecart extends Item {
 
     public ItemHopperMinecart() {
-        super( "minecraft:hopper_minecart", 516 );
+        super( 516 );
     }
 
 

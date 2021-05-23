@@ -14,7 +14,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDoor extends Block {
+public abstract class BlockDoor extends Block {
 
     public BlockDoor( String identifier ) {
         super( identifier );
@@ -24,7 +24,7 @@ public class BlockDoor extends Block {
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( Direction.fromAngle( player.getYaw() ) );
 
-        BlockDoor blockAbove = new BlockDoor( this.identifier );
+        BlockDoor blockAbove = this.newDoor();
         blockAbove.setLocation( new Location( world, placePosition.add( 0, 1, 0 ) ) );
         blockAbove.setDirection( this.getDirection() );
         blockAbove.setUpperBlock( true );
@@ -48,12 +48,14 @@ public class BlockDoor extends Block {
         return true;
     }
 
+    public abstract BlockDoor newDoor();
+
     @Override
     public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
         if ( this.isUpperBlock() ) {
-            this.world.setBlock( this.location.subtract( 0, 1,0 ), new BlockAir() );
+            this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir() );
         } else {
-            this.world.setBlock( this.location.add( 0, 1,0 ), new BlockAir() );
+            this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir() );
         }
         this.world.setBlock( this.location, new BlockAir() );
         return true;
@@ -62,31 +64,28 @@ public class BlockDoor extends Block {
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen() );
-
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
     }
 
-    public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockDoor setOpen( boolean value ) {
+       return this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isOpen() {
         return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
     }
 
-    public void setUpperBlock( boolean value ) {
-        this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockDoor setUpperBlock( boolean value ) {
+       return this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isUpperBlock() {
         return this.stateExists( "upper_block_bit" ) && this.getByteState( "upper_block_bit" ) == 1;
     }
 
-    public void setDoorHinge( boolean value ) {
-        this.setState( "door_hinge_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockDoor setDoorHinge( boolean value ) {
+        return this.setState( "door_hinge_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isDoorHinge() {
@@ -123,4 +122,5 @@ public class BlockDoor extends Block {
                 return Direction.EAST;
         }
     }
+
 }

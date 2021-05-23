@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCarrotOnAStick extends Item {
 
     public ItemCarrotOnAStick() {
-        super( "minecraft:carrot_on_a_stick", 507 );
+        super( 507 );
     }
 
 

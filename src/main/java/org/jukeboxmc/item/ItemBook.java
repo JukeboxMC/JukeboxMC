@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBook extends Item {
 
     public ItemBook() {
-        super( "minecraft:book", 385 );
+        super( 385 );
     }
 
 

@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.QuartzType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemQuartzBlock;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -20,8 +22,6 @@ public class BlockQuartzBlock extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setChiselType( ChiselType.values()[itemIndHand.getMeta()] );
-
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
@@ -35,8 +35,13 @@ public class BlockQuartzBlock extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getChiselType().ordinal() );
+    public ItemQuartzBlock toItem() {
+        return new ItemQuartzBlock(this.runtimeId);
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.QUARTZ_BLOCK;
     }
 
     public void setAxis( Axis axis ) {
@@ -44,21 +49,15 @@ public class BlockQuartzBlock extends Block {
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 
-    public void setChiselType( ChiselType chiselType ) {
-        this.setState( "chisel_type", chiselType.name().toLowerCase() );
+    public BlockQuartzBlock setQuartzType( QuartzType quartzType ) {
+       return this.setState( "chisel_type", quartzType.name().toLowerCase() );
     }
 
-    public ChiselType getChiselType() {
-        return this.stateExists( "chisel_type" ) ? ChiselType.valueOf( this.getStringState( "chisel_type" ).toUpperCase() ) : ChiselType.DEFAULT;
+    public QuartzType getQuartzType() {
+        return this.stateExists( "chisel_type" ) ? QuartzType.valueOf( this.getStringState( "chisel_type" ) ) : QuartzType.DEFAULT;
     }
 
-    public enum ChiselType {
-        DEFAULT,
-        CHISELED,
-        LINES,
-        SMOOTH
-    }
 }

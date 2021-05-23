@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDolphinSpawnEgg extends Item {
 
     public ItemDolphinSpawnEgg() {
-        super( "minecraft:dolphin_spawn_egg", 482 );
+        super( 482 );
     }
 
 

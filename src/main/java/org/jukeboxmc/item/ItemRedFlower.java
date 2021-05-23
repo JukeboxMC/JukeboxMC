@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockRedFlower;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.FlowerType;
 
 /**
  * @author LucGamesYT
@@ -8,13 +10,13 @@ import org.jukeboxmc.block.BlockRedFlower;
  */
 public class ItemRedFlower extends Item {
 
-    public ItemRedFlower() {
-        super( "minecraft:red_flower", 38 );
+    public ItemRedFlower( int blockRuntimeId ) {
+        super( 38, blockRuntimeId );
     }
 
     @Override
     public BlockRedFlower getBlock() {
-        return new BlockRedFlower();
+        return (BlockRedFlower) BlockType.getBlock(this.blockRuntimeId);
     }
 
     public void setFlowerType( FlowerType flowerType ) {
@@ -25,17 +27,4 @@ public class ItemRedFlower extends Item {
         return FlowerType.values()[this.getMeta()];
     }
 
-    public enum FlowerType {
-        POPPY,
-        BLUE_ORCHID,
-        ALLIUM,
-        AZURE_BLUET,
-        RED_TULIP,
-        ORANGE_TULIP,
-        WHITE_TULIP,
-        PINK_TULIP,
-        OXEYE_DAISY,
-        CORN_FLOWER,
-        LILY_OF_THE_VALLEY
-    }
 }

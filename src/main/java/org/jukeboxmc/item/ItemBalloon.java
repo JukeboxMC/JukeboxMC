@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBalloon extends Item {
 
     public ItemBalloon() {
-        super( "minecraft:balloon", 587 );
+        super( 587 );
     }
 
 

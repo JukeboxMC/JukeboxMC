@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockSponge;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.SpongeType;
 
 /**
  * @author LucGamesYT
@@ -8,25 +10,16 @@ import org.jukeboxmc.block.BlockSponge;
  */
 public class ItemSponge extends Item {
 
-    public ItemSponge() {
-        super( "minecraft:sponge", 19 );
+    public ItemSponge( int blockRuntimeId ) {
+        super( 19, blockRuntimeId );
     }
 
     @Override
     public BlockSponge getBlock() {
-        return new BlockSponge();
-    }
-
-    public void setSpongeType( SpongeType spongeType ) {
-        this.setMeta( spongeType.ordinal() );
+        return (BlockSponge) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public SpongeType getSpongeType() {
-        return SpongeType.values()[this.getMeta()];
-    }
-
-    public enum SpongeType {
-        SPONGE,
-        WET_SPONGE
+        return this.getBlock().getSpongeType();
     }
 }

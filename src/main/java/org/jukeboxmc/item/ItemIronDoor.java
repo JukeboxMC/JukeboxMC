@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockIronDoor;
 public class ItemIronDoor extends Item {
 
     public ItemIronDoor() {
-        super( "minecraft:iron_door", 370 );
+        super( 370 );
     }
 
     @Override

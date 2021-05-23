@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGlowingBlastFurnace;
 public class ItemLitBlastFurnace extends Item {
 
     public ItemLitBlastFurnace() {
-        super( "minecraft:lit_blast_furnace", -214 );
+        super( -214 );
     }
 
     @Override

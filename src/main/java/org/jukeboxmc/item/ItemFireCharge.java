@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFireCharge extends Item {
 
     public ItemFireCharge() {
-        super( "minecraft:fire_charge", 499 );
+        super( 499 );
     }
 
 

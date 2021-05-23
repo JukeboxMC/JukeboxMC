@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockMonsterEgg;
+import org.jukeboxmc.block.BlockInfestedStone;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.MonsterEggStoneType;
 
 /**
  * @author LucGamesYT
@@ -8,29 +10,17 @@ import org.jukeboxmc.block.BlockMonsterEgg;
  */
 public class ItemMonsterEgg extends Item {
 
-    public ItemMonsterEgg() {
-        super( "minecraft:monster_egg", 97 );
+    public ItemMonsterEgg( int blockdRuntimeId ) {
+        super( 97, blockdRuntimeId );
     }
 
     @Override
-    public BlockMonsterEgg getBlock() {
-        return new BlockMonsterEgg();
-    }
-
-    public void setMonsterEggType( MonsterEggStoneType monsterEggType ) {
-        this.setMeta( monsterEggType.ordinal() );
+    public BlockInfestedStone getBlock() {
+        return (BlockInfestedStone) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public MonsterEggStoneType getMonsterEggStoneType() {
-        return MonsterEggStoneType.values()[this.getMeta()];
+        return this.getBlock().getMonsterEggStoneType();
     }
 
-    public enum MonsterEggStoneType {
-        INFESTED_STONE,
-        INFESTED_COBBLESTONE,
-        INFESTED_STONE_BRICK,
-        INFESTED_MOSSY_STONE_BRICK,
-        INFESTED_CRACKED_STONE_BRICK,
-        INFESTED_CHISELED_STONE_BRICK
-    }
 }

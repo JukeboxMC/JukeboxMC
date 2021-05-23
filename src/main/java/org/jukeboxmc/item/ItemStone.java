@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStone;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.StoneType;
 
 /**
  * @author LucGamesYT
@@ -8,30 +10,17 @@ import org.jukeboxmc.block.BlockStone;
  */
 public class ItemStone extends Item {
 
-    public ItemStone() {
-        super( "minecraft:stone", 1 );
+    public ItemStone( int blockRuntimeId ) {
+        super( 1, blockRuntimeId );
     }
 
     @Override
     public BlockStone getBlock() {
-        return new BlockStone();
-    }
-
-    public void setStoneType( StoneType stoneType ) {
-        this.setMeta( stoneType.ordinal() );
+        return (BlockStone) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public StoneType getStoneType() {
-        return StoneType.values()[this.getMeta()];
+        return this.getBlock().getStoneType();
     }
 
-    public enum StoneType {
-        STONE,
-        GRANITE,
-        POLISHED_GRANITE,
-        DIORITE,
-        POLISHED_DIORITE,
-        ANDESITE,
-        POLISHED_ANDESITE
-    }
 }

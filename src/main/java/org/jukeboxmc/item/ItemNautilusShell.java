@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNautilusShell extends Item {
 
     public ItemNautilusShell() {
-        super( "minecraft:nautilus_shell", 560 );
+        super( 560 );
     }
 
 

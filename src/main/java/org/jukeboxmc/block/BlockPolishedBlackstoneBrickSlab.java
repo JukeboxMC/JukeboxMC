@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemPolishedBlackstoneBrickSlab;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -16,8 +17,6 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-
         Block targetBlock = world.getBlock( blockPosition );
         Block block = world.getBlock( placePosition );
 
@@ -49,7 +48,19 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
                 return true;
             }
         }
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
         return true;
     }
+
+    @Override
+    public ItemPolishedBlackstoneBrickSlab toItem() {
+        return new ItemPolishedBlackstoneBrickSlab();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.POLISHED_BLACKSTONE_BRICK_SLAB;
+    }
+
 }

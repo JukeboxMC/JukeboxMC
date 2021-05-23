@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemChainCommandBlock;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockChainCommandBlock extends Block {
 
     public BlockChainCommandBlock() {
         super( "minecraft:chain_command_block" );
+    }
+
+    @Override
+    public ItemChainCommandBlock toItem() {
+        return new ItemChainCommandBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CHAIN_COMMAND_BLOCK;
     }
 
     public void setConditional( boolean value ) {
@@ -27,4 +38,5 @@ public class BlockChainCommandBlock extends Block {
     public BlockFace getBlockFace() {
         return this.stateExists( "facing_direction" ) ? BlockFace.values()[this.getIntState( "facing_direction" )] : BlockFace.NORTH;
     }
+
 }

@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.SignDirection;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.blockentity.BlockEntityBanner;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
@@ -14,7 +15,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBanner extends Block {
+public abstract class BlockBanner extends Block {
 
     public BlockBanner( String identifier ) {
         super( identifier );
@@ -53,4 +54,5 @@ public class BlockBanner extends Block {
     public SignDirection getSignDirection() {
         return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
     }
+
 }

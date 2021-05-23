@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEmerald extends Item {
 
     public ItemEmerald() {
-        super( "minecraft:emerald", 502 );
+        super( 502 );
     }
 
 }

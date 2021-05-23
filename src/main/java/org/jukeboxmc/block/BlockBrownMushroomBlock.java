@@ -1,5 +1,15 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBrownMushroomBlock;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
+
+import java.util.Random;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,11 +20,22 @@ public class BlockBrownMushroomBlock extends Block {
         super( "minecraft:brown_mushroom_block" );
     }
 
-    public void setHugeMushroom( int value ) { //0-15
-        this.setState( "huge_mushroom_bits", value );
+    @Override
+    public ItemBrownMushroomBlock toItem() {
+        return new ItemBrownMushroomBlock( this.runtimeId );
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BROWN_MUSHROOM_BLOCK;
+    }
+
+    public BlockBrownMushroomBlock setHugeMushroom( int value ) { //0-15
+        return this.setState( "huge_mushroom_bits", value );
     }
 
     public int getHugeMushroom() {
         return this.stateExists( "huge_mushroom_bits" ) ? this.getIntState( "huge_mushroom_bits" ) : 0;
     }
+
 }

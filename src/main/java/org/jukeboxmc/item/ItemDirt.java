@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDirt;
 public class ItemDirt extends Item {
 
     public ItemDirt() {
-        super( "minecraft:dirt", 3 );
+        super( 3 );
     }
 
     @Override

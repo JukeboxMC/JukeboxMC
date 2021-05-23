@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRespawnAnchor;
 public class ItemRespawnAnchor extends Item {
 
     public ItemRespawnAnchor() {
-        super( "minecraft:respawn_anchor", -272 );
+        super( -272 );
     }
 
     @Override

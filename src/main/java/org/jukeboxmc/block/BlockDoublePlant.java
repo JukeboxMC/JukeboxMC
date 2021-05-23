@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.PlantType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemDoublePlant;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -25,7 +26,6 @@ public class BlockDoublePlant extends Block {
         Block blockDown = world.getBlock( placePosition.substract( 0, 1, 0 ) );
 
         if ( blockAbove instanceof BlockAir && ( blockDown instanceof BlockGrass || blockDown instanceof BlockDirt ) ) {
-            this.setPlantType( PlantType.values()[itemIndHand.getMeta()] );
 
             BlockDoublePlant blockDoublePlant = new BlockDoublePlant();
             blockDoublePlant.setLocation( new Location( world, placePosition.add( 0, 1, 0 ) ) );
@@ -51,8 +51,13 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getPlantType().ordinal() );
+    public ItemDoublePlant toItem() {
+        return new ItemDoublePlant( this.runtimeId );
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.DOUBLE_PLANT;
     }
 
     public BlockDoublePlant setPlantType( PlantType plantType ) {
@@ -60,7 +65,7 @@ public class BlockDoublePlant extends Block {
     }
 
     public PlantType getPlantType() {
-        return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ).toUpperCase() ) : PlantType.SUNFLOWER;
+        return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ) ) : PlantType.SUNFLOWER;
     }
 
     public void setUpperBlock( boolean value ) {

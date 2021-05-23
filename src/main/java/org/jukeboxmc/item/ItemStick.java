@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemStick extends Item {
 
     public ItemStick() {
-        super( "minecraft:stick", 320 );
+        super( 320 );
     }
 
 

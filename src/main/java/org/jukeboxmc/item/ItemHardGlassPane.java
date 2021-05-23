@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHardGlassPane;
 public class ItemHardGlassPane extends Item {
 
     public ItemHardGlassPane() {
-        super( "minecraft:hard_glass_pane", 190 );
+        super( 190 );
     }
 
     @Override

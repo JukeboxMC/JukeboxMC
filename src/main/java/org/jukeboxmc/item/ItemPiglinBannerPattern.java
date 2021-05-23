@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 public class ItemPiglinBannerPattern extends Item {
 
     public ItemPiglinBannerPattern() {
-        super( "minecraft:piglin_banner_pattern", 577 );
+        super( 577 );
     }
 
     @Override

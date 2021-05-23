@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemWood;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -21,27 +22,6 @@ public class BlockWood extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        int meta = itemIndHand.getMeta();
-
-        if ( meta < 6 ) {
-            this.setStripped( false );
-        } else {
-            this.setStripped( true );
-        }
-
-        if ( meta == 0 || meta == 8 ) {
-            this.setWoodType( WoodType.OAK );
-        } else if ( meta == 1 || meta == 9 ) {
-            this.setWoodType( WoodType.SPRUCE );
-        } else if ( meta == 2 || meta == 10 ) {
-            this.setWoodType( WoodType.BIRCH );
-        } else if ( meta == 3 || meta == 11 ) {
-            this.setWoodType( WoodType.JUNGLE );
-        } else if ( meta == 4 || meta == 12 ) {
-            this.setWoodType( WoodType.ACACIA );
-        } else if ( meta == 5 || meta == 13 ) {
-            this.setWoodType( WoodType.DARK_OAK );
-        }
 
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
@@ -56,20 +36,25 @@ public class BlockWood extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getWoodType().ordinal() );
+    public ItemWood toItem() {
+        return new ItemWood( this.runtimeId );
     }
 
-    public void setWoodType( WoodType woodType ) {
-        this.setState( "wood_type", woodType.name().toLowerCase() );
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WOOD;
+    }
+
+    public BlockWood setWoodType( WoodType woodType ) {
+       return this.setState( "wood_type", woodType.name().toLowerCase() );
     }
 
     public WoodType getWoodType() {
-        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ).toUpperCase() ) : WoodType.OAK;
+        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ) ) : WoodType.OAK;
     }
 
-    public void setStripped( boolean value ) {
-        this.setState( "stripped_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockWood setStripped( boolean value ) {
+       return this.setState( "stripped_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isStripped() {
@@ -81,6 +66,7 @@ public class BlockWood extends Block {
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
+
 }

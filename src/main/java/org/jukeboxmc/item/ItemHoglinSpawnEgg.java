@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemHoglinSpawnEgg extends Item {
 
     public ItemHoglinSpawnEgg() {
-        super( "minecraft:hoglin_spawn_egg", 494 );
+        super( 494 );
     }
 
 

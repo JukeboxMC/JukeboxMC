@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemShield extends Item {
 
     public ItemShield() {
-        super( "minecraft:shield", 355 );
+        super( 355 );
     }
 
 

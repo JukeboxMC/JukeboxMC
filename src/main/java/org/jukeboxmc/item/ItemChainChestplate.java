@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemChainChestplate extends Item {
 
     public ItemChainChestplate() {
-        super( "minecraft:chainmail_chestplate", 340 );
+        super( 340 );
     }
 
 

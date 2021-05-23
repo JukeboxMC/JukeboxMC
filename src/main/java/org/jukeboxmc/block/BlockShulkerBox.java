@@ -1,12 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.item.ItemShulkerBox;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -18,23 +13,23 @@ public class BlockShulkerBox extends Block {
         super( "minecraft:shulker_box" );
     }
 
-    @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        world.setBlock( placePosition, this );
-        return true;
-    }
+
 
     @Override
     public ItemShulkerBox toItem() {
         return new ItemShulkerBox( this.runtimeId );
     }
 
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SHULKER_BOX;
+    }
+
     public BlockShulkerBox setColor( BlockColor color ) {
-        this.setState( "color", color.name().toLowerCase() );
-        return this;
+        return this.setState( "color", color.name().toLowerCase() );
     }
 
     public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ).toUpperCase() ) : BlockColor.WHITE;
+        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

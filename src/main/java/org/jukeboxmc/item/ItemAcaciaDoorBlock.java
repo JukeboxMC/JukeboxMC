@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaDoor;
 public class ItemAcaciaDoorBlock extends Item {
 
     public ItemAcaciaDoorBlock() {
-        super( "minecraft:item.acacia_door", 196 );
+        super( 196 );
     }
 
 

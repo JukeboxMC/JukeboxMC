@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDarkOakButton;
 public class ItemDarkOakButton extends Item {
 
     public ItemDarkOakButton() {
-        super( "minecraft:dark_oak_button", -142 );
+        super( -142 );
     }
 
     @Override

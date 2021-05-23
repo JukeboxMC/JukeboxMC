@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemBamboo;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -15,7 +17,7 @@ public class BlockBamboo extends Block {
     }
 
     public BambooLeafSize getBambooLeafSize() {
-        return this.stateExists( "bamboo_leaf_size" ) ? BambooLeafSize.valueOf( this.getStringState( "bamboo_leaf_size" ).toUpperCase() ) : BambooLeafSize.NO_LEAVES;
+        return this.stateExists( "bamboo_leaf_size" ) ? BambooLeafSize.valueOf( this.getStringState( "bamboo_leaf_size" ) ) : BambooLeafSize.NO_LEAVES;
     }
 
     public void setAge( boolean value ) {
@@ -31,7 +33,17 @@ public class BlockBamboo extends Block {
     }
 
     public BambooStalkThickness getBambooStalkThickness() {
-        return this.stateExists( "bamboo_stalk_thickness" ) ? BambooStalkThickness.valueOf( this.getStringState( "bamboo_stalk_thickness" ).toUpperCase() ) : BambooStalkThickness.THIN;
+        return this.stateExists( "bamboo_stalk_thickness" ) ? BambooStalkThickness.valueOf( this.getStringState( "bamboo_stalk_thickness" ) ) : BambooStalkThickness.THIN;
+    }
+
+    @Override
+    public ItemBamboo toItem() {
+        return new ItemBamboo();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BAMBOO;
     }
 
     public enum BambooLeafSize {

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPiston;
 public class ItemPiston extends Item {
 
     public ItemPiston() {
-        super( "minecraft:piston", 33 );
+        super( 33 );
     }
 
     @Override

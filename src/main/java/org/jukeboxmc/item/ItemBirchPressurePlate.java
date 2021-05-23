@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchPressurePlate;
 public class ItemBirchPressurePlate extends Item {
 
     public ItemBirchPressurePlate() {
-        super( "minecraft:birch_pressure_plate", -151 );
+        super( -151 );
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemLever;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockLever extends Block {
 
     public BlockLever() {
         super( "minecraft:lever" );
+    }
+
+    @Override
+    public ItemLever toItem() {
+        return new ItemLever();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LEVER;
     }
 
     public void setOpen( boolean value ) {
@@ -23,7 +35,7 @@ public class BlockLever extends Block {
     }
 
     public LeverDirection getLeverDirection() {
-        return this.stateExists( "lever_direction" ) ? LeverDirection.valueOf( this.getStringState( "lever_direction" ).toUpperCase() ) : LeverDirection.DOWN_EAST_WEST;
+        return this.stateExists( "lever_direction" ) ? LeverDirection.valueOf( this.getStringState( "lever_direction" ) ) : LeverDirection.DOWN_EAST_WEST;
     }
 
     public enum LeverDirection {

@@ -6,6 +6,7 @@ import org.jukeboxmc.blockentity.BlockEntitySign;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAcaciaStandingSign;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -22,11 +23,6 @@ public class BlockAcaciaStandingSign extends BlockSign {
     }
 
     @Override
-    public Item toItem() {
-        return new ItemAcaciaStandingSign();
-    }
-
-    @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
@@ -38,5 +34,15 @@ public class BlockAcaciaStandingSign extends BlockSign {
         }
         BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public Item toItem() {
+        return new ItemAcaciaStandingSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.ACACIA_STANDING_SIGN;
     }
 }

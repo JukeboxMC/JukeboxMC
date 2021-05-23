@@ -1,7 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockColor;
 import org.jukeboxmc.block.BlockStainedHardenedClay;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT
@@ -9,21 +10,17 @@ import org.jukeboxmc.block.BlockStainedHardenedClay;
  */
 public class ItemStainedHardenedClay extends Item {
 
-    public ItemStainedHardenedClay() {
-        super( "minecraft:stained_hardened_clay", 159 );
+    public ItemStainedHardenedClay( int blockRuntimeId ) {
+        super( 159, blockRuntimeId );
     }
 
     @Override
     public BlockStainedHardenedClay getBlock() {
-        return new BlockStainedHardenedClay();
-    }
-
-    public void setColor( BlockColor blockColor ) {
-        this.setMeta( blockColor.ordinal() );
+        return (BlockStainedHardenedClay) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public BlockColor getColor() {
-        return BlockColor.values()[this.getMeta()];
+        return this.getBlock().getColor();
     }
 
 }

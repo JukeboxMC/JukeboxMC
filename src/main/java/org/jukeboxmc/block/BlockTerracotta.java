@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockTerracotta extends Block {
+public abstract class BlockTerracotta extends Block {
 
     public BlockTerracotta( String identifier ) {
         super( identifier );
@@ -31,4 +31,5 @@ public class BlockTerracotta extends Block {
     public BlockFace getBlockFace() {
         return this.stateExists( "facing_direction" ) ? BlockFace.values()[this.getIntState( "facing_direction" )] : BlockFace.NORTH;
     }
+
 }

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonHyphae;
 public class ItemCrimsonHyphae extends Item {
 
     public ItemCrimsonHyphae() {
-        super( "minecraft:crimson_hyphae", -299 );
+        super( -299 );
     }
 
     @Override

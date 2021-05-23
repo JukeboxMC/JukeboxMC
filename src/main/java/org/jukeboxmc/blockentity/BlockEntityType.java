@@ -15,10 +15,20 @@ public enum BlockEntityType {
     SIGN( "Sign", BlockEntitySign.class ),
     BED( "Bed", BlockEntityBed.class ),
     BEEHIVE( "Beehive", BlockEntityBeehive.class ),
-    BANNER( "Banner", BlockEntityBanner.class );
+    BANNER( "Banner", BlockEntityBanner.class ),
+    SKULL( "Skull", BlockEntitySkull.class );
 
     private String blockEntityId;
     private Class<? extends BlockEntity> blockEntityClass;
+
+    public static String getId( Class<? extends BlockEntity> blockEntityClass ) {
+        for ( BlockEntityType blockEntityType : values() ) {
+            if ( blockEntityType.getBlockEntityClass() == blockEntityClass ) {
+                return blockEntityType.getBlockEntityId();
+            }
+        }
+        return null;
+    }
 
     public String getBlockEntityId() {
         return this.blockEntityId;

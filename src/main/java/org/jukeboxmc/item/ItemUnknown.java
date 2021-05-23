@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemUnknown extends Item {
 
     public ItemUnknown() {
-        super( "minecraft:unknown", -305 );
+        super( -305 );
     }
 
 

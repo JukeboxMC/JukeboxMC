@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.PrismarineType;
+import org.jukeboxmc.item.ItemPrismarine;
 
 /**
  * @author LucGamesYT
@@ -17,29 +13,24 @@ public class BlockPrismarine extends Block {
         super( "minecraft:prismarine" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setPrismarineType( PrismarineType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemPrismarine toItem() {
+        return new ItemPrismarine( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getPrismarineType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.PRISMARINE;
     }
 
-    public void setPrismarineType( PrismarineType prismarineType ) {
-        this.setState( "prismarine_block_type", prismarineType.name().toLowerCase() );
+    public BlockPrismarine setPrismarineType( PrismarineType prismarineType ) {
+       return this.setState( "prismarine_block_type", prismarineType.name().toLowerCase() );
     }
 
     public PrismarineType getPrismarineType() {
-        return this.stateExists( "prismarine_block_type" ) ? PrismarineType.valueOf( this.getStringState( "prismarine_block_type" ).toUpperCase() ) : PrismarineType.DEFAULT;
+        return this.stateExists( "prismarine_block_type" ) ? PrismarineType.valueOf( this.getStringState( "prismarine_block_type" ) ) : PrismarineType.DEFAULT;
     }
 
-    public enum PrismarineType {
-        DEFAULT,
-        DARK,
-        BRICKS
-    }
 }

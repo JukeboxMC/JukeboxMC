@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMilkBucket extends Item {
 
     public ItemMilkBucket() {
-        super( "minecraft:milk_bucket", 361 );
+        super( 361 );
     }
 
 

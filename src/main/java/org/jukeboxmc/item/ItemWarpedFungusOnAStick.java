@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWarpedFungusOnAStick extends Item {
 
     public ItemWarpedFungusOnAStick() {
-        super( "minecraft:warped_fungus_on_a_stick", 606 );
+        super( 606 );
     }
 
 

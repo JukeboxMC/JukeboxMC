@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonStem;
 public class ItemCrimsonStem extends Item {
 
     public ItemCrimsonStem() {
-        super( "minecraft:crimson_stem", -225 );
+        super( -225 );
     }
 
     @Override

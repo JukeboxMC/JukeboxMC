@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemChainHelmet extends Item {
 
     public ItemChainHelmet() {
-        super( "minecraft:chainmail_helmet", 339 );
+        super( 339 );
     }
 
 

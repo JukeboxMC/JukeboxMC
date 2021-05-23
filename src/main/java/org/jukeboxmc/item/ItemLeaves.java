@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockLeaves;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.LeafType;
 
 /**
  * @author LucGamesYT
@@ -8,27 +10,17 @@ import org.jukeboxmc.block.BlockLeaves;
  */
 public class ItemLeaves extends Item {
 
-    public ItemLeaves() {
-        super( "minecraft:leaves", 18 );
+    public ItemLeaves( int blockRuntimeId ) {
+        super( 18, blockRuntimeId );
     }
 
     @Override
     public BlockLeaves getBlock() {
-        return new BlockLeaves();
-    }
-
-    public void setLeafType( LeafType leafType ) {
-        this.setMeta( leafType.ordinal() );
+        return (BlockLeaves) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public LeafType getLeafType() {
-        return LeafType.values()[this.getMeta()];
+        return this.getBlock().getLeafType();
     }
 
-    public enum LeafType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE
-    }
 }

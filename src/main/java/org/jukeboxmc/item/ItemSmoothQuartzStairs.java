@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSmoothQuartzStairs;
 public class ItemSmoothQuartzStairs extends Item {
 
     public ItemSmoothQuartzStairs() {
-        super( "minecraft:smooth_quartz_stairs", -185 );
+        super( -185 );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBone extends Item {
 
     public ItemBone() {
-        super( "minecraft:bone", 413 );
+        super(  413 );
     }
 
 

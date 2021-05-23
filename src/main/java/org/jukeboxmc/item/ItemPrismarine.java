@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockPrismarine;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.PrismarineType;
 
 /**
  * @author LucGamesYT
@@ -8,26 +10,17 @@ import org.jukeboxmc.block.BlockPrismarine;
  */
 public class ItemPrismarine extends Item {
 
-    public ItemPrismarine() {
-        super( "minecraft:prismarine", 168 );
+    public ItemPrismarine( int blockRuntimeId ) {
+        super( 168, blockRuntimeId );
     }
 
     @Override
     public BlockPrismarine getBlock() {
-        return new BlockPrismarine();
-    }
-
-    public void setPrismarineType( PrismarineType prismarineType ) {
-        this.setMeta( prismarineType.ordinal() );
+        return (BlockPrismarine) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public PrismarineType getPrismarineType() {
-        return PrismarineType.values()[this.getMeta()];
+        return this.getBlock().getPrismarineType();
     }
 
-    public enum PrismarineType {
-        PRISMARINE,
-        DARK_PRISMARINE,
-        PRISMARINE_BRICKS
-    }
 }

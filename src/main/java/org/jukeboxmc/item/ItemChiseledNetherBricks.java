@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChiseledNetherBricks;
 public class ItemChiseledNetherBricks extends Item {
 
     public ItemChiseledNetherBricks() {
-        super( "minecraft:chiseled_nether_bricks", -302 );
+        super(  -302 );
     }
 
     @Override

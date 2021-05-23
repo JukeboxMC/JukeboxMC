@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDaylightDetectorInverted;
 public class ItemDaylightDetectorInverted extends Item {
 
     public ItemDaylightDetectorInverted() {
-        super( "minecraft:daylight_detector_inverted", 178 );
+        super( 178 );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBlackstone;
 public class ItemBlackstone extends Item {
 
     public ItemBlackstone() {
-        super( "minecraft:blackstone", -273 );
+        super( -273 );
     }
 
     @Override

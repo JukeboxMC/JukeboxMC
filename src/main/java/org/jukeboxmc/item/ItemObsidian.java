@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockObsidian;
 public class ItemObsidian extends Item {
 
     public ItemObsidian() {
-        super( "minecraft:obsidian", 49 );
+        super( 49 );
     }
 
     @Override

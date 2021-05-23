@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemStickypistonarmcollision;
 
 /**
  * @author LucGamesYT
@@ -12,6 +13,16 @@ public class BlockStickypistonarmcollision extends Block {
         super( "minecraft:stickypistonarmcollision" );
     }
 
+    @Override
+    public ItemStickypistonarmcollision toItem() {
+        return new ItemStickypistonarmcollision();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STICKYPISTONARMCOLLISION;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
@@ -19,4 +30,5 @@ public class BlockStickypistonarmcollision extends Block {
     public BlockFace getBlockFace() {
         return this.stateExists( "facing_direction" ) ? BlockFace.values()[this.getIntState( "facing_direction" )] : BlockFace.NORTH;
     }
+
 }

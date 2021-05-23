@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFermentedSpiderEye extends Item {
 
     public ItemFermentedSpiderEye() {
-        super( "minecraft:fermented_spider_eye", 426 );
+        super( 426 );
     }
 
 

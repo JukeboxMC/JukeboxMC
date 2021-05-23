@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStrippedDarkOakLog;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -32,11 +33,21 @@ public class BlockStrippedDarkOakLog extends Block {
         return true;
     }
 
+    @Override
+    public ItemStrippedDarkOakLog toItem() {
+        return new ItemStrippedDarkOakLog();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STRIPPED_DARK_OAK_LOG;
+    }
+
     public void setAxis( Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

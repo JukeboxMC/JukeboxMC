@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGrindstone;
 public class ItemGrindstone extends Item {
 
     public ItemGrindstone() {
-        super( "minecraft:grindstone", -195 );
+        super( -195 );
     }
 
     @Override

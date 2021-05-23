@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemTnt;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockTnt extends Block {
 
     public BlockTnt() {
         super( "minecraft:tnt" );
+    }
+
+    @Override
+    public ItemTnt toItem() {
+        return new ItemTnt();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.TNT;
     }
 
     public void setExplode( boolean value ) {

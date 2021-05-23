@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFlowerPot;
 public class ItemFlowerPot extends Item {
 
     public ItemFlowerPot() {
-        super( "minecraft:flower_pot", 504 );
+        super( 504 );
     }
 
     @Override

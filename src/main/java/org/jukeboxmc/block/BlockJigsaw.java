@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemJigsaw;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockJigsaw extends Block {
 
     public BlockJigsaw() {
         super( "minecraft:jigsaw" );
+    }
+
+    @Override
+    public ItemJigsaw toItem() {
+        return new ItemJigsaw();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.JIGSAW;
     }
 
     public void setRotation( int value ) { //0-3

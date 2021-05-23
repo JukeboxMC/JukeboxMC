@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLoom;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -23,6 +24,16 @@ public class BlockLoom extends Block {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemLoom toItem() {
+        return new ItemLoom();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LOOM;
     }
 
     public void setDirection( Direction direction ) {

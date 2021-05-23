@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherWartBlock;
 public class ItemNetherWartItemBlock extends Item {
 
     public ItemNetherWartItemBlock() {
-        super( "minecraft:item.nether_wart", 115 );
+        super( 115 );
     }
 
     @Override

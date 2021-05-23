@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedStandingSign;
 public class ItemWarpedStandingSign extends Item {
 
     public ItemWarpedStandingSign() {
-        super( "minecraft:warped_standing_sign", -251 );
+        super(  -251 );
     }
 
     @Override

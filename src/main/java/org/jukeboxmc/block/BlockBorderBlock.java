@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.WallConnectionType;
+import org.jukeboxmc.item.ItemBorderBlock;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockBorderBlock extends Block {
 
     public BlockBorderBlock() {
         super( "minecraft:border_block" );
+    }
+
+    @Override
+    public ItemBorderBlock toItem() {
+        return new ItemBorderBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BORDER_BLOCK;
     }
 
     public void setWallPost( boolean value ) {
@@ -25,7 +36,7 @@ public class BlockBorderBlock extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeEast() {
-        return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeSouth( WallConnectionType wallConnectionTypeEast ) {
@@ -33,7 +44,7 @@ public class BlockBorderBlock extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeSouth() {
-        return this.stateExists( "wall_connection_type_south" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_south" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_south" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_south" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeWest( WallConnectionType wallConnectionTypeEast ) {
@@ -41,7 +52,7 @@ public class BlockBorderBlock extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeWest() {
-        return this.stateExists( "wall_connection_type_west" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_west" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_west" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_west" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeNorth( WallConnectionType wallConnectionTypeEast ) {
@@ -49,6 +60,6 @@ public class BlockBorderBlock extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeNorth() {
-        return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ) ) : WallConnectionType.NONE;
     }
 }

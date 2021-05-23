@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStrippedSpruceLog;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -32,11 +33,21 @@ public class BlockStrippedSpruceLog extends Block {
         return true;
     }
 
+    @Override
+    public ItemStrippedSpruceLog toItem() {
+        return new ItemStrippedSpruceLog();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STRIPPED_SPRUCE_LOG;
+    }
+
     public void setAxis( Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

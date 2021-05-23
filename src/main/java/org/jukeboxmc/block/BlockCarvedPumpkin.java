@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemCarvedPumpkin;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -23,6 +24,16 @@ public class BlockCarvedPumpkin extends Block {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemCarvedPumpkin toItem() {
+        return new ItemCarvedPumpkin();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CARVED_PUMPKIN;
     }
 
     public void setDirection( Direction direction ) {

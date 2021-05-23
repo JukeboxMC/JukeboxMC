@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBambooSapling;
 public class ItemBambooSapling extends Item {
 
     public ItemBambooSapling() {
-        super( "minecraft:bamboo_saplin", -164 );
+        super( -164 );
     }
 
     @Override

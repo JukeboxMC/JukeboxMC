@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaWallSign;
 public class ItemAcaciaWallSign extends Item {
 
     public ItemAcaciaWallSign() {
-        super( "minecraft:acacia_wall_sign", -191 );
+        super( -191 );
     }
 
     @Override

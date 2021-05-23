@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedNylium;
 public class ItemWarpedNylium extends Item {
 
     public ItemWarpedNylium() {
-        super( "minecraft:warped_nylium", -233 );
+        super( -233 );
     }
 
     @Override

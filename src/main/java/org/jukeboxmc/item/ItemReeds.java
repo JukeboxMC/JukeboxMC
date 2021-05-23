@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemReeds extends Item {
 
     public ItemReeds() {
-        super( "minecraft:item.reeds", 83 );
+        super( 83 );
     }
 
 

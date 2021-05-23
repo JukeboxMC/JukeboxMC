@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockActivatorRail;
 public class ItemActivatorRail extends Item {
 
     public ItemActivatorRail() {
-        super( "minecraft:activator_rail", 126 );
+        super( 126 );
     }
 
     @Override

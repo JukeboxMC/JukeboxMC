@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemBubbleColumn;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockBubbleColumn extends Block {
 
     public BlockBubbleColumn() {
         super( "minecraft:bubble_column" );
+    }
+
+    @Override
+    public ItemBubbleColumn toItem() {
+        return new ItemBubbleColumn();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BUBBLE_COLUMN;
     }
 
     public void setDragDown( boolean value ) {

@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemDirt;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -25,8 +26,13 @@ public class BlockDirt extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getDirtType().ordinal() );
+    public ItemDirt toItem() {
+        return new ItemDirt();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.DIRT;
     }
 
     public BlockDirt setDirtType( DirtType dirtType ) {
@@ -34,7 +40,7 @@ public class BlockDirt extends Block {
     }
 
     public DirtType getDirtType() {
-        return this.stateExists( "dirt_type" ) ? DirtType.valueOf( this.getStringState( "dirt_type" ).toUpperCase() ) : DirtType.NORMAL;
+        return this.stateExists( "dirt_type" ) ? DirtType.valueOf( this.getStringState( "dirt_type" ) ) : DirtType.NORMAL;
     }
 
     public enum DirtType {

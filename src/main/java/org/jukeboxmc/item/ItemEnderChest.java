@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEnderChest;
 public class ItemEnderChest extends Item {
 
     public ItemEnderChest() {
-        super( "minecraft:ender_chest", 130 );
+        super( 130 );
     }
 
     @Override

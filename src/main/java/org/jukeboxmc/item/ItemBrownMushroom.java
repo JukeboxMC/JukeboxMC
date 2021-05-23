@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBrownMushroom;
 public class ItemBrownMushroom extends Item {
 
     public ItemBrownMushroom() {
-        super( "minecraft:brown_mushroom", 39 );
+        super( 39 );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLoom;
 public class ItemLoom extends Item {
 
     public ItemLoom() {
-        super( "minecraft:loom", -204 );
+        super( -204 );
     }
 
     @Override

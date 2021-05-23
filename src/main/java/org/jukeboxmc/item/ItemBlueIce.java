@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBlueIce;
 public class ItemBlueIce extends Item {
 
     public ItemBlueIce() {
-        super( "minecraft:blue_ice", -11 );
+        super( -11 );
     }
 
     @Override

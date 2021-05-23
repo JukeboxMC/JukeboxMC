@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDiamondChestplate extends Item {
 
     public ItemDiamondChestplate() {
-        super( "minecraft:diamond_chestplate", 348 );
+        super( 348 );
     }
 
 

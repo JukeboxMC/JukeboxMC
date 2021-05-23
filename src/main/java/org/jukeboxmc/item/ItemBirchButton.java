@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchButton;
 public class ItemBirchButton extends Item {
 
     public ItemBirchButton() {
-        super( "minecraft:birch_button", -141 );
+        super( -141 );
     }
 
     @Override

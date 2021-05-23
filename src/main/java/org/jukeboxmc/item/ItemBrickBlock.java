@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBrickBlock;
 public class ItemBrickBlock extends Item {
 
     public ItemBrickBlock() {
-        super( "minecraft:brick_block", 45 );
+        super( 45 );
     }
 
     @Override

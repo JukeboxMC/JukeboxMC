@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBarrel;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,10 +20,32 @@ public class BlockBarrel extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+        if ( Math.abs( player.getX() - this.getLocation().getX() ) < 2 && Math.abs( player.getZ() - this.getLocation().getZ() ) < 2 ) {
+            double y = player.getY() + player.getEyeHeight();
+
+            if ( y - this.getLocation().getY() > 2 ) {
+                this.setBlockFace( BlockFace.UP );
+            } else if ( this.getLocation().getY() - y > 0 ) {
+                this.setBlockFace( BlockFace.DOWN );
+            } else {
+                this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+            }
+        } else {
+            this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+        }
         this.setOpen( false );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemBarrel toItem() {
+        return new ItemBarrel();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BARREL;
     }
 
     public void setOpen( boolean value ) {

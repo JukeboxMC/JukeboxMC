@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLeatherHelmet extends Item {
 
     public ItemLeatherHelmet() {
-        super( "minecraft:leather_helmet", 335 );
+        super( 335 );
     }
 
 

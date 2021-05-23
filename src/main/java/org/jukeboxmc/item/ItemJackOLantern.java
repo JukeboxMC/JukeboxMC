@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJackOLantern;
 public class ItemJackOLantern extends Item {
 
     public ItemJackOLantern() {
-        super( "minecraft:lit_pumpkin", 91 );
+        super( 91 );
     }
 
     @Override

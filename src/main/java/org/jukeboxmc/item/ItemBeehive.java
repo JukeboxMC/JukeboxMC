@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBeehive;
 public class ItemBeehive extends Item {
 
     public ItemBeehive() {
-        super( "minecraft:beehive", -219 );
+        super( -219 );
     }
 
     @Override

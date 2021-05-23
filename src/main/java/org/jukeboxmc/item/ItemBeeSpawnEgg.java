@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBeeSpawnEgg extends Item {
 
     public ItemBeeSpawnEgg() {
-        super( "minecraft:bee_spawn_egg", 492 );
+        super( 492 );
     }
 
 

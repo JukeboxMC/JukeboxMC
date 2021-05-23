@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBeetrootSeeds extends Item {
 
     public ItemBeetrootSeeds() {
-        super( "minecraft:beetroot_seeds", 295 );
+        super(  295 );
     }
 
 

@@ -1,11 +1,22 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemWarpedWallSign;
 
 public class BlockWarpedWallSign extends Block {
 
     public BlockWarpedWallSign() {
         super("minecraft:warped_wall_sign");
+    }
+
+    @Override
+    public ItemWarpedWallSign toItem() {
+        return new ItemWarpedWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WARPED_WALL_SIGN;
     }
 
     @Override

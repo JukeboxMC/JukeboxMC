@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.SpongeType;
+import org.jukeboxmc.item.ItemSponge;
 
 /**
  * @author LucGamesYT
@@ -18,27 +14,21 @@ public class BlockSponge extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setSpongeType( SpongeType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemSponge toItem() {
+        return new ItemSponge( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getSpongeType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.SPONGE;
     }
 
-    public void setSpongeType( SpongeType spongeType ) {
-        this.setState( "sponge_type", spongeType.name().toLowerCase() );
+    public BlockSponge setSpongeType( SpongeType spongeType ) {
+        return this.setState( "sponge_type", spongeType.name().toLowerCase() );
     }
 
     public SpongeType getSpongeType() {
-        return this.stateExists( "sponge_type" ) ? SpongeType.valueOf( this.getStringState( "sponge_type" ).toUpperCase() ) : SpongeType.DRY;
+        return this.stateExists( "sponge_type" ) ? SpongeType.valueOf( this.getStringState( "sponge_type" ) ) : SpongeType.DRY;
     }
 
-    public enum SpongeType {
-        DRY,
-        WET
-    }
 }

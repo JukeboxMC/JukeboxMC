@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCartographyTableBlock;
 public class ItemCartographyTable extends Item {
 
     public ItemCartographyTable() {
-        super( "minecraft:cartography_table", -200 );
+        super( -200 );
     }
 
     @Override

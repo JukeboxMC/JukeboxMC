@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBeeNest;
 public class ItemBeeNest extends Item {
 
     public ItemBeeNest() {
-        super( "minecraft:bee_nest", -218 );
+        super( -218 );
     }
 
     @Override

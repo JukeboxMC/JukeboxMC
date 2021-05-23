@@ -22,11 +22,6 @@ public class BlockJungleStandingSign extends BlockSign {
     }
 
     @Override
-    public Item toItem() {
-        return new ItemJungleStandingSign();
-    }
-
-    @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
@@ -39,4 +34,15 @@ public class BlockJungleStandingSign extends BlockSign {
         BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();
         return true;
     }
+
+    @Override
+    public ItemJungleStandingSign toItem() {
+        return new ItemJungleStandingSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.JUNGLE_STANDING_SIGN;
+    }
+
 }

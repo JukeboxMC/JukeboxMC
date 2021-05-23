@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCompund extends Item {
 
     public ItemCompund() {
-        super( "minecraft:compound", 583 );
+        super( 583 );
     }
 
 

@@ -10,7 +10,7 @@ import org.jukeboxmc.math.AxisAlignedBB;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWall extends Block {
+public abstract class BlockWall extends Block {
 
     public BlockWall( String identifier ) {
         super( identifier );
@@ -148,7 +148,7 @@ public class BlockWall extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeEast() {
-        return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeSouth( WallConnectionType wallConnectionTypeEast ) {
@@ -156,7 +156,7 @@ public class BlockWall extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeSouth() {
-        return this.stateExists( "wall_connection_type_south" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_south" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_south" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_south" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeWest( WallConnectionType wallConnectionTypeEast ) {
@@ -164,7 +164,7 @@ public class BlockWall extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeWest() {
-        return this.stateExists( "wall_connection_type_west" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_west" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_west" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_west" ) ) : WallConnectionType.NONE;
     }
 
     public void setWallConnectionTypeNorth( WallConnectionType wallConnectionTypeEast ) {
@@ -172,6 +172,7 @@ public class BlockWall extends Block {
     }
 
     public WallConnectionType getWallConnectionTypeNorth() {
-        return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ).toUpperCase() ) : WallConnectionType.NONE;
+        return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ) ) : WallConnectionType.NONE;
     }
+
 }

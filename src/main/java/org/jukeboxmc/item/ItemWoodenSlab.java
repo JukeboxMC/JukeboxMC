@@ -1,5 +1,6 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.BlockWoodenSlab;
 import org.jukeboxmc.block.type.WoodType;
 
@@ -9,20 +10,16 @@ import org.jukeboxmc.block.type.WoodType;
  */
 public class ItemWoodenSlab extends Item {
 
-    public ItemWoodenSlab() {
-        super( "minecraft:wooden_slab", 158 );
+    public ItemWoodenSlab( int blockRuntimeId ) {
+        super( 158, blockRuntimeId );
     }
 
     @Override
     public BlockWoodenSlab getBlock() {
-        return new BlockWoodenSlab();
-    }
-
-    public void setWoodType( WoodType woodType ) {
-        this.setMeta( woodType.ordinal() );
+        return (BlockWoodenSlab) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public WoodType getWoodType() {
-        return WoodType.values()[this.getMeta()];
+        return this.getBlock().getWoodType();
     }
 }

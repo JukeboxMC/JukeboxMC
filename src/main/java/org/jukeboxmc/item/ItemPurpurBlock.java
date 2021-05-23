@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockPurpurBlock;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.PurpurType;
 
 /**
  * @author LucGamesYT
@@ -8,26 +10,18 @@ import org.jukeboxmc.block.BlockPurpurBlock;
  */
 public class ItemPurpurBlock extends Item {
 
-    public ItemPurpurBlock() {
-        super( "minecraft:purpur_block", 201 );
+    public ItemPurpurBlock( int blockRuntimeId ) {
+        super( 201, blockRuntimeId );
     }
 
     @Override
     public BlockPurpurBlock getBlock() {
-        return new BlockPurpurBlock();
-    }
-
-    public void setPurpurType( PurpurType purpurType ) {
-        this.setMeta( purpurType.ordinal() );
+        return (BlockPurpurBlock) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public PurpurType getPurpurType() {
-        return PurpurType.values()[this.getMeta()];
+        return this.getBlock().getPurpurType();
     }
 
-    public enum PurpurType {
-        PURPUR,
-        CHISELED_PURPUR,
-        PURPUR_PILLAR
-    }
+
 }

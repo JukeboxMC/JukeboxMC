@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGravel;
 public class ItemGravel extends Item {
 
     public ItemGravel() {
-        super( "minecraft:gravel", 13 );
+        super( 13 );
     }
 
     @Override

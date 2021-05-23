@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCreeperSpawnEgg extends Item {
 
     public ItemCreeperSpawnEgg() {
-        super( "minecraft:creeper_spawn_egg", 439 );
+        super(  439 );
     }
 
 

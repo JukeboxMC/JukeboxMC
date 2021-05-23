@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemTotemOfUndying extends Item {
 
     public ItemTotemOfUndying() {
-        super( "minecraft:totem_of_undying", 558 );
+        super( 558 );
     }
 
 

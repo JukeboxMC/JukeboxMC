@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGoldenRail;
 public class ItemGoldenRail extends Item {
 
     public ItemGoldenRail() {
-        super( "minecraft:golden_rail", 27 );
+        super( 27 );
     }
 
     @Override

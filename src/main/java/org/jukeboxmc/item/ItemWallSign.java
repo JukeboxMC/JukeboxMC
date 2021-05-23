@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWallSign;
 public class ItemWallSign extends Item {
 
     public ItemWallSign() {
-        super( "minecraft:wall_sign", 68 );
+        super( 68 );
     }
 
 

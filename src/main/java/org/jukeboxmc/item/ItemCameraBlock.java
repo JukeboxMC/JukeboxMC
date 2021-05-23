@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCamera;
 public class ItemCameraBlock extends Item {
 
     public ItemCameraBlock() {
-        super( "minecraft:item.camera", 242 );
+        super(  242 );
     }
 
     @Override

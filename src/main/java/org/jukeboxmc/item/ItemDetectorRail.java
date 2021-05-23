@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDetectorRail;
 public class ItemDetectorRail extends Item {
 
     public ItemDetectorRail() {
-        super( "minecraft:detector_rail", 28 );
+        super( 28 );
     }
 
     @Override

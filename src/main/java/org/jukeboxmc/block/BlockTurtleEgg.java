@@ -1,11 +1,6 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.item.ItemTurtleEgg;
 
 /**
  * @author LucGamesYT
@@ -17,16 +12,16 @@ public class BlockTurtleEgg extends Block {
         super( "minecraft:turtle_egg" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setCrackedState( CrackedState.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemTurtleEgg toItem() {
+        return new ItemTurtleEgg();
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getCrackedState().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.TURTLE_EGG;
     }
 
     public void setCrackedState( CrackedState crackedState ) {
@@ -34,7 +29,7 @@ public class BlockTurtleEgg extends Block {
     }
 
     public CrackedState getCrackedState() {
-        return this.stateExists( "cracked_state" ) ? CrackedState.valueOf( this.getStringState( "cracked_state" ).toUpperCase() ) : CrackedState.NO_CRACKS;
+        return this.stateExists( "cracked_state" ) ? CrackedState.valueOf( this.getStringState( "cracked_state" ) ) : CrackedState.NO_CRACKS;
     }
 
     public void setTurtleEggCount( TurtleEggCount turtleEggCount ) {
@@ -42,7 +37,7 @@ public class BlockTurtleEgg extends Block {
     }
 
     public TurtleEggCount getTurtleEggCount() {
-        return this.stateExists( "turtle_egg_count" ) ? TurtleEggCount.valueOf( this.getStringState( "turtle_egg_count" ).toUpperCase() ) : TurtleEggCount.ONE_EGG;
+        return this.stateExists( "turtle_egg_count" ) ? TurtleEggCount.valueOf( this.getStringState( "turtle_egg_count" ) ) : TurtleEggCount.ONE_EGG;
     }
 
     public enum CrackedState {

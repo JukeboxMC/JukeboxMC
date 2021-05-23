@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonNylium;
 public class ItemCrimsonNylium extends Item {
 
     public ItemCrimsonNylium() {
-        super( "minecraft:crimson_nylium", -232 );
+        super( -232 );
     }
 
     @Override

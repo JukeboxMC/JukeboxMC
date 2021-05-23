@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.ItemCocoa;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockCocoa extends Block {
 
     public BlockCocoa() {
         super( "minecraft:cocoa" );
+    }
+
+    @Override
+    public ItemCocoa toItem() {
+        return new ItemCocoa();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.COCOA;
     }
 
     public void setAge( int value ) { // 0-15

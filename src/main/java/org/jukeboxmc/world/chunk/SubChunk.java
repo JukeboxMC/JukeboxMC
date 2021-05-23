@@ -60,7 +60,7 @@ public class SubChunk {
 
     public Block getBlock( int x, int y, int z, int layer ) {
         int runtimeId = this.blocks[layer][this.getIndex( x, y, z )];
-        return (Block) BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
+        return BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {

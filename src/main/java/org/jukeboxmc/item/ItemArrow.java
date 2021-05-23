@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemArrow extends Item {
 
     public ItemArrow() {
-        super( "minecraft:arrow", 301 );
+        super( 301 );
     }
 
     public void setArrowType( ArrowType arrowType ) {

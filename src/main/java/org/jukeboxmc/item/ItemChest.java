@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChest;
 public class ItemChest extends Item {
 
     public ItemChest() {
-        super( "minecraft:chest", 54 );
+        super( 54 );
     }
 
     @Override

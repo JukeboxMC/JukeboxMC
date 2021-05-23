@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlab2Type;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStoneSlab2;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -26,12 +27,22 @@ public class BlockDoubleStoneSlab2 extends BlockSlab {
         return true;
     }
 
+    @Override
+    public ItemStoneSlab2 toItem() {
+        return new ItemStoneSlab2( this.runtimeId );
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STONE_SLAB2;
+    }
+
     public Block setStoneSlabType( StoneSlab2Type stoneSlabType ) {
         this.setState( "stone_slab_type_2", stoneSlabType.name().toLowerCase() );
         return this;
     }
 
     public StoneSlab2Type getStoneSlabType() {
-        return this.stateExists( "stone_slab_type_2" ) ? StoneSlab2Type.valueOf( this.getStringState( "stone_slab_type_2" ).toUpperCase() ) : StoneSlab2Type.RED_SANDSTONE;
+        return this.stateExists( "stone_slab_type_2" ) ? StoneSlab2Type.valueOf( this.getStringState( "stone_slab_type_2" ) ) : StoneSlab2Type.RED_SANDSTONE;
     }
 }

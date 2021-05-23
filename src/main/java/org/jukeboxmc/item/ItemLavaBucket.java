@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLavaBucket extends Item {
 
     public ItemLavaBucket() {
-        super( "minecraft:lava_bucket", 363 );
+        super( 363 );
     }
 
 

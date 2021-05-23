@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.FlowerType;
+import org.jukeboxmc.item.ItemRedFlower;
 
 /**
  * @author LucGamesYT
@@ -18,36 +14,22 @@ public class BlockRedFlower extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setFlowerType( FlowerType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemRedFlower toItem() {
+        return new ItemRedFlower( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getFlowerType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.RED_FLOWER;
     }
 
-    public void setFlowerType( FlowerType flowerType ) {
-        this.setState( "flower_type", flowerType.name().toLowerCase() );
+    public BlockRedFlower setFlowerType( FlowerType flowerType ) {
+        return this.setState( "flower_type", flowerType.name().toLowerCase() );
     }
 
     public FlowerType getFlowerType() {
-        return this.stateExists( "flower_type" ) ? FlowerType.valueOf( this.getStringState( "flower_type" ).toUpperCase() ) : FlowerType.TULIP_RED;
+        return this.stateExists( "flower_type" ) ? FlowerType.valueOf( this.getStringState( "flower_type" ) ) : FlowerType.TULIP_RED;
     }
 
-    public enum FlowerType {
-        POPPY,
-        ORCHID,
-        ALLIUM,
-        HOUSTONIA,
-        TULIP_RED,
-        TULIP_ORANGE,
-        TULIP_WHITE,
-        TULIP_PINK,
-        OXEYE,
-        CORNFLOWER,
-        LILY_OF_THE_VALLEY
-    }
+
 }

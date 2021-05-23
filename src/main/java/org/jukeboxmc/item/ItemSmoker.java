@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSmoker;
 public class ItemSmoker extends Item {
 
     public ItemSmoker() {
-        super( "minecraft:smoker", -198 );
+        super( -198 );
     }
 
     @Override

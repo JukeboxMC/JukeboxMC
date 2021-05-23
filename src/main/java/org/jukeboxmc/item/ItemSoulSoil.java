@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSoulSoil;
 public class ItemSoulSoil extends Item{
 
     public ItemSoulSoil() {
-        super( "minecraft:soul_soil", -236 );
+        super( -236 );
     }
 
     @Override

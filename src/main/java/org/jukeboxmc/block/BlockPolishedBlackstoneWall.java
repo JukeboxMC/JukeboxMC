@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemPolishedBlackstoneWall;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,4 +20,15 @@ public class BlockPolishedBlackstoneWall extends BlockWall {
         world.setBlock( placePosition, this );
         return true;
     }
+
+    @Override
+    public ItemPolishedBlackstoneWall toItem() {
+        return new ItemPolishedBlackstoneWall();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.POLISHED_BLACKSTONE_WALL;
+    }
+
 }

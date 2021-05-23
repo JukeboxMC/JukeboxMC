@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockChorusFlower;
+import org.jukeboxmc.block.BlockChorusPlant;
 
 /**
  * @author LucGamesYT
@@ -9,11 +10,11 @@ import org.jukeboxmc.block.BlockChorusFlower;
 public class ItemChorusPlant extends Item {
 
     public ItemChorusPlant() {
-        super( "minecraft:chorus_plant", 240 );
+        super( 240 );
     }
 
     @Override
-    public BlockChorusFlower getBlock() {
-        return new BlockChorusFlower();
+    public BlockChorusPlant getBlock() {
+        return new BlockChorusPlant();
     }
 }

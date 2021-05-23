@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemTrappedChest;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -22,6 +23,16 @@ public class BlockTrappedChest extends Block {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemTrappedChest toItem() {
+        return new ItemTrappedChest();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.TRAPPED_CHEST;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

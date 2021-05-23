@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHayBlock;
 public class ItemHayBlock extends Item {
 
     public ItemHayBlock() {
-        super( "minecraft:hay_block", 170 );
+        super( 170 );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWriteableBook extends Item {
 
     public ItemWriteableBook() {
-        super( "minecraft:writable_book", 500 );
+        super( 500 );
     }
 
 

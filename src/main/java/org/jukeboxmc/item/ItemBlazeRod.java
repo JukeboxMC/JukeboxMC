@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBlazeRod extends Item {
 
     public ItemBlazeRod() {
-        super( "minecraft:blaze_rod", 421 );
+        super(  421 );
     }
 
 

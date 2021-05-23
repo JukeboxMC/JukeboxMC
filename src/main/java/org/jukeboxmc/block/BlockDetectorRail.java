@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
+import org.jukeboxmc.item.ItemDetectorRail;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockDetectorRail extends Block {
 
     public BlockDetectorRail() {
         super( "minecraft:detector_rail" );
+    }
+
+    @Override
+    public ItemDetectorRail toItem() {
+        return new ItemDetectorRail();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.DETECTOR_RAIL;
     }
 
     public void setRailData( boolean value ) {

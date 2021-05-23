@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBeacon;
 public class ItemBeacon extends Item {
 
     public ItemBeacon() {
-        super( "minecraft:beacon", 138 );
+        super( 138 );
     }
 
     @Override

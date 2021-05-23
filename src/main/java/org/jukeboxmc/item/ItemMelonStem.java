@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMelonStem;
 public class ItemMelonStem extends Item {
 
     public ItemMelonStem() {
-        super( "minecraft:melon_stem", 105 );
+        super( 105 );
     }
 
     @Override

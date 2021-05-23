@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGlowStick extends Item {
 
     public ItemGlowStick() {
-        super( "minecraft:glow_stick", 166 );
+        super( 166 );
     }
 
 

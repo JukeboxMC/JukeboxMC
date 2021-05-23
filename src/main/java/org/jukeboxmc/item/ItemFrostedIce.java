@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFrostedIce;
 public class ItemFrostedIce extends Item {
 
     public ItemFrostedIce() {
-        super( "minecraft:frosted_ice", 207 );
+        super( 207 );
     }
 
     @Override

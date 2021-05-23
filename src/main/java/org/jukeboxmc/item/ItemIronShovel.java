@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronShovel extends Item {
 
     public ItemIronShovel() {
-        super( "minecraft:iron_shovel", 296 );
+        super( 296 );
     }
 
 

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemSeaPickle;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockSeaPickle extends Block {
 
     public BlockSeaPickle() {
         super( "minecraft:sea_pickle" );
+    }
+
+    @Override
+    public ItemSeaPickle toItem() {
+        return new ItemSeaPickle();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SEA_PICKLE;
     }
 
     public void clusterCount( int value ) { //0-3

@@ -1,6 +1,14 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.Attachment;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemGrindstone;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -12,12 +20,37 @@ public class BlockGrindstone extends Block {
         super( "minecraft:grindstone" );
     }
 
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        if ( blockFace == BlockFace.UP ) {
+            this.setAttachment( Attachment.STANDING );
+        } else if ( blockFace == BlockFace.DOWN ) {
+            this.setAttachment( Attachment.HANGING );
+        } else {
+            this.setDirection( blockFace.toDirection() );
+            this.setAttachment( Attachment.SIDE );
+        }
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemGrindstone toItem() {
+        return new ItemGrindstone();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.GRINDSTONE;
+    }
+
     public void setAttachment( Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }
 
     public Attachment getAttachment() {
-        return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ).toUpperCase() ) : Attachment.STANDING;
+        return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ) ) : Attachment.STANDING;
     }
 
     public void setDirection( Direction direction ) {
@@ -49,12 +82,5 @@ public class BlockGrindstone extends Block {
             default:
                 return Direction.EAST;
         }
-    }
-
-    public enum Attachment {
-        STANDING,
-        HANGING,
-        SIDE,
-        MULTIPLE
     }
 }

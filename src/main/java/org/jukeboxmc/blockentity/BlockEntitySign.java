@@ -37,7 +37,6 @@ public class BlockEntitySign extends BlockEntityContainer {
     @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
-        compound.putString( "id", "Sign" );
         compound.putString( "Text", Joiner.on( "\n" ).skipNulls().join( this.lines ) );
         return compound;
     }

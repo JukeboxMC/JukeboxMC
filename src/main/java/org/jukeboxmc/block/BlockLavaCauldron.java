@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLavaCauldron;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -25,8 +26,13 @@ public class BlockLavaCauldron extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getLiquidType().ordinal() );
+    public ItemLavaCauldron toItem() {
+        return new ItemLavaCauldron();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LAVA_CAULDRON;
     }
 
     public void setFillLevel( int value ) { //0-6
@@ -42,7 +48,7 @@ public class BlockLavaCauldron extends Block {
     }
 
     public LiquidType getLiquidType() {
-        return this.stateExists( "cauldron_liquid" ) ? LiquidType.valueOf( this.getStringState( "cauldron_liquid" ).toUpperCase() ) : LiquidType.WATER;
+        return this.stateExists( "cauldron_liquid" ) ? LiquidType.valueOf( this.getStringState( "cauldron_liquid" ) ) : LiquidType.WATER;
     }
 
     public enum LiquidType {

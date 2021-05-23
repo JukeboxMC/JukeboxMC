@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMushroomStew extends Item {
 
     public ItemMushroomStew() {
-        super( "minecraft:mushroom_stew", 260 );
+        super( 260 );
     }
 
 

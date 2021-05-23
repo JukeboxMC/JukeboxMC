@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockColoredTorchBP;
 public class ItemColoredTorchBP extends Item {
 
     public ItemColoredTorchBP() {
-        super( "minecraft:colored_torch_bp", 204 );
+        super( 204 );
     }
 
     @Override

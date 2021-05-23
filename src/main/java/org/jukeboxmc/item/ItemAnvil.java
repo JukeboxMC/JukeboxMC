@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockAnvil;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.AnvilDamage;
 
 /**
  * @author LucGamesYT
@@ -8,44 +10,17 @@ import org.jukeboxmc.block.BlockAnvil;
  */
 public class ItemAnvil extends Item {
 
-    public ItemAnvil() {
-        super( "minecraft:anvil", 145 );
+    public ItemAnvil( int blockRuntimeId ) {
+        super( 145, blockRuntimeId );
     }
 
     @Override
     public BlockAnvil getBlock() {
-        return new BlockAnvil();
+        return (BlockAnvil) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setAnvilType( AnvilType anvilType ) {
-        switch ( anvilType ) {
-            case SLIGHTLY_ANVIL:
-                this.setMeta( 4 );
-                break;
-            case VERY_DAMAGED_ANVIL:
-                this.setMeta( 8 );
-                break;
-            default:
-                this.setMeta( 0 );
-                break;
-        }
-    }
-
-    public AnvilType getAnvilType() {
-        switch ( this.getMeta() ) {
-            case 4:
-                return AnvilType.SLIGHTLY_ANVIL;
-            case 8:
-                return AnvilType.VERY_DAMAGED_ANVIL;
-            default:
-                return AnvilType.ANVIL;
-        }
-    }
-
-    public enum AnvilType {
-        ANVIL,
-        SLIGHTLY_ANVIL,
-        VERY_DAMAGED_ANVIL
+    public AnvilDamage getAnvilType() {
+        return this.getBlock().getDamage();
     }
 
 }

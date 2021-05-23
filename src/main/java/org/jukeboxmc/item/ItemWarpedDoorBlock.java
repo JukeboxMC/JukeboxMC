@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedDoor;
 public class ItemWarpedDoorBlock extends Item {
 
     public ItemWarpedDoorBlock() {
-        super( "minecraft:item.warped_door", -245 );
+        super( -245 );
     }
 
     @Override

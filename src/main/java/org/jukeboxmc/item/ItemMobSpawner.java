@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMobSpawner;
 public class ItemMobSpawner extends Item {
 
     public ItemMobSpawner() {
-        super( "minecraft:mob_spawner", 52 );
+        super( 52 );
     }
 
     @Override

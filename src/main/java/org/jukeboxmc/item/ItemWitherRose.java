@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWitherRose;
 public class ItemWitherRose extends Item {
 
     public ItemWitherRose() {
-        super( "minecraft:wither_rose", -216 );
+        super( -216 );
     }
 
     @Override

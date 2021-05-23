@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronNugget extends Item {
 
     public ItemIronNugget() {
-        super( "minecraft:iron_nugget", 559 );
+        super( 559 );
     }
 
 

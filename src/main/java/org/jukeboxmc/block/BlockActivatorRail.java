@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
+import org.jukeboxmc.item.ItemActivatorRail;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockActivatorRail extends Block {
 
     public BlockActivatorRail() {
         super( "minecraft:activator_rail" );
+    }
+
+    @Override
+    public ItemActivatorRail toItem() {
+        return new ItemActivatorRail();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.ACTIVATOR_RAIL;
     }
 
     public void setRailData( boolean value ) {
@@ -81,4 +92,5 @@ public class BlockActivatorRail extends Block {
                 return RailDirection.NORTH_EAST;
         }
     }
+
 }

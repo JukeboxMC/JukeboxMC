@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedPlanks;
 public class ItemWarpedPlanks extends Item {
 
     public ItemWarpedPlanks() {
-        super( "minecraft:warped_planks", -243 );
+        super( -243 );
     }
 
     @Override

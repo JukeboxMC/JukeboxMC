@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMedicine extends Item {
 
     public ItemMedicine() {
-        super( "minecraft:medicine", 588 );
+        super( 588 );
     }
 
 

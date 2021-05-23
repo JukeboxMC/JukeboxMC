@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRepeatingCommandBlock;
 public class ItemRepeatingCommandBlock extends Item {
 
     public ItemRepeatingCommandBlock() {
-        super( "minecraft:repeating_command_block", 188 );
+        super( 188 );
     }
 
     @Override

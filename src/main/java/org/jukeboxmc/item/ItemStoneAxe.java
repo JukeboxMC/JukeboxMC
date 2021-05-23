@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemStoneAxe extends Item {
 
     public ItemStoneAxe() {
-        super( "minecraft:stone_axe", 315 );
+        super( 315 );
     }
 
 

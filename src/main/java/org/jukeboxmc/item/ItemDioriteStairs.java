@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDioriteStairs;
 public class ItemDioriteStairs extends Item {
 
     public ItemDioriteStairs() {
-        super( "minecraft:diorite_stairs", -170 );
+        super( -170 );
     }
 
     @Override

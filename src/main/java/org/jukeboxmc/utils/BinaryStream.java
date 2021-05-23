@@ -398,7 +398,7 @@ public class BinaryStream {
         // when crafting is false
         this.writeBoolean( false );
 
-        this.writeSignedVarInt( item.getBlockRuntimeId() ); // put 0 if not in the palette
+        this.writeSignedVarInt( item.getBlock().getRuntimeId() ); // put 0 if not in the palette
 
         ByteBuf userData = ByteBufAllocator.DEFAULT.ioBuffer();
         final BinaryStream userData2 = new BinaryStream( userData );
@@ -521,7 +521,7 @@ public class BinaryStream {
             userData2.readString16();
         }
 
-        Item item = ItemType.getItemFormNetwork( networkId, data, blockRuntimeId );
+        Item item = ItemType.getItemFormNetwork( networkId, data );
         item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );

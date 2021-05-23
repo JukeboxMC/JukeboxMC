@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
+import org.jukeboxmc.item.ItemRail;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockRail extends Block {
 
     public BlockRail() {
         super( "minecraft:rail" );
+    }
+
+    @Override
+    public ItemRail toItem() {
+        return new ItemRail();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.RAIL;
     }
 
     public void setRailDirection( RailDirection railDirection ) {

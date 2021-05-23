@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemFire;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockFire extends Block {
 
     public BlockFire() {
         super( "minecraft:fire" );
+    }
+
+    @Override
+    public ItemFire toItem() {
+        return new ItemFire();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.FIRE;
     }
 
     public void setAge( int value ) { // 0-15

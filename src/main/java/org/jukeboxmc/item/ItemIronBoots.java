@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronBoots extends Item {
 
     public ItemIronBoots() {
-        super( "minecraft:iron_boots", 346 );
+        super( 346 );
     }
 
 

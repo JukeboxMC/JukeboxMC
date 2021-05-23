@@ -16,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockPressurePlate extends Block {
+public abstract class BlockPressurePlate extends Block {
 
     public BlockPressurePlate( String identifier ) {
         super( identifier );
@@ -108,4 +108,5 @@ public class BlockPressurePlate extends Block {
                 this.location.getZ() + 0.9375f
         );
     }
+
 }

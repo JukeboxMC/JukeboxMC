@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSkull;
 public class ItemSkull extends Item {
 
     public ItemSkull() {
-        super( "minecraft:skull", 506 );
+        super( 506 );
     }
 
     @Override

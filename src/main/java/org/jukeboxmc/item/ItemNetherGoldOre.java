@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherGoldOre;
 public class ItemNetherGoldOre extends Item {
 
     public ItemNetherGoldOre() {
-        super( "minecraft:nether_gold_ore", -288 );
+        super( -288 );
     }
 
     @Override

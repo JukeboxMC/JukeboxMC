@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLead extends Item {
 
     public ItemLead() {
-        super( "minecraft:lead", 537 );
+        super( 537 );
     }
 
 

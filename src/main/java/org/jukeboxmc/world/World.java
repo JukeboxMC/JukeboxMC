@@ -16,6 +16,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
@@ -312,6 +313,7 @@ public class World extends LevelDB {
 
         block.setLocation( new Location( this, location ) );
         block.setLayer( layer );
+        block.setPlaced( true );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setPosition( location );
@@ -477,23 +479,21 @@ public class World extends LevelDB {
         }
 
         Item itemInHand = player.getInventory().getItemInHand();
-
-        if ( itemInHand.getRuntimeId() == -158 ) {
-            return false;
-        }
-
         Block replacedBlock = this.getBlock( placePosition );
         Block placedBlock = itemInHand.getBlock();
         placedBlock.setLocation( new Location( this, placePosition ) );
-
 
         boolean interact = false;
         if ( !player.isSneaking() ) {
             interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
         }
 
-        if ( ( !interact ) || player.isSneaking() ) {
-            if ( !replacedBlock.canBeReplaced() ) {
+        if ( itemInHand instanceof ItemAir ) {
+            return interact;
+        }
+
+        if ( !interact || player.isSneaking() ) {
+            if ( !replacedBlock.canBeReplaced( placedBlock ) ) {
                 return false;
             }
 
@@ -521,7 +521,6 @@ public class World extends LevelDB {
             }
             return success;
         }
-
         return interact;
     }
 

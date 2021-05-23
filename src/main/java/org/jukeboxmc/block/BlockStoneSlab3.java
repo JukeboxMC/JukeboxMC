@@ -21,9 +21,6 @@ public class BlockStoneSlab3 extends BlockSlab {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setStoneSlabType( StoneSlab3Type.values()[itemIndHand.getMeta()] );
-
         Block targetBlock = world.getBlock( blockPosition );
         Block block = world.getBlock( placePosition );
 
@@ -64,20 +61,26 @@ public class BlockStoneSlab3 extends BlockSlab {
                 }
             }
         }
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return new ItemStoneSlab3().setMeta( this.getStoneSlabType().ordinal() );
+    public ItemStoneSlab3 toItem() {
+        return new ItemStoneSlab3( this.runtimeId );
     }
 
-    public void setStoneSlabType( StoneSlab3Type stoneSlabType ) {
-        this.setState( "stone_slab_type_3", stoneSlabType.name().toLowerCase() );
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STONE_SLAB3;
+    }
+
+    public BlockStoneSlab3 setStoneSlabType( StoneSlab3Type stoneSlabType ) {
+        return this.setState( "stone_slab_type_3", stoneSlabType.name().toLowerCase() );
     }
 
     public StoneSlab3Type getStoneSlabType() {
-        return this.stateExists( "stone_slab_type_3" ) ? StoneSlab3Type.valueOf( this.getStringState( "stone_slab_type_3" ).toUpperCase() ) : StoneSlab3Type.END_STONE_BRICK;
+        return this.stateExists( "stone_slab_type_3" ) ? StoneSlab3Type.valueOf( this.getStringState( "stone_slab_type_3" ) ) : StoneSlab3Type.END_STONE_BRICK;
     }
 }

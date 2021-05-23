@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStrippedWarpedHyphae;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -28,6 +29,16 @@ public class BlockStrippedWarpedHyphae extends Block {
         return true;
     }
 
+    @Override
+    public ItemStrippedWarpedHyphae toItem() {
+        return new ItemStrippedWarpedHyphae();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STRIPPED_WARPED_HYPHAE;
+    }
+
     public void setDeprecated( int value ) { //0-3 Idk what it is
         this.setState( "deprecated", value );
     }
@@ -41,6 +52,6 @@ public class BlockStrippedWarpedHyphae extends Block {
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

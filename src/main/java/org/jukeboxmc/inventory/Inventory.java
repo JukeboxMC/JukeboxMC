@@ -53,10 +53,12 @@ public abstract class Inventory {
     }
 
     public void setItem( int slot, Item item ) {
+        if ( slot < 0 || slot >= this.slotSize ) {
+            return;
+        }
         if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
             this.contents[slot] = ItemType.AIR.getItem();
         }
-
         this.contents[slot] = item;
         for ( Player player : this.viewer ) {
             this.sendContents( slot, player );
@@ -68,20 +70,22 @@ public abstract class Inventory {
         return content != null ? content : ItemType.AIR.getItem();
     }
 
+
     public boolean canAddItem( Item item ) {
-        Item clone = item.clone();
+        int amount = item.getAmount();
 
         for ( Item content : this.getContents() ) {
-            if ( content instanceof ItemAir ) {
+            if ( content == null || content.getItemType().equals( ItemType.AIR ) ) {
                 return true;
-            } else if ( content.equals( clone ) && content.getAmount() <= content.getMaxAmount() ) {
-                return true;
-            } else {
-                int removeCount = content.getMaxAmount() - content.getAmount();
-                clone.setAmount( clone.getAmount() - removeCount );
-            }
-            if ( clone.getAmount() == 0 ) {
-                return true;
+            } else if ( content.equals( item ) ) {
+                if ( content.getAmount() + item.getAmount() <= content.getMaxAmount() ) {
+                    return true;
+                } else {
+                    amount -= content.getMaxAmount() - content.getAmount();
+                    if ( amount <= 0 ) {
+                        return true;
+                    }
+                }
             }
         }
         return false;

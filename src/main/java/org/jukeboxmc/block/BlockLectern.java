@@ -1,6 +1,13 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLectern;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +17,24 @@ public class BlockLectern extends Block {
 
     public BlockLectern() {
         super( "minecraft:lectern" );
+    }
+
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemLectern toItem() {
+        return new ItemLectern();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LECTERN;
     }
 
     public void setPowered( boolean value ) {

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEnchantedBook extends Item {
 
     public ItemEnchantedBook() {
-        super( "minecraft:enchanted_book", 511 );
+        super( 511 );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBlazePowder extends Item {
 
     public ItemBlazePowder() {
-        super( "minecraft:blaze_powder", 427 );
+        super( 427 );
     }
 
 

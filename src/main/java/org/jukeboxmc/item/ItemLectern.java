@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLectern;
 public class ItemLectern extends Item {
 
     public ItemLectern() {
-        super( "minecraft:lectern", -194 );
+        super( -194 );
     }
 
     @Override

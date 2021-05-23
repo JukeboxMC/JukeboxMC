@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGoldenChestplate extends Item {
 
     public ItemGoldenChestplate() {
-        super( "minecraft:golden_chestplate", 352 );
+        super( 352 );
     }
 
 

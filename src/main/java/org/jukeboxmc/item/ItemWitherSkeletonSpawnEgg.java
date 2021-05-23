@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWitherSkeletonSpawnEgg extends Item {
 
     public ItemWitherSkeletonSpawnEgg() {
-        super( "minecraft:wither_skeleton_spawn_egg", 462 );
+        super( 462 );
     }
 
 

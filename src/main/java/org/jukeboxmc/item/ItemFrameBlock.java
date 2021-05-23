@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFrame;
 public class ItemFrameBlock extends Item {
 
     public ItemFrameBlock() {
-        super( "minecraft:item.frame", 199 );
+        super( 199 );
     }
 
     @Override

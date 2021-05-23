@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemCommandBlock;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockCommandBlock extends Block {
 
     public BlockCommandBlock() {
         super( "minecraft:command_block" );
+    }
+
+    @Override
+    public ItemCommandBlock toItem() {
+        return new ItemCommandBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.COMMAND_BLOCK;
     }
 
     public void setConditional( boolean value ) {

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemZombieSpawnEgg extends Item {
 
     public ItemZombieSpawnEgg() {
-        super( "minecraft:zombie_spawn_egg", 445 );
+        super( 445 );
     }
 
 

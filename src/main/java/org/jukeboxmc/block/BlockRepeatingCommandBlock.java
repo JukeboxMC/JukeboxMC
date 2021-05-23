@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemRepeatingCommandBlock;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockRepeatingCommandBlock extends Block {
 
     public BlockRepeatingCommandBlock() {
         super( "minecraft:repeating_command_block" );
+    }
+
+    @Override
+    public ItemRepeatingCommandBlock toItem() {
+        return new ItemRepeatingCommandBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.REPEATING_COMMAND_BLOCK;
     }
 
     public void setConditional( boolean value ) {

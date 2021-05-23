@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStairs extends Block {
+public abstract class BlockStairs extends Block {
 
     public BlockStairs( String identifier ) {
         super( identifier );
@@ -68,4 +68,5 @@ public class BlockStairs extends Block {
                 return CrossDirection.NORTH;
         }
     }
+
 }

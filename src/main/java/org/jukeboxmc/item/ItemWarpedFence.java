@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedFence;
 public class ItemWarpedFence extends Item {
 
     public ItemWarpedFence() {
-        super( "minecraft:warped_fence", -257 );
+        super( -257 );
     }
 
     @Override

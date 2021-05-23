@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronHorseArmor extends Item {
 
     public ItemIronHorseArmor() {
-        super( "minecraft:iron_horse_armor", 521 );
+        super( 521 );
     }
 
 

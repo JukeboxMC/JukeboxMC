@@ -45,4 +45,21 @@ public enum BlockFace {
         }
     }
 
+    public TorchFacing torchFacing() {
+        switch ( this ) {
+            case UP:
+                return TorchFacing.TOP;
+            case WEST:
+                return TorchFacing.WEST;
+            case EAST:
+                return TorchFacing.EAST;
+            case NORTH:
+                return TorchFacing.NORTH;
+            case SOUTH:
+                return TorchFacing.SOUTH;
+            default:
+                return TorchFacing.UNKNOWN;
+        }
+    }
+
 }

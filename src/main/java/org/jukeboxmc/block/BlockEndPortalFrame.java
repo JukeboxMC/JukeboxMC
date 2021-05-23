@@ -1,6 +1,13 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemEndPortalFrame;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +17,23 @@ public class BlockEndPortalFrame extends Block {
 
     public BlockEndPortalFrame() {
         super( "minecraft:end_portal_frame" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemEndPortalFrame toItem() {
+        return new ItemEndPortalFrame();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.END_PORTAL_FRAME;
     }
 
     public void setEndPortalEye( boolean value ) {
@@ -50,4 +74,5 @@ public class BlockEndPortalFrame extends Block {
                 return Direction.EAST;
         }
     }
+
 }

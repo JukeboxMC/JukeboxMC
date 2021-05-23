@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemCrimsonSlab;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,4 +20,15 @@ public class BlockDoubleCrimsonSlab extends BlockSlab {
         world.setBlock( placePosition, this );
         return true;
     }
+
+    @Override
+    public ItemCrimsonSlab toItem() {
+        return new ItemCrimsonSlab();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CRIMSON_SLAB;
+    }
+
 }

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedJungleLog;
 public class ItemStrippedJungleLog extends Item {
 
     public ItemStrippedJungleLog() {
-        super( "minecraft:stripped_jungle_log", -7 );
+        super( -7 );
     }
 
     @Override

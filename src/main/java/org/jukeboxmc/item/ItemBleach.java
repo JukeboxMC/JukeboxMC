@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBleach extends Item {
 
     public ItemBleach() {
-        super( "minecraft:bleach", 585 );
+        super( 585 );
     }
 
 

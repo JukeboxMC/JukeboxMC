@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchStairs;
 public class ItemBirchStairs extends Item {
 
     public ItemBirchStairs() {
-        super( "minecraft:birch_stairs", 135 );
+        super(  135 );
     }
 
     @Override

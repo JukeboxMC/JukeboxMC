@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemFurnace;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -46,6 +47,16 @@ public class BlockFurnace extends Block {
     @Override
     public BlockEntityFurnace getBlockEntity() {
         return (BlockEntityFurnace) this.world.getBlockEntity( this.getBlockPosition() );
+    }
+
+    @Override
+    public ItemFurnace toItem() {
+        return new ItemFurnace();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.FURNACE;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

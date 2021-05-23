@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemRedstoneWire;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -22,6 +23,16 @@ public class BlockRedstoneWire extends Block {
         this.setRedstoneSignal( 0 );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemRedstoneWire toItem() {
+        return new ItemRedstoneWire();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.REDSTONE_WIRE;
     }
 
     public void setRedstoneSignal( int value ) {

@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.BlockWood;
+import org.jukeboxmc.block.type.WoodType;
 
 /**
  * @author LucGamesYT
@@ -8,37 +10,17 @@ import org.jukeboxmc.block.BlockWood;
  */
 public class ItemWood extends Item {
 
-    public ItemWood() {
-        super( "minecraft:wood", -212 );
+    public ItemWood( int blockRuntimeId ) {
+        super( -212, blockRuntimeId );
     }
 
     @Override
     public BlockWood getBlock() {
-        return new BlockWood();
-    }
-
-    public void setWoodType( WoodType woodType ) {
-        this.setMeta( woodType.ordinal() );
+        return (BlockWood) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public WoodType getWoodType() {
-        return WoodType.values()[this.getMeta()];
+        return this.getBlock().getWoodType();
     }
 
-    public enum WoodType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE,
-        ACACIA,
-        DARK_OAK,
-        OAK2, // <--- OAK
-        OAK3, // <--- OAK
-        STRIPPED_OAK,
-        STRIPPED_SPRUCE,
-        STRIPPED_BIRCH,
-        STRIPPED_JUNGLE,
-        STRIPPED_ACACIA,
-        STRIPPED_DARK_OAK
-    }
 }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
+import org.jukeboxmc.item.ItemGoldenRail;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockGoldenRail extends Block {
 
     public BlockGoldenRail() {
         super( "minecraft:golden_rail" );
+    }
+
+    @Override
+    public ItemGoldenRail toItem() {
+        return new ItemGoldenRail();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.GOLDEN_RAIL;
     }
 
     public void setRailData( boolean value ) {
@@ -81,4 +92,5 @@ public class BlockGoldenRail extends Block {
                 return RailDirection.NORTH_EAST;
         }
     }
+
 }

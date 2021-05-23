@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemHopper;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -23,6 +24,16 @@ public class BlockHopper extends Block {
         this.setToggle( false );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemHopper toItem() {
+        return new ItemHopper();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.HOPPER;
     }
 
     public void setToggle( boolean value ) {

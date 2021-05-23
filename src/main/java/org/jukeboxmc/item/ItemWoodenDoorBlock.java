@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWoodenButton;
 public class ItemWoodenDoorBlock extends Item {
 
     public ItemWoodenDoorBlock() {
-        super( "minecraft:item.wooden_door", 64 );
+        super( 64 );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSoulCampfire;
 public class ItemSoulCampfireBlock extends Item {
 
     public ItemSoulCampfireBlock() {
-        super( "minecraft:item.soul_campfire", -290 );
+        super( -290 );
     }
 
     @Override

@@ -1,5 +1,8 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemAcaciaFenceGate;
+import org.jukeboxmc.item.ItemType;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -10,4 +13,13 @@ public class BlockAcaciaFenceGate extends BlockFenceGate {
         super( "minecraft:acacia_fence_gate" );
     }
 
+    @Override
+    public ItemAcaciaFenceGate toItem() {
+        return new ItemAcaciaFenceGate();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.ACACIA_FENCE_GATE;
+    }
 }

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSalmonSpawnEgg extends Item {
 
     public ItemSalmonSpawnEgg() {
-        super( "minecraft:salmon_spawn_egg", 480 );
+        super( 480 );
     }
 
 

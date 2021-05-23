@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPotion extends Item {
 
     public ItemPotion() {
-        super( "minecraft:potion", 424 );
+        super( 424 );
     }
 
     public void setPotionType( PotionType potionType ) {

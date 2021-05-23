@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemComparator;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -32,6 +33,16 @@ public class BlockCompartor extends Block {
         this.world.sendBlockUpdate( this );
         this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return true;
+    }
+
+    @Override
+    public ItemComparator toItem() {
+        return new ItemComparator();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.UNPOWERED_COMPARATOR;
     }
 
     public void setOutputSubstract( boolean value ) {

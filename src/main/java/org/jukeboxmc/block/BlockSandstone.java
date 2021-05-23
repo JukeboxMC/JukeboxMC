@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemSandstone;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -25,8 +26,13 @@ public class BlockSandstone extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getSandStoneType().ordinal() );
+    public ItemSandstone toItem() {
+        return new ItemSandstone();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SANDSTONE;
     }
 
     public void setSandStoneType( SandStoneType sandStoneType ) {
@@ -34,7 +40,7 @@ public class BlockSandstone extends Block {
     }
 
     public SandStoneType getSandStoneType() {
-        return this.stateExists( "sand_stone_type" ) ? SandStoneType.valueOf( this.getStringState( "sand_stone_type" ).toUpperCase() ) : SandStoneType.DEFAULT;
+        return this.stateExists( "sand_stone_type" ) ? SandStoneType.valueOf( this.getStringState( "sand_stone_type" ) ) : SandStoneType.DEFAULT;
     }
 
     public enum SandStoneType {

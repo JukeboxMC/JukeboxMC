@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStonePressurePlate;
 public class ItemStonePressurePlate extends Item {
 
     public ItemStonePressurePlate() {
-        super( "minecraft:stone_pressure_plate", 70 );
+        super( 70 );
     }
 
     @Override

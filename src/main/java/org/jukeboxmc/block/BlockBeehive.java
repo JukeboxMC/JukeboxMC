@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBeehive;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -34,6 +35,16 @@ public class BlockBeehive extends Block {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ItemBeehive toItem() {
+        return new ItemBeehive();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BEEHIVE;
     }
 
     @Override

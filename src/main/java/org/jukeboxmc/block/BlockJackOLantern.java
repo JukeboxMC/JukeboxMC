@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemJackOLantern;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -23,6 +24,16 @@ public class BlockJackOLantern extends Block {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemJackOLantern toItem() {
+        return new ItemJackOLantern();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.JACK_O_LANTERN;
     }
 
     public void setDirection( Direction direction ) {

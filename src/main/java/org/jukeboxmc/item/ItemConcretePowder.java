@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockConcretePowder;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT
@@ -8,16 +10,17 @@ import org.jukeboxmc.block.BlockColor;
  */
 public class ItemConcretePowder extends Item {
 
-    public ItemConcretePowder() {
-        super( "minecraft:concrete_powder", 237 );
+    public ItemConcretePowder( int blockRuntimeId ) {
+        super( 237, blockRuntimeId );
     }
 
-    public void setColor( BlockColor blockColor ) {
-        this.setMeta( blockColor.ordinal() );
+    @Override
+    public BlockConcretePowder getBlock() {
+        return (BlockConcretePowder) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public BlockColor getColor() {
-        return BlockColor.values()[this.getMeta()];
+        return this.getBlock().getColor();
     }
 
 }

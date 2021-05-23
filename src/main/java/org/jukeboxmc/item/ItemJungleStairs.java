@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJungleStairs;
 public class ItemJungleStairs extends Item {
 
     public ItemJungleStairs() {
-        super( "minecraft:jungle_stairs", 136 );
+        super( 136 );
     }
 
     @Override

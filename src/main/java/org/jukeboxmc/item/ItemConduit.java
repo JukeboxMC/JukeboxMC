@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockConduit;
 public class ItemConduit extends Item {
 
     public ItemConduit() {
-        super( "minecraft:conduit", -157 );
+        super( -157 );
     }
 
     @Override

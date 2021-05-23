@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGrassPath;
 public class ItemGrassPath extends Item {
 
     public ItemGrassPath() {
-        super( "minecraft:grass_path", 198 );
+        super( 198 );
     }
 
     @Override

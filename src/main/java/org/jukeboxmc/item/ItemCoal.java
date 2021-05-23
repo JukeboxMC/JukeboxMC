@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCoal extends Item {
 
     public ItemCoal() {
-        super( "minecraft:coal", 302 );
+        super( 302 );
     }
 
 

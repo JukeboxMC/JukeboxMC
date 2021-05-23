@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPurpleGlazedTerracotta;
 public class ItemPurpleGlazedTerracotta extends Item {
 
     public ItemPurpleGlazedTerracotta() {
-        super( "minecraft:purple_glazed_terracotta", 219 );
+        super( 219 );
     }
 
     @Override

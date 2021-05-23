@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockSapling;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.SaplingType;
 
 /**
  * @author LucGamesYT
@@ -8,30 +10,18 @@ import org.jukeboxmc.block.BlockSapling;
  */
 public class ItemSapling extends Item {
 
-    public ItemSapling() {
-        super( "minecraft:sapling", 6 );
+    public ItemSapling( int blockRuntimeId ) {
+        super( 6, blockRuntimeId );
     }
 
     @Override
     public BlockSapling getBlock() {
-        return new BlockSapling();
-    }
-
-    public void setSaplingType( SaplingType saplingType ) {
-        this.setMeta( saplingType.ordinal() );
+        return (BlockSapling) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public SaplingType getSaplingType() {
-        return SaplingType.values()[this.getMeta()];
+        return this.getBlock().getSaplingType();
     }
 
-    public enum SaplingType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE,
-        ACACIA,
-        DARK_OAK
-    }
 
 }

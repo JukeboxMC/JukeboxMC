@@ -25,7 +25,7 @@ public class BlockPickRequestHandler implements PacketHandler {
         if ( player.getGameMode() == GameMode.CREATIVE ) {
             Item item = pickedBlock.toItem();
             if ( item instanceof ItemAir ) {
-                Server.getInstance().getLogger().debug( "User try to pick air" );
+                Server.getInstance().getLogger().warn( "User try to pick air" );
                 return;
             }
             player.getInventory().addItem( item );

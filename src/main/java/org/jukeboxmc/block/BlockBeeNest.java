@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBeeNest;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -37,6 +38,16 @@ public class BlockBeeNest extends Block {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ItemBeeNest toItem() {
+        return new ItemBeeNest();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BEE_NEST;
     }
 
     @Override

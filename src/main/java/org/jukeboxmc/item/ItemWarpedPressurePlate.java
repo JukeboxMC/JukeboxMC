@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedPressurePlate;
 public class ItemWarpedPressurePlate extends Item {
 
     public ItemWarpedPressurePlate() {
-        super( "minecraft:warped_pressure_plate", -263 );
+        super( -263 );
     }
 
     @Override

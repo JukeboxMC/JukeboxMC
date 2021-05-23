@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGoldIngot extends Item {
 
     public ItemGoldIngot() {
-        super( "minecraft:gold_ingot", 306 );
+        super( 306 );
     }
 
 

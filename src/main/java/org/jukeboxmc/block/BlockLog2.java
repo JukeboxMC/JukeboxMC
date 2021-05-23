@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.LogType2;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLog2;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -20,8 +22,6 @@ public class BlockLog2 extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setLogType( LogType.values()[itemIndHand.getMeta()] );
-
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
@@ -34,24 +34,31 @@ public class BlockLog2 extends Block {
         return true;
     }
 
+    @Override
+    public ItemLog2 toItem() {
+        return new ItemLog2( this.runtimeId );
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LOG2;
+    }
+
     public void setAxis( Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 
-    public void setLogType( LogType logType ) {
-        this.setState( "new_log_type", logType.name().toLowerCase() );
+    public BlockLog2 setLogType( LogType2 logType ) {
+        return this.setState( "new_log_type", logType.name().toLowerCase() );
     }
 
-    public LogType getLogType() {
-        return this.stateExists( "new_log_type" ) ? LogType.valueOf( this.getStringState( "new_log_type" ).toUpperCase() ) : LogType.ACACIA;
+    public LogType2 getLogType() {
+        return this.stateExists( "new_log_type" ) ? LogType2.valueOf( this.getStringState( "new_log_type" ) ) : LogType2.ACACIA;
     }
 
-    public enum LogType {
-        ACACIA,
-        DARK_OAK
-    }
+
 }

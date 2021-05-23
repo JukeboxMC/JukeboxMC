@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIceBomb extends Item {
 
     public ItemIceBomb() {
-        super( "minecraft:ice_bomb", 584 );
+        super( 584 );
     }
 
 

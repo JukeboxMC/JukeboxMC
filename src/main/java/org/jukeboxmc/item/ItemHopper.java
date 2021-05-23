@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHopper;
 public class ItemHopper extends Item {
 
     public ItemHopper() {
-        super( "minecraft:hopper", 517 );
+        super( 517 );
     }
 
     @Override

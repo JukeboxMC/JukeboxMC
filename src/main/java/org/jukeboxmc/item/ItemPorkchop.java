@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPorkchop extends Item {
 
     public ItemPorkchop() {
-        super( "minecraft:porkchop", 262 );
+        super( 262 );
     }
 
 

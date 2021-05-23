@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSmithingTable;
 public class ItemSmithingTable extends Item {
 
     public ItemSmithingTable() {
-        super( "minecraft:smithing_table", -202 );
+        super( -202 );
     }
 
     @Override

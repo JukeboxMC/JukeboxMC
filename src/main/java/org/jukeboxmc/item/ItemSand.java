@@ -1,7 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockSand;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.SandType;
 
 /**
  * @author LucGamesYT
@@ -9,25 +10,17 @@ import org.jukeboxmc.block.BlockSand;
  */
 public class ItemSand extends Item {
 
-    public ItemSand() {
-        super( "minecraft:sand", 12 );
+    public ItemSand( int blockRuntimeId ) {
+        super( 12, blockRuntimeId );
     }
 
     @Override
-    public Block getBlock() {
-        return new BlockSand();
-    }
-
-    public void setSandType( SandType sandType ) {
-        this.setMeta( sandType.ordinal() );
+    public BlockSand getBlock() {
+        return (BlockSand) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public SandType getSandType() {
-        return SandType.values()[this.getMeta()];
+        return this.getBlock().getSandType();
     }
 
-    public enum SandType {
-        SAND,
-        RED_SAND
-    }
 }

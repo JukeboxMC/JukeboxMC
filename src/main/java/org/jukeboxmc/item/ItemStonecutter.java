@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStonecutter;
 public class ItemStonecutter extends Item {
 
     public ItemStonecutter() {
-        super( "minecraft:stonecutter", 245 );
+        super( 245 );
     }
 
     @Override

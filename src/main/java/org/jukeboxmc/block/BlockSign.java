@@ -10,7 +10,7 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSign extends Block {
+public abstract class BlockSign extends Block {
 
     public BlockSign( String identifier ) {
         super( identifier );
@@ -55,4 +55,5 @@ public class BlockSign extends Block {
     public SignDirection getSignDirection() {
         return this.stateExists( "ground_sign_direction" ) ? SignDirection.values()[this.getIntState( "ground_sign_direction" )] : SignDirection.SOUTH;
     }
+
 }

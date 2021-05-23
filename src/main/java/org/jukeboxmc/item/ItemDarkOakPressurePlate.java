@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDarkOakPressurePlate;
 public class ItemDarkOakPressurePlate extends Item {
 
     public ItemDarkOakPressurePlate() {
-        super( "minecraft:dark_oak_pressure_plate", -152 );
+        super( -152 );
     }
 
     @Override

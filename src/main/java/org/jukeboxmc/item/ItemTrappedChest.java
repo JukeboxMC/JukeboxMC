@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockTrappedChest;
 public class ItemTrappedChest extends Item {
 
     public ItemTrappedChest() {
-        super( "minecraft:trapped_chest", 146 );
+        super( 146 );
     }
 
     @Override

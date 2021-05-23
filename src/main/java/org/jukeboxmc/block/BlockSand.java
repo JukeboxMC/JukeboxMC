@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.SandType;
+import org.jukeboxmc.item.ItemSand;
 
 /**
  * @author LucGamesYT
@@ -18,27 +14,21 @@ public class BlockSand extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setSandType( SandType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemSand toItem() {
+        return new ItemSand( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getSandType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.SAND;
     }
 
-    public void setSandType( SandType sandType ) {
-        this.setState( "sand_type", sandType.name().toLowerCase() );
+    public BlockSand setSandType( SandType sandType ) {
+       return this.setState( "sand_type", sandType.name().toLowerCase() );
     }
 
     public SandType getSandType() {
-        return this.stateExists( "sand_type" ) ? SandType.valueOf( this.getStringState( "sand_type" ).toUpperCase() ) : SandType.NORMAL;
+        return this.stateExists( "sand_type" ) ? SandType.valueOf( this.getStringState( "sand_type" ) ) : SandType.NORMAL;
     }
 
-    public enum SandType {
-        NORMAL,
-        RED
-    }
 }

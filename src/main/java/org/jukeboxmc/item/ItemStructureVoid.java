@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStructureVoid;
 public class ItemStructureVoid extends Item {
 
     public ItemStructureVoid() {
-        super( "minecraft:structure_void", 217 );
+        super( 217 );
     }
 
     @Override

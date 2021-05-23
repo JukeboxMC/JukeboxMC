@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStructureBlock;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -25,8 +26,13 @@ public class BlockStructureBlock extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getStructureBlockType().ordinal() );
+    public ItemStructureBlock toItem() {
+        return new ItemStructureBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STRUCTURE_BLOCK;
     }
 
     public void setStructureBlockType( StructureBlockType structureBlockType ) {
@@ -34,7 +40,7 @@ public class BlockStructureBlock extends Block {
     }
 
     public StructureBlockType getStructureBlockType() {
-        return this.stateExists( "structure_block_type" ) ? StructureBlockType.valueOf( this.getStringState( "structure_block_type" ).toUpperCase() ) : StructureBlockType.DATA;
+        return this.stateExists( "structure_block_type" ) ? StructureBlockType.valueOf( this.getStringState( "structure_block_type" ) ) : StructureBlockType.DATA;
     }
 
     public enum StructureBlockType {

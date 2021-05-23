@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchTrapdoor;
 public class ItemBirchTrapdoor extends Item {
 
     public ItemBirchTrapdoor() {
-        super( "minecraft:birch_trapdoor", -146 );
+        super( -146 );
     }
 
     @Override

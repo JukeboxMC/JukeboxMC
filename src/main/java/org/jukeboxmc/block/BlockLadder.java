@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLadder;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -28,6 +29,16 @@ public class BlockLadder extends Block {
         }
 
         return false;
+    }
+
+    @Override
+    public ItemLadder toItem() {
+        return new ItemLadder();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LADDER;
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMagmaCubeSpawnEgg extends Item {
 
     public ItemMagmaCubeSpawnEgg() {
-        super( "minecraft:magma_cube_spawn_egg", 453 );
+        super( 453 );
     }
 
 

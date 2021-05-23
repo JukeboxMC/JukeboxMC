@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPortal;
 public class ItemPortal extends Item {
 
     public ItemPortal() {
-        super( "minecraft:portal", 90 );
+        super( 90 );
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemTripwire;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockTripwire extends Block {
 
     public BlockTripwire() {
         super( "minecraft:tripwire" );
+    }
+
+    @Override
+    public ItemTripwire toItem() {
+        return new ItemTripwire();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.TRIPWIRE;
     }
 
     public void setPowered( boolean value ) {

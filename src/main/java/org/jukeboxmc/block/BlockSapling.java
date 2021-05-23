@@ -1,12 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.SaplingType;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.item.ItemSapling;
 
 /**
  * @author LucGamesYT
@@ -19,23 +14,21 @@ public class BlockSapling extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setSaplingType( SaplingType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemSapling toItem() {
+        return new ItemSapling(this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getSaplingType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.SAPLING;
     }
 
-    public void setSaplingType( SaplingType saplingType ) {
-        this.setState( "sapling_type", saplingType.name().toLowerCase() );
+    public BlockSapling setSaplingType( SaplingType saplingType ) {
+       return this.setState( "sapling_type", saplingType.name().toLowerCase() );
     }
 
     public SaplingType getSaplingType() {
-        return this.stateExists( "sapling_type" ) ? SaplingType.valueOf( this.getStringState( "sapling_type" ).toUpperCase() ) : SaplingType.OAK;
+        return this.stateExists( "sapling_type" ) ? SaplingType.valueOf( this.getStringState( "sapling_type" ) ) : SaplingType.OAK;
     }
 
     public void setAge( boolean value ) {

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.ItemPoweredComparator;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockPoweredComparator extends Block {
 
     public BlockPoweredComparator() {
         super( "minecraft:powered_comparator" );
+    }
+
+    @Override
+    public ItemPoweredComparator toItem() {
+        return new ItemPoweredComparator();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.POWERED_COMPARATOR;
     }
 
     public void setOutputSubstract( boolean value ) {

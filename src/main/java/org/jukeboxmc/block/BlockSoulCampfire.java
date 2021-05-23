@@ -1,11 +1,35 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemSoulCampfire;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 public class BlockSoulCampfire extends Block {
 
     public BlockSoulCampfire() {
         super("minecraft:soul_campfire");
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemSoulCampfire toItem() {
+        return new ItemSoulCampfire();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SOUL_CAMPFIRE;
     }
 
     public void setExtinguished( boolean value ) {

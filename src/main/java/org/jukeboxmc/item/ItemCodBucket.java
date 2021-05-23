@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCodBucket extends Item {
 
     public ItemCodBucket() {
-        super( "minecraft:cod_bucket", 364 );
+        super( 364 );
     }
 
 

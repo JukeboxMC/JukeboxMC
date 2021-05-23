@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemCauldron;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockCauldron extends Block {
 
     public BlockCauldron() {
         super( "minecraft:cauldron" );
+    }
+
+    @Override
+    public ItemCauldron toItem() {
+        return new ItemCauldron();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CAULDRON;
     }
 
     public void setFillLevel( int value ) { //0-6
@@ -23,7 +35,7 @@ public class BlockCauldron extends Block {
     }
 
     public LiquidType getLiquidType() {
-        return this.stateExists( "cauldron_liquid" ) ? LiquidType.valueOf( this.getStringState( "cauldron_liquid" ).toUpperCase() ) : LiquidType.WATER;
+        return this.stateExists( "cauldron_liquid" ) ? LiquidType.valueOf( this.getStringState( "cauldron_liquid" ) ) : LiquidType.WATER;
     }
 
     public enum LiquidType {

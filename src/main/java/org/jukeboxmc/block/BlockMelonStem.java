@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemMelonStem;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockMelonStem extends Block {
 
     public BlockMelonStem() {
         super( "minecraft:melon_stem" );
+    }
+
+    @Override
+    public ItemMelonStem toItem() {
+        return new ItemMelonStem();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.MELON_STEM;
     }
 
     public void setGrowth( int value ) { //0-7

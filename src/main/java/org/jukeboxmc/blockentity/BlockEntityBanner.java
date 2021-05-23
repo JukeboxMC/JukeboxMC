@@ -1,7 +1,7 @@
 package org.jukeboxmc.blockentity;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
@@ -43,7 +43,6 @@ public class BlockEntityBanner extends BlockEntity {
     @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
-        compound.putString( "id", "Banner" );
         compound.putInt( "Base", this.baseColor );
         compound.putInt( "Type", this.type );
 

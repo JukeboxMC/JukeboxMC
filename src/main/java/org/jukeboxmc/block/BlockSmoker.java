@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemSmoker;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -22,6 +23,16 @@ public class BlockSmoker extends Block {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public ItemSmoker toItem() {
+        return new ItemSmoker();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SMOKER;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

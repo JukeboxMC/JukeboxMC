@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.ItemPoweredRepeater;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockPoweredRepeater extends Block {
 
     public BlockPoweredRepeater() {
         super( "minecraft:powered_repeater" );
+    }
+
+    @Override
+    public ItemPoweredRepeater toItem() {
+        return new ItemPoweredRepeater();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.POWERED_REPEATER;
     }
 
     public void setRepeaterDelay( int value ) { //0-3

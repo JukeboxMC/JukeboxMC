@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronHoe extends Item {
 
     public ItemIronHoe() {
-        super( "minecraft:iron_hoe", 331 );
+        super( 331 );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 class ItemMojangBannerPattern extends Item {
 
     public ItemMojangBannerPattern() {
-        super( "minecraft:mojang_banner_pattern", 574 );
+        super( 574 );
     }
 
     @Override

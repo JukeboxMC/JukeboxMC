@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockShroomlight;
 public class ItemShroomlight extends Item {
 
     public ItemShroomlight() {
-        super( "minecraft:shroomlight", -230 );
+        super( -230 );
     }
 
     @Override

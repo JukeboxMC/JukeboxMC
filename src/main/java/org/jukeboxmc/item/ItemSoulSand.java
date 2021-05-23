@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSoulSand;
 public class ItemSoulSand extends Item {
 
     public ItemSoulSand() {
-        super( "minecraft:soul_sand", 88 );
+        super( 88 );
     }
 
     @Override

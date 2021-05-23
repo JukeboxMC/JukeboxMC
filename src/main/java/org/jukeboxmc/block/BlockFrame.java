@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemFrame;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockFrame extends Block {
 
     public BlockFrame() {
         super( "minecraft:frame" );
+    }
+
+    @Override
+    public ItemFrame toItem() {
+        return new ItemFrame();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.FRAME;
     }
 
     public void setItemFrameMap( boolean value ) {

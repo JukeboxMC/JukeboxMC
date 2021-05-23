@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonPressurePlate;
 public class ItemCrimsonPressurePlate extends Item {
 
     public ItemCrimsonPressurePlate() {
-        super( "minecraft:crimson_pressure_plate", -262 );
+        super( -262 );
     }
 
     @Override

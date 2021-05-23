@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemStriderSpawnEgg extends Item {
 
     public ItemStriderSpawnEgg() {
-        super( "minecraft:strider_spawn_egg", 493 );
+        super(  493 );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPufferfishBucket extends Item {
 
     public ItemPufferfishBucket() {
-        super( "minecraft:pufferfish_bucket", 367 );
+        super( 367 );
     }
 
 

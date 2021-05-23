@@ -1,9 +1,21 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemTwistingVines;
+
 public class BlockTwistingVines extends Block {
 
     public BlockTwistingVines() {
         super("minecraft:twisting_vines");
+    }
+
+    @Override
+    public ItemTwistingVines toItem() {
+        return new ItemTwistingVines();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.TWISTING_VINES;
     }
 
     public void setTwistingVinesAge( int value ) { //0-25

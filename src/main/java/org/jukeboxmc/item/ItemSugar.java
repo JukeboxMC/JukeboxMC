@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSugar extends Item {
 
     public ItemSugar() {
-        super( "minecraft:sugar", 414 );
+        super( 414 );
     }
 
 

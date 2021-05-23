@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPumpkinStem;
 public class ItemPumpkinStem extends Item {
 
     public ItemPumpkinStem() {
-        super( "minecraft:pumpkin_stem", 104 );
+        super( 104 );
     }
 
     @Override

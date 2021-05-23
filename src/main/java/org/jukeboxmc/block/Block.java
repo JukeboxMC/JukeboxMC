@@ -7,7 +7,6 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.BlockPosition;
@@ -22,14 +21,14 @@ import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.*;
 
-import static org.jukeboxmc.block.BlockType.Companion.*;
+import static org.jukeboxmc.block.BlockType.Companion.update;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
 
-public class Block implements Cloneable {
+public abstract class Block implements Cloneable {
 
     private static final Map<String, Map<NbtMap, Integer>> STATES = new LinkedHashMap<>();
 
@@ -38,6 +37,7 @@ public class Block implements Cloneable {
     protected NbtMap blockStates;
 
     protected World world;
+    protected boolean placed;
     protected Location location;
     protected int layer = 0;
 
@@ -75,7 +75,7 @@ public class Block implements Cloneable {
 
         this.blockStates = blockStates;
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
-        ;
+        this.placed = false;
     }
 
     public <B extends Block> B setData( int data ) {
@@ -107,6 +107,10 @@ public class Block implements Cloneable {
         if ( Server.getInstance().isIniatiating() ) {
             update( this.runtimeId, this );
         }
+        if ( this.getWorld() != null && this.placed ) {
+            this.getWorld().sendBlockUpdate( this );
+            this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+        }
         return (B) this;
     }
 
@@ -115,7 +119,7 @@ public class Block implements Cloneable {
     }
 
     public String getStringState( String value ) {
-        return this.blockStates.getString( value );
+        return this.blockStates.getString( value ).toUpperCase();
     }
 
     public byte getByteState( String value ) {
@@ -154,22 +158,13 @@ public class Block implements Cloneable {
         player.getPlayerConnection().sendPacket( updateBlockPacket );
     }
 
-    public boolean canBeReplaced() {
+    public boolean canBeReplaced( Block block ) {
         return false;
     }
 
-    public Item toItem() {
-        for ( Item item : ItemType.getItems() ) {
-            if ( item.getIdentifier().equals( this.identifier ) ) {
-                return item;
-            }
-        }
-        return new ItemAir();
-    }
+    public abstract Item toItem();
 
-    public BlockType getBlockType() {
-        return BlockType.AIR;
-    }
+    public abstract BlockType getBlockType();
 
     public Block getSide( Direction direction ) {
         switch ( direction ) {
@@ -241,6 +236,10 @@ public class Block implements Cloneable {
         return this.location;
     }
 
+    public void setPlaced( boolean placed ) {
+        this.placed = placed;
+    }
+
     public BlockPosition getBlockPosition() {
         return new BlockPosition( this.location );
     }
@@ -289,7 +288,7 @@ public class Block implements Cloneable {
     }
 
     public List<Item> getDrops() {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     public long onUpdate( UpdateReason updateReason ) {

@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemWarpedStandingSign;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -28,6 +29,16 @@ public class BlockWarpedStandingSign extends BlockSign {
         }
         BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public ItemWarpedStandingSign toItem() {
+        return new ItemWarpedStandingSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WARPED_STANDING_SIGN;
     }
 
 }

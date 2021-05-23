@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPolarBearSpawnEgg extends Item {
 
     public ItemPolarBearSpawnEgg() {
-        super( "minecraft:polar_bear_spawn_egg", 470 );
+        super( 470 );
     }
 
 

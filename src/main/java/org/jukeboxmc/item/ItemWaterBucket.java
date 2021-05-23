@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWaterBucket extends Item {
 
     public ItemWaterBucket() {
-        super( "minecraft:water_bucket", 362 );
+        super( 362 );
     }
 
 

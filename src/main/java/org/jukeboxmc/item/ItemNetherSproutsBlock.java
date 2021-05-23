@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherSprouts;
 public class ItemNetherSproutsBlock extends Item {
 
     public ItemNetherSproutsBlock() {
-        super( "minecraft:nether_sprouts", 609 );
+        super( 609 );
     }
 
     @Override

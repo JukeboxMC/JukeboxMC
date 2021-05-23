@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWoodenPressurePlate;
 public class ItemWoodenPressurePlate extends Item {
 
     public ItemWoodenPressurePlate() {
-        super( "minecraft:wooden_pressure_plate", 72 );
+        super( 72 );
     }
 
     @Override

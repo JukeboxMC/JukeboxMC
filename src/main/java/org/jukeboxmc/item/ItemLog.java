@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockLog;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.LogType;
 
 /**
  * @author LucGamesYT
@@ -8,27 +10,17 @@ import org.jukeboxmc.block.BlockLog;
  */
 public class ItemLog extends Item {
 
-    public ItemLog() {
-        super( "minecraft:log", 17 );
+    public ItemLog( int blockRuntimeId ) {
+        super( 17, blockRuntimeId );
     }
 
     @Override
     public BlockLog getBlock() {
-        return new BlockLog();
-    }
-
-    public void setLogType( LogType logType ) {
-        this.setMeta( logType.ordinal() );
+        return (BlockLog) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public LogType getLogType() {
-        return LogType.values()[this.getMeta()];
+        return this.getBlock().getLogType();
     }
 
-    public enum LogType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE
-    }
 }

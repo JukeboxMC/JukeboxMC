@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteIngot extends Item {
 
     public ItemNetheriteIngot() {
-        super( "minecraft:netherite_ingot", 591 );
+        super( 591 );
     }
 
 

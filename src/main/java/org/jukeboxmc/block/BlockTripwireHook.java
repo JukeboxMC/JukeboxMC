@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.ItemTripwireHook;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockTripwireHook extends Block {
 
     public BlockTripwireHook() {
         super( "minecraft:tripwire_hook" );
+    }
+
+    @Override
+    public ItemTripwireHook toItem() {
+        return new ItemTripwireHook();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.TRIPWIRE_HOOK;
     }
 
     public void setPowered( boolean value ) {
@@ -58,4 +69,5 @@ public class BlockTripwireHook extends Block {
                 return Direction.EAST;
         }
     }
+
 }

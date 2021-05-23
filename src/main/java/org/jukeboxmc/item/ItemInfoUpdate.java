@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockInfoUpdate;
 public class ItemInfoUpdate extends Item {
 
     public ItemInfoUpdate() {
-        super( "minecraft:info_update", 248 );
+        super( 248 );
     }
 
     @Override

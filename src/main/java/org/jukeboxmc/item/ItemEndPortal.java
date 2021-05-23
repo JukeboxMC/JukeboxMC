@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEndPortal;
 public class ItemEndPortal extends Item {
 
     public ItemEndPortal() {
-        super( "minecraft:end_portal", 119 );
+        super( 119 );
     }
 
     @Override

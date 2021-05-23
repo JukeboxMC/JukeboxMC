@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRealDoubleRedSandstoneSlab extends Item{
 
     public ItemRealDoubleRedSandstoneSlab() {
-        super( "minecraft:real_double_stone_slab2", 181 );
+        super( 181 );
     }
 
 

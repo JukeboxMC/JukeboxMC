@@ -1,6 +1,14 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.Attachment;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBell;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -12,12 +20,52 @@ public class BlockBell extends Block {
         super( "minecraft:bell" );
     }
 
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setDirection( player.getDirection().opposite() );
+        if ( blockFace == BlockFace.UP ) {
+            this.setAttachment( Attachment.STANDING );
+        } else if ( blockFace == BlockFace.DOWN ) {
+            this.setAttachment( Attachment.HANGING );
+        } else {
+            this.setDirection( blockFace.toDirection() );
+            if( world.getBlock( placePosition ).getSide( blockFace ).isSolid() && world.getBlock( placePosition ).getSide( blockFace.opposite() ).isSolid() ) {
+                this.setAttachment( Attachment.MULTIPLE );
+            } else {
+                if ( world.getBlock( blockPosition ).isSolid() ) {
+                    this.setAttachment( Attachment.SIDE );
+                } else {
+                    System.out.println("RETURN");
+                    return false;
+                }
+            }
+        }
+        System.out.println("PLACE");
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemBell toItem() {
+        return new ItemBell();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BELL;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setAttachment( Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }
 
     public Attachment getAttachment() {
-        return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ).toUpperCase() ) : Attachment.STANDING;
+        return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ) ) : Attachment.STANDING;
     }
 
     public void setToggle( boolean value ) {
@@ -59,10 +107,4 @@ public class BlockBell extends Block {
         }
     }
 
-    public enum Attachment {
-        STANDING,
-        HANGING,
-        SIDE,
-        MULTIPLE
-    }
 }

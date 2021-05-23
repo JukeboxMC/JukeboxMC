@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockQuartzBlock;
 public class ItemQuartz extends Item {
 
     public ItemQuartz() {
-        super( "minecraft:quartz", 514 );
+        super( 514 );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchStandingSign;
 public class ItemBirchSign extends Item {
 
     public ItemBirchSign() {
-        super( "minecraft:birch_sign", 567 );
+        super( 567 );
     }
 
     @Override

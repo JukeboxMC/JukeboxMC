@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.StoneBrickType;
+import org.jukeboxmc.item.ItemStonebrick;
 
 /**
  * @author LucGamesYT
@@ -17,31 +13,25 @@ public class BlockStonebrick extends Block {
         super( "minecraft:stonebrick" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setStoneBrickType( StoneBrickType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemStonebrick toItem() {
+        return new ItemStonebrick( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getStoneBrickType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.STONEBRICK;
     }
 
-    public void setStoneBrickType( StoneBrickType stoneBrickType ) {
-        this.setState( "stone_brick_type", stoneBrickType.name().toLowerCase() );
+
+    public BlockStonebrick setStoneBrickType( StoneBrickType stoneBrickType ) {
+        return this.setState( "stone_brick_type", stoneBrickType.name().toLowerCase() );
     }
 
     public StoneBrickType getStoneBrickType() {
-        return this.stateExists( "stone_brick_type" ) ? StoneBrickType.valueOf( this.getStringState( "stone_brick_type" ).toUpperCase() ) : StoneBrickType.DEFAULT;
+        return this.stateExists( "stone_brick_type" ) ? StoneBrickType.valueOf( this.getStringState( "stone_brick_type" ) ) : StoneBrickType.DEFAULT;
     }
 
-    public enum StoneBrickType {
-        DEFAULT,
-        MOSSY,
-        CRACKED,
-        CHISELED,
-        SMOOTH
-    }
 }

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEndBricks;
 public class ItemEndBricks extends Item {
 
     public ItemEndBricks() {
-        super( "minecraft:end_bricks", 206 );
+        super( 206 );
     }
 
     @Override

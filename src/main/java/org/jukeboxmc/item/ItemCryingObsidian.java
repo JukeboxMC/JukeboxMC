@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCryingObsidian;
 public class ItemCryingObsidian extends Item {
 
     public ItemCryingObsidian() {
-        super( "minecraft:crying_obsidian", -289 );
+        super( -289 );
     }
 
     @Override

@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.BlockColor;
+import org.jukeboxmc.item.ItemWool;
 
 /**
  * @author LucGamesYT
@@ -17,23 +13,23 @@ public class BlockWool extends Block {
         super( "minecraft:wool" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setColor( BlockColor.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemWool toItem() {
+        return new ItemWool( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getColor().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.WOOL;
     }
 
-    public void setColor( BlockColor color ) {
-        this.setState( "color", color.name().toLowerCase() );
+    public BlockWool setColor( BlockColor color ) {
+        return this.setState( "color", color.name().toLowerCase() );
     }
 
     public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ).toUpperCase() ) : BlockColor.WHITE;
+        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

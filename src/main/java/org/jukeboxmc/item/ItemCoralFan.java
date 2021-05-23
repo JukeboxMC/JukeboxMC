@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockCoralFan;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.CoralColor;
 
 /**
  * @author LucGamesYT
@@ -8,29 +10,17 @@ import org.jukeboxmc.block.BlockCoralFan;
  */
 public class ItemCoralFan extends Item {
 
-    public ItemCoralFan() {
-        super( "minecraft:coral_fan", -133 );
+    public ItemCoralFan( int blockRuntimeId ) {
+        super( -133, blockRuntimeId );
     }
 
     @Override
     public BlockCoralFan getBlock() {
-        return new BlockCoralFan();
+        return (BlockCoralFan) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setCoralType( CoralType coralType ) {
-        this.setMeta( coralType.ordinal() );
-    }
-
-    public CoralType getCoralType() {
-        return CoralType.values()[this.getMeta()];
-    }
-
-    public enum CoralType {
-        TUBE,
-        BRAIN,
-        BUBBLE,
-        FIRE,
-        HORN
+    public CoralColor getCoralType() {
+        return this.getBlock().getCoralColor();
     }
 
 }

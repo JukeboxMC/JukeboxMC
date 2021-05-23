@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPufferfishSpawnEgg extends Item {
 
     public ItemPufferfishSpawnEgg() {
-        super( "minecraft:pufferfish_spawn_egg", 479 );
+        super( 479 );
     }
 
 

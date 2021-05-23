@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedBasalt;
 public class ItemPolishedBasalt extends Item {
 
     public ItemPolishedBasalt() {
-        super( "minecraft:polished_basalt", -235 );
+        super( -235 );
     }
 
     @Override

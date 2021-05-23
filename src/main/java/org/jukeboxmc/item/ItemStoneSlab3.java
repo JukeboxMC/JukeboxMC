@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStoneSlab3;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.StoneSlab3Type;
 
 /**
  * @author LucGamesYT
@@ -8,31 +10,17 @@ import org.jukeboxmc.block.BlockStoneSlab3;
  */
 public class ItemStoneSlab3 extends Item {
 
-    public ItemStoneSlab3() {
-        super( "minecraft:double_stone_slab3", -162 );
+    public ItemStoneSlab3( int blockRuntimeId ) {
+        super( -162, blockRuntimeId );
     }
 
     @Override
     public BlockStoneSlab3 getBlock() {
-        return new BlockStoneSlab3();
+        return (BlockStoneSlab3) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setSlabType( SlabType slabType ) {
-        this.setMeta( slabType.ordinal() );
+    public StoneSlab3Type getSlabType() {
+        return this.getBlock().getStoneSlabType();
     }
 
-    public SlabType getSlabType() {
-        return SlabType.values()[this.getMeta()];
-    }
-
-    public enum SlabType {
-        END_STONE_BRICK,
-        SMOOTH_RED_SANDSTONE,
-        POLISHED_ANDESITE,
-        ANDESITE,
-        DIORITE,
-        POLISHED_DIORITE,
-        GRANITE,
-        POLISHED_GRANITE
-    }
 }

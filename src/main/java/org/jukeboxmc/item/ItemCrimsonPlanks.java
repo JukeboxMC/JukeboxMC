@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonPlanks;
 public class ItemCrimsonPlanks extends Item {
 
     public ItemCrimsonPlanks() {
-        super( "minecraft:crimson_planks", -242 );
+        super( -242 );
     }
 
     @Override

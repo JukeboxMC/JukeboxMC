@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChain;
 public class ItemChainBlock extends Item {
 
     public ItemChainBlock() {
-        super( "minecraft:item.chain", -286 );
+        super( -286 );
     }
 
     @Override

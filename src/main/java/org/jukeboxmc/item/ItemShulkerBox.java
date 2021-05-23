@@ -1,8 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockColor;
 import org.jukeboxmc.block.BlockShulkerBox;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT

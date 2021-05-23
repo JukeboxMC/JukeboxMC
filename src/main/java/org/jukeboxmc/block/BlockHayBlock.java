@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemHayBlock;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -32,6 +33,16 @@ public class BlockHayBlock extends Block {
         return true;
     }
 
+    @Override
+    public ItemHayBlock toItem() {
+        return new ItemHayBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.HAY_BLOCK;
+    }
+
     public void setDeprecated( int value ) { //0-3 Idk what it is
         this.setState( "deprecated", value );
     }
@@ -45,6 +56,6 @@ public class BlockHayBlock extends Block {
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

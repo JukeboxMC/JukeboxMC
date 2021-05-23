@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDoubleWarpedSlab;
 public class ItemWarpedDoubleSlab extends Item {
 
     public ItemWarpedDoubleSlab() {
-        super( "minecraft:warped_double_slab", -267 );
+        super( -267 );
     }
 
     @Override

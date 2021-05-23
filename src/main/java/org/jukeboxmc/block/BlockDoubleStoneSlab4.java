@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlab4Type;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStoneSlab4;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -21,14 +22,18 @@ public class BlockDoubleStoneSlab4 extends BlockSlab {
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setStoneSlabType( StoneSlab4Type.values()[itemIndHand.getMeta()] );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getStoneSlabType().ordinal() );
+    public ItemStoneSlab4 toItem() {
+        return new ItemStoneSlab4(this.runtimeId);
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STONE_SLAB4;
     }
 
     public Block setStoneSlabType( StoneSlab4Type stoneSlabType ) {
@@ -37,7 +42,7 @@ public class BlockDoubleStoneSlab4 extends BlockSlab {
     }
 
     public StoneSlab4Type getStoneSlabType() {
-        return this.stateExists( "stone_slab_type_4" ) ? StoneSlab4Type.valueOf( this.getStringState( "stone_slab_type_4" ).toUpperCase() ) : StoneSlab4Type.MOSSY_STONE_BRICK;
+        return this.stateExists( "stone_slab_type_4" ) ? StoneSlab4Type.valueOf( this.getStringState( "stone_slab_type_4" ) ) : StoneSlab4Type.MOSSY_STONE_BRICK;
     }
 
 }

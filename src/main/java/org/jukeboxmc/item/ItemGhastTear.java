@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGhastTear extends Item {
 
     public ItemGhastTear() {
-        super( "minecraft:ghast_tear", 422 );
+        super( 422 );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBubbleColumn;
 public class ItemBubbleColumn extends Item {
 
     public ItemBubbleColumn() {
-        super( "minecraft:bubble_column", -160 );
+        super( -160 );
     }
 
     @Override

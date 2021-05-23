@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemJungleWallSign;
 
 /**
  * @author LucGamesYT
@@ -13,10 +14,19 @@ public class BlockJungleWallSign extends Block {
     }
 
     @Override
+    public ItemJungleWallSign toItem() {
+        return new ItemJungleWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.JUNGLE_WALL_SIGN;
+    }
+
+    @Override
     public boolean isSolid() {
         return false;
     }
-
 
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonFence;
 public class ItemCrimsonFence extends Item {
 
     public ItemCrimsonFence() {
-        super( "minecraft:crimson_fence", -256 );
+        super( -256 );
     }
 
     @Override

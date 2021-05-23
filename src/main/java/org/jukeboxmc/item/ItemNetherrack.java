@@ -1,5 +1,8 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockNetherrack;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -7,8 +10,11 @@ package org.jukeboxmc.item;
 public class ItemNetherrack extends Item {
 
     public ItemNetherrack() {
-        super( "minecraft:netherrack", 87 );
+        super( 87 );
     }
 
-
+    @Override
+    public BlockNetherrack getBlock() {
+        return new BlockNetherrack();
+    }
 }

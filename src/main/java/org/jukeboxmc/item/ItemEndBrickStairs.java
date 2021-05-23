@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEndBrickStairs;
 public class ItemEndBrickStairs extends Item {
 
     public ItemEndBrickStairs() {
-        super( "minecraft:end_brick_stairs", -178 );
+        super( -178 );
     }
 
     @Override

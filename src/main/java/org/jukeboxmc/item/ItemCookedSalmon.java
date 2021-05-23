@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCookedSalmon extends Item {
 
     public ItemCookedSalmon() {
-        super( "minecraft:cooked_salmon", 269 );
+        super( 269 );
     }
 
 

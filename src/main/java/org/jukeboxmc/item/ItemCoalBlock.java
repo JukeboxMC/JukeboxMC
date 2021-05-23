@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCoalBlock;
 public class ItemCoalBlock extends Item {
 
     public ItemCoalBlock() {
-        super( "minecraft:coal_block", 173 );
+        super( 173 );
     }
 
     @Override

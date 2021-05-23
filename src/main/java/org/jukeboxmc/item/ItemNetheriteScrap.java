@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteScrap extends Item {
 
     public ItemNetheriteScrap() {
-        super( "minecraft:netherite_scrap", 601 );
+        super( 601 );
     }
 
 

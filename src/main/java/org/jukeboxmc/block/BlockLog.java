@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.LogType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemLog;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
@@ -20,8 +22,6 @@ public class BlockLog extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setLogType( LogType.values()[itemIndHand.getMeta()] );
-
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
@@ -35,16 +35,21 @@ public class BlockLog extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getLogType().ordinal() );
+    public ItemLog toItem() {
+        return new ItemLog( this.runtimeId );
     }
 
-    public void setLogType( LogType logType ) {
-        this.setState( "old_log_type", logType.name().toLowerCase() );
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LOG;
+    }
+
+    public BlockLog setLogType( LogType logType ) {
+        return this.setState( "old_log_type", logType.name().toLowerCase() );
     }
 
     public LogType getLogType() {
-        return this.stateExists( "old_log_type" ) ? LogType.valueOf( this.getStringState( "old_log_type" ).toUpperCase() ) : LogType.OAK;
+        return this.stateExists( "old_log_type" ) ? LogType.valueOf( this.getStringState( "old_log_type" ) ) : LogType.OAK;
     }
 
     public void setAxis( Axis axis ) {
@@ -52,13 +57,6 @@ public class BlockLog extends Block {
     }
 
     public Axis getAxis() {
-        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ).toUpperCase() ) : Axis.Y;
-    }
-
-    public enum LogType {
-        OAK,
-        SPRUCE,
-        BIRCH,
-        JUNGLE
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

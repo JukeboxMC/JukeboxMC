@@ -1,7 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockColor;
 import org.jukeboxmc.block.BlockStainedGlassPane;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT
@@ -9,13 +10,13 @@ import org.jukeboxmc.block.BlockStainedGlassPane;
  */
 public class ItemStainedGlassPane extends Item {
 
-    public ItemStainedGlassPane() {
-        super(160, 5823);
+    public ItemStainedGlassPane( int blockRuntimeId ) {
+        super( 160, blockRuntimeId );
     }
 
     @Override
     public ItemType getItemType() {
-        switch (this.getColor()) {
+        switch ( this.getColor() ) {
             case SILVER:
                 return ItemType.SILVER_STAINED_GLASS_PANE;
             case GRAY:
@@ -53,98 +54,11 @@ public class ItemStainedGlassPane extends Item {
 
     @Override
     public BlockStainedGlassPane getBlock() {
-        return new BlockStainedGlassPane().setColor(this.getColor());
+        return (BlockStainedGlassPane) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public ItemStainedGlassPane setColor(BlockColor color) {
-        switch (color) {
-            case SILVER:
-                this.setBlockRuntimeId(5831);
-                break;
-            case GRAY:
-                this.setBlockRuntimeId(5830);
-                break;
-            case BLACK:
-                this.setBlockRuntimeId(5838);
-                break;
-            case BROWN:
-                this.setBlockRuntimeId(5835);
-                break;
-            case RED:
-                this.setBlockRuntimeId(5837);
-                break;
-            case ORANGE:
-                this.setBlockRuntimeId(5824);
-                break;
-            case YELLOW:
-                this.setBlockRuntimeId(5827);
-                break;
-            case LIME:
-                this.setBlockRuntimeId(5828);
-                break;
-            case GREEN:
-                this.setBlockRuntimeId(5836);
-                break;
-            case CYAN:
-                this.setBlockRuntimeId(5832);
-                break;
-            case LIGHT_BLUE:
-                this.setBlockRuntimeId(5826);
-                break;
-            case BLUE:
-                this.setBlockRuntimeId(5834);
-                break;
-            case PURPLE:
-                this.setBlockRuntimeId(5833);
-                break;
-            case MAGENTA:
-                this.setBlockRuntimeId(5825);
-                break;
-            case PINK:
-                this.setBlockRuntimeId(5829);
-                break;
-            default:
-                this.setBlockRuntimeId(5823);
-                break;
-        }
-
-        return this;
-    }
 
     public BlockColor getColor() {
-        switch (this.blockRuntimeId) {
-            case 5831:
-                return BlockColor.SILVER;
-            case 5830:
-                return BlockColor.GRAY;
-            case 5838:
-                return BlockColor.BLACK;
-            case 5835:
-                return BlockColor.BROWN;
-            case 5837:
-                return BlockColor.RED;
-            case 5824:
-                return BlockColor.ORANGE;
-            case 5827:
-                return BlockColor.YELLOW;
-            case 5828:
-                return BlockColor.LIME;
-            case 5836:
-                return BlockColor.GREEN;
-            case 5832:
-                return BlockColor.CYAN;
-            case 5826:
-                return BlockColor.LIGHT_BLUE;
-            case 5834:
-                return BlockColor.BLUE;
-            case 5833:
-                return BlockColor.PURPLE;
-            case 5825:
-                return BlockColor.MAGENTA;
-            case 5829:
-                return BlockColor.PINK;
-            default:
-                return BlockColor.WHITE;
-        }
+        return this.getBlock().getColor();
     }
 }

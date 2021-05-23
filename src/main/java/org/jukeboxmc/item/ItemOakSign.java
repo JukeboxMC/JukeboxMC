@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingSign;
 public class ItemOakSign extends Item {
 
     public ItemOakSign() {
-        super( "minecraft:oak_sign", 358 );
+        super( 358 );
     }
 
     @Override

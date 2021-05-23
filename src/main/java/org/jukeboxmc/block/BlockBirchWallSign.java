@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemBirchWallSign;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockBirchWallSign extends Block {
 
     public BlockBirchWallSign() {
         super( "minecraft:birch_wall_sign" );
+    }
+
+    @Override
+    public ItemBirchWallSign toItem() {
+        return new ItemBirchWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BIRCH_WALL_SIGN;
     }
 
     @Override

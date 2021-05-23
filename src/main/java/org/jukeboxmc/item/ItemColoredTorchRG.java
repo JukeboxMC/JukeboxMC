@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockColoredTorchRG;
 public class ItemColoredTorchRG extends Item {
 
     public ItemColoredTorchRG() {
-        super( "minecraft:colored_torch_rg", 202 );
+        super( 202 );
     }
 
     @Override

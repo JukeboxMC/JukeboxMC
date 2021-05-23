@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSpruceStandingSign;
 public class ItemSpruceSign extends Item {
 
     public ItemSpruceSign() {
-        super( "minecraft:spruce_sign", 566 );
+        super( 566 );
     }
 
     @Override

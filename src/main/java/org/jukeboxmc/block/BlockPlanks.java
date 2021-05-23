@@ -1,13 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.WoodType;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemPlanks;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -20,14 +14,13 @@ public class BlockPlanks extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemPlanks toItem() {
+        return new ItemPlanks( this.runtimeId );
     }
 
     @Override
-    public ItemPlanks toItem() {
-        return new ItemPlanks().setWoodType( this.getWoodType() );
+    public BlockType getBlockType() {
+        return BlockType.PLANKS;
     }
 
     public BlockPlanks setWoodType( WoodType woodType ) {
@@ -36,6 +29,6 @@ public class BlockPlanks extends Block {
     }
 
     public WoodType getWoodType() {
-        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ).toUpperCase() ) : WoodType.OAK;
+        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ) ) : WoodType.OAK;
     }
 }

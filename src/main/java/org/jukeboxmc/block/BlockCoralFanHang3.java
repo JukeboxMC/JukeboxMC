@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.item.ItemCoralFanHang3;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockCoralFanHang3 extends Block {
 
     public BlockCoralFanHang3() {
         super("minecraft:coral_fan_hang3");
+    }
+
+    @Override
+    public ItemCoralFanHang3 toItem() {
+        return new ItemCoralFanHang3();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CORAL_FAN_HANG3;
     }
 
     public void setCoralHangType( boolean value ) {

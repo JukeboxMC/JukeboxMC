@@ -2,9 +2,11 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.blockentity.BlockEntityBed;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBed;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -29,7 +31,7 @@ public class BlockBed extends Block {
             Block block = this.getSide( player.getDirection() );
             Block blockNext = world.getBlock( block.getLocation() );
 
-            if ( block.canBeReplaced() && !blockNext.isTransparent() ) {
+            if ( block.canBeReplaced( this ) && blockNext.isTransparent() ) {
                 this.setDirection( player.getDirection() );
 
                 BlockBed blockBed = new BlockBed();
@@ -66,8 +68,13 @@ public class BlockBed extends Block {
     }
 
     @Override
-    public boolean isTransparent() {
-        return true;
+    public ItemBed toItem() {
+        return new ItemBed();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BED;
     }
 
     @Override
@@ -80,11 +87,9 @@ public class BlockBed extends Block {
         return (BlockEntityBed) this.world.getBlockEntity( this.getBlockPosition() );
     }
 
-
     public BlockColor getColor() {
         return this.getBlockEntity().getColor();
     }
-
 
     public void setHeadPiece( boolean value ) {
         this.setState( "head_piece_bit", value ? (byte) 1 : (byte) 0 );

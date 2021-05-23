@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockGrass;
 
 /**
@@ -9,12 +8,12 @@ import org.jukeboxmc.block.BlockGrass;
  */
 public class ItemGrass extends Item {
 
-    public ItemGrass( ) {
-        super( "minecraft:grass", 2 );
+    public ItemGrass() {
+        super( 2 );
     }
 
     @Override
-    public Block getBlock() {
+    public BlockGrass getBlock() {
         return new BlockGrass();
     }
 }

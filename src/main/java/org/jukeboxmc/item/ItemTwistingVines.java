@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockTwistingVines;
 public class ItemTwistingVines extends Item {
 
     public ItemTwistingVines() {
-        super( "minecraft:twisting_vines", -287 );
+        super( -287 );
     }
 
     @Override

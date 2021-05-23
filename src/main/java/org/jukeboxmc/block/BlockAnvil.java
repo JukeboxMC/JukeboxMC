@@ -2,7 +2,10 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.block.type.AnvilDamage;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAnvil;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -20,33 +23,30 @@ public class BlockAnvil extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        switch ( itemIndHand.getMeta() ) {
-            case 4:
-                this.setDamage( Damage.SLIGHTLY_DAMAGED );
-                break;
-            case 8:
-                this.setDamage( Damage.VERY_DAMAGED );
-                break;
-            default:
-                this.setDamage( Damage.UNDAMAGED );
-                break;
-        }
         this.setDirection( player.getDirection().getRightDirection() );
         world.setBlock( placePosition, this );
+
+        Item item = new Item( ItemType.STONE_BRICK_SLAB );
+        player.getInventory().addItem( item );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getDamage().ordinal() );
+    public ItemAnvil toItem() {
+        return new ItemAnvil( this.runtimeId );
     }
 
-    public void setDamage( Damage damage ) {
-        this.setState( "damage", damage.name().toLowerCase() );
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.ANVIL;
     }
 
-    public Damage getDamage() {
-        return this.stateExists( "damage" ) ? Damage.valueOf( this.getStringState( "damage" ).toUpperCase() ) : Damage.UNDAMAGED;
+    public BlockAnvil setDamage( AnvilDamage damage ) {
+       return this.setState( "damage", damage.name().toLowerCase() );
+    }
+
+    public AnvilDamage getDamage() {
+        return this.stateExists( "damage" ) ? AnvilDamage.valueOf( this.getStringState( "damage" ) ) : AnvilDamage.UNDAMAGED;
     }
 
     public void setDirection( Direction direction ) {
@@ -80,10 +80,4 @@ public class BlockAnvil extends Block {
         }
     }
 
-    public enum Damage {
-        UNDAMAGED,
-        SLIGHTLY_DAMAGED,
-        VERY_DAMAGED,
-        BROKEN
-    }
 }

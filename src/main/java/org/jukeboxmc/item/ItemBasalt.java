@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBasalt;
 public class ItemBasalt extends Item {
 
     public ItemBasalt() {
-        super( "minecraft:basalt", -234 );
+        super( -234 );
     }
 
     @Override

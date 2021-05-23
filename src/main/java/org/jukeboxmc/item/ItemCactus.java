@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCactus;
 public class ItemCactus extends Item {
 
     public ItemCactus() {
-        super( "minecraft:cactus", 81 );
+        super( 81 );
     }
 
     @Override

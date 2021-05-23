@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEndCrystal extends Item {
 
     public ItemEndCrystal() {
-        super( "minecraft:end_crystal", 615 );
+        super( 615 );
     }
 
 

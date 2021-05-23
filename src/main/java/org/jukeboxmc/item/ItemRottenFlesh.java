@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRottenFlesh extends Item {
 
     public ItemRottenFlesh() {
-        super( "minecraft:rotten_flesh", 277 );
+        super( 277 );
     }
 
 

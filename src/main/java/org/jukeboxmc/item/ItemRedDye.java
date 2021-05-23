@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRedDye extends Item {
 
     public ItemRedDye() {
-        super( "minecraft:red_dye", 394 );
+        super( 394 );
     }
 
 

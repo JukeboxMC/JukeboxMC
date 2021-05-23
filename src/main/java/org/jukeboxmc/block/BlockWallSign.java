@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemWallSign;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockWallSign extends Block {
 
     public BlockWallSign() {
         super( "minecraft:wall_sign" );
+    }
+
+    @Override
+    public ItemWallSign toItem() {
+        return new ItemWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WALL_SIGN;
     }
 
     @Override

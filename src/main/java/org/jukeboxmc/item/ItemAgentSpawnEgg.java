@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemAgentSpawnEgg extends Item {
 
     public ItemAgentSpawnEgg() {
-        super( "minecraft:agent_spawn_egg", 485 );
+        super( 485 );
     }
 
 

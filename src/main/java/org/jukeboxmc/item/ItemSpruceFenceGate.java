@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSpruceFenceGate;
 public class ItemSpruceFenceGate extends Item {
 
     public ItemSpruceFenceGate() {
-        super( "minecraft:spruce_fence_gate", 183 );
+        super( 183 );
     }
 
     @Override

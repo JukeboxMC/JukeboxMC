@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherBrickStairs;
 public class ItemNetherBrickStairs extends Item {
 
     public ItemNetherBrickStairs() {
-        super( "minecraft:nether_brick_stairs", 114 );
+        super( 114 );
     }
 
     @Override

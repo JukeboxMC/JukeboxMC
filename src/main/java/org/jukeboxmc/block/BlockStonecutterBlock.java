@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStonecutterBlock;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -10,6 +16,23 @@ public class BlockStonecutterBlock extends Block {
 
     public BlockStonecutterBlock() {
         super( "minecraft:stonecutter_block" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
+    public ItemStonecutterBlock toItem() {
+        return new ItemStonecutterBlock();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.STONECUTTER_BLOCK;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

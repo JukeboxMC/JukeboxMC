@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBrick extends Item {
 
     public ItemBrick() {
-        super( "minecraft:brick", 381 );
+        super( 381 );
     }
 
 

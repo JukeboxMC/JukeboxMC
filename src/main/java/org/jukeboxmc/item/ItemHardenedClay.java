@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHardenedClay;
 public class ItemHardenedClay extends Item {
 
     public ItemHardenedClay() {
-        super( "minecraft:hardened_clay", 172 );
+        super( 172 );
     }
 
     @Override

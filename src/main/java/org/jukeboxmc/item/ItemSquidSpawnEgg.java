@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSquidSpawnEgg extends Item {
 
     public ItemSquidSpawnEgg() {
-        super( "minecraft:squid_spawn_egg", 448 );
+        super( 448 );
     }
 
 

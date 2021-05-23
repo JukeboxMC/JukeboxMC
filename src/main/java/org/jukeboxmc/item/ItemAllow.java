@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAllow;
 public class ItemAllow extends Item {
 
     public ItemAllow() {
-        super( "minecraft:allow", 210 );
+        super( 210 );
     }
 
     @Override

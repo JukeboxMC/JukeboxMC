@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemScute extends Item {
 
     public ItemScute() {
-        super( "minecraft:scute", 562 );
+        super( 562 );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFireworkRocket extends Item {
 
     public ItemFireworkRocket() {
-        super( "minecraft:firework_rocket", 509 );
+        super( 509 );
     }
 
 

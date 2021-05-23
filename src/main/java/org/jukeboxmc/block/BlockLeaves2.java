@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.LeafType2;
+import org.jukeboxmc.item.ItemLeaves2;
 
 /**
  * @author LucGamesYT
@@ -18,10 +14,13 @@ public class BlockLeaves2 extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setLeafType( LeafType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemLeaves2 toItem() {
+        return new ItemLeaves2( this.runtimeId );
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LEAVES2;
     }
 
     public void setPersistent( boolean value ) {
@@ -40,16 +39,11 @@ public class BlockLeaves2 extends Block {
         return this.stateExists( "update_bit" ) && this.getByteState( "update_bit" ) == 1;
     }
 
-    public void setLeafType( LeafType leafType ) {
-        this.setState( "new_leaf_type", leafType.name().toLowerCase() );
+    public BlockLeaves2 setLeafType( LeafType2 leafType ) {
+        return this.setState( "new_leaf_type", leafType.name().toLowerCase() );
     }
 
-    public LeafType getLeafType() {
-        return this.stateExists( "new_leaf_type" ) ? LeafType.valueOf( this.getStringState( "new_leaf_type" ).toUpperCase() ) : LeafType.ACACIA;
-    }
-
-    public enum LeafType {
-        ACACIA,
-        DARK_OAK
+    public LeafType2 getLeafType() {
+        return this.stateExists( "new_leaf_type" ) ? LeafType2.valueOf( this.getStringState( "new_leaf_type" ) ) : LeafType2.ACACIA;
     }
 }

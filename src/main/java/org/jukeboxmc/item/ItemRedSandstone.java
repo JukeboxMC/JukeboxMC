@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRedSandstone;
 public class ItemRedSandstone extends Item {
 
     public ItemRedSandstone() {
-        super( "minecraft:red_sandstone", 179 );
+        super( 179 );
     }
 
     @Override

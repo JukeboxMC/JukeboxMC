@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSandstone;
 public class ItemSandstone extends Item {
 
     public ItemSandstone() {
-        super( "minecraft:sandstone", 24 );
+        super( 24 );
     }
 
     @Override

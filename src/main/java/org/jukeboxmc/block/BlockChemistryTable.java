@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemChemistryTable;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -26,8 +27,13 @@ public class BlockChemistryTable extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getChemistryTableType().ordinal() );
+    public ItemChemistryTable toItem() {
+        return new ItemChemistryTable();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.CHEMISTRY_TABLE;
     }
 
     public void setChemistryTableType( ChemistryTableType chemistryTableType ) {
@@ -35,7 +41,7 @@ public class BlockChemistryTable extends Block {
     }
 
     public ChemistryTableType getChemistryTableType() {
-        return this.stateExists( "chemistry_table_type" ) ? ChemistryTableType.valueOf( this.getStringState( "chemistry_table_type" ).toUpperCase() ) : ChemistryTableType.COMPUND_CREATOR;
+        return this.stateExists( "chemistry_table_type" ) ? ChemistryTableType.valueOf( this.getStringState( "chemistry_table_type" ) ) : ChemistryTableType.COMPUND_CREATOR;
     }
 
     public void setDirection( Direction direction ) {

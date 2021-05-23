@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockIce;
 public class ItemIce extends Item {
 
     public ItemIce() {
-        super( "minecraft:ice", 79 );
+        super( 79 );
     }
 
     @Override

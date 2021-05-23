@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockIronOre;
 public class ItemIronOre extends Item {
 
     public ItemIronOre() {
-        super( "minecraft:iron_ore", 15 );
+        super( 15 );
     }
 
     @Override

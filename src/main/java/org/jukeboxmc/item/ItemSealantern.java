@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSealantern;
 public class ItemSealantern extends Item {
 
     public ItemSealantern() {
-        super( "minecraft:sealantern", 169 );
+        super( 169 );
     }
 
     @Override

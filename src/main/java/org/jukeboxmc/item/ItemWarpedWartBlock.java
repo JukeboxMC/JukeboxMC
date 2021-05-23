@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedWartBlock;
 public class ItemWarpedWartBlock extends Item {
 
     public ItemWarpedWartBlock() {
-        super( "minecraft:warped_wart_block", -227 );
+        super( -227 );
     }
 
     @Override

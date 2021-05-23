@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteBoots extends Item {
 
     public ItemNetheriteBoots() {
-        super( "minecraft:netherite_boots", 600 );
+        super( 600 );
     }
 
 

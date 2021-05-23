@@ -27,21 +27,21 @@ public class BlockCobblestoneWall extends BlockWall {
     }
 
     @Override
+    public BlockType getBlockType() {
+        return BlockType.COBBLESTONE_WALL;
+    }
+
+    @Override
     public ItemCobblestoneWall toItem() {
-        return new ItemCobblestoneWall().setWallType( this.getWallBlockType() );
+        return new ItemCobblestoneWall( this.runtimeId );
     }
 
     public BlockCobblestoneWall setWallBlockType( WallType wallType ) {
-        this.setState( "wall_block_type", wallType.name().toLowerCase() );
-        if ( this.getWorld() != null ) {
-            this.getWorld().sendBlockUpdate( this );
-            this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
-        }
-        return this;
+        return this.setState( "wall_block_type", wallType.name().toLowerCase() );
     }
 
     public WallType getWallBlockType() {
-        return this.stateExists( "wall_block_type" ) ? WallType.valueOf( this.getStringState( "wall_block_type" ).toUpperCase() ) : WallType.COBBLESTONE;
+        return this.stateExists( "wall_block_type" ) ? WallType.valueOf( this.getStringState( "wall_block_type" ) ) : WallType.COBBLESTONE;
     }
 
 }

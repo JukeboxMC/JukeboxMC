@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLavaCauldron extends Item {
 
     public ItemLavaCauldron() {
-        super( "minecraft:lava_cauldron", -210 );
+        super( -210 );
     }
 
 

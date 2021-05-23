@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscMellohi extends Item {
 
     public ItemMusicDiscMellohi() {
-        super( "minecraft:music_disc_mellohi", 530 );
+        super( 530 );
     }
 
 

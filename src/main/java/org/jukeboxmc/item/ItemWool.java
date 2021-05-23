@@ -1,7 +1,8 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockColor;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.BlockWool;
+import org.jukeboxmc.block.type.BlockColor;
 
 /**
  * @author LucGamesYT
@@ -9,20 +10,16 @@ import org.jukeboxmc.block.BlockWool;
  */
 public class ItemWool extends Item {
 
-    public ItemWool() {
-        super( "minecraft:wool", 35 );
+    public ItemWool( int blockRuntimeId ) {
+        super( 35, blockRuntimeId );
     }
 
     @Override
     public BlockWool getBlock() {
-        return new BlockWool();
-    }
-
-    public void setColor( BlockColor blockColor ) {
-        this.setMeta( blockColor.ordinal() );
+        return (BlockWool) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public BlockColor getColor() {
-        return BlockColor.values()[this.getMeta()];
+        return this.getBlock().getColor();
     }
 }

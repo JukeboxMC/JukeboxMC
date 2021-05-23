@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockUndyedShulkerBox;
 public class ItemUndyedShulkerBox extends Item {
 
     public ItemUndyedShulkerBox() {
-        super( "minecraft:undyed_shulker_box", 205 );
+        super( 205 );
     }
 
     @Override

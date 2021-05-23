@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemPumpkinStem;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockPumpkinStem extends Block {
 
     public BlockPumpkinStem() {
         super( "minecraft:pumpkin_stem" );
+    }
+
+    @Override
+    public ItemPumpkinStem toItem() {
+        return new ItemPumpkinStem();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.PUMPKIN_STEM;
     }
 
     public void setGrowth( int value ) { //0-7

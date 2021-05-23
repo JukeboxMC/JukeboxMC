@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSmoothRedSandstoneStairs;
 public class ItemSmoothRedSandstoneStairs extends Item {
 
     public ItemSmoothRedSandstoneStairs() {
-        super( "minecraft:smooth_red_sandstone_stairs", -176 );
+        super( -176 );
     }
 
     @Override

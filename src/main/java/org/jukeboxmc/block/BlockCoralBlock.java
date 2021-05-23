@@ -1,12 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.CoralColor;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.item.ItemCoralBlock;
 
 /**
  * @author LucGamesYT
@@ -19,27 +14,25 @@ public class BlockCoralBlock extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setCoralColor( CoralColor.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemCoralBlock toItem() {
+        return new ItemCoralBlock( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getCoralColor().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.CORAL_BLOCK;
     }
 
-    public void setCoralColor( CoralColor coralColor ) {
-        this.setState( "coral_color", coralColor.name().toLowerCase() );
+    public BlockCoralBlock setCoralColor( CoralColor coralColor ) {
+        return this.setState( "coral_color", coralColor.name().toLowerCase() );
     }
 
     public CoralColor getCoralColor() {
-        return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ).toUpperCase() ) : CoralColor.BLUE;
+        return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ) ) : CoralColor.BLUE;
     }
 
-    public void setDead( boolean value ) {
-        this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockCoralBlock setDead( boolean value ) {
+       return this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isDead() {

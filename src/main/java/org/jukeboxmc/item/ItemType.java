@@ -4,11 +4,8 @@ import com.google.gson.*;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.JukeboxMC;
-import org.jukeboxmc.block.BlockColor;
-import org.jukeboxmc.block.BlockShulkerBox;
-import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.block.type.WallType;
-import org.jukeboxmc.block.type.WoodType;
+import org.jukeboxmc.block.*;
+import org.jukeboxmc.block.type.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,33 +21,61 @@ import java.util.Map;
 @AllArgsConstructor
 public enum ItemType {
 
-    AIR( new ItemAir() ),
-    STONE( new ItemStone() ),
+    AIR( BlockType.AIR.toItem() ),
+
+    STONE( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.STONE ).toItem() ),
+    GRANITE( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.GRANITE ).toItem() ),
+    GRANITE_SMOOTH( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.GRANITE_SMOOTH ).toItem() ),
+    DIORITE( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.DIORITE ).toItem() ),
+    DIORITE_SMOOTH( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.DIORITE_SMOOTH ).toItem() ),
+    ANDESITE( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.ANDESITE ).toItem() ),
+    ANDESITE_SMOOTH( BlockType.STONE.<BlockStone>getBlock().setStoneType( StoneType.ANDESITE_SMOOTH ).toItem() ),
+
     GRASS( new ItemGrass() ),
     DIRT( new ItemDirt() ),
     COBBLESTONE( new ItemCobblestone() ),
 
-    OAK_PLANKS( new ItemPlanks().setWoodType( WoodType.OAK ) ),
-    SPRUCE_PLANKS( new ItemPlanks().setWoodType( WoodType.SPRUCE ) ),
-    BIRCH_PLANKS( new ItemPlanks().setWoodType( WoodType.BIRCH ) ),
-    JUNGLE_PLANKS( new ItemPlanks().setWoodType( WoodType.JUNGLE ) ),
-    ACACIA_PLANKS( new ItemPlanks().setWoodType( WoodType.ACACIA ) ),
-    DARK_OAK_PLANKS( new ItemPlanks().setWoodType( WoodType.DARK_OAK ) ),
+    OAK_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.OAK ).toItem() ),
+    SPRUCE_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.SPRUCE ).toItem() ),
+    BIRCH_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.BIRCH ).toItem() ),
+    JUNGLE_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.JUNGLE ).toItem() ),
+    ACACIA_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.ACACIA ).toItem() ),
+    DARK_OAK_PLANKS( BlockType.PLANKS.<BlockPlanks>getBlock().setWoodType( WoodType.DARK_OAK ).toItem() ),
 
-    SAPLING( new ItemSapling() ),
+    OAK_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.OAK ).toItem() ),
+    SPRUCE_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.SPRUCE ).toItem() ),
+    BIRCH_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.BIRCH ).toItem() ),
+    JUNGLE_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.JUNGLE ).toItem() ),
+    ACACIA_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.ACACIA ).toItem() ),
+    DARK_OAK_SAPLING( BlockType.SAPLING.<BlockSapling>getBlock().setSaplingType( SaplingType.DARK_OAK ).toItem() ),
+
     BEDROCK( new ItemBedrock() ),
     FLOWING_WATER( new ItemFlowingWater() ),
     WATER( new ItemWater() ),
     FLOWING_LAVA( new ItemFlowingLava() ),
     LAVA( new ItemLava() ),
-    SAND( new ItemSand() ),
+
+    SAND( BlockType.SAND.<BlockSand>getBlock().setSandType( SandType.NORMAL ).toItem() ),
+    RED_SAND( BlockType.SAND.<BlockSand>getBlock().setSandType( SandType.RED ).toItem() ),
+
     GRAVEL( new ItemGravel() ),
     GOLD_ORE( new ItemGoldOre() ),
     IRON_ORE( new ItemIronOre() ),
     COAL_ORE( new ItemCoalOre() ),
-    LOG( new ItemLog() ),
-    LEAVES( new ItemLeaves() ),
-    SPONGE( new ItemSponge() ),
+
+    OAK_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.OAK ).toItem() ),
+    SPRUCE_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.SPRUCE ).toItem() ),
+    BIRCH_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.BIRCH ).toItem() ),
+    JUNGLE_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.JUNGLE ).toItem() ),
+
+    OAK_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.OAK ).toItem() ),
+    SPRUCE_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.SPRUCE ).toItem() ),
+    BIRCH_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.BIRCH ).toItem() ),
+    JUNGLE_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.JUNGLE ).toItem() ),
+
+    DRY_SPONGE( BlockType.SPONGE.<BlockSponge>getBlock().setSpongeType( SpongeType.DRY ).toItem() ),
+    WET_SPONGE( BlockType.SPONGE.<BlockSponge>getBlock().setSpongeType( SpongeType.WET ).toItem() ),
+
     GLASS( new ItemGlass() ),
     LAPIS_ORE( new ItemLapisOre() ),
     LAPIS_BLOCK( new ItemLapisBlock() ),
@@ -62,20 +87,51 @@ public enum ItemType {
     DETECTOR_RAIL( new ItemDetectorRail() ),
     STICKY_PISTON( new ItemStickyPiston() ),
     WEB( new ItemWeb() ),
-    TALLGRASS( new ItemTallgrass() ),
+
+    TALLGRASS( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.TALL ).toItem() ),
+    FERN( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.FERN ).toItem() ),
+
     DEADBUSH( new ItemDeadbush() ),
     PISTON( new ItemPiston() ),
     PISTONARMCOLLISION( new ItemPistonarmcollision() ),
-    WOOL( new ItemWool() ),
+
+    WHITE_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    ORANGE_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    MAGENTA_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    LIGHT_BLUE_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    YELLOW_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    PINK_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.PINK ).toItem() ),
+    GRAY_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    SILVER_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    CYAN_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    PURPLE_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    BLUE_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    BROWN_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.RED ).toItem() ),
+    BLACK_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    GREEN_WOOL( BlockType.WOOL.<BlockWool>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+
     ELEMENT_0( new ItemElement0() ),
     YELLOW_FLOWER( new ItemYellowFlower() ),
-    RED_FLOWER( new ItemRedFlower() ),
+
+    POPPY( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.POPPY ).toItem() ),
+    ORCHID( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.ORCHID ).toItem() ),
+    ALLIUM( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.ALLIUM ).toItem() ),
+    AZURE_BLUET( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.HOUSTONIA ).toItem() ),
+    RED_TULIP( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.TULIP_RED ).toItem() ),
+    ORANGE_TULIP( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.TULIP_ORANGE ).toItem() ),
+    WHITE_TULIP( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.TULIP_WHITE ).toItem() ),
+    PINK_TULIP( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.TULIP_PINK ).toItem() ),
+    OXEYE( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.OXEYE ).toItem() ),
+    CORNFLOWER( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.CORNFLOWER ).toItem() ),
+    LILY_OF_THE_VALLEY( BlockType.RED_FLOWER.<BlockRedFlower>getBlock().setFlowerType( FlowerType.LILY_OF_THE_VALLEY ).toItem() ),
+
     BROWN_MUSHROOM( new ItemBrownMushroom() ),
     RED_MUSHROOM( new ItemRedMushroom() ),
     GOLD_BLOCK( new ItemGoldBlock() ),
     IRON_BLOCK( new ItemIronBlock() ),
     DOUBLE_STONE_SLAB( new ItemRealDoubleStoneSlab() ),
-    STONE_SLAB( new ItemStoneSlab() ),
     BRICK_BLOCK( new ItemBrickBlock() ),
     TNT( new ItemTnt() ),
     BOOKSHELF( new ItemBookshelf() ),
@@ -109,12 +165,14 @@ public enum ItemType {
     UNLIT_REDSTONE_TORCH( new ItemUnlitRedstoneTorch() ),
     REDSTONE_TORCH( new ItemRedstoneTorch() ),
     STONE_BUTTON( new ItemStoneButton() ),
-    SNOW_LAYER( new ItemSnowLayer() ),
+
+    SNOW_LAYER( BlockType.SNOW_LAYER.<BlockSnowLayer>getBlock().setHeight( 0 ).toItem() ),
+
     ICE( new ItemIce() ),
     SNOW( new ItemSnow() ),
     CACTUS( new ItemCactus() ),
     CLAY( new ItemClay() ),
-    SUGAR_CANE( new ItemSugarCane() ),
+    SUGARCANE( new ItemSugarCane() ),
     JUKEBOX( new ItemJukebox() ),
 
     OAK_FENCE( new ItemFence().setWoodType( WoodType.OAK ) ),
@@ -125,7 +183,9 @@ public enum ItemType {
     DARK_OAK_FENCE( new ItemFence().setWoodType( WoodType.DARK_OAK ) ),
 
     PUMPKIN( new ItemPumpkin() ),
+
     NETHERRACK( new ItemNetherrack() ),
+
     SOUL_SAND( new ItemSoulSand() ),
     GLOWSTONE( new ItemGlowstone() ),
     PORTAL( new ItemPortal() ),
@@ -135,27 +195,45 @@ public enum ItemType {
     POWERED_REPEATER( new ItemPoweredRepeater() ),
     INVISIBLE_BEDROCK( new ItemInvisibleBedrock() ),
     WOODEN_TRAPDOOR( new ItemTrapdoor() ),
-    MONSTER_EGG( new ItemMonsterEgg() ),
-    STONE_BRICK( new ItemStonebrick() ),
-    BROWN_MUSHROOM_BLOCK( new ItemBrownMushroomBlock() ),
-    RED_MUSHROOM_BLOCK( new ItemRedMushroomBlock() ),
+
+    INFESTED_STONE( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.STONE ).toItem() ),
+    INFESTED_COBBLESTONE( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.COBBLESTONE ).toItem() ),
+    INFESTED_STONE_BRICK( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.STONE_BRICK ).toItem() ),
+    INFESTED_MOSSY_STONE_BRICK( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.MOSSY_STONE_BRICK ).toItem() ),
+    INFESTED_CRACKED_STONE_BRICK( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.CRACKED_STONE_BRICK ).toItem() ),
+    INFESTED_CHISELED_STONE_BRICK( BlockType.INFESTED_STONE.<BlockInfestedStone>getBlock().setMonsterEggStoneType( MonsterEggStoneType.CHISELED_STONE_BRICK ).toItem() ),
+
+    STONEBRICK( BlockType.STONEBRICK.<BlockStonebrick>getBlock().setStoneBrickType( StoneBrickType.DEFAULT ).toItem() ),
+    MOSSY_STONEBRICK( BlockType.STONEBRICK.<BlockStonebrick>getBlock().setStoneBrickType( StoneBrickType.MOSSY ).toItem() ),
+    CRACKED_STONEBRICK( BlockType.STONEBRICK.<BlockStonebrick>getBlock().setStoneBrickType( StoneBrickType.CRACKED ).toItem() ),
+    CHISELED_STONEBRICK( BlockType.STONEBRICK.<BlockStonebrick>getBlock().setStoneBrickType( StoneBrickType.CHISELED ).toItem() ),
+    SMOOTH_STONEBRICK( BlockType.STONEBRICK.<BlockStonebrick>getBlock().setStoneBrickType( StoneBrickType.SMOOTH ).toItem() ),
+
+    MUSHROOM_STEM_BLOCK( BlockType.BROWN_MUSHROOM_BLOCK.<BlockBrownMushroomBlock>getBlock().setHugeMushroom( 15 ).toItem() ),
+    MUSHROOM_BLOCK( BlockType.BROWN_MUSHROOM_BLOCK.<BlockBrownMushroomBlock>getBlock().setHugeMushroom( 11 ).toItem() ),
+    BROWN_MUSHROOM_BLOCK( BlockType.BROWN_MUSHROOM_BLOCK.<BlockBrownMushroomBlock>getBlock().setHugeMushroom( 14 ).toItem() ),
+
+    RED_MUSHROOM_BLOCK( BlockType.RED_MUSHROOM_BLOCK.<BlockRedMushroomBlock>getBlock().setHugeMushroom( 14 ).toItem() ),
+
     IRON_BARS( new ItemIronBars() ),
-    WHITE_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.WHITE) ),
-    SILVER_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.SILVER) ),
-    GRAY_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.GRAY) ),
-    BLACK_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.BLACK) ),
-    BROWN_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.BROWN) ),
-    RED_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.RED) ),
-    ORANGE_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.ORANGE) ),
-    YELLOW_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.YELLOW) ),
-    LIME_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.LIME) ),
-    GREEN_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.GREEN) ),
-    CYAN_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.CYAN) ),
-    LIGHT_BLUE_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.LIGHT_BLUE) ),
-    BLUE_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.BLUE) ),
-    PURPLE_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.PURPLE) ),
-    MAGENTA_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.MAGENTA) ),
-    PINK_STAINED_GLASS_PANE( new ItemStainedGlassPane().setColor(BlockColor.PINK) ),
+
+    WHITE_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    SILVER_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    GRAY_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    BLACK_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    BROWN_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.RED ).toItem() ),
+    ORANGE_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    YELLOW_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    GREEN_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    CYAN_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    LIGHT_BLUE_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    BLUE_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    PURPLE_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    MAGENTA_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    PINK_STAINED_GLASS_PANE( BlockType.STAINED_GLASS_PANE.<BlockStainedGlassPane>getBlock().setColor( BlockColor.PINK ).toItem() ),
+
     MELON_BLOCK( new ItemMelonBlock() ),
     PUMPKIN_STEM( new ItemPumpkinStem() ),
     MELON_STEM( new ItemMelonStem() ),
@@ -193,27 +271,32 @@ public enum ItemType {
     COMMAND_BLOCK( new ItemCommandBlock() ),
     BEACON( new ItemBeacon() ),
 
-    COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.COBBLESTONE ) ),
-    MOSSY_COBBLESTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_COBBLESTONE ) ),
-    GRANITE_WALL( new ItemCobblestoneWall().setWallType( WallType.GRANITE ) ),
-    DIORITE_WALL( new ItemCobblestoneWall().setWallType( WallType.DIORITE ) ),
-    ANDESITE_WALL( new ItemCobblestoneWall().setWallType( WallType.ANDESITE ) ),
-    SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.SANDSTONE ) ),
-    RED_SANDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_SANDSTONE ) ),
-    STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.STONE_BRICK ) ),
-    MOSSY_STONE_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.MOSSY_STONE_BRICK ) ),
-    BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.BRICK ) ),
-    NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.NETHER_BRICK ) ),
-    RED_NETHER_BRICK_WALL( new ItemCobblestoneWall().setWallType( WallType.RED_NETHER_BRICK ) ),
-    ENDSTONE_WALL( new ItemCobblestoneWall().setWallType( WallType.END_BRICK ) ),
-    PRISMARINE_WALL( new ItemCobblestoneWall().setWallType( WallType.PRISMARINE ) ),
+    COBBLESTONE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.COBBLESTONE ).toItem() ),
+    MOSSY_COBBLESTONE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.MOSSY_COBBLESTONE ).toItem() ),
+    GRANITE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.GRANITE ).toItem() ),
+    DIORITE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.DIORITE ).toItem() ),
+    ANDESITE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.ANDESITE ).toItem() ),
+    SANDSTONE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.SANDSTONE ).toItem() ),
+    RED_SANDSTONE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.RED_SANDSTONE ).toItem() ),
+    STONE_BRICK_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.STONE_BRICK ).toItem() ),
+    MOSSY_STONE_BRICK_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.MOSSY_STONE_BRICK ).toItem() ),
+    BRICK_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.BRICK ).toItem() ),
+    NETHER_BRICK_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.NETHER_BRICK ).toItem() ),
+    RED_NETHER_BRICK_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.RED_NETHER_BRICK ).toItem() ),
+    ENDSTONE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.END_BRICK ).toItem() ),
+    PRISMARINE_WALL( BlockType.COBBLESTONE_WALL.<BlockCobblestoneWall>getBlock().setWallBlockType( WallType.PRISMARINE ).toItem() ),
 
     FLOWER_POT_BLOCK( new ItemFlowerPotBlock() ),
     CARROTS( new ItemCarrots() ),
     POTATOES( new ItemPotatoes() ),
     WOODEN_BUTTON( new ItemWoodenButton() ),
     SKULL_BLOCK( new ItemSkullBlock() ),
-    ANVIL( new ItemAnvil() ),
+
+    ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
+    SLIGHTLY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.SLIGHTLY_DAMAGED ).toItem() ),
+    VERY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.VERY_DAMAGED ).toItem() ),
+    BROKEN_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
+
     TRAPPED_CHEST( new ItemTrappedChest() ),
     LIGHT_WEIGHTED_PRESSURE_PLATE( new ItemLightWeightedPressurePlate() ),
     HEAVY_WEIGHTED_PRESSURE_PLATE( new ItemHeavyWeightedPressurePlate() ),
@@ -223,33 +306,89 @@ public enum ItemType {
     REDSTONE_BLOCK( new ItemRedstoneBlock() ),
     QUARTZ_ORE( new ItemQuartzOre() ),
     HOPPER_BLOCK( new ItemHopperBlock() ),
-    QUARTZ_BLOCK( new ItemQuartzBlock() ),
+
+    QUARTZ_BLOCK( BlockType.QUARTZ_BLOCK.<BlockQuartzBlock>getBlock().setQuartzType( QuartzType.DEFAULT ).toItem() ),
+    QUARTZ_CHISELED( BlockType.QUARTZ_BLOCK.<BlockQuartzBlock>getBlock().setQuartzType( QuartzType.CHISELED ).toItem() ),
+    QUARTZ_LINES( BlockType.QUARTZ_BLOCK.<BlockQuartzBlock>getBlock().setQuartzType( QuartzType.LINES ).toItem() ),
+    QUARTZ_SMOOTH( BlockType.QUARTZ_BLOCK.<BlockQuartzBlock>getBlock().setQuartzType( QuartzType.SMOOTH ).toItem() ),
+
     QUARTZ_STAIRS( new ItemQuartzStairs() ),
     DOUBLE_WOODEN_SLAB( new ItemDoubleWoodenSlab() ),
-    WOODEN_SLAB( new ItemWoodenSlab() ),
-    STAINED_HARDENED_CLAY( new ItemStainedHardenedClay() ),
-    STAINED_GLASS_PANE( new ItemStainedGlassPane() ),
-    ACACIA_LEAVES( new ItemAcaciaLeaves() ),
-    ACACIA_LOG( new ItemAcaciaLog() ),
+    OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.OAK ).toItem() ),
+    SPRUCE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.SPRUCE ).toItem() ),
+    BIRCH_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.BIRCH ).toItem() ),
+    JUNGLE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.JUNGLE ).toItem() ),
+    ACACIA_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.ACACIA ).toItem() ),
+    DARK_OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.DARK_OAK ).toItem() ),
+
+    WHITE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    SILVER_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    GRAY_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    BLACK_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    BROWN_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.RED ).toItem() ),
+    ORANGE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    YELLOW_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    GREEN_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    CYAN_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    LIGHT_BLUE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    BLUE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    PURPLE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    MAGENTA_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    PINK_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.PINK ).toItem() ),
+
+    ACACIA_LEAVES( BlockType.LEAVES2.<BlockLeaves2>getBlock().setLeafType( LeafType2.ACACIA ).toItem() ),
+    DARK_OAK_LEAVES( BlockType.LEAVES2.<BlockLeaves2>getBlock().setLeafType( LeafType2.DARK_OAK ).toItem() ),
+
+    ACACIA_LOG( BlockType.LOG2.<BlockLog2>getBlock().setLogType( LogType2.ACACIA ).toItem() ),
+    DARK_OAK_LOG( BlockType.LOG2.<BlockLog2>getBlock().setLogType( LogType2.DARK_OAK ).toItem() ),
+
     ACACIA_STAIRS( new ItemAcaciaStairs() ),
     DARK_OAK_STAIRS( new ItemDarkOakStairs() ),
     SLIME( new ItemSlime() ),
     GLOW_STICK( new ItemGlowStick() ),
     IRON_TRAPDOOR( new ItemIronTrapdoor() ),
-    PRISMARINE( new ItemPrismarine() ),
+
+    PRISMARINE_BLOCK( BlockType.PRISMARINE.<BlockPrismarine>getBlock().setPrismarineType( PrismarineType.DEFAULT ).toItem() ),
+    PRISMARINE_BRICKS( BlockType.PRISMARINE.<BlockPrismarine>getBlock().setPrismarineType( PrismarineType.BRICKS ).toItem() ),
+    PRISMARINE_DARK( BlockType.PRISMARINE.<BlockPrismarine>getBlock().setPrismarineType( PrismarineType.DARK ).toItem() ),
+
     SEALANTERN( new ItemSealantern() ),
     HAY_BLOCK( new ItemHayBlock() ),
-    CARPET( new ItemCarpet() ),
+    WHITE_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    ORANGE_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    MAGENTA_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    LIGHT_BLUE_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    YELLOW_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    PINK_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.PINK ).toItem() ),
+    GRAY_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    SILVER_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    CYAN_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    PURPLE_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    BLUE_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    BROWN_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    GREEN_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    RED_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.RED ).toItem() ),
+    BLACK_CARPET( BlockType.CARPET.<BlockCarpet>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+
     HARDENED_CLAY( new ItemHardenedClay() ),
     COAL_BLOCK( new ItemCoalBlock() ),
     PACKED_ICE( new ItemPackedIce() ),
-    DOUBLE_PLANT( new ItemDoublePlant() ),
+
+    LARGE_FERN( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).toItem() ),
+    DOUBLE_TALLGRASS( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).toItem() ),
+    SUNFLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).toItem() ),
+    LILLAC_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).toItem() ),
+    ROSE_BUSH( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).toItem() ),
+    PEONY_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).toItem() ),
+
     STANDING_BANNER( new ItemStandingBanner() ),
     WALL_BANNER( new ItemWallBanner() ),
     DAYLIGHT_DETECTOR_INVERTED( new ItemDaylightDetectorInverted() ),
     RED_SANDSTONE( new ItemRedSandstone() ),
     RED_SANDSTONE_STAIRS( new ItemRedSandstoneStairs() ),
-    DOUBLE_RED_SANDSTONE_SLAB( new ItemStoneSlab2() ),
     REAL_DOUBLE_RED_SANDSTONE_SLAB( new ItemRealDoubleRedSandstoneSlab() ),
     SPRUCE_FENCE_GATE( new ItemSpruceFenceGate() ),
     BIRCH_FENCE_GATE( new ItemBirchFenceGate() ),
@@ -267,9 +406,12 @@ public enum ItemType {
     ACACIA_DOOR_BLOCK( new ItemAcaciaDoorBlock() ),
     DARK_OAK_DOOR_BLOCK( new ItemDarkOakDoorBlock() ),
     GRASS_PATH( new ItemGrassPath() ),
-    FRAME_BLOCK( new ItemFrameBlock() ), //
+    FRAME_BLOCK( new ItemFrameBlock() ),
     CHORUS_FLOWER( new ItemChorusFlower() ),
-    PURPUR_BLOCK( new ItemPurpurBlock() ),
+
+    PURPUR_BLOCK( BlockType.PURPUR_BLOCK.<BlockPurpurBlock>getBlock().setPurpurType( PurpurType.DEFAULT ).toItem() ),
+    PURPUR_BLOCK2( BlockType.PURPUR_BLOCK.<BlockPurpurBlock>getBlock().setPurpurType( PurpurType.LINES ).toItem() ),
+
     COLORED_TORCH_RG( new ItemColoredTorchRG() ),
     PURPUR_STAIRS( new ItemPurpurStairs() ),
     COLORED_TORCH_BP( new ItemColoredTorchBP() ),
@@ -297,8 +439,8 @@ public enum ItemType {
     GRAY_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.GRAY ).toItem() ),
     SILVER_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.SILVER ).toItem() ),
     CYAN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.CYAN ).toItem() ),
-    PURPLE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.PURPLE ).toItem()),
-    BLUE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BLUE ).toItem()),
+    PURPLE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    BLUE_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BLUE ).toItem() ),
     BROWN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.BROWN ).toItem() ),
     GREEN_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.GREEN ).toItem() ),
     RED_SHULKER_BOX( BlockType.SHULKER_BOX.<BlockShulkerBox>getBlock().setColor( BlockColor.RED ).toItem() ),
@@ -320,27 +462,62 @@ public enum ItemType {
     GREEN_GLAZED_TERRACOTTA( new ItemGreenGlazedTerracotta() ),
     RED_GLAZED_TERRACOTTA( new ItemRedGlazedTerracotta() ),
     BLACK_GLAZED_TERRACOTTA( new ItemBlackGlazedTerracotta() ),
-    CONCRETE( new ItemConcrete() ),
-    CONCRETEPOWDER( new ItemConcretePowder() ),
+
+    WHITE_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    SILVER_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    GRAY_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    BLACK_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    BROWN_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.RED ).toItem() ),
+    ORANGE_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    YELLOW_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    GREEN_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    CYAN_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    LIGHT_BLUE_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    BLUE_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    PURPLE_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    MAGENTA_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    PINK_CONCRETE( BlockType.CONCRETE.<BlockConcrete>getBlock().setColor( BlockColor.PINK ).toItem() ),
+
+    WHITE_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    SILVER_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    GRAY_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    BLACK_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    BROWN_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.RED ).toItem() ),
+    ORANGE_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    YELLOW_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    GREEN_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    CYAN_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    LIGHT_BLUE_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    BLUE_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    PURPLE_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    MAGENTA_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    PINK_CONCRETEPOWDER( BlockType.CONCRETEPOWDER.<BlockConcretePowder>getBlock().setColor( BlockColor.PINK ).toItem() ),
+
     CHEMISTRY_TABLE( new ItemChemistryTable() ),
     UNDERWATER_TORCH( new ItemUnderwaterTorch() ),
     CHORUS_PLANT( new ItemChorusPlant() ),
-    WHITE_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.WHITE) ),
-    SILVER_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.SILVER) ),
-    GRAY_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.GRAY) ),
-    BLACK_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.BLACK) ),
-    BROWN_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.BROWN) ),
-    RED_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.RED) ),
-    ORANGE_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.ORANGE) ),
-    YELLOW_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.YELLOW) ),
-    LIME_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.LIME) ),
-    GREEN_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.GREEN) ),
-    CYAN_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.CYAN) ),
-    LIGHT_BLUE_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.LIGHT_BLUE) ),
-    BLUE_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.BLUE) ),
-    PURPLE_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.PURPLE) ),
-    MAGENTA_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.MAGENTA) ),
-    PINK_STAINED_GLASS( new ItemStainedGlass().setColor(BlockColor.PINK) ),
+
+    WHITE_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.WHITE ).toItem() ),
+    SILVER_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.SILVER ).toItem() ),
+    GRAY_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.GRAY ).toItem() ),
+    BLACK_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.BLACK ).toItem() ),
+    BROWN_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.BROWN ).toItem() ),
+    RED_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.RED ).toItem() ),
+    ORANGE_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.ORANGE ).toItem() ),
+    YELLOW_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.YELLOW ).toItem() ),
+    LIME_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.LIME ).toItem() ),
+    GREEN_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.GREEN ).toItem() ),
+    CYAN_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.CYAN ).toItem() ),
+    LIGHT_BLUE_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.LIGHT_BLUE ).toItem() ),
+    BLUE_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.BLUE ).toItem() ),
+    PURPLE_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
+    MAGENTA_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
+    PINK_STAINED_GLASS( BlockType.STAINED_GLASS.<BlockStainedGlass>getBlock().setColor( BlockColor.PINK ).toItem() ),
+
     CAMERA_BLOCK( new ItemCameraBlock() ),
     PODZOL( new ItemPodzol() ),
     BEETROOT_BLOCK( new ItemBeetrootBlock() ),
@@ -484,10 +661,43 @@ public enum ItemType {
     ELEMENT_117( new ItemElement117() ),
     ELEMENT_118( new ItemElement118() ),
     SEAGRASS( new ItemSeagrass() ),
-    CORAL( new ItemCoral() ),
-    CORAL_BLOCK( new ItemCoralBlock() ),
-    CORAL_FAN( new ItemCoralFan() ),
-    CORAL_FAN_DEAD( new ItemCoralFanDead() ),
+
+    FIRE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.RED ).toItem() ),
+    BRAIN_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.PINK ).toItem() ),
+    BUBBLE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.PURPLE ).toItem() ),
+    TUBE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.BLUE ).toItem() ),
+    HORN_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.YELLOW ).toItem() ),
+
+    DEAD_FIRE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.RED ).setDead( true ).toItem() ),
+    DEAD_BRAIN_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.PINK ).setDead( true ).toItem() ),
+    DEAD_BUBBLE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.PURPLE ).setDead( true ).toItem() ),
+    DEAD_TUBE_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.BLUE ).setDead( true ).toItem() ),
+    DEAD_HORN_CORAL( BlockType.CORAL.<BlockCoral>getBlock().setCoralColor( CoralColor.YELLOW ).setDead( true ).toItem() ),
+
+    FIRE_CORAL_FAN( BlockType.CORAL_FAN.<BlockCoralFan>getBlock().setCoralColor( CoralColor.RED ).toItem() ),
+    BRAIN_CORAL_FAN( BlockType.CORAL_FAN.<BlockCoralFan>getBlock().setCoralColor( CoralColor.PINK ).toItem() ),
+    BUBBLE_CORAL_FAN( BlockType.CORAL_FAN.<BlockCoralFan>getBlock().setCoralColor( CoralColor.PURPLE ).toItem() ),
+    TUBE_CORAL_FAN( BlockType.CORAL_FAN.<BlockCoralFan>getBlock().setCoralColor( CoralColor.BLUE ).toItem() ),
+    HORN_CORAL_FAN( BlockType.CORAL_FAN.<BlockCoralFan>getBlock().setCoralColor( CoralColor.YELLOW ).toItem() ),
+
+    DEAD_FIRE_CORAL_FAN( BlockType.CORAL_FAN_DEAD.<BlockCoralFanDead>getBlock().setCoralColor( CoralColor.RED ).toItem() ),
+    DEAD_BRAIN_CORAL_FAN( BlockType.CORAL_FAN_DEAD.<BlockCoralFanDead>getBlock().setCoralColor( CoralColor.PINK ).toItem() ),
+    DEAD_BUBBLE_CORAL_FAN( BlockType.CORAL_FAN_DEAD.<BlockCoralFanDead>getBlock().setCoralColor( CoralColor.PURPLE ).toItem() ),
+    DEAD_TUBE_CORAL_FAN( BlockType.CORAL_FAN_DEAD.<BlockCoralFanDead>getBlock().setCoralColor( CoralColor.BLUE ).toItem() ),
+    DEAD_HORN_CORAL_FAN( BlockType.CORAL_FAN_DEAD.<BlockCoralFanDead>getBlock().setCoralColor( CoralColor.YELLOW ).toItem() ),
+
+    TUBE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.BLUE ).toItem() ),
+    BRAIN_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.PINK ).toItem() ),
+    BUBBLE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.PURPLE ).toItem() ),
+    FIRE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.RED ).toItem() ),
+    HORN_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.YELLOW ).toItem() ),
+
+    DEAD_TUBE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.BLUE ).setDead( true ).toItem() ),
+    DEAD_BRAIN_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.PINK ).setDead( true ).toItem() ),
+    DEAD_BUBBLE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.PURPLE ).setDead( true ).toItem() ),
+    DEAD_FIRE_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.RED ).setDead( true ).toItem() ),
+    DEAD_HORN_CORAL_BLOCK( BlockType.CORAL_BLOCK.<BlockCoralBlock>getBlock().setCoralColor( CoralColor.YELLOW ).setDead( true ).toItem() ),
+
     CORAL_FAN_HANG( new ItemCoralFanHang() ),
     CORAL_FAN_HANG2( new ItemCoralFanHang2() ),
     CORAL_FAN_HANG3( new ItemCoralFanHang3() ),
@@ -519,8 +729,40 @@ public enum ItemType {
     BAMBOO_SAPLING( new ItemBambooSapling() ),
     SCAFFOLDING( new ItemScaffolding() ),
     REAL_DOUBLE_MOSSY_STONE_BRICK_SLAB( new ItemRealDoubleMossyStoneBrickSlab() ),
-    DOUBLE_END_STONE_BRICK_SLAB( new ItemStoneSlab3() ),
-    DOUBLE_MOSSY_STONE_BRICK_SLAB( new ItemStoneSlab4() ),
+
+    SMOOTH_STONE_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.SMOOTH_STONE ).toItem() ),
+    SANDSTONE_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.SANDSTONE ).toItem() ),
+    WOOD_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.WOOD ).toItem() ),
+    COBBLESTONE_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.COBBLESTONE ).toItem() ),
+    BRICK_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.BRICK ).toItem() ),
+    STONE_BRICK_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.STONE_BRICK ).toItem() ),
+    QUARTZ_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.QUARTZ ).toItem() ),
+    NETHER_BRICK_SLAB( BlockType.STONE_SLAB.<BlockStoneSlab>getBlock().setStoneSlabType( StoneSlabType.NETHER_BRICK ).toItem() ),
+
+    RED_SANDSTONE_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.RED_SANDSTONE ).toItem() ),
+    PURPUR_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.PURPUR ).toItem() ),
+    PRISMARINE_ROUGH_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.PRISMARINE_ROUGH ).toItem() ),
+    PRISMARINE_DARK_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.PRISMARINE_DARK ).toItem() ),
+    PRISMARINE_BRICK_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.PRISMARINE_BRICK ).toItem() ),
+    MOSSY_COBBLESTONE_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.MOSSY_COBBLESTONE ).toItem() ),
+    SMOOTH_SANDSTONE_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.SMOOTH_SANDSTONE ).toItem() ),
+    RED_NETHER_BRICK_SLAB( BlockType.STONE_SLAB2.<BlockStoneSlab2>getBlock().setStoneSlabType( StoneSlab2Type.RED_NETHER_BRICK ).toItem() ),
+
+    END_STONE_BRICK_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.END_STONE_BRICK ).toItem() ),
+    SMOOTH_RED_SANDSTONE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.SMOOTH_RED_SANDSTONE ).toItem() ),
+    POLISHED_ANDESITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.POLISHED_ANDESITE ).toItem() ),
+    ANDESITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.ANDESITE ).toItem() ),
+    DIORITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.DIORITE ).toItem() ),
+    POLISHED_DIORITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.POLISHED_DIORITE ).toItem() ),
+    GRANITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.GRANITE ).toItem() ),
+    POLISHED_GRANITE_SLAB( BlockType.STONE_SLAB3.<BlockStoneSlab3>getBlock().setStoneSlabType( StoneSlab3Type.POLISHED_GRANITE ).toItem() ),
+
+    MOSSY_STONE_BRICK_SLAB( BlockType.STONE_SLAB4.<BlockStoneSlab4>getBlock().setStoneSlabType( StoneSlab4Type.MOSSY_STONE_BRICK ).toItem() ),
+    SMOOTH_QUARTZ_SLAB( BlockType.STONE_SLAB4.<BlockStoneSlab4>getBlock().setStoneSlabType( StoneSlab4Type.SMOOTH_QUARTZ ).toItem() ),
+    STONE_SLAB( BlockType.STONE_SLAB4.<BlockStoneSlab4>getBlock().setStoneSlabType( StoneSlab4Type.STONE ).toItem() ),
+    CUT_SANDSTONE_SLAB( BlockType.STONE_SLAB4.<BlockStoneSlab4>getBlock().setStoneSlabType( StoneSlab4Type.CUT_SANDSTONE ).toItem() ),
+    CUT_RED_SANDSTONE_SLAB( BlockType.STONE_SLAB4.<BlockStoneSlab4>getBlock().setStoneSlabType( StoneSlab4Type.CUT_RED_SANDSTONE ).toItem() ),
+
     GRANITE_STAIRS( new ItemGraniteStairs() ),
     DIORITE_STAIRS( new ItemDioriteStairs() ),
     ANDESITE_STAIRS( new ItemAndesiteStairs() ),
@@ -534,7 +776,7 @@ public enum ItemType {
     MOSSY_COBBLESTONE_STAIRS( new ItemMossyCobblestoneStairs() ),
     NORMAL_STONE_STAIRS( new ItemNormalStoneStairs() ),
     SPRUCE_STANDING_SIGN( new ItemSpruceStandingSign() ),
-    SPURCE_WALL_SIGN( new ItemSpruceWallSign() ),
+    SPRUCE_WALL_SIGN( new ItemSpruceWallSign() ),
     SMOOTH_STONE( new ItemSmoothStone() ),
     RED_NETHER_BRICK_STAIRS( new ItemRedNetherBrickStairs() ),
     SMOOTH_QUARTZ_STAIRS( new ItemSmoothQuartzStairs() ),
@@ -552,7 +794,7 @@ public enum ItemType {
     STONECUTTER_BLOCK( new ItemStonecutterBlock() ),
     SMOKER( new ItemSmoker() ),
     LIT_SMOKER( new ItemLitSmoker() ),
-    CARTOGHRAPHY( new ItemCartographyTable() ),
+    CARTOGRAPGHY_TABLE( new ItemCartographyTable() ),
     FLETCHING_TABLE( new ItemFletchingTable() ),
     SMITHING_TABLE( new ItemSmithingTable() ),
     BARREL( new ItemBarrel() ),
@@ -563,13 +805,27 @@ public enum ItemType {
     CAMPFIRE_BLOCK( new ItemCampfireBlock() ),
     LAVA_CAULDRON( new ItemLavaCauldron() ),
     JIGSAW( new ItemJigsaw() ),
-    WOOD( new ItemWood() ),
+
+    OAK_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.OAK ).toItem() ),
+    SPRUCE_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.SPRUCE ).toItem() ),
+    BIRCH_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.BIRCH ).toItem() ),
+    JUNGLE_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.JUNGLE ).toItem() ),
+    ACACIA_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.ACACIA ).toItem() ),
+    DARK_OAK_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.DARK_OAK ).toItem() ),
+
+    STRIPPED_OAK_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.OAK ).setStripped( true ).toItem() ),
+    STRIPPED_SPRUCE_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.SPRUCE ).setStripped( true ).toItem() ),
+    STRIPPED_BIRCH_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.BIRCH ).setStripped( true ).toItem() ),
+    STRIPPED_JUNGLE_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.JUNGLE ).setStripped( true ).toItem() ),
+    STRIPPED_ACACIA_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.ACACIA ).setStripped( true ).toItem() ),
+    STRIPPED_DARK_OAK_WOOD( BlockType.WOOD.<BlockWood>getBlock().setWoodType( WoodType.DARK_OAK ).setStripped( true ).toItem() ),
+
     COMPOSTER( new ItemComposter() ),
     LIT_BLAST_FURNACE( new ItemLitBlastFurnace() ),
     LIGHT_BLOCK( new ItemLightBlock() ),
     WITHER_ROSE( new ItemWitherRose() ),
-    STICKY_PISTONARMCOLLISION( new ItemStickypistonarmcollision() ),
-    BBE_NEST( new ItemBeeNest() ),
+    STICKYPISTONARMCOLLISION( new ItemStickypistonarmcollision() ),
+    BEE_NEST( new ItemBeeNest() ),
     BEEHIVE( new ItemBeehive() ),
     HONEY_BLOCK( new ItemHoneyBlock() ),
     HONEYCOMB_BLOCK( new ItemHoneycomBlock() ),
@@ -653,7 +909,7 @@ public enum ItemType {
     CHISELED_NETHER_BRICKS( new ItemChiseledNetherBricks() ),
     CRACKED_NETHER_BRICKS( new ItemCrackedNetherBricks() ),
     QUARTZ_BRICKS( new ItemQuartzBricks() ), //To here are blocks
-
+    GLASS_PANE( new ItemGlassPane() ),
     IRON_SHOVEL( new ItemIronShovel() ), //From here items
     IRON_PICKAXE( new ItemIronPickaxe() ),
     IRON_AXE( new ItemIronAxe() ),
@@ -1040,31 +1296,13 @@ public enum ItemType {
         for ( Map<String, Object> objectMap : map ) {
             itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
         }
-
-       /*
-        final JsonArray jsonItemPalette = (JsonArray) parseItem;
-        jsonItemPalette.forEach( jsonItemPaletteEntryElement -> {
-            final JsonObject jsonItemPaletteEntry = (JsonObject) jsonItemPaletteEntryElement;
-            itemIdByName.put( jsonItemPaletteEntry.get( "name" ).getAsString(), jsonItemPaletteEntry.get( "id" ).getAsInt() );
-        } );
-
-        for ( ItemType value : ItemType.values() ) {
-            CACHED_ITEMS.add( value.getItem() );
-        }
-
-        final JsonObject itemPalette2 = new JsonParser().parse( new InputStreamReader( JukeboxMC().getClassLoader().getResourceAsStream( "itempalette2.json" ) ) ).getAsJsonObject();
-        itemPalette2.entrySet().forEach( it -> {
-            final JsonObject it2 = it.getValue().getAsJsonObject();
-            itemSubIdByIdAndBlockRuntimeId.put( new ItemIdBlockRuntimeIdPair(it2.get( "bedrock_id" ).getAsInt(), it2.has( "bedrock_data" ) ? it2.get( "bedrock_data" ).getAsInt() : 0), it2.has( "blockRuntimeId" ) ? it2.get( "blockRuntimeId" ).getAsInt() : 0 );
-        } );
-        */
     }
 
     public static List<Item> getItems() {
         return CACHED_ITEMS;
     }
 
-    public static Item getItemFormNetwork( int networkId, int meta, int blockruntimeId ) {
+    public static Item getItemFormNetwork( int networkId, int meta ) {
         for ( ItemType itemType : values() ) {
             Item item = itemType.getItem();
             if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
@@ -1100,7 +1338,7 @@ public enum ItemType {
 
     @SneakyThrows
     public <B extends Item> B getItem() {
-        return (B) this.item;
+        return (B) this.item.clone();
     }
 
 }

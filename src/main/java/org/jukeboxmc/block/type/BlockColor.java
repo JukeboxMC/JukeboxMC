@@ -1,4 +1,4 @@
-package org.jukeboxmc.block;
+package org.jukeboxmc.block.type;
 
 /**
  * @author LucGamesYT

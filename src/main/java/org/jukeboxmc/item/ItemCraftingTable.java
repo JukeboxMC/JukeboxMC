@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCraftingTable;
 public class ItemCraftingTable extends Item {
 
     public ItemCraftingTable() {
-        super( "minecraft:crafting_table", 58 );
+        super(  58 );
     }
 
     @Override

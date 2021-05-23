@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockDoublePlant;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.type.PlantType;
 
 /**
@@ -9,21 +10,17 @@ import org.jukeboxmc.block.type.PlantType;
  */
 public class ItemDoublePlant extends Item {
 
-    public ItemDoublePlant() {
-        super( "minecraft:double_plant", 175 );
+    public ItemDoublePlant( int blockRuntimeId ) {
+        super( 175, blockRuntimeId );
     }
 
     @Override
     public BlockDoublePlant getBlock() {
-        return new BlockDoublePlant();
-    }
-
-    public void setPlantType( PlantType plantType ) {
-        this.setMeta( plantType.ordinal() );
+        return (BlockDoublePlant) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public PlantType getPlantType() {
-        return PlantType.values()[this.getMeta()];
+        return this.getBlock().getPlantType();
     }
 
 }

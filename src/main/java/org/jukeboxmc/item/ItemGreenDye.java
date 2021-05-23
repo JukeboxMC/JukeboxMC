@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGreenDye extends Item {
 
     public ItemGreenDye() {
-        super( "minecraft:green_dye", 395 );
+        super( 395 );
     }
 
 

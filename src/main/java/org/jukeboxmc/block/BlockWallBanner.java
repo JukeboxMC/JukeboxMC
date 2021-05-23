@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityBanner;
+import org.jukeboxmc.item.ItemWallBanner;
 
 /**
  * @author LucGamesYT
@@ -11,6 +12,16 @@ public class BlockWallBanner extends Block {
 
     public BlockWallBanner() {
         super( "minecraft:wall_banner" );
+    }
+
+    @Override
+    public ItemWallBanner toItem() {
+        return new ItemWallBanner();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WALL_BANNER;
     }
 
     @Override

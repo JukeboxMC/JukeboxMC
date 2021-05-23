@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPodzol;
 public class ItemPodzol extends Item {
 
     public ItemPodzol() {
-        super( "minecraft:podzol", 243 );
+        super( 243 );
     }
 
     @Override

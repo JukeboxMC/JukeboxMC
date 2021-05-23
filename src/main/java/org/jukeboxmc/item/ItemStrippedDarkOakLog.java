@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedDarkOakLog;
 public class ItemStrippedDarkOakLog extends Item {
 
     public ItemStrippedDarkOakLog() {
-        super( "minecraft:stripped_dark_oak_log", -9 );
+        super( -9 );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSalmonBucket extends Item {
 
     public ItemSalmonBucket() {
-        super( "minecraft:salmon_bucket", 365 );
+        super( 365 );
     }
 
 

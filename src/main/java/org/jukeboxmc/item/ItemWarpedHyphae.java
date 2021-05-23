@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedHyphae;
 public class ItemWarpedHyphae extends Item {
 
     public ItemWarpedHyphae() {
-        super( "minecraft:warped_hyphae", -298 );
+        super( -298 );
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStoneSlab;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.type.StoneSlabType;
 
 /**
@@ -9,21 +10,17 @@ import org.jukeboxmc.block.type.StoneSlabType;
  */
 public class ItemStoneSlab extends Item {
 
-    public ItemStoneSlab() {
-        super( 44, 5942 );
+    public ItemStoneSlab( int blockRuntimeId ) {
+        super( 44, blockRuntimeId );
     }
 
     @Override
     public BlockStoneSlab getBlock() {
-        return new BlockStoneSlab();
-    }
-
-    public void setSlabType( StoneSlabType slabType ) {
-        this.setMeta( slabType.ordinal() );
+        return (BlockStoneSlab) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public StoneSlabType getSlabType() {
-        return StoneSlabType.values()[this.getMeta()];
+        return this.getBlock().getStoneSlabType();
     }
 
 }

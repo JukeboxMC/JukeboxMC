@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCobblestone;
 public class ItemCobblestone extends Item {
 
     public ItemCobblestone() {
-        super( "minecraft:cobblestone", 4 );
+        super( 4 );
     }
 
     @Override

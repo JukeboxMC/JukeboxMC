@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemSmoker;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockGlowingSmoker extends Block {
 
     public BlockGlowingSmoker() {
         super( "minecraft:lit_smoker" );
+    }
+
+    @Override
+    public ItemSmoker toItem() {
+        return new ItemSmoker();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.LIT_SMOKER;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -1,6 +1,7 @@
 package org.jukeboxmc.blockentity;
 
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.BlockPosition;
@@ -35,9 +36,10 @@ public abstract class BlockEntity {
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = NbtMap.builder();
         BlockPosition position = this.block.getBlockPosition();
-        compound.put( "x", position.getX() );
-        compound.put( "y", position.getY() );
-        compound.put( "z", position.getZ() );
+        compound.putString( "id", BlockEntityType.getId( this.getClass() ) );
+        compound.putInt( "x", position.getX() );
+        compound.putInt( "y", position.getY() );
+        compound.putInt( "z", position.getZ() );
         compound.putBoolean( "isMovable", this.isMoveable );
         return compound;
     }

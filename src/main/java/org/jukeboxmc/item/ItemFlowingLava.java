@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFlowingLava;
 public class ItemFlowingLava extends Item {
 
     public ItemFlowingLava() {
-        super( "minecraft:flowing_lava", 10 );
+        super( 10 );
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.inventory.CursorInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
@@ -29,7 +30,7 @@ public class InventoryTransactionHandler implements PacketHandler {
             case InventoryTransactionPacket.TYPE_NORMAL:
                 for ( InventoryTransactionPacket.Transaction transaction : transactionPacket.getTransactions() ) {
                     switch ( transaction.getSourceType() ) {
-                        case 0:
+                        case 0: // Slot Change Action
                             Item sourceItem = transaction.getOldItem();
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
@@ -58,8 +59,9 @@ public class InventoryTransactionHandler implements PacketHandler {
                 BlockFace blockFace = transactionPacket.getBlockFace();
 
                 switch ( transactionPacket.getActionType() ) {
-                    case 0: //Place
+                    case 0:
                         if ( !this.canInteract() ) {
+                            player.getWorld().getBlock( player.getWorld().getSidePosition( blockPosition, blockFace ) ).sendBlockUpdate( player );
                             return;
                         }
                         this.spamCheckTime = System.currentTimeMillis();

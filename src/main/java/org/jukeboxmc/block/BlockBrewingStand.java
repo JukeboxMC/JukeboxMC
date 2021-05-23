@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemBrewingStand;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockBrewingStand extends Block {
 
     public BlockBrewingStand() {
         super( "minecraft:brewing_stand" );
+    }
+
+    @Override
+    public ItemBrewingStand toItem() {
+        return new ItemBrewingStand();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BREWING_STAND;
     }
 
     public void setBrewingStandSlotA( boolean value ) {

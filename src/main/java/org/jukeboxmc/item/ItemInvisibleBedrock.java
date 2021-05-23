@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockInvisiblebedrock;
 public class ItemInvisibleBedrock extends Item {
 
     public ItemInvisibleBedrock() {
-        super( "minecraft:invisiblebedrock", 95 );
+        super( 95 );
     }
 
     @Override

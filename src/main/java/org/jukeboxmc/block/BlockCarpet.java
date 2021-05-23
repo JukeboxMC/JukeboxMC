@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.BlockColor;
+import org.jukeboxmc.item.ItemCarpet;
 
 /**
  * @author LucGamesYT
@@ -17,23 +13,23 @@ public class BlockCarpet extends Block {
         super( "minecraft:carpet" );
     }
 
+
+
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setColor( BlockColor.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemCarpet toItem() {
+        return new ItemCarpet( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getColor().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.CARPET;
     }
 
-    public void setColor( BlockColor color ) {
-        this.setState( "color", color.name().toLowerCase() );
+    public BlockCarpet setColor( BlockColor color ) {
+        return this.setState( "color", color.name().toLowerCase() );
     }
 
     public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ).toUpperCase() ) : BlockColor.WHITE;
+        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

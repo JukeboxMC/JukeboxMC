@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRedstoneLamp;
 public class ItemRedstoneLamp extends Item {
 
     public ItemRedstoneLamp() {
-        super( "minecraft:redstone_lamp", 123 );
+        super( 123 );
     }
 
     @Override

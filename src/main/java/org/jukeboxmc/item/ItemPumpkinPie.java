@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPumpkinPie extends Item {
 
     public ItemPumpkinPie() {
-        super( "minecraft:pumpkin_pie", 284 );
+        super( 284 );
     }
 
 

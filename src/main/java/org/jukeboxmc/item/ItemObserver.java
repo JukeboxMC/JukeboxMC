@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockObserver;
 public class ItemObserver extends Item {
 
     public ItemObserver() {
-        super( "minecraft:observer", 251 );
+        super( 251 );
     }
 
     @Override

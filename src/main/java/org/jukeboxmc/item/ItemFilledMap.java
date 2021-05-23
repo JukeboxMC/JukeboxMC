@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFilledMap extends Item {
 
     public ItemFilledMap() {
-        super( "minecraft:filled_map", 418 );
+        super( 418 );
     }
 
 

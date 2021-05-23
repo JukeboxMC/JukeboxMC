@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemTropicalFishBucket extends Item {
 
     public ItemTropicalFishBucket() {
-        super( "minecraft:tropical_fish_bucket", 366 );
+        super( 366 );
     }
 
 

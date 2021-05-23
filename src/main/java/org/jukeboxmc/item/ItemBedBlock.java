@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBed;
 public class ItemBedBlock extends Item {
 
     public ItemBedBlock() {
-        super( "minecraft:item.bed", 26 );
+        super( 26 );
     }
 
     @Override

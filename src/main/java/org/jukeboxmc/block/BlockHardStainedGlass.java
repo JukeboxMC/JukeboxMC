@@ -1,7 +1,9 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemHardStainedGlass;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -25,15 +27,21 @@ public class BlockHardStainedGlass extends Block {
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getColor().ordinal() );
+    public ItemHardStainedGlass toItem() {
+        return new ItemHardStainedGlass();
     }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.HARD_STAINED_GLASS;
+    }
+
 
     public void setColor( BlockColor color ) {
         this.setState( "color", color.name().toLowerCase() );
     }
 
     public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ).toUpperCase() ) : BlockColor.WHITE;
+        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

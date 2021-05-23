@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSeagrass;
 public class ItemSeagrass extends Item {
 
     public ItemSeagrass() {
-        super( "minecraft:seagrass", -130 );
+        super( -130 );
     }
 
     @Override

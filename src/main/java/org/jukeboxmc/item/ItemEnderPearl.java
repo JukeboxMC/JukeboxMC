@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEnderPearl extends Item {
 
     public ItemEnderPearl() {
-        super( "minecraft:ender_pearl", 420 );
+        super( 420 );
     }
 
 

@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemWoodenSlab;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -20,9 +21,6 @@ public class BlockWoodenSlab extends BlockSlab {
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-        this.setWoodType( WoodType.values()[itemIndHand.getMeta()] );
-
         Block targetBlock = world.getBlock( blockPosition );
         Block block = world.getBlock( placePosition );
 
@@ -54,21 +52,27 @@ public class BlockWoodenSlab extends BlockSlab {
                 return true;
             }
         }
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getWoodType().ordinal() );
+    public ItemWoodenSlab toItem() {
+        return new ItemWoodenSlab(this.runtimeId);
     }
 
-    public void setWoodType( WoodType woodType ) {
-        this.setState( "wood_type", woodType.name().toLowerCase() );
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WOODEN_SLAB;
+    }
+
+    public BlockWoodenSlab setWoodType( WoodType woodType ) {
+       return this.setState( "wood_type", woodType.name().toLowerCase() );
     }
 
     public WoodType getWoodType() {
-        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ).toUpperCase() ) : WoodType.OAK;
+        return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ) ) : WoodType.OAK;
     }
 
 }

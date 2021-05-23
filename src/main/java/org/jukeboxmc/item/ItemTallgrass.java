@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockTallGrass;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.type.GrassType;
 
 /**
  * @author LucGamesYT
@@ -8,33 +10,17 @@ import org.jukeboxmc.block.BlockTallGrass;
  */
 public class ItemTallgrass extends Item {
 
-    public ItemTallgrass() {
-        super( "minecraft:tallgrass", 31 );
+    public ItemTallgrass( int blockRuntimeId ) {
+        super( 31, blockRuntimeId );
     }
 
     @Override
     public BlockTallGrass getBlock() {
-        return new BlockTallGrass();
-    }
-
-    public void setGrassType( GrassType grassType ) {
-        if ( grassType == GrassType.GRASS ) {
-            this.setMeta( 1 );
-        } else {
-            this.setMeta( 2 );
-        }
+        return (BlockTallGrass) BlockType.getBlock( this.blockRuntimeId );
     }
 
     public GrassType getGrassType() {
-        if ( this.getMeta() == 1 ) {
-            return GrassType.GRASS;
-        } else {
-            return GrassType.FERN;
-        }
+        return this.getBlock().getGrassType();
     }
 
-    public enum GrassType {
-        GRASS,
-        FERN
-    }
 }

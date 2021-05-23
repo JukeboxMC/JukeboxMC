@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemRepeater;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -38,6 +39,16 @@ public class BlockRepeater extends Block {
         this.world.sendBlockUpdate( this );
         this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return true;
+    }
+
+    @Override
+    public ItemRepeater toItem() {
+        return new ItemRepeater();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.UNPOWERED_REPEATER;
     }
 
     public void setRepeaterDelay( int value ) { //0-3

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMooshroomSpawnEgg extends Item {
 
     public ItemMooshroomSpawnEgg() {
-        super( "minecraft:mooshroom_spawn_egg", 438 );
+        super( 438 );
     }
 
 

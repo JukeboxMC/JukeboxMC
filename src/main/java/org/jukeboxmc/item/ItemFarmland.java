@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFarmland;
 public class ItemFarmland extends Item {
 
     public ItemFarmland() {
-        super( "minecraft:farmland", 60 );
+        super( 60 );
     }
 
     @Override

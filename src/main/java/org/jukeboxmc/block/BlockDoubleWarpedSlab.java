@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemWarpedSlab;
 import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -19,4 +20,15 @@ public class BlockDoubleWarpedSlab extends BlockSlab {
         world.setBlock( placePosition, this );
         return true;
     }
+
+    @Override
+    public ItemWarpedSlab toItem() {
+        return new ItemWarpedSlab();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.WARPED_SLAB;
+    }
+
 }

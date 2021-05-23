@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSoulTorch;
 public class ItemSoulTorch extends Item {
 
     public ItemSoulTorch() {
-        super( "minecraft:soul_torch", -268 );
+        super( -268 );
     }
 
     @Override

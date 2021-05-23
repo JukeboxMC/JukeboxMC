@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLantern;
 public class ItemLantern extends Item {
 
     public ItemLantern() {
-        super( "minecraft:lantern", -208 );
+        super( -208 );
     }
 
     @Override

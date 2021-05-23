@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemAcaciaWallSign;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockAcaciaWallSign extends Block {
 
     public BlockAcaciaWallSign() {
         super( "minecraft:acacia_wall_sign" );
+    }
+
+    @Override
+    public ItemAcaciaWallSign toItem() {
+        return new ItemAcaciaWallSign();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.ACACIA_WALL_SIGN;
     }
 
     @Override

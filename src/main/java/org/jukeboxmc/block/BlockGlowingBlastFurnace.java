@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.ItemFurnace;
 
 /**
  * @author LucGamesYT
@@ -10,6 +11,16 @@ public class BlockGlowingBlastFurnace extends Block {
 
     public BlockGlowingBlastFurnace() {
         super( "minecraft:lit_blast_furnace" );
+    }
+
+    @Override
+    public ItemFurnace toItem() {
+        return new ItemFurnace();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.FURNACE;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

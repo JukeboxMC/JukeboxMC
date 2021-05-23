@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedButton;
 public class ItemWarpedButton extends Item {
 
     public ItemWarpedButton() {
-        super( "minecraft:warped_button", -261 );
+        super( -261 );
     }
 
     @Override

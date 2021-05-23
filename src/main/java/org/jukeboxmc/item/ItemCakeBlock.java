@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCake;
 public class ItemCakeBlock extends Item {
 
     public ItemCakeBlock() {
-        super( "minecraft:item.cake", 92 );
+        super( 92 );
     }
 
     @Override

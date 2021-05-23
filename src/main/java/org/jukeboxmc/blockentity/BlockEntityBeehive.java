@@ -16,7 +16,6 @@ public class BlockEntityBeehive extends BlockEntityContainer {
     @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
-        compound.putString( "id", "Beehive" );
         return compound;
     }
 }

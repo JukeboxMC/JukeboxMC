@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockSnowLayer;
+import org.jukeboxmc.block.BlockType;
 
 /**
  * @author LucGamesYT
@@ -8,12 +9,12 @@ import org.jukeboxmc.block.BlockSnowLayer;
  */
 public class ItemSnowLayer extends Item {
 
-    public ItemSnowLayer() {
-        super( "minecraft:snow_layer", 78 );
+    public ItemSnowLayer( int blockRuntimeId ) {
+        super( 78, blockRuntimeId );
     }
 
     @Override
     public BlockSnowLayer getBlock() {
-        return new BlockSnowLayer();
+        return (BlockSnowLayer) BlockType.getBlock(this.blockRuntimeId);
     }
 }

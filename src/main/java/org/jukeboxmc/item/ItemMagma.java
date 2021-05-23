@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMagma;
 public class ItemMagma extends Item {
 
     public ItemMagma() {
-        super( "minecraft:magma", 213 );
+        super( 213 );
     }
 
     @Override

@@ -1,11 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.block.type.GrassType;
+import org.jukeboxmc.item.ItemTallgrass;
 
 /**
  * @author LucGamesYT
@@ -18,15 +14,13 @@ public class BlockTallGrass extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setGrassType( GrassType.values()[itemIndHand.getMeta() - 1] );
-        world.setBlock( placePosition, this );
-        return true;
+    public ItemTallgrass toItem() {
+        return new ItemTallgrass( this.runtimeId );
     }
 
     @Override
-    public Item toItem() {
-        return super.toItem().setMeta( this.getGrassType().ordinal() );
+    public BlockType getBlockType() {
+        return BlockType.TALLGRASS;
     }
 
     public BlockTallGrass setGrassType( GrassType grassType ) {
@@ -34,13 +28,7 @@ public class BlockTallGrass extends Block {
     }
 
     public GrassType getGrassType() {
-        return this.stateExists( "tall_grass_type" ) ? GrassType.valueOf(  this.getStringState( "tall_grass_type" ).toUpperCase() ) : GrassType.DEFAULT;
+        return this.stateExists( "tall_grass_type" ) ? GrassType.valueOf( this.getStringState( "tall_grass_type" ) ) : GrassType.DEFAULT;
     }
 
-    public enum GrassType {
-        DEFAULT,
-        FERN,
-        SNOW,
-        TALL
-    }
 }

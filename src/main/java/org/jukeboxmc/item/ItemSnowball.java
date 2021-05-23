@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSnowball extends Item {
 
     public ItemSnowball() {
-        super( "minecraft:snowball", 372 );
+        super( 372 );
     }
 
 

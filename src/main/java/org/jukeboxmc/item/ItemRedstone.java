@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRedstoneWire;
 public class ItemRedstone extends Item {
 
     public ItemRedstone() {
-        super( "minecraft:redstone", 371 );
+        super( 371 );
     }
 
     @Override

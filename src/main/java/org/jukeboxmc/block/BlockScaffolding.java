@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemScaffolding;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -8,6 +10,16 @@ public class BlockScaffolding extends Block {
 
     public BlockScaffolding() {
         super( "minecraft:scaffolding" );
+    }
+
+    @Override
+    public ItemScaffolding toItem() {
+        return new ItemScaffolding();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.SCAFFOLDING;
     }
 
     public void setStability( int value ) { //0-7

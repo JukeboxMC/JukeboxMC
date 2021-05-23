@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockUnlitRedstoneTorch;
 public class ItemUnlitRedstoneTorch extends Item {
 
     public ItemUnlitRedstoneTorch() {
-        super( "minecraft:unlit_redstone_torch", 75 );
+        super( 75 );
     }
 
     @Override

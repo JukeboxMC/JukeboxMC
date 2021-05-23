@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBlastFurnace;
 public class ItemBlastFurnace extends Item {
 
     public ItemBlastFurnace() {
-        super( "minecraft:blast_furnace", -196 );
+        super(  -196 );
     }
 
     @Override
