@@ -22,6 +22,11 @@ public class BlockCauldron extends Block {
         return BlockType.CAULDRON;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setFillLevel( int value ) { //0-6
         this.setState( "fill_level", value );
     }

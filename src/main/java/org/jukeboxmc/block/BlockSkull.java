@@ -46,6 +46,16 @@ public class BlockSkull extends Block {
         return BlockType.SKULL;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public boolean hasBlockEntity() {
         return true;
     }

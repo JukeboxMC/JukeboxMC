@@ -47,6 +47,16 @@ public abstract class BlockPressurePlate extends Block {
     }
 
     @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
     public void enterBlock() {
         this.updateState( this.getRedstoneSignal() );
     }
@@ -54,6 +64,18 @@ public abstract class BlockPressurePlate extends Block {
     @Override
     public void leaveBlock() {
         this.updateState( this.getRedstoneSignal() );
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return new AxisAlignedBB(
+                this.location.getX() + 0.0625f,
+                this.location.getY(),
+                this.location.getZ() + 0.0625f,
+                this.location.getX() + 0.9375f,
+                this.location.getY() + 0.0625f,
+                this.location.getZ() + 0.9375f
+        );
     }
 
     public void setRedstoneSignal( int value ) {
@@ -97,16 +119,5 @@ public abstract class BlockPressurePlate extends Block {
         }
     }
 
-    @Override
-    public AxisAlignedBB getBoundingBox() {
-        return new AxisAlignedBB(
-                this.location.getX() + 0.0625f,
-                this.location.getY(),
-                this.location.getZ() + 0.0625f,
-                this.location.getX() + 0.9375f,
-                this.location.getY() + 0.0625f,
-                this.location.getZ() + 0.9375f
-        );
-    }
 
 }

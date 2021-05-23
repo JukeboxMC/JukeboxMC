@@ -22,6 +22,16 @@ public class BlockNetherWart extends Block {
         return BlockType.NETHER_WART;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setAge( int value ) {
         this.setState( "age", value );
     }

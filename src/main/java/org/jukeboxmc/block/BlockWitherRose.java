@@ -22,4 +22,14 @@ public class BlockWitherRose extends Block {
         return BlockType.WITHER_ROSE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
 }

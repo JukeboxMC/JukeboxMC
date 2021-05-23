@@ -30,6 +30,11 @@ public abstract class BlockStairs extends Block {
         return true;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setUpsideDown( boolean value ) {
         this.setState( "upside_down_bit", value ? (byte) 1 : (byte) 0 );
     }

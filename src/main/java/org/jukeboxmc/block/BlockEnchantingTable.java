@@ -22,4 +22,8 @@ public class BlockEnchantingTable extends Block {
         return BlockType.ENCHANTING_TABLE;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

@@ -12,8 +12,4 @@ public class ItemWheat extends Item {
         super( 334 );
     }
 
-    @Override
-    public BlockWheat getBlock() {
-        return new BlockWheat();
-    }
 }

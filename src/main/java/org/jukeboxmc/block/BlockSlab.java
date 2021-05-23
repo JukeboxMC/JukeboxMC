@@ -16,12 +16,21 @@ public abstract class BlockSlab extends Block {
 
     public BlockSlab( String identifier ) {
         super( identifier );
-        this.setTopSlot( false );
     }
 
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setTopSlot( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN );
+        return true;
+    }
+
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        return block instanceof BlockSlab;
+    }
+
+    @Override
+    public boolean isTransparent() {
         return true;
     }
 
@@ -46,11 +55,6 @@ public abstract class BlockSlab extends Block {
                     this.location.getZ() + 1
             );
         }
-    }
-
-    @Override
-    public boolean canBeReplaced( Block block ) {
-        return block instanceof BlockSlab;
     }
 
     public void setTopSlot( boolean value ) {

@@ -23,6 +23,16 @@ public class BlockCoral extends Block {
         return BlockType.CORAL;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockCoral setCoralColor( CoralColor coralColor ) {
        return this.setState( "coral_color", coralColor.name().toLowerCase() );
     }

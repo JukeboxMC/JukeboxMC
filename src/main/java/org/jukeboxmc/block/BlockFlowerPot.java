@@ -22,6 +22,16 @@ public class BlockFlowerPot extends Block {
         return BlockType.FLOWER_POT;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setUpdate( boolean value ) {
         this.setState( "update_bit", value ? (byte) 1 : (byte) 0 );
     }

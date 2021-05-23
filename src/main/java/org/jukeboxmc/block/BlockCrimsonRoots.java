@@ -22,4 +22,13 @@ public class BlockCrimsonRoots extends Block {
         return BlockType.CRIMSON_ROOTS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

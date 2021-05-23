@@ -23,6 +23,16 @@ public class BlockSapling extends Block {
         return BlockType.SAPLING;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockSapling setSaplingType( SaplingType saplingType ) {
        return this.setState( "sapling_type", saplingType.name().toLowerCase() );
     }

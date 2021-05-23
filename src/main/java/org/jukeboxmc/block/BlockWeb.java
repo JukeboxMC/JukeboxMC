@@ -22,4 +22,14 @@ public class BlockWeb extends Block {
         return BlockType.WEB;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
 }

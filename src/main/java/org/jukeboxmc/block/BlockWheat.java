@@ -22,6 +22,16 @@ public class BlockWheat extends Block {
         return BlockType.WHEAT;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setGrowth( int value ) { //0-7
         this.setState( "growth", value );
     }

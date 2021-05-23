@@ -22,4 +22,13 @@ public class BlockNetherSprouts extends Block {
         return BlockType.NETHER_SPROUTS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

@@ -35,6 +35,16 @@ public class BlockRedstoneWire extends Block {
         return BlockType.REDSTONE_WIRE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setRedstoneSignal( int value ) {
         this.setState( "redstone_signal", value );
     }

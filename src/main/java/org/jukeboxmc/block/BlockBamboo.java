@@ -12,6 +12,26 @@ public class BlockBamboo extends Block {
         super( "minecraft:bamboo" );
     }
 
+    @Override
+    public ItemBamboo toItem() {
+        return new ItemBamboo();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.BAMBOO;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setBambooLeafSize( BambooLeafSize bambooLeafSize ) {
         this.setState( "bamboo_leaf_size", bambooLeafSize.name().toLowerCase() );
     }
@@ -34,16 +54,6 @@ public class BlockBamboo extends Block {
 
     public BambooStalkThickness getBambooStalkThickness() {
         return this.stateExists( "bamboo_stalk_thickness" ) ? BambooStalkThickness.valueOf( this.getStringState( "bamboo_stalk_thickness" ) ) : BambooStalkThickness.THIN;
-    }
-
-    @Override
-    public ItemBamboo toItem() {
-        return new ItemBamboo();
-    }
-
-    @Override
-    public BlockType getBlockType() {
-        return BlockType.BAMBOO;
     }
 
     public enum BambooLeafSize {

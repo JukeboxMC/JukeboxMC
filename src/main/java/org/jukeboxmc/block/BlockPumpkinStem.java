@@ -23,6 +23,16 @@ public class BlockPumpkinStem extends Block {
         return BlockType.PUMPKIN_STEM;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setGrowth( int value ) { //0-7
         this.setState( "growth", value );
     }

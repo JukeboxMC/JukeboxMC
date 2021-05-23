@@ -12,8 +12,4 @@ public class ItemDriedKelp extends Item {
         super( 270 );
     }
 
-    @Override
-    public BlockDriedKelpBlock getBlock() {
-        return new BlockDriedKelpBlock();
-    }
 }

@@ -23,6 +23,16 @@ public class BlockTallGrass extends Block {
         return BlockType.TALLGRASS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockTallGrass setGrassType( GrassType grassType ) {
         return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }

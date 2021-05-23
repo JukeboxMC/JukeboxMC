@@ -39,4 +39,13 @@ public class BlockWaterlily extends Block {
         return BlockType.WATERLILY;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

@@ -22,4 +22,8 @@ public class BlockDragonEgg extends Block {
         return BlockType.DRAGON_EGG;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

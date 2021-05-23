@@ -32,6 +32,16 @@ public class BlockSoulCampfire extends Block {
         return BlockType.SOUL_CAMPFIRE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setExtinguished( boolean value ) {
         this.setState( "extinguished", value ? (byte) 1 : (byte) 0 );
     }

@@ -45,6 +45,11 @@ public class BlockGrindstone extends Block {
         return BlockType.GRINDSTONE;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setAttachment( Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }

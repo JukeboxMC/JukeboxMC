@@ -35,12 +35,10 @@ public class BlockBell extends Block {
                 if ( world.getBlock( blockPosition ).isSolid() ) {
                     this.setAttachment( Attachment.SIDE );
                 } else {
-                    System.out.println("RETURN");
                     return false;
                 }
             }
         }
-        System.out.println("PLACE");
         world.setBlock( placePosition, this );
         return true;
     }
@@ -58,6 +56,11 @@ public class BlockBell extends Block {
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public void setAttachment( Attachment attachment ) {

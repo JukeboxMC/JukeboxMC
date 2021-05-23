@@ -22,4 +22,13 @@ public class BlockWarpedRoots extends Block {
         return BlockType.WARPED_ROOTS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

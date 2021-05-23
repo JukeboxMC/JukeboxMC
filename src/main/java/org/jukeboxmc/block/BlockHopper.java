@@ -36,6 +36,11 @@ public class BlockHopper extends Block {
         return BlockType.HOPPER;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setToggle( boolean value ) {
         this.setState( "toggle_bit", value ? (byte) 1 : (byte) 0 );
     }

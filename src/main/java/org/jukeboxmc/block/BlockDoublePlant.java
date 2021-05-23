@@ -60,6 +60,16 @@ public class BlockDoublePlant extends Block {
         return BlockType.DOUBLE_PLANT;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockDoublePlant setPlantType( PlantType plantType ) {
         return this.setState( "double_plant_type", plantType.name().toLowerCase() );
     }

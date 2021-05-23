@@ -13,8 +13,6 @@ public class BlockCarpet extends Block {
         super( "minecraft:carpet" );
     }
 
-
-
     @Override
     public ItemCarpet toItem() {
         return new ItemCarpet( this.runtimeId );
@@ -23,6 +21,16 @@ public class BlockCarpet extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.CARPET;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public BlockCarpet setColor( BlockColor color ) {

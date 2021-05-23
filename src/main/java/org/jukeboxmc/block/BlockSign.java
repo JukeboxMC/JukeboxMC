@@ -31,6 +31,11 @@ public abstract class BlockSign extends Block {
         return false;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public List<String> getLines() {
         BlockEntitySign blockEntity = this.getBlockEntity();
         return blockEntity != null ? new ArrayList<>( blockEntity.getLines() ) : null;

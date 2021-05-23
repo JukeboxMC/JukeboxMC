@@ -22,6 +22,11 @@ public class BlockComposter extends Block {
         return BlockType.COMPOSTER;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setComposterFillLevel( int value ) {
         this.setState( "composter_fill_level", value );
     }

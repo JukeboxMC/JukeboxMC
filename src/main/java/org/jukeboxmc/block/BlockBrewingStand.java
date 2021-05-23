@@ -22,6 +22,11 @@ public class BlockBrewingStand extends Block {
         return BlockType.BREWING_STAND;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setBrewingStandSlotA( boolean value ) {
         this.setState( "brewing_stand_slot_a_bit", value ? (byte) 1 : (byte) 0 );
     }

@@ -22,4 +22,8 @@ public class BlockIronBars extends Block {
         return BlockType.IRON_BARS;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

@@ -13,8 +13,6 @@ public class BlockStainedGlassPane extends Block {
         super( "minecraft:stained_glass_pane" );
     }
 
-
-
     @Override
     public ItemStainedGlassPane toItem() {
         return new ItemStainedGlassPane( this.runtimeId );
@@ -23,6 +21,11 @@ public class BlockStainedGlassPane extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.STAINED_GLASS_PANE;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public BlockStainedGlassPane setColor( BlockColor color ) {

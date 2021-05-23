@@ -12,14 +12,6 @@ public class BlockBeetroot extends Block {
         super( "minecraft:beetroot" );
     }
 
-    public void setGrowth( int value ) { //0-7
-        this.setState( "growth", value );
-    }
-
-    public int getGrowth() {
-        return this.stateExists( "growth" ) ? this.getIntState( "growth" ) : 0;
-    }
-
     @Override
     public ItemBeetroot toItem() {
         return new ItemBeetroot();
@@ -30,4 +22,21 @@ public class BlockBeetroot extends Block {
         return BlockType.BEETROOT;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    public void setGrowth( int value ) { //0-7
+        this.setState( "growth", value );
+    }
+
+    public int getGrowth() {
+        return this.stateExists( "growth" ) ? this.getIntState( "growth" ) : 0;
+    }
 }

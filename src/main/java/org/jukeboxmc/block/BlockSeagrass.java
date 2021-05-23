@@ -12,8 +12,6 @@ public class BlockSeagrass extends Block {
         super( "minecraft:seagrass" );
     }
 
-
-
     @Override
     public ItemSeagrass toItem() {
         return new ItemSeagrass();
@@ -22,6 +20,16 @@ public class BlockSeagrass extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SEAGRASS;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public void setSeaGrassType( SeaGrassType seaGrassType ) {

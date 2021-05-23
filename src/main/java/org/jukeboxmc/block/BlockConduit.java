@@ -22,4 +22,13 @@ public class BlockConduit extends Block {
         return BlockType.CONDUIT;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

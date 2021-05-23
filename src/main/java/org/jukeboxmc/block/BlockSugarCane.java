@@ -39,6 +39,16 @@ public class BlockSugarCane extends Block {
         return BlockType.SUGARCANE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setAge( int value ) {
         this.setState( "age", value );
     }

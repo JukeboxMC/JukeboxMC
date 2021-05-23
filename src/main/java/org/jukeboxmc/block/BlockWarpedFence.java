@@ -18,4 +18,8 @@ public class BlockWarpedFence extends Block {
         return BlockType.WARPED_FENCE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
 }

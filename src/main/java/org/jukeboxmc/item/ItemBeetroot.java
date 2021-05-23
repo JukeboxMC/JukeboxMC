@@ -11,9 +11,4 @@ public class ItemBeetroot extends Item {
     public ItemBeetroot() {
         super( 285 );
     }
-
-    @Override
-    public BlockBeetroot getBlock() {
-        return new BlockBeetroot();
-    }
 }

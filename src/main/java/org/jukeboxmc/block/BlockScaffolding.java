@@ -22,6 +22,16 @@ public class BlockScaffolding extends Block {
         return BlockType.SCAFFOLDING;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setStability( int value ) { //0-7
         this.setState( "stability", value );
     }

@@ -22,6 +22,16 @@ public class BlockKelp extends Block {
         return BlockType.KELP;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setKelpAge( int value ) { //0-25
         this.setState( "kelp_age", value );
     }

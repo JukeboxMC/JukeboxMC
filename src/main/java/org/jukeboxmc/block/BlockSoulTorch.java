@@ -45,13 +45,13 @@ public class BlockSoulTorch extends Block {
     }
 
     @Override
-    public boolean isTransparent() {
-        return true;
+    public boolean isSolid() {
+        return false;
     }
 
     @Override
-    public boolean isSolid() {
-        return false;
+    public boolean isTransparent() {
+        return true;
     }
 
     @Override

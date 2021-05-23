@@ -52,6 +52,11 @@ public abstract class BlockTrapdoor extends Block {
         return true;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }

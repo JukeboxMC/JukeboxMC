@@ -39,6 +39,16 @@ public class BlockWeepingVines extends Block {
         return BlockType.WEEPING_VINES;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setWeepingVinesAge( int value ) {
         this.setState( "weeping_vines_age", value );
     }

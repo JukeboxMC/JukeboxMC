@@ -28,6 +28,11 @@ public class BlockWallSign extends Block {
         return false;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }

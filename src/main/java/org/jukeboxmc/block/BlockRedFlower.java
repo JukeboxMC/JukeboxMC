@@ -23,6 +23,16 @@ public class BlockRedFlower extends Block {
         return BlockType.RED_FLOWER;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockRedFlower setFlowerType( FlowerType flowerType ) {
         return this.setState( "flower_type", flowerType.name().toLowerCase() );
     }
@@ -30,6 +40,5 @@ public class BlockRedFlower extends Block {
     public FlowerType getFlowerType() {
         return this.stateExists( "flower_type" ) ? FlowerType.valueOf( this.getStringState( "flower_type" ) ) : FlowerType.TULIP_RED;
     }
-
 
 }

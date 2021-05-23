@@ -55,6 +55,11 @@ public abstract class BlockFenceGate extends Block {
         return true;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     private int getIndex( int x, int y, int z ) {
         return ( x << 8 ) + ( z << 4 ) + y;
     }

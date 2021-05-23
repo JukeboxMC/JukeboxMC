@@ -22,4 +22,14 @@ public class BlockDeadbush extends Block {
         return BlockType.DEADBUSH;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
 }

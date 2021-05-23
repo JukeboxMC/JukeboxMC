@@ -13,8 +13,6 @@ public class BlockFence extends Block {
         super( "minecraft:fence" );
     }
 
-
-
     @Override
     public ItemFence toItem() {
         return new ItemFence();
@@ -23,6 +21,11 @@ public class BlockFence extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.FENCE;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public BlockFence setWoodType( WoodType woodType ) {

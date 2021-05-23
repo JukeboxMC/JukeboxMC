@@ -22,4 +22,14 @@ public class BlockCrimsonFungus extends Block {
         return BlockType.CRIMSON_FUNGUS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
 }

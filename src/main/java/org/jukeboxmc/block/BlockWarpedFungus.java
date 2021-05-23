@@ -22,4 +22,13 @@ public class BlockWarpedFungus extends Block {
         return BlockType.WARPED_FUNGUS;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

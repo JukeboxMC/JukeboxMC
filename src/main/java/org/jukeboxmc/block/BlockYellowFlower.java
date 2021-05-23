@@ -22,4 +22,13 @@ public class BlockYellowFlower extends Block {
         return BlockType.YELLOW_FLOWER;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

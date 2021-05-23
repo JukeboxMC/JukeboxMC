@@ -18,4 +18,8 @@ public class BlockCrimsonFence extends Block {
         return BlockType.CRIMSON_FENCE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
 }

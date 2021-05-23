@@ -22,6 +22,16 @@ public class BlockSeaPickle extends Block {
         return BlockType.SEA_PICKLE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void clusterCount( int value ) { //0-3
         this.setState( "cluster_count", value );
     }

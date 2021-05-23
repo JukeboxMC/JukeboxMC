@@ -48,8 +48,6 @@ public abstract class BlockDoor extends Block {
         return true;
     }
 
-    public abstract BlockDoor newDoor();
-
     @Override
     public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
         if ( this.isUpperBlock() ) {
@@ -67,6 +65,18 @@ public abstract class BlockDoor extends Block {
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
         return true;
     }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    public abstract BlockDoor newDoor();
 
     public BlockDoor setOpen( boolean value ) {
        return this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );

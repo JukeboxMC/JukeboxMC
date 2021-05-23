@@ -23,6 +23,16 @@ public class BlockRail extends Block {
         return BlockType.RAIL;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setRailDirection( RailDirection railDirection ) {
         switch ( railDirection ) {
             case NORTH_SOUTH:

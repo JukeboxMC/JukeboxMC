@@ -19,7 +19,6 @@ public class BlockLectern extends Block {
         super( "minecraft:lectern" );
     }
 
-
     @Override
     public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
@@ -35,6 +34,11 @@ public class BlockLectern extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.LECTERN;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public void setPowered( boolean value ) {

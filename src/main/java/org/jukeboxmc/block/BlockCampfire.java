@@ -36,6 +36,16 @@ public class BlockCampfire extends Block {
         return BlockType.CAMPFIRE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setExtinguished( boolean value ) {
         this.setState( "extinguished", value ? (byte) 1 : (byte) 0 );
     }

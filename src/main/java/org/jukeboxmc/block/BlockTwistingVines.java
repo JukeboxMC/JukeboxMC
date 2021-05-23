@@ -18,6 +18,16 @@ public class BlockTwistingVines extends Block {
         return BlockType.TWISTING_VINES;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setTwistingVinesAge( int value ) { //0-25
         this.setState( "twisting_vines_age", value );
     }

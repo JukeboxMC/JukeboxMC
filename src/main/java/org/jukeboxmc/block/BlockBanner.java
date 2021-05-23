@@ -38,6 +38,16 @@ public abstract class BlockBanner extends Block {
     }
 
     @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
     public boolean hasBlockEntity() {
         return true;
     }

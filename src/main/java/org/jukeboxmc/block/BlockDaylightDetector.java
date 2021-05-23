@@ -22,6 +22,11 @@ public class BlockDaylightDetector extends Block {
         return BlockType.DAYLIGHT_DETECTOR;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setRedstoneSignal( int value ) {
         this.setState( "redstone_signal", value );
     }

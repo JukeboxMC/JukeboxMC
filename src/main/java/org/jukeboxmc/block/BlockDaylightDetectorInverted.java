@@ -22,6 +22,11 @@ public class BlockDaylightDetectorInverted extends Block {
         return BlockType.DAYLIGHT_DETECTOR_INVERTED;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setRedstoneSignal( int value ) {
         this.setState( "redstone_signal", value );
     }

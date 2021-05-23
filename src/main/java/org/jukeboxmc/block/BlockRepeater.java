@@ -51,6 +51,16 @@ public class BlockRepeater extends Block {
         return BlockType.UNPOWERED_REPEATER;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setRepeaterDelay( int value ) { //0-3
         this.setState( "repeater_delay", value );
     }

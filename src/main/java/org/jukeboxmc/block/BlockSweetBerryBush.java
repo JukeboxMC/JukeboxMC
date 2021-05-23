@@ -22,6 +22,16 @@ public class BlockSweetBerryBush extends Block {
         return BlockType.SWEET_BERRY_BUSH;
     }
 
+    @Override
+    public boolean isSolid() {
+        return true;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setGrowth( int value ) { //0-7
         this.setState( "growth", value );
     }

@@ -24,6 +24,16 @@ public class BlockCoralFan extends Block {
         return BlockType.CORAL_FAN;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setCoralDirection( RotationDirection rotationDirection ) {
         this.setState( "coral_fan_direction", rotationDirection.ordinal() );
     }

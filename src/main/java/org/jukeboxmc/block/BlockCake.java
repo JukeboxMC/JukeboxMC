@@ -22,6 +22,11 @@ public class BlockCake extends Block {
         return BlockType.CAKE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setBiteCounter( int value ) {
         this.setState( "bite_counter", value );
     }

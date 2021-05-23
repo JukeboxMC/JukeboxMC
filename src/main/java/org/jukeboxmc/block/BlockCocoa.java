@@ -23,6 +23,11 @@ public class BlockCocoa extends Block {
         return BlockType.COCOA;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
     public void setAge( int value ) { // 0-15
         this.setState( "age", value );
     }

@@ -22,4 +22,13 @@ public class BlockBrownMushroom extends Block {
         return BlockType.BROWN_MUSHROOM;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

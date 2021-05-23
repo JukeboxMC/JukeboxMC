@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemVine;
+import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -13,6 +19,13 @@ public class BlockVine extends Block {
     }
 
     @Override
+    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+
+        world.setBlock( placePosition, this );
+        return true;
+    }
+
+    @Override
     public ItemVine toItem() {
         return new ItemVine();
     }
@@ -20,6 +33,16 @@ public class BlockVine extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.VINE;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
     }
 
     public void setVineDirection( int value ) { //0-15 TODO -> Add Direction Class

@@ -39,6 +39,11 @@ public class BlockChain extends Block {
         return BlockType.CHAIN;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setAxis( Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }

@@ -69,12 +69,12 @@ public class BlockSnowLayer extends Block {
 
     @Override
     public boolean isSolid() {
-        return false;
+        return this.getHeight() == 1;
     }
 
     @Override
     public boolean isTransparent() {
-        return this.getHeight() != 7;
+        return true;
     }
 
     public void setCovered( boolean value ) {

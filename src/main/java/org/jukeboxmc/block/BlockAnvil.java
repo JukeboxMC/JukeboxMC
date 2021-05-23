@@ -41,6 +41,11 @@ public class BlockAnvil extends Block {
         return BlockType.ANVIL;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public BlockAnvil setDamage( AnvilDamage damage ) {
        return this.setState( "damage", damage.name().toLowerCase() );
     }

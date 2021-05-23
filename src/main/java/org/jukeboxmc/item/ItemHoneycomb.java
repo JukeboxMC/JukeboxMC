@@ -12,8 +12,4 @@ public class ItemHoneycomb extends Item {
         super( 580 );
     }
 
-    @Override
-    public BlockHoneycombBlock getBlock() {
-        return new BlockHoneycombBlock();
-    }
 }

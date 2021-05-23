@@ -17,11 +17,6 @@ public abstract class BlockWall extends Block {
     }
 
     @Override
-    public boolean isSolid() {
-        return false;
-    }
-
-    @Override
     public boolean isTransparent() {
         return true;
     }

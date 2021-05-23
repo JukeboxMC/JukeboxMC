@@ -22,6 +22,16 @@ public class BlockFire extends Block {
         return BlockType.FIRE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setAge( int value ) { // 0-15
         this.setState( "age", value );
     }

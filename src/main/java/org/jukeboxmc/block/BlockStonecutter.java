@@ -22,4 +22,8 @@ public class BlockStonecutter extends Block {
         return BlockType.STONECUTTER;
     }
 
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 }

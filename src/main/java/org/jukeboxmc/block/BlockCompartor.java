@@ -45,6 +45,16 @@ public class BlockCompartor extends Block {
         return BlockType.UNPOWERED_COMPARATOR;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setOutputSubstract( boolean value ) {
         this.setState( "output_subtract_bit", value ? (byte) 1: (byte) 0 );
     }

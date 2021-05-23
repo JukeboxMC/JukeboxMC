@@ -22,6 +22,16 @@ public class BlockTripwire extends Block {
         return BlockType.TRIPWIRE;
     }
 
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
     public void setPowered( boolean value ) {
         this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
     }
