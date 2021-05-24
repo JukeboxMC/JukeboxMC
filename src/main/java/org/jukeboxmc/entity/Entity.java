@@ -7,8 +7,11 @@ import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.SetEntityDataPacket;
+import org.jukeboxmc.network.packet.SpawnParticleEffectPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.Particle;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -63,7 +66,7 @@ public abstract class Entity {
     public void setEntityId( long entityId ) {
         this.entityId = entityId;
     }
-
+    
     public Location getLocation() {
         return this.location;
     }
@@ -277,6 +280,17 @@ public abstract class Entity {
                 location.getY() + this.getEyeHeight(),
                 location.getZ() + ( this.getWidth() / 2 )
         );
+    }
+
+    public void spawnParticle( Particle particle, Vector position ) {
+        SpawnParticleEffectPacket spawnParticleEffectPacket = new SpawnParticleEffectPacket();
+        spawnParticleEffectPacket.setParticle( particle );
+        spawnParticleEffectPacket.setPosition( position );
+        spawnParticleEffectPacket.setEntityId( this.entityId );
+        spawnParticleEffectPacket.setDimensionId( (byte) 0 ); //TODO
+        for ( Player player : this.location.getWorld().getPlayers() ) {
+            player.getPlayerConnection().sendPacket( spawnParticleEffectPacket );
+        }
     }
 
 }
