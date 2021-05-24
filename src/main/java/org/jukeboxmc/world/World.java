@@ -565,7 +565,7 @@ public class World extends LevelDB {
         }
 
         this.playSound( breakPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( breakPosition.toVector(), LevelEvent.PARTICLE_DESTROY, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( breakPosition.toVector(), LevelEvent.PARTICLE_DESTROY_BLOCK, breakBlock.getRuntimeId() );
     }
 
     public void sendBlockUpdate( Block block ) {

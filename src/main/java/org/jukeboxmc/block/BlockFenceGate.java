@@ -51,7 +51,7 @@ public abstract class BlockFenceGate extends Block {
         }
         this.setOpen( !this.isOpen() );
 
-        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
+        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 

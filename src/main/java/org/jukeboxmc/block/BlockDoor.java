@@ -62,7 +62,7 @@ public abstract class BlockDoor extends Block {
     @Override
     public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen() );
-        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR, 0 );
+        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 
