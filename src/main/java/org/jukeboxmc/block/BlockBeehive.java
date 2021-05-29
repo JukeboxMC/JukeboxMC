@@ -5,7 +5,6 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBeehive;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -21,14 +20,14 @@ public class BlockBeehive extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
         return true;
     }
 
     @Override
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityBeehive blockEntityBeehive = this.getBlockEntity();
         if ( blockEntityBeehive != null ) {
             blockEntityBeehive.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -54,7 +53,7 @@ public class BlockBeehive extends Block {
 
     @Override
     public BlockEntityBeehive getBlockEntity() {
-        BlockEntityBeehive blockEntity = (BlockEntityBeehive) this.world.getBlockEntity( this.getBlockPosition() );
+        BlockEntityBeehive blockEntity = (BlockEntityBeehive) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
         if ( blockEntity == null ) {
             return new BlockEntityBeehive( this );
         }

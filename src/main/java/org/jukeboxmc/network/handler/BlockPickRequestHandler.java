@@ -20,6 +20,7 @@ public class BlockPickRequestHandler implements PacketHandler {
     public void handle( Packet packet, Player player ) {
         BlockPickRequestPacket blockPickRequestPacket = (BlockPickRequestPacket) packet;
         Vector position = blockPickRequestPacket.getPosition();
+        position.setDimension( player.getDimension() );
         Block pickedBlock = player.getWorld().getBlock( position );
 
         if ( player.getGameMode() == GameMode.CREATIVE ) {

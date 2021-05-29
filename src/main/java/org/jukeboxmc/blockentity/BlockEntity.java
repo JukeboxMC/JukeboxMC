@@ -1,10 +1,8 @@
 package org.jukeboxmc.blockentity;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
@@ -25,7 +23,7 @@ public abstract class BlockEntity {
         this.block = block;
     }
 
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         return false;
     }
 
@@ -35,25 +33,25 @@ public abstract class BlockEntity {
 
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = NbtMap.builder();
-        BlockPosition position = this.block.getBlockPosition();
+        Vector position = this.block.getLocation();
         compound.putString( "id", BlockEntityType.getId( this.getClass() ) );
-        compound.putInt( "x", position.getX() );
-        compound.putInt( "y", position.getY() );
-        compound.putInt( "z", position.getZ() );
+        compound.putInt( "x", position.getFloorX() );
+        compound.putInt( "y", position.getFloorY() );
+        compound.putInt( "z", position.getFloorZ() );
         compound.putBoolean( "isMovable", this.isMoveable );
         return compound;
     }
 
     public void spawn() {
         World world = this.block.getWorld();
-        BlockPosition location = this.block.getBlockPosition();
+        Vector location = this.block.getLocation();
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( location );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
-        world.sendWorldPacket( blockEntityDataPacket );
+        world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
 
-        world.setBlockEntity( location, this );
+        world.setBlockEntity( location, this, this.block.getLocation().getDimension() );
     }
 
     public Block getBlock() {

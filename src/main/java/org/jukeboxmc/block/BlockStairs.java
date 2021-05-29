@@ -3,7 +3,6 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.CrossDirection;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -19,7 +18,7 @@ public abstract class BlockStairs extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setCrossDirection( player.getDirection().toCrossDirection() );
 
         if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {

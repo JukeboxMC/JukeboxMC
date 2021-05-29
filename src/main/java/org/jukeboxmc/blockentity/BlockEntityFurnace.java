@@ -5,7 +5,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.FurnaceInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
@@ -25,7 +24,7 @@ public class BlockEntityFurnace extends BlockEntityContainer implements Inventor
     }
 
     @Override
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.furnaceInventory, blockPosition );
         return true;
     }

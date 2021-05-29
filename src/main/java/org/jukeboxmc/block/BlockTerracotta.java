@@ -2,7 +2,6 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -18,7 +17,7 @@ public abstract class BlockTerracotta extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
         return true;

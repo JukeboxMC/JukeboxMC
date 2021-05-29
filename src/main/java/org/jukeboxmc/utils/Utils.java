@@ -53,50 +53,87 @@ public class Utils {
         return buf;
     }
 
-    public static byte[] getKey( int chunkX, int chunkZ, byte key ) {
-        return new byte[]{
-                (byte) ( chunkX & 0xff ),
-                (byte) ( ( chunkX >>> 8 ) & 0xff ),
-                (byte) ( ( chunkX >>> 16 ) & 0xff ),
-                (byte) ( ( chunkX >>> 24 ) & 0xff ),
-                (byte) ( chunkZ & 0xff ),
-                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                key
-        };
+    public static byte[] getKey( int chunkX, int chunkZ, byte dimension, byte key ) {
+        if ( dimension == 0 ) {
+            return new byte[]{
+                    (byte) ( chunkX & 0xff ),
+                    (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                    (byte) ( chunkZ & 0xff ),
+                    (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                    key
+            };
+        } else {
+            return new byte[]{
+                    (byte) ( chunkX & 0xff ),
+                    (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                    (byte) ( chunkZ & 0xff ),
+                    (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                    (byte) ( dimension & 0xff ),
+                    (byte) ( ( dimension >>> 8 ) & 0xff ),
+                    (byte) ( ( dimension >>> 16 ) & 0xff ),
+                    (byte) ( ( dimension >>> 24 ) & 0xff ),
+                    key
+            };
+        }
     }
 
-    public static byte[] getSubChunkKey( int chunkX, int chunkZ, byte key, byte subChunk ) {
-        return new byte[]{
-                (byte) ( chunkX & 0xff ),
-                (byte) ( ( chunkX >>> 8 ) & 0xff ),
-                (byte) ( ( chunkX >>> 16 ) & 0xff ),
-                (byte) ( ( chunkX >>> 24 ) & 0xff ),
-                (byte) ( chunkZ & 0xff ),
-                (byte) ( ( chunkZ >>> 8 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 16 ) & 0xff ),
-                (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                key,
-                subChunk
-        };
+    public static byte[] getSubChunkKey( int chunkX, int chunkZ, byte dimension, byte key, byte subChunk ) {
+        if ( dimension == 0 ) {
+            return new byte[]{
+                    (byte) ( chunkX & 0xff ),
+                    (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                    (byte) ( chunkZ & 0xff ),
+                    (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                    key,
+                    subChunk
+            };
+        } else {
+            return new byte[]{
+                    (byte) ( chunkX & 0xff ),
+                    (byte) ( ( chunkX >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkX >>> 24 ) & 0xff ),
+                    (byte) ( chunkZ & 0xff ),
+                    (byte) ( ( chunkZ >>> 8 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 16 ) & 0xff ),
+                    (byte) ( ( chunkZ >>> 24 ) & 0xff ),
+                    (byte) ( dimension & 0xff ),
+                    (byte) ( ( dimension >>> 8 ) & 0xff ),
+                    (byte) ( ( dimension >>> 16 ) & 0xff ),
+                    (byte) ( ( dimension >>> 24 ) & 0xff ),
+                    key,
+                    subChunk
+            };
+        }
     }
 
-    public static void writeFile( File file, InputStream content) throws IOException {
-        if (content == null) {
-            throw new IllegalArgumentException("Content must not be null!");
+    public static void writeFile( File file, InputStream content ) throws IOException {
+        if ( content == null ) {
+            throw new IllegalArgumentException( "Content must not be null!" );
         }
 
-        if (!file.exists()) {
+        if ( !file.exists() ) {
             file.createNewFile();
         }
 
-        FileOutputStream stream = new FileOutputStream(file);
+        FileOutputStream stream = new FileOutputStream( file );
 
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = content.read(buffer)) != -1) {
-            stream.write(buffer, 0, length);
+        while ( ( length = content.read( buffer ) ) != -1 ) {
+            stream.write( buffer, 0, length );
         }
         content.close();
         stream.close();

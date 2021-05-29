@@ -5,7 +5,6 @@ import org.jukeboxmc.block.type.LogType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLog;
 import org.jukeboxmc.math.Axis;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -21,7 +20,7 @@ public class BlockLog extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {

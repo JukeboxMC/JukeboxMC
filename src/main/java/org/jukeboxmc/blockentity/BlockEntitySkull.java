@@ -1,8 +1,5 @@
 package org.jukeboxmc.blockentity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;

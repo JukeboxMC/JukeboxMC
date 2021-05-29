@@ -11,25 +11,21 @@ import org.jukeboxmc.world.chunk.Chunk;
  */
 public class Location extends Vector implements Cloneable {
 
-    private World world = null;
+    private World world;
     private float yaw = 0;
     private float pitch = 0;
     private float headYaw = 0;
 
-    public Location( float x, float y, float z ) {
+    public Location( World world, float x, float y, float z ) {
         super( x, y, z );
+        this.world = world;
     }
 
     public Location( World world, Vector vector ) {
-        super( vector.getX(), vector.getY(), vector.getZ() );
+        super( vector.getX(), vector.getY(), vector.getZ(), vector.getDimension() );
         this.world = world;
+        this.dimension = vector.getDimension();
     }
-
-    public Location( World world, BlockPosition position ) {
-        super( position.getX(), position.getY(), position.getZ() );
-        this.world = world;
-    }
-
 
     public Location( World world, float x, float y, float z, float yaw, float pitch ) {
         super( x, y, z );
@@ -38,9 +34,23 @@ public class Location extends Vector implements Cloneable {
         this.pitch = pitch;
     }
 
+    public Location( World world, float x, float y, float z, float yaw, float pitch, byte dimension ) {
+        super( x, y, z );
+        this.world = world;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.dimension = dimension;
+    }
+
     public Location( World world, float x, float y, float z, float headYaw, float yaw, float pitch ) {
         this( world, x, y, z, yaw, pitch );
         this.headYaw = headYaw;
+    }
+
+    public Location( World world, float x, float y, float z, float headYaw, float yaw, float pitch, byte dimension ) {
+        this( world, x, y, z, yaw, pitch );
+        this.headYaw = headYaw;
+        this.dimension = dimension;
     }
 
     public World getWorld() {
@@ -76,11 +86,15 @@ public class Location extends Vector implements Cloneable {
     }
 
     public Chunk getChunk() {
-        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4 );
+        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4, this.dimension );
     }
 
     public Block getBlock() {
         return this.world.getBlock( this );
+    }
+
+    public Location divide( float x, float z ) {
+        return new Location( this.world, this.x / x, this.getY(), this.z / z );
     }
 
     @Override
@@ -94,6 +108,7 @@ public class Location extends Vector implements Cloneable {
         location.setHeadYaw( this.getHeadYaw() );
         location.setYaw( this.getYaw() );
         location.setPitch( this.getPitch() );
+        location.setDimension( this.getDimension() );
         return location;
     }
 

@@ -3,7 +3,6 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -21,7 +20,7 @@ public abstract class BlockDoor extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( Direction.fromAngle( player.getYaw() ) );
 
         BlockDoor blockAbove = this.newDoor();
@@ -49,7 +48,7 @@ public abstract class BlockDoor extends Block {
     }
 
     @Override
-    public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
         if ( this.isUpperBlock() ) {
             this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir() );
         } else {
@@ -60,7 +59,7 @@ public abstract class BlockDoor extends Block {
     }
 
     @Override
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen() );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;

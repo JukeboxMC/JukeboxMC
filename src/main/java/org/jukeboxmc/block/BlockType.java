@@ -81,7 +81,7 @@ public enum BlockType {
     LADDER( new BlockLadder() ),
     RAIL( new BlockRail() ),
     STONE_STAIRS( new BlockCobblestoneStairs() ),
-    WALL_SIGN( new BlockWallSign() ),
+    WALL_SIGN( new BlockOakWallSign() ),
     LEVER( new BlockLever() ),
     STONE_PRESSURE_PLATE( new BlockStonePressurePlate() ),
     IRON_DOOR( new BlockIronDoor() ),

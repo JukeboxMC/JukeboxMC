@@ -4,7 +4,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.PlantType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDoublePlant;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -21,7 +20,7 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block blockAbove = world.getBlock( placePosition.add( 0, 1, 0 ) );
         Block blockDown = world.getBlock( placePosition.substract( 0, 1, 0 ) );
 
@@ -40,7 +39,7 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
         if ( this.isUpperBlock() ) {
             this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir() );
         } else {

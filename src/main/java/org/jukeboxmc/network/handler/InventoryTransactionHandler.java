@@ -3,11 +3,9 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.inventory.CursorInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -54,10 +52,13 @@ public class InventoryTransactionHandler implements PacketHandler {
                 }
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM:
-                BlockPosition blockPosition = transactionPacket.getBlockPosition();
-                Vector clickPosition = transactionPacket.getClickPosition();
-                BlockFace blockFace = transactionPacket.getBlockFace();
+                Vector blockPosition = transactionPacket.getBlockPosition();
+                blockPosition.setDimension( player.getDimension() );
 
+                Vector clickPosition = transactionPacket.getClickPosition();
+                clickPosition.setDimension( player.getDimension() );
+
+                BlockFace blockFace = transactionPacket.getBlockFace();
                 switch ( transactionPacket.getActionType() ) {
                     case 0:
                         if ( !this.canInteract() ) {
@@ -66,7 +67,9 @@ public class InventoryTransactionHandler implements PacketHandler {
                         }
                         this.spamCheckTime = System.currentTimeMillis();
                         player.setAction( false );
-                        BlockPosition placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
+                        Vector placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
+                        placePosition.setDimension( player.getDimension() );
+
                         if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
                             Block blockClicked = player.getWorld().getBlock( blockPosition );
                             blockClicked.sendBlockUpdate( player );

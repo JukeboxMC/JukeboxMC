@@ -3,7 +3,6 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemPiston;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -19,7 +18,7 @@ public class BlockPiston extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( Math.abs( player.getX() - this.getLocation().getX() ) < 2 && Math.abs( player.getZ() - this.getLocation().getZ() ) < 2 ) {
             double y = player.getY() + player.getEyeHeight();
 

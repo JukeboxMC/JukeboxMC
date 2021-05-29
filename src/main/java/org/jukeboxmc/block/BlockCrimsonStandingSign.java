@@ -4,7 +4,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCrimsonStandingSign;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -16,7 +15,7 @@ public class BlockCrimsonStandingSign extends BlockSign {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
             world.setBlock( placePosition, this );

@@ -23,7 +23,7 @@ public abstract class BlockSign extends Block {
 
     @Override
     public BlockEntitySign getBlockEntity() {
-        return (BlockEntitySign) this.world.getBlockEntity( this.getBlockPosition() );
+        return (BlockEntitySign) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
     @Override

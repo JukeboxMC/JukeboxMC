@@ -5,12 +5,15 @@ import io.netty.buffer.ByteBufInputStream;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.Iq80DBFactory;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Difficulty;
+import org.jukeboxmc.world.World;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +52,9 @@ public class LevelDB {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                this.spawnLocation = new Location( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 4 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                //System.out.println(nbt.toString());
+                World world = Server.getInstance().getWorld("LevelName");
+                this.spawnLocation = new Location( world, new Vector( nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 4 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 return true;
             } catch ( IOException e ) {

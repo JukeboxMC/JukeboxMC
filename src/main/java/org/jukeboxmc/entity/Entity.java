@@ -26,6 +26,7 @@ public abstract class Entity {
     protected Location location;
     protected Metadata metadata;
     protected AxisAlignedBB boundingBox;
+    protected byte dimension = 0;
 
     public Entity() {
         this.metadata = new Metadata();
@@ -40,6 +41,7 @@ public abstract class Entity {
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, true );
 
         this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 7, 0, 0, 0 );
+        this.location.setDimension( this.dimension );
 
         this.boundingBox = new AxisAlignedBB( 0, 0, 0, 0, 0, 0 );
         this.recalcBoundingBox();
@@ -120,7 +122,7 @@ public abstract class Entity {
     }
 
     public Chunk getChunk() {
-        return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ() );
+        return this.location.getWorld().getChunk( this.getChunkX(), this.getChunkZ(), this.dimension );
     }
 
     public void setLocation( Location location ) {
@@ -293,4 +295,11 @@ public abstract class Entity {
         }
     }
 
+    public byte getDimension() {
+        return this.dimension;
+    }
+
+    public void setDimension( byte dimension ) {
+        this.dimension = dimension;
+    }
 }

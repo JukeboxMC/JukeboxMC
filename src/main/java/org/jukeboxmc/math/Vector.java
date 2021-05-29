@@ -17,9 +17,17 @@ public class Vector {
     public static final Vector SOUTH = new Vector( 0, 0, 1 );
     public static final Vector WEST = new Vector( -1, 0, 0 );
 
-    private float x;
-    private float y;
-    private float z;
+    protected float x;
+    protected float y;
+    protected float z;
+    protected byte dimension = 0;
+
+    public Vector( float x, float y, float z, byte dimension ) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.dimension = dimension;
+    }
 
     public Vector( float x, float y, float z ) {
         this.x = x;
@@ -63,22 +71,29 @@ public class Vector {
         this.z = z;
     }
 
+    public byte getDimension() {
+        return this.dimension;
+    }
+
+    public void setDimension( byte dimension ) {
+        this.dimension = dimension;
+    }
+
     public Vector add( float x, float y, float z ) {
-        return new Vector( this.x + x, this.y + y, this.z + z );
+        return new Vector( this.x + x, this.y + y, this.z + z, this.dimension );
     }
 
     public Vector add( Vector vector ) {
-        return new Vector( this.x + vector.x, this.y + vector.y, this.z + vector.z );
+        return new Vector( this.x + vector.x, this.y + vector.y, this.z + vector.z, vector.dimension );
     }
 
     public Vector subtract( float x, float y, float z ) {
-        return new Vector( this.x - x, this.y - y, this.z - z );
+        return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
     }
 
     public Vector subtract( Vector vector ) {
-        return new Vector( this.x - vector.x, this.y - vector.y, this.z - vector.z );
+        return new Vector( this.x - vector.x, this.y - vector.y, this.z - vector.z, vector.dimension );
     }
-
 
     public double distanceSquared( Vector vector ) {
         return Math.pow( this.x - vector.x, 2 ) + Math.pow( this.y - vector.y, 2 ) + Math.pow( this.z - vector.z, 2 );
@@ -94,7 +109,7 @@ public class Vector {
         float zDiff = other.z - this.z;
 
         float f = ( x - this.x ) / xDiff;
-        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
     public Vector getVectorWhenYIsOnLine( Vector other, float y ) {
@@ -103,7 +118,7 @@ public class Vector {
         float zDiff = other.z - this.z;
 
         float f = ( y - this.y ) / yDiff;
-        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
     public Vector getVectorWhenZIsOnLine( Vector other, float z ) {
@@ -112,10 +127,10 @@ public class Vector {
         float zDiff = other.z - this.z;
 
         float f = ( z - this.z ) / zDiff;
-        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f ) : null;
+        return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
-    public BlockPosition toBlockPosition() {
-        return new BlockPosition( this.getFloorX(), this.getFloorY(), this.getFloorZ() );
+    public Vector substract( int x, int y, int z ) {
+        return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
     }
 }

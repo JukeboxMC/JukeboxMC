@@ -1,26 +1,16 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.ItemWallSign;
+import org.jukeboxmc.blockentity.BlockEntitySign;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWallSign extends Block {
+public abstract class BlockWallSign extends Block {
 
-    public BlockWallSign() {
-        super( "minecraft:wall_sign" );
-    }
-
-    @Override
-    public ItemWallSign toItem() {
-        return new ItemWallSign();
-    }
-
-    @Override
-    public BlockType getBlockType() {
-        return BlockType.WALL_SIGN;
+    public BlockWallSign( String identifier ) {
+        super( identifier );
     }
 
     @Override
@@ -31,6 +21,16 @@ public class BlockWallSign extends Block {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntitySign getBlockEntity() {
+        return (BlockEntitySign) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

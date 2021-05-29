@@ -1,8 +1,6 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAcaciaPressurePlate;
-import org.jukeboxmc.item.ItemType;
 
 /**
  * @author LucGamesYT

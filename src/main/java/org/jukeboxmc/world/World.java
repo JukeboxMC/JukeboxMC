@@ -9,8 +9,9 @@ import org.apache.commons.io.FileUtils;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.type.UpdateReason;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.block.BlockBreakEvent;
@@ -18,7 +19,6 @@ import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.AxisAlignedBB;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.*;
@@ -55,7 +55,7 @@ public class World extends LevelDB {
 
     private boolean prepareSpawnLocaion = false;
 
-    private Map<Long, Chunk> chunkMap;
+    private Map<Byte, Map<Long, Chunk>> chunkMap;
     private Map<Long, Player> players;
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
@@ -68,7 +68,7 @@ public class World extends LevelDB {
         this.worldGenerator = worldGenerator;
         this.blockUpdateList = new BlockUpdateList();
         this.difficulty = Difficulty.NORMAL;
-        this.spawnLocation = new Location( 0, 4 + 1.62f, 0 );
+        this.spawnLocation = new Location( this, 0, 4 + 1.62f, 0 );
         this.saveLevelDatFile();
     }
 
@@ -85,7 +85,7 @@ public class World extends LevelDB {
         }
 
         while ( this.blockUpdateList.getNextTaskTime() < currentTick ) {
-            BlockPosition blockPosition = this.blockUpdateList.getNextElement();
+            Vector blockPosition = this.blockUpdateList.getNextElement();
             if ( blockPosition == null ) {
                 break;
             }
@@ -121,44 +121,24 @@ public class World extends LevelDB {
         this.players.remove( player.getEntityId() );
     }
 
-    public Map<Long, Chunk> getChunkMap() {
-        return this.chunkMap;
+    public Map<Long, Chunk> getChunkMap( byte dimension ) {
+        return this.chunkMap.get( dimension );
     }
 
     public Collection<Player> getPlayers() {
         return this.players.values();
     }
 
-    public CompletableFuture<Void> prepareSpawnRegion() {
-        return CompletableFuture.supplyAsync( () -> {
-            int spawnRadius = Server.getInstance().getViewDistance();
-
-            if ( spawnRadius == 0 ) {
-                return null;
-            }
-
-            final int chunkX = this.spawnLocation.getFloorX() >> 4;
-            final int chunkZ = this.spawnLocation.getFloorZ() >> 4;
-
-            for ( int i = chunkX - spawnRadius; i <= chunkX + spawnRadius; i++ ) {
-                for ( int j = chunkZ - spawnRadius; j <= chunkZ + spawnRadius; j++ ) {
-                    this.loadChunk( i, j ).join();
-                }
-            }
-            return null;
-        } );
-    }
-
-    public Location getSafeSpawnLocation() {
+    public Location getSafeSpawnLocation( byte dimension ) {
         if ( this.prepareSpawnLocaion ) {
             return this.spawnLocation;
         }
         int airRuntimeId = new BlockAir().getRuntimeId();
-        BlockPosition blockPosition = new BlockPosition( this.spawnLocation.getFloorX(), 0, this.spawnLocation.getFloorZ() );
-        Chunk chunk = this.getChunk( this.spawnLocation.getFloorX() >> 4, this.spawnLocation.getFloorX() >> 4 );
+        Vector blockPosition = new Vector( this.spawnLocation.getFloorX(), 0, this.spawnLocation.getFloorZ() );
+        Chunk chunk = this.getChunk( this.spawnLocation.getFloorX() >> 4, this.spawnLocation.getFloorX() >> 4, dimension );
         for ( int i = 255; i > 0; i-- ) {
             blockPosition.setY( i );
-            if ( chunk.getRuntimeId( blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), 0 ) != airRuntimeId ) {
+            if ( chunk.getRuntimeId( blockPosition.getFloorX(), blockPosition.getFloorY(), blockPosition.getFloorZ(), 0 ) != airRuntimeId ) {
                 this.spawnLocation.setY( 2.5f + i );
                 break;
             }
@@ -215,30 +195,30 @@ public class World extends LevelDB {
         }
     }
 
-    public CompletableFuture<Chunk> loadChunk( int chunkX, int chunkZ ) {
+    public CompletableFuture<Chunk> loadChunk( int chunkX, int chunkZ, byte dimension ) {
         long chunkHash = Utils.toLong( chunkX, chunkZ );
-
-        if ( !this.chunkMap.containsKey( chunkHash ) ) {
+        Map<Long, Chunk> chunkMap = this.chunkMap.computeIfAbsent( dimension, o -> new ConcurrentHashMap<>() );
+        if ( !chunkMap.containsKey( chunkHash ) ) {
             return CompletableFuture.supplyAsync( () -> {
-                Chunk chunk = new Chunk( this, chunkX, chunkZ );
+                Chunk chunk = new Chunk( this, chunkX, chunkZ, dimension );
 
-                byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2C ) );
+                byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ) );
                 if ( version == null ) {
+                    WorldGenerator worldGenerator;
                     if ( this.worldGenerator != null ) {
-                        WorldGenerator worldGenerator = this.worldGenerator;
-                        worldGenerator.generate( chunk );
+                        worldGenerator = this.worldGenerator;
                     } else {
-                        WorldGenerator worldGenerator = Server.getInstance().getOverworldGenerator();
-                        worldGenerator.generate( chunk );
+                        worldGenerator = Server.getInstance().getOverworldGenerator();
                     }
+                    worldGenerator.generate( chunk );
                 } else {
-                    byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x36 ) );
+                    byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x36 ) );
 
                     chunk.chunkVersion = version[0];
                     chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
                     for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
-                        byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, (byte) 0x2f, (byte) sectionY ) );
+                        byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ) );
 
                         if ( chunkData != null ) {
                             chunk.checkAndCreateSubChunks( sectionY );
@@ -246,32 +226,31 @@ public class World extends LevelDB {
                         }
                     }
 
-                    byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x31 ) );
+                    byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
                     if ( blockEntitys != null ) {
                         chunk.loadBlockEntitys( chunk, blockEntitys );
                     }
 
-                    byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, (byte) 0x2d ) );
+                    byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
                     if ( biomes != null ) {
                         chunk.loadHeightAndBiomes( biomes );
                     }
                 }
-                this.chunkMap.put( chunkHash, chunk );
+                chunkMap.put( chunkHash, chunk );
                 return chunk;
             } );
         } else {
-            return CompletableFuture.supplyAsync( () -> this.chunkMap.get( chunkHash ) );
+            return CompletableFuture.supplyAsync( () -> chunkMap.get( chunkHash ) );
         }
     }
 
-    public Chunk getChunk( int chunkX, int chunkZ ) {
-        return this.loadChunk( chunkX, chunkZ ).join();
+    public Chunk getChunk( int chunkX, int chunkZ, byte dimension ) {
+        return this.loadChunk( chunkX, chunkZ, dimension ).join();
     }
 
     public void save() {
-        for ( Chunk chunk : this.chunkMap.values() ) {
-            chunk.save( this.db );
-        }
+        this.chunkMap.forEach( ( dimension, chunkMap ) -> chunkMap.values().forEach( chunk -> chunk.save( this.db ) ) );
+
         this.saveLevelDatFile();
         Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
     }
@@ -282,36 +261,71 @@ public class World extends LevelDB {
         this.db.close();
     }
 
-    public Block getBlock( BlockPosition location ) {
-        return this.getBlock( location.toVector(), 0 );
+    public int getHeightMap( int x, int z, byte dimension ) {
+        return this.getChunk( x >> 4, z >> 4, dimension ).getHeightMap( x, z );
+    }
+
+    public Block getBlock( int x, int y, int z ) {
+        return this.getBlock( new Vector( x, y, z ), 0 );
     }
 
     public Block getBlock( Vector location ) {
         return this.getBlock( location, 0 );
     }
 
-    public Block getBlock( Vector vector, int layer ) {
-        Chunk chunk = this.getChunk( vector.getFloorX() >> 4, vector.getFloorZ() >> 4 );
-        return chunk.getBlock( vector.getFloorX(), vector.getFloorY(), vector.getFloorZ(), layer );
+    public Block getBlock( Vector location, int layer ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, location.getDimension() );
+        return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
     }
 
-    public Block getBlockAt( int x, int y, int z ) {
-        return this.getBlock( new Vector( x, y, z ), 0 );
+    public Block getBlockAt( int x, int y, int z, byte dimension ) {
+        return this.getBlock( new Vector( x, y, z, dimension ), 0 );
+    }
+
+    public int getHighestBlockAt( Vector vector, byte dimension ) {
+        return this.getHeighestBlockAt( vector.getFloorX(), vector.getFloorZ(), dimension );
+    }
+
+    public int getHeighestBlockAt( int x, int z, byte dimension ) {
+        for ( int y = dimension == 0 ? 255 : 120;  y >= 0; y-- ) {
+            BlockType blockType = this.getBlockAt( x, y, z, dimension ).getBlockType();
+            if ( !blockType.equals( BlockType.AIR ) ) {
+                this.setHeightMap( x, z, dimension, y );
+                return y;
+            }
+        }
+        return 256;
+    }
+
+    public Vector getSafeLocationAt( int x, int z, byte dimension ) {
+        for ( int y = dimension == 0 ? 252 : 124;  y >= 0; y-- ) {
+            if ( getBlockAt( x, y, z, dimension ).isSolid() ) {
+                if ( !getBlockAt( x, y + 1, z, dimension ).isSolid() ) {
+                    if ( !getBlockAt( x, y + 2, z, dimension ).isSolid() ) {
+                        return new Vector( x, y + 1, z );
+                    }
+                }
+            }
+        }
+        return new Vector( x, 0, z );
+    }
+
+    public void setHeightMap( int x, int z, byte dimension, int value ) {
+        this.getChunk( x >> 4, z >> 4, dimension ).setHeightMap( x, z, value );
     }
 
     public void setBlock( Vector location, Block block ) {
-        this.setBlock( location.toBlockPosition(), block, 0 );
+        this.setBlock( location, block, 0, location.getDimension() );
     }
 
-    public void setBlock( BlockPosition location, Block block ) {
-        this.setBlock( location, block, 0 );
-    }
+    public void setBlock( Vector location, Block block, int layer, byte dimension ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
+        chunk.setBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer, block );
 
-    public void setBlock( BlockPosition location, Block block, int layer ) {
-        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
-        chunk.setBlock( location.getX(), location.getY(), location.getZ(), layer, block );
+        Location blockLocation = new Location( this, location );
+        blockLocation.setDimension( dimension );
+        block.setLocation( blockLocation );
 
-        block.setLocation( new Location( this, location ) );
         block.setLayer( layer );
         block.setPlaced( true );
 
@@ -320,10 +334,10 @@ public class World extends LevelDB {
         updateBlockPacket.setBlockId( block.getRuntimeId() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( layer );
-        this.sendWorldPacket( updateBlockPacket );
+        this.sendDimensionPacket( updateBlockPacket, location.getDimension() );
 
         if ( !block.hasBlockEntity() ) {
-            chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+            chunk.removeBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ() );
         }
 
         long next;
@@ -335,29 +349,24 @@ public class World extends LevelDB {
         }
     }
 
-    public void setBlockEntity( BlockPosition location, BlockEntity blockEntity ) {
-        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
-        chunk.setBlockEntity( location.getX(), location.getY(), location.getZ(), blockEntity );
+    public void setBlockEntity( Vector location, BlockEntity blockEntity, byte dimension ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
+        chunk.setBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ(), blockEntity );
     }
 
-    public BlockEntity getBlockEntity( BlockPosition location ) {
-        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
-        return chunk.getBlockEntity( location.getX(), location.getY(), location.getZ() );
+    public BlockEntity getBlockEntity( Vector location, byte dimension ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
+        return chunk.getBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ() );
     }
 
-    public void removeBlockEntity( BlockPosition location ) {
-        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
-        chunk.removeBlockEntity( location.getX(), location.getY(), location.getZ() );
+    public void removeBlockEntity( Vector location, byte dimension ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
+        chunk.removeBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ() );
     }
 
-    public Biome getBiome( Vector location ) {
-        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4 );
+    public Biome getBiome( Vector location, byte dimension ) {
+        Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
         return chunk.getBiome( location.getFloorX() & 15, location.getFloorZ() & 15 );
-    }
-
-    public Biome getBiome( BlockPosition location ) {
-        Chunk chunk = this.getChunk( location.getX() >> 4, location.getZ() >> 4 );
-        return chunk.getBiome( location.getX() & 15, location.getZ() & 15 );
     }
 
     public void playSound( Location location, LevelSound levelSound ) {
@@ -414,8 +423,12 @@ public class World extends LevelDB {
         this.spawnLocation = spawnLocation;
     }
 
-    public Location getSpawnLocation() {
-        return new Location( this, this.spawnLocation );
+    public Location getSpawnLocation( byte dimension ) {
+        if ( dimension == 1 ) {
+            return new Location( this, this.spawnLocation.divide( 8, 8 ) );
+        } else {
+            return new Location( this, this.spawnLocation );
+        }
     }
 
     public void setDifficulty( Difficulty difficulty ) {
@@ -447,7 +460,7 @@ public class World extends LevelDB {
         }
     }
 
-    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb ) {
+    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb, byte dimension ) {
         Set<Entity> targetEntity = new HashSet<>();
 
         int minX = (int) Math.floor( ( bb.getMinX() - 2 ) / 16 );
@@ -457,7 +470,7 @@ public class World extends LevelDB {
 
         for ( int x = minX; x <= maxX; ++x ) {
             for ( int z = minZ; z <= maxZ; ++z ) {
-                Chunk chunk = this.getChunk( x, z );
+                Chunk chunk = this.getChunk( x, z, dimension );
                 if ( chunk != null ) {
                     chunk.iterateEntities( entity -> {
                         AxisAlignedBB boundingBox = entity.getBoundingBox();
@@ -471,17 +484,21 @@ public class World extends LevelDB {
         return targetEntity;
     }
 
-    public boolean useItemOn( Player player, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, BlockFace blockFace ) {
+    public boolean useItemOn( Player player, Vector blockPosition, Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
 
         if ( clickedBlock instanceof BlockAir ) {
+            System.out.println( 1 );
             return false;
         }
 
         Item itemInHand = player.getInventory().getItemInHand();
         Block replacedBlock = this.getBlock( placePosition );
         Block placedBlock = itemInHand.getBlock();
-        placedBlock.setLocation( new Location( this, placePosition ) );
+
+        Location location = new Location( this, placePosition );
+        location.setDimension( player.getDimension() );
+        placedBlock.setLocation( location );
 
         boolean interact = false;
         if ( !player.isSneaking() ) {
@@ -489,21 +506,29 @@ public class World extends LevelDB {
         }
 
         if ( itemInHand instanceof ItemAir ) {
+            System.out.println( 2 );
             return interact;
         }
 
         if ( !interact || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced( placedBlock ) ) {
+                System.out.println( 3 );
                 return false;
             }
 
+            if ( clickedBlock.canBeReplaced( placedBlock ) ) {
+                placePosition = blockPosition;
+            }
+
             if ( placedBlock.isSolid() ) {
-                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox() );
+                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox(), location.getDimension() );
                 if ( !nearbyEntities.isEmpty() ) {
+                    System.out.println( 4 );
                     return false;
                 }
                 AxisAlignedBB boundingBox = player.getBoundingBox();
                 if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
+                    System.out.println( 5 );
                     return false;
                 }
             }
@@ -512,19 +537,22 @@ public class World extends LevelDB {
             Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
 
             if ( blockPlaceEvent.isCancelled() ) {
+                System.out.println( 6 );
                 return false;
             }
 
             boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
             if ( success ) {
-                this.playSound( placePosition.toVector(), LevelSound.PLACE, placedBlock.getRuntimeId() );
+                this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
             }
+            System.out.println( 7 + ": " + success );
             return success;
         }
+        System.out.println( 8 + ": " + interact );
         return interact;
     }
 
-    public BlockPosition getSidePosition( BlockPosition blockPosition, BlockFace blockFace ) {
+    public Vector getSidePosition( Vector blockPosition, BlockFace blockFace ) {
         switch ( blockFace ) {
             case DOWN:
                 return this.getRelative( blockPosition, Vector.DOWN );
@@ -542,14 +570,14 @@ public class World extends LevelDB {
         return null;
     }
 
-    private BlockPosition getRelative( BlockPosition blockPosition, Vector position ) {
+    private Vector getRelative( Vector blockPosition, Vector position ) {
         float x = blockPosition.getX() + position.getX();
         float y = blockPosition.getY() + position.getY();
         float z = blockPosition.getZ() + position.getZ();
-        return new Vector( x, y, z ).toBlockPosition();
+        return new Vector( x, y, z, blockPosition.getDimension() );
     }
 
-    public void breakBlock( Player player, BlockPosition breakPosition, boolean isCreative ) {
+    public void breakBlock( Player player, Vector breakPosition, boolean isCreative ) {
         Block breakBlock = this.getBlock( breakPosition );
 
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops() );
@@ -564,17 +592,25 @@ public class World extends LevelDB {
             //Drop Item
         }
 
-        this.playSound( breakPosition.toVector(), LevelSound.BREAK, breakBlock.getRuntimeId() );
-        this.sendLevelEvent( breakPosition.toVector(), LevelEvent.PARTICLE_DESTROY_BLOCK, breakBlock.getRuntimeId() );
+        this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
+        this.sendLevelEvent( breakPosition, LevelEvent.PARTICLE_DESTROY_BLOCK, breakBlock.getRuntimeId() );
     }
 
     public void sendBlockUpdate( Block block ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( block.getRuntimeId() );
-        updateBlockPacket.setPosition( block.getBlockPosition() );
+        updateBlockPacket.setPosition( block.getLocation() );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( block.getLayer() );
-        this.sendWorldPacket( updateBlockPacket );
+        this.sendDimensionPacket( updateBlockPacket, block.getLocation().getDimension() );
+    }
+
+    public void sendDimensionPacket( Packet packet, byte dimension ) {
+        for ( Player player : this.getPlayers() ) {
+            if ( player.getDimension() == dimension ) {
+                player.getPlayerConnection().sendPacket( packet );
+            }
+        }
     }
 
     public void sendWorldPacket( Packet packet ) {
@@ -584,6 +620,6 @@ public class World extends LevelDB {
     }
 
     public void scheduleBlockUpdate( Location location, long delay ) {
-        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location.toBlockPosition() );
+        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
     }
 }

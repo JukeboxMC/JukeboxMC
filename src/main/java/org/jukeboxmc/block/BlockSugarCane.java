@@ -3,7 +3,6 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSugarCane;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -19,7 +18,7 @@ public class BlockSugarCane extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition ).getSide( BlockFace.DOWN );
 
         if ( blockFace != BlockFace.DOWN && block.getBlockType() != BlockType.AIR ) {

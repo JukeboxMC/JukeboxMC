@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemAcaciaStairs;
-import org.jukeboxmc.item.ItemType;
 
 /**
  * @author LucGamesYT

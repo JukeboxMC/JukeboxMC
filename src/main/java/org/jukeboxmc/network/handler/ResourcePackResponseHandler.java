@@ -24,7 +24,7 @@ public class ResourcePackResponseHandler implements PacketHandler {
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_HAVE_ALL_PACKS ) {
             player.getPlayerConnection().sendResourcePackStack();
         } else if ( status == ResourcePackResponsePacket.Status.STATUS_COMPLETED ) {
-            Vector worldSpawn = player.getWorld().getSafeSpawnLocation();
+            Vector worldSpawn = player.getWorld().getSafeSpawnLocation( player.getDimension() );
 
             StartGamePacket startGamePacket = new StartGamePacket();
             startGamePacket.setEntityId( player.getEntityId() );
@@ -41,7 +41,9 @@ public class ResourcePackResponseHandler implements PacketHandler {
             player.getPlayerConnection().sendPacket( startGamePacket );
 
             //Set player new position (Need from file soon)
-            player.setLocation( new Location( player.getWorld(), worldSpawn.getX(), worldSpawn.getY() - player.getEyeHeight(), worldSpawn.getZ(), player.getYaw(), player.getPitch() ) );
+            Location location = new Location( player.getWorld(), worldSpawn.getX(), worldSpawn.getY() - player.getEyeHeight(), worldSpawn.getZ(), player.getYaw(), player.getPitch() );
+            location.setDimension( player.getDimension() );
+            player.setLocation( location );
 
             player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
             player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );

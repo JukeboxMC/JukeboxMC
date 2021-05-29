@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockWallSign;
+import org.jukeboxmc.block.BlockOakWallSign;
 
 /**
  * @author LucGamesYT
@@ -14,7 +14,7 @@ public class ItemWallSign extends Item {
 
 
     @Override
-    public BlockWallSign getBlock() {
-        return new BlockWallSign();
+    public BlockOakWallSign getBlock() {
+        return new BlockOakWallSign();
     }
 }

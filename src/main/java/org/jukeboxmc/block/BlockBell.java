@@ -5,7 +5,6 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.Attachment;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBell;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -21,7 +20,7 @@ public class BlockBell extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         if ( blockFace == BlockFace.UP ) {
             this.setAttachment( Attachment.STANDING );

@@ -6,7 +6,6 @@ import org.jukeboxmc.block.type.AnvilDamage;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAnvil;
 import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -22,7 +21,7 @@ public class BlockAnvil extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().getRightDirection() );
         world.setBlock( placePosition, this );
 

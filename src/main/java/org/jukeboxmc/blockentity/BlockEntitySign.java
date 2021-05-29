@@ -59,19 +59,19 @@ public class BlockEntitySign extends BlockEntityContainer {
             return;
         }
 
-        NbtMapBuilder nbtMapBuilder = nbt.toBuilder();
-        nbtMapBuilder.putString( "Text", Joiner.on( "\n" ).skipNulls().join( signChangeEvent.getLines() ) );
+        this.lines.clear();
+        this.lines.addAll( signChangeEvent.getLines() );
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getBlockPosition() );
-        blockEntityDataPacket.setNbt( nbtMapBuilder.build() );
-        this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation());
+        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
     }
 
     public void updateBlockEntitySign() {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getBlockPosition() );
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation() );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
-        this.block.getWorld().sendWorldPacket( blockEntityDataPacket );
+        this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
     }
 }

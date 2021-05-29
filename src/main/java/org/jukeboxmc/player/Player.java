@@ -9,9 +9,9 @@ import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.inventory.*;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.network.packet.ChangeDimensionPacket;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
@@ -230,6 +230,38 @@ public class Player extends EntityHuman implements InventoryHolder {
         this.playerConnection.setViewDistance( viewDistance );
     }
 
+    @Override
+    public void setDimension( byte dimension ) {
+        if ( this.dimension == dimension ) {
+            return;
+        }
+
+        this.getChunk().removeEntity( this );
+
+        this.playerConnection.despawnForAll();
+        this.playerConnection.resetChunks();
+
+        World world = this.getWorld();
+        Location location = new Location( world,
+                this.dimension == 0 && dimension == 1 ? world.getSafeLocationAt( (int) ( getX() / 8 ), (int) ( getZ() / 8 ), dimension )
+                        : this.dimension == 1 && dimension == 0 ? world.getSafeLocationAt( (int) ( getX() * 8 ), (int) ( getZ() * 8 ), dimension )
+                        : world.getSpawnLocation( dimension ) );
+        location.setDimension( dimension );
+        this.setLocation( location );
+
+        this.dimension = dimension;
+
+        ChangeDimensionPacket changeDimensionPacket = new ChangeDimensionPacket();
+        changeDimensionPacket.setDimension( dimension );
+        changeDimensionPacket.setRespawn( false );
+        changeDimensionPacket.setVector( this.location );
+        this.playerConnection.sendPacket( changeDimensionPacket, true );
+
+        this.getChunk().addEntity( this );
+        this.playerConnection.spawnToAll();
+        this.playerConnection.movePlayer( this.location, PlayerMovePacket.Mode.TELEPORT );
+    }
+
     public void disconnect( String message ) {
         this.playerConnection.disconnect( message );
     }
@@ -266,7 +298,7 @@ public class Player extends EntityHuman implements InventoryHolder {
         this.playerConnection.playSound( position, sound, volume, pitch );
     }
 
-    public void openInventory( Inventory inventory, BlockPosition position ) {
+    public void openInventory( Inventory inventory, Vector position ) {
         if ( inventory instanceof ContainerInventory ) {
             ContainerInventory containerInventory = (ContainerInventory) inventory;
 
@@ -281,7 +313,7 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     public void openInventory( Inventory inventory ) {
-        this.openInventory( inventory, this.location.toBlockPosition() );
+        this.openInventory( inventory, this.location );
     }
 
     public void closeInventory( int windowId, boolean isServerSide ) {
@@ -334,7 +366,7 @@ public class Player extends EntityHuman implements InventoryHolder {
             this.playerConnection.despawnForAll();
             this.playerConnection.resetChunks();
 
-            this.setLocation( new Location( world, world.getSpawnLocation() ) );
+            this.setLocation( new Location( world, world.getSpawnLocation( this.getDimension() ) ) );
 
             world.addPlayer( this );
             this.getChunk().addEntity( this );

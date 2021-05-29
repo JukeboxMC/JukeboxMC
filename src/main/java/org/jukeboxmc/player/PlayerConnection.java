@@ -8,7 +8,6 @@ import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.math.Vector2;
@@ -42,10 +41,10 @@ public class PlayerConnection {
 
     private ChunkComparator chunkComparator;
 
+    private Queue<Chunk> chunkQueue = new ConcurrentLinkedQueue<>();
     private Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
     private Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
 
-    private Queue<Chunk> chunkQueue = new ConcurrentLinkedQueue<>();
     private List<Long> loadingChunks = new CopyOnWriteArrayList<>();
     private List<Long> loadedChunks = new CopyOnWriteArrayList<>();
 
@@ -72,7 +71,7 @@ public class PlayerConnection {
                 int chunkZ = Utils.fromHashZ( hash );
 
                 World world = this.player.getWorld();
-                world.loadChunk( chunkX, chunkZ ).whenComplete( ( chunk, throwable ) -> {
+                world.loadChunk( chunkX, chunkZ, this.player.getDimension() ).whenComplete( ( chunk, throwable ) -> {
                     this.chunkQueue.offer( chunk );
                 } );
             }
@@ -87,7 +86,7 @@ public class PlayerConnection {
                 while ( ( packet = this.incomingQueue.poll() ) != null ) {
                     PacketHandler handler = PacketRegistry.getHandler( packet.getClass() );
                     if ( handler != null ) {
-                        handler.handle( packet, player );
+                        handler.handle( packet, this.player );
                     } else {
                         this.logger.debug( "Handler for packet: " + packet.getClass().getSimpleName() + " is missing" );
                     }
@@ -100,7 +99,6 @@ public class PlayerConnection {
 
     public void sendChunk( Chunk chunk ) {
         this.sendPacket( chunk.createLevelChunkPacket() );
-
         long hash = Utils.toLong( chunk.getChunkX(), chunk.getChunkZ() );
         this.loadedChunks.add( hash );
         this.loadingChunks.remove( hash );
@@ -429,7 +427,7 @@ public class PlayerConnection {
 
     public void spawnToAll() {
         for ( Player players : this.player.getWorld().getPlayers() ) {
-            if ( players != null ) {
+            if ( players != null && players.getDimension() == this.player.getDimension() ) {
                 players.getPlayerConnection().spawnPlayer( this.player );
                 this.player.getPlayerConnection().spawnPlayer( players );
             }
@@ -437,6 +435,9 @@ public class PlayerConnection {
     }
 
     public void despawn( Player player ) {
+        if ( player == this.player ) {
+            return;
+        }
         RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
         removeEntityPacket.setEntityId( this.player.getEntityId() );
         player.getPlayerConnection().sendPacket( removeEntityPacket );
@@ -493,7 +494,7 @@ public class PlayerConnection {
         this.logger.info( this.player.getName() + " logged out reason: " + reason );
     }
 
-    public void openInventory( Inventory inventory, BlockPosition position ) {
+    public void openInventory( Inventory inventory, Vector position ) {
         ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
         containerOpenPacket.setEntityId( this.player.getEntityId() );
         containerOpenPacket.setWindowType( inventory.getWindowType() );

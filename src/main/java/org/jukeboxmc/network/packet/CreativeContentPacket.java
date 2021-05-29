@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.network.Protocol;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 

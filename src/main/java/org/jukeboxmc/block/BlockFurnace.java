@@ -5,7 +5,6 @@ import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemFurnace;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -21,7 +20,7 @@ public class BlockFurnace extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
 
@@ -30,7 +29,7 @@ public class BlockFurnace extends Block {
     }
 
     @Override
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityFurnace blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -46,7 +45,7 @@ public class BlockFurnace extends Block {
 
     @Override
     public BlockEntityFurnace getBlockEntity() {
-        return (BlockEntityFurnace) this.world.getBlockEntity( this.getBlockPosition() );
+        return (BlockEntityFurnace) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
     @Override

@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NBTOutputStream;
 import org.jukeboxmc.nbt.NbtMap;
@@ -21,7 +21,7 @@ import java.io.IOException;
 @EqualsAndHashCode(callSuper = true)
 public class BlockEntityDataPacket extends Packet {
 
-    private BlockPosition blockPosition;
+    private Vector blockPosition;
     private NbtMap nbt;
 
     @Override
@@ -32,7 +32,7 @@ public class BlockEntityDataPacket extends Packet {
     @Override
     public void read() {
         super.read();
-        this.blockPosition = new BlockPosition( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
+        this.blockPosition = new Vector( this.readSignedVarInt(), this.readUnsignedVarInt(), this.readSignedVarInt() );
         try {
             NBTInputStream networkReader = NbtUtils.createNetworkReader( new ByteBufInputStream( this.getBuffer() ) );
             this.nbt = (NbtMap) networkReader.readTag();
@@ -44,9 +44,9 @@ public class BlockEntityDataPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeSignedVarInt( this.blockPosition.getX() );
-        this.writeUnsignedVarInt( this.blockPosition.getY() );
-        this.writeSignedVarInt( this.blockPosition.getZ() );
+        this.writeSignedVarInt( this.blockPosition.getFloorX() );
+        this.writeUnsignedVarInt( this.blockPosition.getFloorY() );
+        this.writeSignedVarInt( this.blockPosition.getFloorZ() );
 
         try {
             NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( new ByteBufOutputStream( this.getBuffer() ) );

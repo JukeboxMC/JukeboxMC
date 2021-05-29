@@ -6,6 +6,7 @@ import org.jukeboxmc.event.player.PlayerToggleSneakEvent;
 import org.jukeboxmc.event.player.PlayerToggleSprintEvent;
 import org.jukeboxmc.event.player.PlayerToggleSwimEvent;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.PlayerActionPacket;
 import org.jukeboxmc.player.Player;
 
@@ -21,6 +22,9 @@ public class PlayerActionHandler implements PacketHandler {
         PlayerActionPacket.Action action = playerActionPacket.getAction();
 
         switch ( action ) {
+            case DIMENSION_CHANGE_ACK:
+                player.getPlayerConnection().sendPacket( new PlayStatusPacket( PlayStatusPacket.Status.PLAYER_SPAWN ) );
+                break;
             case START_SNEAK:
                 PlayerToggleSneakEvent playerToggleSneakEvent = new PlayerToggleSneakEvent( player, true );
                 Server.getInstance().getPluginManager().callEvent( playerToggleSneakEvent );

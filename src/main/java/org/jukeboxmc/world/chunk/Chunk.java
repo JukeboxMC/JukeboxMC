@@ -10,7 +10,6 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTOutputStream;
@@ -44,16 +43,26 @@ public class Chunk extends LevelDBChunk {
     private World world;
     private int chunkX;
     private int chunkZ;
+    public byte dimension;
     public byte chunkVersion = 21;
 
     private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
-    public Chunk( World world, int chunkX, int chunkZ ) {
+    public Chunk( World world, int chunkX, int chunkZ, byte dimension ) {
         super( world, chunkX, chunkZ );
         this.world = world;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
+        this.dimension = dimension;
         this.subChunks = new SubChunk[16];
+    }
+
+    public void setHeightMap( int x, int z, int value ) {
+        this.height[(z << 4) | x] = (byte) value;
+    }
+
+    public int getHeightMap( int x, int z ) {
+        return this.height[(z << 4) | x] & 0xFF;
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
@@ -84,7 +93,7 @@ public class Chunk extends LevelDBChunk {
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
-        block.setLocation( new Location( this.world, new BlockPosition( x, y, z ) ) );
+        block.setLocation( new Location( this.world, new Vector( x, y, z ) ) );
         block.setLayer( layer );
         return block;
     }
@@ -107,6 +116,14 @@ public class Chunk extends LevelDBChunk {
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
+    public void setDimension( byte dimension ) {
+        this.dimension = dimension;
+    }
+
+    public byte getDimension() {
+        return this.dimension;
+    }
+
     public List<BlockEntity> getBlockEntitys() {
         List<BlockEntity> blockEntities = new ArrayList<>();
         for ( SubChunk subChunk : this.subChunks ) {
@@ -122,7 +139,7 @@ public class Chunk extends LevelDBChunk {
     }
 
     public Biome getBiome( int x, int z ) {
-        return Biome.findById( this.biomes[( x << 4 ) | z] );
+        return Biome.findById( this.biomes[( x << 4 ) | z] & 0xFF ) ;
     }
 
     public void checkAndCreateSubChunks( int subY ) {
@@ -184,12 +201,12 @@ public class Chunk extends LevelDBChunk {
         }
 
         //ELSE
-        byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2c );
+        byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
         BinaryStream versionBuffer = new BinaryStream();
         versionBuffer.writeByte( this.chunkVersion );
         writeBatch.put( versionKey, versionBuffer.getArray() );
 
-        byte[] finalizedKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x36 );
+        byte[] finalizedKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x36 );
         ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer( 1 );
         byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
         writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getArray() );
@@ -206,11 +223,11 @@ public class Chunk extends LevelDBChunk {
         }
 
         if ( blockEntityBuffer.readableBytes() > 0 ) {
-            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x31 );
+            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
             writeBatch.put( blockEntityKey, blockEntityBuffer.getArray() );
         }
 
-        byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, (byte) 0x2d );
+        byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
         BinaryStream biomeBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
@@ -280,7 +297,7 @@ public class Chunk extends LevelDBChunk {
                 }
             }
         }
-        byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, (byte) 0x2f, (byte) subY );
+        byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, buffer.getArray() );
     }
 

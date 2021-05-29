@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.event.world.LoadWorldEvent;
@@ -70,7 +69,7 @@ public class Server {
     private World defaultWorld;
     private WorldGenerator overWorldGenerator;
 
-    private int viewDistance = 32;
+    private int viewDistance = 80;
     private int currentTick = 0;
 
     private boolean isShutdown = false;
@@ -360,7 +359,7 @@ public class Server {
                 if ( world == this.defaultWorld || this.defaultWorld == null ) {
                     player.disconnect( "World was unloaded" );
                 } else {
-                    player.teleport( this.defaultWorld.getSpawnLocation() );
+                    player.teleport( this.defaultWorld.getSpawnLocation( (byte) 0 ) );
                 }
             }
         } );

@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockChorusFlower;
 import org.jukeboxmc.block.BlockChorusPlant;
 
 /**

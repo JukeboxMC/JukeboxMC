@@ -7,9 +7,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
@@ -130,9 +128,9 @@ public abstract class Block implements Cloneable {
         return this.blockStates.getInt( value );
     }
 
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
-            world.setBlock( placePosition, this );
+            world.setBlock( placePosition, this, 0, player.getDimension() );
             return true;
         } else {
             Server.getInstance().getLogger().debug( "Try to place block -> " + this.getName() );
@@ -140,11 +138,11 @@ public abstract class Block implements Cloneable {
         return false;
     }
 
-    public boolean interact( Player player, BlockPosition blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         return false;
     }
 
-    public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
         this.world.setBlock( breakPosition, new BlockAir() );
         return true;
     }
@@ -152,7 +150,7 @@ public abstract class Block implements Cloneable {
     public void sendBlockUpdate( Player player ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setBlockId( this.runtimeId );
-        updateBlockPacket.setPosition( this.location.toBlockPosition() );
+        updateBlockPacket.setPosition( this.location );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( this.layer );
         player.getPlayerConnection().sendPacket( updateBlockPacket );
@@ -169,13 +167,13 @@ public abstract class Block implements Cloneable {
     public Block getSide( Direction direction ) {
         switch ( direction ) {
             case SOUTH:
-                return this.getRelative( BlockPosition.SOUTH );
+                return this.getRelative( Vector.SOUTH );
             case NORTH:
-                return this.getRelative( BlockPosition.NORTH );
+                return this.getRelative( Vector.NORTH );
             case EAST:
-                return this.getRelative( BlockPosition.EAST );
+                return this.getRelative( Vector.EAST );
             case WEST:
-                return this.getRelative( BlockPosition.WEST );
+                return this.getRelative( Vector.WEST );
             default:
                 return null;
         }
@@ -184,27 +182,27 @@ public abstract class Block implements Cloneable {
     public Block getSide( BlockFace blockFace ) {
         switch ( blockFace ) {
             case DOWN:
-                return this.getRelative( BlockPosition.DOWN );
+                return this.getRelative( Vector.DOWN );
             case UP:
-                return this.getRelative( BlockPosition.UP );
+                return this.getRelative( Vector.UP );
             case SOUTH:
-                return this.getRelative( BlockPosition.SOUTH );
+                return this.getRelative( Vector.SOUTH );
             case NORTH:
-                return this.getRelative( BlockPosition.NORTH );
+                return this.getRelative( Vector.NORTH );
             case EAST:
-                return this.getRelative( BlockPosition.EAST );
+                return this.getRelative( Vector.EAST );
             case WEST:
-                return this.getRelative( BlockPosition.WEST );
+                return this.getRelative( Vector.WEST );
             default:
                 return null;
         }
     }
 
-    private Block getRelative( BlockPosition position ) {
-        int x = this.location.getFloorX() + position.getX();
-        int y = this.location.getFloorY() + position.getY();
-        int z = this.location.getFloorZ() + position.getZ();
-        return this.world.getBlockAt( x, y, z );
+    private Block getRelative( Vector position ) {
+        int x = this.location.getFloorX() + position.getFloorX();
+        int y = this.location.getFloorY() + position.getFloorY();
+        int z = this.location.getFloorZ() + position.getFloorZ();
+        return this.world.getBlockAt( x, y, z, this.location.getDimension() );
     }
 
     public int getRuntimeId() {
@@ -229,7 +227,7 @@ public abstract class Block implements Cloneable {
     }
 
     public Chunk getChunk() {
-        return this.world.getChunk( this.location.getFloorX() >> 4, this.location.getFloorZ() >> 4 );
+        return this.world.getChunk( this.location.getFloorX() >> 4, this.location.getFloorZ() >> 4, this.location.getDimension() );
     }
 
     public Location getLocation() {
@@ -238,10 +236,6 @@ public abstract class Block implements Cloneable {
 
     public void setPlaced( boolean placed ) {
         this.placed = placed;
-    }
-
-    public BlockPosition getBlockPosition() {
-        return new BlockPosition( this.location );
     }
 
     public int getLayer() {

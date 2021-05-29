@@ -7,7 +7,6 @@ import org.jukeboxmc.blockentity.BlockEntityBed;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBed;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -23,7 +22,7 @@ public class BlockBed extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         BlockColor blockColor = BlockColor.values()[itemIndHand.getMeta()];
         Block blockDown = world.getBlock( blockPosition );
 
@@ -51,7 +50,7 @@ public class BlockBed extends Block {
     }
 
     @Override
-    public boolean onBlockBreak( BlockPosition breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
         Direction direction = this.getDirection();
         if ( this.isHeadPiece() ) {
             direction = direction.opposite();
@@ -84,7 +83,7 @@ public class BlockBed extends Block {
 
     @Override
     public BlockEntityBed getBlockEntity() {
-        return (BlockEntityBed) this.world.getBlockEntity( this.getBlockPosition() );
+        return (BlockEntityBed) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
     public BlockColor getColor() {

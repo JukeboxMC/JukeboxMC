@@ -1,6 +1,6 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,9 +14,9 @@ public class BlockUpdateList {
 
     private Element element;
 
-    public synchronized void addElement( long timeValue, BlockPosition blockPosition ) {
+    public synchronized void addElement( long timeValue, Vector blockPosition ) {
         if ( this.element == null ) {
-            this.element = new Element( timeValue, null, new LinkedList<BlockPosition>() {{
+            this.element = new Element( timeValue, null, new LinkedList<Vector>() {{
                 add( blockPosition );
             }} );
         } else {
@@ -29,12 +29,12 @@ public class BlockUpdateList {
             }
 
             if ( element == null ) {
-                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<BlockPosition>() {{
+                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<Vector>() {{
                     add( blockPosition );
                 }} ) );
             } else {
                 if ( element.getTimeValue() != timeValue ) {
-                    Element nextElement = new Element( timeValue, element, new LinkedList<BlockPosition>() {{
+                    Element nextElement = new Element( timeValue, element, new LinkedList<Vector>() {{
                         add( blockPosition );
                     }} );
 
@@ -58,7 +58,7 @@ public class BlockUpdateList {
         }
     }
 
-    public synchronized BlockPosition getNextElement() {
+    public synchronized Vector getNextElement() {
         if ( this.element == null ) {
             return null;
         }
@@ -71,7 +71,7 @@ public class BlockUpdateList {
             return null;
         }
 
-        BlockPosition blockPosition = this.element.getPositionQueue().poll();
+        Vector blockPosition = this.element.getPositionQueue().poll();
         while ( this.element.getPositionQueue().size() == 0 ) {
             this.element = this.element.getNextElement();
             if ( this.element == null ) {
@@ -95,7 +95,7 @@ public class BlockUpdateList {
         return 0;
     }
 
-    public synchronized boolean contains( BlockPosition blockPosition ) {
+    public synchronized boolean contains( Vector blockPosition ) {
         Element element = this.element;
         if ( element == null ) {
             return false;
@@ -113,9 +113,9 @@ public class BlockUpdateList {
 
         private long timeValue;
         private Element nextElement;
-        private Queue<BlockPosition> positionQueue;
+        private Queue<Vector> positionQueue;
 
-        public Element( long timeValue, Element nextElement, Queue<BlockPosition> positionQueue ) {
+        public Element( long timeValue, Element nextElement, Queue<Vector> positionQueue ) {
             this.timeValue = timeValue;
             this.nextElement = nextElement;
             this.positionQueue = positionQueue;
@@ -137,11 +137,11 @@ public class BlockUpdateList {
             this.nextElement = nextElement;
         }
 
-        public Queue<BlockPosition> getPositionQueue() {
+        public Queue<Vector> getPositionQueue() {
             return this.positionQueue;
         }
 
-        public void setPositionQueue( Queue<BlockPosition> positionQueue ) {
+        public void setPositionQueue( Queue<Vector> positionQueue ) {
             this.positionQueue = positionQueue;
         }
     }

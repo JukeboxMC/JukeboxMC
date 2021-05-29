@@ -33,6 +33,11 @@ public class BlockTallGrass extends Block {
         return true;
     }
 
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        return true;
+    }
+
     public BlockTallGrass setGrassType( GrassType grassType ) {
         return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }

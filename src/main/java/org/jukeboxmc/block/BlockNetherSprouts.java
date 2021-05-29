@@ -31,4 +31,9 @@ public class BlockNetherSprouts extends Block {
     public boolean isTransparent() {
         return true;
     }
+
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        return true;
+    }
 }

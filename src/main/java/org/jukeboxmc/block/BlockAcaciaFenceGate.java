@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemAcaciaFenceGate;
-import org.jukeboxmc.item.ItemType;
 
 /**
  * @author LucGamesYT

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntitySign;
 import org.jukeboxmc.item.ItemSpruceWallSign;
 
 /**
@@ -12,7 +13,6 @@ public class BlockSpruceWallSign extends Block {
     public BlockSpruceWallSign() {
         super( "minecraft:spruce_wall_sign" );
     }
-
 
     @Override
     public ItemSpruceWallSign toItem() {
@@ -27,6 +27,16 @@ public class BlockSpruceWallSign extends Block {
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntitySign getBlockEntity() {
+        return (BlockEntitySign) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -1,8 +1,6 @@
 package org.jukeboxmc.network.packet;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.jukeboxmc.network.Protocol;
 
 /**
@@ -11,6 +9,8 @@ import org.jukeboxmc.network.Protocol;
  */
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode ( callSuper = true )
 public class PlayStatusPacket extends Packet {
 

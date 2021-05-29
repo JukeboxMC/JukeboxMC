@@ -31,9 +31,8 @@ public class BlockWallBanner extends Block {
 
     @Override
     public BlockEntityBanner getBlockEntity() {
-        return (BlockEntityBanner) this.world.getBlockEntity( this.getBlockPosition() );
+        return (BlockEntityBanner) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
-
 
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );

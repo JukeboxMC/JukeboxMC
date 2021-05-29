@@ -2,7 +2,6 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.world.Particle;

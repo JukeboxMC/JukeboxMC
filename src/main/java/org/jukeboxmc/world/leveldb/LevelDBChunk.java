@@ -87,7 +87,6 @@ public class LevelDBChunk {
         }
     }
 
-
     public void loadBlockEntitys( Chunk chunk, byte[] blockEntityData ) {
         ByteBuf data = Utils.allocate( blockEntityData );
 
@@ -124,5 +123,13 @@ public class LevelDBChunk {
 
     public void setPopulated( boolean populated ) {
         this.populated = populated;
+    }
+
+    public void setHeight( short[] height ) {
+        this.height = height;
+    }
+
+    public short[] getHeight() {
+        return this.height;
     }
 }

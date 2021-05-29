@@ -1,7 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockDriedKelpBlock;
-
 /**
  * @author LucGamesYT
  * @version 1.0

@@ -2,7 +2,7 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jukeboxmc.math.BlockPosition;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
 /**
@@ -21,7 +21,7 @@ public class UpdateBlockPacket extends Packet {
     public static final int FLAG_ALL = FLAG_NEIGHBORS | FLAG_NETWORK;
     public static final int FLAG_ALL_PRIORITY = FLAG_ALL | FLAG_PRIORITY;
 
-    private BlockPosition position;
+    private Vector position;
     private int blockId;
     private int flags;
     private int layer;
@@ -34,9 +34,9 @@ public class UpdateBlockPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeSignedVarInt( this.position.getX() );
-        this.writeUnsignedVarInt( this.position.getY() );
-        this.writeSignedVarInt( this.position.getZ() );
+        this.writeSignedVarInt( this.position.getFloorX() );
+        this.writeUnsignedVarInt( this.position.getFloorY() );
+        this.writeSignedVarInt( this.position.getFloorZ() );
         this.writeUnsignedVarInt( this.blockId );
         this.writeUnsignedVarInt( this.flags );
         this.writeUnsignedVarInt( this.layer );

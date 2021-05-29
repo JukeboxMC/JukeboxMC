@@ -6,7 +6,6 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
-import org.jukeboxmc.math.BlockPosition;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelSound;
@@ -23,7 +22,7 @@ public abstract class BlockPressurePlate extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, BlockPosition blockPosition, BlockPosition placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block target = world.getBlock( blockPosition );
         if ( target.isTransparent() ) {
             return false;
@@ -91,7 +90,7 @@ public abstract class BlockPressurePlate extends Block {
     private int getRedstoneStrength() {
         AxisAlignedBB boundingBox = this.getBoundingBox();
 
-        for ( Entity entity : this.world.getNearbyEntities( boundingBox ) ) {
+        for ( Entity entity : this.world.getNearbyEntities( boundingBox, this.location.getDimension() ) ) {
             if ( entity instanceof EntityHuman ) {
                 return 15;
             }
