@@ -2,6 +2,7 @@ package org.jukeboxmc.math;
 
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -34,7 +35,7 @@ public class Location extends Vector implements Cloneable {
         this.pitch = pitch;
     }
 
-    public Location( World world, float x, float y, float z, float yaw, float pitch, byte dimension ) {
+    public Location( World world, float x, float y, float z, float yaw, float pitch, Dimension dimension ) {
         super( x, y, z );
         this.world = world;
         this.yaw = yaw;
@@ -47,7 +48,7 @@ public class Location extends Vector implements Cloneable {
         this.headYaw = headYaw;
     }
 
-    public Location( World world, float x, float y, float z, float headYaw, float yaw, float pitch, byte dimension ) {
+    public Location( World world, float x, float y, float z, float headYaw, float yaw, float pitch, Dimension dimension ) {
         this( world, x, y, z, yaw, pitch );
         this.headYaw = headYaw;
         this.dimension = dimension;

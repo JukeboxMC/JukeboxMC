@@ -17,6 +17,7 @@ import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 
@@ -231,7 +232,7 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     @Override
-    public void setDimension( byte dimension ) {
+    public void setDimension( Dimension dimension ) {
         if ( this.dimension == dimension ) {
             return;
         }
@@ -243,8 +244,8 @@ public class Player extends EntityHuman implements InventoryHolder {
 
         World world = this.getWorld();
         Location location = new Location( world,
-                this.dimension == 0 && dimension == 1 ? world.getSafeLocationAt( (int) ( getX() / 8 ), (int) ( getZ() / 8 ), dimension )
-                        : this.dimension == 1 && dimension == 0 ? world.getSafeLocationAt( (int) ( getX() * 8 ), (int) ( getZ() * 8 ), dimension )
+                this.dimension.equals( Dimension.OVERWORLD ) && dimension.equals( Dimension.NETHER ) ? world.getSafeLocationAt( (int) ( getX() / 8 ), (int) ( getZ() / 8 ), dimension )
+                        : this.dimension.equals( Dimension.NETHER ) && dimension.equals( Dimension.OVERWORLD ) ? world.getSafeLocationAt( (int) ( getX() * 8 ), (int) ( getZ() * 8 ), dimension )
                         : world.getSpawnLocation( dimension ) );
         location.setDimension( dimension );
         this.setLocation( location );

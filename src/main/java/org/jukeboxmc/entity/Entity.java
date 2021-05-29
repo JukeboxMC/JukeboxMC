@@ -11,6 +11,7 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.SetEntityDataPacket;
 import org.jukeboxmc.network.packet.SpawnParticleEffectPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Particle;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -26,7 +27,7 @@ public abstract class Entity {
     protected Location location;
     protected Metadata metadata;
     protected AxisAlignedBB boundingBox;
-    protected byte dimension = 0;
+    protected Dimension dimension = Dimension.OVERWORLD;
 
     public Entity() {
         this.metadata = new Metadata();
@@ -289,17 +290,17 @@ public abstract class Entity {
         spawnParticleEffectPacket.setParticle( particle );
         spawnParticleEffectPacket.setPosition( position );
         spawnParticleEffectPacket.setEntityId( this.entityId );
-        spawnParticleEffectPacket.setDimensionId( (byte) 0 ); //TODO
+        spawnParticleEffectPacket.setDimension( Dimension.OVERWORLD ); //TODO
         for ( Player player : this.location.getWorld().getPlayers() ) {
             player.getPlayerConnection().sendPacket( spawnParticleEffectPacket );
         }
     }
 
-    public byte getDimension() {
+    public Dimension getDimension() {
         return this.dimension;
     }
 
-    public void setDimension( byte dimension ) {
+    public void setDimension( Dimension dimension ) {
         this.dimension = dimension;
     }
 }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.math;
 
 import lombok.ToString;
+import org.jukeboxmc.world.Dimension;
 
 /**
  * @author LucGamesYT
@@ -20,9 +21,9 @@ public class Vector {
     protected float x;
     protected float y;
     protected float z;
-    protected byte dimension = 0;
+    protected Dimension dimension = Dimension.OVERWORLD;
 
-    public Vector( float x, float y, float z, byte dimension ) {
+    public Vector( float x, float y, float z, Dimension dimension ) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -71,11 +72,11 @@ public class Vector {
         this.z = z;
     }
 
-    public byte getDimension() {
+    public Dimension getDimension() {
         return this.dimension;
     }
 
-    public void setDimension( byte dimension ) {
+    public void setDimension( Dimension dimension ) {
         this.dimension = dimension;
     }
 

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
+import org.jukeboxmc.world.Dimension;
 
 /**
  * @author LucGamesYT
@@ -13,7 +14,7 @@ import org.jukeboxmc.network.Protocol;
 @EqualsAndHashCode ( callSuper = true )
 public class ChangeDimensionPacket extends Packet {
 
-    private int dimension;
+    private Dimension dimension;
     private Vector vector;
     private boolean respawn;
 
@@ -26,7 +27,7 @@ public class ChangeDimensionPacket extends Packet {
     public void write() {
         super.write();
 
-        this.writeSignedVarInt( this.dimension );
+        this.writeSignedVarInt( this.dimension.getId() );
         this.writeLFloat( this.vector.getFloorX() );
         this.writeLFloat( this.vector.getFloorY() );
         this.writeLFloat( this.vector.getFloorZ() );

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Particle;
 
 /**
@@ -14,7 +15,7 @@ import org.jukeboxmc.world.Particle;
 @EqualsAndHashCode ( callSuper = true )
 public class SpawnParticleEffectPacket extends Packet {
 
-    private byte dimensionId;
+    private Dimension dimension;
     private long entityId;
     private Vector position;
     private Particle particle;
@@ -27,7 +28,7 @@ public class SpawnParticleEffectPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeByte( this.dimensionId );
+        this.writeByte( this.dimension.getId() );
         this.writeSignedVarLong( this.entityId );
         this.writeLFloat( this.position.getFloorX() );
         this.writeLFloat( this.position.getFloorY() );

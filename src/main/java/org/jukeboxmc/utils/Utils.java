@@ -2,6 +2,7 @@ package org.jukeboxmc.utils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import org.jukeboxmc.world.Dimension;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,8 +54,8 @@ public class Utils {
         return buf;
     }
 
-    public static byte[] getKey( int chunkX, int chunkZ, byte dimension, byte key ) {
-        if ( dimension == 0 ) {
+    public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {
+        if ( dimension.equals( Dimension.OVERWORLD ) ) {
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
                     (byte) ( ( chunkX >>> 8 ) & 0xff ),
@@ -67,6 +68,7 @@ public class Utils {
                     key
             };
         } else {
+            byte dimensionId = dimension.getId();
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
                     (byte) ( ( chunkX >>> 8 ) & 0xff ),
@@ -76,17 +78,17 @@ public class Utils {
                     (byte) ( ( chunkZ >>> 8 ) & 0xff ),
                     (byte) ( ( chunkZ >>> 16 ) & 0xff ),
                     (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                    (byte) ( dimension & 0xff ),
-                    (byte) ( ( dimension >>> 8 ) & 0xff ),
-                    (byte) ( ( dimension >>> 16 ) & 0xff ),
-                    (byte) ( ( dimension >>> 24 ) & 0xff ),
+                    (byte) ( dimensionId & 0xff ),
+                    (byte) ( ( dimensionId >>> 8 ) & 0xff ),
+                    (byte) ( ( dimensionId >>> 16 ) & 0xff ),
+                    (byte) ( ( dimensionId >>> 24 ) & 0xff ),
                     key
             };
         }
     }
 
-    public static byte[] getSubChunkKey( int chunkX, int chunkZ, byte dimension, byte key, byte subChunk ) {
-        if ( dimension == 0 ) {
+    public static byte[] getSubChunkKey( int chunkX, int chunkZ, Dimension dimension, byte key, byte subChunk ) {
+        if ( dimension.equals( Dimension.OVERWORLD ) ) {
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
                     (byte) ( ( chunkX >>> 8 ) & 0xff ),
@@ -100,6 +102,7 @@ public class Utils {
                     subChunk
             };
         } else {
+            byte dimensionId = dimension.getId();
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
                     (byte) ( ( chunkX >>> 8 ) & 0xff ),
@@ -109,10 +112,10 @@ public class Utils {
                     (byte) ( ( chunkZ >>> 8 ) & 0xff ),
                     (byte) ( ( chunkZ >>> 16 ) & 0xff ),
                     (byte) ( ( chunkZ >>> 24 ) & 0xff ),
-                    (byte) ( dimension & 0xff ),
-                    (byte) ( ( dimension >>> 8 ) & 0xff ),
-                    (byte) ( ( dimension >>> 16 ) & 0xff ),
-                    (byte) ( ( dimension >>> 24 ) & 0xff ),
+                    (byte) ( dimensionId & 0xff ),
+                    (byte) ( ( dimensionId >>> 8 ) & 0xff ),
+                    (byte) ( ( dimensionId >>> 16 ) & 0xff ),
+                    (byte) ( ( dimensionId >>> 24 ) & 0xff ),
                     key,
                     subChunk
             };

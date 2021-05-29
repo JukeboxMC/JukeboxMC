@@ -22,6 +22,7 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
@@ -359,7 +360,7 @@ public class Server {
                 if ( world == this.defaultWorld || this.defaultWorld == null ) {
                     player.disconnect( "World was unloaded" );
                 } else {
-                    player.teleport( this.defaultWorld.getSpawnLocation( (byte) 0 ) );
+                    player.teleport( this.defaultWorld.getSpawnLocation( Dimension.OVERWORLD ) );
                 }
             }
         } );

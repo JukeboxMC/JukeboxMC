@@ -20,6 +20,7 @@ import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
@@ -43,12 +44,12 @@ public class Chunk extends LevelDBChunk {
     private World world;
     private int chunkX;
     private int chunkZ;
-    public byte dimension;
+    public Dimension dimension;
     public byte chunkVersion = 21;
 
     private List<Entity> entitys = new CopyOnWriteArrayList<>();
 
-    public Chunk( World world, int chunkX, int chunkZ, byte dimension ) {
+    public Chunk( World world, int chunkX, int chunkZ, Dimension dimension ) {
         super( world, chunkX, chunkZ );
         this.world = world;
         this.chunkX = chunkX;
@@ -116,11 +117,11 @@ public class Chunk extends LevelDBChunk {
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
-    public void setDimension( byte dimension ) {
+    public void setDimension( Dimension dimension ) {
         this.dimension = dimension;
     }
 
-    public byte getDimension() {
+    public Dimension getDimension() {
         return this.dimension;
     }
 
