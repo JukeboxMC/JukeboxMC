@@ -48,10 +48,13 @@ public abstract class BlockEntity {
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( location );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        NbtMap build = this.toCompound().build();
+        System.out.println(build.toString());
+        blockEntityDataPacket.setNbt( build );
         world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
 
-        world.setBlockEntity( location, this, this.block.getLocation().getDimension() );
+        System.out.println("SPAWN in Dimension: " + location.getDimension().name());
+        world.setBlockEntity( location, this, location.getDimension() );
     }
 
     public Block getBlock() {

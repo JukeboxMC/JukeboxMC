@@ -21,15 +21,6 @@ public enum BlockEntityType {
     private String blockEntityId;
     private Class<? extends BlockEntity> blockEntityClass;
 
-    public static String getId( Class<? extends BlockEntity> blockEntityClass ) {
-        for ( BlockEntityType blockEntityType : values() ) {
-            if ( blockEntityType.getBlockEntityClass() == blockEntityClass ) {
-                return blockEntityType.getBlockEntityId();
-            }
-        }
-        return null;
-    }
-
     public String getBlockEntityId() {
         return this.blockEntityId;
     }
@@ -41,6 +32,15 @@ public enum BlockEntityType {
     @SneakyThrows
     public <E extends BlockEntity> E createBlockEntity( Block block ) {
         return (E) this.blockEntityClass.getConstructor( Block.class ).newInstance( block );
+    }
+
+    public static String getId( Class<? extends BlockEntity> blockEntityClass ) {
+        for ( BlockEntityType blockEntityType : values() ) {
+            if ( blockEntityType.getBlockEntityClass() == blockEntityClass ) {
+                return blockEntityType.getBlockEntityId();
+            }
+        }
+        return null;
     }
 
     public static BlockEntity getBlockEntityById( String blockEntityId, Block block ) {

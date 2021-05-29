@@ -607,8 +607,9 @@ public class World extends LevelDB {
 
     public void sendDimensionPacket( Packet packet, Dimension dimension ) {
         for ( Player player : this.getPlayers() ) {
-            if ( player.getDimension() == dimension ) {
+            if ( player.getDimension().equals( dimension) ) {
                 player.getPlayerConnection().sendPacket( packet );
+                System.out.println(player.getName() );
             }
         }
     }

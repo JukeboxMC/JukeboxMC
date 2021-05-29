@@ -25,12 +25,11 @@ public class BlockSkull extends Block {
             return false;
         }
         this.setBlockFace( blockFace );
-
+        world.setBlock( placePosition, this );
         BlockEntityType.SKULL.<BlockEntitySkull>createBlockEntity( this )
                 .setRotation( (byte) ( (int) Math.floor( ( player.getYaw() * 16 / 360 ) + 0.5 ) & 0xF ) )
                 .setSkullMeta( (byte) itemIndHand.getMeta() )
                 .spawn();
-        world.setBlock( placePosition, this );
         return true;
     }
 
@@ -63,8 +62,8 @@ public class BlockSkull extends Block {
         return (BlockEntitySkull) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
-    public void setNoDrop( boolean value ) {
-        this.setState( "no_drop_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockSkull setNoDrop( boolean value ) {
+        return this.setState( "no_drop_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isNoDrop() {
