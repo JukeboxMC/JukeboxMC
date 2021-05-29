@@ -70,7 +70,7 @@ public class Server {
     private World defaultWorld;
     private WorldGenerator overWorldGenerator;
 
-    private int viewDistance = 80;
+    private int viewDistance = 32;
     private int currentTick = 0;
 
     private boolean isShutdown = false;
@@ -124,7 +124,7 @@ public class Server {
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
-
+        this.viewDistance = this.serverConfig.getInt( "viewdistance" );
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
     }
 
@@ -210,6 +210,7 @@ public class Server {
         this.serverConfig.addDefault( "address", "127.0.0.1" );
         this.serverConfig.addDefault( "port", 19132 );
         this.serverConfig.addDefault( "maxplayers", 20 );
+        this.serverConfig.addDefault( "viewdistance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
