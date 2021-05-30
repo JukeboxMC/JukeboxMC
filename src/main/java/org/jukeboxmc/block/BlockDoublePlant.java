@@ -25,14 +25,21 @@ public class BlockDoublePlant extends Block {
         Block blockDown = world.getBlock( placePosition.substract( 0, 1, 0 ) );
 
         if ( blockAbove instanceof BlockAir && ( blockDown instanceof BlockGrass || blockDown instanceof BlockDirt ) ) {
-
-            BlockDoublePlant blockDoublePlant = new BlockDoublePlant();
-            blockDoublePlant.setLocation( new Location( world, placePosition.add( 0, 1, 0 ) ) );
-            blockDoublePlant.setPlantType( this.getPlantType() );
-            blockDoublePlant.setUpperBlock( true );
-
-            world.setBlock( placePosition.add( 0, 1, 0 ), blockDoublePlant );
-            world.setBlock( placePosition, this );
+            if ( !this.isUpperBlock() ) {
+                BlockDoublePlant blockDoublePlant = new BlockDoublePlant();
+                blockDoublePlant.setLocation( new Location( world, placePosition.add( 0, 1, 0 ) ) );
+                blockDoublePlant.setPlantType( this.getPlantType() );
+                blockDoublePlant.setUpperBlock( true );
+                world.setBlock( placePosition.add( 0, 1, 0 ), blockDoublePlant );
+                world.setBlock( placePosition, this );
+            } else {
+                BlockDoublePlant blockDoublePlant = new BlockDoublePlant();
+                blockDoublePlant.setLocation( new Location( world, placePosition ) );
+                blockDoublePlant.setPlantType( this.getPlantType() );
+                blockDoublePlant.setUpperBlock( false );
+                world.setBlock( placePosition, blockDoublePlant );
+                world.setBlock( placePosition.add( 0, 1, 0 ), this );
+            }
             return true;
         }
         return false;
@@ -46,7 +53,7 @@ public class BlockDoublePlant extends Block {
             this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir() );
         }
         this.world.setBlock( this.location, new BlockAir() );
-        return true;
+        return !isCreative;
     }
 
     @Override
@@ -69,6 +76,12 @@ public class BlockDoublePlant extends Block {
         return true;
     }
 
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        this.onBlockBreak( block.getLocation(), true );
+        return true;
+    }
+
     public BlockDoublePlant setPlantType( PlantType plantType ) {
         return this.setState( "double_plant_type", plantType.name().toLowerCase() );
     }
@@ -77,8 +90,8 @@ public class BlockDoublePlant extends Block {
         return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ) ) : PlantType.SUNFLOWER;
     }
 
-    public void setUpperBlock( boolean value ) {
-        this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
+    public BlockDoublePlant setUpperBlock( boolean value ) {
+       return this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isUpperBlock() {

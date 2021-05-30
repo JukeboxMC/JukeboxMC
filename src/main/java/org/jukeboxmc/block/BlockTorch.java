@@ -30,7 +30,7 @@ public class BlockTorch extends Block {
             return true;
         }
 
-        if ( !world.getBlock( placePosition.substract( 0, 1,0 ) ).isTransparent() ) {
+        if ( !world.getBlock( placePosition.substract( 0, 1, 0 ) ).isTransparent() ) {
             this.setTorchFacing( TorchFacing.TOP );
             world.setBlock( placePosition, this );
             return true;
@@ -40,9 +40,9 @@ public class BlockTorch extends Block {
 
     @Override
     public long onUpdate( UpdateReason updateReason ) {
-        if(updateReason == UpdateReason.NEIGHBORS) {
+        if ( updateReason == UpdateReason.NEIGHBORS ) {
             BlockFace blockFace = this.getTorchFacing().toBlockFace();
-            if( !this.getSide( blockFace.opposite() ).isSolid() ) {
+            if ( !this.getSide( blockFace.opposite() ).isSolid() ) {
                 this.world.setBlock( this.getLocation(), BlockType.AIR.getBlock() );
                 return -1;
             }

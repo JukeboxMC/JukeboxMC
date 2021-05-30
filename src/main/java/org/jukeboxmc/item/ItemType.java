@@ -378,11 +378,22 @@ public enum ItemType {
     PACKED_ICE( new ItemPackedIce() ),
 
     LARGE_FERN( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).toItem() ),
+    LARGE_FERN_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).setUpperBlock( true ).toItem() ),
+
     DOUBLE_TALLGRASS( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).toItem() ),
+    DOUBLE_TALLGRASS_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).setUpperBlock( true ).toItem() ),
+
     SUNFLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).toItem() ),
+    SUNFLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).setUpperBlock( true ).toItem() ),
+
     LILLAC_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).toItem() ),
+    LILLAC_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).setUpperBlock( true ).toItem() ),
+
     ROSE_BUSH( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).toItem() ),
+    ROSE_BUSH_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).setUpperBlock( true ).toItem() ),
+
     PEONY_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).toItem() ),
+    PEONY_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).setUpperBlock( true ).toItem() ),
 
     STANDING_BANNER( new ItemStandingBanner() ),
     WALL_BANNER( new ItemWallBanner() ),

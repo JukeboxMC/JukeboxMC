@@ -23,6 +23,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -518,6 +519,7 @@ public class World extends LevelDB {
 
             if ( clickedBlock.canBeReplaced( placedBlock ) ) {
                 placePosition = blockPosition;
+                clickedBlock.onBlockBreak( placePosition, player.getGameMode().equals( GameMode.CREATIVE ) );
             }
 
             if ( placedBlock.isSolid() ) {
@@ -609,7 +611,6 @@ public class World extends LevelDB {
         for ( Player player : this.getPlayers() ) {
             if ( player.getDimension().equals( dimension) ) {
                 player.getPlayerConnection().sendPacket( packet );
-                System.out.println(player.getName() );
             }
         }
     }
