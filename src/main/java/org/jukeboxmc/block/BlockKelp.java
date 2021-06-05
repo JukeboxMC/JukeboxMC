@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemKelp;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockKelp extends Block {
+public class BlockKelp extends BlockWaterlogable {
 
     public BlockKelp() {
         super( "minecraft:kelp" );

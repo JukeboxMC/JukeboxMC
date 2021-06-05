@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemSeagrass;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSeagrass extends Block {
+public class BlockSeagrass extends BlockWaterlogable {
 
     public BlockSeagrass() {
         super( "minecraft:seagrass" );

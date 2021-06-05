@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemCoral;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCoral extends Block {
+public class BlockCoral extends BlockWaterlogable {
 
     public BlockCoral() {
         super( "minecraft:coral" );

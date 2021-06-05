@@ -8,7 +8,7 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
-public class BlockChain extends Block {
+public class BlockChain extends BlockWaterlogable {
 
     public BlockChain() {
         super("minecraft:chain");
@@ -23,9 +23,7 @@ public class BlockChain extends Block {
         } else {
             this.setAxis( Axis.X );
         }
-
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemCauldron;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCauldron extends Block {
+public class BlockCauldron extends BlockWaterlogable {
 
     public BlockCauldron() {
         super( "minecraft:cauldron" );

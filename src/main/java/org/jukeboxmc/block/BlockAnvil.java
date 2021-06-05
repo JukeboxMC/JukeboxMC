@@ -14,7 +14,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockAnvil extends Block {
+public class BlockAnvil extends BlockWaterlogable {
 
     public BlockAnvil() {
         super( "minecraft:anvil" );
@@ -23,11 +23,7 @@ public class BlockAnvil extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().getRightDirection() );
-        world.setBlock( placePosition, this );
-
-        Item item = new Item( ItemType.STONE_BRICK_SLAB );
-        player.getInventory().addItem( item );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
@@ -46,7 +42,7 @@ public class BlockAnvil extends Block {
     }
 
     public BlockAnvil setDamage( AnvilDamage damage ) {
-       return this.setState( "damage", damage.name().toLowerCase() );
+        return this.setState( "damage", damage.name().toLowerCase() );
     }
 
     public AnvilDamage getDamage() {

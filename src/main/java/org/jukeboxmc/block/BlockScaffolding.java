@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemScaffolding;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockScaffolding extends Block {
+public class BlockScaffolding extends BlockWaterlogable {
 
     public BlockScaffolding() {
         super( "minecraft:scaffolding" );

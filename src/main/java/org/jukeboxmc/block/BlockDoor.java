@@ -13,7 +13,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockDoor extends Block {
+public abstract class BlockDoor extends BlockWaterlogable {
 
     public BlockDoor( String identifier ) {
         super( identifier );
@@ -21,6 +21,7 @@ public abstract class BlockDoor extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block block = world.getBlock( placePosition );
         this.setDirection( Direction.fromAngle( player.getYaw() ) );
 
         BlockDoor blockAbove = this.newDoor();
@@ -44,17 +45,26 @@ public abstract class BlockDoor extends Block {
 
         world.setBlock( placePosition.add( 0, 1, 0 ), blockAbove );
         world.setBlock( placePosition, this );
+
+        if ( block.isWater() ) {
+            world.setBlock( placePosition.add( 0, 1, 0 ), block, 1 );
+            world.setBlock( placePosition, block, 1 );
+        }
         return true;
     }
 
     @Override
     public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+        Block block = this.world.getBlock( breakPosition, 1 );
         if ( this.isUpperBlock() ) {
-            this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir() );
+            this.world.setBlock( this.location.subtract( 0, 1, 0 ), block );
+            this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir(), 1 );
         } else {
-            this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir() );
+            this.world.setBlock( this.location.add( 0, 1, 0 ), block );
+            this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir(), 1 );
         }
-        this.world.setBlock( this.location, new BlockAir() );
+        this.world.setBlock( this.location, block );
+        this.world.setBlock( this.location, new BlockAir(), 1 );
         return true;
     }
 

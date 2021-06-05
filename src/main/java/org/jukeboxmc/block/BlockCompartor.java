@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCompartor extends Block {
+public class BlockCompartor extends BlockWaterlogable {
 
     public BlockCompartor() {
         super( "minecraft:unpowered_comparator" );
@@ -21,16 +21,12 @@ public class BlockCompartor extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOutputSubstract( !this.isOutputSubstract() );
-
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return true;
     }
 

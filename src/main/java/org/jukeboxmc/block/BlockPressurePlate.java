@@ -15,7 +15,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockPressurePlate extends Block {
+public abstract class BlockPressurePlate extends BlockWaterlogable {
 
     public BlockPressurePlate( String identifier ) {
         super( identifier );
@@ -29,8 +29,7 @@ public abstract class BlockPressurePlate extends Block {
         }
 
         this.setRedstoneSignal( 0 );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
@@ -79,8 +78,6 @@ public abstract class BlockPressurePlate extends Block {
 
     public void setRedstoneSignal( int value ) {
         this.setState( "redstone_signal", value );
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public int getRedstoneSignal() {

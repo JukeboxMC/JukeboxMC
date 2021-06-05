@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockTrapdoor extends Block {
+public abstract class BlockTrapdoor extends BlockWaterlogable {
 
     public BlockTrapdoor( String identifier ) {
         super( identifier );
@@ -37,16 +37,12 @@ public abstract class BlockTrapdoor extends Block {
         }
         this.setOpen( false );
 
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen()  );
-
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }

@@ -15,7 +15,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBed extends Block {
+public class BlockBed extends BlockWaterlogable {
 
     public BlockBed() {
         super( "minecraft:bed" );
@@ -24,33 +24,37 @@ public class BlockBed extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         BlockColor blockColor = BlockColor.values()[itemIndHand.getMeta()];
-        Block blockDown = world.getBlock( blockPosition );
+        Block block = world.getBlock( placePosition );
 
-        if ( !blockDown.isTransparent() ) {
-            Block block = this.getSide( player.getDirection() );
-            Block blockNext = world.getBlock( block.getLocation() );
+        Block blockDirection = this.getSide( player.getDirection() );
+        Block blockNext = world.getBlock( blockDirection.getLocation() );
 
-            if ( block.canBeReplaced( this ) && blockNext.isTransparent() ) {
-                this.setDirection( player.getDirection() );
+        if ( blockDirection.canBeReplaced( this ) && blockNext.isTransparent() ) {
+            this.setDirection( player.getDirection() );
 
-                BlockBed blockBed = new BlockBed();
-                blockBed.setLocation( blockNext.getLocation() );
-                blockBed.setDirection( this.getDirection() );
-                blockBed.setHeadPiece( true );
+            BlockBed blockBed = new BlockBed();
+            blockBed.setLocation( blockNext.getLocation() );
+            blockBed.setDirection( this.getDirection() );
+            blockBed.setHeadPiece( true );
 
-                world.setBlock( blockNext.getLocation(), blockBed );
-                world.setBlock( placePosition, this );
+            world.setBlock( blockNext.getLocation(), blockBed );
+            world.setBlock( placePosition, this );
 
-                BlockEntityType.BED.<BlockEntityBed>createBlockEntity( blockBed ).setColor( blockColor ).spawn();
-                BlockEntityType.BED.<BlockEntityBed>createBlockEntity( this ).setColor( blockColor ).spawn();
-                return true;
+            if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
+                world.setBlock( blockNext.getLocation(), block, 1, player.getDimension() );
+                world.setBlock( placePosition, block, 1, player.getDimension() );
             }
+
+            BlockEntityType.BED.<BlockEntityBed>createBlockEntity( blockBed ).setColor( blockColor ).spawn();
+            BlockEntityType.BED.<BlockEntityBed>createBlockEntity( this ).setColor( blockColor ).spawn();
+            return true;
         }
         return false;
     }
 
     @Override
     public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+        Block block = this.world.getBlock( breakPosition, 1 );
         Direction direction = this.getDirection();
         if ( this.isHeadPiece() ) {
             direction = direction.opposite();
@@ -59,10 +63,12 @@ public class BlockBed extends Block {
         if ( otherBlock instanceof BlockBed ) {
             BlockBed blockBed = (BlockBed) otherBlock;
             if ( blockBed.isHeadPiece() != this.isHeadPiece() ) {
-                this.world.setBlock( otherBlock.getLocation(), new BlockAir() );
+                this.world.setBlock( otherBlock.getLocation(), block );
+                this.world.setBlock( otherBlock.getLocation(), new BlockAir(), 1 );
             }
         }
-        this.world.setBlock( breakPosition, new BlockAir() );
+        this.world.setBlock( breakPosition, block );
+        this.world.setBlock( breakPosition, new BlockAir(), 1 );
         return true;
     }
 

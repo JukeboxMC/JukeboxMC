@@ -13,7 +13,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBell extends Block {
+public class BlockBell extends BlockWaterlogable {
 
     public BlockBell() {
         super( "minecraft:bell" );
@@ -38,8 +38,7 @@ public class BlockBell extends Block {
                 }
             }
         }
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemIronBars;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockIronBars extends Block {
+public class BlockIronBars extends BlockWaterlogable {
 
     public BlockIronBars() {
         super( "minecraft:iron_bars" );

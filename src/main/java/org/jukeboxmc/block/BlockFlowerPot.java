@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemFlowerPot;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFlowerPot extends Block {
+public class BlockFlowerPot extends BlockWaterlogable {
 
     public BlockFlowerPot() {
         super( "minecraft:flower_pot" );

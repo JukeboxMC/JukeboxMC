@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemDragonEgg;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDragonEgg extends Block {
+public class BlockDragonEgg extends BlockWaterlogable {
 
     public BlockDragonEgg() {
         super( "minecraft:dragon_egg" );

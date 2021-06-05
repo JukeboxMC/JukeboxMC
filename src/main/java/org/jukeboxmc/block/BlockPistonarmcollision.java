@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemPistonarmcollision;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockPistonarmcollision extends Block {
+public class BlockPistonarmcollision extends BlockWaterlogable {
 
     public BlockPistonarmcollision() {
         super( "minecraft:pistonarmcollision" );

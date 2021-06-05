@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemBrewingStand;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBrewingStand extends Block {
+public class BlockBrewingStand extends BlockWaterlogable {
 
     public BlockBrewingStand() {
         super( "minecraft:brewing_stand" );

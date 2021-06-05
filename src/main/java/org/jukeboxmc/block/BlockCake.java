@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemCake;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCake extends Block {
+public class BlockCake extends BlockWaterlogable {
 
     public BlockCake() {
         super( "minecraft:cake" );

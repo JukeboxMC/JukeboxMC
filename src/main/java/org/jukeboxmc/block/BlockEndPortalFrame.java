@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEndPortalFrame extends Block {
+public class BlockEndPortalFrame extends BlockWaterlogable {
 
     public BlockEndPortalFrame() {
         super( "minecraft:end_portal_frame" );
@@ -21,8 +21,7 @@ public class BlockEndPortalFrame extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

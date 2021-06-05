@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStructureBlock extends Block {
+public class BlockStructureBlock extends BlockWaterlogable {
 
     public BlockStructureBlock() {
         super( "minecraft:structure_block" );
@@ -20,8 +20,7 @@ public class BlockStructureBlock extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setStructureBlockType( StructureBlockType.values()[itemIndHand.getMeta()] );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

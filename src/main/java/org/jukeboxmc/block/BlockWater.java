@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemWater;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWater extends Block {
+public class BlockWater extends BlockLiqued {
 
     public BlockWater() {
         super( "minecraft:water" );
@@ -22,11 +22,9 @@ public class BlockWater extends Block {
         return BlockType.WATER;
     }
 
-    public void setLiquidDepth( int value ) {
-        this.setState( "liquid_depth", value );
+    @Override
+    public boolean canBeReplaced( Block block ) {
+        return true;
     }
 
-    public int getLiquidDepth() {
-        return this.stateExists( "liquid_depth" ) ? this.getIntState( "liquid_depth" ) : 0;
-    }
 }

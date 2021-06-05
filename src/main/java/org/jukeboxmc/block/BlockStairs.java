@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockStairs extends Block {
+public abstract class BlockStairs extends BlockWaterlogable {
 
     public BlockStairs( String identifier ) {
         super( identifier );
@@ -25,8 +25,7 @@ public abstract class BlockStairs extends Block {
             this.setUpsideDown( true );
         }
 
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

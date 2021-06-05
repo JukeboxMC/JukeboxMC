@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLadder extends Block {
+public class BlockLadder extends BlockWaterlogable {
 
     public BlockLadder() {
         super( "minecraft:ladder" );
@@ -23,8 +23,7 @@ public class BlockLadder extends Block {
 
         if ( !targetBlock.isTransparent() && blockFace != BlockFace.UP && blockFace != BlockFace.DOWN ) {
             this.setBlockFace( blockFace );
-            world.setBlock( placePosition, this );
-            return true;
+            return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         }
 
         return false;

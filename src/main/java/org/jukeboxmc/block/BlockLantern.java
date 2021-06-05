@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLantern extends Block {
+public class BlockLantern extends BlockWaterlogable {
 
     public BlockLantern() {
         super( "minecraft:lantern" );
@@ -25,8 +25,7 @@ public class BlockLantern extends Block {
         }
 
         this.setHanging( hanging );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

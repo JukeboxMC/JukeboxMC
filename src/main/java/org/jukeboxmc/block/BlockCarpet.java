@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemCarpet;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCarpet extends Block {
+public class BlockCarpet extends BlockWaterlogable {
 
     public BlockCarpet() {
         super( "minecraft:carpet" );

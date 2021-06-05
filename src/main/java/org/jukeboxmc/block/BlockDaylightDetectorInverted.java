@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemDaylightDetectorInverted;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDaylightDetectorInverted extends Block {
+public class BlockDaylightDetectorInverted extends BlockWaterlogable {
 
     public BlockDaylightDetectorInverted() {
         super( "minecraft:daylight_detector_inverted" );

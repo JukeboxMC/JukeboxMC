@@ -47,6 +47,7 @@ public class BlockBlackstoneSlab extends BlockSlab {
             }
         }
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        world.setBlock( placePosition, block, 1 );
         world.setBlock( placePosition, this );
         return true;
     }

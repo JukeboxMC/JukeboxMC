@@ -22,6 +22,7 @@ public class BlockDarkOakStandingSign extends BlockSign {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block block = world.getBlock( placePosition );
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
             world.setBlock( placePosition, this );
@@ -30,6 +31,7 @@ public class BlockDarkOakStandingSign extends BlockSign {
             blockWallSign.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallSign );
         }
+        world.setBlock( placePosition, block, 1 );
         BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();
         return true;
     }

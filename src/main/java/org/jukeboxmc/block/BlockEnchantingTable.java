@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemEnchantingTable;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEnchantingTable extends Block {
+public class BlockEnchantingTable extends BlockWaterlogable {
 
     public BlockEnchantingTable() {
         super( "minecraft:enchanting_table" );

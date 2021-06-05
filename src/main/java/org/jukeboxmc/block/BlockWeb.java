@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemWeb;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWeb extends Block {
+public class BlockWeb extends BlockWaterlogable {
 
     public BlockWeb() {
         super( "minecraft:web" );

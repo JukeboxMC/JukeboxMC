@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemFrame;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFrame extends Block {
+public class BlockFrame extends BlockWaterlogable {
 
     public BlockFrame() {
         super( "minecraft:frame" );

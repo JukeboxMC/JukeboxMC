@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockPiston extends Block {
+public class BlockPiston extends BlockWaterlogable {
 
     public BlockPiston() {
         super( "minecraft:piston" );
@@ -32,9 +32,7 @@ public class BlockPiston extends Block {
         } else {
             this.setBlockFace( player.getDirection().toBlockFace() );
         }
-
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

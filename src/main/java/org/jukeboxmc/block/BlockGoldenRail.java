@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemGoldenRail;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockGoldenRail extends Block {
+public class BlockGoldenRail extends BlockWaterlogable {
 
     public BlockGoldenRail() {
         super( "minecraft:golden_rail" );

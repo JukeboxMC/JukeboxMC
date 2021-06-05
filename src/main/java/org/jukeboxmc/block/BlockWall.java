@@ -10,7 +10,7 @@ import org.jukeboxmc.math.AxisAlignedBB;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockWall extends Block {
+public abstract class BlockWall extends BlockWaterlogable {
 
     public BlockWall( String identifier ) {
         super( identifier );

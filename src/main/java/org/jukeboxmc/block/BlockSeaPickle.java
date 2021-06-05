@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemSeaPickle;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSeaPickle extends Block {
+public class BlockSeaPickle extends BlockWaterlogable {
 
     public BlockSeaPickle() {
         super( "minecraft:sea_pickle" );

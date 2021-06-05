@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemTripwire;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockTripwire extends Block {
+public class BlockTripwire extends BlockWaterlogable {
 
     public BlockTripwire() {
         super( "minecraft:tripwire" );

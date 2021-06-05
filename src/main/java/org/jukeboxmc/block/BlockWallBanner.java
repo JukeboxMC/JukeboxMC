@@ -8,7 +8,7 @@ import org.jukeboxmc.item.ItemWallBanner;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWallBanner extends Block {
+public class BlockWallBanner extends BlockWaterlogable {
 
     public BlockWallBanner() {
         super( "minecraft:wall_banner" );
@@ -31,7 +31,7 @@ public class BlockWallBanner extends Block {
 
     @Override
     public BlockEntityBanner getBlockEntity() {
-        return (BlockEntityBanner) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
+        return (BlockEntityBanner) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

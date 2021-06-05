@@ -13,7 +13,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSkull extends Block {
+public class BlockSkull extends BlockWaterlogable {
 
     public BlockSkull() {
         super( "minecraft:skull" );
@@ -25,7 +25,7 @@ public class BlockSkull extends Block {
             return false;
         }
         this.setBlockFace( blockFace );
-        world.setBlock( placePosition, this );
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         BlockEntityType.SKULL.<BlockEntitySkull>createBlockEntity( this )
                 .setRotation( (byte) ( (int) Math.floor( ( player.getYaw() * 16 / 360 ) + 0.5 ) & 0xF ) )
                 .setSkullMeta( (byte) itemIndHand.getMeta() )

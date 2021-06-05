@@ -6,13 +6,11 @@ import org.jukeboxmc.item.ItemTurtleEgg;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockTurtleEgg extends Block {
+public class BlockTurtleEgg extends BlockWaterlogable {
 
     public BlockTurtleEgg() {
         super( "minecraft:turtle_egg" );
     }
-
-
 
     @Override
     public ItemTurtleEgg toItem() {

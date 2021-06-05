@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemDetectorRail;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDetectorRail extends Block {
+public class BlockDetectorRail extends BlockWaterlogable {
 
     public BlockDetectorRail() {
         super( "minecraft:detector_rail" );

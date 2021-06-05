@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemComposter;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockComposter extends Block {
+public class BlockComposter extends BlockWaterlogable {
 
     public BlockComposter() {
         super( "minecraft:composter" );

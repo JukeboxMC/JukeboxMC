@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemEndRod;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEndRod extends Block {
+public class BlockEndRod extends BlockWaterlogable {
 
     public BlockEndRod() {
         super( "minecraft:end_rod" );

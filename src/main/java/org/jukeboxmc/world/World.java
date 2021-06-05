@@ -33,12 +33,10 @@ import org.jukeboxmc.world.leveldb.LevelDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author LucGamesYT
@@ -55,6 +53,8 @@ public class World extends LevelDB {
     private int worldTime;
 
     private boolean prepareSpawnLocaion = false;
+
+    private Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
     private Map<Dimension, Map<Long, Chunk>> chunkMap;
     private Map<Long, Player> players;
@@ -83,6 +83,11 @@ public class World extends LevelDB {
             if ( player != null && player.isSpawned() ) {
                 player.getPlayerConnection().sendTime( this.worldTime );
             }
+        }
+
+        while ( !this.blockUpdateNormals.isEmpty() ) {
+            BlockUpdateNormal updateNormal = this.blockUpdateNormals.poll();
+            updateNormal.getBlock().onUpdate( UpdateReason.NORMAL );
         }
 
         while ( this.blockUpdateList.getNextTaskTime() < currentTick ) {
@@ -279,8 +284,12 @@ public class World extends LevelDB {
         return chunk.getBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer );
     }
 
+    public Block getBlockAt( int x, int y, int z, Dimension dimension, int layer ) {
+        return this.getBlock( new Vector( x, y, z, dimension ), layer );
+    }
+
     public Block getBlockAt( int x, int y, int z, Dimension dimension ) {
-        return this.getBlock( new Vector( x, y, z, dimension ), 0 );
+        return this.getBlockAt( x, y, z, dimension, 0 );
     }
 
     public int getHighestBlockAt( Vector vector, Dimension dimension ) {
@@ -315,6 +324,10 @@ public class World extends LevelDB {
         this.getChunk( x >> 4, z >> 4, dimension ).setHeightMap( x, z, value );
     }
 
+    public void setBlock( Vector location, Block block, int layer) {
+        this.setBlock( location, block, layer, location.getDimension() );
+    }
+
     public void setBlock( Vector location, Block block ) {
         this.setBlock( location, block, 0, location.getDimension() );
     }
@@ -340,6 +353,10 @@ public class World extends LevelDB {
         if ( !block.hasBlockEntity() ) {
             chunk.removeBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ() );
         }
+
+        block.onUpdate( UpdateReason.NORMAL );
+        this.getBlock( location, layer == 0 ? 1 : 0 ).onUpdate( UpdateReason.NORMAL );
+        this.updateBlockAround( location );
 
         long next;
         for ( BlockFace blockFace : BlockFace.values() ) {
@@ -623,5 +640,15 @@ public class World extends LevelDB {
 
     public void scheduleBlockUpdate( Location location, long delay ) {
         this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
+    }
+
+    public void updateBlockAround( Vector vector ) {
+        Block block = this.getBlock( vector );
+        for ( BlockFace blockFace : BlockFace.values() ) {
+            Block blockLayer0 = block.getSide( blockFace, 0 );
+            Block blockLayer1 = block.getSide( blockFace, 1 );
+            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer0, blockFace ) );
+            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer1, blockFace ) );
+        }
     }
 }

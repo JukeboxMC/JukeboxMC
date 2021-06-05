@@ -7,13 +7,11 @@ import org.jukeboxmc.item.ItemShulkerBox;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockShulkerBox extends Block {
+public class BlockShulkerBox extends BlockWaterlogable {
 
     public BlockShulkerBox() {
         super( "minecraft:shulker_box" );
     }
-
-
 
     @Override
     public ItemShulkerBox toItem() {

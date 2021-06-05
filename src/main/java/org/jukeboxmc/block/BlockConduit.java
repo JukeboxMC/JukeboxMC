@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemConduit;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockConduit extends Block {
+public class BlockConduit extends BlockWaterlogable {
 
     public BlockConduit() {
         super( "minecraft:conduit" );

@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemRail;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockRail extends Block {
+public class BlockRail extends BlockWaterlogable {
 
     public BlockRail() {
         super( "minecraft:rail" );

@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemLever;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLever extends Block {
+public class BlockLever extends BlockWaterlogable {
 
     public BlockLever() {
         super( "minecraft:lever" );

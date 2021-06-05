@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockSlab extends Block {
+public abstract class BlockSlab extends BlockWaterlogable {
 
     public BlockSlab( String identifier ) {
         super( identifier );

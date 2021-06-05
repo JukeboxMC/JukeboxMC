@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemFence;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFence extends Block {
+public class BlockFence extends BlockWaterlogable {
 
     public BlockFence() {
         super( "minecraft:fence" );

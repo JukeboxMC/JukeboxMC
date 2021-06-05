@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemLeaves;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLeaves extends Block {
+public class BlockLeaves extends BlockWaterlogable {
 
     public BlockLeaves() {
         super( "minecraft:leaves" );

@@ -60,8 +60,11 @@ public class BlockStoneSlab4 extends BlockSlab {
                 }
             }
         }
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
-    }
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, block, 1 );
+        return true;
+       }
 
     @Override
     public ItemStoneSlab4 toItem() {

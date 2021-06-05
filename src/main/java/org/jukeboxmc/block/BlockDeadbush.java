@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemDeadbush;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDeadbush extends Block {
+public class BlockDeadbush extends BlockWaterlogable {
 
     public BlockDeadbush() {
         super( "minecraft:deadbush" );

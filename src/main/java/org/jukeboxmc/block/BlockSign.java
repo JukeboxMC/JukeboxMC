@@ -10,7 +10,7 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockSign extends Block {
+public abstract class BlockSign extends BlockWaterlogable {
 
     public BlockSign( String identifier ) {
         super( identifier );

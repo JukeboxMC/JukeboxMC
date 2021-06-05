@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemBeacon;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBeacon extends Block {
+public class BlockBeacon extends BlockWaterlogable {
 
     public BlockBeacon() {
         super( "minecraft:beacon" );

@@ -8,7 +8,7 @@ import org.jukeboxmc.item.ItemCoralFan;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCoralFan extends Block {
+public class BlockCoralFan extends BlockWaterlogable {
 
     public BlockCoralFan() {
         super( "minecraft:coral_fan" );

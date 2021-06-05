@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemStonecutter;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStonecutter extends Block {
+public class BlockStonecutter extends BlockWaterlogable {
 
     public BlockStonecutter() {
         super( "minecraft:stonecutter" );

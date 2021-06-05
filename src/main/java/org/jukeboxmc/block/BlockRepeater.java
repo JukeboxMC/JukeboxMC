@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockRepeater extends Block {
+public class BlockRepeater extends BlockWaterlogable {
 
     public BlockRepeater() {
         super( "minecraft:unpowered_repeater" );
@@ -21,8 +21,7 @@ public class BlockRepeater extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override
@@ -34,9 +33,6 @@ public class BlockRepeater extends Block {
         } else {
             this.setRepeaterDelay( 0 );
         }
-
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         return true;
     }
 

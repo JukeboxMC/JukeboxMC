@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemDaylightDetector;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDaylightDetector extends Block {
+public class BlockDaylightDetector extends BlockWaterlogable {
 
     public BlockDaylightDetector() {
         super( "minecraft:daylight_detector" );

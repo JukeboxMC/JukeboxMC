@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemHardGlassPane;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockHardGlassPane extends Block {
+public class BlockHardGlassPane extends BlockWaterlogable {
 
     public BlockHardGlassPane() {
         super( "minecraft:hard_glass_pane" );

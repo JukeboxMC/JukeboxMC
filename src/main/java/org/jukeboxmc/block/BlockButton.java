@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockButton extends Block {
+public abstract class BlockButton extends BlockWaterlogable {
 
     public BlockButton( String identifier ) {
         super( identifier );
@@ -21,6 +21,7 @@ public abstract class BlockButton extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
+        Block placedBlock = world.getBlock( placePosition );
 
         if ( block.isTransparent() ) {
             return false;
@@ -28,7 +29,9 @@ public abstract class BlockButton extends Block {
 
         this.setBlockFace( blockFace );
         this.setButtonPressed( false );
+
         world.setBlock( placePosition, this );
+        world.setBlock( placePosition, placedBlock, 1 );
         return true;
     }
 
@@ -65,8 +68,6 @@ public abstract class BlockButton extends Block {
 
     public void setButtonPressed( boolean value ) {
         this.setState( "button_pressed_bit", value ? (byte) 1 : (byte) 0 );
-        this.world.sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public boolean isButtonPressed() {

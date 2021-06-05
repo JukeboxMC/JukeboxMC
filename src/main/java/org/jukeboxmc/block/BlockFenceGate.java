@@ -12,7 +12,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class BlockFenceGate extends Block {
+public abstract class BlockFenceGate extends BlockWaterlogable {
 
     public BlockFenceGate( String identifier ) {
         super( identifier );
@@ -22,8 +22,7 @@ public abstract class BlockFenceGate extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection() );
         this.setOpen( false );
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

@@ -13,7 +13,6 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
         super( "minecraft:polished_blackstone_brick_slab" );
     }
 
-
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block targetBlock = world.getBlock( blockPosition );
@@ -49,6 +48,7 @@ public class BlockPolishedBlackstoneBrickSlab extends BlockSlab {
         }
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
+        world.setBlock( placePosition, block, 1 );
         return true;
     }
 

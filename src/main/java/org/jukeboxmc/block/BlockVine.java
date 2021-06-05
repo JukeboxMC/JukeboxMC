@@ -11,7 +11,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockVine extends Block {
+public class BlockVine extends BlockWaterlogable {
 
     public BlockVine() {
         super( "minecraft:vine" );

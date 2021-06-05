@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemMobSpawner;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockMobSpawner extends Block {
+public class BlockMobSpawner extends BlockWaterlogable {
 
     public BlockMobSpawner() {
         super( "minecraft:mob_spawner" );

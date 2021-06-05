@@ -13,7 +13,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockGrindstone extends Block {
+public class BlockGrindstone extends BlockWaterlogable {
 
     public BlockGrindstone() {
         super( "minecraft:grindstone" );
@@ -30,8 +30,7 @@ public class BlockGrindstone extends Block {
             this.setDirection( blockFace.toDirection() );
             this.setAttachment( Attachment.SIDE );
         }
-        world.setBlock( placePosition, this );
-        return true;
+        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
     }
 
     @Override

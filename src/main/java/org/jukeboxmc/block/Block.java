@@ -164,45 +164,53 @@ public abstract class Block implements Cloneable {
 
     public abstract BlockType getBlockType();
 
-    public Block getSide( Direction direction ) {
+    public Block getSide( Direction direction, int layer ) {
         switch ( direction ) {
             case SOUTH:
-                return this.getRelative( Vector.SOUTH );
+                return this.getRelative( Vector.SOUTH, layer );
             case NORTH:
-                return this.getRelative( Vector.NORTH );
+                return this.getRelative( Vector.NORTH, layer );
             case EAST:
-                return this.getRelative( Vector.EAST );
+                return this.getRelative( Vector.EAST, layer );
             case WEST:
-                return this.getRelative( Vector.WEST );
+                return this.getRelative( Vector.WEST, layer );
+            default:
+                return null;
+        }
+    }
+
+    public Block getSide( Direction direction ) {
+        return this.getSide( direction, 0 );
+    }
+
+    public Block getSide( BlockFace blockFace, int layer ) {
+        switch ( blockFace ) {
+            case DOWN:
+                return this.getRelative( Vector.DOWN, layer );
+            case UP:
+                return this.getRelative( Vector.UP, layer );
+            case SOUTH:
+                return this.getRelative( Vector.SOUTH, layer );
+            case NORTH:
+                return this.getRelative( Vector.NORTH, layer );
+            case EAST:
+                return this.getRelative( Vector.EAST, layer );
+            case WEST:
+                return this.getRelative( Vector.WEST, layer );
             default:
                 return null;
         }
     }
 
     public Block getSide( BlockFace blockFace ) {
-        switch ( blockFace ) {
-            case DOWN:
-                return this.getRelative( Vector.DOWN );
-            case UP:
-                return this.getRelative( Vector.UP );
-            case SOUTH:
-                return this.getRelative( Vector.SOUTH );
-            case NORTH:
-                return this.getRelative( Vector.NORTH );
-            case EAST:
-                return this.getRelative( Vector.EAST );
-            case WEST:
-                return this.getRelative( Vector.WEST );
-            default:
-                return null;
-        }
+        return this.getSide( blockFace, 0 );
     }
 
-    private Block getRelative( Vector position ) {
+    public Block getRelative( Vector position, int layer ) {
         int x = this.location.getFloorX() + position.getFloorX();
         int y = this.location.getFloorY() + position.getFloorY();
         int z = this.location.getFloorZ() + position.getFloorZ();
-        return this.world.getBlockAt( x, y, z, this.location.getDimension() );
+        return this.world.getBlockAt( x, y, z, this.location.getDimension(), layer );
     }
 
     public int getRuntimeId() {
@@ -295,6 +303,10 @@ public abstract class Block implements Cloneable {
 
     public void leaveBlock() {
 
+    }
+
+    public boolean isWater() {
+        return this instanceof BlockWater || this instanceof BlockFlowingWater;
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemGlassPane;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockGlassPane extends Block {
+public class BlockGlassPane extends BlockWaterlogable {
 
     public BlockGlassPane() {
         super( "minecraft:glass_pane" );

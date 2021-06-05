@@ -7,7 +7,7 @@ import org.jukeboxmc.item.ItemActivatorRail;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockActivatorRail extends Block {
+public class BlockActivatorRail extends BlockWaterlogable {
 
     public BlockActivatorRail() {
         super( "minecraft:activator_rail" );
