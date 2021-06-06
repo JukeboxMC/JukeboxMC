@@ -23,7 +23,6 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
-import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;

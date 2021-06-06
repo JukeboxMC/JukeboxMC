@@ -5,7 +5,6 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.AnvilDamage;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAnvil;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;

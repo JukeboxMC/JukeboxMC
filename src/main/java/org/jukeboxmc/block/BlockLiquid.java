@@ -1,12 +1,10 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.event.block.BlockFromToEvent;
 import org.jukeboxmc.item.ItemWoodenSword;
 import org.jukeboxmc.utils.Utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
