@@ -40,9 +40,9 @@ public class BlockBed extends BlockWaterlogable {
             world.setBlock( blockNext.getLocation(), blockBed );
             world.setBlock( placePosition, this );
 
-            if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
-                world.setBlock( blockNext.getLocation(), block, 1, player.getDimension() );
-                world.setBlock( placePosition, block, 1, player.getDimension() );
+            if ( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
+                world.setBlock( blockNext.getLocation(), block, 1 );
+                world.setBlock( placePosition, block, 1 );
             }
 
             BlockEntityType.BED.<BlockEntityBed>createBlockEntity( blockBed ).setColor( blockColor ).spawn();
@@ -53,7 +53,7 @@ public class BlockBed extends BlockWaterlogable {
     }
 
     @Override
-    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition ) {
         Block block = this.world.getBlock( breakPosition, 1 );
         Direction direction = this.getDirection();
         if ( this.isHeadPiece() ) {

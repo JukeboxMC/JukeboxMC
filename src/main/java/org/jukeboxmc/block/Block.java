@@ -130,7 +130,7 @@ public abstract class Block implements Cloneable {
 
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         if ( this.getBlockType() != BlockType.AIR ) {
-            world.setBlock( placePosition, this, 0, player.getDimension() );
+            world.setBlock( placePosition, this, 0, player.getDimension(), true );
             return true;
         } else {
             Server.getInstance().getLogger().debug( "Try to place block -> " + this.getName() );
@@ -142,7 +142,7 @@ public abstract class Block implements Cloneable {
         return false;
     }
 
-    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition ) {
         this.world.setBlock( breakPosition, new BlockAir() );
         return true;
     }
@@ -307,6 +307,18 @@ public abstract class Block implements Cloneable {
 
     public boolean isWater() {
         return this instanceof BlockWater || this instanceof BlockFlowingWater;
+    }
+
+    public int getTickRate() {
+        return 10;
+    }
+
+    public boolean canBeFlowedInto() {
+        return false;
+    }
+
+    public final boolean canWaterloggingFlowInto() {
+        return this.canBeFlowedInto() || (this instanceof BlockWaterlogable && ((BlockWaterlogable) this).getWaterloggingLevel() > 1);
     }
 
     @Override

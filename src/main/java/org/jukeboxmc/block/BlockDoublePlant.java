@@ -46,14 +46,14 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition ) {
         if ( this.isUpperBlock() ) {
             this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir() );
         } else {
             this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir() );
         }
         this.world.setBlock( this.location, new BlockAir() );
-        return !isCreative;
+        return true;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BlockDoublePlant extends Block {
 
     @Override
     public boolean canBeReplaced( Block block ) {
-        this.onBlockBreak( block.getLocation(), true );
+        this.onBlockBreak( block.getLocation() );
         return true;
     }
 

@@ -10,5 +10,4 @@ public class ItemBucket extends Item {
         super( 360 );
     }
 
-
 }

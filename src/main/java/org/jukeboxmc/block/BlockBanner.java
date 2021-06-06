@@ -23,17 +23,16 @@ public abstract class BlockBanner extends BlockWaterlogable {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition );
-        System.out.println("FACE: " + blockFace.name());
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) Math.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
             world.setBlock( placePosition, this );
         } else {
             BlockWallBanner blockWallBanner = new BlockWallBanner();
             blockWallBanner.setBlockFace( blockFace );
-            world.setBlock( placePosition, blockWallBanner, 0, player.getDimension() );
+            world.setBlock( placePosition, blockWallBanner, 0 );
         }
         if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
-            world.setBlock( placePosition, block, 1, player.getDimension() );
+            world.setBlock( placePosition, block, 1 );
         }
         int type = itemIndHand.getNBT() != null ? itemIndHand.getNBT().getInt( "Type", 0 ) : 0;
         BlockEntityType.BANNER.<BlockEntityBanner>createBlockEntity( this ).setColor( BlockColor.values()[itemIndHand.getMeta()] ).setType( type ).spawn();

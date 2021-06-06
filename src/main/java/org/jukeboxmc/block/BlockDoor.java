@@ -54,7 +54,7 @@ public abstract class BlockDoor extends BlockWaterlogable {
     }
 
     @Override
-    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition ) {
         Block block = this.world.getBlock( breakPosition, 1 );
         if ( this.isUpperBlock() ) {
             this.world.setBlock( this.location.subtract( 0, 1, 0 ), block );

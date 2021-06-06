@@ -324,15 +324,18 @@ public class World extends LevelDB {
         this.getChunk( x >> 4, z >> 4, dimension ).setHeightMap( x, z, value );
     }
 
-    public void setBlock( Vector location, Block block, int layer) {
-        this.setBlock( location, block, layer, location.getDimension() );
-    }
-
     public void setBlock( Vector location, Block block ) {
-        this.setBlock( location, block, 0, location.getDimension() );
+        this.setBlock( location, block, 0, location.getDimension(), true );
     }
 
-    public void setBlock( Vector location, Block block, int layer, Dimension dimension ) {
+    public void setBlock( Vector location, Block block, int layer ) {
+        this.setBlock( location, block, layer, location.getDimension(), true );
+    }
+    public void setBlock( Vector location, Block block, int layer, boolean updateBlock ) {
+        this.setBlock( location, block, layer, location.getDimension(), updateBlock );
+    }
+
+    public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getFloorX() >> 4, location.getFloorZ() >> 4, dimension );
         chunk.setBlock( location.getFloorX(), location.getFloorY(), location.getFloorZ(), layer, block );
 
@@ -354,15 +357,17 @@ public class World extends LevelDB {
             chunk.removeBlockEntity( location.getFloorX(), location.getFloorY(), location.getFloorZ() );
         }
 
-        block.onUpdate( UpdateReason.NORMAL );
-        this.getBlock( location, layer == 0 ? 1 : 0 ).onUpdate( UpdateReason.NORMAL );
-        this.updateBlockAround( location );
+        if ( updateBlock ) {
+            block.onUpdate( UpdateReason.NORMAL );
+            this.getBlock( location, layer == 0 ? 1 : 0 ).onUpdate( UpdateReason.NORMAL );
+            this.updateBlockAround( location );
 
-        long next;
-        for ( BlockFace blockFace : BlockFace.values() ) {
-            Block blockSide = block.getSide( blockFace );
-            if ( ( next = blockSide.onUpdate( UpdateReason.NEIGHBORS ) ) > this.server.getCurrentTick() ) {
-                this.scheduleBlockUpdate( blockSide.getLocation(), next );
+            long next;
+            for ( BlockFace blockFace : BlockFace.values() ) {
+                Block blockSide = block.getSide( blockFace );
+                if ( ( next = blockSide.onUpdate( UpdateReason.NEIGHBORS ) ) > this.server.getCurrentTick() ) {
+                    this.scheduleBlockUpdate( blockSide.getLocation(), next );
+                }
             }
         }
     }
@@ -536,7 +541,7 @@ public class World extends LevelDB {
 
             if ( clickedBlock.canBeReplaced( placedBlock ) ) {
                 placePosition = blockPosition;
-                clickedBlock.onBlockBreak( placePosition, player.getGameMode().equals( GameMode.CREATIVE ) );
+                clickedBlock.onBlockBreak( placePosition );
             }
 
             if ( placedBlock.isSolid() ) {
@@ -596,7 +601,7 @@ public class World extends LevelDB {
         return new Vector( x, y, z, blockPosition.getDimension() );
     }
 
-    public void breakBlock( Player player, Vector breakPosition, boolean isCreative ) {
+    public void breakBlock( Player player, Vector breakPosition, Item item) {
         Block breakBlock = this.getBlock( breakPosition );
 
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops() );
@@ -607,7 +612,7 @@ public class World extends LevelDB {
             return;
         }
 
-        if ( breakBlock.onBlockBreak( breakPosition, isCreative ) ) {
+        if ( breakBlock.onBlockBreak( breakPosition ) ) {
             //Drop Item
         }
 
@@ -626,7 +631,7 @@ public class World extends LevelDB {
 
     public void sendDimensionPacket( Packet packet, Dimension dimension ) {
         for ( Player player : this.getPlayers() ) {
-            if ( player.getDimension().equals( dimension) ) {
+            if ( player.getDimension().equals( dimension ) ) {
                 player.getPlayerConnection().sendPacket( packet );
             }
         }

@@ -6,7 +6,7 @@ import org.jukeboxmc.item.ItemAir;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockAir extends Block {
+public class BlockAir extends BlockWaterlogable {
 
     public BlockAir() {
         super( "minecraft:air" );
@@ -34,6 +34,11 @@ public class BlockAir extends Block {
 
     @Override
     public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeFlowedInto() {
         return true;
     }
 }

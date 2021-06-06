@@ -21,7 +21,7 @@ public abstract class BlockWaterlogable extends Block {
         Block block = world.getBlock( placePosition );
         if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
             if( super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace ) ) {
-                world.setBlock( placePosition, block, 1, player.getDimension() );
+                world.setBlock( placePosition, block, 1 );
                 return true;
             }
             return false;
@@ -30,19 +30,19 @@ public abstract class BlockWaterlogable extends Block {
     }
 
     @Override
-    public boolean onBlockBreak( Vector breakPosition, boolean isCreative ) {
+    public boolean onBlockBreak( Vector breakPosition ) {
         Block block = this.world.getBlock( breakPosition, 1 );
         if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
-            if( super.onBlockBreak( breakPosition, isCreative ) ) {
-                this.world.setBlock( breakPosition, block, 0, this.location.getDimension() );
-                this.world.setBlock( breakPosition, BlockType.AIR.getBlock(), 1, this.location.getDimension() );
+            if( super.onBlockBreak( breakPosition ) ) {
+                this.world.setBlock( breakPosition, block, 0);
+                this.world.setBlock( breakPosition, BlockType.AIR.getBlock(), 1 );
                 return true;
             }
 
             return false;
         }
 
-        return super.onBlockBreak( breakPosition, isCreative );
+        return super.onBlockBreak( breakPosition );
     }
 
     public int getWaterloggingLevel() {
