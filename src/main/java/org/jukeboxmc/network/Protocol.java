@@ -72,7 +72,6 @@ public interface Protocol {
     byte CONNECTION_REQUEST_ACCEPTED = 0x10;
     byte NEW_INCOMING_CONNECTION = 0x13;
     byte DISCONNECT_NOTIFICATION = 0x15;
-
     byte ACKNOWLEDGE_PACKET = (byte) 0xc0;
     byte NACKNOWLEDGE_PACKET = (byte) 0xa0;
     byte QUERY = (byte) 0xfe;
