@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonRoots;
 public class ItemCrimsonRoots extends Item {
 
     public ItemCrimsonRoots() {
-        super( -223 );
+        super ( "minecraft:crimson_roots" );
     }
 
     @Override

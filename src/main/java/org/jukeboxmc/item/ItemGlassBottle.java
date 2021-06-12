@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGlassBottle extends Item {
 
     public ItemGlassBottle() {
-        super( 425 );
+        super ( "minecraft:glass_bottle" );
     }
 
 

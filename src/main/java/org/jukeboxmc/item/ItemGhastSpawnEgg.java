@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGhastSpawnEgg extends Item {
 
     public ItemGhastSpawnEgg() {
-        super( 452 );
+        super ( "minecraft:ghast_spawn_egg" );
     }
 
 

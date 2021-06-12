@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGlowingObsidian;
 public class ItemGlowingObsidian extends Item {
 
     public ItemGlowingObsidian() {
-        super( 246 );
+        super ( "minecraft:glowingobsidian" );
     }
 
     @Override

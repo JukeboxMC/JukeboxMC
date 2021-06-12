@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.SandType;
 public class ItemSand extends Item {
 
     public ItemSand( int blockRuntimeId ) {
-        super( 12, blockRuntimeId );
+        super( "minecraft:sand", blockRuntimeId );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemChainBoots extends Item {
 
     public ItemChainBoots() {
-        super( 342 );
+        super ( "minecraft:chainmail_boots" );
     }
 
 

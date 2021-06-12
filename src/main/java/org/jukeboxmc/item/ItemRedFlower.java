@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.FlowerType;
 public class ItemRedFlower extends Item {
 
     public ItemRedFlower( int blockRuntimeId ) {
-        super( 38, blockRuntimeId );
+        super( "minecraft:red_flower", blockRuntimeId );
     }
 
     @Override

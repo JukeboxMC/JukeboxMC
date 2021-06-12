@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPumpkin;
 public class ItemPumpkin extends Item {
 
     public ItemPumpkin() {
-        super( 86 );
+        super ( "minecraft:pumpkin" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJungleButton;
 public class ItemJungleButton extends Item {
 
     public ItemJungleButton() {
-        super( -143 );
+        super ( "minecraft:jungle_button" );
     }
 
     @Override

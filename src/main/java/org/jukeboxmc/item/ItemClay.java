@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockClay;
 public class ItemClay extends Item {
 
     public ItemClay() {
-        super( 82 );
+        super ( "minecraft:clay" );
     }
 
     @Override

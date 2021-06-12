@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonFungus;
 public class ItemCrimsonFungus extends Item {
 
     public ItemCrimsonFungus() {
-        super(  -228 );
+        super( "minecraft:crimson_fungus" );
     }
 
     @Override

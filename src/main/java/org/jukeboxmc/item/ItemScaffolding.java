@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockScaffolding;
 public class ItemScaffolding extends Item {
 
     public ItemScaffolding() {
-        super( -165 );
+        super ( "minecraft:scaffolding" );
     }
 
     @Override

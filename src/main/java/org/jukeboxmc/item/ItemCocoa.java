@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCocoa;
 public class ItemCocoa extends Item {
 
     public ItemCocoa() {
-        super( 127 );
+        super ( "minecraft:cocoa" );
     }
 
     @Override

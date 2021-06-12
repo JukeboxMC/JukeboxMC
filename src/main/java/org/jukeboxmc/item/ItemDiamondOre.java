@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDiamondOre;
 public class ItemDiamondOre extends Item {
 
     public ItemDiamondOre() {
-        super( 56 );
+        super ( "minecraft:diamond_ore" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLapisLazuli extends Item {
 
     public ItemLapisLazuli() {
-        super( 412 );
+        super ( "minecraft:lapis_lazuli" );
     }
 
 

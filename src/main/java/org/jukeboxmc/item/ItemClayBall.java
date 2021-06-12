@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemClayBall extends Item {
 
     public ItemClayBall() {
-        super( 382 );
+        super ( "minecraft:clay_ball" );
     }
 
 

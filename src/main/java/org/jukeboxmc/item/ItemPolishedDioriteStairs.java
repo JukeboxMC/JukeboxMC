@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedDioriteStairs;
 public class ItemPolishedDioriteStairs extends Item {
 
     public ItemPolishedDioriteStairs() {
-        super( -173 );
+        super ( "minecraft:polished_diorite_stairs" );
     }
 
     @Override

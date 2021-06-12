@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.MonsterEggStoneType;
 public class ItemMonsterEgg extends Item {
 
     public ItemMonsterEgg( int blockdRuntimeId ) {
-        super( 97, blockdRuntimeId );
+        super( "minecraft:monster_egg", blockdRuntimeId );
     }
 
     @Override

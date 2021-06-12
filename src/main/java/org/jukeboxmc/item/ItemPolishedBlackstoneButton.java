@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedBlackstoneButton;
 public class ItemPolishedBlackstoneButton extends Item {
 
     public ItemPolishedBlackstoneButton() {
-        super( -296 );
+        super ( "minecraft:polished_blackstone_button" );
     }
 
     @Override

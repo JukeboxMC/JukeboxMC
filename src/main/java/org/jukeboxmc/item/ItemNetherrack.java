@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherrack;
 public class ItemNetherrack extends Item {
 
     public ItemNetherrack() {
-        super( 87 );
+        super ( "minecraft:netherrack" );
     }
 
     @Override

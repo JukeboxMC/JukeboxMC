@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSmoothStone;
 public class ItemSmoothStone extends Item {
 
     public ItemSmoothStone() {
-        super( -183 );
+        super ( "minecraft:smooth_stone" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRabbitHide extends Item {
 
     public ItemRabbitHide() {
-        super( 519 );
+        super ( "minecraft:rabbit_hide" );
     }
 
 

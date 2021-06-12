@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemStraySpawnEgg extends Item {
 
     public ItemStraySpawnEgg() {
-        super( 460 );
+        super ( "minecraft:stray_spawn_egg" );
     }
 
 

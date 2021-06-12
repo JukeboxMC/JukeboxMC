@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockKelp;
 public class ItemKelpBlock extends Item {
 
     public ItemKelpBlock() {
-        super( -138 );
+        super ( "minecraft:item.kelp" );
     }
 
     @Override

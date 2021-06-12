@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEnchantingTable;
 public class ItemEnchantingTable extends Item {
 
     public ItemEnchantingTable() {
-        super( 116 );
+        super ( "minecraft:enchanting_table" );
     }
 
     @Override

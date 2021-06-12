@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.WoodType;
 public class ItemWood extends Item {
 
     public ItemWood( int blockRuntimeId ) {
-        super( -212, blockRuntimeId );
+        super( "minecraft:wood", blockRuntimeId );
     }
 
     @Override

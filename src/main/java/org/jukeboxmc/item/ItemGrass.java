@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGrass;
 public class ItemGrass extends Item {
 
     public ItemGrass() {
-        super( 2 );
+        super ( "minecraft:grass" );
     }
 
     @Override

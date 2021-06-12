@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.QuartzType;
 public class ItemQuartzBlock extends Item {
 
     public ItemQuartzBlock( int blockRuntimeId ) {
-        super( 155, blockRuntimeId );
+        super( "minecraft:quartz_block", blockRuntimeId );
     }
 
     @Override

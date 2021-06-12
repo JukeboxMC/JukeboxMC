@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGoldNugget extends Item {
 
     public ItemGoldNugget() {
-        super( 423 );
+        super ( "minecraft:gold_nugget" );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFlint extends Item {
 
     public ItemFlint() {
-        super( 356 );
+        super ( "minecraft:flint" );
     }
 
 

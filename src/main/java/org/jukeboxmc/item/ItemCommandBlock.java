@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCommandBlock;
 public class ItemCommandBlock extends Item {
 
     public ItemCommandBlock() {
-        super( 137 );
+        super ( "minecraft:command_block" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPotato extends Item {
 
     public ItemPotato() {
-        super( 280 );
+        super ( "minecraft:potato" );
     }
 
 

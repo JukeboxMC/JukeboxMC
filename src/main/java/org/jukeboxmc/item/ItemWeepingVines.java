@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWeepingVines;
 public class ItemWeepingVines extends Item {
 
     public ItemWeepingVines() {
-        super( -231 );
+        super ( "minecraft:weeping_vines" );
     }
 
     @Override

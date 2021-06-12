@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDispenser;
 public class ItemDispenser extends Item {
 
     public ItemDispenser() {
-        super( 23 );
+        super ( "minecraft:dispenser" );
     }
 
     @Override

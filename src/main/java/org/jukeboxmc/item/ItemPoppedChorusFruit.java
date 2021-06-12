@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPoppedChorusFruit extends Item {
 
     public ItemPoppedChorusFruit() {
-        super( 549 );
+        super ( "minecraft:popped_chorus_fruit" );
     }
 
 

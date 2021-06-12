@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBoneMeal extends Item {
 
     public ItemBoneMeal() {
-        super( 409 );
+        super ( "minecraft:bone_meal" );
     }
 
 

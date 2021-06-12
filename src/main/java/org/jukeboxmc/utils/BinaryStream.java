@@ -332,6 +332,7 @@ public class BinaryStream {
 
         gamerules.forEach( ( name, value ) -> {
             this.writeString( name );
+            this.writeBoolean( true );
             this.writeUnsignedVarInt( value.getType() );
             switch ( value.getType() ) {
                 case 1:
@@ -525,6 +526,7 @@ public class BinaryStream {
         }
 
         Item item = ItemType.getItemFormNetwork( networkId, data );
+        if ( item == null ) System.out.println("NULL!");
         item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );

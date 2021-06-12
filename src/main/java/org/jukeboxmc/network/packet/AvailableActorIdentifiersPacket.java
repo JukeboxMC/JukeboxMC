@@ -17,6 +17,7 @@ public class AvailableActorIdentifiersPacket extends Packet {
 
     static {
         try( InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "entity_identifiers.dat" ) ) {
+            System.out.println( resourceAsStream );
             entityIdentifiers = ByteStreams.toByteArray(resourceAsStream);
         } catch ( IOException e ) {
             e.printStackTrace();

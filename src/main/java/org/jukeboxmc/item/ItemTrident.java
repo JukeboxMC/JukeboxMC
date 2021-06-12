@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemTrident extends Item {
 
     public ItemTrident() {
-        super( 536 );
+        super ( "minecraft:trident" );
     }
 
 

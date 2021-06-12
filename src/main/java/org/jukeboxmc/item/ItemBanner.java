@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 public class ItemBanner extends Item {
 
     public ItemBanner() {
-        super( 557 );
+        super ( "minecraft:banner" );
     }
 
     @Override

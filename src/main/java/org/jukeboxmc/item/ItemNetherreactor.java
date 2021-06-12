@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherreactor;
 public class ItemNetherreactor extends Item {
 
     public ItemNetherreactor() {
-        super(  247 );
+        super( "minecraft:netherreactor" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemVexSpawnEgg extends Item {
 
     public ItemVexSpawnEgg() {
-        super( 474 );
+        super ( "minecraft:vex_spawn_egg" );
     }
 
 

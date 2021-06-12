@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGildedBlackstone;
 public class ItemGlidedBlackstone extends Item {
 
     public ItemGlidedBlackstone() {
-        super( -281 );
+        super ( "minecraft:gilded_blackstone" );
     }
 
     @Override

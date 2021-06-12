@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemTurtleSpawnEgg extends Item {
 
     public ItemTurtleSpawnEgg() {
-        super(  483 );
+        super( "minecraft:turtle_spawn_egg" );
     }
 
 

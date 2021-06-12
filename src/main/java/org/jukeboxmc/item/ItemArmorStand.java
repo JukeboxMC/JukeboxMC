@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemArmorStand extends Item {
 
     public ItemArmorStand() {
-        super(  542 );
+        super(  "minecraft:armor_stand" );
     }
 
 

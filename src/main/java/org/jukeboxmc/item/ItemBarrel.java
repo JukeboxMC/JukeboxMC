@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBarrel;
 public class ItemBarrel extends Item {
 
     public ItemBarrel() {
-        super( -203 );
+        super ( "minecraft:barrel" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetherStar extends Item {
 
     public ItemNetherStar() {
-        super( 508 );
+        super ( "minecraft:nether_star" );
     }
 
 

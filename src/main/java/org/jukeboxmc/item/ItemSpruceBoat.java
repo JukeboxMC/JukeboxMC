@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSpruceBoat extends Item {
 
     public ItemSpruceBoat() {
-        super( 376 );
+        super ( "minecraft:spruce_boat" );
     }
 
 

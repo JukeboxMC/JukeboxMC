@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemHoneycomb extends Item {
 
     public ItemHoneycomb() {
-        super( 580 );
+        super ( "minecraft:honeycomb" );
     }
 
 }

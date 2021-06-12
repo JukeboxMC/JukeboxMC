@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRedstoneOre;
 public class ItemRedstoneOre extends Item {
 
     public ItemRedstoneOre() {
-        super( 73 );
+        super ( "minecraft:redstone_ore" );
     }
 
     @Override

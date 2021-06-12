@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockReserved6;
 public class ItemReserved6 extends Item {
 
     public ItemReserved6() {
-        super( 255 );
+        super ( "minecraft:reserved6" );
     }
 
     @Override

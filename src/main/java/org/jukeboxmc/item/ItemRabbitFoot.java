@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRabbitFoot extends Item {
 
     public ItemRabbitFoot() {
-        super( 518 );
+        super ( "minecraft:rabbit_foot" );
     }
 
 

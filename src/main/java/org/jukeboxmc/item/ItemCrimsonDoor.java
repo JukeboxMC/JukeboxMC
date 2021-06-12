@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonDoor;
 public class ItemCrimsonDoor extends Item {
 
     public ItemCrimsonDoor() {
-        super( 604 );
+        super ( "minecraft:crimson_door" );
     }
 
     @Override

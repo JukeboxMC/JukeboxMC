@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockTnt;
 public class ItemTnt extends Item {
 
     public ItemTnt() {
-        super( 46 );
+        super ( "minecraft:tnt" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEmptyMap extends Item {
 
     public ItemEmptyMap() {
-        super( 505 );
+        super ( "minecraft:empty_map" );
     }
 
     public void setMapType( MapType mapType ) {

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBarrier;
 public class ItemBarrier extends Item {
 
     public ItemBarrier() {
-        super( -161 );
+        super ( "minecraft:barrier" );
     }
 
     @Override

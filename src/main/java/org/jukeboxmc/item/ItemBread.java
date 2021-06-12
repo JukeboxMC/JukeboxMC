@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBread extends Item {
 
     public ItemBread() {
-        super( 261 );
+        super ( "minecraft:bread" );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSpruceButton;
 public class ItemSpruceButton extends Item {
 
     public ItemSpruceButton() {
-        super( -144 );
+        super ( "minecraft:spruce_button" );
     }
 
     @Override

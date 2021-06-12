@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDarkOakStairs;
 public class ItemDarkOakStairs extends Item {
 
     public ItemDarkOakStairs() {
-        super( 164 );
+        super ( "minecraft:dark_oak_stairs" );
     }
 
     @Override

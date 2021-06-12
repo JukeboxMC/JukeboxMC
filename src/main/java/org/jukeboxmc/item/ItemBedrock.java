@@ -10,7 +10,7 @@ import org.jukeboxmc.block.BlockBedrock;
 public class ItemBedrock extends Item {
 
     public ItemBedrock() {
-        super( 7 );
+        super ( "minecraft:bedrock" );
     }
 
     @Override

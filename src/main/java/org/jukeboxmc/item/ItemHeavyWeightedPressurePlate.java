@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHeavyWeightedPressurePlate;
 public class ItemHeavyWeightedPressurePlate extends Item {
 
     public ItemHeavyWeightedPressurePlate() {
-        super( 148 );
+        super ( "minecraft:heavy_weighted_pressure_plate" );
     }
 
     @Override

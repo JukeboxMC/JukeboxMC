@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 public class ItemSkullBannerPattern extends Item {
 
     public ItemSkullBannerPattern() {
-        super( 573 );
+        super ( "minecraft:skull_banner_pattern" );
     }
 
     @Override

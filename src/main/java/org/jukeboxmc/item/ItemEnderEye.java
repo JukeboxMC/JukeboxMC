@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEnderEye extends Item {
 
     public ItemEnderEye() {
-        super( 431 );
+        super ( "minecraft:ender_eye" );
     }
 
 

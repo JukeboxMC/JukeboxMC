@@ -7,12 +7,14 @@ import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtType;
-import org.jukeboxmc.nbt.NbtUtils;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author LucGamesYT
@@ -26,11 +28,16 @@ public class BlockPalette {
     public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
     public static final List<BlockData> BLOCK_DATA = new LinkedList<>();
 
+    public static List<NbtMap> test1 = new ArrayList<>();
+    public static List<NbtMap> test2 = new ArrayList<>();
+
     @SneakyThrows
     public static void init() {
-        try ( NBTInputStream nbtReader = NbtUtils.createGZIPReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
+        InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" );
+        try ( NBTInputStream nbtReader = new NBTInputStream( new DataInputStream( new GZIPInputStream( resourceAsStream ) ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
             for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) ) {
+                test2.add( blockMap );
                 int runtimeId = RUNTIME_COUNTER.getAndIncrement();
                 BLOCK_PALETTE.put( runtimeId, blockMap );
                 BLOCK_DATA.add( new BlockData( blockMap.getString( "name" ), runtimeId, blockMap.getCompound( "states" ) ) );
@@ -38,6 +45,24 @@ public class BlockPalette {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+
+        /*
+            InputStream resourceAsStreamOld = JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpaletteOLD.nbt" );
+        try ( NBTInputStream nbtReaderOld = new NBTInputStream( new DataInputStream( new GZIPInputStream( resourceAsStreamOld ) ) ) ) {
+            NbtMap nbtMapOld = (NbtMap) nbtReaderOld.readTag();
+            test1.addAll( nbtMapOld.getList( "blocks", NbtType.COMPOUND ) );
+        }
+
+        test1.forEach( nbtMap -> test2.remove( nbtMap ) );
+
+
+        int count = 0;
+        for ( String name : test2.stream().map( nbtMap -> nbtMap.getString( "name" ) ).collect( Collectors.toSet() ) ) {
+            count++;
+            System.out.println(name);
+        }
+        System.out.println(count);
+         */
     }
 
     public static NbtMap getBlockNBT( int runtimeId ) {

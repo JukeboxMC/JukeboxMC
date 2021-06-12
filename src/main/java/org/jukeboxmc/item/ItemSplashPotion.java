@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSplashPotion extends Item {
 
     public ItemSplashPotion() {
-        super( 551 );
+        super ( "minecraft:splash_potion" );
     }
 
     public void setPotionType( PotionType potionType ) {

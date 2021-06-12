@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNetherBrickFence;
 public class ItemNetherBrickFence extends Item {
 
     public ItemNetherBrickFence() {
-        super( 113 );
+        super ( "minecraft:nether_brick_fence" );
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.PurpurType;
 public class ItemPurpurBlock extends Item {
 
     public ItemPurpurBlock( int blockRuntimeId ) {
-        super( 201, blockRuntimeId );
+        super( "minecraft:purpur_block", blockRuntimeId );
     }
 
     @Override

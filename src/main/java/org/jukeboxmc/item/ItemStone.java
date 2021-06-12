@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.StoneType;
 public class ItemStone extends Item {
 
     public ItemStone( int blockRuntimeId ) {
-        super( 1, blockRuntimeId );
+        super( "minecraft:stone", blockRuntimeId );
     }
 
     @Override

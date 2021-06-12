@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFireworkStar extends Item {
 
     public ItemFireworkStar() {
-        super( 510 );
+        super ( "minecraft:firework_star" );
     }
 
     //TODO Implement NBTs

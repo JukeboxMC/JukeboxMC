@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedBirchLog;
 public class ItemStrippedBirchLog extends Item {
 
     public ItemStrippedBirchLog() {
-        super( -6 );
+        super ( "minecraft:stripped_birch_log" );
     }
 
     @Override

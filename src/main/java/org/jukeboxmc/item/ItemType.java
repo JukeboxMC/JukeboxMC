@@ -149,7 +149,6 @@ public enum ItemType {
     WHEAT_BLOCK( new ItemWheatBlock() ), //Maybe WHEAT
     FARMLAND( new ItemFarmland() ),
     FURNACE( new ItemFurnace() ),
-    BURNING_FURNACE( new ItemBurningFurnace() ),
     STANDING_SIGN( new ItemStandingSign() ),
     OAK_DOOR( new ItemOakDoor() ),
     LADDER( new ItemLadder() ),
@@ -1290,7 +1289,8 @@ public enum ItemType {
 
     private static Map<String, Integer> itemIdByName = new HashMap<>();
 
-    private static final List<Item> CACHED_ITEMS = new ArrayList<>();
+    private static List<String> test1 = new ArrayList<>();
+    private static List<String> test2 = new ArrayList<>();
 
     public static void init() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -1305,12 +1305,28 @@ public enum ItemType {
         ItemType.setItemPalette( map );
 
         for ( Map<String, Object> objectMap : map ) {
+            //System.out.println((String) objectMap.get( "name" ));
             itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
         }
-    }
 
-    public static List<Item> getItems() {
-        return CACHED_ITEMS;
+       /*
+        InputStream itemPaletteOld = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempaletteOLD.json" );
+        JsonElement parseItemOld = new JsonParser().parse( new InputStreamReader( itemPaletteOld ) );
+        List<Map<String, Object>> mapOld = gson.fromJson( parseItemOld, List.class );
+
+        for ( Map<String, Object> objectMap : mapOld ) {
+            test1.add( (String) objectMap.get( "name" ) );
+        }
+
+        test1.forEach( string -> test2.remove( string ) );
+
+        int count = 0;
+        for ( String name : new HashSet<>( test2 ) ) {
+            count++;
+            System.out.println( "ITEM -> " +  name );
+        }
+        System.out.println( count );
+        */
     }
 
     public static Item getItemFormNetwork( int networkId, int meta ) {

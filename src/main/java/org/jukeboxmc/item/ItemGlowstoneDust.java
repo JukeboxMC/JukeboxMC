@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGlowstoneDust extends Item {
 
     public ItemGlowstoneDust() {
-        super( 392 );
+        super ( "minecraft:glowstone_dust" );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSlimeSpawnEgg extends Item {
 
     public ItemSlimeSpawnEgg() {
-        super( 443 );
+        super ( "minecraft:slime_spawn_egg" );
     }
 
 

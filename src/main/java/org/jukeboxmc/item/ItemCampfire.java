@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCampfire;
 public class ItemCampfire extends Item {
 
     public ItemCampfire() {
-        super(  578 );
+        super( "minecraft:campfire" );
     }
 
     @Override

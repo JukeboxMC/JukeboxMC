@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedSlab;
 public class ItemWarpedSlab extends Item {
 
     public ItemWarpedSlab() {
-        super( -265 );
+        super ( "minecraft:warped_slab" );
     }
 
     @Override

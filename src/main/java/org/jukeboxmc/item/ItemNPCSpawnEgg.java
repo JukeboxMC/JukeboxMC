@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNPCSpawnEgg extends Item {
 
     public ItemNPCSpawnEgg() {
-        super( 468 );
+        super ( "minecraft:npc_spawn_egg" );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBamboo;
 public class ItemBamboo extends Item {
 
     public ItemBamboo() {
-        super( -163 );
+        super ( "minecraft:bamboo" );
     }
 
     @Override

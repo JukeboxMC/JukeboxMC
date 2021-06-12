@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscWait extends Item {
 
     public ItemMusicDiscWait() {
-        super( 535 );
+        super ( "minecraft:music_disc_wait" );
     }
 
 

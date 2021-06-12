@@ -586,6 +586,9 @@ public enum BlockType {
     }
 
     public static Block getBlock( int runtimeId ) {
+        if ( !runtimeIdToBlock.containsKey( runtimeId ) ) {
+            return new BlockAir().clone();
+        }
         return runtimeIdToBlock.get( runtimeId ).clone();
     }
 

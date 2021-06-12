@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPackedIce;
 public class ItemPackedIce extends Item {
 
     public ItemPackedIce() {
-        super( 174 );
+        super ( "minecraft:packed_ice" );
     }
 
     @Override

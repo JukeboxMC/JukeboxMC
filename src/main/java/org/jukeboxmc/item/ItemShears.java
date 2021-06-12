@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemShears extends Item {
 
     public ItemShears() {
-        super( 419 );
+        super ( "minecraft:shears" );
     }
 
 

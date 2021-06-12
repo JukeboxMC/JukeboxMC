@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemConcretePowder extends Item {
 
     public ItemConcretePowder( int blockRuntimeId ) {
-        super( 237, blockRuntimeId );
+        super( "minecraft:concrete_powder", blockRuntimeId );
     }
 
     @Override

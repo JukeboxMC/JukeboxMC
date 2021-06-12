@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIncSac extends Item {
 
     public ItemIncSac() {
-        super( 411 );
+        super ( "minecraft:ink_sac" );
     }
 
 

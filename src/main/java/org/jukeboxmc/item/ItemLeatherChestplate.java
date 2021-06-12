@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLeatherChestplate extends Item {
 
     public ItemLeatherChestplate() {
-        super( 336 );
+        super ( "minecraft:leather_chestplate" );
     }
 
 

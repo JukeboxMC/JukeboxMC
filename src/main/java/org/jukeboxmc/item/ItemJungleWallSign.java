@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJungleWallSign;
 public class ItemJungleWallSign extends Item {
 
     public ItemJungleWallSign() {
-        super( -189 );
+        super ( "minecraft:jungle_wall_sign" );
     }
 
     @Override

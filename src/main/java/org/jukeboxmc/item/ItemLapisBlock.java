@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLapisBlock;
 public class ItemLapisBlock extends Item {
 
     public ItemLapisBlock() {
-        super( 22 );
+        super ( "minecraft:lapis_block" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBeetroot;
 public class ItemBeetrootBlock extends Item {
 
     public ItemBeetrootBlock() {
-        super( 244 );
+        super( "minecraft:item.beetroot" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaPressurePlate;
 public class ItemAcaciaPressurePlate extends Item {
 
     public ItemAcaciaPressurePlate() {
-        super( -150 );
+        super( "minecraft:acacia_pressure_plate" );
     }
 
     @Override

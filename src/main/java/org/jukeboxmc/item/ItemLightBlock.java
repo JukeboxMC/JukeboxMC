@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLightBlock;
 public class ItemLightBlock extends Item {
 
     public ItemLightBlock() {
-        super( -215 );
+        super ( "minecraft:light_block" );
     }
 
     @Override

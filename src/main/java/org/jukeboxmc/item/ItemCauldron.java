@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCauldron;
 public class ItemCauldron extends Item {
 
     public ItemCauldron() {
-        super( 430 );
+        super ( "minecraft:cauldron" );
     }
 
     @Override

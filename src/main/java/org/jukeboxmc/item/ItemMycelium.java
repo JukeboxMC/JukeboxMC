@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMycelium;
 public class ItemMycelium extends Item {
 
     public ItemMycelium() {
-        super( 110 );
+        super ( "minecraft:mycelium" );
     }
 
     @Override

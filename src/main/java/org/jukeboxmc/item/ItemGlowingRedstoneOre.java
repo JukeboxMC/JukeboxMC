@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGlowingRedstoneOre;
 public class ItemGlowingRedstoneOre extends Item {
 
     public ItemGlowingRedstoneOre() {
-        super( 74 );
+        super ( "minecraft:lit_redstone_ore" );
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.LeafType2;
 public class ItemLeaves2 extends Item {
 
     public ItemLeaves2( int blockRuntimeId ) {
-        super( 161, blockRuntimeId );
+        super( "minecraft:leaves2", blockRuntimeId );
     }
 
     @Override

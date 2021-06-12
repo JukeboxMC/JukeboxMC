@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBirchBoat extends Item {
 
     public ItemBirchBoat() {
-        super(  374 );
+        super(  "minecraft:birch_boat" );
     }
 
 

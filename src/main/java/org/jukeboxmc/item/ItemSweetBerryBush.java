@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSweetBerryBush;
 public class ItemSweetBerryBush extends Item {
 
     public ItemSweetBerryBush() {
-        super( -207 );
+        super ( "minecraft:sweet_berry_bush" );
     }
 
     @Override

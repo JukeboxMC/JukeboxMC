@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.SaplingType;
 public class ItemSapling extends Item {
 
     public ItemSapling( int blockRuntimeId ) {
-        super( 6, blockRuntimeId );
+        super( "minecraft:sapling", blockRuntimeId );
     }
 
     @Override

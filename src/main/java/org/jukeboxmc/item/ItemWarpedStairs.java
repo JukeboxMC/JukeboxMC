@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedStairs;
 public class ItemWarpedStairs extends Item {
 
     public ItemWarpedStairs() {
-        super( -255 );
+        super ( "minecraft:warped_stairs" );
     }
 
     @Override

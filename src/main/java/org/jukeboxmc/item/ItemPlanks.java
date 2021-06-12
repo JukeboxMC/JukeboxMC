@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.WoodType;
 public class ItemPlanks extends Item {
 
     public ItemPlanks( int blockRuntimeId ) {
-        super( 5, blockRuntimeId );
+        super( "minecraft:planks", blockRuntimeId );
     }
 
     @Override

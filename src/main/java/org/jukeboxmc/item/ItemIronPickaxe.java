@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemIronPickaxe extends Item {
 
     public ItemIronPickaxe() {
-        super( 297 );
+        super ( "minecraft:iron_pickaxe" );
     }
 
 

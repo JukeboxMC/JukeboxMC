@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSugarCane;
 public class ItemSugarCane extends Item {
 
     public ItemSugarCane() {
-        super( 383 );
+        super ( "minecraft:sugar_cane" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedStem;
 public class ItemWarpedStem extends Item {
 
     public ItemWarpedStem() {
-        super( -226 );
+        super ( "minecraft:warped_stem" );
     }
 
     @Override

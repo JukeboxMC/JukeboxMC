@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCrossbow extends Item {
 
     public ItemCrossbow() {
-        super( 565 );
+        super ( "minecraft:crossbow" );
     }
 
 

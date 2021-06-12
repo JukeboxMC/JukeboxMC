@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLadder;
 public class ItemLadder extends Item {
 
     public ItemLadder() {
-        super( 65 );
+        super ( "minecraft:ladder" );
     }
 
     @Override

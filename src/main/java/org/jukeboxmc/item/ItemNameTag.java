@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNameTag extends Item {
 
     public ItemNameTag() {
-        super( 538 );
+        super ( "minecraft:name_tag" );
     }
 
 

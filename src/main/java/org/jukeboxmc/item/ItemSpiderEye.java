@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSpiderEye extends Item {
 
     public ItemSpiderEye() {
-        super(  278 );
+        super( "minecraft:spider_eye" );
     }
 
 

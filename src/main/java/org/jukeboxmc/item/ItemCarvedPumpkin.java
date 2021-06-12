@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCarvedPumpkin;
 public class ItemCarvedPumpkin extends Item {
 
     public ItemCarvedPumpkin() {
-        super(  -155 );
+        super( "minecraft:carved_pumpkin" );
     }
 
     @Override

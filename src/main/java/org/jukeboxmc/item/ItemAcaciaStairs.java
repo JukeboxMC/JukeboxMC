@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaStairs;
 public class ItemAcaciaStairs extends Item {
 
     public ItemAcaciaStairs() {
-        super( 163 );
+        super( "minecraft:acacia_stairs" );
     }
 
     @Override

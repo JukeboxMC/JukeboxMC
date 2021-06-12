@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscChirp extends Item {
 
     public ItemMusicDiscChirp() {
-        super( 527 );
+        super ( "minecraft:music_disc_chirp" );
     }
 
 

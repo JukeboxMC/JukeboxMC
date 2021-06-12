@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDrownedSpawnEgg extends Item {
 
     public ItemDrownedSpawnEgg() {
-        super( 481 );
+        super ( "minecraft:drowned_spawn_egg" );
     }
 
 

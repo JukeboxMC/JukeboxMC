@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFishingRod extends Item {
 
     public ItemFishingRod() {
-        super( 390 );
+        super ( "minecraft:fishing_rod" );
     }
 
 

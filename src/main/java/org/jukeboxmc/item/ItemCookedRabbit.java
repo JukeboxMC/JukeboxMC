@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCookedRabbit extends Item {
 
     public ItemCookedRabbit() {
-        super( 289 );
+        super ( "minecraft:cooked_rabbit" );
     }
 
 

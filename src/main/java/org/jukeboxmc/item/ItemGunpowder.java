@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGunpowder extends Item {
 
     public ItemGunpowder() {
-        super( 328 );
+        super ( "minecraft:gunpowder" );
     }
 
 

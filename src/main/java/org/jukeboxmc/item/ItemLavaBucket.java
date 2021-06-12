@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLava;
 public class ItemLavaBucket extends Item {
 
     public ItemLavaBucket() {
-        super( 363 );
+        super ( "minecraft:lava_bucket" );
     }
 
     @Override

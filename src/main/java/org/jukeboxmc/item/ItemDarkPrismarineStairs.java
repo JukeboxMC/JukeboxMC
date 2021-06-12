@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDarkPrismarineStairs;
 public class ItemDarkPrismarineStairs extends Item {
 
     public ItemDarkPrismarineStairs() {
-        super( -3 );
+        super ( "minecraft:dark_prismarine_stairs" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGlisteringMelonSlice extends Item {
 
     public ItemGlisteringMelonSlice() {
-        super( 432 );
+        super ( "minecraft:glistering_melon_slice" );
     }
 
 

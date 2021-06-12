@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockNoteblock;
 public class ItemNoteblock extends Item {
 
     public ItemNoteblock() {
-        super( 25 );
+        super ( "minecraft:noteblock" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDeadbush;
 public class ItemDeadbush extends Item {
 
     public ItemDeadbush() {
-        super( 32 );
+        super ( "minecraft:deadbush" );
     }
 
     @Override

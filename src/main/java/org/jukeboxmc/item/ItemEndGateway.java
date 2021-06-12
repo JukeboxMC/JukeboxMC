@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEndGateway;
 public class ItemEndGateway extends Item {
 
     public ItemEndGateway() {
-        super(  209 );
+        super( "minecraft:end_gateway" );
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.SpongeType;
 public class ItemSponge extends Item {
 
     public ItemSponge( int blockRuntimeId ) {
-        super( 19, blockRuntimeId );
+        super( "minecraft:sponge", blockRuntimeId );
     }
 
     @Override

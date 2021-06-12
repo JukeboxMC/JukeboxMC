@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemClock extends Item {
 
     public ItemClock() {
-        super( 391 );
+        super ( "minecraft:clock" );
     }
 
 

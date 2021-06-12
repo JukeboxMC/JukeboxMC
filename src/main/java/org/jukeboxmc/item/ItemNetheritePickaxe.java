@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheritePickaxe extends Item {
 
     public ItemNetheritePickaxe() {
-        super( 594 );
+        super ( "minecraft:netherite_pickaxe" );
     }
 
 

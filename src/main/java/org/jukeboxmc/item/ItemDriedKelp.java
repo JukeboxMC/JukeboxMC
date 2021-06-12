@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDriedKelp extends Item {
 
     public ItemDriedKelp() {
-        super( 270 );
+        super ( "minecraft:dried_kelp" );
     }
 
 }

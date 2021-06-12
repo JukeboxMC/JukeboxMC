@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemConcrete extends Item {
 
     public ItemConcrete( int blockRuntimeId ) {
-        super( 236, blockRuntimeId );
+        super( "minecraft:concrete", blockRuntimeId );
     }
 
     @Override

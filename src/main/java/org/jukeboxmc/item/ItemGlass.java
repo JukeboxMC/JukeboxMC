@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGlass;
 public class ItemGlass extends Item {
 
     public ItemGlass() {
-        super( 20 );
+        super ( "minecraft:glass" );
     }
 
     @Override

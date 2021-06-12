@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.StoneBrickType;
 public class ItemStonebrick extends Item {
 
     public ItemStonebrick( int blockRuntimeId ) {
-        super( 98, blockRuntimeId );
+        super( "minecraft:stonebrick", blockRuntimeId );
     }
 
     @Override

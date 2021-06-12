@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBorderBlock;
 public class ItemBorderBlock extends Item {
 
     public ItemBorderBlock() {
-        super( 212 );
+        super ( "minecraft:border_block" );
     }
 
     @Override

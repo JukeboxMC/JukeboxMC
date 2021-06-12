@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonStandingSign;
 public class ItemCrimsonSign extends Item {
 
     public ItemCrimsonSign() {
-        super( 602 );
+        super ( "minecraft:crimson_sign" );
     }
 
     @Override

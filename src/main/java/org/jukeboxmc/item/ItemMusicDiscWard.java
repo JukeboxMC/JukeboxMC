@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscWard extends Item {
 
     public ItemMusicDiscWard() {
-        super( 533 );
+        super ( "minecraft:music_disc_ward" );
     }
 
 

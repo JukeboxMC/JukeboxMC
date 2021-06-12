@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSoulLantern;
 public class ItemSoulLantern extends Item {
 
     public ItemSoulLantern() {
-        super( -269 );
+        super ( "minecraft:soul_lantern" );
     }
 
     @Override

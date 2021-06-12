@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSprucePressurePlate;
 public class ItemSprucePressurePlate extends Item {
 
     public ItemSprucePressurePlate() {
-        super( -154 );
+        super ( "minecraft:spruce_pressure_plate" );
     }
 
     @Override

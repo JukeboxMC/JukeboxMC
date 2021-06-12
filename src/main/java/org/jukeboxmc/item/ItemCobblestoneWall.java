@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.WallType;
 public class ItemCobblestoneWall extends Item {
 
     public ItemCobblestoneWall( int blockRuntimeId ) {
-        super( 139, blockRuntimeId );
+        super( "minecraft:cobblestone_wall", blockRuntimeId );
     }
 
     @Override

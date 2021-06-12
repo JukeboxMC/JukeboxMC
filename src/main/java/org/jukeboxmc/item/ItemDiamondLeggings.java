@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemDiamondLeggings extends Item {
 
     public ItemDiamondLeggings() {
-        super( 349 );
+        super ( "minecraft:diamond_leggings" );
     }
 
 
