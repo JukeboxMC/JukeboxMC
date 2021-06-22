@@ -31,6 +31,10 @@ public class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
+    public Item( String identifier ) {
+        this( identifier, 0, 0, null );
+    }
+
     public Item( String identifier, int meta, int blockRuntimeId, NbtMap nbt ) {
         this.identifier = identifier;
         this.blockRuntimeId = blockRuntimeId;
@@ -48,10 +52,6 @@ public class Item implements Cloneable {
 
     public Item( String identifier, int blockRuntimeId ) {
         this( identifier, 0, blockRuntimeId, null );
-    }
-
-    public Item( String identifier ) {
-        this( identifier, 0, 0, null );
     }
 
     public Item( ItemType itemType, int amount, int meta, NbtMap nbt ) {
