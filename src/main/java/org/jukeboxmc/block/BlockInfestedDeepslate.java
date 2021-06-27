@@ -1,7 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemInfestedDeepslate;
+import org.jukeboxmc.math.Axis;
 
 /**
  * @author LucGamesYT
@@ -21,5 +21,13 @@ public class BlockInfestedDeepslate extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.INFESTED_DEEPSLATE;
+    }
+
+    public void setAxis( Axis axis ) {
+        this.setState( "pillar_axis", axis.name().toLowerCase() );
+    }
+
+    public Axis getAxis() {
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockWeatheredDoubleCutCopperSlab;
 
 /**

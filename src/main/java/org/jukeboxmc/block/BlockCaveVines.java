@@ -1,6 +1,5 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCaveVines;
 
 /**
@@ -21,5 +20,13 @@ public class BlockCaveVines extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.CAVE_VINES;
+    }
+
+    public void setGrowingPlantAge( int value ) {
+        this.setState( "growing_plant_age", value );
+    }
+
+    public int getGrowingPlantAge() {
+        return this.stateExists( "growing_plant_age" ) ? this.getIntState( "growing_plant_age" ) : 0;
     }
 }

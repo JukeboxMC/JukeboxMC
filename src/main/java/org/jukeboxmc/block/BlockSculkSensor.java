@@ -1,6 +1,5 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSculkSensor;
 
 /**
@@ -21,5 +20,13 @@ public class BlockSculkSensor extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.SCULK_SENSOR;
+    }
+
+    public void setPowered( boolean value ) {
+        this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
+    }
+
+    public boolean isPowered() {
+        return this.stateExists( "powered_bit" ) && this.getByteState( "powered_bit" ) == 1;
     }
 }

@@ -1,6 +1,5 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemWaxedExposedCutCopper;
 
 /**
