@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.item.Item;
+import org.jukeboxmc.block.BlockDeepslateBrickWall;
 
 /**
  * @author LucGamesYT
@@ -10,5 +10,10 @@ public class ItemDeepslateBrickWall extends Item {
 
     public ItemDeepslateBrickWall() {
         super( "minecraft:deepslate_brick_wall" );
+    }
+
+    @Override
+    public BlockDeepslateBrickWall getBlock() {
+        return new BlockDeepslateBrickWall();
     }
 }

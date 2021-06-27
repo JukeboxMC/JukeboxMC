@@ -97,7 +97,7 @@ minecraft:waxed_exposed_double_cut_copper_slab
 minecraft:infested_deepslate
 minecraft:medium_amethyst_bud
 minecraft:amethyst_cluster
-minecraft:waxed_weathered_cut_copper_stairs
+minecraft:waxed_weathered_cut_copper_stairs -
 minecraft:cobbled_deepslate_stairs
 minecraft:deepslate
 minecraft:exposed_double_cut_copper_slab

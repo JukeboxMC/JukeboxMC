@@ -526,7 +526,6 @@ public class BinaryStream {
         }
 
         Item item = ItemType.getItemFormNetwork( networkId, data );
-        if ( item == null ) System.out.println("NULL!");
         item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );

@@ -9,7 +9,10 @@ import org.jukeboxmc.block.type.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -1287,7 +1290,6 @@ public enum ItemType {
     HANGING_ROOTS( new ItemHangingRoots() ),
     WAXED_EXPOSED_CUT_COPPER_STAIRS( new ItemWaxedExposedCutCopperStairs() ),
     POLISHED_DEEPSLATE_SLAB( new ItemPolishedDeepslateSlab() ),
-    ITEM_GLOW_FRAME( new ItemGlowFrameBlock() ),
     COBBLED_DEEPSLATE( new ItemCobbledDeepslate() ),
     DEEPSLATE_BRICK_DOUBLE_SLAB( new ItemDeepslateBrickDoubleSlab() ),
     DRIPSTONE_BLOCK( new ItemDripstoneBlock() ),
@@ -1411,9 +1413,6 @@ public enum ItemType {
 
     private static Map<String, Integer> itemIdByName = new HashMap<>();
 
-    private static List<String> test1 = new ArrayList<>();
-    private static List<String> test2 = new ArrayList<>();
-
     public static void init() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -1426,29 +1425,8 @@ public enum ItemType {
         ItemType.itemPalette = gson.fromJson( parseItem, List.class );
 
         for ( Map<String, Object> objectMap : ItemType.itemPalette ) {
-            // test2.add( (String) objectMap.get( "name" ) );
             itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
         }
-
-        /*
-        InputStream itemPaletteOld = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempaletteOLD.json" );
-        JsonElement parseItemOld = new JsonParser().parse( new InputStreamReader( itemPaletteOld ) );
-        List<Map<String, Object>> mapOld = gson.fromJson( parseItemOld, List.class );
-
-        for ( Map<String, Object> objectMap : mapOld ) {
-            test1.add( (String) objectMap.get( "name" ) );
-        }
-
-        test1.forEach( string -> test2.remove( string ) );
-
-        int count = 0;
-        for ( String name : new HashSet<>( test2 ) ) {
-            count++;
-            System.out.println( name + " -> " + name.replace( "minecraft:", "" ).toUpperCase() + "(  )," );
-        }
-        System.out.println( count );
-
-         */
     }
 
     private Item item;
