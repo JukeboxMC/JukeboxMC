@@ -1,7 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDeepslate;
+import org.jukeboxmc.math.Axis;
 
 /**
  * @author LucGamesYT
@@ -21,5 +21,13 @@ public class BlockDeepslate extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.DEEPSLATE;
+    }
+
+    public void setAxis( Axis axis ) {
+        this.setState( "pillar_axis", axis.name().toLowerCase() );
+    }
+
+    public Axis getAxis() {
+        return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

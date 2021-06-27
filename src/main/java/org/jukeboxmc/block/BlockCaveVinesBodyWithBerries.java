@@ -1,6 +1,5 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCaveVinesBodyWithBerries;
 
 /**
@@ -31,5 +30,13 @@ public class BlockCaveVinesBodyWithBerries extends Block{
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    public void setGrowingPlantAge( int value ) {
+        this.setState( "growing_plant_age", value );
+    }
+
+    public int getGrowingPlantAge() {
+        return this.stateExists( "growing_plant_age" ) ? this.getIntState( "growing_plant_age" ) : 0;
     }
 }

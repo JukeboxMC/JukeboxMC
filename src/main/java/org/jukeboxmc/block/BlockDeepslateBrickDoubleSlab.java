@@ -2,7 +2,6 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemDeepslateBrickDoubleSlab;
 import org.jukeboxmc.item.ItemDeepslateBrickSlab;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;

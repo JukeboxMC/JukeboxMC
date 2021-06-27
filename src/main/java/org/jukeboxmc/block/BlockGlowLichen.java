@@ -1,6 +1,5 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemGlowLichen;
 
 /**
@@ -31,5 +30,16 @@ public class BlockGlowLichen extends Block{
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    public void setMultiFaceDirection( int value ) {
+        if ( value >= 0 && value <= 63 ) {
+            return;
+        }
+        this.setState( "multi_face_direction_bits", value );
+    }
+
+    public int getMultiFaceDirection() {
+        return this.stateExists( "multi_face_direction_bits" ) ? this.getIntState( "multi_face_direction_bits" ) : 0;
     }
 }
