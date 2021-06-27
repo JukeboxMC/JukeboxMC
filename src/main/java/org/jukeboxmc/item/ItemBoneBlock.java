@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBoneBlock;
 public class ItemBoneBlock extends Item {
 
     public ItemBoneBlock() {
-        super( 216 );
+        super ( "minecraft:bone_block" );
     }
 
     @Override

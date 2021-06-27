@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonStairs;
 public class ItemCrimsonStairs extends Item {
 
     public ItemCrimsonStairs() {
-        super( -254 );
+        super ( "minecraft:crimson_stairs" );
     }
 
     @Override

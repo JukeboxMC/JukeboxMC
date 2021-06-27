@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHardGlass;
 public class ItemHardGlass extends Item {
 
     public ItemHardGlass() {
-        super( 253 );
+        super ( "minecraft:hard_glass" );
     }
 
     @Override

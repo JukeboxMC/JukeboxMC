@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStructureBlock;
 public class ItemStructureBlock extends Item {
 
     public ItemStructureBlock() {
-        super( 252 );
+        super ( "minecraft:structure_block" );
     }
 
     @Override

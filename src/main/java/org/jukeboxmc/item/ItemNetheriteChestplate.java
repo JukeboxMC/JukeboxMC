@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteChestplate extends Item {
 
     public ItemNetheriteChestplate() {
-        super( 598 );
+        super ( "minecraft:netherite_chestplate" );
     }
 
 

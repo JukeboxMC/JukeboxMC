@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLeatherHorseArmor extends Item {
 
     public ItemLeatherHorseArmor() {
-        super(  520 );
+        super( "minecraft:leather_horse_armor" );
     }
 
 

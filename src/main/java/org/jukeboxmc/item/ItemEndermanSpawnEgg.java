@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEndermanSpawnEgg extends Item {
 
     public ItemEndermanSpawnEgg() {
-        super( 440 );
+        super ( "minecraft:enderman_spawn_egg" );
     }
 
 

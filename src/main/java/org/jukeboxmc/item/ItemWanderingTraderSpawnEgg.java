@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWanderingTraderSpawnEgg extends Item {
 
     public ItemWanderingTraderSpawnEgg() {
-        super( 490 );
+        super ( "minecraft:wandering_trader_spawn_egg" );
     }
 
 

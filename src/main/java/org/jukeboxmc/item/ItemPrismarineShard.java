@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPrismarineShard extends Item {
 
     public ItemPrismarineShard() {
-        super( 555 );
+        super ( "minecraft:prismarine_shard" );
     }
 
 

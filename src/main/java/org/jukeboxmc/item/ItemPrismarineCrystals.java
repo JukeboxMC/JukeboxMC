@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPrismarineCrystals extends Item {
 
     public ItemPrismarineCrystals() {
-        super( 539 );
+        super ( "minecraft:prismarine_crystals" );
     }
 
 

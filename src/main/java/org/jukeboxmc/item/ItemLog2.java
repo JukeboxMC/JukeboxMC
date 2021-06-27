@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.LogType2;
 public class ItemLog2 extends Item {
 
     public ItemLog2( int blockRuntimeId ) {
-        super( 162, blockRuntimeId );
+        super( "minecraft:log2", blockRuntimeId );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSparkler extends Item {
 
     public ItemSparkler() {
-        super( 589 );
+        super ( "minecraft:sparkler" );
     }
 
 

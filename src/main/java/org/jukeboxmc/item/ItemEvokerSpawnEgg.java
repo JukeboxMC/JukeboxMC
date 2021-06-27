@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEvokerSpawnEgg extends Item {
 
     public ItemEvokerSpawnEgg() {
-        super( 473 );
+        super ( "minecraft:evoker_spawn_egg" );
     }
 
 

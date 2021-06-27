@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBookshelf;
 public class ItemBookshelf extends Item {
 
     public ItemBookshelf() {
-        super( 47 );
+        super ( "minecraft:bookshelf" );
     }
 
     @Override

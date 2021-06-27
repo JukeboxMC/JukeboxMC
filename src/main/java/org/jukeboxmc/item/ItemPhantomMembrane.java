@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPhantomMembrane extends Item {
 
     public ItemPhantomMembrane() {
-        super( 564 );
+        super ( "minecraft:phantom_membrane" );
     }
 
 

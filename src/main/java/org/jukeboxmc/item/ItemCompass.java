@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCompass extends Item {
 
     public ItemCompass() {
-        super( 389 );
+        super ( "minecraft:compass" );
     }
 
 

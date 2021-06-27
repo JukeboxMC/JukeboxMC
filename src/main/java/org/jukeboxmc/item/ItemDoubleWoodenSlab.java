@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDoubleWoodenSlab;
 public class ItemDoubleWoodenSlab extends Item {
 
     public ItemDoubleWoodenSlab() {
-        super( 157 );
+        super ( "minecraft:double_stone_slab" );
     }
 
     @Override

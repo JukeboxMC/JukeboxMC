@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLingeringPotion extends Item {
 
     public ItemLingeringPotion() {
-        super( 552 );
+        super ( "minecraft:lingering_potion" );
     }
 
     public void setPotionType( PotionType potionType ) {

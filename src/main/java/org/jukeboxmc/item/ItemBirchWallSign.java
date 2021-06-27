@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBirchWallSign;
 public class ItemBirchWallSign extends Item {
 
     public ItemBirchWallSign() {
-        super( -187 );
+        super ( "minecraft:birch_wall_sign" );
     }
 
     @Override

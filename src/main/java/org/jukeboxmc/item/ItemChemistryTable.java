@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChemistryTable;
 public class ItemChemistryTable extends Item {
 
     public ItemChemistryTable() {
-        super(  238 );
+        super( "minecraft:chemistry_table" );
     }
 
     @Override

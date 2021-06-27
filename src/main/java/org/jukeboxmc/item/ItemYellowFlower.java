@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockYellowFlower;
 public class ItemYellowFlower extends Item {
 
     public ItemYellowFlower() {
-        super( 37 );
+        super ( "minecraft:yellow_flower" );
     }
 
     @Override

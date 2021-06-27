@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemStainedGlass extends Item {
 
     public ItemStainedGlass( int blockRuntimeId ) {
-        super( 241, blockRuntimeId );
+        super( "minecraft:stained_glass", blockRuntimeId );
     }
 
     @Override

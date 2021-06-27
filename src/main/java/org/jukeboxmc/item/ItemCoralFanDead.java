@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.CoralColor;
 public class ItemCoralFanDead extends Item {
 
     public ItemCoralFanDead( int blockRuntimeId ) {
-        super( -134, blockRuntimeId );
+        super( "minecraft:coral_fan_dead", blockRuntimeId );
     }
 
     @Override

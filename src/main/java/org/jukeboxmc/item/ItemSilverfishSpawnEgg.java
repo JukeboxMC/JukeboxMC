@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSilverfishSpawnEgg extends Item {
 
     public ItemSilverfishSpawnEgg() {
-        super( 441 );
+        super ( "minecraft:silverfish_spawn_egg" );
     }
 
 

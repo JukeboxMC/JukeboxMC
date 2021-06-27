@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedFungus;
 public class ItemWarpedFungus extends Item {
 
     public ItemWarpedFungus() {
-        super( -229 );
+        super ( "minecraft:warped_fungus" );
     }
 
     @Override

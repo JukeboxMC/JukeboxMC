@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.PrismarineType;
 public class ItemPrismarine extends Item {
 
     public ItemPrismarine( int blockRuntimeId ) {
-        super( 168, blockRuntimeId );
+        super( "minecraft:prismarine", blockRuntimeId );
     }
 
     @Override

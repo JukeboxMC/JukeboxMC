@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedWallSign;
 public class ItemWarpedWallSign extends Item {
 
     public ItemWarpedWallSign() {
-        super( -253 );
+        super ( "minecraft:warped_wall_sign" );
     }
 
     @Override

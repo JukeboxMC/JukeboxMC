@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedSpruceLog;
 public class ItemStrippedSpruceLog extends Item {
 
     public ItemStrippedSpruceLog() {
-        super( -5 );
+        super ( "minecraft:stripped_spruce_log" );
     }
 
     @Override

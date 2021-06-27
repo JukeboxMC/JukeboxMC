@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockTarget;
 public class ItemTarget extends Item {
 
     public ItemTarget() {
-        super( -239 );
+        super ( "minecraft:target" );
     }
 
     @Override

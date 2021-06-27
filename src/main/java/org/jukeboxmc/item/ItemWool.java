@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemWool extends Item {
 
     public ItemWool( int blockRuntimeId ) {
-        super( 35, blockRuntimeId );
+        super( "minecraft:wool", blockRuntimeId );
     }
 
     @Override

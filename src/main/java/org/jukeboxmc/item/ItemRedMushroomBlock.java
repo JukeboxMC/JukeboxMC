@@ -10,7 +10,7 @@ import org.jukeboxmc.block.BlockType;
 public class ItemRedMushroomBlock extends Item {
 
     public ItemRedMushroomBlock( int blockRuntimeId ) {
-        super( 100, blockRuntimeId );
+        super( "minecraft:red_mushroom_block", blockRuntimeId );
     }
 
     @Override

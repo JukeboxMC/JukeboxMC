@@ -10,7 +10,7 @@ import org.jukeboxmc.block.BlockElement74;
 public class ItemElement74 extends Item {
 
     public ItemElement74() {
-        super( -85 );
+        super ( "minecraft:element_74" );
     }
 
     @Override

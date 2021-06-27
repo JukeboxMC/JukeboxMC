@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWarpedRoots;
 public class ItemWarpedRoots extends Item {
 
     public ItemWarpedRoots() {
-        super( -224 );
+        super ( "minecraft:warped_roots" );
     }
 
     @Override

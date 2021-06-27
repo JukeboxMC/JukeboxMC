@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemLlamaSpawnEgg extends Item {
 
     public ItemLlamaSpawnEgg() {
-        super(  471 );
+        super( "llama_spawn_egg" );
     }
 
 

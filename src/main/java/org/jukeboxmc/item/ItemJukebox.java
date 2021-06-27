@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJukebox;
 public class ItemJukebox extends Item {
 
     public ItemJukebox() {
-        super( 84 );
+        super ( "minecraft:jukebox" );
     }
 
     @Override

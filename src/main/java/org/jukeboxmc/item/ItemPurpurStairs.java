@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPurpurStairs;
 public class ItemPurpurStairs extends Item {
 
     public ItemPurpurStairs() {
-        super( 203 );
+        super ( "minecraft:purpur_stairs" );
     }
 
     @Override

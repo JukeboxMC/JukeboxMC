@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemStainedHardenedClay extends Item {
 
     public ItemStainedHardenedClay( int blockRuntimeId ) {
-        super( 159, blockRuntimeId );
+        super( "minecraft:stained_hardened_clay", blockRuntimeId );
     }
 
     @Override

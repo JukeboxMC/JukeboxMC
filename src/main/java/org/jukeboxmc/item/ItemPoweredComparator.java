@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPoweredComparator;
 public class ItemPoweredComparator extends Item {
 
     public ItemPoweredComparator() {
-        super( 150 );
+        super ( "minecraft:powered_comparator" );
     }
 
     @Override

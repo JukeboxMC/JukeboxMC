@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSlimeBall extends Item {
 
     public ItemSlimeBall() {
-        super( 386 );
+        super ( "minecraft:slime_ball" );
     }
 
 

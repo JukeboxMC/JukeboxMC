@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMagmaCream extends Item {
 
     public ItemMagmaCream() {
-        super( 428 );
+        super ( "minecraft:magma_cream" );
     }
 
 

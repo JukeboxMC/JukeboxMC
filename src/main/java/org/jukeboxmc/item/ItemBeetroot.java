@@ -7,6 +7,6 @@ package org.jukeboxmc.item;
 public class ItemBeetroot extends Item {
 
     public ItemBeetroot() {
-        super( 285 );
+        super ( "minecraft:beetroot" );
     }
 }

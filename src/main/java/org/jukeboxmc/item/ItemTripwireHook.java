@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockTripwireHook;
 public class ItemTripwireHook extends Item {
 
     public ItemTripwireHook() {
-        super( 131 );
+        super ( "minecraft:tripwire_hook" );
     }
 
     @Override

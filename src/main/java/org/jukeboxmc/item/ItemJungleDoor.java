@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJungleDoor;
 public class ItemJungleDoor extends Item {
 
     public ItemJungleDoor() {
-        super( 545 );
+        super ( "minecraft:jungle_door" );
     }
 
     @Override

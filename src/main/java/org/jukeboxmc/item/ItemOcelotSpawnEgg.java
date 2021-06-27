@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemOcelotSpawnEgg extends Item {
 
     public ItemOcelotSpawnEgg() {
-        super( 449 );
+        super ( "minecraft:ocelot_spawn_egg" );
     }
 
 

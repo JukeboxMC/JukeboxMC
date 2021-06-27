@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockUnderwaterTorch;
 public class ItemUnderwaterTorch extends Item {
 
     public ItemUnderwaterTorch() {
-        super(  239 );
+        super( "minecraft:underwater_torch");
     }
 
     @Override

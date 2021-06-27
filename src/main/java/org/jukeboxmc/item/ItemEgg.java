@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEgg extends Item {
 
     public ItemEgg() {
-        super( 388 );
+        super ( "minecraft:egg" );
     }
 
 

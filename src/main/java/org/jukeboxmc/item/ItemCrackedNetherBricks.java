@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrackedNetherBricks;
 public class ItemCrackedNetherBricks extends Item {
 
     public ItemCrackedNetherBricks() {
-        super( -303 );
+        super ( "minecraft:cracked_nether_bricks" );
     }
 
     @Override

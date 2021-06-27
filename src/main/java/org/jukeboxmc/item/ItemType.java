@@ -149,7 +149,6 @@ public enum ItemType {
     WHEAT_BLOCK( new ItemWheatBlock() ), //Maybe WHEAT
     FARMLAND( new ItemFarmland() ),
     FURNACE( new ItemFurnace() ),
-    BURNING_FURNACE( new ItemBurningFurnace() ),
     STANDING_SIGN( new ItemStandingSign() ),
     OAK_DOOR( new ItemOakDoor() ),
     LADDER( new ItemLadder() ),
@@ -1283,34 +1282,158 @@ public enum ItemType {
     ITEM_WOODEN_DOOR( new ItemWoodenDoorBlock() ),
     CYAN_DYE( new ItemCyanDye() ),
     PURPLE_DYE( new ItemPurpleDye() ),
-    MOJANG_BANNER_PATTERN( new ItemMojangBannerPattern() );
+    MOJANG_BANNER_PATTERN( new ItemMojangBannerPattern() ),
+
+    DEEPSLATE_BRICK_WALL( new ItemDeepslateBrickWall() ),
+    WEATHERED_CUT_COPPER_SLAB( new ItemWeatheredCutCopperSlab() ),
+    GLOW_FRAME( new ItemGlowFrame() ),
+    HANGING_ROOTS( new ItemHangingRoots() ),
+    WAXED_EXPOSED_CUT_COPPER_STAIRS( new ItemWaxedExposedCutCopperStairs() ),
+    POLISHED_DEEPSLATE_SLAB( new ItemPolishedDeepslateSlab() ),
+    COBBLED_DEEPSLATE( new ItemCobbledDeepslate() ),
+    DEEPSLATE_BRICK_DOUBLE_SLAB( new ItemDeepslateBrickDoubleSlab() ),
+    DRIPSTONE_BLOCK( new ItemDripstoneBlock() ),
+    CALCITE( new ItemCalcite() ),
+    RAW_GOLD_BLOCK( new ItemRawGoldBlock() ),
+    POWDER_SNOW_BUCKET( new ItemPowderSnowBucket() ),
+    WAXED_CUT_COPPER_SLAB( new ItemWaxedCutCopperSlab() ),
+    LIT_DEEPSLATE_REDSTONE_ORE( new ItemLitDeepslateRedstoneOre() ),
+    CUT_COPPER_SLAB( new ItemCutCopperSlab() ),
+    MOSS_BLOCK( new ItemMossBlock() ),
+    RAW_GOLD( new ItemRawGold() ),
+    DEEPSLATE_TILES( new ItemDeepslateTiles() ),
+    DEEPSLATE_TILE_STAIRS( new ItemDeepslateTileStairs() ),
+    WAXED_EXPOSED_CUT_COPPER( new ItemWaxedExposedCutCopper() ),
+    WAXED_CUT_COPPER( new ItemWaxedCutCopper() ),
+    EXPOSED_CUT_COPPER( new ItemExposedCutCopper() ),
+    CAVE_VINES( new ItemCaveVines() ),
+    WAXED_WEATHERED_DOUBLE_CUT_COPPER_SLAB( new ItemWaxedWeatheredDoubleCutCopperSlab() ),
+    CUT_COPPER( new ItemCutCopper() ),
+    AMETHYST_BLOCK( new ItemAmethystBlock() ),
+    SCULK_SENSOR( new ItemSculkSensor() ),
+    BIG_DRIPLEAF( new ItemBigDripleaf() ),
+    WAXED_WEATHERED_CUT_COPPER( new ItemWaxedWeatheredCutCopper() ),
+    COBBLED_DEEPSLATE_WALL( new ItemCobbledDeepslateWall() ),
+    SMALL_DRIPLEAF_BLOCK( new ItemSmallDripleafBlock() ),
+    GLOW_SQUID_SPAWN_EGG( new ItemGlowSquidSpawnEgg() ),
+    GLOW_INK_SAC( new ItemGlowInkSac() ),
+    AZALEA_LEAVES_FLOWERED( new ItemAzaleaLeavesFlowered() ),
+    OXIDIZED_CUT_COPPER_STAIRS( new ItemOxidizedCutCopperStairs() ),
+    WAXED_WEATHERED_COPPER( new ItemWaxedWeatheredCopper() ),
+    CAVE_VINES_HEAD_WITH_BERRIES( new ItemCaveVinesHeadWithBerries() ),
+    CAVE_VINES_BODY_WITH_BERRIES( new ItemCaveVinesBodyWithBerries() ),
+    DEEPSLATE_GOLD_ORE( new ItemDeepslateGoldOre() ),
+    FLOWERING_AZALEA( new ItemFloweringAzalea() ),
+    DEEPSLATE_TILE_WALL( new ItemDeepslateTileWall() ),
+    GLOW_LICHEN( new ItemGlowLichen() ),
+    OXIDIZED_CUT_COPPER_SLAB( new ItemOxidizedCutCopperSlab() ),
+    WAXED_DOUBLE_CUT_COPPER_SLAB( new ItemWaxedDoubleCutCopperSlab() ),
+    CRACKED_DEEPSLATE_TILES( new ItemCrackedDeepslateTiles() ),
+    WEATHERED_CUT_COPPER( new ItemWeatheredCutCopper() ),
+    DEEPSLATE_EMERALD_ORE( new ItemDeepslateEmeraldOre() ),
+    AXOLOTL_SPAWN_EGG( new ItemAxolotlSpawnEgg() ),
+    SMALL_AMETHYST_BUD( new ItemSmallAmethystBud() ),
+    WAXED_EXPOSED_COPPER( new ItemWaxedExposedCopper() ),
+    SPORE_BLOSSOM( new ItemSporeBlossom() ),
+    DEEPSLATE_BRICK_SLAB( new ItemDeepslateBrickSlab() ),
+    BUDDING_AMETHYST( new ItemBuddingAmethyst() ),
+    OXIDIZED_COPPER( new ItemOxidizedCopper() ),
+    SMOOTH_BASALT( new ItemSmoothBasalt() ),
+    TINTED_GLASS( new ItemTintedGlass() ),
+    WAXED_OXIDIZED_CUT_COPPER_SLAB( new ItemWaxedOxidizedCutCopperSlab() ),
+    POWDER_SNOW( new ItemPowderSnow() ),
+    AZALEA( new ItemAzalea() ),
+    EXPOSED_CUT_COPPER_SLAB( new ItemExposedCutCopperSlab() ),
+    DEEPSLATE_BRICKS( new ItemDeepslateBricks() ),
+    WEATHERED_DOUBLE_CUT_COPPER_SLAB( new ItemWeatheredDoubleCutCopperSlab() ),
+    OXIDIZED_CUT_COPPER( new ItemOxidizedCutCopper() ),
+    OXIDIZED_DOUBLE_CUT_COPPER_SLAB( new ItemOxidizedDoubleCutCopperSlab() ),
+    POLISHED_DEEPSLATE_DOUBLE_SLAB( new ItemPolishedDeepslateDoubleSlab() ),
+    DEEPSLATE_TILE_DOUBLE_SLAB( new ItemDeepslateTileDoubleSlab() ),
+    CUT_COPPER_STAIRS( new ItemCutCopperStairs() ),
+    COPPER_INGOT( new ItemCopperIngot() ),
+    LIGHTNING_ROD( new ItemLightningRod() ),
+    WAXED_OXIDIZED_CUT_COPPER( new ItemWaxedOxidizedCutCopper() ),
+    POLISHED_DEEPSLATE( new ItemPolishedDeepslate() ),
+    DOUBLE_CUT_COPPER_SLAB( new ItemDoubleCutCopperSlab() ),
+    DEEPSLATE_REDSTONE_ORE( new ItemDeepslateRedstoneOre() ),
+    WAXED_COPPER( new ItemWaxedCopper() ),
+    POLISHED_DEEPSLATE_WALL( new ItemPolishedDeepslateWall() ),
+    GOAT_HORN( new ItemGoatHorn() ),
+    GOAT_SPAWN_EGG( new ItemGoatSpawnEgg() ),
+    COBBLED_DEEPSLATE_DOUBLE_SLAB( new ItemCobbledDeepslateDoubleSlab() ),
+    DEEPSLATE_IRON_ORE( new ItemDeepslateIronOre() ),
+    DEEPSLATE_DIAMOND_ORE( new ItemDeepslateDiamondOre() ),
+    WAXED_EXPOSED_CUT_COPPER_SLAB( new ItemWaxedExposedCutCopperSlab() ),
+    WAXED_OXIDIZED_CUT_COPPER_STAIRS( new ItemWaxedOxidizedCutCopperStairs() ),
+    DEEPSLATE_COPPER_ORE( new ItemDeepslateCopperOre() ),
+    AZALEA_LEAVES( new ItemAzaleaLeaves() ),
+    POLISHED_DEEPSLATE_STAIRS( new ItemPolishedDeepslateStairs() ),
+    GLOW_BERRIES( new ItemGlowBerries() ),
+    TUFF( new ItemTuff() ),
+    WAXED_WEATHERED_CUT_COPPER_SLAB( new ItemWaxedWeatheredCutCopperSlab() ),
+    WAXED_OXIDIZED_COPPER( new ItemWaxedOxidizedCopper() ),
+    EXPOSED_CUT_COPPER_STAIRS( new ItemExposedCutCopperStairs() ),
+    WAXED_CUT_COPPER_STAIRS( new ItemWaxedCutCopperStairs() ),
+    DEEPSLATE_BRICK_STAIRS( new ItemDeepslateBrickStairs() ),
+    WAXED_OXIDIZED_DOUBLE_CUT_COPPER_SLAB( new ItemWaxedOxidizedDoubleCutCopperSlab() ),
+    CRACKED_DEEPSLATE_BRICKS( new ItemCrackedDeepslateBricks() ),
+    POINTED_DRIPSTONE( new ItemPointedDripstone() ),
+    DEEPSLATE_LAPIS_ORE( new ItemDeepslateLapisOre() ),
+    AMETHYST_SHARD( new ItemAmethystShard() ),
+    DEEPSLATE_COAL_ORE( new ItemDeepslateCoalOre() ),
+    LARGE_AMETHYST_BUD( new ItemLargeAmethystBud() ),
+    COPPER_BLOCK( new ItemCopperBlock() ),
+    RAW_COPPER_BLOCK( new ItemRawCopperBlock() ),
+    WEATHERED_COPPER( new ItemWeatheredCopper() ),
+    MOSS_CARPET( new ItemMossCarpet() ),
+    WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB( new ItemWaxedExposedDoubleCutCopperSlab() ),
+    INFESTED_DEEPSLATE( new ItemInfestedDeepslate() ),
+    RAW_COPPER( new ItemRawCopper() ),
+    MEDIUM_AMETHYST_BUD( new ItemMediumAmethystBud() ),
+    AMETHYST_CLUSTER( new ItemAmethystCluster() ),
+    WAXED_WEATHERED_CUT_COPPER_STAIRS( new ItemWaxedWeatheredCutCopperStairs() ),
+    COBBLED_DEEPSLATE_STAIRS( new ItemCobbledDeepslateStairs() ),
+    AXOLOTL_BUCKET( new ItemAxolotlBucket() ),
+    DEEPSLATE( new ItemDeepslate() ),
+    EXPOSED_DOUBLE_CUT_COPPER_SLAB( new ItemExposedDoubleCutCopperSlab() ),
+    COPPER_ORE( new ItemCopperOre() ),
+    CHISELED_DEEPSLATE( new ItemChiseledDeepslate() ),
+    DEEPSLATE_TILE_SLAB( new ItemDeepslateTileSlab() ),
+    DIRT_WITH_ROOTS( new ItemDirtWithRoots() ),
+    RAW_IRON( new ItemRawIron() ),
+    RAW_IRON_BLOCK( new ItemRawIronBlock() ),
+    SPYGLASS( new ItemSpyglass() ),
+    WEATHERED_CUT_COPPER_STAIRS( new ItemWeatheredCutCopperStairs() ),
+    EXPOSED_COPPER( new ItemExposedCopper() ),
+    COBBLED_DEEPSLATE_SLAB( new ItemCobbledDeepslateSlab() );
 
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static List<Map<String, Object>> itemPalette = new ArrayList<>();
 
     private static Map<String, Integer> itemIdByName = new HashMap<>();
 
-    private static final List<Item> CACHED_ITEMS = new ArrayList<>();
-
     public static void init() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         InputStream creativeItems = JukeboxMC.class.getClassLoader().getResourceAsStream( "creative_items.json" );
         JsonArray parseCreative = new JsonParser().parse( new InputStreamReader( creativeItems ) ).getAsJsonObject().getAsJsonArray( "items" );
-        ItemType.setCreativeItems( ( gson.fromJson( parseCreative, List.class ) ) );
+        ItemType.creativeItems = gson.fromJson( parseCreative, List.class );
 
         InputStream itemPalette = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempalette.json" );
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
-        List<Map<String, Object>> map = gson.fromJson( parseItem, List.class );
-        ItemType.setItemPalette( map );
+        ItemType.itemPalette = gson.fromJson( parseItem, List.class );
 
-        for ( Map<String, Object> objectMap : map ) {
+        for ( Map<String, Object> objectMap : ItemType.itemPalette ) {
             itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
         }
     }
 
-    public static List<Item> getItems() {
-        return CACHED_ITEMS;
+    private Item item;
+
+    @SneakyThrows
+    public <B extends Item> B getItem() {
+        return (B) this.item.clone();
     }
 
     public static Item getItemFormNetwork( int networkId, int meta ) {
@@ -1329,27 +1452,12 @@ public enum ItemType {
         return creativeItems;
     }
 
-    public static void setCreativeItems( List<Map<String, Object>> creativeItems ) {
-        ItemType.creativeItems = creativeItems;
-    }
-
     public static List<Map<String, Object>> getItemPalette() {
         return itemPalette;
     }
 
     public static Map<String, Integer> getItemIdByName() {
         return itemIdByName;
-    }
-
-    public static void setItemPalette( List<Map<String, Object>> itemPalette ) {
-        ItemType.itemPalette = itemPalette;
-    }
-
-    private Item item;
-
-    @SneakyThrows
-    public <B extends Item> B getItem() {
-        return (B) this.item.clone();
     }
 
 }

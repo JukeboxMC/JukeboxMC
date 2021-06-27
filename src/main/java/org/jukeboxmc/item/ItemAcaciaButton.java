@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaButton;
 public class ItemAcaciaButton extends Item {
 
     public ItemAcaciaButton() {
-        super( -140 );
+        super( "minecraft:acacia_button");
     }
 
     @Override

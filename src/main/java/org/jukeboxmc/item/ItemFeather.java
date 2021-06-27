@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemFeather extends Item {
 
     public ItemFeather() {
-        super( 327 );
+        super ( "minecraft:feather" );
     }
 
 

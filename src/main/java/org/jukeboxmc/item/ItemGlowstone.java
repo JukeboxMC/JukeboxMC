@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGlowstone;
 public class ItemGlowstone extends Item {
 
     public ItemGlowstone() {
-        super( 89 );
+        super ( "minecraft:glowstone" );
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.GrassType;
 public class ItemTallgrass extends Item {
 
     public ItemTallgrass( int blockRuntimeId ) {
-        super( 31, blockRuntimeId );
+        super( "minecraft:tallgrass", blockRuntimeId );
     }
 
     @Override

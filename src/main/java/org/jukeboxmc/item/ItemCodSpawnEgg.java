@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCodSpawnEgg extends Item {
 
     public ItemCodSpawnEgg() {
-        super(  478 );
+        super( "cod_spawn_egg" );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemTurtleHelmet extends Item {
 
     public ItemTurtleHelmet() {
-        super( 563 );
+        super ( "minecraft:turtle_helmet" );
     }
 
 

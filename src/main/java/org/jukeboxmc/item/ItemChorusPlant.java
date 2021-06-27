@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChorusPlant;
 public class ItemChorusPlant extends Item {
 
     public ItemChorusPlant() {
-        super( 240 );
+        super ( "minecraft:chorus_plant" );
     }
 
     @Override

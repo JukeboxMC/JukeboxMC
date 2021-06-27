@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSpruceWallSign;
 public class ItemSpruceWallSign extends Item {
 
     public ItemSpruceWallSign() {
-        super( -182 );
+        super ( "minecraft:spruce_wall_sign" );
     }
 
     @Override

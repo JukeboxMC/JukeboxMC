@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMovingblock;
 public class ItemMovingblock extends Item {
 
     public ItemMovingblock() {
-        super( 250 );
+        super ( "minecraft:movingblock" );
     }
 
     @Override

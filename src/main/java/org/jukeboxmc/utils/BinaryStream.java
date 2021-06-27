@@ -332,6 +332,7 @@ public class BinaryStream {
 
         gamerules.forEach( ( name, value ) -> {
             this.writeString( name );
+            this.writeBoolean( true );
             this.writeUnsignedVarInt( value.getType() );
             switch ( value.getType() ) {
                 case 1:

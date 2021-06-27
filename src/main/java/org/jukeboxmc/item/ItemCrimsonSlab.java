@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonSlab;
 public class ItemCrimsonSlab extends Item {
 
     public ItemCrimsonSlab() {
-        super( -264 );
+        super ( "minecraft:crimson_slab" );
     }
 
     @Override

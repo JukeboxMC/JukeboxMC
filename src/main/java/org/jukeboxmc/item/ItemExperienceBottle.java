@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemExperienceBottle extends Item {
 
     public ItemExperienceBottle() {
-        super( 498 );
+        super ( "minecraft:experience_bottle" );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJigsaw;
 public class ItemJigsaw extends Item {
 
     public ItemJigsaw() {
-        super( -211 );
+        super ( "minecraft:jigsaw" );
     }
 
     @Override

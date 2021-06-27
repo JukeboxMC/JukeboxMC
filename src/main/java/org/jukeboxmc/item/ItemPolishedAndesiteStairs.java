@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedAndesiteStairs;
 public class ItemPolishedAndesiteStairs extends Item {
 
     public ItemPolishedAndesiteStairs() {
-        super( -174 );
+        super ( "minecraft:polished_andesite_stairs" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSnow;
 public class ItemSnow extends Item {
 
     public ItemSnow() {
-        super( 80 );
+        super ( "minecraft:snow" );
     }
 
     @Override

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemSpiderSpawnEgg extends Item {
 
     public ItemSpiderSpawnEgg() {
-        super( 444 );
+        super ( "minecraft:spider_spawn_egg" );
     }
 
 

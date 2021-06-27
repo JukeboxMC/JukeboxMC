@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLava;
 public class ItemLava extends Item {
 
     public ItemLava() {
-        super( 11 );
+        super ( "minecraft:lava" );
     }
 
     @Override

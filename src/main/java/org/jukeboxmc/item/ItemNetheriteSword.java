@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteSword extends Item {
 
     public ItemNetheriteSword() {
-        super( 592 );
+        super ( "minecraft:netherite_sword" );
     }
 
 

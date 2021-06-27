@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemVindicatorSpawnEgg extends Item {
 
     public ItemVindicatorSpawnEgg() {
-        super( 472 );
+        super ( "minecraft:vindicator_spawn_egg" );
     }
 
 

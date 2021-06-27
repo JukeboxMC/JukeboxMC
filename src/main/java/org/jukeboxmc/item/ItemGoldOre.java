@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockGoldOre;
 public class ItemGoldOre extends Item {
 
     public ItemGoldOre() {
-        super( 14 );
+        super ( "minecraft:gold_ore" );
     }
 
     @Override

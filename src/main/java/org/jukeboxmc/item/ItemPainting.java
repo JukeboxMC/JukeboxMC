@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPainting extends Item {
 
     public ItemPainting() {
-        super( 357 );
+        super ( "minecraft:painting" );
     }
 
 

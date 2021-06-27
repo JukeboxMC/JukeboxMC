@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemShulkerShell extends Item {
 
     public ItemShulkerShell() {
-        super( 556 );
+        super ( "minecraft:shulker_shell" );
     }
 
 

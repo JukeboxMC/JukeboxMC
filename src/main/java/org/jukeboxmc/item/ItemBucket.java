@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBucket extends Item {
 
     public ItemBucket() {
-        super( 360 );
+        super ( "minecraft:bucket" );
     }
 
 }

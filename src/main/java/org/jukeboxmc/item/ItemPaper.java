@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemPaper extends Item {
 
     public ItemPaper() {
-        super( 384 );
+        super ( "minecraft:paper" );
     }
 
 

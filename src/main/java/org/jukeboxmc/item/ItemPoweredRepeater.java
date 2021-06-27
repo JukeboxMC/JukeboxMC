@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPoweredRepeater;
 public class ItemPoweredRepeater extends Item {
 
     public ItemPoweredRepeater() {
-        super( 94 );
+        super ( "minecraft:powered_repeater" );
     }
 
     @Override

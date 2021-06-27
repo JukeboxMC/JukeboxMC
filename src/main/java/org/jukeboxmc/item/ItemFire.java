@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFire;
 public class ItemFire extends Item {
 
     public ItemFire() {
-        super( 51 );
+        super ( "minecraft:fire" );
     }
 
     @Override

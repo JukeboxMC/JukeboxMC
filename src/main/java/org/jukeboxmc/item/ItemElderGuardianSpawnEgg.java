@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemElderGuardianSpawnEgg extends Item {
 
     public ItemElderGuardianSpawnEgg() {
-        super( 469 );
+        super ( "minecraft:elder_guardian_spawn_egg" );
     }
 
 

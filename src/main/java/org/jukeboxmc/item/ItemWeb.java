@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWeb;
 public class ItemWeb extends Item {
 
     public ItemWeb() {
-        super( 30 );
+        super ( "minecraft:web" );
     }
 
     @Override

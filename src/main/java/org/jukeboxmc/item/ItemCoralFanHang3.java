@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCoralFanHang3;
 public class ItemCoralFanHang3 extends Item {
 
     public ItemCoralFanHang3() {
-        super(  -137 );
+        super( "minecraft:coral_fan_hang3" );
     }
 
     @Override

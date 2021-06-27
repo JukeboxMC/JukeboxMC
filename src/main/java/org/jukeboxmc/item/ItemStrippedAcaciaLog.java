@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedAcaciaLog;
 public class ItemStrippedAcaciaLog extends Item {
 
     public ItemStrippedAcaciaLog() {
-        super( -8 );
+        super ( "minecraft:stripped_acacia_log" );
     }
 
     @Override

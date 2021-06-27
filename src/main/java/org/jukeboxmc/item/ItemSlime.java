@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockSlime;
 public class ItemSlime extends Item {
 
     public ItemSlime() {
-        super( 165 );
+        super ( "minecraft:slime" );
     }
 
     @Override

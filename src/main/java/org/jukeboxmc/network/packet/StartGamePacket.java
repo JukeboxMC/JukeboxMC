@@ -29,6 +29,7 @@ public class StartGamePacket extends Packet {
     private String worldId = "";
     private String worldName;
     private Vector worldSpawn;
+    private String serverEngine;
 
     private Map<String, GameRules<?>> gamerules = new HashMap<>();
 
@@ -136,5 +137,6 @@ public class StartGamePacket extends Packet {
 
         this.writeString( "" );
         this.writeBoolean( false ); //New inventory system
+        this.writeString( this.serverEngine );
     }
 }

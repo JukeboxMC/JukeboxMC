@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAcaciaTrapdoor;
 public class ItemAcaciaTrapdoor extends Item {
 
     public ItemAcaciaTrapdoor() {
-        super( -145 );
+        super( "minecraft:acacia_trapdoor" );
     }
 
     @Override

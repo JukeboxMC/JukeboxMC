@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBell;
 public class ItemBell extends Item {
 
     public ItemBell() {
-        super( -206 );
+        super ( "minecraft:bell" );
     }
 
     @Override

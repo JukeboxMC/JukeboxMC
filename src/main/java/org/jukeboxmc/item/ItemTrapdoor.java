@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWoodenTrapdoor;
 public class ItemTrapdoor extends Item {
 
     public ItemTrapdoor() {
-        super( 96 );
+        super ( "minecraft:trapdoor" );
     }
 
     @Override

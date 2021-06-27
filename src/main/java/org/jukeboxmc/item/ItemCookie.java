@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCookie extends Item {
 
     public ItemCookie() {
-        super( 271 );
+        super ( "minecraft:cookie" );
     }
 
 

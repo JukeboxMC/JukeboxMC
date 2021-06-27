@@ -19,7 +19,7 @@ import java.util.List;
 @ToString
 public class Item implements Cloneable {
 
-    private int runtimeId;
+    private String identifier;
     protected int blockRuntimeId;
 
     protected int amount;
@@ -31,8 +31,12 @@ public class Item implements Cloneable {
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
-    public Item( int runtimeId, int meta, int blockRuntimeId, NbtMap nbt ) {
-        this.runtimeId = runtimeId;
+    public Item( String identifier ) {
+        this( identifier, 0, 0, null );
+    }
+
+    public Item( String identifier, int meta, int blockRuntimeId, NbtMap nbt ) {
+        this.identifier = identifier;
         this.blockRuntimeId = blockRuntimeId;
         this.meta = meta;
         this.amount = 1;
@@ -42,28 +46,22 @@ public class Item implements Cloneable {
         this.canDestroy = new ArrayList<>();
     }
 
-    public Item( int runtimeId, int meta, int blockRuntimeId ) {
-        this( runtimeId, meta, blockRuntimeId, null );
+    public Item( String identifier, int meta, int blockRuntimeId ) {
+        this( identifier, meta, blockRuntimeId, null );
     }
 
-    public Item( int runtimeId, int blockRuntimeId ) {
-        this( runtimeId, 0, blockRuntimeId, null );
-    }
-
-    public Item( int runtimeId ) {
-        this( runtimeId, 0, 0, null );
+    public Item( String identifier, int blockRuntimeId ) {
+        this( identifier, 0, blockRuntimeId, null );
     }
 
     public Item( ItemType itemType, int amount, int meta, NbtMap nbt ) {
         Item item = itemType.getItem();
-        this.runtimeId = item.getRuntimeId();
         this.blockRuntimeId = item.getBlockRuntimeId();
         this.meta = meta;
         this.amount = amount;
         this.nbt = nbt;
         this.canPlaceOn = new ArrayList<>();
         this.canDestroy = new ArrayList<>();
-
     }
 
     public Item( ItemType itemType, int amount, int meta ) {
@@ -126,7 +124,10 @@ public class Item implements Cloneable {
     }
 
     public int getRuntimeId() {
-        return this.runtimeId;
+        if ( !ItemType.getItemIdByName().containsKey( this.identifier ) ) {
+            return -158;
+        }
+        return ItemType.getItemIdByName().get( this.identifier );
     }
 
     public int getBlockRuntimeId() {
@@ -171,7 +172,7 @@ public class Item implements Cloneable {
     public boolean equals( Object obj ) {
         if ( obj instanceof Item ) {
             Item item = (Item) obj;
-            return item.getRuntimeId() == this.runtimeId && item.meta == this.meta && ( item.blockRuntimeId == this.blockRuntimeId || item.blockRuntimeId == 0 || this.blockRuntimeId == 0 );
+            return item.getRuntimeId() == this.getRuntimeId() && item.meta == this.meta && ( item.blockRuntimeId == this.blockRuntimeId || item.blockRuntimeId == 0 || this.blockRuntimeId == 0 );
         } else {
             return false;
         }
@@ -181,7 +182,6 @@ public class Item implements Cloneable {
     public Item clone() {
         try {
             Item clone = (Item) super.clone();
-            clone.runtimeId = this.runtimeId;
             clone.amount = this.amount;
             clone.meta = this.meta;
             clone.nbt = this.nbt;

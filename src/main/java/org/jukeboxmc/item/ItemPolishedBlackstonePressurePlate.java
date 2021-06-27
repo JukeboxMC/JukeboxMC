@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedBlackstonePressurePlate;
 public class ItemPolishedBlackstonePressurePlate extends Item {
 
     public ItemPolishedBlackstonePressurePlate() {
-        super( -295 );
+        super ( "minecraft:polished_blackstone_pressure_plate" );
     }
 
     @Override

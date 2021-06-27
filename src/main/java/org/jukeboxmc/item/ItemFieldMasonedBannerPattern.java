@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 public class ItemFieldMasonedBannerPattern extends Item {
 
     public ItemFieldMasonedBannerPattern() {
-        super( 575 );
+        super ( "minecraft:field_masoned_banner_pattern" );
     }
 
     @Override

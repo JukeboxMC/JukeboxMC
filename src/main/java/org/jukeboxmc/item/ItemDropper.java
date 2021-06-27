@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDropper;
 public class ItemDropper extends Item {
 
     public ItemDropper() {
-        super( 125 );
+        super ( "minecraft:dropper" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockPolishedBlackstoneBrickWall;
 public class ItemPolishedBlackstoneBrickWall extends Item {
 
     public ItemPolishedBlackstoneBrickWall() {
-        super( -278 );
+        super ( "minecraft:polished_blackstone_brick_wall" );
     }
 
     @Override

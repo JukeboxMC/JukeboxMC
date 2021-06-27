@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEmeraldBlock;
 public class ItemEmeraldBlock extends Item {
 
     public ItemEmeraldBlock() {
-        super( 133 );
+        super ( "minecraft:emerald_block" );
     }
 
     @Override

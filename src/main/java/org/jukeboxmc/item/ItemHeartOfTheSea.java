@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemHeartOfTheSea extends Item {
 
     public ItemHeartOfTheSea() {
-        super( 561 );
+        super ( "minecraft:heart_of_the_sea" );
     }
 
 

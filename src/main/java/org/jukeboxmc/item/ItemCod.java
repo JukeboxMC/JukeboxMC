@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemCod extends Item {
 
     public ItemCod() {
-        super( 264 );
+        super ( "minecraft:cod" );
     }
 
     

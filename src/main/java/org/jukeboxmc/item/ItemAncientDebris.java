@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockAncientDebris;
 public class ItemAncientDebris extends Item {
 
     public ItemAncientDebris() {
-        super( -271 );
+        super ( "minecraft:ancient_debris" );
     }
 
     @Override

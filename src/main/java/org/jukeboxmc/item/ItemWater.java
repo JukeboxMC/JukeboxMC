@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockWater;
 public class ItemWater extends Item {
 
     public ItemWater() {
-        super( 9 );
+        super ( "minecraft:water" );
     }
 
     @Override

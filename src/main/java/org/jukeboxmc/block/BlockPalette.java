@@ -7,12 +7,15 @@ import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtType;
-import org.jukeboxmc.nbt.NbtUtils;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author LucGamesYT
@@ -28,7 +31,8 @@ public class BlockPalette {
 
     @SneakyThrows
     public static void init() {
-        try ( NBTInputStream nbtReader = NbtUtils.createGZIPReader( JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" ) ) ) {
+        InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" );
+        try ( NBTInputStream nbtReader = new NBTInputStream( new DataInputStream( new GZIPInputStream( resourceAsStream ) ) ) ) {
             NbtMap nbtMap = (NbtMap) nbtReader.readTag();
             for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) ) {
                 int runtimeId = RUNTIME_COUNTER.getAndIncrement();

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockVine;
 public class ItemVine extends Item {
 
     public ItemVine() {
-        super( 106 );
+        super ( "minecraft:vine" );
     }
 
     @Override

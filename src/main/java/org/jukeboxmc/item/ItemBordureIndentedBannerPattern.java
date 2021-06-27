@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBordureIndentedBannerPattern extends Item {
 
     public ItemBordureIndentedBannerPattern() {
-        super(  576 );
+        super( "minecraft:bordure_indented_banner_pattern" );
     }
 
 

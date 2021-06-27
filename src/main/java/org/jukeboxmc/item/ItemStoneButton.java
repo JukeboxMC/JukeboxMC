@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStoneButton;
 public class ItemStoneButton extends Item {
 
     public ItemStoneButton() {
-        super( 77 );
+        super ( "minecraft:stone_button" );
     }
 
     @Override

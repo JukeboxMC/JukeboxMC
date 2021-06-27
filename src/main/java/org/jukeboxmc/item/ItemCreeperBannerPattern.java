@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStandingBanner;
 public class ItemCreeperBannerPattern extends Item {
 
     public ItemCreeperBannerPattern() {
-        super( 572 );
+        super ( "minecraft:creeper_banner_pattern" );
     }
 
     @Override

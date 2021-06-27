@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockChemicalHeat;
 public class ItemChemicalHeat extends Item {
 
     public ItemChemicalHeat() {
-        super(  192 );
+        super( "minecraft:chemical_heat" );
     }
 
     @Override

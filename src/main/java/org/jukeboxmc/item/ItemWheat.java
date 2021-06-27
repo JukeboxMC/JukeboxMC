@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemWheat extends Item {
 
     public ItemWheat() {
-        super( 334 );
+        super ( "minecraft:wheat" );
     }
 
 }

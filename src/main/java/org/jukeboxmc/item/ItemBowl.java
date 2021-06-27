@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemBowl extends Item {
 
     public ItemBowl() {
-        super( 321 );
+        super ( "minecraft:bowl" );
     }
 
 

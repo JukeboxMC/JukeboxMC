@@ -10,7 +10,7 @@ import org.jukeboxmc.block.BlockType;
 public class ItemSnowLayer extends Item {
 
     public ItemSnowLayer( int blockRuntimeId ) {
-        super( 78, blockRuntimeId );
+        super( "minecraft:snow_layer", blockRuntimeId );
     }
 
     @Override

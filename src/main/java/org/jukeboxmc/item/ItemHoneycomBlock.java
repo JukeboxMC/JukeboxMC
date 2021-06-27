@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockHoneycombBlock;
 public class ItemHoneycomBlock extends Item {
 
     public ItemHoneycomBlock() {
-        super( -221 );
+        super ( "minecraft:honeycomb_block" );
     }
 
     @Override

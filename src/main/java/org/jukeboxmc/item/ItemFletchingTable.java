@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockFletchingTable;
 public class ItemFletchingTable extends Item {
 
     public ItemFletchingTable() {
-        super( -201 );
+        super ( "minecraft:fletching_table" );
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLever;
 public class ItemLever extends Item {
 
     public ItemLever() {
-        super( 69 );
+        super ( "minecraft:lever" );
     }
 
     @Override

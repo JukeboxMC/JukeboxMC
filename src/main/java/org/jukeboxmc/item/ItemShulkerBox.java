@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemShulkerBox extends Item {
 
     public ItemShulkerBox( int blockRuntimeId ) {
-        super( 218, blockRuntimeId );
+        super( "minecraft:shulker_box", blockRuntimeId );
     }
 
     @Override

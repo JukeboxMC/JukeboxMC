@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDeny;
 public class ItemDeny extends Item {
 
     public ItemDeny() {
-        super( 211 );
+        super ( "minecraft:deny" );
     }
 
     @Override

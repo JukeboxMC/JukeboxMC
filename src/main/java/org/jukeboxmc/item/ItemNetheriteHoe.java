@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteHoe extends Item {
 
     public ItemNetheriteHoe() {
-        super( 596 );
+        super ( "minecraft:netherite_hoe" );
     }
 
 

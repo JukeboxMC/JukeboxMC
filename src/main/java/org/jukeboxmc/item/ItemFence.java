@@ -7,10 +7,11 @@ import org.jukeboxmc.block.type.WoodType;
  * @author LucGamesYT
  * @version 1.0
  */
+//TODO
 public class ItemFence extends Item {
 
     public ItemFence() {
-        super( 85,4018 );
+        super( "minecraft:fence" );
     }
 
     @Override

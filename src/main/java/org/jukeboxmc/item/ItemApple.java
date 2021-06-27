@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemApple extends Item {
 
     public ItemApple() {
-        super( 257 );
+        super ( "minecraft:apple" );
     }
 
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockDragonEgg;
 public class ItemDragonEgg extends Item {
 
     public ItemDragonEgg() {
-        super( 122 );
+        super ( "minecraft:dragon_egg" );
     }
 
     @Override

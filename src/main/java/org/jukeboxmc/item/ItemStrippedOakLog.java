@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockStrippedOakLog;
 public class ItemStrippedOakLog extends Item{
 
     public ItemStrippedOakLog() {
-        super( -10 );
+        super ( "minecraft:stripped_oak_log" );
     }
 
     @Override

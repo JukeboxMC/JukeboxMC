@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockRedNetherBrick;
 public class ItemRedNetherBrick extends Item {
 
     public ItemRedNetherBrick() {
-        super( 215 );
+        super ( "minecraft:red_nether_brick" );
     }
 
     @Override

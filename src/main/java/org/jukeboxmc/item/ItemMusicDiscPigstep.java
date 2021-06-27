@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemMusicDiscPigstep extends Item {
 
     public ItemMusicDiscPigstep() {
-        super( 608 );
+        super ( "minecraft:music_disc_pigstep" );
     }
 
 

@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemEnchantedGoldenApple extends Item {
 
     public ItemEnchantedGoldenApple() {
-        super( 259 );
+        super ( "minecraft:enchanted_golden_apple" );
     }
 
 

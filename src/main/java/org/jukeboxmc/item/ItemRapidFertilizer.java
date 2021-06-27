@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemRapidFertilizer extends Item {
 
     public ItemRapidFertilizer() {
-        super( 586 );
+        super ( "minecraft:rapid_fertilizer" );
     }
 
 

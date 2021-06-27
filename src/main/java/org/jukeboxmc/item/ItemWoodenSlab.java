@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.WoodType;
 public class ItemWoodenSlab extends Item {
 
     public ItemWoodenSlab( int blockRuntimeId ) {
-        super( 158, blockRuntimeId );
+        super( "minecraft:wooden_slab", blockRuntimeId );
     }
 
     @Override

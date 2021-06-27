@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.PlantType;
 public class ItemDoublePlant extends Item {
 
     public ItemDoublePlant( int blockRuntimeId ) {
-        super( 175, blockRuntimeId );
+        super( "double_plant", blockRuntimeId );
     }
 
     @Override

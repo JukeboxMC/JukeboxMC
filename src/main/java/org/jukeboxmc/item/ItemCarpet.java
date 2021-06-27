@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemCarpet extends Item {
 
     public ItemCarpet( int blockRuntimeId ) {
-        super( 171, blockRuntimeId );
+        super( "minecraft:carpet", blockRuntimeId );
     }
 
     @Override

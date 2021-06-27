@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemNetheriteShovel extends Item {
 
     public ItemNetheriteShovel() {
-        super( 593 );
+        super ( "minecraft:netherite_shovel" );
     }
 
 

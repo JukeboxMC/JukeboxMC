@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockEndStone;
 public class ItemEndStone extends Item {
 
     public ItemEndStone() {
-        super( 121 );
+        super ( "minecraft:end_stone" );
     }
 
     @Override

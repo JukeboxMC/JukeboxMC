@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockCrimsonButton;
 public class ItemCrimsonButton extends Item {
 
     public ItemCrimsonButton() {
-        super( -260 );
+        super ( "minecraft:crimson_button" );
     }
 
     @Override

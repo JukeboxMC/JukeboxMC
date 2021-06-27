@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockLodestone;
 public class ItemLodestone extends Item {
 
     public ItemLodestone() {
-        super( -222 );
+        super ( "minecraft:lodestone" );
     }
 
     @Override

@@ -510,7 +510,6 @@ public class World extends LevelDB {
         Block clickedBlock = this.getBlock( blockPosition );
 
         if ( clickedBlock instanceof BlockAir ) {
-            System.out.println( 1 );
             return false;
         }
 
@@ -528,13 +527,11 @@ public class World extends LevelDB {
         }
 
         if ( itemInHand instanceof ItemAir ) {
-            System.out.println( 2 );
             return interact;
         }
 
         if ( !interact || player.isSneaking() ) {
             if ( !replacedBlock.canBeReplaced( placedBlock ) ) {
-                System.out.println( 3 );
                 return false;
             }
 
@@ -546,12 +543,10 @@ public class World extends LevelDB {
             if ( placedBlock.isSolid() ) {
                 Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox(), location.getDimension() );
                 if ( !nearbyEntities.isEmpty() ) {
-                    System.out.println( 4 );
                     return false;
                 }
                 AxisAlignedBB boundingBox = player.getBoundingBox();
                 if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
-                    System.out.println( 5 );
                     return false;
                 }
             }
@@ -560,7 +555,6 @@ public class World extends LevelDB {
             Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
 
             if ( blockPlaceEvent.isCancelled() ) {
-                System.out.println( 6 );
                 return false;
             }
 
@@ -568,10 +562,8 @@ public class World extends LevelDB {
             if ( success ) {
                 this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
             }
-            System.out.println( 7 + ": " + success );
             return success;
         }
-        System.out.println( 8 + ": " + interact );
         return interact;
     }
 

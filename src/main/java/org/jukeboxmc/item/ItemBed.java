@@ -10,7 +10,7 @@ import org.jukeboxmc.block.type.BlockColor;
 public class ItemBed extends Item {
 
     public ItemBed() {
-        super( 416 );
+        super ( "minecraft:bed" );
     }
 
     @Override

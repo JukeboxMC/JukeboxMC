@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockMossyStoneBrickStairs;
 public class ItemMossyStoneBrickStairs extends Item {
 
     public ItemMossyStoneBrickStairs() {
-        super( -175 );
+        super ( "minecraft:mossy_stone_brick_stairs" );
     }
 
     @Override

@@ -36,6 +36,14 @@ bamboo_leaf_size (String):
 bamboo_stalk_thickness (String):
   - thin
   - thick
+big_dripleaf_head (Byte):
+  - 0
+  - 1
+big_dripleaf_tilt (String):
+  - none
+  - unstable
+  - partial_tilt
+  - full_tilt
 bite_counter (Integer):
   - 0
   - 1
@@ -76,6 +84,7 @@ button_pressed_bit (Byte):
 cauldron_liquid (String):
   - water
   - lava
+  - powder_snow
 chemistry_table_type (String):
   - compound_creator
   - material_reducer
@@ -185,6 +194,12 @@ double_plant_type (String):
 drag_down (Byte):
   - 0
   - 1
+dripstone_thickness (String):
+  - tip
+  - frustum
+  - middle
+  - base
+  - merge
 end_portal_eye_bit (Byte):
   - 0
   - 1
@@ -238,6 +253,33 @@ ground_sign_direction (Integer):
   - 13
   - 14
   - 15
+growing_plant_age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
 growth (Integer):
   - 0
   - 1
@@ -364,6 +406,71 @@ monster_egg_stone_type (String):
   - mossy_stone_brick
   - cracked_stone_brick
   - chiseled_stone_brick
+multi_face_direction_bits (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
+  - 32
+  - 33
+  - 34
+  - 35
+  - 36
+  - 37
+  - 38
+  - 39
+  - 40
+  - 41
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  - 47
+  - 48
+  - 49
+  - 50
+  - 51
+  - 52
+  - 53
+  - 54
+  - 55
+  - 56
+  - 57
+  - 58
+  - 59
+  - 60
+  - 61
+  - 62
+  - 63
 new_leaf_type (String):
   - acacia
   - dark_oak

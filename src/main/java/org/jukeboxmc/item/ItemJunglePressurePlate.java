@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockJunglePressurePlate;
 public class ItemJunglePressurePlate extends Item {
 
     public ItemJunglePressurePlate() {
-        super( -153 );
+        super ( "minecraft:jungle_pressure_plate" );
     }
 
     @Override

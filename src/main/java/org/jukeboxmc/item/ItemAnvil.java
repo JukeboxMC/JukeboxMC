@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.AnvilDamage;
 public class ItemAnvil extends Item {
 
     public ItemAnvil( int blockRuntimeId ) {
-        super( 145, blockRuntimeId );
+        super( "minecraft:avil", blockRuntimeId );
     }
 
     @Override

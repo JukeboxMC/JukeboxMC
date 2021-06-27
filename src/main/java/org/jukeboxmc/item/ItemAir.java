@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemAir extends Item {
 
     public ItemAir() {
-        super( -158 );
+        super( "minecraft:air" );
     }
 
     @Override

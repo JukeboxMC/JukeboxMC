@@ -7,7 +7,7 @@ package org.jukeboxmc.item;
 public class ItemGoldenCarrot extends Item {
 
     public ItemGoldenCarrot() {
-        super( 283 );
+        super ( "minecraft:golden_carrot" );
     }
 
 
