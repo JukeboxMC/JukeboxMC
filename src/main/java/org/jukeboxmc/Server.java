@@ -212,6 +212,7 @@ public class Server {
         this.serverConfig.addDefault( "maxplayers", 20 );
         this.serverConfig.addDefault( "viewdistance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
+        this.serverConfig.addDefault("submotd", "A fresh JukeboxMC Server");
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );

@@ -21,7 +21,7 @@ import java.util.StringJoiner;
 public class ServerInfo {
 
     private String motd;
-    private String name = "Submotd";
+    private String submotd;
     private int onlinePlayers = 0;
     private int maxPlayers;
     private GameMode gameMode;
@@ -30,6 +30,7 @@ public class ServerInfo {
     public ServerInfo( Server server, Listener listener ) {
         this.serverId = listener.getServerId();
         this.motd = server.getServerConfig().getString( "motd" );
+        this.submotd = server.getServerConfig().getString("submotd");
         this.maxPlayers = server.getServerConfig().getInt( "maxplayers" );
         this.gameMode = GameMode.valueOf( server.getServerConfig().getString( "gamemode" ).toUpperCase() );
     }
@@ -44,7 +45,7 @@ public class ServerInfo {
         stringJoiner.add( Integer.toString( this.onlinePlayers ) );
         stringJoiner.add( Integer.toString( this.maxPlayers ) );
         stringJoiner.add( Long.toString( this.serverId ) );
-        stringJoiner.add( this.name );
+        stringJoiner.add( this.submotd );
         stringJoiner.add( this.gameMode.getGamemode() );
         stringJoiner.add( "1" );
         return stringJoiner.toString();
