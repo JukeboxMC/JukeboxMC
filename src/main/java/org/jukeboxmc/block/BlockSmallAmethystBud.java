@@ -1,16 +1,27 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSmallAmethystBud;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSmallAmethystBud extends Block{
+public class BlockSmallAmethystBud extends Block {
 
     public BlockSmallAmethystBud() {
         super( "minecraft:small_amethyst_bud" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setBlockFace( blockFace );
+        world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override

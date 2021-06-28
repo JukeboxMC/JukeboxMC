@@ -1,7 +1,11 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAmethystCluster;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -11,6 +15,13 @@ public class BlockAmethystCluster extends Block {
 
     public BlockAmethystCluster() {
         super( "minecraft:amethyst_cluster" );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        this.setBlockFace( blockFace );
+        world.setBlock( placePosition, this );
+        return true;
     }
 
     @Override
