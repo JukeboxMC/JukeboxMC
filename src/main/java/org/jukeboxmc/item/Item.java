@@ -76,6 +76,10 @@ public class Item implements Cloneable {
         this( itemType, 1, 0, null );
     }
 
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
     public ItemType getItemType() {
         return ItemType.AIR;
     }
