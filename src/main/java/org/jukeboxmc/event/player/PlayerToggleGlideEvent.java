@@ -1,18 +1,19 @@
 package org.jukeboxmc.event.player;
 
-import org.jukeboxmc.event.CancelablePlayerEvent;
+import org.jukeboxmc.event.Cancelable;
 import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class PlayerToggleGlideEvent extends CancelablePlayerEvent {
+public class PlayerToggleGlideEvent extends PlayerEvent implements Cancelable {
 
     private boolean isGliding;
 
-    public PlayerToggleGlideEvent( Player player, boolean isGliding ) {
-        super( player );
+    public PlayerToggleGlideEvent(Player player, boolean isGliding) {
+        super(player);
+
         this.isGliding = isGliding;
     }
 

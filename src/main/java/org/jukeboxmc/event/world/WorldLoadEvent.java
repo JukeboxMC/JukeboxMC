@@ -1,25 +1,28 @@
 package org.jukeboxmc.event.world;
 
-import org.jukeboxmc.event.CancelableEvent;
+import org.jukeboxmc.event.Cancelable;
 import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class UnloadWorldEvent extends CancelableEvent {
+public class WorldLoadEvent extends WorldEvent implements Cancelable {
 
     private World world;
 
-    public UnloadWorldEvent( World world ) {
+    public WorldLoadEvent(World world) {
+        super(world);
+
         this.world = world;
     }
 
+    @Override
     public World getWorld() {
         return this.world;
     }
 
-    public void setWorld( World world ) {
+    public void setWorld(World world) {
         this.world = world;
     }
 }

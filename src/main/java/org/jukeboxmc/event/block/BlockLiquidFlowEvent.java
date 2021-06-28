@@ -1,19 +1,22 @@
-package org.jukeboxmc.block;
+package org.jukeboxmc.event.block;
 
-import org.jukeboxmc.event.CancelableBlockEvent;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockLiquid;
+import org.jukeboxmc.event.Cancelable;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class LiquidFlowEvent extends CancelableBlockEvent {
+public class BlockLiquidFlowEvent extends BlockEvent implements Cancelable {
 
     private Block blockTo;
     private BlockLiquid source;
     private int newFlowDecay;
 
-    public LiquidFlowEvent( Block blockTo, BlockLiquid source, int newFlowDecay ) {
-        super( blockTo );
+    public BlockLiquidFlowEvent(Block blockTo, BlockLiquid source, int newFlowDecay) {
+        super(blockTo);
+
         this.blockTo = blockTo;
         this.source = source;
         this.newFlowDecay = newFlowDecay;
