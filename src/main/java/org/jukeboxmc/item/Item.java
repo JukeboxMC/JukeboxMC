@@ -11,6 +11,7 @@ import org.jukeboxmc.nbt.NbtType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -81,6 +82,11 @@ public class Item implements Cloneable {
     }
 
     public ItemType getItemType() {
+        for ( Map.Entry<ItemType, Item> entry : ItemType.getAllItems().entrySet() ) {
+            if ( entry.getValue().getIdentifier().equalsIgnoreCase( this.identifier ) ) {
+                return entry.getKey();
+            }
+        }
         return ItemType.AIR;
     }
 
