@@ -16,7 +16,7 @@ public abstract class PlayerEvent extends Event {
      *
      * @param player who represents the player which comes with this event
      */
-    public PlayerEvent(Player player) {
+    public PlayerEvent( Player player ) {
         this.player = player;
     }
 

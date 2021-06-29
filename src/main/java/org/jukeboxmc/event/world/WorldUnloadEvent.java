@@ -11,8 +11,8 @@ public class WorldUnloadEvent extends WorldEvent implements Cancellable {
 
     private World world;
 
-    public WorldUnloadEvent(World world) {
-        super(world);
+    public WorldUnloadEvent( World world ) {
+        super( world );
 
         this.world = world;
     }
@@ -22,7 +22,7 @@ public class WorldUnloadEvent extends WorldEvent implements Cancellable {
         return this.world;
     }
 
-    public void setWorld(World world) {
+    public void setWorld( World world ) {
         this.world = world;
     }
 }

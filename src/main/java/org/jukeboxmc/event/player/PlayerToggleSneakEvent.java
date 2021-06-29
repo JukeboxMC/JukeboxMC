@@ -11,8 +11,8 @@ public class PlayerToggleSneakEvent extends PlayerEvent implements Cancellable {
 
     private boolean isSneaking;
 
-    public PlayerToggleSneakEvent(Player player, boolean isSneaking) {
-        super(player);
+    public PlayerToggleSneakEvent( Player player, boolean isSneaking ) {
+        super( player );
 
         this.isSneaking = isSneaking;
     }

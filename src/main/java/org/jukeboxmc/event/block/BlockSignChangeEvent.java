@@ -15,8 +15,8 @@ public class BlockSignChangeEvent extends BlockEvent implements Cancellable {
     private Player player;
     private List<String> lines;
 
-    public BlockSignChangeEvent(Block block, Player player, List<String> lines) {
-        super(block);
+    public BlockSignChangeEvent( Block block, Player player, List<String> lines ) {
+        super( block );
 
         this.player = player;
         this.lines = lines;
@@ -30,21 +30,21 @@ public class BlockSignChangeEvent extends BlockEvent implements Cancellable {
         return this.lines;
     }
 
-    public void setLines(List<String> lines) {
+    public void setLines( List<String> lines ) {
         this.lines = lines;
     }
 
-    public void setLine(int line, String text) {
-        if (line > 4 || line < 1) {
+    public void setLine( int line, String text ) {
+        if ( line > 4 || line < 1 ) {
             return;
         }
 
-        if (this.lines.size() < line) {
-            for (int i = 0; i < line - this.lines.size(); i++) {
-                this.lines.add("");
+        if ( this.lines.size() < line ) {
+            for ( int i = 0; i < line - this.lines.size(); i++ ) {
+                this.lines.add( "" );
             }
         }
 
-        this.lines.set(line - 1, text);
+        this.lines.set( line - 1, text );
     }
 }

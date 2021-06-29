@@ -15,8 +15,8 @@ public class BlockPlaceEvent extends BlockEvent implements Cancellable {
     private Block replacedBlock;
     private Block clickedBlock;
 
-    public BlockPlaceEvent(Player player, Block placedBlock, Block replacedBlock, Block clickedBlock) {
-        super(placedBlock);
+    public BlockPlaceEvent( Player player, Block placedBlock, Block replacedBlock, Block clickedBlock ) {
+        super( placedBlock );
 
         this.player = player;
         this.placedBlock = placedBlock;
@@ -32,7 +32,7 @@ public class BlockPlaceEvent extends BlockEvent implements Cancellable {
         return this.placedBlock;
     }
 
-    public void setPlacedBlock(Block placedBlock) {
+    public void setPlacedBlock( Block placedBlock ) {
         this.placedBlock = placedBlock;
     }
 

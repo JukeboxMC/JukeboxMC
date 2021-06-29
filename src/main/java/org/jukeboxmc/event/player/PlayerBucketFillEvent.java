@@ -8,9 +8,9 @@ import org.jukeboxmc.player.Player;
  * @author Kaooot
  * @version 1.0
  */
-public class PlayerBucketFillEvent extends PlayerBucketEvent{
+public class PlayerBucketFillEvent extends PlayerBucketEvent {
 
-    public PlayerBucketFillEvent(Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlocK) {
-        super(player, bucket, itemInHand, clickedBlock, placedBlocK);
+    public PlayerBucketFillEvent( Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlocK ) {
+        super( player, bucket, itemInHand, clickedBlock, placedBlocK );
     }
 }

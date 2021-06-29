@@ -261,7 +261,7 @@ public class PlayerConnection {
         PlayerMovePacket playerMovePacket = new PlayerMovePacket();
         playerMovePacket.setEntityRuntimeId( this.player.getEntityId() );
         playerMovePacket.setX( vector.getX() );
-        playerMovePacket.setY( vector.getY() + player.getEyeHeight()  );
+        playerMovePacket.setY( vector.getY() + player.getEyeHeight() );
         playerMovePacket.setZ( vector.getZ() );
         playerMovePacket.setYaw( this.player.getYaw() );
         playerMovePacket.setPitch( this.player.getPitch() );

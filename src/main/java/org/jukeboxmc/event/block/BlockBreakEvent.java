@@ -17,8 +17,8 @@ public class BlockBreakEvent extends BlockEvent implements Cancellable {
     private Block block;
     private List<Item> drops;
 
-    public BlockBreakEvent(Player player, Block block, List<Item> drops) {
-        super(block);
+    public BlockBreakEvent( Player player, Block block, List<Item> drops ) {
+        super( block );
 
         this.player = player;
         this.block = block;
@@ -29,7 +29,7 @@ public class BlockBreakEvent extends BlockEvent implements Cancellable {
         return this.player;
     }
 
-    public void setBlock(Block block) {
+    public void setBlock( Block block ) {
         this.block = block;
     }
 
@@ -37,7 +37,7 @@ public class BlockBreakEvent extends BlockEvent implements Cancellable {
         return this.drops;
     }
 
-    public void setDrops(List<Item> drops) {
+    public void setDrops( List<Item> drops ) {
         this.drops = drops;
     }
 }
