@@ -73,10 +73,10 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelabl
     /**
      * Modifies the block which will be placed
      *
-     * @param placedBlocK which will be placed
+     * @param placedBlock which will be placed
      */
-    public void setPlacedBlocK(Block placedBlocK) {
-        this.placedBlock = placedBlocK;
+    public void setPlacedBlock(Block placedBlock) {
+        this.placedBlock = placedBlock;
     }
 
     /**
