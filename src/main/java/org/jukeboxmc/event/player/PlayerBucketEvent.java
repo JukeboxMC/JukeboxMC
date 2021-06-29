@@ -35,7 +35,8 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellab
     }
 
     /**
-     * Retrieves the bucket {@link Item}
+     * Retrieves the item which was hold in the players hand
+     * after the regular bucket item has updated
      *
      * @return a fresh {@link Item}
      */
