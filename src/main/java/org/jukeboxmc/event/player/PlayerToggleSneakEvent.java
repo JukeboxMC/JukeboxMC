@@ -1,18 +1,19 @@
 package org.jukeboxmc.event.player;
 
-import org.jukeboxmc.event.CancelablePlayerEvent;
+import org.jukeboxmc.event.Cancelable;
 import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class PlayerToggleSneakEvent extends CancelablePlayerEvent {
+public class PlayerToggleSneakEvent extends PlayerEvent implements Cancelable {
 
     private boolean isSneaking;
 
-    public PlayerToggleSneakEvent( Player player, boolean isSneaking ) {
-        super( player );
+    public PlayerToggleSneakEvent(Player player, boolean isSneaking) {
+        super(player);
+
         this.isSneaking = isSneaking;
     }
 

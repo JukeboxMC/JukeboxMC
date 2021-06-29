@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.event.block.BlockFromToEvent;
+import org.jukeboxmc.event.block.BlockLiquidFlowEvent;
 import org.jukeboxmc.item.ItemWoodenSword;
 import org.jukeboxmc.utils.Utils;
 
@@ -178,7 +179,7 @@ public abstract class BlockLiquid extends Block {
                 }
             }
 
-            LiquidFlowEvent event = new LiquidFlowEvent( block, this, newFlowDecay );
+            BlockLiquidFlowEvent event = new BlockLiquidFlowEvent( block, this, newFlowDecay );
             this.world.getServer().getPluginManager().callEvent( event );
             if ( !event.isCancelled() ) {
                 if ( block.layer == 0 && block.getBlockType() != BlockType.AIR ) {

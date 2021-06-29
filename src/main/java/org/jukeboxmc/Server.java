@@ -7,8 +7,8 @@ import lombok.SneakyThrows;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
-import org.jukeboxmc.event.world.LoadWorldEvent;
-import org.jukeboxmc.event.world.UnloadWorldEvent;
+import org.jukeboxmc.event.world.WorldLoadEvent;
+import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.packet.Packet;
@@ -212,6 +212,7 @@ public class Server {
         this.serverConfig.addDefault( "maxplayers", 20 );
         this.serverConfig.addDefault( "viewdistance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
+        this.serverConfig.addDefault("submotd", "A fresh JukeboxMC Server");
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
@@ -334,7 +335,7 @@ public class Server {
     public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             World world = new World( worldName, this, worldGenerator );
-            LoadWorldEvent loadWorldEvent = new LoadWorldEvent( world );
+            WorldLoadEvent loadWorldEvent = new WorldLoadEvent( world );
             this.pluginManager.callEvent( loadWorldEvent );
 
             if ( loadWorldEvent.isCancelled() ) {
@@ -369,7 +370,7 @@ public class Server {
 
     public void unloadWorld( String worldName, Consumer<Player> consumer ) {
         World world = this.getWorld( worldName );
-        UnloadWorldEvent unloadWorldEvent = new UnloadWorldEvent( world );
+        WorldUnloadEvent unloadWorldEvent = new WorldUnloadEvent( world );
         this.pluginManager.callEvent( unloadWorldEvent );
 
         if ( unloadWorldEvent.isCancelled() ) {

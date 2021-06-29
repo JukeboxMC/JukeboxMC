@@ -1,18 +1,19 @@
 package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.CancelableBlockEvent;
+import org.jukeboxmc.event.Cancelable;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFromToEvent extends CancelableBlockEvent {
+public class BlockFromToEvent extends BlockEvent implements Cancelable {
 
     private Block blockTo;
 
-    public BlockFromToEvent( Block block, Block blockTo ) {
-        super( block );
+    public BlockFromToEvent(Block block, Block blockTo) {
+        super(block);
+
         this.blockTo = blockTo;
     }
 
@@ -24,7 +25,7 @@ public class BlockFromToEvent extends CancelableBlockEvent {
         return this.blockTo;
     }
 
-    public void setBlockTo( Block blockTo ) {
+    public void setBlockTo(Block blockTo) {
         this.blockTo = blockTo;
     }
 }

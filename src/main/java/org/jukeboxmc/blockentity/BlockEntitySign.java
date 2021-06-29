@@ -3,7 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.google.common.base.Joiner;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.block.SignChangeEvent;
+import org.jukeboxmc.event.block.BlockSignChangeEvent;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.network.packet.BlockEntityDataPacket;
@@ -52,15 +52,15 @@ public class BlockEntitySign extends BlockEntityContainer {
         ArrayList<String> lineList = new ArrayList<>();
         Collections.addAll( lineList, splitLine );
 
-        SignChangeEvent signChangeEvent = new SignChangeEvent( this.block, player, lineList );
-        Server.getInstance().getPluginManager().callEvent( signChangeEvent );
+        BlockSignChangeEvent blockSignChangeEvent = new BlockSignChangeEvent( this.block, player, lineList );
+        Server.getInstance().getPluginManager().callEvent( blockSignChangeEvent );
 
-        if ( signChangeEvent.isCancelled() ) {
+        if ( blockSignChangeEvent.isCancelled() ) {
             return;
         }
 
         this.lines.clear();
-        this.lines.addAll( signChangeEvent.getLines() );
+        this.lines.addAll( blockSignChangeEvent.getLines() );
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getLocation());
