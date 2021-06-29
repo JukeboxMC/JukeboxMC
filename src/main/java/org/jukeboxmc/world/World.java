@@ -21,6 +21,7 @@ import org.jukeboxmc.event.player.PlayerBucketEmptyEvent;
 import org.jukeboxmc.event.player.PlayerBucketFillEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -556,10 +557,11 @@ public class World extends LevelDB {
             }
 
             String itemName = itemInHand.getClass().getSimpleName();
+            boolean isNormalBucket = itemInHand.getItemType().equals(ItemType.BUCKET);
 
             if (itemName.endsWith("Bucket")) {
                 if (placedBlock.getBlockType().equals(BlockType.AIR)
-                        && clickedBlock instanceof BlockLiquid && itemName.equalsIgnoreCase("ItemBucket")) {
+                        && clickedBlock instanceof BlockLiquid && isNormalBucket) {
                     PlayerBucketFillEvent playerBucketFillEvent = new PlayerBucketFillEvent(player, itemInHand,
                             player.getInventory().getItemInHand(), clickedBlock, placedBlock);
 
@@ -568,9 +570,12 @@ public class World extends LevelDB {
                     if (playerBucketFillEvent.isCancelled()) {
                         return false;
                     }
+
+                    clickedBlock = playerBucketFillEvent.getClickedBlock();
+                    placedBlock = playerBucketFillEvent.getPlacedBlock();
                 }
 
-                if (placedBlock instanceof BlockLiquid && !itemName.equalsIgnoreCase("ItemBucket")) {
+                if (placedBlock instanceof BlockLiquid && !isNormalBucket) {
                     PlayerBucketEmptyEvent playerBucketEmptyEvent = new PlayerBucketEmptyEvent(player, itemInHand,
                             player.getInventory().getItemInHand(), clickedBlock, placedBlock);
 
@@ -579,6 +584,9 @@ public class World extends LevelDB {
                     if (playerBucketEmptyEvent.isCancelled()) {
                         return false;
                     }
+
+                    clickedBlock = playerBucketEmptyEvent.getClickedBlock();
+                    placedBlock = playerBucketEmptyEvent.getPlacedBlock();
                 }
             }
 

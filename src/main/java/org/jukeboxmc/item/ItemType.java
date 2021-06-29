@@ -9,10 +9,7 @@ import org.jukeboxmc.block.type.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -1408,24 +1405,29 @@ public enum ItemType {
     EXPOSED_COPPER( new ItemExposedCopper() ),
     COBBLED_DEEPSLATE_SLAB( new ItemCobbledDeepslateSlab() );
 
-    private static List<Map<String, Object>> creativeItems = new ArrayList<>();
-    private static List<Map<String, Object>> itemPalette = new ArrayList<>();
+    private static List<Map<String, Object>> CREATIVEITEMS;
+    private static List<Map<String, Object>> ITEMPALETTE = new ArrayList<>();
 
-    private static Map<String, Integer> itemIdByName = new HashMap<>();
+    private static Map<String, Integer> ITEMIDBYNAME = new HashMap<>();
+    private static Map<ItemType, Item> ALLITEMS = new HashMap<>();
 
     public static void init() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         InputStream creativeItems = JukeboxMC.class.getClassLoader().getResourceAsStream( "creative_items.json" );
         JsonArray parseCreative = new JsonParser().parse( new InputStreamReader( creativeItems ) ).getAsJsonObject().getAsJsonArray( "items" );
-        ItemType.creativeItems = gson.fromJson( parseCreative, List.class );
+        ItemType.CREATIVEITEMS = gson.fromJson( parseCreative, List.class );
 
         InputStream itemPalette = JukeboxMC.class.getClassLoader().getResourceAsStream( "itempalette.json" );
         JsonElement parseItem = new JsonParser().parse( new InputStreamReader( itemPalette ) );
-        ItemType.itemPalette = gson.fromJson( parseItem, List.class );
+        ItemType.ITEMPALETTE = gson.fromJson( parseItem, List.class );
 
-        for ( Map<String, Object> objectMap : ItemType.itemPalette ) {
-            itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
+        for ( Map<String, Object> objectMap : ItemType.ITEMPALETTE ) {
+            ITEMIDBYNAME.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
+        }
+
+        for ( ItemType itemType : values() ) {
+            ALLITEMS.put( itemType, itemType.getItem() );
         }
     }
 
@@ -1449,15 +1451,18 @@ public enum ItemType {
     }
 
     public static List<Map<String, Object>> getCreativeItems() {
-        return creativeItems;
+        return CREATIVEITEMS;
     }
 
     public static List<Map<String, Object>> getItemPalette() {
-        return itemPalette;
+        return ITEMPALETTE;
     }
 
     public static Map<String, Integer> getItemIdByName() {
-        return itemIdByName;
+        return ITEMIDBYNAME;
     }
 
+    public static Map<ItemType, Item> getAllItems() {
+        return ALLITEMS;
+    }
 }

@@ -14,7 +14,7 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelabl
     private Item bucket;
     private Item itemInHand;
     private Block clickedBlock;
-    private Block placedBlocK;
+    private Block placedBlock;
 
     /**
      * Creates a new {@link PlayerBucketEvent}
@@ -23,15 +23,15 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelabl
      * @param bucket       which represents the bucket item
      * @param itemInHand   which stands for the item which was hold by the player in their hand
      * @param clickedBlock which is the block the player clicked at
-     * @param placedBlocK  which is the block which will be placed
+     * @param placedBlock  which is the block which will be placed
      */
-    public PlayerBucketEvent(Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlocK) {
+    public PlayerBucketEvent(Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlock) {
         super(player);
 
         this.bucket = bucket;
         this.itemInHand = itemInHand;
         this.clickedBlock = clickedBlock;
-        this.placedBlocK = placedBlocK;
+        this.placedBlock = placedBlock;
     }
 
     /**
@@ -66,8 +66,8 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelabl
      *
      * @return a fresh {@link Block}
      */
-    public Block getPlacedBlocK() {
-        return this.placedBlocK;
+    public Block getPlacedBlock() {
+        return this.placedBlock;
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelabl
      * @param placedBlocK which will be placed
      */
     public void setPlacedBlocK(Block placedBlocK) {
-        this.placedBlocK = placedBlocK;
+        this.placedBlock = placedBlocK;
     }
 
     /**
