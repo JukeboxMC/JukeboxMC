@@ -1,13 +1,13 @@
 package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.Cancelable;
+import org.jukeboxmc.event.Cancellable;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFromToEvent extends BlockEvent implements Cancelable {
+public class BlockFromToEvent extends BlockEvent implements Cancellable {
 
     private Block blockTo;
 

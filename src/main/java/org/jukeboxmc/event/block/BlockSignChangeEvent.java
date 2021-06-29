@@ -1,7 +1,7 @@
 package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.Cancelable;
+import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.player.Player;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSignChangeEvent extends BlockEvent implements Cancelable {
+public class BlockSignChangeEvent extends BlockEvent implements Cancellable {
 
     private Player player;
     private List<String> lines;

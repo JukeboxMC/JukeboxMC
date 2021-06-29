@@ -1,7 +1,7 @@
 package org.jukeboxmc.event.player;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.event.Cancelable;
+import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.Player;
 
@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  * @author Kaooot
  * @version 1.0
  */
-public abstract class PlayerBucketEvent extends PlayerEvent implements Cancelable {
+public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellable {
 
     private Item bucket;
     private Item itemInHand;
