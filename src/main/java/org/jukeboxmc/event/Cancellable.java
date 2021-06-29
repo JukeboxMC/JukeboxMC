@@ -4,17 +4,17 @@ package org.jukeboxmc.event;
  * @author Kaooot
  * @version 1.0
  */
-public interface Cancelable {
+public interface Cancellable {
 
     /**
      * Updates the cancelled state to the given value
      *
      * @param cancelled which should be set
      */
-    void setCancelled(boolean cancelled);
+    void setCancelled( boolean cancelled );
 
     /**
-     * Retrieves whether the {@link Cancelable} implementation is cancelled or not
+     * Retrieves whether the {@link Cancellable} implementation is cancelled or not
      *
      * @return whether the event implementation is cancelled
      */

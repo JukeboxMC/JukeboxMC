@@ -1,6 +1,6 @@
 package org.jukeboxmc.event.player;
 
-import org.jukeboxmc.event.Cancelable;
+import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.player.Player;
 
@@ -8,7 +8,7 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class PlayerMoveEvent extends PlayerEvent implements Cancelable {
+public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
 
     private Location from;
     private Location to;
