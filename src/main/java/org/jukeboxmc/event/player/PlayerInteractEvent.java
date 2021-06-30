@@ -77,9 +77,5 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
         RIGHT_CLICK_AIR,
         LEFT_CLICK_BLOCK,
         RIGHT_CLICK_BLOCK;
-
-        Action() {
-
-        }
     }
 }
