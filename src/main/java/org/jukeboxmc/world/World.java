@@ -19,6 +19,7 @@ import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.event.player.PlayerBucketEmptyEvent;
 import org.jukeboxmc.event.player.PlayerBucketFillEvent;
+import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
@@ -513,6 +514,12 @@ public class World extends LevelDB {
 
     public boolean useItemOn( Player player, Vector blockPosition, Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
+
+        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
+                clickedBlock.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
+                        PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), clickedBlock );
+
+        Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
 
         if ( clickedBlock instanceof BlockAir ) {
             return false;
