@@ -207,7 +207,7 @@ public class Server {
 
     private void initServerConfig() {
         this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json" );
-        this.serverConfig.addDefault( "address", "127.0.0.1" );
+        this.serverConfig.addDefault( "address", "0.0.0.0" );
         this.serverConfig.addDefault( "port", 19132 );
         this.serverConfig.addDefault( "maxplayers", 20 );
         this.serverConfig.addDefault( "viewdistance", 32 );
