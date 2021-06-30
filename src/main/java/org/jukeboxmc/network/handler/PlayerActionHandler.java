@@ -1,10 +1,9 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
-import org.jukeboxmc.event.player.PlayerToggleGlideEvent;
-import org.jukeboxmc.event.player.PlayerToggleSneakEvent;
-import org.jukeboxmc.event.player.PlayerToggleSprintEvent;
-import org.jukeboxmc.event.player.PlayerToggleSwimEvent;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.event.player.*;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PlayStatusPacket;
 import org.jukeboxmc.network.packet.PlayerActionPacket;
@@ -96,6 +95,15 @@ public class PlayerActionHandler implements PacketHandler {
                 } else {
                     player.setGliding( false );
                 }
+                break;
+            case START_BREAK:
+                Block block = player.getWorld().getBlock( playerActionPacket.getPosition() );
+
+                PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
+                        block.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.LEFT_CLICK_AIR :
+                                PlayerInteractEvent.Action.LEFT_CLICK_BLOCK, player.getInventory().getItemInHand(), block );
+
+                Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
                 break;
             default:
                 break;
