@@ -39,7 +39,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      * @return a fresh {@link Action}
      */
     public Action getAction() {
-        return action;
+        return this.action;
     }
 
     /**
@@ -48,7 +48,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      * @return a fresh {@link Item}
      */
     public Item getItem() {
-        return item;
+        return this.item;
     }
 
     /**
@@ -66,7 +66,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      * @return a fresh {@link Block}
      */
     public Block getClickedBlock() {
-        return clickedBlock;
+        return this.clickedBlock;
     }
 
     /**
