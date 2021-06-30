@@ -11,6 +11,11 @@ public class WorldLoadEvent extends WorldEvent implements Cancellable {
 
     private World world;
 
+    /**
+     * Creates a new {@link WorldLoadEvent}
+     *
+     * @param world which should be loaded
+     */
     public WorldLoadEvent( World world ) {
         super( world );
 
@@ -22,6 +27,11 @@ public class WorldLoadEvent extends WorldEvent implements Cancellable {
         return this.world;
     }
 
+    /**
+     * Modifies the {@link World}
+     *
+     * @param world which should be modified
+     */
     public void setWorld( World world ) {
         this.world = world;
     }
