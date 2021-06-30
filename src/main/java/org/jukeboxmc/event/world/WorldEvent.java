@@ -16,7 +16,7 @@ public abstract class WorldEvent extends Event {
      *
      * @param world which represents the world which comes with this event
      */
-    public WorldEvent(World world) {
+    public WorldEvent( World world ) {
         this.world = world;
     }
 

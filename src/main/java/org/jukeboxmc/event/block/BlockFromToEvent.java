@@ -11,8 +11,8 @@ public class BlockFromToEvent extends BlockEvent implements Cancellable {
 
     private Block blockTo;
 
-    public BlockFromToEvent(Block block, Block blockTo) {
-        super(block);
+    public BlockFromToEvent( Block block, Block blockTo ) {
+        super( block );
 
         this.blockTo = blockTo;
     }
@@ -25,7 +25,7 @@ public class BlockFromToEvent extends BlockEvent implements Cancellable {
         return this.blockTo;
     }
 
-    public void setBlockTo(Block blockTo) {
+    public void setBlockTo( Block blockTo ) {
         this.blockTo = blockTo;
     }
 }

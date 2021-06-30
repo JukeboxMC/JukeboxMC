@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.network.packet.LoginPacket;
 import org.jukeboxmc.network.packet.Packet;
@@ -31,7 +32,13 @@ public class LoginHandler implements PacketHandler {
         player.setNameTagVisible( true );
         player.setNameTagAlwaysVisible( true );
 
-        playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
+        if ( ( player.getXuid() == null || player.getXuid().isEmpty() ) && Server.getInstance().getServerConfig().getBoolean( "online-mode" ) ) {
+            player.disconnect( "Server is online-mode" );
+            return;
+        } else {
+            playerConnection.sendStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
+        }
+
         playerConnection.sendResourcePackInfo();
     }
 }

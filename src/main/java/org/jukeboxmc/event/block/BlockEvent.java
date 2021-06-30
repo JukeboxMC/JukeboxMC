@@ -16,7 +16,7 @@ public abstract class BlockEvent extends Event {
      *
      * @param block which represents the block which comes with this event
      */
-    public BlockEvent(Block block) {
+    public BlockEvent( Block block ) {
         this.block = block;
     }
 

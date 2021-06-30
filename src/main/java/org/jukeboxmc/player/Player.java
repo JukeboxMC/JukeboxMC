@@ -8,6 +8,7 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.event.player.PlayerDisconnectEvent;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -264,6 +265,15 @@ public class Player extends EntityHuman implements InventoryHolder {
     }
 
     public void disconnect( String message ) {
+        PlayerDisconnectEvent playerDisconnectEvent = new PlayerDisconnectEvent( this,
+                PlayerDisconnectEvent.DisconnectReason.getReasonByMessage( message ), message );
+
+        Server.getInstance().getPluginManager().callEvent( playerDisconnectEvent );
+
+        if ( !playerDisconnectEvent.getDisconnectMessage().isEmpty() ) {
+            message = playerDisconnectEvent.getDisconnectMessage();
+        }
+
         this.playerConnection.disconnect( message );
     }
 

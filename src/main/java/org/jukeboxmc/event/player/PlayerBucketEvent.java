@@ -25,8 +25,8 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellab
      * @param clickedBlock which is the block the player clicked at
      * @param placedBlock  which is the block which will be placed
      */
-    public PlayerBucketEvent(Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlock) {
-        super(player);
+    public PlayerBucketEvent( Player player, Item bucket, Item itemInHand, Block clickedBlock, Block placedBlock ) {
+        super( player );
 
         this.bucket = bucket;
         this.itemInHand = itemInHand;
@@ -35,7 +35,8 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellab
     }
 
     /**
-     * Retrieves the bucket {@link Item}
+     * Retrieves the item which was hold in the players hand
+     * after the regular bucket item has updated
      *
      * @return a fresh {@link Item}
      */
@@ -75,7 +76,7 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellab
      *
      * @param placedBlock which will be placed
      */
-    public void setPlacedBlock(Block placedBlock) {
+    public void setPlacedBlock( Block placedBlock ) {
         this.placedBlock = placedBlock;
     }
 
@@ -84,7 +85,7 @@ public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellab
      *
      * @param clickedBlock which will be changed
      */
-    public void setClickedBlock(Block clickedBlock) {
+    public void setClickedBlock( Block clickedBlock ) {
         this.clickedBlock = clickedBlock;
     }
 }

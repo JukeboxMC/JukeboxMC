@@ -14,8 +14,8 @@ public class BlockLiquidFlowEvent extends BlockEvent implements Cancellable {
     private BlockLiquid source;
     private int newFlowDecay;
 
-    public BlockLiquidFlowEvent(Block blockTo, BlockLiquid source, int newFlowDecay) {
-        super(blockTo);
+    public BlockLiquidFlowEvent( Block blockTo, BlockLiquid source, int newFlowDecay ) {
+        super( blockTo );
 
         this.blockTo = blockTo;
         this.source = source;

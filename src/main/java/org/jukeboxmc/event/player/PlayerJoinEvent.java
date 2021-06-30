@@ -10,8 +10,8 @@ public class PlayerJoinEvent extends PlayerEvent {
 
     private String joinMessage;
 
-    public PlayerJoinEvent(Player player, String joinMessage) {
-        super(player);
+    public PlayerJoinEvent( Player player, String joinMessage ) {
+        super( player );
 
         this.joinMessage = joinMessage;
     }
@@ -20,7 +20,7 @@ public class PlayerJoinEvent extends PlayerEvent {
         return this.joinMessage;
     }
 
-    public void setJoinMessage(String joinMessage) {
+    public void setJoinMessage( String joinMessage ) {
         this.joinMessage = joinMessage;
     }
 }

@@ -13,8 +13,8 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
     private Location from;
     private Location to;
 
-    public PlayerMoveEvent(Player player, Location from, Location to) {
-        super(player);
+    public PlayerMoveEvent( Player player, Location from, Location to ) {
+        super( player );
 
         this.from = from;
         this.to = to;
@@ -24,7 +24,7 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
         return this.from;
     }
 
-    public void setFrom(Location from) {
+    public void setFrom( Location from ) {
         this.from = from;
     }
 
@@ -32,7 +32,7 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
         return this.to;
     }
 
-    public void setTo(Location to) {
+    public void setTo( Location to ) {
         this.to = to;
     }
 }
