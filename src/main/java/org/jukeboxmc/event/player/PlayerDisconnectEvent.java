@@ -59,6 +59,7 @@ public class PlayerDisconnectEvent extends PlayerEvent {
     public enum DisconnectReason {
         SERVER_SHUTDOWN( "Server shutdown" ),
         WORLD_UNLOADED( "World was unloaded" ),
+        CLIENT_NOT_VERIFIED( "Server is online-mode" ),
         UNKNOWN( "Unknown" );
 
         private String message;

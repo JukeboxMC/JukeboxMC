@@ -216,6 +216,7 @@ public class Server {
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
+        this.serverConfig.addDefault( "online-mode", true );
         this.serverConfig.save();
     }
 
