@@ -134,4 +134,16 @@ public class Vector {
     public Vector substract( int x, int y, int z ) {
         return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
     }
+
+    public double lengthSquared() {
+        return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
+    }
+
+    public Vector normalize() {
+        double length = this.lengthSquared();
+        this.x /= length;
+        this.y /= length;
+        this.z /= length;
+        return this;
+    }
 }

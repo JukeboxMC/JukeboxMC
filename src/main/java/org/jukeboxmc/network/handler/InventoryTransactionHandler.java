@@ -2,7 +2,6 @@ package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.inventory.Inventory;
@@ -61,7 +60,6 @@ public class InventoryTransactionHandler implements PacketHandler {
                 clickPosition.setDimension( player.getDimension() );
 
                 BlockFace blockFace = transactionPacket.getBlockFace();
-
                 Block block = player.getWorld().getBlock( blockPosition );
 
                 switch ( transactionPacket.getActionType() ) {
@@ -75,12 +73,6 @@ public class InventoryTransactionHandler implements PacketHandler {
                         Vector placePosition = player.getWorld().getSidePosition( blockPosition, blockFace );
                         placePosition.setDimension( player.getDimension() );
 
-                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
-                                block.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
-                                        PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), block );
-
-                        Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
-
                         if ( !player.getWorld().useItemOn( player, blockPosition, placePosition, clickPosition, blockFace ) ) {
                             Block blockClicked = player.getWorld().getBlock( blockPosition );
                             blockClicked.sendBlockUpdate( player );
@@ -91,12 +83,13 @@ public class InventoryTransactionHandler implements PacketHandler {
                         }
                         break;
                     case 1: //Click Air
-                        playerInteractEvent = new PlayerInteractEvent( player,
-                                block.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
-                                        PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), block );
-
+                        Vector directionVector = player.getLocation().getDirectionVector();
+                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(
+                                player,
+                                PlayerInteractEvent.Action.RIGHT_CLICK_AIR,
+                                player.getInventory().getItemInHand(),
+                                directionVector );
                         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
-
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {

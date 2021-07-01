@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockLiquid;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
@@ -17,11 +16,9 @@ import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
-import org.jukeboxmc.event.player.PlayerBucketEmptyEvent;
-import org.jukeboxmc.event.player.PlayerBucketFillEvent;
+import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -526,9 +523,17 @@ public class World extends LevelDB {
         location.setDimension( player.getDimension() );
         placedBlock.setLocation( location );
 
+        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
+                clickedBlock.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
+                        PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), clickedBlock );
+
+        Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
+
         boolean interact = false;
         if ( !player.isSneaking() ) {
-            interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            if ( !playerInteractEvent.isCancelled() ) {
+                interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            }
         }
 
         if ( itemInHand instanceof ItemAir ) {
@@ -553,40 +558,6 @@ public class World extends LevelDB {
                 AxisAlignedBB boundingBox = player.getBoundingBox();
                 if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
                     return false;
-                }
-            }
-
-            String itemName = itemInHand.getClass().getSimpleName();
-            boolean isNormalBucket = itemInHand.getItemType().equals( ItemType.BUCKET );
-
-            if ( itemName.endsWith( "Bucket" ) ) {
-                if ( placedBlock.getBlockType().equals( BlockType.AIR )
-                        && clickedBlock instanceof BlockLiquid && isNormalBucket ) {
-                    PlayerBucketFillEvent playerBucketFillEvent = new PlayerBucketFillEvent( player, itemInHand,
-                            player.getInventory().getItemInHand(), clickedBlock, placedBlock );
-
-                    Server.getInstance().getPluginManager().callEvent( playerBucketFillEvent );
-
-                    if ( playerBucketFillEvent.isCancelled() ) {
-                        return false;
-                    }
-
-                    clickedBlock = playerBucketFillEvent.getClickedBlock();
-                    placedBlock = playerBucketFillEvent.getPlacedBlock();
-                }
-
-                if ( placedBlock instanceof BlockLiquid && !isNormalBucket ) {
-                    PlayerBucketEmptyEvent playerBucketEmptyEvent = new PlayerBucketEmptyEvent( player, itemInHand,
-                            player.getInventory().getItemInHand(), clickedBlock, placedBlock );
-
-                    Server.getInstance().getPluginManager().callEvent( playerBucketEmptyEvent );
-
-                    if ( playerBucketEmptyEvent.isCancelled() ) {
-                        return false;
-                    }
-
-                    clickedBlock = playerBucketEmptyEvent.getClickedBlock();
-                    placedBlock = playerBucketEmptyEvent.getPlacedBlock();
                 }
             }
 

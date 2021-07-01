@@ -2,8 +2,10 @@ package org.jukeboxmc.event.player;
 
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -16,6 +18,24 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
     private Action action;
     private Item item;
     private Block clickedBlock;
+    private Vector touchVector;
+
+    /**
+     * Creates a new {@link PlayerInteractEvent}
+     *
+     * @param player       who has interacted with something
+     * @param action       which represents the interaction type
+     * @param item         which is the interaction item
+     * @param touchVector  which stands for the vector the player clicked at
+     */
+    public PlayerInteractEvent( Player player, Action action, Item item, Vector touchVector ) {
+        super( player );
+
+        this.action = action;
+        this.item = item;
+        this.touchVector = touchVector;
+        this.clickedBlock = new BlockAir();
+    }
 
     /**
      * Creates a new {@link PlayerInteractEvent}
@@ -31,6 +51,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
         this.action = action;
         this.item = item;
         this.clickedBlock = clickedBlock;
+        this.touchVector = clickedBlock.getLocation();
     }
 
     /**
@@ -67,6 +88,15 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      */
     public Block getClickedBlock() {
         return this.clickedBlock;
+    }
+
+    /**
+     * Retrieves the {@link Vector} the player clicked at
+     *
+     * @return a fresh {@link Vector}
+     */
+    public Vector getTouchVector() {
+        return this.touchVector;
     }
 
     /**
