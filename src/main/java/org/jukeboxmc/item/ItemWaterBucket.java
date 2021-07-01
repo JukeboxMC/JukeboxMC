@@ -6,7 +6,7 @@ import org.jukeboxmc.block.BlockWater;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemWaterBucket extends Item {
+public class ItemWaterBucket extends AbstractItemBucket {
 
     public ItemWaterBucket() {
         super ( "minecraft:water_bucket" );

@@ -402,7 +402,11 @@ public class Server {
     }
 
     public void broadcastPacket( Packet packet ) {
-        for ( Player onlinePlayers : this.players.values() ) {
+        this.broadcastPacket( this.players.values(), packet );
+    }
+
+    public void broadcastPacket( Collection<Player> players, Packet packet ) {
+        for ( Player onlinePlayers : players ) {
             onlinePlayers.getPlayerConnection().sendPacket( packet );
         }
     }
