@@ -26,30 +26,21 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public void removeViewer( Player player ) {
-
-    }
-
-    @Override
     public void sendContents( Player player ) {
         super.sendContents( player );
     }
 
     @Override
     public void sendContents( int slot, Player player ) {
+        InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
-            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
-            inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot] );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
         } else {
-            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setWindowId( WindowId.PLAYER );
-            inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot] );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
         }
+        inventorySlotPacket.setSlot( slot );
+        inventorySlotPacket.setItem( this.contents[slot] );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 
     @Override
@@ -79,6 +70,10 @@ public class PlayerInventory extends ContainerInventory {
             this.itemInHandSlot = itemInHandSlot;
             this.updateItemInHandForAll();
         }
+    }
+
+    public void setItemInHand( Item itemInHand ) {
+        this.setItem( this.itemInHandSlot, itemInHand );
     }
 
     public MobEquipmentPacket createMobEquipmentPacket( EntityHuman entityHuman ) {
