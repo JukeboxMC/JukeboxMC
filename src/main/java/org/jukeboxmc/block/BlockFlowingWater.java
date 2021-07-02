@@ -1,12 +1,6 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemWater;
-import org.jukeboxmc.math.Location;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -16,13 +10,6 @@ public class BlockFlowingWater extends BlockLiquid {
 
     public BlockFlowingWater() {
         super( "minecraft:flowing_water" );
-    }
-
-    @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        world.setBlock( placePosition, this, 0, false );
-        world.scheduleBlockUpdate( new Location( world, placePosition ), this.getTickRate() );
-        return true;
     }
 
     @Override

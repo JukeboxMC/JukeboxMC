@@ -90,6 +90,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                                 player.getInventory().getItemInHand(),
                                 directionVector );
                         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
+                        player.getInventory().getItemInHand().useInAir( player, directionVector );
                         break;
                     case 2://Break
                         if ( player.getGameMode() == GameMode.CREATIVE ) {

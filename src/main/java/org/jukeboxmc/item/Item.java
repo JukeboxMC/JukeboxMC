@@ -4,9 +4,12 @@ import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
+import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,6 +155,10 @@ public class Item implements Cloneable {
         return this.amount;
     }
 
+    public Item decreaseAmount() {
+        return this.setAmount( this.getAmount() - 1 );
+    }
+
     public Item setAmount( int amount ) {
         this.amount = amount;
         return this;
@@ -222,6 +229,14 @@ public class Item implements Cloneable {
 
             builder.putCompound( "display", displayBuilder.build() );
         }
+    }
+
+    public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
+        return false;
+    }
+
+    public boolean useInAir( Player player, Vector clickVector ) {
+        return false;
     }
 
 }

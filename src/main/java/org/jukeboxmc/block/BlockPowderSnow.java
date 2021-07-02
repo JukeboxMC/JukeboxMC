@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemPowderSnow;
 
 /**
  * @author LucGamesYT
@@ -14,11 +15,11 @@ public class BlockPowderSnow extends Block{
 
     @Override
     public Item toItem() {
-        return null;
+        return new ItemPowderSnow();
     }
 
     @Override
     public BlockType getBlockType() {
-        return null;
+        return BlockType.POWDER_SNOW;
     }
 }

@@ -74,6 +74,7 @@ public class PlayerInventory extends ContainerInventory {
 
     public void setItemInHand( Item itemInHand ) {
         this.setItem( this.itemInHandSlot, itemInHand );
+        this.sendItemInHand();
     }
 
     public MobEquipmentPacket createMobEquipmentPacket( EntityHuman entityHuman ) {
@@ -90,6 +91,7 @@ public class PlayerInventory extends ContainerInventory {
         if ( this.holder instanceof Player ) {
             Player player = (Player) this.holder;
             player.getPlayerConnection().sendPacket( this.createMobEquipmentPacket( player ) );
+            this.sendContents( this.itemInHandSlot, player );
         }
     }
 
@@ -100,7 +102,7 @@ public class PlayerInventory extends ContainerInventory {
             MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
 
             for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
-                if(onlinePlayers != entityHuman){
+                if ( onlinePlayers != entityHuman ) {
                     onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
                 }
             }

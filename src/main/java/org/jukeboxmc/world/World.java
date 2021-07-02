@@ -536,6 +536,10 @@ public class World extends LevelDB {
             }
         }
 
+        if ( !interact && itemInHand.useOnBlock( player, clickedBlock, location ) ) {
+            return true;
+        }
+
         if ( itemInHand instanceof ItemAir ) {
             return interact;
         }
