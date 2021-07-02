@@ -17,41 +17,44 @@ public abstract class AbstractItemBucket extends Item {
 
     @Override
     public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
-        if ( !( block instanceof BlockLiquid ) ) {
+        if ( !( block instanceof BlockLiquid ) && !( block instanceof BlockPowderSnow ) ) {
             block = player.getWorld().getBlock( block.getLocation(), 1 );
         }
 
-        if ( block instanceof BlockLiquid ) {
+        if ( block instanceof BlockLiquid || block instanceof BlockPowderSnow ) {
             if ( this.getItemType() != ItemType.BUCKET ) {
                 return false;
             }
 
-            PlayerBucketFillEvent playerBucketFillEvent = new PlayerBucketFillEvent( player, this,
-                    player.getInventory().getItemInHand(), block );
-
+            Item item = block instanceof BlockPowderSnow ? new ItemPowderSnowBucket() : block instanceof BlockLava ? new ItemLavaBucket() : new ItemWaterBucket();
+            PlayerBucketFillEvent playerBucketFillEvent = new PlayerBucketFillEvent( player, this, item, block );
             Server.getInstance().getPluginManager().callEvent( playerBucketFillEvent );
 
             if ( playerBucketFillEvent.isCancelled() ) {
+                player.getInventory().sendContents( player );
                 return false;
             }
-
-            LevelSound sound;
-            Item filledBucket;
-            if ( block instanceof BlockWater || block instanceof BlockFlowingWater ) {
-                sound = LevelSound.BUCKET_FILL_WATER;
-                filledBucket = new ItemWaterBucket();
-            } else {
-                sound = LevelSound.BUCKET_FILL_LAVA;
-                filledBucket = new ItemLavaBucket();
-            }
-
             player.getWorld().setBlock( block.getLocation(), new BlockAir() );
-            player.getWorld().playSound( player.getLocation(), sound );
-            if ( player.getGameMode() != GameMode.CREATIVE ) {
-                player.getInventory().setItemInHand( this.getAmount() == 1 ? new ItemAir() : this.decreaseAmount() );
+
+            if ( block instanceof BlockPowderSnow ) {
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_POWDER_SNOW );
+            } else if ( block instanceof BlockLava || block instanceof BlockFlowingLava ) {
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_LAVA );
+            } else {
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_WATER );
             }
-            if ( !player.getInventory().addItem( filledBucket ) ) {
-                //TODO: Drop filledBucket
+
+            if ( player.getGameMode() != GameMode.CREATIVE ) {
+                if ( this.getAmount() - 1 <= 0 ) {
+                    player.getInventory().setItemInHand( playerBucketFillEvent.getItemInHand() );
+                } else {
+                    Item clone = this.clone();
+                    clone.setAmount( this.getAmount() - 1 );
+                    player.getInventory().setItemInHand( clone );
+                    if ( !player.getInventory().addItem( playerBucketFillEvent.getItemInHand() ) ) {
+                        System.out.println( "DropFilled" );
+                    }
+                }
             }
             return true;
         } else {
@@ -75,17 +78,21 @@ public abstract class AbstractItemBucket extends Item {
             }
 
             PlayerBucketEmptyEvent playerBucketEmptyEvent = new PlayerBucketEmptyEvent( player, this,
-                    player.getInventory().getItemInHand(), block, placedBlock );
+                    new ItemBucket(), block, placedBlock );
 
             Server.getInstance().getPluginManager().callEvent( playerBucketEmptyEvent );
 
-            LevelSound sound;
-            if ( placedBlock instanceof BlockWater || placedBlock instanceof BlockFlowingWater ) {
-                sound = LevelSound.BUCKET_EMPTY_WATER;
-            } else if ( placedBlock instanceof BlockPowderSnow ) {
-                sound = LevelSound.BUCKET_EMPTY_POWDER_SNOW;
+            if ( playerBucketEmptyEvent.isCancelled() ) {
+                player.getInventory().sendContents( player );
+                return false;
+            }
+
+            if ( placedBlock instanceof BlockPowderSnow ) {
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_POWDER_SNOW );
+            } else if ( placedBlock instanceof BlockLava || placedBlock instanceof BlockFlowingLava ) {
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_LAVA );
             } else {
-                sound = LevelSound.BUCKET_EMPTY_LAVA;
+                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_WATER );
             }
 
             player.getWorld().setBlock( placeLocation, placedBlock, placedBlock.getLayer() );
@@ -93,13 +100,17 @@ public abstract class AbstractItemBucket extends Item {
                 player.getWorld().scheduleBlockUpdate( placeLocation, placedBlock.getTickRate() );
             }
 
-            player.getWorld().playSound( player.getLocation(), sound );
             if ( player.getGameMode() != GameMode.CREATIVE ) {
-                player.getInventory().setItemInHand( this.getAmount() == 1 ? new ItemAir() : this.decreaseAmount() );
-            }
-            Item emptyBucket = new ItemBucket();
-            if ( !player.getInventory().addItem( emptyBucket ) ) {
-                //TODO: Drop emptyBucket
+                if ( this.getAmount() - 1 <= 0 ) {
+                    player.getInventory().setItemInHand( playerBucketEmptyEvent.getItemInHand() );
+                } else {
+                    Item clone = this.clone();
+                    clone.setAmount( this.getAmount() - 1 );
+                    player.getInventory().setItemInHand( clone );
+                    if ( !player.getInventory().addItem( playerBucketEmptyEvent.getItemInHand() ) ) {
+                        System.out.println( "DropEmpty" );
+                    }
+                }
             }
             return true;
         }
