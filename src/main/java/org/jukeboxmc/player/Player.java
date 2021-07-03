@@ -8,6 +8,8 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.attribute.Attributes;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.event.inventory.InventoryCloseEvent;
+import org.jukeboxmc.event.inventory.InventoryOpenEvent;
 import org.jukeboxmc.event.player.PlayerDisconnectEvent;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.Location;
@@ -313,6 +315,12 @@ public class Player extends EntityHuman implements InventoryHolder {
         if ( inventory instanceof ContainerInventory ) {
             ContainerInventory containerInventory = (ContainerInventory) inventory;
 
+            InventoryOpenEvent inventoryOpenEvent = new InventoryOpenEvent( containerInventory, this );
+            Server.getInstance().getPluginManager().callEvent( inventoryOpenEvent );
+            if ( inventoryOpenEvent.isCancelled() ) {
+                return;
+            }
+
             if ( this.currentInventory != null ) {
                 this.closeInventory( this.currentInventory );
             }
@@ -329,6 +337,7 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public void closeInventory( int windowId, boolean isServerSide ) {
         if ( this.currentInventory != null ) {
+            Server.getInstance().getPluginManager().callEvent( new InventoryCloseEvent( this.currentInventory, this ) );
             this.currentInventory.removeViewer( this );
             this.playerConnection.closeInventory( windowId, isServerSide );
             this.currentInventory = null;

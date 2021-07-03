@@ -1,6 +1,7 @@
 package org.jukeboxmc;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -48,7 +49,7 @@ import java.util.function.Consumer;
 public class Server {
 
     @Getter
-    @Setter
+    @Setter( AccessLevel.PROTECTED )
     private static Server instance;
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );

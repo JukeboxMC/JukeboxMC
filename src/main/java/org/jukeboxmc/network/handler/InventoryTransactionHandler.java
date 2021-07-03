@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.event.inventory.InventoryClickEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
@@ -38,7 +39,14 @@ public class InventoryTransactionHandler implements PacketHandler {
                             if ( windowIdById != null ) {
                                 Inventory inventory = player.getInventory( windowIdById );
                                 if ( inventory != null ) {
-                                    inventory.setItem( slot, targetItem );
+                                    InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( inventory, player, sourceItem, targetItem, slot );
+                                    Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
+
+                                    if ( !inventoryClickEvent.isCancelled() ) {
+                                        inventory.setItem( slot, targetItem );
+                                    } else {
+                                        player.getInventory().sendContents( player );
+                                    }
                                 } else {
                                     Server.getInstance().getLogger().debug( "Inventory with id " + transaction.getWindowId() + " is missing" );
                                 }
@@ -63,7 +71,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                 Block block = player.getWorld().getBlock( blockPosition );
 
                 switch ( transactionPacket.getActionType() ) {
-                    case 0:
+                    case 0: //Use click block
                         if ( !this.canInteract() ) {
                             player.getWorld().getBlock( player.getWorld().getSidePosition( blockPosition, blockFace ) ).sendBlockUpdate( player );
                             return;
@@ -102,11 +110,11 @@ public class InventoryTransactionHandler implements PacketHandler {
                         break;
                 }
                 break;
-            case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
-                Server.getInstance().getLogger().debug( "RELEASE" );
-                break;
             case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY:
                 Server.getInstance().getLogger().debug( "USE_ON_ENTITY" );
+                break;
+            case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
+                Server.getInstance().getLogger().debug( "RELEASE" );
                 break;
             default:
                 break;
