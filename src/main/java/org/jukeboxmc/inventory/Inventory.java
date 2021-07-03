@@ -35,8 +35,10 @@ public abstract class Inventory {
 
     public abstract void sendContents( int slot, Player player );
 
-    public WindowType getWindowType() {
-        return WindowType.INVENTORY;
+    public abstract InventoryType getInventoryType();
+
+    public WindowTypeId getWindowTypeId() {
+        return WindowTypeId.INVENTORY;
     }
 
     public InventoryHolder getHolder() {
@@ -69,7 +71,6 @@ public abstract class Inventory {
         Item content = this.contents[slot];
         return content != null ? content : ItemType.AIR.getItem();
     }
-
 
     public boolean canAddItem( Item item ) {
         int amount = item.getAmount();

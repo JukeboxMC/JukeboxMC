@@ -11,7 +11,12 @@ public class FurnaceInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowType getWindowType() {
-        return WindowType.FURNACE;
+    public InventoryType getInventoryType() {
+        return InventoryType.FURNACE;
+    }
+
+    @Override
+    public WindowTypeId getWindowTypeId() {
+        return WindowTypeId.FURNACE;
     }
 }

@@ -3,7 +3,7 @@ package org.jukeboxmc.network.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.inventory.WindowId;
-import org.jukeboxmc.inventory.WindowType;
+import org.jukeboxmc.inventory.WindowTypeId;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 
@@ -16,7 +16,7 @@ import org.jukeboxmc.network.Protocol;
 public class ContainerOpenPacket extends Packet {
 
     private WindowId windowId;
-    private WindowType windowType;
+    private WindowTypeId windowTypeId;
     private Vector position;
     private long entityId;
 
@@ -29,7 +29,7 @@ public class ContainerOpenPacket extends Packet {
     public void write() {
         super.write();
         this.writeByte( this.windowId.getId() );
-        this.writeByte( this.windowType.getId() );
+        this.writeByte( this.windowTypeId.getId() );
         this.writeSignedVarInt( this.position.getFloorX() );
         this.writeUnsignedVarInt( this.position.getFloorY() );
         this.writeSignedVarInt( this.position.getFloorZ() );

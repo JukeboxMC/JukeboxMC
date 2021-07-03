@@ -4,7 +4,7 @@ package org.jukeboxmc.inventory;
  * @author LucGamesYT
  * @version 1.0
  */
-public enum WindowType {
+public enum WindowTypeId {
 
     INVENTORY( (byte) -1 ),
     CONTAINER( (byte) 0 ),
@@ -44,7 +44,7 @@ public enum WindowType {
 
     private byte id;
 
-    WindowType( byte id ) {
+    WindowTypeId( byte id ) {
         this.id = id;
     }
 

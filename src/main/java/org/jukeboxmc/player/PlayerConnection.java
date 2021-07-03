@@ -497,7 +497,7 @@ public class PlayerConnection {
     public void openInventory( Inventory inventory, Vector position ) {
         ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
         containerOpenPacket.setEntityId( this.player.getEntityId() );
-        containerOpenPacket.setWindowType( inventory.getWindowType() );
+        containerOpenPacket.setWindowTypeId( inventory.getWindowTypeId() );
         containerOpenPacket.setWindowId( WindowId.OPEN_CONTAINER );
         containerOpenPacket.setPosition( position );
         this.sendPacket( containerOpenPacket );

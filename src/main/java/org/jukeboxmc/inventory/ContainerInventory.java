@@ -15,8 +15,8 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public WindowType getWindowType() {
-        return WindowType.CONTAINER;
+    public WindowTypeId getWindowTypeId() {
+        return WindowTypeId.CONTAINER;
     }
 
     @Override

@@ -21,8 +21,13 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowType getWindowType() {
-        return WindowType.INVENTORY;
+    public InventoryType getInventoryType() {
+        return InventoryType.PLAYER;
+    }
+
+    @Override
+    public WindowTypeId getWindowTypeId() {
+        return WindowTypeId.INVENTORY;
     }
 
     @Override

@@ -35,4 +35,9 @@ public class CursorInventory extends Inventory {
         inventorySlotPacket.setSlot( slot );
         player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
+
+    @Override
+    public InventoryType getInventoryType() {
+        return InventoryType.CURSOR;
+    }
 }
