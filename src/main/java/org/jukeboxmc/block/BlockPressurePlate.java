@@ -60,7 +60,7 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     public void enterBlock( Player player ) {
 
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL,
-                null, this );
+                player.getInventory().getItemInHand(), this );
 
         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
 

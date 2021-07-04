@@ -672,7 +672,6 @@ public class World extends LevelDB {
         int radius = this.server.getServerConfig().getInt( "spawn-protection-radius" );
 
         return radius > 0 && new Vector( location.getX(), location.getY(), location.getZ() )
-                .distance( new Vector( this.spawnLocation.getX(), this.spawnLocation.getY(), this.spawnLocation.getZ() ) )
-                <= radius;
+                .distance( this.spawnLocation ) <= radius;
     }
 }
