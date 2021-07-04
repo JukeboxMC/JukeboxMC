@@ -45,10 +45,11 @@ public class InventoryTransactionHandler implements PacketHandler {
                                     if ( !inventoryClickEvent.isCancelled() ) {
                                         inventory.setItem( slot, targetItem );
                                     } else {
+                                        player.getCursorInventory().sendContents( player );
                                         player.getInventory().sendContents( player );
                                     }
                                 } else {
-                                    Server.getInstance().getLogger().debug( "Inventory with id " + transaction.getWindowId() + " is missing" );
+                                    Server.getInstance().getLogger().info( "Inventory with id " + transaction.getWindowId() + " is missing" );
                                 }
                             }
                             break;
