@@ -49,7 +49,7 @@ import java.util.function.Consumer;
 public class Server {
 
     @Getter
-    @Setter( AccessLevel.PROTECTED )
+    @Setter ( AccessLevel.PROTECTED )
     private static Server instance;
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );
@@ -218,6 +218,8 @@ public class Server {
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.addDefault( "online-mode", true );
+        this.serverConfig.addDefault( "spawn-protection", true );
+        this.serverConfig.addDefault( "spawn-protection-radius", 16 );
         this.serverConfig.save();
     }
 
