@@ -297,11 +297,11 @@ public abstract class Block implements Cloneable {
         return -1;
     }
 
-    public void enterBlock() {
+    public void enterBlock(Player player) {
 
     }
 
-    public void leaveBlock() {
+    public void leaveBlock(Player player) {
 
     }
 

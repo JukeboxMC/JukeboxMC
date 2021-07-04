@@ -568,7 +568,8 @@ public class World extends LevelDB {
             BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent( player, placedBlock, replacedBlock, clickedBlock );
             Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
 
-            if ( blockPlaceEvent.isCancelled() ) {
+            if ( blockPlaceEvent.isCancelled() || ( player.getWorld().isSpawnProtectionEnabled() &&
+                    player.getWorld().isLocationInSpawnProtectionArea( placedBlock.getLocation() ) ) ) {
                 return false;
             }
 
@@ -612,7 +613,8 @@ public class World extends LevelDB {
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops() );
         Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
 
-        if ( blockBreakEvent.isCancelled() ) {
+        if ( blockBreakEvent.isCancelled() || ( player.getWorld().isSpawnProtectionEnabled() &&
+                player.getWorld().isLocationInSpawnProtectionArea( breakBlock.getLocation() ) ) ) {
             breakBlock.sendBlockUpdate( player );
             return;
         }
@@ -660,5 +662,16 @@ public class World extends LevelDB {
             this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer0, blockFace ) );
             this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer1, blockFace ) );
         }
+    }
+
+    public boolean isSpawnProtectionEnabled() {
+        return this.server.getServerConfig().getBoolean( "spawn-protection" );
+    }
+
+    public boolean isLocationInSpawnProtectionArea( Location location ) {
+        int radius = this.server.getServerConfig().getInt( "spawn-protection-radius" );
+
+        return radius > 0 && new Vector( location.getX(), location.getY(), location.getZ() )
+                .distance( this.spawnLocation ) <= radius;
     }
 }

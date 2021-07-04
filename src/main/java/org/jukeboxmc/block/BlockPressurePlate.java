@@ -1,9 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Vector;
@@ -55,12 +57,23 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     }
 
     @Override
-    public void enterBlock() {
+    public void enterBlock( Player player ) {
+
+        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL,
+                player.getInventory().getItemInHand(), this );
+
+        Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
+
+        if ( playerInteractEvent.isCancelled() || ( this.world.isSpawnProtectionEnabled() &&
+                this.world.isLocationInSpawnProtectionArea( this.location ) ) ) {
+            return;
+        }
+
         this.updateState( this.getRedstoneSignal() );
     }
 
     @Override
-    public void leaveBlock() {
+    public void leaveBlock( Player player ) {
         this.updateState( this.getRedstoneSignal() );
     }
 
