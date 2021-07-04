@@ -4,6 +4,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.network.packet.MobEquipmentPacket;
 import org.jukeboxmc.player.Player;
@@ -32,7 +33,15 @@ public class PlayerInventory extends ContainerInventory {
 
     @Override
     public void sendContents( Player player ) {
-        super.sendContents( player );
+        InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
+        if ( player.getCurrentInventory() == this ) {
+            inventoryContentPacket.setWindowId( WindowId.OPEN_CONTAINER );
+            inventoryContentPacket.setItems( this.contents );
+            player.getPlayerConnection().sendPacket( inventoryContentPacket );
+        }
+        inventoryContentPacket.setWindowId( WindowId.PLAYER );
+        inventoryContentPacket.setItems( this.contents );
+        player.getPlayerConnection().sendPacket( inventoryContentPacket );
     }
 
     @Override

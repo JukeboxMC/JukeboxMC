@@ -21,10 +21,7 @@ public class CursorInventory extends Inventory {
 
     @Override
     public void sendContents( Player player ) {
-        InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-        inventoryContentPacket.setWindowId( WindowId.CURSOR_DEPRECATED );
-        inventoryContentPacket.setItems( this.contents );
-        player.getPlayerConnection().sendPacket( inventoryContentPacket );
+        this.sendContents( 0, player );
     }
 
     @Override
