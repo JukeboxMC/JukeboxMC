@@ -3,9 +3,9 @@ Why did I start JukeboxMC ?
 Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P
 
 ## Links
-Disocord: https://discord.gg/Jatt7tfRBF
-
-Twitter: https://twitter.com/LucGamesHD
+Discord: 
+* __[Discord](https://discord.gg/Jatt7tfRBF)__
+* __[Twitter](https://twitter.com/LucGamesHD)__
 
 ## How to build a jar file
 1. git clone https://github.com/LucGamesYT/JukeboxMC.git
