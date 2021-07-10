@@ -5,6 +5,7 @@ Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also 
 ## Links
 Discord: 
 * __[Discord](https://discord.gg/Jatt7tfRBF)__
+
 * __[Twitter](https://twitter.com/LucGamesHD)__
 
 ## How to build a jar file
