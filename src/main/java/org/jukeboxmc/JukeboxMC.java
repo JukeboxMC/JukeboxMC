@@ -20,6 +20,7 @@ public class JukeboxMC {
     }
 
     private JukeboxMC() {
+        //I will test the maven.yml please ignore this comment 
         ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
 
         this.logger = Logger.getInstance();
