@@ -12,6 +12,10 @@ public class BlockWater extends BlockLiquid {
         super( "minecraft:water" );
     }
 
+    protected BlockWater( String identifier ) {
+        super( identifier );
+    }
+
     @Override
     public ItemWater toItem() {
         return new ItemWater();

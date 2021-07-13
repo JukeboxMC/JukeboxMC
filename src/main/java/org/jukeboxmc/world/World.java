@@ -397,6 +397,10 @@ public class World extends LevelDB {
         this.playSound( null, location, levelSound, -1, ":", false, false );
     }
 
+    public void playSound( Vector position, LevelSound levelSound ) {
+        this.playSound( null, position, levelSound, -1, ":", false, false );
+    }
+
     public void playSound( Player player, LevelSound levelSound ) {
         this.playSound( player, player.getLocation(), levelSound, -1, ":", false, false );
     }
