@@ -22,7 +22,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
 
     @Override
     protected void runCommand( String command ) {
-        if ( command.startsWith( "stop" ) ) {
+        if ( command.startsWith( "stop" ) || command.startsWith("end") || command.startsWith("shutdown") ) {
             for ( World world : this.server.getWorlds() ) {
                 this.server.unloadWorld( world.getName() );
             }
