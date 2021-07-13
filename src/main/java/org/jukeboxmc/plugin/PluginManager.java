@@ -3,6 +3,7 @@ package org.jukeboxmc.plugin;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.command.CommandManager;
 import org.jukeboxmc.event.*;
 import org.jukeboxmc.logger.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -32,12 +33,15 @@ public class PluginManager {
     private final Object2ObjectMap<String, Class<?>> cachedClasses = new Object2ObjectArrayMap<>();
     final Object2ObjectMap<String, PluginClassLoader> pluginClassLoaders = new Object2ObjectArrayMap<>();
     final Map<Class<? extends Event>, Map<EventPriority, List<RegisteredListener>>> listeners = new HashMap<>();
+    private final CommandManager commandManager;
 
     public PluginManager( Server server ) {
         this.server = server;
         this.logger = server.getLogger();
         this.pluginLoader = new PluginLoader( this.logger, this );
         this.loadPluginsIn( this.server.getPluginFolder().toPath() );
+
+        this.commandManager = new CommandManager();
     }
 
     public void loadPluginsIn( Path folderPath ) {
@@ -236,5 +240,9 @@ public class PluginManager {
                 }
             }
         }
+    }
+
+    public CommandManager getCommandManager() {
+        return this.commandManager;
     }
 }

@@ -3,6 +3,7 @@ package org.jukeboxmc.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -16,6 +17,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.ChangeDimensionPacket;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
+import org.jukeboxmc.network.packet.SetCommandsEnabledPacket;
 import org.jukeboxmc.network.packet.TextPacket;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -34,7 +36,7 @@ import java.util.UUID;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Player extends EntityHuman implements InventoryHolder {
+public class Player extends EntityHuman implements InventoryHolder, CommandSender {
 
     private String name;
     private String xuid;
@@ -65,6 +67,8 @@ public class Player extends EntityHuman implements InventoryHolder {
     private CursorInventory cursorInventory;
 
     private List<UUID> emotes = new ArrayList<>();
+
+    private boolean enableClientCommand;
 
     public Player( Server server, Connection connection ) {
         this.server = server;
@@ -283,6 +287,17 @@ public class Player extends EntityHuman implements InventoryHolder {
         this.playerConnection.sendMessage( message, TextPacket.Type.RAW );
     }
 
+    // TODO: Add permission system
+    @Override
+    public boolean hasPermission( String permission ) {
+        return true;
+    }
+
+    @Override
+    public boolean hasPermission( String permission, boolean defaultValue ) {
+        return true;
+    }
+
     public void sendTip( String message ) {
         this.playerConnection.sendMessage( message, TextPacket.Type.TIP );
     }
@@ -406,5 +421,18 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public void teleport( Vector vector, PlayerMovePacket.Mode mode ) {
         this.playerConnection.movePlayer( vector, mode );
+    }
+
+    public boolean isEnableClientCommand() {
+        return this.enableClientCommand;
+    }
+
+    public void setEnableClientCommand( boolean enableClientCommand ) {
+        this.enableClientCommand = enableClientCommand;
+
+        SetCommandsEnabledPacket setCommandsEnabledPacket = new SetCommandsEnabledPacket();
+        setCommandsEnabledPacket.setEnabled( enableClientCommand );
+
+        this.playerConnection.sendPacket( setCommandsEnabledPacket );
     }
 }

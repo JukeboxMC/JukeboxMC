@@ -14,6 +14,7 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.nbt.util.stream.LittleEndianByteBufInputStream;
 import org.jukeboxmc.nbt.util.stream.LittleEndianByteBufOutputStream;
+import org.jukeboxmc.network.type.CommandOrigin;
 import org.jukeboxmc.player.skin.*;
 import org.jukeboxmc.world.GameRules;
 
@@ -628,5 +629,22 @@ public class BinaryStream {
         } else {
             this.writeLInt( 0 );
         }
+    }
+
+    public CommandOrigin readCommandOrigin() {
+        CommandOrigin commandOrigin = new CommandOrigin();
+        commandOrigin.setUnknown1( this.readByte() );
+        commandOrigin.setUuid( this.readUUID() );
+        commandOrigin.setUnknown2( this.readByte() );
+        commandOrigin.setType( this.readByte() );
+
+        return commandOrigin;
+    }
+
+    public void writeCommandOrigin( CommandOrigin commandOrigin ) {
+        this.writeByte( commandOrigin.getUnknown1() );
+        this.writeUUID( commandOrigin.getUuid() );
+        this.writeByte( commandOrigin.getUnknown2() );
+        this.writeByte( commandOrigin.getType() );
     }
 }
