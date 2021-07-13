@@ -94,6 +94,10 @@ public class PacketRegistry {
                 return new BlockPickRequestPacket();
             case Protocol.BLOCK_ENTITY_DATA_PACKET:
                 return new BlockEntityDataPacket();
+            case Protocol.SIMULATION_TYPE_PACKET:
+                return new SimulationTypePacket();
+            case Protocol.NPC_DIALOGUE_PACKET:
+                return new NpcDialoguePacket();
             default:
                 return null;
         }

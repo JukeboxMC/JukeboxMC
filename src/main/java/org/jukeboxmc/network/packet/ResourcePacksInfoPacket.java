@@ -16,6 +16,7 @@ public class ResourcePacksInfoPacket extends Packet {
 
     private boolean forceAccept;
     private boolean scripting;
+    private boolean forceServerPacks;
 
     @Override
     public int getPacketId() {
@@ -27,7 +28,8 @@ public class ResourcePacksInfoPacket extends Packet {
         super.write();
         this.writeBoolean( this.forceAccept );
         this.writeBoolean( this.scripting );
-        this.writeLShort( 0 ); // Resource Packs amount = 0, weil keine Resource Packs
-        this.writeLShort( 0 ); // Behavior Packs amount = 0, weil keine Behavior Packs
+        this.writeBoolean( this.forceServerPacks );
+        this.writeLShort( 0 ); // Resource Packs amount = 0, because of no resource packs
+        this.writeLShort( 0 ); // Behavior Packs amount = 0, because of no behaviour packs
     }
 }
