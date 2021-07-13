@@ -6,8 +6,8 @@ package org.jukeboxmc.network;
  */
 public interface Protocol {
 
-    int PROTOCOL = 440;
-    String MINECRAFT_VERSION = "1.17.0";
+    int PROTOCOL = 448;
+    String MINECRAFT_VERSION = "1.17.10";
 
     //Minecraft
     int BATCH_PACKET = 0xfe;
@@ -58,6 +58,8 @@ public interface Protocol {
     byte SET_DIFFICULTY_PACKET = 0x3c;
     byte SPAWN_PARTICLE_EFFECT_PACKET = 0x76;
     byte CHANGE_DIMENSION_PACKET = 0x3d;
+    byte SIMULATION_TYPE_PACKET = (byte) 0xa8;
+    byte NPC_DIALOGUE_PACKET = (byte) 0xa9;
 
     //Raknet
     byte CONNECTED_PING = 0x00;
