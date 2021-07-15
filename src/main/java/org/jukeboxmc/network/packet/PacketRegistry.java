@@ -32,7 +32,6 @@ public class PacketRegistry {
         handler.put( MobEquipmentPacket.class, new MobEquipmentHandler() );
         handler.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
         handler.put( BlockEntityDataPacket.class, new BlockEntityDataHandler() );
-        handler.put( CommandRequestPacket.class, new CommandRequestHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -99,6 +98,10 @@ public class PacketRegistry {
                 return new SetCommandsEnabledPacket();
             case Protocol.COMMAND_REQUEST_PACKET:
                 return new CommandRequestPacket();
+            case Protocol.SIMULATION_TYPE_PACKET:
+                return new SimulationTypePacket();
+            case Protocol.NPC_DIALOGUE_PACKET:
+                return new NpcDialoguePacket();
             default:
                 return null;
         }

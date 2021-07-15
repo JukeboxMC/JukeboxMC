@@ -58,6 +58,7 @@ public abstract class AbstractItemBucket extends Item {
             }
             return true;
         } else {
+            block = block.getWorld().getBlock( block.getLocation(), 0 );
             Block placedBlock;
             switch ( this.getItemType() ) {
                 case BUCKET:
@@ -70,11 +71,14 @@ public abstract class AbstractItemBucket extends Item {
                     return false;
                 default:
                     placedBlock = this.getBlock();
-                    if ( block instanceof BlockWaterlogable && this.getItemType() == ItemType.WATER_BUCKET ) {
+                    if ( block instanceof BlockWaterlogable && !( block instanceof BlockLiquid ) && this.getItemType() == ItemType.WATER_BUCKET ) {
                         placedBlock.setLocation( block.getLocation() );
                         placedBlock.setLayer( 1 );
-                    } else
+                    } else if ( block instanceof BlockLiquid ) {
+                        return false;
+                    } else {
                         placedBlock.setLocation( placeLocation );
+                    }
             }
 
             PlayerBucketEmptyEvent playerBucketEmptyEvent = new PlayerBucketEmptyEvent( player, this,

@@ -7,7 +7,7 @@ import org.jukeboxmc.world.Dimension;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFlowingLava extends BlockLiquid {
+public class BlockFlowingLava extends BlockLava {
 
     public BlockFlowingLava() {
         super( "minecraft:flowing_lava" );
@@ -26,14 +26,6 @@ public class BlockFlowingLava extends BlockLiquid {
     @Override
     public boolean canBeReplaced( Block block ) {
         return true;
-    }
-
-    @Override
-    public int getTickRate() {
-        if ( this.location.getDimension() == Dimension.NETHER ) {
-            return 10;
-        }
-        return 30;
     }
 
     @Override
