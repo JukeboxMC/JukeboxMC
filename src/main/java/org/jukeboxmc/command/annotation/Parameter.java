@@ -1,7 +1,5 @@
 package org.jukeboxmc.command.annotation;
 
-import org.jukeboxmc.command.validator.ParameterValidator;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,13 +19,6 @@ public @interface Parameter {
      * @return a fresh {@link String}
      */
     String name();
-
-    /**
-     * Represents the {@link ParameterValidator} of this {@link Parameter}
-     *
-     * @return a fresh {@link Class<? extends ParameterValidator>}
-     */
-    Class<? extends ParameterValidator<?, ?>> validator();
 
     /**
      * Represents the list of arguments of this {@link Parameter}

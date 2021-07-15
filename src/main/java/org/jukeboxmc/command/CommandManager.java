@@ -2,10 +2,7 @@ package org.jukeboxmc.command;
 
 import org.jukeboxmc.command.annotation.Parameter;
 import org.jukeboxmc.command.jukebox.TestCommand;
-import org.jukeboxmc.command.validator.ParameterValidator;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -40,8 +37,6 @@ public class CommandManager {
             if ( command.getName().equalsIgnoreCase( commandIdentifier ) || ( command.getAliases() != null &&
                     command.getAliases().contains( commandIdentifier ) ) ) {
                 for ( Parameter parameter : command.getParameters() ) {
-                    System.out.println( "param length: " + parameter.arguments().length );
-                    System.out.println( "commandPart length " + ( commandParts.length - 1 ) );
                     if ( parameter.arguments().length == ( commandParts.length - 1 ) && !parameter.optional() ) {
                         isCommand = true;
                         break;
@@ -63,52 +58,24 @@ public class CommandManager {
         }
 
         Map<String, Object> argumentsMap = new HashMap<>();
-        List<String> arguments = new ArrayList<>();
-        Constructor<? extends ParameterValidator<?, ?>> constructor = null;
 
         for ( Parameter parameter : command.getParameters() ) {
             if ( parameter.arguments().length == ( commandParts.length - 1 ) ) {
-                arguments.addAll( Arrays.asList( parameter.arguments() ) );
+                int i = 0;
 
-                try {
-                    constructor = parameter.validator().getConstructor();
-                } catch ( NoSuchMethodException e ) {
-                    System.out.println( "Constructor is not no arg" );
-                    try {
-                        constructor = parameter.validator().getConstructor( String.class );
-                    } catch ( NoSuchMethodException e1 ) {
-                        System.out.println( "Constructor is not string" );
-                        try {
-                            constructor = parameter.validator().getConstructor( List.class );
-                        } catch ( NoSuchMethodException e2 ) {
-                            e2.printStackTrace();
-                        }
-                    }
+                for ( String argument : parameter.arguments() ) {
+                    argumentsMap.put( argument, commandParts[i + 1] );
+
+                    i++;
                 }
             }
-        }
-
-        try {
-            if ( constructor != null ) {
-                final ParameterValidator<?, ?> parameterValidator = constructor.newInstance();
-
-                for ( String argument : arguments ) {
-                    argumentsMap.put( argument, parameterValidator.validate( input, commandSender ) );
-                }
-            }
-        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException e ) {
-            e.printStackTrace();
         }
 
         if ( argumentsMap.isEmpty() ) {
             return failOutput;
         }
 
-        command.execute( commandSender, commandIdentifier, argumentsMap );
-
-        System.out.println( "executed command with arguments: " + argumentsMap );
-
-        return new CommandOutput().success( "" );
+        return command.execute( commandSender, commandIdentifier, argumentsMap );
     }
 
     public void registerCommand( Command command ) {

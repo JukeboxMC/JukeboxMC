@@ -4,7 +4,6 @@ import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandOutput;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.command.annotation.*;
-import org.jukeboxmc.command.validator.StringValidator;
 
 import java.util.Map;
 
@@ -21,7 +20,7 @@ import java.util.Map;
 @Permission ( "jukebox.test" )
 @ParameterSections ( {
         @ParameterSection ( {
-                @Parameter ( name = "args", validator = StringValidator.class, arguments = { "arg1", "arg2" } )
+                @Parameter ( name = "args", arguments = { "arg1", "arg2" } )
         } )
 } )
 public class TestCommand extends Command {
