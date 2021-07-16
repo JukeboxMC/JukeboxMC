@@ -1,7 +1,6 @@
 package org.jukeboxmc.command;
 
 import org.jukeboxmc.command.annotation.Parameter;
-import org.jukeboxmc.command.jukebox.TestCommand;
 
 import java.util.*;
 
@@ -15,7 +14,7 @@ public class CommandManager {
 
     public CommandManager() {
         List<Class<? extends Command>> commands = Arrays.asList(
-                TestCommand.class
+
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {
@@ -94,6 +93,10 @@ public class CommandManager {
         }
 
         return false;
+    }
+
+    public List<Command> getCommands() {
+        return new ArrayList<>( this.commands );
     }
 
     private Command getCommandByNameOrAlias( String identifier ) {
