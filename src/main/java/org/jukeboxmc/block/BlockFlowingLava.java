@@ -1,7 +1,6 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemLava;
-import org.jukeboxmc.world.Dimension;
 
 /**
  * @author LucGamesYT

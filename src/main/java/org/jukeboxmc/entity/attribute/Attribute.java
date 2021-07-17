@@ -4,18 +4,22 @@ package org.jukeboxmc.entity.attribute;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Attribute {
+public class Attribute implements Cloneable {
 
-    private String key;
+    private final String key;
     private float minValue;
     private float maxValue;
+    private final float defaultValue;
     private float currentValue;
+    private boolean dirty;
 
     public Attribute( String key, float minValue, float maxValue, float currentValue ) {
         this.key = key;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = currentValue;
+        this.defaultValue = currentValue;
+        this.dirty = true;
     }
 
     public String getKey() {
@@ -44,5 +48,22 @@ public class Attribute {
 
     public void setCurrentValue( float currentValue ) {
         this.currentValue = currentValue;
+        this.dirty = true;
+    }
+
+    public boolean isDirty() {
+        boolean value = this.dirty;
+        this.dirty = false;
+        return value;
+    }
+
+    public void reset() {
+        this.currentValue = this.defaultValue;
+        this.dirty = true;
+    }
+
+    @Override
+    protected Attribute clone() throws CloneNotSupportedException {
+        return (Attribute) super.clone();
     }
 }

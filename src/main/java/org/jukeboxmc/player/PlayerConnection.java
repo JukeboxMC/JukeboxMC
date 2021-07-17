@@ -34,19 +34,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class PlayerConnection {
 
-    private Player player;
-    private Server server;
-    private Logger logger;
-    private Connection connection;
+    private final Player player;
+    private final Server server;
+    private final Logger logger;
+    private final Connection connection;
 
-    private ChunkComparator chunkComparator;
+    private final ChunkComparator chunkComparator;
 
-    private Queue<Chunk> chunkQueue = new ConcurrentLinkedQueue<>();
-    private Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
-    private Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Chunk> chunkQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Packet> incomingQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Long> chunkLoadQueue = new ConcurrentLinkedQueue<>();
 
-    private List<Long> loadingChunks = new CopyOnWriteArrayList<>();
-    private List<Long> loadedChunks = new CopyOnWriteArrayList<>();
+    private final List<Long> loadingChunks = new CopyOnWriteArrayList<>();
+    private final List<Long> loadedChunks = new CopyOnWriteArrayList<>();
 
     public PlayerConnection( Player player, Server server, Connection connection ) {
         this.player = player;
@@ -76,7 +76,27 @@ public class PlayerConnection {
                 } );
             }
         }
+
+        this.updateAttributes();
         this.needNewChunks();
+    }
+
+    private void updateAttributes() {
+        UpdateAttributesPacket updateAttributesPacket = null;
+        for ( Attribute attribute : this.player.getAttributes() ) {
+            if ( attribute.isDirty() ) {
+                if ( updateAttributesPacket == null ) {
+                    updateAttributesPacket = new UpdateAttributesPacket();
+                    updateAttributesPacket.setEntityId( this.player.getEntityId() );
+                }
+                updateAttributesPacket.addAttributes( attribute );
+            }
+        }
+
+        if ( updateAttributesPacket != null ) {
+            updateAttributesPacket.setTick( this.player.getWorld().getCurrentTick() / 50 );
+            this.sendPacket( updateAttributesPacket );
+        }
     }
 
     public void updateNetwork( long currentTick ) {
@@ -456,7 +476,7 @@ public class PlayerConnection {
 
         this.sendTime( 1000 );
         this.sendAdventureSettings();
-        this.sendAttributes( this.player.getAttributes().getAttributes() );
+        this.sendAttributes( new ArrayList<>( this.player.getAttributes() ) );
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.sendMetadata();
 

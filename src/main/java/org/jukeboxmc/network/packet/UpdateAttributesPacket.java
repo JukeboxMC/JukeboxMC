@@ -45,4 +45,10 @@ public class UpdateAttributesPacket extends Packet {
         }
         this.writeUnsignedVarLong( this.tick );
     }
+
+    public void addAttributes( Attribute attribute ) {
+        if ( !this.attributes.contains( attribute ) ) {
+            this.attributes.add( attribute );
+        }
+    }
 }
