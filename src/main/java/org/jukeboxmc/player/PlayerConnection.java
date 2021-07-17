@@ -425,23 +425,7 @@ public class PlayerConnection {
 
     public void spawnPlayer( Player player ) {
         if ( this.player != player ) {
-            AddPlayerPacket addPlayerPacket = new AddPlayerPacket();
-            addPlayerPacket.setUuid( player.getUUID() );
-            addPlayerPacket.setName( player.getName() );
-            addPlayerPacket.setEntityId( player.getEntityId() );
-            addPlayerPacket.setRuntimeEntityId( player.getEntityId() );
-            addPlayerPacket.setPlatformChatId( player.getDeviceInfo().getDeviceId() );
-            addPlayerPacket.setX( player.getX() );
-            addPlayerPacket.setY( player.getY() );
-            addPlayerPacket.setZ( player.getZ() );
-            addPlayerPacket.setVelocity( new Vector( 0, 0, 0 ) );
-            addPlayerPacket.setPitch( player.getPitch() );
-            addPlayerPacket.setHeadYaw( player.getHeadYaw() );
-            addPlayerPacket.setYaw( player.getYaw() );
-            addPlayerPacket.setItem( ItemType.AIR.getItem() );
-            addPlayerPacket.setMetadata( player.getMetadata() );
-            addPlayerPacket.setDeviceInfo( player.getDeviceInfo() );
-            this.sendPacket( addPlayerPacket );
+            this.sendPacket( player.createSpawnPacket() );
         }
     }
 
