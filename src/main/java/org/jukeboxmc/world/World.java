@@ -44,20 +44,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class World extends LevelDB {
 
-    private String name;
+    private final String name;
 
-    private Server server;
-    private WorldGenerator worldGenerator;
-    private BlockUpdateList blockUpdateList;
+    private final Server server;
+    private final WorldGenerator worldGenerator;
+    private final BlockUpdateList blockUpdateList;
 
     private int worldTime;
+    private long currentTick;
 
-    private boolean prepareSpawnLocaion = false;
+    private boolean prepareSpawnLocation = false;
 
-    private Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
+    private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    private Map<Dimension, Map<Long, Chunk>> chunkMap;
-    private Map<Long, Player> players;
+    private final Map<Dimension, Map<Long, Chunk>> chunkMap;
+    private final Map<Long, Player> players;
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         super( name );
@@ -74,6 +75,7 @@ public class World extends LevelDB {
     }
 
     public void update( long currentTick ) {
+        this.currentTick = currentTick;
         this.worldTime++;
         while ( this.worldTime >= 24000 ) {
             this.worldTime -= 24000;
@@ -107,6 +109,10 @@ public class World extends LevelDB {
         }
     }
 
+    public long getCurrentTick() {
+        return this.currentTick;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -136,7 +142,7 @@ public class World extends LevelDB {
     }
 
     public Location getSafeSpawnLocation( Dimension dimension ) {
-        if ( this.prepareSpawnLocaion ) {
+        if ( this.prepareSpawnLocation ) {
             return this.spawnLocation;
         }
         int airRuntimeId = new BlockAir().getRuntimeId();
@@ -149,7 +155,7 @@ public class World extends LevelDB {
                 break;
             }
         }
-        this.prepareSpawnLocaion = true;
+        this.prepareSpawnLocation = true;
         return this.spawnLocation;
     }
 
@@ -186,7 +192,7 @@ public class World extends LevelDB {
         compound.putLong( "Time", this.worldTime );
 
 
-        for ( GameRules gameRules : GameRule.getAll() ) {
+        for ( GameRules<?> gameRules : GameRule.getAll() ) {
             compound.put( gameRules.getName(), gameRules.toCompoundValue() );
         }
 

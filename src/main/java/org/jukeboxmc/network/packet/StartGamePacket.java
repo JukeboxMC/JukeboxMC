@@ -6,6 +6,7 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.player.GameMode;
+import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.GameRules;
 
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class StartGamePacket extends Packet {
     private String worldName;
     private Vector worldSpawn;
     private String serverEngine;
+    private Difficulty difficulty;
 
     private Map<String, GameRules<?>> gamerules = new HashMap<>();
 
@@ -60,7 +62,7 @@ public class StartGamePacket extends Packet {
 
         this.writeSignedVarInt( 1 ); //Generator
         this.writeSignedVarInt( 0 ); //GameMode
-        this.writeSignedVarInt( 0 ); //Difficulty
+        this.writeSignedVarInt( this.difficulty.ordinal() ); //Difficulty
 
         //Worldspawn
         this.writeSignedVarInt( (int) this.worldSpawn.getX() );

@@ -1,7 +1,6 @@
 package org.jukeboxmc.inventory;
 
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
 

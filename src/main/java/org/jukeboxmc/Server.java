@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
@@ -140,7 +141,12 @@ public class Server {
             Connection connection = event.getConnection();
             Packet packet = event.getPacket();
             Player player = this.players.get( connection.getSender() );
-            player.getPlayerConnection().handlePacketSync( packet );
+            PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( player, packet );
+            Server.getInstance().getPluginManager().callEvent( packetReceiveEvent );
+            if ( packetReceiveEvent.isCancelled() ) {
+                return;
+            }
+            player.getPlayerConnection().handlePacketSync( packetReceiveEvent.getPacket() );
         } );
 
         this.listener.getRakNetEventManager().onEvent( PlayerConnectionSuccessEvent.class, (Consumer<PlayerConnectionSuccessEvent>) event -> {

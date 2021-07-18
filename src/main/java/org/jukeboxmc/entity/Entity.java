@@ -8,6 +8,7 @@ import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.SetEntityDataPacket;
 import org.jukeboxmc.network.packet.SpawnParticleEffectPacket;
 import org.jukeboxmc.player.Player;
@@ -24,10 +25,13 @@ public abstract class Entity {
 
     public static long entityCount = 1;
     private long entityId = 0;
+
     protected Location location;
     protected Metadata metadata;
     protected AxisAlignedBB boundingBox;
     protected Dimension dimension = Dimension.OVERWORLD;
+
+    protected boolean isOnGround = false;
 
     public Entity() {
         this.metadata = new Metadata();
@@ -57,6 +61,8 @@ public abstract class Entity {
     public abstract float getHeight();
 
     public abstract float getEyeHeight();
+
+    public abstract Packet createSpawnPacket();
 
     public Metadata getMetadata() {
         return this.metadata;
@@ -174,6 +180,14 @@ public abstract class Entity {
         } else {
             return Direction.SOUTH;
         }
+    }
+
+    public boolean isOnGround() {
+        return this.isOnGround;
+    }
+
+    public void setOnGround( boolean onGround ) {
+        this.isOnGround = onGround;
     }
 
     public String getNameTag() {
