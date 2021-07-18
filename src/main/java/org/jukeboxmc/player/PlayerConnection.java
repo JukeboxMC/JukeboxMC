@@ -3,6 +3,7 @@ package org.jukeboxmc.player;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
@@ -210,8 +211,13 @@ public class PlayerConnection {
     }
 
     public void sendPacket( Packet packet, boolean direct ) {
+        PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
+        Server.getInstance().getPluginManager().callEvent( packetSendEvent );
+        if ( packetSendEvent.isCancelled() ) {
+            return;
+        }
         BatchPacket batchPacket = new BatchPacket();
-        batchPacket.addPacket( packet );
+        batchPacket.addPacket( packetSendEvent.getPacket() );
         batchPacket.write();
 
         EncapsulatedPacket encapsulatedPacket = new EncapsulatedPacket();
