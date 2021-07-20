@@ -19,16 +19,6 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn install
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: JukeboxMC ${{ github.ref }}
-          draft: false
-          prerelease: true
       - name: Upload JukeboxMC to Release
         uses: actions/upload-release-asset@v1
         env:
