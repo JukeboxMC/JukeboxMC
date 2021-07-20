@@ -42,6 +42,11 @@ public class BlockWater extends BlockLiquid {
     }
 
     @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
+    @Override
     public BlockLiquid getBlock( int liquidDepth ) {
         BlockWater blockWater = new BlockWater();
         blockWater.setLiquidDepth( liquidDepth );

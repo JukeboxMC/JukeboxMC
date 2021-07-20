@@ -25,7 +25,7 @@ public class BlockSoulTorch extends Block {
             return true;
         }
 
-        if ( !world.getBlock( placePosition.substract( 0, 1,0 ) ).isTransparent() ) {
+        if ( !world.getBlock( placePosition.subtract( 0, 1,0 ) ).isTransparent() ) {
             this.setTorchFacing( TorchFacing.TOP );
             world.setBlock( placePosition, this );
             return true;

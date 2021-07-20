@@ -1,6 +1,7 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.network.PacketSendEvent;
@@ -22,10 +23,7 @@ import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -80,6 +78,13 @@ public class PlayerConnection {
 
         this.updateAttributes();
         this.needNewChunks();
+
+        Collection<Entity> nearbyEntities = this.player.getWorld().getNearbyEntities( this.player.getBoundingBox().grow( 1, 0.5f, 1 ), this.player.getDimension(), null );
+        if ( nearbyEntities != null ) {
+            for ( Entity nearbyEntity : nearbyEntities ) {
+                nearbyEntity.onCollideWithPlayer( this.player );
+            }
+        }
     }
 
     private void updateAttributes() {

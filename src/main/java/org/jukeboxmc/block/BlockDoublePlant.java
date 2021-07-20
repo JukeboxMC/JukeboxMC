@@ -22,7 +22,7 @@ public class BlockDoublePlant extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block blockAbove = world.getBlock( placePosition.add( 0, 1, 0 ) );
-        Block blockDown = world.getBlock( placePosition.substract( 0, 1, 0 ) );
+        Block blockDown = world.getBlock( placePosition.subtract( 0, 1, 0 ) );
 
         if ( blockAbove instanceof BlockAir && ( blockDown instanceof BlockGrass || blockDown instanceof BlockDirt ) ) {
             if ( !this.isUpperBlock() ) {

@@ -28,6 +28,14 @@ public class Location extends Vector implements Cloneable {
         this.dimension = vector.getDimension();
     }
 
+    public Location( World world, Vector vector, float yaw, float pitch ) {
+        super( vector.getX(), vector.getY(), vector.getZ(), vector.getDimension() );
+        this.world = world;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.dimension = vector.getDimension();
+    }
+
     public Location( World world, float x, float y, float z, float yaw, float pitch ) {
         super( x, y, z );
         this.world = world;
@@ -98,13 +106,13 @@ public class Location extends Vector implements Cloneable {
         return new Location( this.world, this.x / x, this.getY(), this.z / z );
     }
 
-    public Vector getDirectionVector() {
-        double pitch = ( ( getPitch() + 90 ) * Math.PI ) / 180;
-        double yaw = ( ( getYaw() + 90 ) * Math.PI ) / 180;
+    public Vector getDirection() {
+        double pitch = ( ( this.pitch + 90 ) * Math.PI ) / 180;
+        double yaw = ( ( this.yaw + 90 ) * Math.PI ) / 180;
         double x = Math.sin( pitch ) * Math.cos( yaw );
         double z = Math.sin( pitch ) * Math.sin( yaw );
         double y = Math.cos( pitch );
-        return new Vector( (float) x, (float) y, (float) z, this.dimension ).normalize();
+        return new Vector( (float) x, (float) y, (float) z ).normalize();
     }
 
     @Override

@@ -100,7 +100,7 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     private int getRedstoneStrength() {
         AxisAlignedBB boundingBox = this.getBoundingBox();
 
-        for ( Entity entity : this.world.getNearbyEntities( boundingBox, this.location.getDimension() ) ) {
+        for ( Entity entity : this.world.getNearbyEntities( boundingBox, this.location.getDimension(), null ) ) {
             if ( entity instanceof EntityHuman ) {
                 return 15;
             }
