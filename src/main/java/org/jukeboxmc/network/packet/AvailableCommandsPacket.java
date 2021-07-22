@@ -24,56 +24,6 @@ public class AvailableCommandsPacket extends Packet {
         return Protocol.AVAILABLE_COMMANDS_PACKET;
     }
 
-    /*@Override
-    public void write() {
-        final List<String> values = new ArrayList<>();
-        final List<String> postfixes = new ArrayList<>();
-        final List<String> enums = new ArrayList<>();
-        commands.forEach( command -> {
-            *//*command.getAliases().forEach( alias -> {
-
-            } );*//*
-            enums.addAll(command.getAliases());
-            command.getParameterSections().forEach( overload -> {
-                for ( Parameter param : overload.value() ) {
-                    values.addAll( Arrays.asList( param.arguments() ) );
-                    enums.addAll( Arrays.asList( param.arguments() ) );
-                    postfixes.add(  param.postfix() );
-                }
-            } );
-        } );
-
-        writeUnsignedVarInt( values.size() );
-        values.forEach( this::writeString );
-
-        writeUnsignedVarInt( postfixes.size() );
-        postfixes.forEach( this::writeString );
-
-        writeUnsignedVarInt( enums.size() );
-        enums.forEach( it -> {
-            writeString( String.valueOf( it.hashCode() ) );
-            this.writeUnsignedVarInt( it.size() );
-
-            for ( String alias : aliases ) {
-                int i = enumValues.indexOf( alias );
-
-                if ( i >= 0 ) {
-                    if ( enumValues.size() < 256 ) {
-                        System.out.println( "i (byte): " + i );
-                        this.writeByte( i );
-                    } else if ( enumValues.size() < 65536 ) {
-                        System.out.println( "i (short): " + i );
-                        this.writeShort( (short) i );
-                    } else {
-                        System.out.println( "i (int): " + i );
-                        this.writeInt( i );
-                    }
-                }
-            }
-        } );
-    }*/
-
-
     @Override
     public void write() {
         super.write();
