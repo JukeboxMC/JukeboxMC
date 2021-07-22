@@ -307,7 +307,7 @@ public class Connection {
                 packet.read();
                 this.listener.getRakNetEventManager().callEvent( new ReceiveMinecraftPacketEvent( this, packet ) );
             } else {
-                Server.getInstance().getLogger().debug( "Packet is missing: " + packetId );
+                Server.getInstance().getLogger().info( "Packet is missing: " + packetId );
             }
         }
     }

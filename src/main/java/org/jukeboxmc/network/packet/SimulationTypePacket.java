@@ -21,11 +21,13 @@ public class SimulationTypePacket extends Packet {
 
     @Override
     public void read() {
+        super.read();
         this.simulationType = SimulationType.values()[this.readByte()];
     }
 
     @Override
     public void write() {
+        super.write();
         this.writeByte( this.simulationType.ordinal() );
     }
 

@@ -26,6 +26,7 @@ public class NpcDialoguePacket extends Packet {
 
     @Override
     public void read() {
+        super.read();
         this.entityId = this.readUnsignedVarLong();
         this.action = Action.values()[this.readInt()];
         this.dialogue = this.readString();
@@ -36,6 +37,7 @@ public class NpcDialoguePacket extends Packet {
 
     @Override
     public void write() {
+        super.write();
         this.writeUnsignedVarLong( this.entityId );
         this.writeInt( this.action.ordinal() );
         this.writeString( this.dialogue );

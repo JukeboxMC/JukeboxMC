@@ -20,5 +20,7 @@ public class SetLocalPlayerAsInitializedHandler implements PacketHandler {
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
             Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
         }
+
+        player.sendCommandData();
     }
 }

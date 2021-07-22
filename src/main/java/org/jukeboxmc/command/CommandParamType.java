@@ -6,48 +6,30 @@ package org.jukeboxmc.command;
  */
 public enum CommandParamType {
 
-    /**
-     * Represents an entity
-     */
-    TARGET,
+    INT( 0x01 ),
+    FLOAT( 0x02 ),
+    VALUE( 0x04 ),
+    WILDCARD_INT( 0x05 ),
+    OPERATOR( 0x06 ),
+    TARGET( 0x07 ),
+    WILDCARD_TARGET( 0x09 ),
+    FILE_PATH( 0x10 ),
+    STRING( 0x20 ),
+    BLOCK_POS( 0x28 ),
+    POSITION( 0x29 ),
+    MESSAGE( 0x2C ),
+    RAWTEXT( 0x2E ),
+    JSON( 0x32 ),
+    BLOCK_STATE( 0x3C ),
+    COMMAND( 0x3F );
 
-    /**
-     * Represents a set of strings
-     */
-    STRING_ENUM,
+    private final int identifier;
 
-    /**
-     * Represents a boolean value
-     */
-    BOOL,
+    CommandParamType( int identifier ) {
+        this.identifier = identifier;
+    }
 
-    /**
-     * Represents an integer value
-     */
-    INT,
-
-    /**
-     * Represents a block position containing x, y and z coordinates
-     */
-    BLOCK_POS,
-
-    /**
-     * Represents a {@link String}
-     */
-    STRING,
-
-    /**
-     * Represents a text which consumes all remaining argument input
-     */
-    TEXT,
-
-    /**
-     * Represents a float decimal value
-     */
-    FLOAT,
-
-    /**
-     * Represents another {@link Command}
-     */
-    COMMAND
+    public int getIdentifier() {
+        return this.identifier;
+    }
 }

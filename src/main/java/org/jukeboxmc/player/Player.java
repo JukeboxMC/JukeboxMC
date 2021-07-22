@@ -11,10 +11,7 @@ import org.jukeboxmc.event.player.PlayerDisconnectEvent;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.ChangeDimensionPacket;
-import org.jukeboxmc.network.packet.PlayerMovePacket;
-import org.jukeboxmc.network.packet.SetCommandsEnabledPacket;
-import org.jukeboxmc.network.packet.TextPacket;
+import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
@@ -52,6 +49,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final List<UUID> emotes = new ArrayList<>();
 
     private boolean enableClientCommand;
+
+    private final List<String> permissions = new ArrayList<>();
 
     public Player( Server server, Connection connection ) {
         this.server = server;
@@ -351,5 +350,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         setCommandsEnabledPacket.setEnabled( enableClientCommand );
 
         this.playerConnection.sendPacket( setCommandsEnabledPacket );
+    }
+
+    public void sendCommandData() {
+        AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
+        availableCommandsPacket.setCommands( Server.getInstance().getPluginManager().getCommandManager().getCommands() );
+
+        this.playerConnection.sendPacket( availableCommandsPacket );
     }
 }

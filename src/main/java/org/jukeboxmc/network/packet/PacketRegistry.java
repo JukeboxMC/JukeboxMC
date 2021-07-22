@@ -32,6 +32,7 @@ public class PacketRegistry {
         handler.put( MobEquipmentPacket.class, new MobEquipmentHandler() );
         handler.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
         handler.put( BlockEntityDataPacket.class, new BlockEntityDataHandler() );
+        handler.put( ViolationWarningPacket.class, new ViolationWarningPacketHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -102,6 +103,8 @@ public class PacketRegistry {
                 return new SimulationTypePacket();
             case Protocol.NPC_DIALOGUE_PACKET:
                 return new NpcDialoguePacket();
+            case Protocol.VIOLATION_WARNING_PACKET:
+                return new ViolationWarningPacket();
             default:
                 return null;
         }

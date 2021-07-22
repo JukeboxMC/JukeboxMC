@@ -1,6 +1,7 @@
 package org.jukeboxmc.command;
 
 import org.jukeboxmc.command.annotation.Parameter;
+import org.jukeboxmc.command.jukebox.GameModeCommand;
 
 import java.util.*;
 
@@ -14,7 +15,7 @@ public class CommandManager {
 
     public CommandManager() {
         List<Class<? extends Command>> commands = Arrays.asList(
-
+                GameModeCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

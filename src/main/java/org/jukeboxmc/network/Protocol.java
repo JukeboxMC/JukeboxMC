@@ -66,6 +66,7 @@ public interface Protocol {
     byte ADD_ITEM_ENTITY_PACKET = 0x0f;
     byte ENTITY_VELOCITY_PACKET = 0x28;
     byte ENTITY_MOVEMENT_PACKET = 0x12;
+    int VIOLATION_WARNING_PACKET = 0x9c;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

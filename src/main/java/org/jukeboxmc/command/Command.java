@@ -21,6 +21,7 @@ public abstract class Command {
 
     private final List<String> aliases = new ArrayList<>();
     private final List<Parameter> parameters = new ArrayList<>();
+    private final List<ParameterSection> parameterSections = new ArrayList<>();
 
     public Command() {
         Class<?> clazz = this.getClass();
@@ -56,12 +57,21 @@ public abstract class Command {
                 Parameter[] parameters = parameterSection.value();
 
                 this.parameters.addAll( Arrays.asList( parameters ) );
+
+                if ( !this.parameterSections.contains( parameterSection ) ) {
+                    this.parameterSections.add( parameterSection );
+                }
             }
         } else {
             if ( clazz.isAnnotationPresent( ParameterSection.class ) ) {
-                Parameter[] parameters = clazz.getAnnotation( ParameterSection.class ).value();
+                ParameterSection parameterSection = clazz.getAnnotation( ParameterSection.class );
+                Parameter[] parameters = parameterSection.value();
 
                 this.parameters.addAll( Arrays.asList( parameters ) );
+
+                if ( !this.parameterSections.contains( parameterSection ) ) {
+                    this.parameterSections.add( parameterSection );
+                }
             }
         }
     }
