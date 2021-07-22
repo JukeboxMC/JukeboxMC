@@ -100,7 +100,7 @@ public class Server {
 
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
         builder.setNameFormat( "JukeboxMC Tick Executor" );
-        this.tickExecutor = Executors.newScheduledThreadPool( 1, builder.build() );
+        this.tickExecutor = Executors.newScheduledThreadPool( Runtime.getRuntime().availableProcessors(), builder.build() );
         this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
 
         INITIATING.set( true );
@@ -191,12 +191,12 @@ public class Server {
             this.listener.shutdown();
         }
 
-        this.scheduler.onTick( ++this.currentTick );
+        this.currentTick++;
+        this.scheduler.onTick( this.currentTick );
 
         for ( Player player : this.players.values() ) {
             if ( player.isSpawned() ) {
                 player.getPlayerConnection().update( this.currentTick );
-
             }
         }
 

@@ -160,6 +160,10 @@ public abstract class Block implements Cloneable {
         return false;
     }
 
+    public boolean canPassThrough() {
+        return false;
+    }
+
     public abstract Item toItem();
 
     public abstract BlockType getBlockType();
@@ -306,7 +310,7 @@ public abstract class Block implements Cloneable {
     }
 
     public boolean isWater() {
-        return this instanceof BlockWater || this instanceof BlockFlowingWater;
+        return this instanceof BlockWater;
     }
 
     public int getTickRate() {

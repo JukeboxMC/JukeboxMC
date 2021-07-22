@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
@@ -14,8 +15,11 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
+import org.jukeboxmc.event.entity.EntityItemSpawnEvent;
+import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
@@ -37,6 +41,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -59,11 +65,13 @@ public class World extends LevelDB {
 
     private final Map<Dimension, Map<Long, Chunk>> chunkMap;
     private final Map<Long, Player> players;
+    private final Map<Long, Entity> entitys;
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         super( name );
         this.chunkMap = new ConcurrentHashMap<>();
         this.players = new ConcurrentHashMap<>();
+        this.entitys = new ConcurrentHashMap<>();
 
         this.name = name;
         this.server = server;
@@ -107,6 +115,10 @@ public class World extends LevelDB {
                 }
             }
         }
+
+        for ( Entity entity : this.entitys.values() ) {
+            entity.update( currentTick );
+        }
     }
 
     public long getCurrentTick() {
@@ -131,6 +143,23 @@ public class World extends LevelDB {
 
     public void removePlayer( Player player ) {
         this.players.remove( player.getEntityId() );
+    }
+
+    public void addEntity( Entity entity ) {
+        this.entitys.put( entity.getEntityId(), entity );
+    }
+
+    public void removeEntity( Entity entity ) {
+        this.entitys.remove( entity.getEntityId() );
+    }
+
+    public Entity getEntity( long entityId ) {
+        if ( this.entitys.containsKey( entityId ) ) {
+            return this.entitys.get( entityId );
+        } else if ( this.players.containsKey( entityId ) ) {
+            return this.players.get( entityId );
+        }
+        return null;
     }
 
     public Map<Long, Chunk> getChunkMap( Dimension dimension ) {
@@ -494,30 +523,6 @@ public class World extends LevelDB {
         }
     }
 
-    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb, Dimension dimension ) {
-        Set<Entity> targetEntity = new HashSet<>();
-
-        int minX = (int) Math.floor( ( bb.getMinX() - 2 ) / 16 );
-        int maxX = (int) Math.ceil( ( bb.getMaxX() + 2 ) / 16 );
-        int minZ = (int) Math.floor( ( bb.getMinZ() - 2 ) / 16 );
-        int maxZ = (int) Math.ceil( ( bb.getMaxZ() + 2 ) / 16 );
-
-        for ( int x = minX; x <= maxX; ++x ) {
-            for ( int z = minZ; z <= maxZ; ++z ) {
-                Chunk chunk = this.getChunk( x, z, dimension );
-                if ( chunk != null ) {
-                    chunk.iterateEntities( entity -> {
-                        AxisAlignedBB boundingBox = entity.getBoundingBox();
-                        if ( boundingBox.intersectsWith( bb ) ) {
-                            targetEntity.add( entity );
-                        }
-                    } );
-                }
-            }
-        }
-        return targetEntity;
-    }
-
     public boolean useItemOn( Player player, Vector blockPosition, Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
         Block clickedBlock = this.getBlock( blockPosition );
 
@@ -565,7 +570,7 @@ public class World extends LevelDB {
             }
 
             if ( placedBlock.isSolid() ) {
-                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox(), location.getDimension() );
+                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox(), location.getDimension(), null );
                 if ( !nearbyEntities.isEmpty() ) {
                     return false;
                 }
@@ -683,5 +688,131 @@ public class World extends LevelDB {
 
         return radius > 0 && new Vector( location.getX(), location.getY(), location.getZ() )
                 .distance( this.spawnLocation ) <= radius;
+    }
+
+    public Entity spawnEntity( Entity entity, Vector position, float yaw, float pitch ) {
+        EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( entity );
+        Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
+        if ( entitySpawnEvent.isCancelled() || entity == null ) {
+            return null;
+        }
+        Entity eventEntity = entitySpawnEvent.getEntity();
+        eventEntity.setLocation( new Location( this, position, yaw, pitch ) );
+        eventEntity.incrementEntityId();
+
+        //TODO Calculate new chunk
+        eventEntity.getChunk().addEntity( entity );
+        eventEntity.getWorld().addEntity( entity );
+
+        this.sendDimensionPacket( entity.createSpawnPacket(), position.getDimension() );
+        return eventEntity;
+    }
+
+    public Entity spawnEntity( Entity entity, Vector position ) {
+        return this.spawnEntity( entity, position, 0, 0 );
+    }
+
+    public EntityItem dropItem( Item item, Vector position, Vector velocity, int pickupDelay ) {
+        if ( velocity == null ) {
+            velocity = new Vector( ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f,
+                    0.2f, ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f );
+        }
+
+        EntityItem entityItem = new EntityItem();
+        entityItem.setItem( item );
+        entityItem.setVelocity( velocity, false );
+        entityItem.setPickupDelay( pickupDelay );
+
+        EntityItemSpawnEvent entityItemSpawnEvent = new EntityItemSpawnEvent( entityItem );
+        Server.getInstance().getPluginManager().callEvent( entityItemSpawnEvent );
+
+        return (EntityItem) this.spawnEntity( entityItemSpawnEvent.getEntity(), position, new Random().nextFloat() * 360, 0 );
+    }
+
+    public EntityItem dropItem( Item item, Vector position, Vector velocity ) {
+        return this.dropItem( item, position, velocity, 20 );
+    }
+
+    public EntityItem dropItem( Item item, Vector position ) {
+        return this.dropItem( item, position, null );
+    }
+
+    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb, Dimension dimension, Entity entity ) {
+        Set<Entity> targetEntity = new HashSet<>();
+
+        int minX = (int) FastMath.floor( ( bb.getMinX() - 2 ) / 16 );
+        int maxX = (int) FastMath.ceil( ( bb.getMaxX() + 2 ) / 16 );
+        int minZ = (int) FastMath.floor( ( bb.getMinZ() - 2 ) / 16 );
+        int maxZ = (int) FastMath.ceil( ( bb.getMaxZ() + 2 ) / 16 );
+
+        for ( int x = minX; x <= maxX; ++x ) {
+            for ( int z = minZ; z <= maxZ; ++z ) {
+                Chunk chunk = this.getChunk( x, z, dimension );
+                if ( chunk != null ) {
+                    chunk.iterateEntities( iterateEntities -> {
+                        if ( !iterateEntities.equals( entity ) ) {
+                            AxisAlignedBB boundingBox = iterateEntities.getBoundingBox();
+                            if ( boundingBox.intersectsWith( bb ) ) {
+                                targetEntity.add( iterateEntities );
+                            }
+                        }
+                    } );
+                }
+            }
+        }
+        return targetEntity;
+    }
+
+    public List<AxisAlignedBB> getCollisionCubes( Entity entity, AxisAlignedBB bb, boolean includeEntities ) {
+        int minX = (int) FastMath.floor( bb.getMinX() );
+        int minY = (int) FastMath.floor( bb.getMinY() );
+        int minZ = (int) FastMath.floor( bb.getMinZ() );
+        int maxX = (int) FastMath.ceil( bb.getMaxX() );
+        int maxY = (int) FastMath.ceil( bb.getMaxY() );
+        int maxZ = (int) FastMath.ceil( bb.getMaxZ() );
+
+        List<Block> collisions = this.iterateBlocks( minX, maxX, minY, maxY, minZ, maxZ, bb, true, false );
+        if ( collisions != null ) {
+            List<AxisAlignedBB> collisions0 = collisions.stream().map( Block::getBoundingBox ).collect( Collectors.toList() );
+            if ( includeEntities ) {
+                Collection<Entity> entities = this.getNearbyEntities( bb.grow( 0.25f, 0.25f, 0.25f ), entity.getDimension(), entity );
+                if ( entities != null ) {
+                    for ( Entity entity1 : entities ) {
+                        collisions0.add( entity1.getBoundingBox() );
+                    }
+                }
+            }
+            return collisions0;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Block> iterateBlocks( int minX, int maxX, int minY, int maxY, int minZ, int maxZ, AxisAlignedBB bb, boolean returnBoundingBoxes, boolean includePassThrough ) {
+        List<Block> values = null;
+
+        for ( int z = minZ; z < maxZ; ++z ) {
+            for ( int x = minX; x < maxX; ++x ) {
+                for ( int y = minY; y < maxY; ++y ) {
+                    Block block = this.getBlock( x, y, z );
+
+                    if ( ( !block.canPassThrough() || includePassThrough ) && block.getBoundingBox().intersectsWith( bb ) ) {
+                        if ( values == null ) {
+                            values = new ArrayList<>();
+                        }
+
+                        if ( returnBoundingBoxes ) {
+                            AxisAlignedBB bbs = block.getBoundingBox();
+                            if ( bbs != null ) {
+                                values.add( block );
+                            }
+                        } else {
+                            values.add( block );
+                        }
+                    }
+                }
+            }
+        }
+        return values;
     }
 }

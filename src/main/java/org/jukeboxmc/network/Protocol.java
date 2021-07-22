@@ -63,6 +63,9 @@ public interface Protocol {
     byte COMMAND_REQUEST_PACKET = 0x4d;
     byte SIMULATION_TYPE_PACKET = (byte) 0xa8;
     byte NPC_DIALOGUE_PACKET = (byte) 0xa9;
+    byte ADD_ITEM_ENTITY_PACKET = 0x0f;
+    byte ENTITY_VELOCITY_PACKET = 0x28;
+    byte ENTITY_MOVEMENT_PACKET = 0x12;
 
     //Raknet
     byte CONNECTED_PING = 0x00;

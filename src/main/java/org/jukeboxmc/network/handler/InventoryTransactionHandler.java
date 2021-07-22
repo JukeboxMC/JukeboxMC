@@ -4,6 +4,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.event.inventory.InventoryClickEvent;
+import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
@@ -54,7 +55,16 @@ public class InventoryTransactionHandler implements PacketHandler {
                             }
                             break;
                         case 2:
-                            //DropItem
+                            PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent( player, transaction.getNewItem() );
+                            Server.getInstance().getPluginManager().callEvent( playerDropItemEvent );
+                            if ( playerDropItemEvent.isCancelled() ) {
+                                player.getInventory().sendContents( player );
+                                return;
+                            }
+                            player.getWorld().dropItem(
+                                    playerDropItemEvent.getItem(),
+                                    player.getLocation().add( 0, player.getEyeHeight(), 0 ),
+                                    player.getLocation().getDirection().multiply( 0.4f ) );
                             break;
                         default:
                             break;
@@ -92,7 +102,7 @@ public class InventoryTransactionHandler implements PacketHandler {
                         }
                         break;
                     case 1: //Click Air
-                        Vector directionVector = player.getLocation().getDirectionVector();
+                        Vector directionVector = player.getLocation().getDirection();
                         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(
                                 player,
                                 PlayerInteractEvent.Action.RIGHT_CLICK_AIR,

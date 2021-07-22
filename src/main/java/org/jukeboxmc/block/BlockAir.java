@@ -41,4 +41,9 @@ public class BlockAir extends BlockWaterlogable {
     public boolean canBeFlowedInto() {
         return true;
     }
+
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
 }

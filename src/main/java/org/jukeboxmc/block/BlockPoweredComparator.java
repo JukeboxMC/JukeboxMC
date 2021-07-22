@@ -23,11 +23,11 @@ public class BlockPoweredComparator extends Block {
         return BlockType.POWERED_COMPARATOR;
     }
 
-    public void setOutputSubstract( boolean value ) {
+    public void setOutputSubtract( boolean value ) {
         this.setState( "output_subtract_bit", value ? (byte) 1: (byte) 0 );
     }
 
-    public boolean isOutputSubstract() {
+    public boolean isOutputSubtract() {
         return this.stateExists( "output_subtract_bit" ) && this.getByteState( "output_subtract_bit" ) == 1;
     }
 

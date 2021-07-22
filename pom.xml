@@ -6,7 +6,7 @@
 
     <groupId>org.jukeboxmc</groupId>
     <artifactId>JukeboxMC</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <repositories>
         <repository>
@@ -20,6 +20,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.iq80.leveldb</groupId>
             <artifactId>leveldb</artifactId>
@@ -128,6 +134,7 @@
     </dependencies>
 
     <build>
+        <finalName>JukeboxMC</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
