@@ -1,6 +1,7 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
@@ -203,14 +204,17 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.playerConnection.sendMessage( message, TextPacket.Type.RAW );
     }
 
-    // TODO: Add permission system
     @Override
     public boolean hasPermission( String permission ) {
-        return true;
+        return this.permissions.contains( permission );
     }
 
     @Override
     public boolean hasPermission( String permission, boolean defaultValue ) {
+        if ( !this.hasPermission( permission ) ) {
+            return defaultValue;
+        }
+
         return true;
     }
 
@@ -353,8 +357,16 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void sendCommandData() {
+        List<Command> playerCommands = new ArrayList<>();
+
+        for ( Command command : Server.getInstance().getPluginManager().getCommandManager().getCommands() ) {
+            if ( this.hasPermission( command.getPermission() ) ) {
+                playerCommands.add( command );
+            }
+        }
+
         AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
-        availableCommandsPacket.setCommands( Server.getInstance().getPluginManager().getCommandManager().getCommands() );
+        availableCommandsPacket.setCommands( playerCommands );
 
         this.playerConnection.sendPacket( availableCommandsPacket );
     }
