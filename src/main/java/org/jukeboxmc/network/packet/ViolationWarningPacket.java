@@ -24,6 +24,7 @@ public class ViolationWarningPacket extends Packet {
 
     @Override
     public void read() {
+        super.read();
         this.type = PacketViolationType.values()[this.readSignedVarInt() + 1];
         this.severity = PacketViolationSeverity.values()[this.readSignedVarInt()];
         this.packetId = this.readSignedVarInt();
