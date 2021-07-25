@@ -61,8 +61,8 @@ public interface Protocol {
     byte SET_COMMANDS_ENABLED_PACKET = 0x3b;
     byte AVAILABLE_COMMANDS_PACKET = 0x4c;
     byte COMMAND_REQUEST_PACKET = 0x4d;
-    byte SIMULATION_TYPE_PACKET = (byte) 0xa8;
-    byte NPC_DIALOGUE_PACKET = (byte) 0xa9;
+    int SIMULATION_TYPE_PACKET = 0xa8;
+    int NPC_DIALOGUE_PACKET = 0xa9;
     byte ADD_ITEM_ENTITY_PACKET = 0x0f;
     byte ENTITY_VELOCITY_PACKET = 0x28;
     byte ENTITY_MOVEMENT_PACKET = 0x12;
