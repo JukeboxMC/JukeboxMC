@@ -1,0 +1,2 @@
+git tag -a v1.0.3 -m "v1.0.3"
+git push --tags

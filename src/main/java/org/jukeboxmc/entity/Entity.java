@@ -1,11 +1,12 @@
 package org.jukeboxmc.entity;
 
-import org.apache.commons.math3.util.FastMath;
+import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.entity.EntityVelocityEvent;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
@@ -17,11 +18,13 @@ import org.jukeboxmc.world.Particle;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 /**
- * @author LucGamesYT
+ * @author LucGamesYT, NukkitX
  * @version 1.0
  */
 public abstract class Entity {
@@ -49,6 +52,8 @@ public abstract class Entity {
     protected boolean isCollidedHorizontally = false;
     protected boolean isCollided = false;
 
+    protected Map<Long, Player> spawnedFor = new HashMap<>();
+
     public Entity() {
         this.metadata = new Metadata();
         this.metadata.setLong( MetadataFlag.INDEX, 0 );
@@ -63,7 +68,7 @@ public abstract class Entity {
 
         this.location = new Location( Server.getInstance().getDefaultWorld(), 0, 7, 0, 0, 0 );
         this.location.setDimension( this.dimension );
-        this.lastLocation = new Location( Server.getInstance().getDefaultWorld(), 0, 0,0 );
+        this.lastLocation = new Location( Server.getInstance().getDefaultWorld(), 0, 0, 0 );
         this.lastLocation.setDimension( this.dimension );
 
         this.velocity = new Vector( 0, 0, 0, this.dimension );
@@ -87,6 +92,51 @@ public abstract class Entity {
     }
 
     public void onCollideWithPlayer( Player player ) {
+    }
+
+    public Entity spawn( Player player ) {
+        if ( !this.spawnedFor.containsKey( player.getEntityId() ) ) {
+            EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( this );
+            Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
+            if ( entitySpawnEvent.isCancelled() ) {
+                return this;
+            }
+            Entity eventEntity = entitySpawnEvent.getEntity();
+            eventEntity.setLocation( this.location );
+            eventEntity.incrementEntityId();
+
+            eventEntity.getWorld().addEntity( this );
+
+            this.spawnedFor.put( player.getEntityId(), player );
+            player.getPlayerConnection().sendPacket( eventEntity.createSpawnPacket() );
+        }
+        return this;
+    }
+
+    public Entity spawn() {
+        for ( Entity entity : this.getChunk().getEntitys() ) {
+            if ( entity instanceof Player ) {
+                this.spawn( (Player) entity );
+            }
+
+        }
+        return this;
+    }
+
+    public void despawn( Player player ) {
+        if ( this.spawnedFor.containsKey( player.getEntityId() ) ) {
+            RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
+            removeEntityPacket.setEntityId( this.entityId );
+            player.getPlayerConnection().sendPacket( removeEntityPacket );
+            this.getWorld().removeEntity( this );
+            this.spawnedFor.remove( player.getEntityId() );
+        }
+    }
+
+    public void despawn() {
+        for ( Player onlinePlayer : this.spawnedFor.values() ) {
+            this.despawn( onlinePlayer );
+        }
     }
 
     public float getGravity() {
@@ -406,7 +456,7 @@ public abstract class Entity {
 
         double diffMotion = ( this.velocity.getX() - this.lastVelocity.getX() ) * ( this.velocity.getX() - this.lastVelocity.getX() ) + ( this.velocity.getY() - this.lastVelocity.getY() ) * ( this.velocity.getY() - this.lastVelocity.getY() ) + ( this.velocity.getZ() - this.lastVelocity.getZ() ) * ( this.velocity.getZ() - this.lastVelocity.getZ() );
 
-        if ( diffPosition > 0.0001 || diffRotation > 1.0 ) { //0.2 ** 2, 1.5 ** 2
+        if ( diffPosition > 0.0001 || diffRotation > 1.0 ) {
             this.lastLocation.setX( this.getX() );
             this.lastLocation.setY( this.getY() );
             this.lastLocation.setZ( this.getZ() );
@@ -499,93 +549,5 @@ public abstract class Entity {
         } else if ( velocityY < 0 ) {
             this.fallDistance -= velocityY;
         }
-    }
-
-    public boolean checkObstruction( float x, float y, float z ) {
-        if ( this.getWorld().getCollisionCubes( this, this.getBoundingBox(), false ).size() == 0 ) {
-            return false;
-        }
-
-        int i = (int) FastMath.floor( x );
-        int j = (int) FastMath.floor( y );
-        int k = (int) FastMath.floor( z );
-
-        double diffX = x - i;
-        double diffY = y - j;
-        double diffZ = z - k;
-
-        if ( !this.getWorld().getBlock( i, j, k ).isTransparent() ) {
-            boolean flag = this.getWorld().getBlock( i - 1, j, k ).isTransparent();
-            boolean flag1 = this.getWorld().getBlock( i + 1, j, k ).isTransparent();
-            boolean flag2 = this.getWorld().getBlock( i, j - 1, k ).isTransparent();
-            boolean flag3 = this.getWorld().getBlock( i, j + 1, k ).isTransparent();
-            boolean flag4 = this.getWorld().getBlock( i, j, k - 1 ).isTransparent();
-            boolean flag5 = this.getWorld().getBlock( i, j, k + 1 ).isTransparent();
-
-            int direction = -1;
-            double limit = 9999;
-
-            if ( flag ) {
-                limit = diffX;
-                direction = 0;
-            }
-
-            if ( flag1 && 1 - diffX < limit ) {
-                limit = 1 - diffX;
-                direction = 1;
-            }
-
-            if ( flag2 && diffY < limit ) {
-                limit = diffY;
-                direction = 2;
-            }
-
-            if ( flag3 && 1 - diffY < limit ) {
-                limit = 1 - diffY;
-                direction = 3;
-            }
-
-            if ( flag4 && diffZ < limit ) {
-                limit = diffZ;
-                direction = 4;
-            }
-
-            if ( flag5 && 1 - diffZ < limit ) {
-                direction = 5;
-            }
-
-            float force = new Random().nextFloat() * 0.2f + 0.1f;
-
-            if ( direction == 0 ) {
-                this.velocity.subtract( force, 0, 0 );
-                return true;
-            }
-
-            if ( direction == 1 ) {
-                this.velocity.setX( force );
-                return true;
-            }
-
-            if ( direction == 2 ) {
-                this.velocity.subtract( 0, force, 0 );
-                return true;
-            }
-
-            if ( direction == 3 ) {
-                this.velocity.setY( force );
-                return true;
-            }
-
-            if ( direction == 4 ) {
-                this.velocity.subtract( 0, 0, force );
-                return true;
-            }
-
-            if ( direction == 5 ) {
-                this.velocity.setZ( force );
-                return true;
-            }
-        }
-        return false;
     }
 }

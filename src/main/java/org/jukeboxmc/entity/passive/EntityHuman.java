@@ -11,6 +11,7 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.AddPlayerPacket;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.GUIScale;
@@ -85,6 +86,14 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     @Override
     public float getEyeHeight() {
         return 1.62f;
+    }
+
+    @Override
+    public EntityHuman spawn( Player player ) {
+        if ( this != player ) {
+            super.spawn( player );
+        }
+        return this;
     }
 
     public Skin getSkin() {

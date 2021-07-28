@@ -690,28 +690,6 @@ public class World extends LevelDB {
                 .distance( this.spawnLocation ) <= radius;
     }
 
-    public Entity spawnEntity( Entity entity, Vector position, float yaw, float pitch ) {
-        EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( entity );
-        Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
-        if ( entitySpawnEvent.isCancelled() || entity == null ) {
-            return null;
-        }
-        Entity eventEntity = entitySpawnEvent.getEntity();
-        eventEntity.setLocation( new Location( this, position, yaw, pitch ) );
-        eventEntity.incrementEntityId();
-
-        //TODO Calculate new chunk
-        eventEntity.getChunk().addEntity( entity );
-        eventEntity.getWorld().addEntity( entity );
-
-        this.sendDimensionPacket( entity.createSpawnPacket(), position.getDimension() );
-        return eventEntity;
-    }
-
-    public Entity spawnEntity( Entity entity, Vector position ) {
-        return this.spawnEntity( entity, position, 0, 0 );
-    }
-
     public EntityItem dropItem( Item item, Vector position, Vector velocity, int pickupDelay ) {
         if ( velocity == null ) {
             velocity = new Vector( ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f,
@@ -722,11 +700,12 @@ public class World extends LevelDB {
         entityItem.setItem( item );
         entityItem.setVelocity( velocity, false );
         entityItem.setPickupDelay( pickupDelay );
+        entityItem.setLocation( new Location( this, position, new Random().nextFloat() * 360, 0 ) );
 
         EntityItemSpawnEvent entityItemSpawnEvent = new EntityItemSpawnEvent( entityItem );
         Server.getInstance().getPluginManager().callEvent( entityItemSpawnEvent );
 
-        return (EntityItem) this.spawnEntity( entityItemSpawnEvent.getEntity(), position, new Random().nextFloat() * 360, 0 );
+        return (EntityItem) entityItem.spawn();
     }
 
     public EntityItem dropItem( Item item, Vector position, Vector velocity ) {
