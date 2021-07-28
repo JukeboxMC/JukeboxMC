@@ -152,6 +152,14 @@ public abstract class Plugin {
         return this.description.getName();
     }
 
+    public String getVersion() {
+        return this.description.getVersion();
+    }
+
+    public String getAuthor() {
+        return this.description.getAuthor();
+    }
+
     public Server getServer() {
         return this.server;
     }

@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.jukeboxmc.command.annotation.Parameter;
 import org.jukeboxmc.command.annotation.ParameterSection;
 import org.jukeboxmc.command.jukebox.GameModeCommand;
+import org.jukeboxmc.command.jukebox.PluginsCommand;
 import org.jukeboxmc.command.validator.Validator;
 
 import java.util.*;
@@ -18,7 +19,8 @@ public class CommandManager {
 
     public CommandManager() {
         List<Class<? extends Command>> commands = Arrays.asList(
-                GameModeCommand.class
+                GameModeCommand.class,
+                PluginsCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {
@@ -94,8 +96,6 @@ public class CommandManager {
                     argumentsMap.put( parameter.name(), value.parseObject( commandParts[++index] ) );
                 }
             }
-        } else {
-            return new CommandOutput().fail( "Failed to find parameter" );
         }
 
         return targetCommand.execute( commandSender, commandIdentifier, argumentsMap );
