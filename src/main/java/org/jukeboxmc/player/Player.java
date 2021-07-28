@@ -1,6 +1,7 @@
 package org.jukeboxmc.player;
 
 import org.jukeboxmc.Server;
+import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.passive.EntityHuman;
@@ -10,9 +11,7 @@ import org.jukeboxmc.event.player.PlayerDisconnectEvent;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.ChangeDimensionPacket;
-import org.jukeboxmc.network.packet.PlayerMovePacket;
-import org.jukeboxmc.network.packet.TextPacket;
+import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.raknet.Connection;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
@@ -28,12 +27,14 @@ import java.util.UUID;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Player extends EntityHuman implements InventoryHolder {
+public class Player extends EntityHuman implements InventoryHolder, CommandSender {
 
     private String name;
     private String xuid;
     private int viewDistance = 16;
+
     private boolean spawned;
+    private boolean enableClientCommand = true;
 
     private Locale locale;
 
@@ -144,6 +145,9 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public void setGameMode( GameMode gameMode ) {
         this.gameMode = gameMode;
+        SetGamemodePacket setGamemodePacket = new SetGamemodePacket();
+        setGamemodePacket.setGameMode( gameMode );
+        this.playerConnection.sendPacket( setGamemodePacket );
     }
 
     public InetSocketAddress getAddress() {
@@ -198,6 +202,16 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public void sendMessage( String message ) {
         this.playerConnection.sendMessage( message, TextPacket.Type.RAW );
+    }
+
+    @Override
+    public boolean hasPermission( String permission ) {
+        return this.hasPermission( permission, false );
+    }
+
+    @Override
+    public boolean hasPermission( String permission, boolean defaultValue ) {
+        return true;
     }
 
     public void sendTip( String message ) {
@@ -323,5 +337,25 @@ public class Player extends EntityHuman implements InventoryHolder {
 
     public void teleport( Vector vector, PlayerMovePacket.Mode mode ) {
         this.playerConnection.movePlayer( vector, mode );
+    }
+
+    public boolean isEnableClientCommand() {
+        return this.enableClientCommand;
+    }
+
+    public void setEnableClientCommand( boolean enableClientCommand ) {
+        this.enableClientCommand = enableClientCommand;
+
+        SetCommandsEnabledPacket setCommandsEnabledPacket = new SetCommandsEnabledPacket();
+        setCommandsEnabledPacket.setEnabled( enableClientCommand );
+
+        this.playerConnection.sendPacket( setCommandsEnabledPacket );
+    }
+
+    public void sendCommandData() {
+        AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
+        availableCommandsPacket.setCommands( Server.getInstance().getPluginManager().getCommandManager().getCommands() );
+
+        this.playerConnection.sendPacket( availableCommandsPacket );
     }
 }

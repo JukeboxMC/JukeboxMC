@@ -470,6 +470,7 @@ public class PlayerConnection {
         world.addPlayer( this.player );
 
         this.sendTime( 1000 );
+        this.player.sendCommandData();
         this.sendAdventureSettings();
         this.sendAttributes( new ArrayList<>( this.player.getAttributes() ) );
         this.sendStatus( PlayStatusPacket.Status.PLAYER_SPAWN );

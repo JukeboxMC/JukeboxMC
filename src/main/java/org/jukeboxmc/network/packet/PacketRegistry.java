@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class PacketRegistry {
 
-    private static Map<Class, PacketHandler> handler = new HashMap<>();
+    private static final Map<Class<? extends Packet>, PacketHandler> handler = new HashMap<>();
 
     static {
         handler.put( LoginPacket.class, new LoginHandler() );
@@ -32,6 +32,7 @@ public class PacketRegistry {
         handler.put( MobEquipmentPacket.class, new MobEquipmentHandler() );
         handler.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
         handler.put( BlockEntityDataPacket.class, new BlockEntityDataHandler() );
+        handler.put( CommandRequestPacket.class, new CommandRequestHandler() );
     }
 
     public static PacketHandler getHandler( Class<? extends Packet> clazz ) {
@@ -98,6 +99,8 @@ public class PacketRegistry {
                 return new SimulationTypePacket();
             case Protocol.NPC_DIALOGUE_PACKET:
                 return new NpcDialoguePacket();
+            case Protocol.COMMAND_REQUEST_PACKET:
+                return new CommandRequestPacket();
             default:
                 return null;
         }
