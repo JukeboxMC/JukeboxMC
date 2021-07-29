@@ -76,6 +76,7 @@ public abstract class Entity {
 
         this.boundingBox = new AxisAlignedBB( 0, 0, 0, 0, 0, 0 );
         this.recalculateBoundingBox();
+        this.incrementEntityId();
     }
 
     public abstract String getName();
@@ -103,7 +104,6 @@ public abstract class Entity {
             }
             Entity eventEntity = entitySpawnEvent.getEntity();
             eventEntity.setLocation( this.location );
-            eventEntity.incrementEntityId();
 
             eventEntity.getWorld().addEntity( this );
 
@@ -116,7 +116,8 @@ public abstract class Entity {
     public Entity spawn() {
         for ( Entity entity : this.getChunk().getEntitys() ) {
             if ( entity instanceof Player ) {
-                this.spawn( (Player) entity );
+                Player player = (Player) entity;
+                this.spawn( player );
             }
 
         }
