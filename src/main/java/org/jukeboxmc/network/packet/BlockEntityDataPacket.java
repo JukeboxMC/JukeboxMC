@@ -44,9 +44,9 @@ public class BlockEntityDataPacket extends Packet {
     @Override
     public void write() {
         super.write();
-        this.writeSignedVarInt( this.blockPosition.getFloorX() );
-        this.writeUnsignedVarInt( this.blockPosition.getFloorY() );
-        this.writeSignedVarInt( this.blockPosition.getFloorZ() );
+        this.writeSignedVarInt( this.blockPosition.getBlockX() );
+        this.writeUnsignedVarInt( this.blockPosition.getBlockY() );
+        this.writeSignedVarInt( this.blockPosition.getBlockZ() );
 
         try {
             NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( new ByteBufOutputStream( this.getBuffer() ) );

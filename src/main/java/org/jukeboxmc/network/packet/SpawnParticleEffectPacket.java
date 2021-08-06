@@ -30,9 +30,9 @@ public class SpawnParticleEffectPacket extends Packet {
         super.write();
         this.writeByte( this.dimension.getId() );
         this.writeSignedVarLong( this.entityId );
-        this.writeLFloat( this.position.getFloorX() );
-        this.writeLFloat( this.position.getFloorY() );
-        this.writeLFloat( this.position.getFloorZ() );
+        this.writeLFloat( this.position.getBlockX() );
+        this.writeLFloat( this.position.getBlockY() );
+        this.writeLFloat( this.position.getBlockZ() );
         this.writeString( this.particle.getIdentifer() );
     }
 }

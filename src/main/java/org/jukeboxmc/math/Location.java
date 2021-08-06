@@ -95,7 +95,7 @@ public class Location extends Vector implements Cloneable {
     }
 
     public Chunk getChunk() {
-        return this.world.getChunk( this.getFloorX() >> 4, this.getFloorZ() >> 4, this.dimension );
+        return this.world.getChunk( this.getBlockX() >> 4, this.getBlockZ() >> 4, this.dimension );
     }
 
     public Block getBlock() {
@@ -140,6 +140,7 @@ public class Location extends Vector implements Cloneable {
                 ", headYaw=" + this.getHeadYaw() +
                 ", yaw=" + this.getY() +
                 ", pitch=" + this.getPitch() +
+                ", dimension=" + this.getDimension() +
                 '}';
     }
 }

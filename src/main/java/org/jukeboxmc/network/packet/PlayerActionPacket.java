@@ -37,9 +37,9 @@ public class PlayerActionPacket extends Packet {
         super.write();
         this.writeUnsignedVarLong( this.entityId );
         this.writeSignedVarInt( this.action.ordinal() );
-        this.writeSignedVarInt( this.position.getFloorX() );
-        this.writeUnsignedVarInt( this.position.getFloorY() );
-        this.writeSignedVarInt( this.position.getFloorZ() );
+        this.writeSignedVarInt( this.position.getBlockX() );
+        this.writeUnsignedVarInt( this.position.getBlockY() );
+        this.writeSignedVarInt( this.position.getBlockZ() );
         this.writeSignedVarInt( this.face );
     }
 

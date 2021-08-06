@@ -41,16 +41,15 @@ public class Chunk extends LevelDBChunk {
 
     public SubChunk[] subChunks;
 
-    private World world;
-    private int chunkX;
-    private int chunkZ;
+    private final World world;
+    private final int chunkX;
+    private final int chunkZ;
     public Dimension dimension;
     public byte chunkVersion = 21;
 
-    private List<Entity> entitys = new CopyOnWriteArrayList<>();
+    private final List<Entity> entitys = new CopyOnWriteArrayList<>();
 
     public Chunk( World world, int chunkX, int chunkZ, Dimension dimension ) {
-        super( world, chunkX, chunkZ );
         this.world = world;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -67,9 +66,9 @@ public class Chunk extends LevelDBChunk {
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
-        int subY = location.getFloorY() >> 4;
+        int subY = location.getBlockY() >> 4;
         this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( location.getFloorX() & 15, location.getFloorY() & 15, location.getFloorZ() & 15, layer, runtimeId );
+        this.subChunks[subY].setBlock( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, layer, runtimeId );
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {

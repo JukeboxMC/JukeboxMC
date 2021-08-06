@@ -30,9 +30,9 @@ public class ContainerOpenPacket extends Packet {
         super.write();
         this.writeByte( this.windowId.getId() );
         this.writeByte( this.windowTypeId.getId() );
-        this.writeSignedVarInt( this.position.getFloorX() );
-        this.writeUnsignedVarInt( this.position.getFloorY() );
-        this.writeSignedVarInt( this.position.getFloorZ() );
+        this.writeSignedVarInt( this.position.getBlockX() );
+        this.writeUnsignedVarInt( this.position.getBlockY() );
+        this.writeSignedVarInt( this.position.getBlockZ() );
         this.writeSignedVarLong( this.entityId );
     }
 }

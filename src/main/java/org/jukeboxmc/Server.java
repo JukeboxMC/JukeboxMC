@@ -104,12 +104,10 @@ public class Server {
         this.tickFuture = this.tickExecutor.scheduleAtFixedRate( this::tickProcess, 50, 50, TimeUnit.MILLISECONDS );
 
         INITIATING.set( true );
-        BlockPalette.init(); // ja
+        BlockPalette.init();
         try {
             Class.forName( "org.jukeboxmc.block.BlockType" );
-        } catch ( ClassNotFoundException e ) {
-            // load the class
-        }
+        } catch ( ClassNotFoundException ignore ) {}
         ItemType.init();
         INITIATING.set( false );
 

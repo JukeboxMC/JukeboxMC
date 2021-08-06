@@ -35,9 +35,9 @@ public abstract class BlockEntity {
         NbtMapBuilder compound = NbtMap.builder();
         Vector position = this.block.getLocation();
         compound.putString( "id", BlockEntityType.getId( this.getClass() ) );
-        compound.putInt( "x", position.getFloorX() );
-        compound.putInt( "y", position.getFloorY() );
-        compound.putInt( "z", position.getFloorZ() );
+        compound.putInt( "x", position.getBlockX() );
+        compound.putInt( "y", position.getBlockY() );
+        compound.putInt( "z", position.getBlockZ() );
         compound.putBoolean( "isMovable", this.isMoveable );
         return compound;
     }

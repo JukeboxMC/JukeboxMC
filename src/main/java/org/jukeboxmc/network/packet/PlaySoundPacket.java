@@ -28,9 +28,9 @@ public class PlaySoundPacket extends Packet {
     public void write() {
         super.write();
         this.writeString( this.sound.getSound() );
-        this.writeSignedVarInt( this.position.getFloorX() );
-        this.writeUnsignedVarInt( this.position.getFloorY() );
-        this.writeSignedVarInt( this.position.getFloorZ() );
+        this.writeSignedVarInt( this.position.getBlockX() );
+        this.writeUnsignedVarInt( this.position.getBlockY() );
+        this.writeSignedVarInt( this.position.getBlockZ() );
         this.writeLFloat( this.volume );
         this.writeLFloat( this.pitch );
     }

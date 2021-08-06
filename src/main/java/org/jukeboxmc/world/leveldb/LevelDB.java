@@ -25,8 +25,8 @@ import java.io.IOException;
  */
 public class LevelDB {
 
-    private File worldFolder;
-    private File worldFile;
+    private final File worldFolder;
+    private final File worldFile;
 
     protected DB db;
 

@@ -55,8 +55,8 @@ public class PlayerMoveHandler implements PacketHandler {
         }
 
         Location from = playerMoveEvent.getFrom();
-        if ( to.getWorld() != from.getWorld() || from.getFloorX() != to.getFloorX()
-                || from.getFloorY() != to.getFloorY() || from.getFloorZ() != to.getFloorZ() ) {
+        if ( to.getWorld() != from.getWorld() || from.getBlockX() != to.getBlockX()
+                || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ() ) {
             Block block = from.getBlock();
             block.leaveBlock(player);
 

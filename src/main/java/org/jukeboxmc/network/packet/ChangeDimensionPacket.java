@@ -28,9 +28,9 @@ public class ChangeDimensionPacket extends Packet {
         super.write();
 
         this.writeSignedVarInt( this.dimension.getId() );
-        this.writeLFloat( this.vector.getFloorX() );
-        this.writeLFloat( this.vector.getFloorY() );
-        this.writeLFloat( this.vector.getFloorZ() );
+        this.writeLFloat( this.vector.getBlockX() );
+        this.writeLFloat( this.vector.getBlockY() );
+        this.writeLFloat( this.vector.getBlockZ() );
         this.writeBoolean( this.respawn );
     }
 }

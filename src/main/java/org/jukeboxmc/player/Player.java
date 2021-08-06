@@ -144,6 +144,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void setGameMode( GameMode gameMode ) {
+        if ( this.gameMode.equals( gameMode ) ) return;
         this.gameMode = gameMode;
         SetGamemodePacket setGamemodePacket = new SetGamemodePacket();
         setGamemodePacket.setGameMode( gameMode );
@@ -222,7 +223,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.playerConnection.sendAttributes( attributes );
     }
 
-    public void sendattribute( Attribute attribute ) {
+    public void sendAttribute( Attribute attribute ) {
         this.playerConnection.sendattribute( attribute );
     }
 

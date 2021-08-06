@@ -40,7 +40,7 @@ public class Vector {
         return this.x;
     }
 
-    public int getFloorX() {
+    public int getBlockX() {
         return (int) Math.floor( this.x );
     }
 
@@ -52,7 +52,7 @@ public class Vector {
         return this.y;
     }
 
-    public int getFloorY() {
+    public int getBlockY() {
         return (int) Math.floor( this.y );
     }
 
@@ -64,7 +64,7 @@ public class Vector {
         return this.z;
     }
 
-    public int getFloorZ() {
+    public int getBlockZ() {
         return (int) Math.floor( this.z );
     }
 

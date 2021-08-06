@@ -27,21 +27,10 @@ import java.util.Map;
  */
 public class LevelDBChunk {
 
-    private World world;
-    private int chunkX;
-    private int chunkZ;
-    protected byte chunkVersion;
-    protected boolean populated;
+    protected boolean populated = true;
 
     protected byte[] biomes = new byte[16 * 16];
     protected short[] height = new short[16 * 16];
-
-    public LevelDBChunk( World world, int chunkX, int chunkZ ) {
-        this.world = world;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
-        this.populated = true;
-    }
 
     public void loadSection( SubChunk chunk, byte[] chunkData ) {
         BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );

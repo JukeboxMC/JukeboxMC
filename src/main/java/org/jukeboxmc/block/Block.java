@@ -211,9 +211,9 @@ public abstract class Block implements Cloneable {
     }
 
     public Block getRelative( Vector position, int layer ) {
-        int x = this.location.getFloorX() + position.getFloorX();
-        int y = this.location.getFloorY() + position.getFloorY();
-        int z = this.location.getFloorZ() + position.getFloorZ();
+        int x = this.location.getBlockX() + position.getBlockX();
+        int y = this.location.getBlockY() + position.getBlockY();
+        int z = this.location.getBlockZ() + position.getBlockZ();
         return this.world.getBlockAt( x, y, z, this.location.getDimension(), layer );
     }
 
@@ -239,7 +239,7 @@ public abstract class Block implements Cloneable {
     }
 
     public Chunk getChunk() {
-        return this.world.getChunk( this.location.getFloorX() >> 4, this.location.getFloorZ() >> 4, this.location.getDimension() );
+        return this.world.getChunk( this.location.getBlockX() >> 4, this.location.getBlockZ() >> 4, this.location.getDimension() );
     }
 
     public Location getLocation() {
