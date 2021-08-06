@@ -10,7 +10,7 @@ import lombok.ToString;
 import org.jukeboxmc.network.Protocol;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
-import org.jukeboxmc.player.info.GUIScale;
+import org.jukeboxmc.player.info.UIProfile;
 import org.jukeboxmc.player.skin.*;
 import org.jukeboxmc.utils.BinaryStream;
 
@@ -83,8 +83,8 @@ public class LoginPacket extends Packet {
             String deviceId = skinMap.get( "DeviceId" ).getAsString();
             long clientId = skinMap.get( "ClientRandomId" ).getAsLong();
             int deviceOS = skinMap.get( "DeviceOS" ).getAsInt();
-            int guiScale = skinMap.get( "GuiScale" ).getAsInt();
-            this.deviceInfo = new DeviceInfo( deviceModel, deviceId, clientId, Device.getDevice( deviceOS ), GUIScale.getGUIScale( guiScale ) );
+            int guiScale = skinMap.get( "UIProfile" ).getAsInt();
+            this.deviceInfo = new DeviceInfo( deviceModel, deviceId, clientId, Device.getDevice( deviceOS ), UIProfile.getUIProfile( guiScale ) );
         }
 
         if ( skinMap.has( "LanguageCode" ) ) {

@@ -14,7 +14,7 @@ import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
-import org.jukeboxmc.player.info.GUIScale;
+import org.jukeboxmc.player.info.UIProfile;
 import org.jukeboxmc.player.skin.Skin;
 
 import java.util.Random;
@@ -33,7 +33,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
 
     public EntityHuman() {
         this.uuid = UUID.randomUUID();
-        this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, GUIScale.CLASSIC );
+        this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, UIProfile.CLASSIC );
         this.playerInventory = new PlayerInventory( this );
         this.addAttribute( AttributeType.PLAYER_HUNGER );
         this.addAttribute( AttributeType.PLAYER_SATURATION );
