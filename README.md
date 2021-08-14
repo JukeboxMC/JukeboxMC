@@ -6,6 +6,15 @@ __Discord: https://discord.gg/Jatt7tfRBF__
 
 __Twitter: https://twitter.com/LucGamesHD__
 
+## Features:
+ - [] World Generation
+ - [x] Commands
+ - [x] MOTD
+ - [x] Joinable
+ - [] Plugin API
+ - [ ] Mobs 
+
+
 ## How to build a jar file
 1. git clone https://github.com/LucGamesYT/JukeboxMC.git
 2. cd /JukeboxMC
