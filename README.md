@@ -23,12 +23,16 @@ GIT: https://git-scm.com/downloads
 ## IMPORTANT
 This server software is not yet ready!
 
-## FAQ
-# What is JukeboxMC ?
-- JukeboxMC is a Minecraft Bedrock Edition Server Software which is written in java
-# Can we use plugins in JukeboxMC
-- Yes
-# How to make plugins for JukeboxMC
-- well you can't really make plugins like Skywars and Bedwars for one of the example plugin are here https://github.com/Kaooot/JukeboxExamplePlugin
-# If you have any more questions join JukeboxMC Discord Server
-- https://discord.gg/Jatt7tfRBF
+# FAQ:
+ - Can I contribute?
+ > Yes
+ - What version of Python should I use?
+ > Any python version above Python 3.5 should work, but we recommend you use the latest one.
+ - Is this free?
+ > Yes
+ - Can I use this in my server ?
+ > We wouldn't recommend using this as its not ready yet
+ - Does it support plugins?
+ > Yes, some of the example plugin are *__https://github.com/Kaooot/JukeboxExamplePlugin__*
+ - You have some questions that Haven't been answered ?
+ > You can ask on our [discord] (https://discord.gg/Jatt7tfRBF)
