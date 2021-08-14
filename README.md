@@ -3,9 +3,9 @@
 *__Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P__*
 
 ## Links
-Disocord: https://discord.gg/Jatt7tfRBF
+__Disocord: https://discord.gg/Jatt7tfRBF__
 
-Twitter: https://twitter.com/LucGamesHD
+__Twitter: https://twitter.com/LucGamesHD__
 
 ## How to build a jar file
 1. git clone https://github.com/LucGamesYT/JukeboxMC.git
