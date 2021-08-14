@@ -7,12 +7,12 @@ __Discord: https://discord.gg/Jatt7tfRBF__
 __Twitter: https://twitter.com/LucGamesHD__
 
 ## Features:
- - [] World Generation
  - [x] Commands
  - [x] MOTD
  - [x] Joinable
- - [] Plugin API
+ - [ ] Plugin API
  - [ ] Mobs 
+ - [ ] World Generation
 
 
 ## How to build a jar file
