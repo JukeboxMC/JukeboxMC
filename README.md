@@ -26,8 +26,8 @@ This server software is not yet ready!
 # FAQ:
  - Can I contribute?
  > Yes
- - What version of Python should I use?
- > Any python version above Python 3.5 should work, but we recommend you use the latest one.
+ - What version of Java should I use?
+ > Any java version above java11 should work, but we recommend you use the latest one.
  - Is this free?
  > Yes
  - Can I use this in my server ?
