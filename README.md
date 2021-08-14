@@ -29,6 +29,10 @@ Maven:
 
 GIT: https://git-scm.com/downloads
 
+# How to use it in Pterodactyl Software
+
+- Download the latest JukeboxMC.jar file from the release and upload it and rename it to server.jar and start your server choose the Java11 or above and JukeboxMC should be running
+
 ## IMPORTANT
 This server software is not yet ready!
 
