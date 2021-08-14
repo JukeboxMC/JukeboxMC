@@ -1,4 +1,3 @@
-# What is JukeboxMC
 # Why did I start JukeboxMC ?
 *__Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P__*
 
@@ -7,7 +6,7 @@ __Discord: https://discord.gg/Jatt7tfRBF__
 
 __Twitter: https://twitter.com/LucGamesHD__
 
-__## How to build a jar file
+## How to build a jar file
 1. git clone https://github.com/LucGamesYT/JukeboxMC.git
 2. cd /JukeboxMC
 3. mvn clean install
@@ -22,4 +21,14 @@ Maven:
 GIT: https://git-scm.com/downloads
 
 ## IMPORTANT
-This server software is not yet ready!__
+This server software is not yet ready!
+
+## FAQ
+# What is JukeboxMC ?
+- JukeboxMC is a Minecraft Bedrock Edition Server Software which is written in java
+# Can we use plugins in JukeboxMC
+- Yes
+# How to make plugins for JukeboxMC
+- well you can't really make plugins like Skywars and Bedwars for one of the example plugin are here https://github.com/Kaooot/JukeboxExamplePlugin
+# If you have any more questions join JukeboxMC Discord Server
+- https://discord.gg/Jatt7tfRBF
