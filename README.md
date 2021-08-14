@@ -33,6 +33,6 @@ This server software is not yet ready!
  - Can I use this in my server ?
  > We wouldn't recommend using this as its not ready yet
  - Does it support plugins?
- > Yes, some of the example plugin are *__https://github.com/Kaooot/JukeboxExamplePlugin__*
+ > Yes
  - You have some questions that Haven't been answered ?
  > You can ask on our [discord] (https://discord.gg/Jatt7tfRBF
