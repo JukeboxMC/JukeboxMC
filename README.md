@@ -1,6 +1,6 @@
-# JukeboxMC
-Why did I start JukeboxMC ?
-Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P
+# What is JukeboxMC
+# Why did I start JukeboxMC ?
+__(Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P)__
 
 ## Links
 Disocord: https://discord.gg/Jatt7tfRBF
