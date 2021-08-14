@@ -21,7 +21,7 @@ __Twitter: https://twitter.com/LucGamesHD__
 3. mvn clean install
 4. Done! 
 
-Please note that you must have Maven installed on your computer as well as git
+*Please note that you must have Maven installed on your computer as well as git*
 
 Maven: 
  - Download: https://maven.apache.org/download.cgi
