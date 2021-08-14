@@ -24,8 +24,8 @@ GIT: https://git-scm.com/downloads
 This server software is not yet ready!
 
 # FAQ:
- - Can I contribute?
- > Yes
+ - What is JukeboxMC ?
+ > JukeboxMC is a Minecraft Bedrock Edition Server Software which is written in java
  - What version of Java should I use?
  > Any java version above java11 should work, but we recommend you use the latest one.
  - Is this free?
@@ -35,4 +35,4 @@ This server software is not yet ready!
  - Does it support plugins?
  > Yes, some of the example plugin are *__https://github.com/Kaooot/JukeboxExamplePlugin__*
  - You have some questions that Haven't been answered ?
- > You can ask on our [discord] (https://discord.gg/Jatt7tfRBF)
+ > You can ask on our [discord] (https://discord.gg/Jatt7tfRBF
