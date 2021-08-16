@@ -48,4 +48,4 @@ GIT: https://git-scm.com/downloads
  - Does it support plugins?
  > Yes
  - You have some questions that Haven't been answered ?
- > You can ask on our [discord] (https://discord.gg/Jatt7tfRBF
+ > You can ask on our [discord] __https://discord.gg/Jatt7tfRBF__
