@@ -1,11 +1,6 @@
 # Why did I start JukeboxMC ?
 *__Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P__*
 
-## Links
-__Discord: https://discord.gg/Jatt7tfRBF__
-
-__Twitter: https://twitter.com/LucGamesHD__
-
 ## Features:
  - [x] Commands
  - [x] MOTD
@@ -13,6 +8,11 @@ __Twitter: https://twitter.com/LucGamesHD__
  - [ ] Plugin API
  - [ ] Mobs 
  - [ ] World Generation
+
+## Links
+__Discord: https://discord.gg/Jatt7tfRBF__
+
+__Twitter: https://twitter.com/LucGamesHD__
 
 
 ## How to build a jar file
