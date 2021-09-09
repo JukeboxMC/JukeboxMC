@@ -1,0 +1,36 @@
+package jukeboxmc.network.packet.type;
+
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public enum PlayerAction {
+
+    START_BREAK,
+    ABORT_BREAK,
+    STOP_BREAK,
+    GET_UPDATED_BLOCK,
+    DROP_ITEM,
+    START_SLEEPING,
+    STOP_SLEEPING,
+    RESPAWN,
+    JUMP,
+    START_SPRINT,
+    STOP_SPRINT,
+    START_SNEAK,
+    STOP_SNEAK,
+    DIMENSION_CHANGE_REQUEST,
+    DIMENSION_CHANGE_ACK,
+    START_GLIDE,
+    STOP_GLIDE,
+    BUILD_DENIED,
+    CONTINUE_BREAK,
+    CHANGE_SKIN,
+    SET_ENCHANTMENT_SEED,
+    START_SWIMMING,
+    STOP_SWIMMING,
+    START_SPIN_ATTACK,
+    STOP_SPIN_ATTACK,
+    ACTION_INTERACT_BLOCK
+
+}

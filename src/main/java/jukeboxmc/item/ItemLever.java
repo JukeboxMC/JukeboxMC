@@ -1,0 +1,19 @@
+package jukeboxmc.item;
+
+import org.jukeboxmc.block.BlockLever;
+
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class ItemLever extends Item {
+
+    public ItemLever() {
+        super ( "minecraft:lever" );
+    }
+
+    @Override
+    public BlockLever getBlock() {
+        return new BlockLever();
+    }
+}

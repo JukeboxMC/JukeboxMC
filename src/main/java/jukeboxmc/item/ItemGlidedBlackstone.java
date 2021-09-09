@@ -1,0 +1,19 @@
+package jukeboxmc.item;
+
+import org.jukeboxmc.block.BlockGildedBlackstone;
+
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class ItemGlidedBlackstone extends Item {
+
+    public ItemGlidedBlackstone() {
+        super ( "minecraft:gilded_blackstone" );
+    }
+
+    @Override
+    public BlockGildedBlackstone getBlock() {
+        return new BlockGildedBlackstone();
+    }
+}
