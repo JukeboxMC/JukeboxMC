@@ -3,6 +3,7 @@ package org.jukeboxmc.player;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.CommandSender;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.passive.EntityHuman;
@@ -77,7 +78,15 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 World world = this.getWorld();
                 world.loadChunkAsync( chunkX, chunkZ, this.dimension ).whenComplete( ( chunk, throwable ) -> {
                     this.sendChunk( chunk );
-                } ).thenRun( this::sendNetworkChunkPublisher );
+                } ).thenRun( () -> {
+                    this.sendNetworkChunkPublisher();
+
+                    for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
+                        if ( entity != null && this != entity ) {
+                            entity.spawn( this );
+                        }
+                    }
+                } );
             }
         }
 
@@ -121,7 +130,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             boolean unloaded = false;
 
             Iterator<Long> iterator = loadedChunks.iterator();
-            while (iterator.hasNext()) {
+            while ( iterator.hasNext() ) {
                 long hash = iterator.next();
                 int x = Utils.fromHashX( hash );
                 int z = Utils.fromHashZ( hash );
@@ -414,6 +423,17 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
             this.getChunk().addEntity( this );
 
+            for ( Long hash : this.loadedChunks ) {
+                int chunkX = Utils.fromHashX( hash );
+                int chunkZ = Utils.fromHashZ( hash );
+
+                for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
+                    if ( entity != null && this != entity ) {
+                        entity.spawn( this );
+                    }
+                }
+            }
+
             PlayStatusPacket playStatusPacket = new PlayStatusPacket();
             playStatusPacket.setStatus( PlayStatus.PLAYER_SPAWN );
 
@@ -423,6 +443,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void leaveServer( String reason ) {
+        this.spawnedFor.clear();
+
         this.getWorld().removeEntity( this );
         this.getChunk().removeEntity( this );
 

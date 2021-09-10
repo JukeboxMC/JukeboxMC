@@ -249,6 +249,7 @@ public abstract class Entity {
             Entity entity = entitySpawnEvent.getEntity();
             entity.setLocation( this.location );
 
+            entity.getChunk().addEntity( this );
             entity.getWorld().addEntity( this );
 
             this.spawnedFor.put( player.getEntityId(), player );
@@ -272,6 +273,7 @@ public abstract class Entity {
         if ( this.spawnedFor.containsKey( player.getEntityId() ) ) {
             RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
             removeEntityPacket.setEntityId( this.entityId );
+            this.getChunk().removeEntity( this );
             this.getWorld().removeEntity( this );
             this.spawnedFor.remove( player.getEntityId() );
             player.getPlayerConnection().sendPacket( removeEntityPacket );
