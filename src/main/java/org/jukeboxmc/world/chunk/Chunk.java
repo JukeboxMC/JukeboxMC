@@ -2,16 +2,23 @@ package org.jukeboxmc.world.chunk;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.PooledByteBufAllocator;
 import lombok.ToString;
+import org.apache.commons.math3.util.FastMath;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NBTOutputStream;
+import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.network.packet.LevelChunkPacket;
 import org.jukeboxmc.utils.BinaryStream;
+import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
@@ -190,9 +197,7 @@ public class Chunk extends LevelDBChunk {
 
     //======== Save and Load =========
 
-    //TODO ADD OLD SAVE KEY
-    /*
-        public void save( DB db ) {
+    public void save( DB db ) {
         WriteBatch writeBatch = db.createWriteBatch();
 
         for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
@@ -202,7 +207,6 @@ public class Chunk extends LevelDBChunk {
             this.saveChunkSlice( subY, writeBatch );
         }
 
-        //ELSE
         byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
         BinaryStream versionBuffer = new BinaryStream();
         versionBuffer.writeByte( this.chunkVersion );
@@ -303,7 +307,7 @@ public class Chunk extends LevelDBChunk {
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, buffer.getBuffer().array() );
     }
-     */
+
 
     public BinaryStream writeChunk() {
         BinaryStream binaryStream = new BinaryStream();

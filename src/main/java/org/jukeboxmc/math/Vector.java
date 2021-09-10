@@ -1,5 +1,6 @@
 package org.jukeboxmc.math;
 
+import lombok.ToString;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.world.Dimension;
 
@@ -7,6 +8,7 @@ import org.jukeboxmc.world.Dimension;
  * @author Kaooot, LucGamesYT
  * @version 1.0
  */
+@ToString
 public class Vector {
 
     protected float x;
@@ -176,15 +178,5 @@ public class Vector {
 
         float f = ( z - this.z ) / zDiff;
         return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
-    }
-
-    @Override
-    public String toString() {
-        return "Vector{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                ", dimension=" + dimension +
-                '}';
     }
 }

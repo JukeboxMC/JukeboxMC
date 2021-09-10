@@ -7,6 +7,7 @@ import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.packet.Packet;
@@ -22,6 +23,7 @@ import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.resourcepack.ResourcePackManager;
 import org.jukeboxmc.utils.BedrockResourceLoader;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.WorldGenerator;
@@ -32,6 +34,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
@@ -179,6 +182,12 @@ public class Server {
 
             for ( Player player : this.getOnlinePlayers() ) {
                 player.disconnect( "Server shutdown" );
+            }
+
+
+            this.logger.info( "Unload all worlds..." );
+            for ( World world : this.getWorlds() ) {
+                this.unloadWorld( world.getName() );
             }
 
             this.logger.info( "Disabling all plugins..." );
@@ -455,6 +464,40 @@ public class Server {
             this.logger.warn( "The world \"" + worldName + "\" was already loaded" );
         }
         return false;
+    }
+
+    public void unloadWorld( String worldName ) {
+        this.unloadWorld( worldName, player -> {
+            World world = this.getWorld( worldName );
+            if ( world != null ) {
+                if ( world == this.defaultWorld || this.defaultWorld == null ) {
+                    player.disconnect( "World was unloaded" );
+                } else {
+                    player.teleport( this.defaultWorld.getSpawnLocation( Dimension.OVERWORLD ) );
+                }
+            }
+        } );
+    }
+
+    public void unloadWorld( String worldName, Consumer<Player> consumer ) {
+        World world = this.getWorld( worldName );
+        WorldUnloadEvent unloadWorldEvent = new WorldUnloadEvent( world );
+        this.pluginManager.callEvent( unloadWorldEvent );
+
+        if ( unloadWorldEvent.isCancelled() ) {
+            return;
+        }
+
+        if ( unloadWorldEvent.getWorld() != null ) {
+            for ( Player player : unloadWorldEvent.getWorld().getPlayers() ) {
+                consumer.accept( player );
+            }
+            unloadWorldEvent.getWorld().clearChunks();
+            unloadWorldEvent.getWorld().close();
+            this.logger.info( "World \"" + worldName + "\" was unloaded" );
+        } else {
+            this.logger.warn( "The world \"" + worldName + "\" was not found" );
+        }
     }
 
 }

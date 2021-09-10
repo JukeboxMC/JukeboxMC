@@ -35,6 +35,7 @@ import org.jukeboxmc.world.leveldb.LevelDBWorld;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -55,6 +56,8 @@ public class World extends LevelDBWorld {
 
     protected final Map<GameRule<?>, Object> gamerules = new HashMap<>();
     protected final Map<Long, Entity> entities = new HashMap<>();
+
+    private final ExecutorService chunkThread = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         super( name );
@@ -207,8 +210,6 @@ public class World extends LevelDBWorld {
         }
     }
 
-    private final ExecutorService chunkThread = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
-
     public CompletableFuture<Chunk> loadChunkAsync( int chunkX, int chunkZ, Dimension dimension ) {
         return CompletableFuture.supplyAsync( () -> {
             if ( !this.chunkMap.get( dimension ).containsKey( Utils.toLong( chunkX, chunkZ ) ) ) {
@@ -268,20 +269,35 @@ public class World extends LevelDBWorld {
         return this.loadChunkSync( chunkX, chunkZ, dimension );
     }
 
+    public void clearChunks() {
+        this.chunkMap.clear();
+    }
+
     public void prepareSpawnRegion() {
         int spawnRadius = 4;
 
-        int chunkX = Utils.blockToChunk( (int) this.spawnLocation.getX() );
-        int chunkZ = Utils.blockToChunk( (int) this.spawnLocation.getZ() );
+        int chunkX = Utils.blockToChunk( this.spawnLocation.getBlockX() );
+        int chunkZ = Utils.blockToChunk( this.spawnLocation.getBlockZ() );
 
         for ( int i = chunkX - spawnRadius; i <= chunkX + spawnRadius; i++ ) {
             for ( int j = chunkZ - spawnRadius; j <= chunkZ + spawnRadius; j++ ) {
-                /*
-                this.loadChunkAsync( i, j, Dimension.OVERWORLD ).whenComplete( ( chunk, throwable ) -> {
-                } );
-                 */
                 this.loadChunkSync( chunkX, chunkZ, Dimension.OVERWORLD );
             }
+        }
+    }
+
+    public void save() {
+        this.chunkMap.forEach( ( dimension, chunkMap ) -> chunkMap.values().forEach( chunk -> chunk.save( this.db ) ) );
+        this.saveLevelDatFile();
+        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+    }
+
+    public void close() {
+        this.save();
+        try {
+            this.db.close();
+        } catch ( IOException e ) {
+            e.printStackTrace();
         }
     }
 
@@ -353,11 +369,11 @@ public class World extends LevelDBWorld {
         this.entities.remove( entity.getEntityId() );
     }
 
-    public Player getPlayer( long entityId ) {
+    public Player getPlayers( long entityId ) {
         return this.entities.get( entityId ) instanceof Player ? (Player) this.entities.get( entityId ) : null;
     }
 
-    public Collection<Player> getPlayer() {
+    public Collection<Player> getPlayers() {
         List<Player> players = new ArrayList<>();
         for ( Entity entity : this.entities.values() ) {
             if ( entity instanceof Player ) {
@@ -427,7 +443,6 @@ public class World extends LevelDBWorld {
     }
 
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
-        System.out.println(block.getName() + " : " + location.toString() + " Layer: " + layer + " Dimension: " + dimension.name() );
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
 
@@ -627,13 +642,13 @@ public class World extends LevelDBWorld {
     //========= With Packets =========
 
     public void sendWorldPacket( Packet packet ) {
-        for ( Player player : this.getPlayer() ) {
+        for ( Player player : this.getPlayers() ) {
             player.getPlayerConnection().sendPacket( packet );
         }
     }
 
     public void sendDimensionPacket( Packet packet, Dimension dimension ) {
-        for ( Player player : this.getPlayer() ) {
+        for ( Player player : this.getPlayers() ) {
             if ( player.getDimension().equals( dimension ) ) {
                 player.getPlayerConnection().sendPacket( packet );
             }
@@ -641,7 +656,7 @@ public class World extends LevelDBWorld {
     }
 
     public void sendChunkPacket( int chunkX, int chunkZ, Packet packet ) {
-        for ( Player player : this.getPlayer() ) {
+        for ( Player player : this.getPlayers() ) {
             if ( player != null && player.isChunkLoaded( chunkX, chunkZ ) ) {
                 player.getPlayerConnection().sendPacket( packet );
             }
