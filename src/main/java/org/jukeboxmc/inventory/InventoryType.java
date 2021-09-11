@@ -8,6 +8,7 @@ public enum InventoryType {
 
     PLAYER,
     CURSOR,
-    FURNACE
+    FURNACE,
+    WORKBENCH
 
 }
