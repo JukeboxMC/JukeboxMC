@@ -20,6 +20,7 @@ import org.jukeboxmc.network.packet.type.TablistType;
 import org.jukeboxmc.network.packet.type.TextType;
 import org.jukeboxmc.utils.ChunkComparator;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -589,4 +590,24 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
+    public void playSound( Sound sound ) {
+        this.playSound( this.location, sound, 1, 1 );
+    }
+
+    public void playSound( Sound sound, float volume, float pitch ) {
+        this.playSound( this.location, sound, volume, pitch );
+    }
+
+    public void playSound( Vector position, Sound sound ) {
+        this.playSound( position, sound, 1, 1 );
+    }
+
+    public void playSound( Vector position, Sound sound, float volume, float pitch ) {
+        PlaySoundPacket playSoundPacket = new PlaySoundPacket();
+        playSoundPacket.setPosition( position );
+        playSoundPacket.setSound( sound );
+        playSoundPacket.setVolume( volume );
+        playSoundPacket.setPitch( pitch );
+        this.playerConnection.sendPacket( playSoundPacket );
+    }
 }

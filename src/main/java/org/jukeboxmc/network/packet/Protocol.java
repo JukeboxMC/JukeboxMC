@@ -59,4 +59,5 @@ public interface Protocol {
     byte ENTITY_MOVE_PACKET = 0x12;
     byte ADD_ITEM_ENTITY_PACKET = 0x0f;
     byte TAKE_ENTITY_ITEM_PACKET = 0x11;
+    byte PLAY_SOUND_PACKET = 0x56;
 }
