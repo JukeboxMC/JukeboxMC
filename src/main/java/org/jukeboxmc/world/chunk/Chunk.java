@@ -180,20 +180,12 @@ public class Chunk extends LevelDBChunk {
     }
 
     public void addEntity( Entity entity ) {
-        if ( !Server.getInstance().isMainThread() ) {
-            System.out.println("Use on Main Thread #1");
-            return;
-        }
         if ( !this.entities.containsKey( entity.getEntityId() ) ) {
             this.entities.put( entity.getEntityId(), entity );
         }
     }
 
     public void removeEntity( Entity entity ) {
-        if ( !Server.getInstance().isMainThread() ) {
-            System.out.println("Use on Main Thread #2");
-            return;
-        }
         this.entities.remove( entity.getEntityId() );
     }
 
@@ -203,10 +195,6 @@ public class Chunk extends LevelDBChunk {
     }
 
     public Collection<Entity> getEntities() {
-        if ( !Server.getInstance().isMainThread() ) {
-            System.out.println("Use on Main Thread #3");
-            return new ArrayList<>();
-        }
         return this.entities.values();
     }
 

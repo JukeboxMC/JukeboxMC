@@ -57,7 +57,7 @@ public class ItemBucketBehavior extends Item {
                     clone.setAmount( this.getAmount() - 1 );
                     player.getInventory().setItemInHand( clone );
                     if ( !player.getInventory().addItem( playerBucketFillEvent.getItemInHand() ) ) {
-                        System.out.println( "DropFilled" );
+                        player.getWorld().dropItem( item, player.getLocation(), null );
                     }
                 }
             }
@@ -117,7 +117,7 @@ public class ItemBucketBehavior extends Item {
                     clone.setAmount( this.getAmount() - 1 );
                     player.getInventory().setItemInHand( clone );
                     if ( !player.getInventory().addItem( playerBucketEmptyEvent.getItemInHand() ) ) {
-                        System.out.println( "DropEmpty" );
+                        player.getWorld().dropItem( new ItemBucket(), player.getLocation(), null );
                     }
                 }
             }

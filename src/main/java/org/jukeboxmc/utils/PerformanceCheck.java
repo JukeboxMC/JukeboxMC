@@ -1,5 +1,7 @@
 package org.jukeboxmc.utils;
 
+import org.jukeboxmc.Server;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -27,7 +29,7 @@ public class PerformanceCheck {
         long stop = System.currentTimeMillis();
         long result = stop - this.start;
         if ( result >= this.startAt ) {
-            System.out.println( this.name + " -> " + result + "ms Thread: " + Thread.currentThread().getName() );
+            Server.getInstance().getLogger().info( this.name + " -> " + result + "ms Thread: " + Thread.currentThread().getName() );
         }
     }
 }
