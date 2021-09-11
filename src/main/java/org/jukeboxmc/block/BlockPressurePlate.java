@@ -57,6 +57,11 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     }
 
     @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
+    @Override
     public void enterBlock( Player player ) {
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL,
                 player.getInventory().getItemInHand(), this );

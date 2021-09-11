@@ -42,6 +42,10 @@ public class Vector {
         this.z = z;
     }
 
+    public static Vector zero() {
+        return new Vector( 0, 0, 0 );
+    }
+
     public static Vector up() {
         return new Vector( 0, 1, 0 );
     }
@@ -67,27 +71,27 @@ public class Vector {
     }
 
     public Vector add( final float x, final float y, final float z ) {
-        return new Vector( this.x + x, this.y + y, this.z + z );
+        return new Vector( this.x + x, this.y + y, this.z + z, this.dimension );
     }
 
     public Vector subtract( final float x, final float y, final float z ) {
-        return new Vector( this.x - x, this.y - y, this.z - z );
+        return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
     }
 
     public Vector multiply( final float x, final float y, final float z ) {
-        return new Vector( this.x * x, this.y * y, this.z * z );
+        return new Vector( this.x * x, this.y * y, this.z * z, this.dimension );
     }
 
     public Vector divide( final float x, final float y, final float z ) {
-        return new Vector( this.x / x, this.y / y, this.z / z );
+        return new Vector( this.x / x, this.y / y, this.z / z, this.dimension );
     }
 
     public Vector squareRoot() {
-        return new Vector( (float) FastMath.sqrt( this.x ), (float) FastMath.sqrt( this.y ), (float) FastMath.sqrt( this.z ) );
+        return new Vector( (float) FastMath.sqrt( this.x ), (float) FastMath.sqrt( this.y ), (float) FastMath.sqrt( this.z ), this.dimension );
     }
 
     public Vector cubicRoot() {
-        return new Vector( (float) FastMath.cbrt( this.x ), (float) FastMath.cbrt( this.y ), (float) FastMath.cbrt( this.z ) );
+        return new Vector( (float) FastMath.cbrt( this.x ), (float) FastMath.cbrt( this.y ), (float) FastMath.cbrt( this.z ), this.dimension );
     }
 
     public Vector normalize() {

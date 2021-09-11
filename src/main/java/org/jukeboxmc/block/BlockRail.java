@@ -33,6 +33,11 @@ public class BlockRail extends BlockWaterlogable {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setRailDirection( RailDirection railDirection ) {
         switch ( railDirection ) {
             case NORTH_SOUTH:

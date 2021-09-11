@@ -82,6 +82,11 @@ public class BlockDoublePlant extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public BlockDoublePlant setPlantType( PlantType plantType ) {
         return this.setState( "double_plant_type", plantType.name().toLowerCase() );
     }

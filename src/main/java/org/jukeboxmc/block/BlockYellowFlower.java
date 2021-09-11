@@ -31,4 +31,9 @@ public class BlockYellowFlower extends Block {
     public boolean isTransparent() {
         return true;
     }
+
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
 }

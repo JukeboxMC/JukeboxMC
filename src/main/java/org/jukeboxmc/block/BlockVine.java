@@ -19,7 +19,6 @@ public class BlockVine extends BlockWaterlogable {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-
         world.setBlock( placePosition, this );
         return true;
     }
@@ -41,6 +40,11 @@ public class BlockVine extends BlockWaterlogable {
 
     @Override
     public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public boolean canPassThrough() {
         return true;
     }
 

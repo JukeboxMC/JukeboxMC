@@ -50,6 +50,11 @@ public class BlockCompartor extends BlockWaterlogable {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setOutputSubtract( boolean value ) {
         this.setState( "output_subtract_bit", value ? (byte) 1: (byte) 0 );
     }

@@ -49,6 +49,11 @@ public class BlockLadder extends BlockWaterlogable {
         return false;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setBlockFace( BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }

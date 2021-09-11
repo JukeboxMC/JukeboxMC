@@ -142,11 +142,10 @@ public class Server {
                 if ( this.currentTps > 20 ) {
                     this.currentTps = 20;
                 }
-
-                for ( World world : this.worlds.values() ) {
-                    if ( world != null ) {
-                        world.update( this.currentTick );
-                    }
+            }
+            for ( World world : this.worlds.values() ) {
+                if ( world != null ) {
+                    world.update( this.currentTick );
                 }
             }
             deltaTime = System.currentTimeMillis() - startTime;

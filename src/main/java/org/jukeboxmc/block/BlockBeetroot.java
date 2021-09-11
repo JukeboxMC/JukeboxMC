@@ -32,6 +32,11 @@ public class BlockBeetroot extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setGrowth( int value ) { //0-7
         this.setState( "growth", value );
     }

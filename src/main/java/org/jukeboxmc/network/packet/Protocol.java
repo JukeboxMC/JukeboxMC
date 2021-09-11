@@ -56,5 +56,7 @@ public interface Protocol {
     byte BLOCK_PICK_REQUEST_PACKET = 0x22;
     byte COMMAND_REQUEST_PACKET = 0x4d;
     byte AVAILABLE_COMMANDS_PACKET = 0x4c;
-
+    byte ENTITY_MOVE_PACKET = 0x12;
+    byte ADD_ITEM_ENTITY_PACKET = 0x0f;
+    byte TAKE_ENTITY_ITEM_PACKET = 0x11;
 }

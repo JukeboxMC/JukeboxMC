@@ -71,6 +71,11 @@ public class BlockTorch extends Block {
     }
 
     @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
+    @Override
     public AxisAlignedBB getBoundingBox() {
         float size = 0.15f;
         switch ( this.getTorchFacing() ) {

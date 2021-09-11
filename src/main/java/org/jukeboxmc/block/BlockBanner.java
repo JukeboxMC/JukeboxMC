@@ -60,6 +60,11 @@ public abstract class BlockBanner extends BlockWaterlogable {
         return (BlockEntityBanner) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setSignDirection( SignDirection signDirection ) {
         this.setState( "ground_sign_direction", signDirection.ordinal() );
     }

@@ -38,6 +38,11 @@ public class BlockTallGrass extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public BlockTallGrass setGrassType( GrassType grassType ) {
         return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }

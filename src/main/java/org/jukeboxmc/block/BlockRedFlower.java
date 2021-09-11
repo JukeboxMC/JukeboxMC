@@ -33,6 +33,11 @@ public class BlockRedFlower extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public BlockRedFlower setFlowerType( FlowerType flowerType ) {
         return this.setState( "flower_type", flowerType.name().toLowerCase() );
     }

@@ -44,6 +44,11 @@ public class BlockRedstoneWire extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setRedstoneSignal( int value ) {
         this.setState( "redstone_signal", value );
     }

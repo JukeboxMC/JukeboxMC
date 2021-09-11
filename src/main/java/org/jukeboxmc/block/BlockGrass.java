@@ -22,4 +22,8 @@ public class BlockGrass extends Block {
         return BlockType.GRASS;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return false;
+    }
 }

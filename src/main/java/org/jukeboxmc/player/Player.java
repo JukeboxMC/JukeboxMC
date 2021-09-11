@@ -45,8 +45,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private int protocol = -1;
     private int viewDistance = 8;
 
-    private boolean spawned = false;
-
     private String name = null;
     private String xuid = null;
     private String minecraftVersion = null;
@@ -79,24 +77,29 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 world.loadChunkAsync( chunkX, chunkZ, this.dimension ).whenComplete( ( chunk, throwable ) -> {
                     this.sendChunk( chunk );
                 } ).thenRun( () -> {
-                    this.sendNetworkChunkPublisher();
+                    Server.getInstance().addToMainThread( () -> {
+                        this.sendNetworkChunkPublisher();
 
-                    for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
-                        if ( entity != null && this != entity ) {
-                            entity.spawn( this );
+                        for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
+                            if ( entity != null && this != entity ) {
+                                entity.spawn( this );
+                            }
                         }
-                    }
+                    } );
                 } );
             }
         }
 
         this.updateAttributes();
+
+
+        Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.dimension, null );
+        if ( nearbyEntities != null ) {
+            for ( Entity nearbyEntity : nearbyEntities ) {
+                nearbyEntity.onCollideWithPlayer( this );
+            }
+        }
     }
-
-    public void updateChunk() {
-
-    }
-
     // ========== Chunk ==========
 
     public void needNewChunks() {
@@ -234,10 +237,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.needNewChunks();
     }
 
-    public boolean isSpawned() {
-        return this.spawned;
-    }
-
     @Override
     public String getName() {
         return this.name;
@@ -360,7 +359,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
             Server.getInstance().getPluginManager().callEvent( new InventoryCloseEvent( this.currentInventory, this ) );
 
-            this.currentInventory.removeViewer( this );
             this.currentInventory = null;
         }
     }
@@ -438,13 +436,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             playStatusPacket.setStatus( PlayStatus.PLAYER_SPAWN );
 
             this.playerConnection.sendPacket( playStatusPacket );
-            this.spawned = true;
         }
     }
 
     public void leaveServer( String reason ) {
-        this.spawnedFor.clear();
-
         this.getWorld().removeEntity( this );
         this.getChunk().removeEntity( this );
 

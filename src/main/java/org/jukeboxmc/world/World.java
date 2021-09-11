@@ -16,8 +16,10 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
+import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
@@ -50,12 +52,12 @@ public class World extends LevelDBWorld {
     private final WorldGenerator worldGenerator;
     private final BlockUpdateList blockUpdateList;
 
-    public final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new HashMap<>();
+    public final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new ConcurrentHashMap<>();
 
     protected final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    protected final Map<GameRule<?>, Object> gamerules = new HashMap<>();
-    protected final Map<Long, Entity> entities = new HashMap<>();
+    protected final Map<GameRule<?>, Object> gamerules = new ConcurrentHashMap<>();
+    protected final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
     private final ExecutorService chunkThread = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
@@ -79,14 +81,9 @@ public class World extends LevelDBWorld {
 
     public void update( long currentTick ) {
         for ( Entity entity : this.entities.values() ) {
-            if ( entity instanceof Player ) {
-                Player player = (Player) entity;
-                if ( player.isSpawned() ) {
-                    player.update( currentTick );
-                    player.updateChunk();
-                }
-            }
+            entity.update( currentTick );
         }
+
         while ( !this.blockUpdateNormals.isEmpty() ) {
             BlockUpdateNormal updateNormal = this.blockUpdateNormals.poll();
             updateNormal.getBlock().onUpdate( UpdateReason.NORMAL );
@@ -735,6 +732,20 @@ public class World extends LevelDBWorld {
 
     //========= Other =========
 
+    public EntityItem dropItem( Item item, Vector location, Vector velocity ) {
+        if ( velocity == null ) {
+            velocity = new Vector( ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f,
+                    0.2f, ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f );
+        }
+
+        EntityItem entityItem = new EntityItem();
+        entityItem.setItem( item );
+        entityItem.setVelocity( velocity, false );
+        entityItem.setLocation( new Location( this, location ) );
+        entityItem.setPickupDelay( 20, TimeUnit.MILLISECONDS );
+        return entityItem;
+    }
+
     public Collection<Entity> getNearbyEntities( AxisAlignedBB bb, Dimension dimension, Entity entity ) {
         Set<Entity> targetEntity = new HashSet<>();
 
@@ -747,17 +758,49 @@ public class World extends LevelDBWorld {
             for ( int z = minZ; z <= maxZ; ++z ) {
                 Chunk chunk = this.getChunk( x, z, dimension );
                 if ( chunk != null ) {
-                    chunk.iterateEntities( iterateEntities -> {
+                    for ( Entity iterateEntities : chunk.getEntities() ) {
                         if ( !iterateEntities.equals( entity ) ) {
                             AxisAlignedBB boundingBox = iterateEntities.getBoundingBox();
                             if ( boundingBox.intersectsWith( bb ) ) {
                                 targetEntity.add( iterateEntities );
                             }
                         }
-                    } );
+                    }
                 }
             }
         }
         return targetEntity;
+    }
+
+    public List<AxisAlignedBB> getCollisionCubes( Entity entity, AxisAlignedBB bb, boolean includeEntities ) {
+        int minX = (int) FastMath.floor( bb.getMinX() );
+        int minY = (int) FastMath.floor( bb.getMinY() );
+        int minZ = (int) FastMath.floor( bb.getMinZ() );
+        int maxX = (int) FastMath.ceil( bb.getMaxX() );
+        int maxY = (int) FastMath.ceil( bb.getMaxY() );
+        int maxZ = (int) FastMath.ceil( bb.getMaxZ() );
+
+        List<AxisAlignedBB> collides = new ArrayList<>();
+
+        for ( int z = minZ; z <= maxZ; ++z ) {
+            for ( int x = minX; x <= maxX; ++x ) {
+                for ( int y = minY; y <= maxY; ++y ) {
+                    Block block = this.getBlock( new Vector( x, y, z ), 0 );
+                    if ( !block.canPassThrough() && block.getBoundingBox().intersectsWith( bb ) ) {
+                        collides.add( block.getBoundingBox() );
+                    }
+                }
+            }
+        }
+
+        if ( includeEntities ) {
+            for ( Entity nearbyEntity : this.getNearbyEntities( bb.grow( 0.25f, 0.25f, 0.25f ), entity.getDimension(), entity ) ) {
+                if ( !nearbyEntity.canPassThrough() ) {
+                    collides.add( nearbyEntity.getBoundingBox().clone() );
+                }
+            }
+        }
+
+        return collides;
     }
 }

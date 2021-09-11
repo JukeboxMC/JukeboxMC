@@ -26,6 +26,7 @@ public class PlayerMoveHandler implements PacketHandler<PlayerMovePacket> {
             playerMoveEvent.setTo( playerMoveEvent.getFrom() );
         }
 
+        player.setLastLocation( player.getLocation() );
         player.setLocation( toLocation );
         player.setOnGround( packet.isOnGround() );
 

@@ -32,6 +32,11 @@ public class BlockFire extends Block {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setAge( int value ) { // 0-15
         this.setState( "age", value );
     }

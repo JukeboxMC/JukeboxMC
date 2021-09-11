@@ -23,6 +23,11 @@ public class BlockFrame extends BlockWaterlogable {
         return BlockType.FRAME;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setItemFrameMap( boolean value ) {
         this.setState( "item_frame_map_bit", value ? (byte) 1 : (byte) 0 );
     }

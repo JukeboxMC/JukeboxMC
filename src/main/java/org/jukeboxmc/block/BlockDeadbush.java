@@ -32,4 +32,8 @@ public class BlockDeadbush extends BlockWaterlogable {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
 }

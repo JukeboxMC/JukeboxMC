@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.inventory.InventoryClickEvent;
 import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
@@ -58,7 +59,12 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                                 player.getInventory().sendContents( player );
                                 return;
                             }
-                            //TODO Player Drop Item
+                            EntityItem entityItem = player.getWorld().dropItem(
+                                    playerDropItemEvent.getItem(),
+                                    player.getLocation().add( 0, player.getEyeHeight(), 0 ),
+                                    player.getLocation().getDirection().multiply( 0.4f, 0.4f, 0.4f ) );
+                            entityItem.setPlayerHasThrown( player );
+                            entityItem.spawn();
                             break;
                         default:
                             break;

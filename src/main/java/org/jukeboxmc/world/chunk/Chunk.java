@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -27,6 +28,7 @@ import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -47,7 +49,7 @@ public class Chunk extends LevelDBChunk {
     public Dimension dimension;
     public byte chunkVersion = 21;
 
-    private final List<Entity> entities = new CopyOnWriteArrayList<>();
+    private final Map<Long, Entity> entities = new HashMap<>();
 
     public Chunk( World world, int chunkX, int chunkZ, Dimension dimension ) {
         this.world = world;
@@ -160,7 +162,7 @@ public class Chunk extends LevelDBChunk {
     }
 
     public void iterateEntities( Consumer<Entity> consumer ) {
-        for ( Entity player : this.entities ) {
+        for ( Entity player : this.entities.values() ) {
             consumer.accept( player );
         }
     }
@@ -178,21 +180,34 @@ public class Chunk extends LevelDBChunk {
     }
 
     public void addEntity( Entity entity ) {
-        if ( !this.entities.contains( entity ) ) {
-            this.entities.add( entity );
+        if ( !Server.getInstance().isMainThread() ) {
+            System.out.println("Use on Main Thread #1");
+            return;
+        }
+        if ( !this.entities.containsKey( entity.getEntityId() ) ) {
+            this.entities.put( entity.getEntityId(), entity );
         }
     }
 
     public void removeEntity( Entity entity ) {
-        this.entities.remove( entity );
+        if ( !Server.getInstance().isMainThread() ) {
+            System.out.println("Use on Main Thread #2");
+            return;
+        }
+        this.entities.remove( entity.getEntityId() );
     }
 
     public Entity getEntity( long entityId ) {
-        return this.entities.stream().filter( entity -> entity.getEntityId() == entityId ).findFirst().orElse( null );
+        Optional<Map.Entry<Long, Entity>> optional = this.entities.entrySet().stream().filter( longEntityEntry -> longEntityEntry.getKey() == entityId ).findFirst();
+        return optional.map( Map.Entry::getValue ).orElse( null );
     }
 
     public Collection<Entity> getEntities() {
-        return this.entities;
+        if ( !Server.getInstance().isMainThread() ) {
+            System.out.println("Use on Main Thread #3");
+            return new ArrayList<>();
+        }
+        return this.entities.values();
     }
 
     //======== Save and Load =========

@@ -22,6 +22,11 @@ public class BlockSoulFire extends Block {
         return BlockType.SOUL_FIRE;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setAge( int value ) {
         this.setState( "age", value );
     }

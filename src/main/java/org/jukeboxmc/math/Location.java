@@ -95,4 +95,17 @@ public class Location extends Vector {
         double y = Math.cos( pitch );
         return new Vector( (float) x, (float) y, (float) z ).normalize();
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "world=" + world +
+                ", yaw=" + yaw +
+                ", pitch=" + pitch +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", dimension=" + dimension +
+                '}';
+    }
 }

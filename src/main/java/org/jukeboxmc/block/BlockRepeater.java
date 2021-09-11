@@ -56,6 +56,11 @@ public class BlockRepeater extends BlockWaterlogable {
         return true;
     }
 
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
     public void setRepeaterDelay( int value ) { //0-3
         this.setState( "repeater_delay", value );
     }
