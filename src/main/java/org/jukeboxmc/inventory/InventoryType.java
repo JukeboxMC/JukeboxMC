@@ -13,5 +13,6 @@ public enum InventoryType {
     CARTOGRAPHY_TABLE,
     SMITHING_TABLE,
     BLAST_FURNACE,
-    SMOKER
+    SMOKER,
+    ANVIL
 }

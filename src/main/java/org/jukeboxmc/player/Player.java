@@ -45,6 +45,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final CraftingTableInventory craftingTableInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
+    private final AnvilInventory anvilInventory;
+
 
     private int protocol = -1;
     private int viewDistance = 8;
@@ -67,6 +69,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
+        this.anvilInventory = new AnvilInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -341,6 +344,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.smithingTableInventory;
     }
 
+    public AnvilInventory getAnvilInventory() {
+        return this.anvilInventory;
+    }
+
     public void openInventory( Inventory inventory, Vector position ) {
         if ( inventory instanceof ContainerInventory ) {
             ContainerInventory containerInventory = (ContainerInventory) inventory;
@@ -394,7 +401,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     // ========== Feature Methode ==========
 
-    //TODO CommandData
     private void joinServer() {
         if ( !this.spawned ) {
             this.server.getDefaultWorld().addEntity( this );
@@ -427,6 +433,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.playerInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
             this.craftingTableInventory.addViewer( this );
+            this.cartographyTableInventory.addViewer( this );
+            this.smithingTableInventory.addViewer( this );
+            this.anvilInventory.addViewer( this );
 
             this.server.addPlayer( this );
             this.server.addToTablist( this );

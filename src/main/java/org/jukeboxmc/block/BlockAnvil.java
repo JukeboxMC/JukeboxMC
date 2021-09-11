@@ -26,6 +26,12 @@ public class BlockAnvil extends BlockWaterlogable {
     }
 
     @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        player.openInventory( player.getAnvilInventory(), blockPosition );
+        return true;
+    }
+
+    @Override
     public ItemAnvil toItem() {
         return new ItemAnvil( this.runtimeId );
     }

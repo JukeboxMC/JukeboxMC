@@ -158,7 +158,17 @@ public enum BlockType {
     POTATOES( new BlockPotatoes() ),
     WOODEN_BUTTON( new BlockWoodenButton() ),
     SKULL( new BlockSkull() ),
+
+    /*
+    ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
+    SLIGHTLY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.SLIGHTLY_DAMAGED ).toItem() ),
+    VERY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.VERY_DAMAGED ).toItem() ),
+    BROKEN_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
+
+     */
+
     ANVIL( new BlockAnvil() ),
+
     TRAPPED_CHEST( new BlockTrappedChest() ),
     LIGHT_WEIGHTED_PRESSURE_PLATE( new BlockLightWeightedPressurePlate() ),
     HEAVY_WEIGHTED_PRESSURE_PLATE( new BlockHeavyWeightedPressurePlate() ),
