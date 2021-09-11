@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockCartographyTableBlock;
+import org.jukeboxmc.block.BlockCartographyTable;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemCartographyTable extends Item {
     }
 
     @Override
-    public BlockCartographyTableBlock getBlock() {
-        return new BlockCartographyTableBlock();
+    public BlockCartographyTable getBlock() {
+        return new BlockCartographyTable();
     }
 }

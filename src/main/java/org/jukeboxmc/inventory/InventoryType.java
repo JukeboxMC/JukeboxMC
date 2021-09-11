@@ -9,6 +9,7 @@ public enum InventoryType {
     PLAYER,
     CURSOR,
     FURNACE,
-    WORKBENCH
+    WORKBENCH,
+    CARTOGRAPHY_TABLE;
 
 }

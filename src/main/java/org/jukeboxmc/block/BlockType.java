@@ -467,7 +467,7 @@ public enum BlockType {
     STONECUTTER_BLOCK( new BlockStonecutterBlock() ),
     SMOKER( new BlockSmoker() ),
     LIT_SMOKER( new BlockGlowingSmoker() ),
-    CARTOGRAPGHY_TABLE( new BlockCartographyTableBlock() ),
+    CARTOGRAPGHY_TABLE( new BlockCartographyTable() ),
     FLETCHING_TABLE( new BlockFletchingTable() ),
     SMITHING_TABLE( new BlockSmithingTable() ),
     BARREL( new BlockBarrel() ),
