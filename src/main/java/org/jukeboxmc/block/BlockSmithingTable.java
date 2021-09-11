@@ -1,6 +1,10 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSmithingTable;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
@@ -22,4 +26,9 @@ public class BlockSmithingTable extends Block {
         return BlockType.SMITHING_TABLE;
     }
 
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        player.openInventory( player.getSmithingTableInventory(), blockPosition );
+        return true;
+    }
 }

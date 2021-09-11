@@ -10,6 +10,6 @@ public enum InventoryType {
     CURSOR,
     FURNACE,
     WORKBENCH,
-    CARTOGRAPHY_TABLE;
-
+    CARTOGRAPHY_TABLE,
+    SMITHING_TABLE;
 }

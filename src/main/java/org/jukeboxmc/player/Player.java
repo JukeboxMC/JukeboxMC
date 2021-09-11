@@ -44,6 +44,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final CursorInventory cursorInventory;
     private final CraftingTableInventory craftingTableInventory;
     private final CartographyTableInventory cartographyTableInventory;
+    private final SmithingTableInventory smithingTableInventory;
 
     private int protocol = -1;
     private int viewDistance = 8;
@@ -65,6 +66,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.cursorInventory = new CursorInventory( this );
         this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
+        this.smithingTableInventory = new SmithingTableInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -333,6 +335,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public CartographyTableInventory getCartographyTableInventory() {
         return this.cartographyTableInventory;
+    }
+
+    public SmithingTableInventory getSmithingTableInventory() {
+        return this.smithingTableInventory;
     }
 
     public void openInventory( Inventory inventory, Vector position ) {
