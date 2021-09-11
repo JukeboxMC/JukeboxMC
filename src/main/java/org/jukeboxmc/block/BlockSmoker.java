@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntitySmoker;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSmoker;
 import org.jukeboxmc.math.Vector;
@@ -21,7 +23,19 @@ public class BlockSmoker extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
+
+        BlockEntityType.SMOKER.<BlockEntitySmoker>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntitySmoker blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -32,6 +46,16 @@ public class BlockSmoker extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SMOKER;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntitySmoker getBlockEntity() {
+        return (BlockEntitySmoker) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

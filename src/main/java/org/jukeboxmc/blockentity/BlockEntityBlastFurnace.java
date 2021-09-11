@@ -29,18 +29,6 @@ public class BlockEntityBlastFurnace extends BlockEntityContainer implements Inv
         return true;
     }
 
-    @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
-    }
-
-    @Override
-    public NbtMapBuilder toCompound() {
-        NbtMapBuilder compound = super.toCompound();
-        compound.put( "id", "BlastFurnace" );
-        return compound;
-    }
-
     public BlastFurnaceInventory getBlastFurnaceInventory() {
         return this.blastFurnaceInventory;
     }

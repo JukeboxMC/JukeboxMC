@@ -12,5 +12,6 @@ public enum InventoryType {
     WORKBENCH,
     CARTOGRAPHY_TABLE,
     SMITHING_TABLE,
-    BLAST_FURNACE
+    BLAST_FURNACE,
+    SMOKER
 }

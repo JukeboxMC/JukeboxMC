@@ -29,19 +29,6 @@ public class BlockEntityFurnace extends BlockEntityContainer implements Inventor
         return false;
     }
 
-    @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
-
-    }
-
-    @Override
-    public NbtMapBuilder toCompound() {
-        NbtMapBuilder compound = super.toCompound();
-        compound.put( "id", "Furnace" );
-        return compound;
-    }
-
     public FurnaceInventory getFurnaceInventory() {
         return this.furnaceInventory;
     }
