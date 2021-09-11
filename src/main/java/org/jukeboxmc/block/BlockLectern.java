@@ -2,6 +2,8 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.blockentity.BlockEntityLectern;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLectern;
 import org.jukeboxmc.math.Vector;
@@ -21,7 +23,12 @@ public class BlockLectern extends BlockWaterlogable {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+
+        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        if ( value ) {
+            BlockEntityType.LECTERN.<BlockEntityLectern>createBlockEntity( this );
+        }
+        return value;
     }
 
     @Override
