@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
-import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -28,8 +27,6 @@ import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**

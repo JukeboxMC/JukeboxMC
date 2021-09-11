@@ -40,7 +40,7 @@ public class BlockBed extends BlockWaterlogable {
             world.setBlock( blockNext.getLocation(), blockBed );
             world.setBlock( placePosition, this );
 
-            if ( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
+            if ( block instanceof BlockWater ) {
                 world.setBlock( blockNext.getLocation(), block, 1 );
                 world.setBlock( placePosition, block, 1 );
             }

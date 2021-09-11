@@ -16,7 +16,8 @@ public enum BlockEntityType {
     BED( "Bed", BlockEntityBed.class ),
     BEEHIVE( "Beehive", BlockEntityBeehive.class ),
     BANNER( "Banner", BlockEntityBanner.class ),
-    SKULL( "Skull", BlockEntitySkull.class );
+    SKULL( "Skull", BlockEntitySkull.class ),
+    BLAST_FURNACE("BlastFurnace", BlockEntityBlastFurnace.class );
 
     private final String blockEntityId;
     private final Class<? extends BlockEntity> blockEntityClass;

@@ -3,7 +3,10 @@ package org.jukeboxmc.command.jukebox;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
-import org.jukeboxmc.command.annotation.*;
+import org.jukeboxmc.command.annotation.Alias;
+import org.jukeboxmc.command.annotation.Description;
+import org.jukeboxmc.command.annotation.Name;
+import org.jukeboxmc.command.annotation.Permission;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 

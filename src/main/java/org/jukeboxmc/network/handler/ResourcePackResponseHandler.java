@@ -2,7 +2,6 @@ package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.AvailableActorIdentifiersPacket;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.packet.type.ResourcePackEntry;
 import org.jukeboxmc.player.Player;

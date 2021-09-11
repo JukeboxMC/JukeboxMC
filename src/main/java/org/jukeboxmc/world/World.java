@@ -19,7 +19,6 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
-import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;

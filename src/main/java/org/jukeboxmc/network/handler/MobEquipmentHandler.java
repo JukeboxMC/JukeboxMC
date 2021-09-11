@@ -1,6 +1,5 @@
 package org.jukeboxmc.network.handler;
 
-import network.ycc.raknet.packet.Packet;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.PlayerInventory;

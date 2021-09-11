@@ -1,9 +1,6 @@
 package org.jukeboxmc.world.chunk;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
-import org.apache.commons.math3.util.FastMath;
-import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
