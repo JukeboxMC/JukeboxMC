@@ -19,7 +19,8 @@ public enum BlockEntityType {
     SKULL( "Skull", BlockEntitySkull.class ),
     BLAST_FURNACE( "BlastFurnace", BlockEntityBlastFurnace.class ),
     SMOKER( "Smoker", BlockEntitySmoker.class ),
-    LECTERN( "Lectern", BlockEntityLectern.class );
+    LECTERN( "Lectern", BlockEntityLectern.class ),
+    ENCHANTMENT_TABLE( "EnchantTable", BlockEntityEnchantmentTable.class );
 
     private final String blockEntityId;
     private final Class<? extends BlockEntity> blockEntityClass;

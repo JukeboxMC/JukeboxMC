@@ -14,5 +14,6 @@ public enum InventoryType {
     SMITHING_TABLE,
     BLAST_FURNACE,
     SMOKER,
-    ANVIL
+    ANVIL,
+    ENCHANTMENT_TABLE
 }
