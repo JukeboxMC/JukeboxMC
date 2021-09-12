@@ -1,5 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.network.packet.ContainerOpenPacket;
 import org.jukeboxmc.network.packet.InventoryContentPacket;
 import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
@@ -10,8 +12,8 @@ import org.jukeboxmc.player.Player;
  */
 public abstract class ContainerInventory extends Inventory {
 
-    public ContainerInventory( InventoryHolder holder, int slots ) {
-        super( holder, slots );
+    public ContainerInventory( InventoryHolder holder, long holderId, int slots ) {
+        super( holder, holderId, slots );
     }
 
     @Override
@@ -20,12 +22,9 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void addViewer( Player player ) {
-        super.addViewer( player );
-    }
-
-    @Override
     public void removeViewer( Player player ) {
+        this.onClose( player );
+
         super.removeViewer( player );
     }
 
@@ -45,4 +44,26 @@ public abstract class ContainerInventory extends Inventory {
         inventorySlotPacket.setItem( this.contents[slot] );
         player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
+
+    public void addViewer( Player player, Vector position, byte windowId ) {
+        ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
+        containerOpenPacket.setEntityId( this.holderId );
+        containerOpenPacket.setWindowId( windowId );
+        containerOpenPacket.setWindowTypeId( this.getWindowTypeId() );
+        containerOpenPacket.setPosition( position );
+        player.getPlayerConnection().sendPacket( containerOpenPacket );
+
+        super.addViewer( player );
+
+        this.onOpen( player );
+    }
+
+    public void onOpen( Player player ) {
+
+    }
+
+    public void onClose( Player player ) {
+
+    }
+
 }

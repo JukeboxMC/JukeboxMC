@@ -17,8 +17,8 @@ public class PlayerInventory extends ContainerInventory {
 
     private int itemInHandSlot;
 
-    public PlayerInventory( InventoryHolder holder ) {
-        super( holder, 36 );
+    public PlayerInventory( InventoryHolder holder, long holderId ) {
+        super( holder, holderId, 36 );
     }
 
     @Override
@@ -55,6 +55,11 @@ public class PlayerInventory extends ContainerInventory {
         inventorySlotPacket.setSlot( slot );
         inventorySlotPacket.setItem( this.contents[slot] );
         player.getPlayerConnection().sendPacket( inventorySlotPacket );
+    }
+
+    @Override
+    public Player getInventoryHolder() {
+        return (Player) this.holder;
     }
 
     @Override

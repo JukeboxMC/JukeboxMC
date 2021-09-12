@@ -1,5 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.blockentity.BlockEntityFurnace;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -7,7 +9,12 @@ package org.jukeboxmc.inventory;
 public class FurnaceInventory extends ContainerInventory {
 
     public FurnaceInventory( InventoryHolder holder ) {
-        super( holder, 3 );
+        super( holder, -1, 3 );
+    }
+
+    @Override
+    public BlockEntityFurnace getInventoryHolder() {
+        return (BlockEntityFurnace) this.holder;
     }
 
     @Override

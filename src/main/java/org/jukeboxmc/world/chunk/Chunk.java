@@ -210,12 +210,12 @@ public class Chunk extends LevelDBChunk {
         byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
         BinaryStream versionBuffer = new BinaryStream();
         versionBuffer.writeByte( this.chunkVersion );
-        writeBatch.put( versionKey, versionBuffer.getBuffer().array() );
+        writeBatch.put( versionKey, versionBuffer.array() );
 
         byte[] finalizedKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x36 );
         ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer( 1 );
         byteBuf.writeByte( this.populated ? 2 : 0 ).writeByte( 0 ).writeByte( 0 ).writeByte( 0 );
-        writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).getBuffer().array() );
+        writeBatch.put( finalizedKey, new BinaryStream( byteBuf ).array() );
 
 
         BinaryStream blockEntityBuffer = new BinaryStream();
@@ -231,17 +231,17 @@ public class Chunk extends LevelDBChunk {
 
         if ( blockEntityBuffer.readableBytes() > 0 ) {
             byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
-            writeBatch.put( blockEntityKey, blockEntityBuffer.getBuffer().array() );
+            writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
-        byte[] biomeKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
+        byte[] biomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
         BinaryStream biomeBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
             biomeBuffer.writeLShort( height );
         }
         biomeBuffer.writeBytes( this.biomes );
-        writeBatch.put( biomeKey, biomeBuffer.getBuffer().array() );
+        writeBatch.put( biomesKey, biomeBuffer.array() );
 
         db.write( writeBatch );
         try {
@@ -305,7 +305,7 @@ public class Chunk extends LevelDBChunk {
             }
         }
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
-        writeBatch.put( subChunkKey, buffer.getBuffer().array() );
+        writeBatch.put( subChunkKey, buffer.array() );
     }
 
 
@@ -317,7 +317,7 @@ public class Chunk extends LevelDBChunk {
             }
         }
         binaryStream.writeBytes( this.biomes );
-        binaryStream.writeUnsignedVarInt( 0 ); //Extradata
+        binaryStream.writeUnsignedVarInt( 0 );
 
 
         List<BlockEntity> blockEntitys = this.getBlockEntitys();
@@ -326,7 +326,8 @@ public class Chunk extends LevelDBChunk {
 
             for ( BlockEntity blockEntity : blockEntitys ) {
                 try {
-                    writer.writeTag( blockEntity.toCompound().build() );
+                    NbtMap build = blockEntity.toCompound().build();
+                    writer.writeTag( build );
                 } catch ( IOException e ) {
                     e.printStackTrace();
                 }

@@ -10,7 +10,7 @@ import org.jukeboxmc.nbt.NbtMapBuilder;
  */
 public class BlockEntityContainer extends BlockEntity {
 
-    private String customName = null;
+    private String customName = "";
 
     public BlockEntityContainer( Block block ) {
         super( block );
@@ -25,9 +25,7 @@ public class BlockEntityContainer extends BlockEntity {
     @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
-        if ( this.customName != null ) {
-            compound.put( "CustomName", this.customName );
-        }
+        compound.put( "CustomName", this.customName );
         return compound;
     }
 

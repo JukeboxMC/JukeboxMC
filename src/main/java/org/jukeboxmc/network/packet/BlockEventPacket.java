@@ -2,7 +2,6 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jukeboxmc.inventory.WindowTypeId;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.utils.BinaryStream;
 
@@ -11,27 +10,25 @@ import org.jukeboxmc.utils.BinaryStream;
  * @version 1.0
  */
 @Data
-@EqualsAndHashCode (callSuper = true)
-public class ContainerOpenPacket extends Packet {
+@EqualsAndHashCode(callSuper = true)
+public class BlockEventPacket extends Packet {
 
-    private byte windowId;
-    private WindowTypeId windowTypeId;
     private Vector position;
-    private long entityId;
+    private int data1;
+    private int data2;
 
     @Override
     public int getPacketId() {
-        return Protocol.CONTAINER_OPEN_PACKET;
+        return Protocol.BLOCK_EVENT_PACKET;
     }
 
     @Override
     public void write( BinaryStream stream ) {
-        super.write(stream);
-        stream.writeByte( this.windowId );
-        stream.writeByte( this.windowTypeId.getId() );
+        super.write( stream );
         stream.writeSignedVarInt( this.position.getBlockX() );
         stream.writeUnsignedVarInt( this.position.getBlockY() );
         stream.writeSignedVarInt( this.position.getBlockZ() );
-        stream.writeSignedVarLong( this.entityId );
+        stream.writeSignedVarInt( this.data1 );
+        stream.writeSignedVarInt( this.data2 );
     }
 }

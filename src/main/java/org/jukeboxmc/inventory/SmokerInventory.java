@@ -1,5 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.blockentity.BlockEntitySmoker;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -7,7 +9,12 @@ package org.jukeboxmc.inventory;
 public class SmokerInventory extends ContainerInventory {
 
     public SmokerInventory( InventoryHolder holder ) {
-        super( holder, 3 );
+        super( holder, -1, 3 );
+    }
+
+    @Override
+    public BlockEntitySmoker getInventoryHolder() {
+        return (BlockEntitySmoker) this.holder;
     }
 
     @Override

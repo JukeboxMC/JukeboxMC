@@ -36,7 +36,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     public EntityHuman() {
         this.uuid = UUID.randomUUID();
         this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, GUIScale.CLASSIC );
-        this.playerInventory = new PlayerInventory( this );
+        this.playerInventory = new PlayerInventory( this, this.entityId );
 
         this.addAttribute( AttributeType.PLAYER_HUNGER );
         this.addAttribute( AttributeType.PLAYER_SATURATION );

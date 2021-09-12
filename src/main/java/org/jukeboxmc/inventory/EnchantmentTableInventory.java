@@ -1,5 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.blockentity.BlockEntityEnchantmentTable;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -7,7 +9,12 @@ package org.jukeboxmc.inventory;
 public class EnchantmentTableInventory extends ContainerInventory {
 
     public EnchantmentTableInventory( InventoryHolder holder ) {
-        super( holder, 2 );
+        super( holder, -1, 2 );
+    }
+
+    @Override
+    public BlockEntityEnchantmentTable getInventoryHolder() {
+        return (BlockEntityEnchantmentTable) this.holder;
     }
 
     @Override

@@ -20,10 +20,13 @@ public abstract class Inventory {
     protected Item[] contents;
     protected int slotSize;
 
-    private final Set<Player> viewer = new HashSet<>();
+    protected long holderId;
 
-    public Inventory( InventoryHolder holder, int slotSize ) {
+    protected final Set<Player> viewer = new HashSet<>();
+
+    public Inventory( InventoryHolder holder, long holderId, int slotSize ) {
         this.holder = holder;
+        this.holderId = holderId;
         this.slotSize = slotSize;
         this.contents = new Item[slotSize];
         for ( int i = 0; i < slotSize; i++ ) {
@@ -35,14 +38,12 @@ public abstract class Inventory {
 
     public abstract void sendContents( int slot, Player player );
 
+    public abstract InventoryHolder getInventoryHolder();
+
     public abstract InventoryType getInventoryType();
 
     public WindowTypeId getWindowTypeId() {
         return WindowTypeId.INVENTORY;
-    }
-
-    public InventoryHolder getHolder() {
-        return this.holder;
     }
 
     public void addViewer( Player player ) {
@@ -160,6 +161,10 @@ public abstract class Inventory {
 
     public int getSlotSize() {
         return this.slotSize;
+    }
+
+    public long getHolderId() {
+        return this.holderId;
     }
 
     public Item[] getContents() {

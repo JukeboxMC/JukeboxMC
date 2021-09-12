@@ -177,6 +177,7 @@ public class Server {
 
     public void shutdown() {
         if ( this.running ) {
+            this.running = false;
             this.logger.info( "Shutdown server..." );
 
             for ( Player player : this.getOnlinePlayers() ) {
@@ -194,8 +195,8 @@ public class Server {
 
             this.terminalConsole.stopConsole();
             this.rakNetListener.close();
-            this.running = false;
             this.logger.info( "Shutdown successfully" );
+            System.exit( 0 );
         }
 
     }
@@ -491,8 +492,8 @@ public class Server {
             for ( Player player : unloadWorldEvent.getWorld().getPlayers() ) {
                 consumer.accept( player );
             }
-            unloadWorldEvent.getWorld().clearChunks();
             unloadWorldEvent.getWorld().close();
+            unloadWorldEvent.getWorld().clearChunks();
             this.logger.info( "World \"" + worldName + "\" was unloaded" );
         } else {
             this.logger.warn( "The world \"" + worldName + "\" was not found" );

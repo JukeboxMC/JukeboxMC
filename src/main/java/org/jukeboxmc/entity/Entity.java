@@ -300,6 +300,10 @@ public abstract class Entity {
         return this.spawned;
     }
 
+    public boolean isClosed() {
+        return this.closed;
+    }
+
     public Location getLocation() {
         return this.location;
     }

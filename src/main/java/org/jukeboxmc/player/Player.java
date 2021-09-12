@@ -9,6 +9,7 @@ import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
+import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.math.Location;
@@ -48,8 +49,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final AnvilInventory anvilInventory;
 
 
-    private int protocol = -1;
+    private int protocol = Protocol.CURRENT_PROTOCOL;
     private int viewDistance = 8;
+    private int windowId = 4;
 
     private String name = null;
     private String xuid = null;
@@ -65,11 +67,11 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.server = playerConnection.getServer();
         this.gameMode = this.server.getDefaultGameMode();
 
-        this.cursorInventory = new CursorInventory( this );
-        this.craftingTableInventory = new CraftingTableInventory( this );
-        this.cartographyTableInventory = new CartographyTableInventory( this );
-        this.smithingTableInventory = new SmithingTableInventory( this );
-        this.anvilInventory = new AnvilInventory( this );
+        this.cursorInventory = new CursorInventory( this, this.entityId );
+        this.craftingTableInventory = new CraftingTableInventory( this, this.entityId  );
+        this.cartographyTableInventory = new CartographyTableInventory( this, this.entityId  );
+        this.smithingTableInventory = new SmithingTableInventory( this, this.entityId  );
+        this.anvilInventory = new AnvilInventory( this, this.entityId  );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -77,6 +79,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     @Override
     public void update( long currentTick ) {
+        if ( this.closed ) {
+            return;
+        }
+
         this.needNewChunks();
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
@@ -228,9 +234,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void setProtocol( int protocol ) {
-        if ( this.protocol == -1 ) {
-            this.protocol = protocol;
-        }
+        this.protocol = protocol;
     }
 
     public int getViewDistance() {
@@ -247,6 +251,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.playerConnection.sendPacket( chunkRadiusUpdatedPacket );
 
         this.needNewChunks();
+    }
+
+    public int generateWindowId() {
+        return this.windowId = Math.max( 4, ++this.windowId % 99 );
     }
 
     @Override
@@ -348,7 +356,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.anvilInventory;
     }
 
-    public void openInventory( Inventory inventory, Vector position ) {
+    public void openInventory( Inventory inventory, Vector position, byte windowId ) {
         if ( inventory instanceof ContainerInventory ) {
             ContainerInventory containerInventory = (ContainerInventory) inventory;
 
@@ -361,16 +369,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             if ( this.currentInventory != null ) {
                 this.closeInventory( this.currentInventory );
             }
-            ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
-            containerOpenPacket.setEntityId( this.entityId );
-            containerOpenPacket.setWindowTypeId( inventory.getWindowTypeId() );
-            containerOpenPacket.setWindowId( WindowId.OPEN_CONTAINER );
-            containerOpenPacket.setPosition( position );
-            this.playerConnection.sendPacket( containerOpenPacket );
+            containerInventory.addViewer( this, position, windowId );
 
-            containerInventory.addViewer( this );
             this.currentInventory = containerInventory;
         }
+    }
+
+    public void openInventory( Inventory inventory, Vector position ) {
+        this.openInventory( inventory, position, (byte) WindowId.OPEN_CONTAINER.getId() );
     }
 
     public void openInventory( Inventory inventory ) {
@@ -379,6 +385,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public void closeInventory( int windowId, boolean isServerSide ) {
         if ( this.currentInventory != null ) {
+            this.currentInventory.removeViewer( this );
 
             ContainerClosePacket containerClosePacket = new ContainerClosePacket();
             containerClosePacket.setWindowId( windowId );
@@ -463,10 +470,16 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 }
             }
 
-            PlayStatusPacket playStatusPacket = new PlayStatusPacket();
-            playStatusPacket.setStatus( PlayStatus.PLAYER_SPAWN );
-
-            this.playerConnection.sendPacket( playStatusPacket );
+            if ( this.chunkLoadQueue.isEmpty() ) {
+                PlayStatusPacket playStatusPacket = new PlayStatusPacket();
+                playStatusPacket.setStatus( PlayStatus.PLAYER_SPAWN );
+                this.playerConnection.sendPacket( playStatusPacket );
+            }
+            PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this, "§e" + this.name + " has joined the game" );
+            Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
+            if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
+                Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
+            }
         }
     }
 
@@ -494,6 +507,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         disconnectPacket.setDisconnectMessage( disconnectMessage );
         disconnectPacket.setHideDisconnectScreen( hideDisconnectScreen );
         this.playerConnection.sendPacket( disconnectPacket, true );
+
+        this.despawn(this );
     }
 
     public void disconnect( String disconnectMessage ) {

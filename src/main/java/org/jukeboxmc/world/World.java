@@ -289,12 +289,16 @@ public class World extends LevelDBWorld {
     }
 
     public void close() {
-        this.save();
         try {
-            this.db.close();
-        } catch ( IOException e ) {
-            e.printStackTrace();
+            this.save();
+        } finally {
+            try {
+                this.db.close();
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     public String getName() {

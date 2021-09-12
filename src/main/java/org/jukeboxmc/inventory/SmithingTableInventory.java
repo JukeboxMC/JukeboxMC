@@ -1,13 +1,20 @@
 package org.jukeboxmc.inventory;
 
+import org.jukeboxmc.player.Player;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
 public class SmithingTableInventory extends ContainerInventory {
 
-    public SmithingTableInventory( InventoryHolder holder) {
-        super( holder, 3 );
+    public SmithingTableInventory( InventoryHolder holder, long holderId ) {
+        super( holder, holderId, 3 );
+    }
+
+    @Override
+    public Player getInventoryHolder() {
+        return (Player) this.holder;
     }
 
     @Override

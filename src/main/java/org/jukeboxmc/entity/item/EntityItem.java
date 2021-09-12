@@ -104,6 +104,7 @@ public class EntityItem extends Entity {
 
             this.despawn();
             player.getInventory().addItem( this.item );
+            player.getInventory().sendContents( player );
         }
     }
 

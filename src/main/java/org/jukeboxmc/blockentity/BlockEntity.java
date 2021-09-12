@@ -48,7 +48,8 @@ public abstract class BlockEntity {
 
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( location );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        NbtMap build = this.toCompound().build();
+        blockEntityDataPacket.setNbt( build );
         world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
         world.setBlockEntity( location, this, location.getDimension() );
     }

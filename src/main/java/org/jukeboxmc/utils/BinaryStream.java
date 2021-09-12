@@ -309,6 +309,13 @@ public class BinaryStream {
         this.buffer.release();
     }
 
+    public byte[] array() {
+        ByteBuf duplicate = this.buffer.duplicate();
+        byte[] array = new byte[duplicate.readableBytes()];
+        duplicate.readBytes( array );
+        return array;
+    }
+
     // ========== Minecarft ==========
 
     private final int shildId = ItemType.SHIELD.getItem().getRuntimeId();

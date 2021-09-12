@@ -60,4 +60,5 @@ public interface Protocol {
     byte ADD_ITEM_ENTITY_PACKET = 0x0f;
     byte TAKE_ENTITY_ITEM_PACKET = 0x11;
     byte PLAY_SOUND_PACKET = 0x56;
+    byte BLOCK_EVENT_PACKET = 0x1a;
 }

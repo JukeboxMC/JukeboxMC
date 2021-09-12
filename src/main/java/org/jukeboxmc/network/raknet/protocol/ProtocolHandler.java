@@ -81,7 +81,7 @@ public class ProtocolHandler extends SimpleChannelInboundHandler<Packet> {
         InetSocketAddress socketAddress = (InetSocketAddress) channel.remoteAddress();
         this.server.addToMainThread( () -> {
             Player player = this.server.getPlayer( socketAddress );
-            if ( player != null ) {
+            if ( player != null && !player.isClosed() ) {
                 player.leaveServer( "Disconnect" );
             }
         } );
