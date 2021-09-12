@@ -690,7 +690,7 @@ public enum BlockType {
     EXPOSED_COPPER( new BlockExposedCopper() ),
     COBBLED_DEEPSLATE_SLAB( new BlockCobbledDeepslateSlab() );
 
-    private Block block;
+    private final Block block;
 
     BlockType( Block block ) {
         this.block = block;

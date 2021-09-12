@@ -169,7 +169,12 @@ public class World extends LevelDBWorld {
                 } else {
                     worldGenerator = Server.getInstance().getOverworldGenerator();
                 }
-                worldGenerator.generate( chunk );
+                try {
+                    worldGenerator.generate( chunk );
+                } finally {
+                    val map = this.chunkMap.get( dimension );
+                    map.put( chunk.toChunkHash(), chunk );
+                }
                 return chunk;
             }
 
@@ -223,7 +228,12 @@ public class World extends LevelDBWorld {
                     } else {
                         worldGenerator = Server.getInstance().getOverworldGenerator();
                     }
-                    worldGenerator.generate( chunk );
+                    try {
+                        worldGenerator.generate( chunk );
+                    } finally {
+                        val map = this.chunkMap.get( dimension );
+                        map.put( chunk.toChunkHash(), chunk );
+                    }
                     return chunk;
                 }
 
@@ -445,7 +455,7 @@ public class World extends LevelDBWorld {
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
-
+        System.out.println( chunk.getBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), 0 ) );
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
         block.setLocation( blockLocation );

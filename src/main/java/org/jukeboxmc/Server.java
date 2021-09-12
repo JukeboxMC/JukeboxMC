@@ -3,6 +3,7 @@ package org.jukeboxmc;
 import lombok.SneakyThrows;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.console.ConsoleSender;
@@ -26,6 +27,7 @@ import org.jukeboxmc.utils.BedrockResourceLoader;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
+import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.WorldGenerator;
 
 import java.io.File;
@@ -104,12 +106,16 @@ public class Server {
         BedrockResourceLoader.init();
         BlockPalette.init();
         ItemType.init();
+        for ( BlockType blockType : BlockType.values() ) {
+            blockType.getBlock();
+        }
         INITIATING.set( false );
 
         this.resourcePackManager = new ResourcePackManager();
         this.resourcePackManager.loadResourcePacks();
 
         this.registerGenerator( "Empty", EmptyGenerator.class );
+        this.registerGenerator( "Flat", FlatGenerator.class );
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
         this.pluginManager = new PluginManager( this );
