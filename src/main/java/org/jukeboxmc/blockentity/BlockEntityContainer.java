@@ -10,7 +10,7 @@ import org.jukeboxmc.nbt.NbtMapBuilder;
  */
 public class BlockEntityContainer extends BlockEntity {
 
-    private String customName = "";
+    protected String customName = "";
 
     public BlockEntityContainer( Block block ) {
         super( block );

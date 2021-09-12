@@ -34,6 +34,7 @@ public class BlockEnderChest extends BlockWaterlogable {
         BlockEntityEnderChest blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
         }
         return false;
     }
