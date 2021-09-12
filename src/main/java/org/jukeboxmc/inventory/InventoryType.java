@@ -23,6 +23,7 @@ public enum InventoryType {
     HOPPER,
     DISPENSER,
     LOOM,
-    BARREL
+    BARREL,
+    STONE_CUTTER
 
 }

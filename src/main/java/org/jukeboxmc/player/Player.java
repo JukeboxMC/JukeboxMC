@@ -48,6 +48,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final SmithingTableInventory smithingTableInventory;
     private final AnvilInventory anvilInventory;
     private final EnderChestInventory enderChestInventory;
+    private final StoneCutterInventory stoneCutterInventory;
 
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
@@ -68,11 +69,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.gameMode = this.server.getDefaultGameMode();
 
         this.cursorInventory = new CursorInventory( this, this.entityId );
-        this.craftingTableInventory = new CraftingTableInventory( this, this.entityId  );
-        this.cartographyTableInventory = new CartographyTableInventory( this, this.entityId  );
-        this.smithingTableInventory = new SmithingTableInventory( this, this.entityId  );
-        this.anvilInventory = new AnvilInventory( this, this.entityId  );
+        this.craftingTableInventory = new CraftingTableInventory( this  );
+        this.cartographyTableInventory = new CartographyTableInventory( this );
+        this.smithingTableInventory = new SmithingTableInventory( this );
+        this.anvilInventory = new AnvilInventory( this  );
         this.enderChestInventory = new EnderChestInventory( this );
+        this.stoneCutterInventory = new StoneCutterInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -355,6 +357,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public EnderChestInventory getEnderChestInventory() {
         return this.enderChestInventory;
+    }
+
+    public StoneCutterInventory getStoneCutterInventory() {
+        return this.stoneCutterInventory;
     }
 
     public void openInventory( Inventory inventory, Vector position, byte windowId ) {

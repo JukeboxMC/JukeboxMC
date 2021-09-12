@@ -25,6 +25,12 @@ public class BlockStonecutterBlock extends Block {
     }
 
     @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        player.openInventory( player.getStoneCutterInventory(), blockPosition );
+        return true;
+    }
+
+    @Override
     public ItemStonecutterBlock toItem() {
         return new ItemStonecutterBlock();
     }

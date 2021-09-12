@@ -8,8 +8,8 @@ import org.jukeboxmc.player.Player;
  */
 public class CraftingTableInventory extends ContainerInventory {
 
-    public CraftingTableInventory( InventoryHolder holder, long holderId ) {
-        super( holder, holderId, 10 );
+    public CraftingTableInventory( InventoryHolder holder ) {
+        super( holder, -1, 10 );
     }
 
     @Override

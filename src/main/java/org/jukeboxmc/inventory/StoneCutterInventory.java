@@ -6,10 +6,10 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class AnvilInventory extends ContainerInventory {
+public class StoneCutterInventory extends ContainerInventory {
 
-    public AnvilInventory( InventoryHolder holder ) {
-        super( holder, -1, 3 );
+    public StoneCutterInventory( InventoryHolder holder ) {
+        super( holder, -1, 2 );
     }
 
     @Override
@@ -19,11 +19,11 @@ public class AnvilInventory extends ContainerInventory {
 
     @Override
     public InventoryType getInventoryType() {
-        return InventoryType.ANVIL;
+        return InventoryType.STONE_CUTTER;
     }
 
     @Override
     public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.ANVIL;
+        return WindowTypeId.STONECUTTER;
     }
 }
