@@ -34,6 +34,12 @@ public class BlockGrindstone extends BlockWaterlogable {
     }
 
     @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        player.openInventory( player.getGrindstoneInventory(), blockPosition );
+        return true;
+    }
+
+    @Override
     public ItemGrindstone toItem() {
         return new ItemGrindstone();
     }

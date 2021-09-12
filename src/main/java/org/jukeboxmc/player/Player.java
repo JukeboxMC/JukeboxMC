@@ -49,7 +49,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final AnvilInventory anvilInventory;
     private final EnderChestInventory enderChestInventory;
     private final StoneCutterInventory stoneCutterInventory;
-
+    private final GrindstoneInventory grindstoneInventory;
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
     private int viewDistance = 8;
@@ -75,6 +75,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.anvilInventory = new AnvilInventory( this  );
         this.enderChestInventory = new EnderChestInventory( this );
         this.stoneCutterInventory = new StoneCutterInventory( this );
+        this.grindstoneInventory = new GrindstoneInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -361,6 +362,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public StoneCutterInventory getStoneCutterInventory() {
         return this.stoneCutterInventory;
+    }
+
+    public GrindstoneInventory getGrindstoneInventory() {
+        return this.grindstoneInventory;
     }
 
     public void openInventory( Inventory inventory, Vector position, byte windowId ) {

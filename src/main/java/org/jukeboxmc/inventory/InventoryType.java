@@ -24,6 +24,7 @@ public enum InventoryType {
     DISPENSER,
     LOOM,
     BARREL,
-    STONE_CUTTER
+    STONE_CUTTER,
+    GRINDSTONE
 
 }
