@@ -2,6 +2,9 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
+import org.jukeboxmc.blockentity.BlockEntity;
+import org.jukeboxmc.blockentity.BlockEntityLoom;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLoom;
 import org.jukeboxmc.math.Vector;
@@ -22,7 +25,18 @@ public class BlockLoom extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this );
+        BlockEntityType.LOOM.<BlockEntityLoom>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityLoom blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -33,6 +47,16 @@ public class BlockLoom extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.LOOM;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityLoom getBlockEntity() {
+        return (BlockEntityLoom) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setDirection( Direction direction ) {

@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntityDispenser;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDispenser;
 import org.jukeboxmc.math.Vector;
@@ -21,7 +23,18 @@ public class BlockDispenser extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
+        BlockEntityType.DISPENSER.<BlockEntityDispenser>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityDispenser blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -32,6 +45,16 @@ public class BlockDispenser extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.DISPENSER;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityDispenser getBlockEntity() {
+        return (BlockEntityDispenser) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setTriggered( boolean value ) {

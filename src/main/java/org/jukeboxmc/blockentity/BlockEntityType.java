@@ -26,8 +26,8 @@ public enum BlockEntityType {
     SHULKER_BOX( "ShulkerBox", BlockEntityShulkerBox.class ),
     DROPPER( "Dropper", BlockEntityDropper.class ),
     HOPPER( "Hopper", BlockEntityHopper.class ),
-    DISPENSER( "Dispenser", null ),
-    LOOM( "Loom", null ),
+    DISPENSER( "Dispenser", BlockEntityDispenser.class ),
+    LOOM( "Loom", BlockEntityLoom.class ),
     BARREL( "Barrel", null );
 
 
