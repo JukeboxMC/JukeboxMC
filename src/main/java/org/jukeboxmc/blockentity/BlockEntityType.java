@@ -24,7 +24,12 @@ public enum BlockEntityType {
     CHEST( "Chest", BlockEntityChest.class ),
     ENDER_CHEST( "EnderChest", BlockEntityEnderChest.class ),
     SHULKER_BOX( "ShulkerBox", BlockEntityShulkerBox.class ),
-    DROPPER( "Dropper", BlockEntityDropper.class );
+    DROPPER( "Dropper", BlockEntityDropper.class ),
+    HOPPER( "Hopper", BlockEntityHopper.class ),
+    DISPENSER( "Dispenser", null ),
+    LOOM( "Loom", null ),
+    BARREL( "Barrel", null );
+
 
     private final String blockEntityId;
     private final Class<? extends BlockEntity> blockEntityClass;

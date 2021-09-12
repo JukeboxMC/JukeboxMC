@@ -19,6 +19,10 @@ public enum InventoryType {
     CHEST,
     ENDER_CHEST,
     SHULKER_BOX,
-    DROPPER
+    DROPPER,
+    HOPPER,
+    DISPENSER,
+    LOOM,
+    BARREL
 
 }
