@@ -27,7 +27,7 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
 
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        player.openInventory( this.chestInventory, blockPosition, (byte) player.generateWindowId() );
+        player.openInventory( this.chestInventory, blockPosition );
         return true;
     }
 

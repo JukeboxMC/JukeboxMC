@@ -52,7 +52,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
     private int viewDistance = 8;
-    private int windowId = 4;
 
     private String name = null;
     private String xuid = null;
@@ -253,10 +252,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.playerConnection.sendPacket( chunkRadiusUpdatedPacket );
 
         this.needNewChunks();
-    }
-
-    public int generateWindowId() {
-        return this.windowId = Math.max( 4, ++this.windowId % 99 );
     }
 
     @Override
