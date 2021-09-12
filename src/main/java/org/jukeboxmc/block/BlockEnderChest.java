@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntityEnderChest;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemEnderChest;
 import org.jukeboxmc.math.Vector;
@@ -20,7 +22,20 @@ public class BlockEnderChest extends BlockWaterlogable {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        if ( value ) {
+            BlockEntityType.ENDER_CHEST.<BlockEntityEnderChest>createBlockEntity( this ).spawn();
+        }
+        return value;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityEnderChest blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+        }
+        return false;
     }
 
     @Override
@@ -31,6 +46,16 @@ public class BlockEnderChest extends BlockWaterlogable {
     @Override
     public BlockType getBlockType() {
         return BlockType.ENDER_CHEST;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityEnderChest getBlockEntity() {
+        return (BlockEntityEnderChest) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setBlockFace( BlockFace blockFace ) {

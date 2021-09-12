@@ -47,6 +47,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
     private final AnvilInventory anvilInventory;
+    private final EnderChestInventory enderChestInventory;
 
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
@@ -72,6 +73,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.cartographyTableInventory = new CartographyTableInventory( this, this.entityId  );
         this.smithingTableInventory = new SmithingTableInventory( this, this.entityId  );
         this.anvilInventory = new AnvilInventory( this, this.entityId  );
+        this.enderChestInventory = new EnderChestInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
@@ -354,6 +356,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public AnvilInventory getAnvilInventory() {
         return this.anvilInventory;
+    }
+
+    public EnderChestInventory getEnderChestInventory() {
+        return this.enderChestInventory;
     }
 
     public void openInventory( Inventory inventory, Vector position, byte windowId ) {

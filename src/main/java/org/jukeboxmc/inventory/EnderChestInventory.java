@@ -1,7 +1,6 @@
 package org.jukeboxmc.inventory;
 
-import org.jukeboxmc.blockentity.BlockEntityChest;
-import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.BlockEventPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelSound;
@@ -10,20 +9,22 @@ import org.jukeboxmc.world.LevelSound;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ChestInventory extends ContainerInventory {
+public class EnderChestInventory extends ContainerInventory {
 
-    public ChestInventory( InventoryHolder holder ) {
-        super( holder, -1,27 );
+    private Vector position;
+
+    public EnderChestInventory( InventoryHolder holder ) {
+        super( holder, -1, 27 );
     }
 
     @Override
-    public BlockEntityChest getInventoryHolder() {
-        return (BlockEntityChest) this.holder;
+    public Player getInventoryHolder() {
+        return (Player) this.holder;
     }
 
     @Override
     public InventoryType getInventoryType() {
-        return InventoryType.CHEST;
+        return InventoryType.ENDER_CHEST;
     }
 
     @Override
@@ -34,32 +35,36 @@ public class ChestInventory extends ContainerInventory {
     @Override
     public void onOpen( Player player ) {
         if ( this.viewer.size() == 1 ) {
-            Location location = this.getInventoryHolder().getBlock().getLocation();
-
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( location );
+            blockEventPacket.setPosition( this.position );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 2 );
             for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.CHEST_OPEN );
+                player.getWorld().playSound( players, LevelSound.ENDERCHEST_OPEN );
             }
-            player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
+            player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
     }
 
     @Override
     public void onClose( Player player ) {
         if ( this.viewer.size() == 1 ) {
-            Location location = this.getInventoryHolder().getBlock().getLocation();
-
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( location );
+            blockEventPacket.setPosition( this.position );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 0 );
             for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.CHEST_CLOSED );
+                player.getWorld().playSound( players, LevelSound.ENDERCHEST_CLOSED );
             }
-            player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
+            player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
+    }
+
+    public Vector getPosition() {
+        return this.position;
+    }
+
+    public void setPosition( Vector position ) {
+        this.position = position;
     }
 }
