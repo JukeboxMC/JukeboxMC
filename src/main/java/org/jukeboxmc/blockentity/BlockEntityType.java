@@ -22,7 +22,8 @@ public enum BlockEntityType {
     LECTERN( "Lectern", BlockEntityLectern.class ),
     ENCHANTMENT_TABLE( "EnchantTable", BlockEntityEnchantmentTable.class ),
     CHEST( "Chest", BlockEntityChest.class ),
-    ENDER_CHEST("EnderChest", BlockEntityEnderChest.class );
+    ENDER_CHEST( "EnderChest", BlockEntityEnderChest.class ),
+    SHULKER_BOX( "ShulkerBox", BlockEntityShulkerBox.class );
 
     private final String blockEntityId;
     private final Class<? extends BlockEntity> blockEntityClass;

@@ -17,5 +17,7 @@ public enum InventoryType {
     ANVIL,
     ENCHANTMENT_TABLE,
     CHEST,
-    ENDER_CHEST
+    ENDER_CHEST,
+    SHULKER_BOX
+
 }

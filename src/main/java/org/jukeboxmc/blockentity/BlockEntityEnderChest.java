@@ -6,7 +6,11 @@ import org.jukeboxmc.inventory.EnderChestInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
+
+import java.util.ArrayList;
 
 /**
  * @author LucGamesYT
@@ -24,5 +28,12 @@ public class BlockEntityEnderChest extends BlockEntityContainer implements Inven
         enderChestInventory.setPosition( blockPosition );
         player.openInventory( enderChestInventory, blockPosition );
         return true;
+    }
+
+    @Override
+    public NbtMapBuilder toCompound() {
+        NbtMapBuilder builder = super.toCompound();
+        builder.putList( "Items", NbtType.COMPOUND, new ArrayList<>() );
+        return builder;
     }
 }
