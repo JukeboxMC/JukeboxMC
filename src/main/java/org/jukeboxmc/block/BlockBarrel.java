@@ -2,6 +2,8 @@ package org.jukeboxmc.block;
 
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.blockentity.BlockEntityBarrel;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBarrel;
 import org.jukeboxmc.math.Vector;
@@ -35,7 +37,18 @@ public class BlockBarrel extends Block {
         }
         this.setOpen( false );
         world.setBlock( placePosition, this );
+        BlockEntityType.BARREL.<BlockEntityBarrel>createBlockEntity( this ).spawn();
         return true;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        BlockEntityBarrel blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -46,6 +59,16 @@ public class BlockBarrel extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.BARREL;
+    }
+
+    @Override
+    public boolean hasBlockEntity() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityBarrel getBlockEntity() {
+        return (BlockEntityBarrel) this.world.getBlockEntity( this.location, this.location.getDimension() );
     }
 
     public void setOpen( boolean value ) {

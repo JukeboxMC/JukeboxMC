@@ -40,9 +40,7 @@ public class ChestInventory extends ContainerInventory {
             blockEventPacket.setPosition( location );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 2 );
-            for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.CHEST_OPEN );
-            }
+            player.getWorld().playSound( location, LevelSound.CHEST_OPEN );
             player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
         }
     }
@@ -56,9 +54,7 @@ public class ChestInventory extends ContainerInventory {
             blockEventPacket.setPosition( location );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 0 );
-            for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.CHEST_CLOSED );
-            }
+            player.getWorld().playSound( location, LevelSound.CHEST_CLOSED );
             player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
         }
     }

@@ -39,9 +39,7 @@ public class EnderChestInventory extends ContainerInventory {
             blockEventPacket.setPosition( this.position );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 2 );
-            for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.ENDERCHEST_OPEN );
-            }
+            player.getWorld().playSound( this.position, LevelSound.ENDERCHEST_OPEN );
             player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
     }
@@ -53,9 +51,7 @@ public class EnderChestInventory extends ContainerInventory {
             blockEventPacket.setPosition( this.position );
             blockEventPacket.setData1( 1 );
             blockEventPacket.setData2( 0 );
-            for ( Player players : player.getWorld().getPlayers() ) {
-                player.getWorld().playSound( players, LevelSound.ENDERCHEST_CLOSED );
-            }
+            player.getWorld().playSound( this.position, LevelSound.ENDERCHEST_CLOSED );
             player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
     }

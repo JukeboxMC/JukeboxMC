@@ -28,7 +28,7 @@ public enum BlockEntityType {
     HOPPER( "Hopper", BlockEntityHopper.class ),
     DISPENSER( "Dispenser", BlockEntityDispenser.class ),
     LOOM( "Loom", BlockEntityLoom.class ),
-    BARREL( "Barrel", null );
+    BARREL( "Barrel", BlockEntityBarrel.class );
 
 
     private final String blockEntityId;
