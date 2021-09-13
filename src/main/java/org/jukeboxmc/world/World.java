@@ -27,6 +27,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.*;
 import org.jukeboxmc.network.packet.*;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -499,8 +500,8 @@ public class World extends LevelDBWorld {
             return;
         }
 
-        if ( breakBlock.onBlockBreak( breakPosition ) ) {
-            //TODO Drop Item
+        if ( breakBlock.onBlockBreak( breakPosition ) && player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+            player.getWorld().dropItem( blockBreakEvent.getBlock().toItem(), breakPosition, null ).spawn();
         }
 
         this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
@@ -648,7 +649,7 @@ public class World extends LevelDBWorld {
         return chunk.getBiome( location.getBlockX() & 15, location.getBlockZ() & 15 );
     }
 
-    //========= With Packets =========
+    //========= Other =========
 
     public void sendWorldPacket( Packet packet ) {
         for ( Player player : this.getPlayers() ) {
@@ -685,15 +686,15 @@ public class World extends LevelDBWorld {
         this.sendLevelEvent( null, position, levelEvent, 0 );
     }
 
-    public void sendLevelEvent( Vector position, LevelEvent levelEvent, int runtimeId ) {
-        this.sendLevelEvent( null, position, levelEvent, runtimeId );
+    public void sendLevelEvent( Vector position, LevelEvent levelEvent, int data ) {
+        this.sendLevelEvent( null, position, levelEvent, data );
     }
 
-    public void sendLevelEvent( Player player, Vector position, LevelEvent levelEvent, int runtimeId ) {
+    public void sendLevelEvent( Player player, Vector position, LevelEvent levelEvent, int data ) {
         LevelEventPacket levelEventPacket = new LevelEventPacket();
         levelEventPacket.setPosition( position );
-        levelEventPacket.setLevelEvent( levelEvent );
-        levelEventPacket.setData( runtimeId );
+        levelEventPacket.setLevelEventId( levelEvent.getId() );
+        levelEventPacket.setData( data );
 
         if ( player != null ) {
             player.getPlayerConnection().sendPacket( levelEventPacket );
@@ -742,7 +743,40 @@ public class World extends LevelDBWorld {
         }
     }
 
-    //========= Other =========
+    public void spawnParticle( Particle particle, Vector position ) {
+        this.spawnParticle( null, particle, position, 0 );
+    }
+
+    public void spawnParticle( Particle particle, Vector position, int data ) {
+        this.spawnParticle( null, particle, position, data );
+    }
+
+    public void spawnParticle( Player player, Particle particle, Vector position ) {
+        this.spawnParticle( player, particle, position, 0 );
+    }
+
+    public void spawnParticle( Player player, Particle particle, Vector position, int data ) {
+        int levelEventId;
+        switch ( particle ) {
+            case DESTROY_BLOCK:
+            case CRACK_BLOCK:
+                levelEventId = particle.toLevelEvent().getId();
+                break;
+            default:
+                levelEventId = 0x4000 | particle.toLevelEvent().getId();
+        }
+
+        LevelEventPacket levelEventPacket = new LevelEventPacket();
+        levelEventPacket.setLevelEventId( levelEventId );
+        levelEventPacket.setData( data );
+        levelEventPacket.setPosition( position );
+
+        if ( player != null ) {
+            player.getPlayerConnection().sendPacket( levelEventPacket );
+        } else {
+            this.sendChunkPacket( position.getChunkX(), position.getChunkZ(), levelEventPacket );
+        }
+    }
 
     public EntityItem dropItem( Item item, Vector location, Vector velocity ) {
         if ( velocity == null ) {

@@ -14,7 +14,7 @@ import org.jukeboxmc.world.LevelEvent;
 @EqualsAndHashCode (callSuper = true)
 public class LevelEventPacket extends Packet {
 
-    private LevelEvent levelEvent;
+    private int levelEventId;
     private Vector position;
     private int data;
 
@@ -26,7 +26,7 @@ public class LevelEventPacket extends Packet {
     @Override
     public void write( BinaryStream stream ) {
         super.write(stream);
-        stream.writeSignedVarInt( this.levelEvent.getId() );
+        stream.writeSignedVarInt( this.levelEventId );
         stream.writeLFloat( this.position.getX() );
         stream.writeLFloat( this.position.getY() );
         stream.writeLFloat( this.position.getZ() );

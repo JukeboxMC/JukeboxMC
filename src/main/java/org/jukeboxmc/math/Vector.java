@@ -149,6 +149,14 @@ public class Vector {
         this.z = z;
     }
 
+    public int getChunkX() {
+        return this.getBlockX() >> 4;
+    }
+
+    public int getChunkZ() {
+        return this.getBlockZ() >> 4;
+    }
+
     public Dimension getDimension() {
         return this.dimension;
     }
