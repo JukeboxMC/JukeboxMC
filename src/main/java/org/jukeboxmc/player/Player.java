@@ -492,6 +492,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
                 Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
             }
+            for ( Player onlinePlayer : server.getOnlinePlayers() ) {
+                if ( onlinePlayer != null && onlinePlayer.getDimension() == this.getDimension() ) {
+                    onlinePlayer.spawn( this );
+                    this.spawn( onlinePlayer );
+                }
+            }
         }
     }
 

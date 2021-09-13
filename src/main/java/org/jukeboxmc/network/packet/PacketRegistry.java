@@ -20,7 +20,6 @@ public class PacketRegistry {
         this.packetHandlerMap.put( ContainerClosePacket.class, new ContainerCloseHandler() );
         this.packetHandlerMap.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
         this.packetHandlerMap.put( TickSyncPacket.class, new TickSyncHandler() );
-        this.packetHandlerMap.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
         this.packetHandlerMap.put( InteractPacket.class, new InteractHandler() );
         this.packetHandlerMap.put( PlayerMovePacket.class, new PlayerMoveHandler() );
         this.packetHandlerMap.put( TextPacket.class, new TextHandler() );
