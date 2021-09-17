@@ -23,6 +23,7 @@ import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.resourcepack.ResourcePackManager;
+import org.jukeboxmc.scheduler.Scheduler;
 import org.jukeboxmc.utils.BedrockResourceLoader;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
@@ -55,6 +56,7 @@ public class Server {
     private final PluginManager pluginManager;
     private final ConsoleSender consoleSender;
     private final TerminalConsole terminalConsole;
+    private final Scheduler scheduler;
 
     private World defaultWorld;
     private final WorldGenerator overWorldGenerator;
@@ -102,6 +104,8 @@ public class Server {
         this.terminalConsole = new TerminalConsole( this );
         this.terminalConsole.startConsole();
 
+        this.scheduler = new Scheduler( this );
+
         INITIATING.set( true );
         BedrockResourceLoader.init();
         BlockPalette.init();
@@ -142,6 +146,8 @@ public class Server {
                     runnable.run();
                 }
             }
+
+            this.scheduler.onTick( this.currentTick );
 
             if ( this.currentTick % 20 == 0 ) {
                 this.currentTps = 1000.0 / ( 50 - deltaTime );
@@ -200,6 +206,7 @@ public class Server {
             this.pluginManager.disableAllPlugins();
 
             this.terminalConsole.stopConsole();
+            this.scheduler.shutdown();
             this.rakNetListener.close();
             this.logger.info( "Shutdown successfully" );
             System.exit( 0 );
@@ -257,6 +264,10 @@ public class Server {
 
     public PluginManager getPluginManager() {
         return this.pluginManager;
+    }
+
+    public Scheduler getScheduler() {
+        return this.scheduler;
     }
 
     public ConsoleSender getConsoleSender() {
