@@ -17,8 +17,10 @@ import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author LucGamesYT
@@ -51,6 +53,8 @@ public abstract class Entity {
     protected Metadata metadata;
     protected AxisAlignedBB boundingBox;
     protected Dimension dimension = Dimension.OVERWORLD;
+
+    private final Set<Long> spawnedFor = new HashSet<>();
 
     public Entity() {
         this.entityId = Entity.entityCount++;
@@ -474,18 +478,21 @@ public abstract class Entity {
     }
 
     public Entity spawn( Player player ) {
-        EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( this );
-        Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
-        if ( entitySpawnEvent.isCancelled() ) {
-            return this;
-        }
-        Entity entity = entitySpawnEvent.getEntity();
-        entity.setLocation( this.location );
+        if ( !this.spawnedFor.contains( player.getEntityId() ) ) {
+            EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( this );
+            Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
+            if ( entitySpawnEvent.isCancelled() ) {
+                return this;
+            }
+            Entity entity = entitySpawnEvent.getEntity();
+            entity.setLocation( this.location );
 
-        entity.getChunk().addEntity( this );
-        entity.getWorld().addEntity( this );
-        player.getPlayerConnection().sendPacket( entity.createSpawnPacket() );
-        this.spawned = true;
+            entity.getChunk().addEntity( this );
+            entity.getWorld().addEntity( this );
+            player.getPlayerConnection().sendPacket( entity.createSpawnPacket() );
+            this.spawned = true;
+            this.spawnedFor.add( player.getEntityId() );
+        }
         return this;
     }
 
@@ -498,9 +505,12 @@ public abstract class Entity {
     }
 
     public void despawn( Player player ) {
-        RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
-        removeEntityPacket.setEntityId( this.entityId );
-        player.getPlayerConnection().sendPacket( removeEntityPacket );
+        if ( this.spawnedFor.contains( player.getEntityId() ) ) {
+            RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
+            removeEntityPacket.setEntityId( this.entityId );
+            player.getPlayerConnection().sendPacket( removeEntityPacket );
+            this.spawnedFor.remove( player.getEntityId() );
+        }
     }
 
     public void close() {

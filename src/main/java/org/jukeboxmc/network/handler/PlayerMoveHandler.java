@@ -2,6 +2,7 @@ package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.PlayerMovePacket;
@@ -37,11 +38,17 @@ public class PlayerMoveHandler implements PacketHandler<PlayerMovePacket> {
                 || to.getYaw() != fromLocation.getYaw() || to.getPitch() != fromLocation.getPitch() ) {
             player.teleport( playerMoveEvent.getFrom() );
         } else {
-            Chunk fromChunk = fromLocation.getChunk();
+            Chunk fromChunk = player.getLastLocation().getChunk();
             Chunk toChunk = player.getChunk();
-            if ( fromChunk.getChunkX() != toChunk.getChunkX() || fromChunk.getChunkZ() != toChunk.getChunkZ() ) {
+            if ( toChunk.getChunkX() != fromChunk.getChunkX() || toChunk.getChunkZ() != fromChunk.getChunkZ() ) {
                 fromChunk.removeEntity( player );
                 toChunk.addEntity( player );
+
+                for ( Entity entity : toChunk.getEntities() ) {
+                    if ( !( entity instanceof Player ) && !entity.isClosed() ) {
+                        entity.spawn( player );
+                    }
+                }
             }
 
             for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {

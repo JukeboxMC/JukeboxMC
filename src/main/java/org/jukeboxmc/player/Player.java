@@ -106,18 +106,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 world.loadChunkAsync( chunkX, chunkZ, this.dimension ).whenComplete( ( chunk, throwable ) -> {
                     this.sendChunk( chunk );
                 } ).thenRun( () -> {
-                    Server.getInstance().addToMainThread( () -> {
-                        this.sendNetworkChunkPublisher();
-
-                        /*
-                        for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
-                            if ( entity != this && entity != null && !entity.isClosed() ) {
-                                entity.spawn( this );
-                                System.out.println("Call3");
-                            }
-                        }
-                         */
-                    } );
+                    Server.getInstance().addToMainThread( this::sendNetworkChunkPublisher );
                 } );
             }
         }
@@ -228,6 +217,18 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
     }
 
+    public List<Chunk> getLoadedChunk() {
+        List<Chunk> chunkList = new ArrayList<>();
+        Iterator<Long> iterator = this.loadedChunks.iterator();
+        while ( iterator.hasNext() ) {
+            long hash = iterator.next();
+            int x = Utils.fromHashX( hash );
+            int z = Utils.fromHashZ( hash );
+            chunkList.add( this.getWorld().getChunk( x, z, this.dimension ) );
+            iterator.remove();
+        }
+        return chunkList;
+    }
     // ========== Other ==========
 
     public PlayerConnection getPlayerConnection() {
@@ -532,19 +533,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                     this.spawn( onlinePlayer );
                 }
             }
-           /*
-            for ( Long hash : this.loadedChunks ) {
-                int chunkX = Utils.fromHashX( hash );
-                int chunkZ = Utils.fromHashZ( hash );
-
-                for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
-                    if ( entity != this && entity != null && !entity.isClosed() ) {
-                        entity.spawn( this );
-                        System.out.println("Call1");
-                    }
-                }
-            }
-            */
             this.spawned = true;
         }
     }

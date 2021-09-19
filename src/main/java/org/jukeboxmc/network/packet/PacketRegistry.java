@@ -31,6 +31,7 @@ public class PacketRegistry {
         this.packetHandlerMap.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
         this.packetHandlerMap.put( CommandRequestPacket.class, new CommandRequestHandler() );
         this.packetHandlerMap.put( PlayerActionPacket.class, new PlayerActionHandler() );
+        this.packetHandlerMap.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
