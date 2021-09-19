@@ -13,8 +13,6 @@ public class BlockStainedGlass extends Block {
         super( "minecraft:stained_glass" );
     }
 
-
-
     @Override
     public ItemStainedGlass toItem() {
         return new ItemStainedGlass( this.runtimeId );
@@ -23,6 +21,16 @@ public class BlockStainedGlass extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.STAINED_GLASS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public BlockStainedGlass setColor( BlockColor color ) {

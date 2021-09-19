@@ -6,6 +6,7 @@ import org.jukeboxmc.blockentity.BlockEntityBarrel;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBarrel;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -69,6 +70,16 @@ public class BlockBarrel extends Block {
     @Override
     public BlockEntityBarrel getBlockEntity() {
         return (BlockEntityBarrel) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 2.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setOpen( boolean value ) {

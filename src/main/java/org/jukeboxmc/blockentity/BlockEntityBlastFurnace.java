@@ -6,8 +6,6 @@ import org.jukeboxmc.inventory.BlastFurnaceInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.player.Player;
 
 /**

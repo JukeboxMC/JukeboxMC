@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemDirtWithRoots;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,15 @@ public class BlockDirtWithRoots extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.DIRT_WITH_ROOTS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 }

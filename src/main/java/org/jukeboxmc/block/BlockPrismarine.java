@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.PrismarineType;
 import org.jukeboxmc.item.ItemPrismarine;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -13,8 +14,6 @@ public class BlockPrismarine extends Block {
         super( "minecraft:prismarine" );
     }
 
-
-
     @Override
     public ItemPrismarine toItem() {
         return new ItemPrismarine( this.runtimeId );
@@ -25,8 +24,23 @@ public class BlockPrismarine extends Block {
         return BlockType.PRISMARINE;
     }
 
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
     public BlockPrismarine setPrismarineType( PrismarineType prismarineType ) {
-       return this.setState( "prismarine_block_type", prismarineType.name().toLowerCase() );
+        return this.setState( "prismarine_block_type", prismarineType.name().toLowerCase() );
     }
 
     public PrismarineType getPrismarineType() {

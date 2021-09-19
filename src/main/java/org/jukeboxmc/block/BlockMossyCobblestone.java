@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemMossyCobblestone;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,18 @@ public class BlockMossyCobblestone extends Block {
         return BlockType.MOSSY_COBBLESTONE;
     }
 
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

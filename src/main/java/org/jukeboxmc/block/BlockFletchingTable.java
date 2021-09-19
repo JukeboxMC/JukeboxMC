@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemFletchingTable;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,13 @@ public class BlockFletchingTable extends Block {
         return BlockType.FLETCHING_TABLE;
     }
 
+    @Override
+    public double getHardness() {
+        return 2.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
+    }
 }

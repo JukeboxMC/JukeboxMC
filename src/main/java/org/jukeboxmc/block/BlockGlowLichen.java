@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemGlowLichen;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -30,6 +31,16 @@ public class BlockGlowLichen extends Block{
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setMultiFaceDirection( int value ) {

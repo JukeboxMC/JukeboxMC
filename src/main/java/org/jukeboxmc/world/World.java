@@ -11,6 +11,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockSlab;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
@@ -20,8 +21,10 @@ import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
+import org.jukeboxmc.item.Durability;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -373,7 +376,9 @@ public class World extends LevelDBWorld {
     }
 
     public void addEntity( Entity entity ) {
-        this.entities.put( entity.getEntityId(), entity );
+        if ( !this.entities.containsKey( entity.getEntityId() ) ) {
+            this.entities.put( entity.getEntityId(), entity );
+        }
     }
 
     public void removeEntity( Entity entity ) {
@@ -492,7 +497,7 @@ public class World extends LevelDBWorld {
     public void breakBlock( Player player, Vector breakPosition, Item item ) {
         Block breakBlock = this.getBlock( breakPosition );
 
-        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops() );
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops( item ) );
         Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
 
         if ( blockBreakEvent.isCancelled() ) {
@@ -500,8 +505,25 @@ public class World extends LevelDBWorld {
             return;
         }
 
-        if ( breakBlock.onBlockBreak( breakPosition ) && player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-            player.getWorld().dropItem( blockBreakEvent.getBlock().toItem(), breakPosition, null ).spawn();
+        if ( breakBlock.onBlockBreak( breakPosition ) && breakBlock.getToolType().equals( item.getItemToolType() ) || breakBlock.canBreakWithHand() ) {
+            BlockEntity blockEntity = this.getBlockEntity( breakPosition, breakPosition.getDimension() );
+            if ( blockEntity != null ) {
+                this.removeBlockEntity( breakPosition, breakPosition.getDimension() );
+            }
+
+            if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                if ( item instanceof Durability ) {
+                    item.updateDurability( player, item.calculateDurability( 1 ) );
+                }
+
+                List<EntityItem> itemDrops = new ArrayList<>();
+                for ( Item droppedItem : blockBreakEvent.getDrops() ) {
+                    if ( !droppedItem.getItemType().equals( ItemType.AIR ) ) {
+                        itemDrops.add( player.getWorld().dropItem( droppedItem, breakPosition, null ) );
+                    }
+                }
+                if ( !itemDrops.isEmpty() ) itemDrops.forEach( Entity::spawn );
+            }
         }
 
         this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
@@ -575,6 +597,9 @@ public class World extends LevelDBWorld {
             }
         }
 
+        boolean itemInteract = itemInHand.interact( player, blockFace, clickedPosition, clickedBlock );
+
+
         if ( !interact && itemInHand.useOnBlock( player, clickedBlock, location ) ) {
             return true;
         }
@@ -583,14 +608,11 @@ public class World extends LevelDBWorld {
             return interact;
         }
 
-        if ( !interact || player.isSneaking() ) {
-            if ( !replacedBlock.canBeReplaced( placedBlock ) ) {
-                return false;
-            }
-
+        if ( ( !interact && !itemInteract ) || player.isSneaking() ) {
             if ( clickedBlock.canBeReplaced( placedBlock ) ) {
                 placePosition = blockPosition;
-                clickedBlock.onBlockBreak( placePosition );
+            } else if ( !( replacedBlock.canBeReplaced( placedBlock ) || ( player.getInventory().getItemInHand().getBlock() instanceof BlockSlab && replacedBlock instanceof BlockSlab ) ) ) {
+                return false;
             }
 
             if ( placedBlock.isSolid() ) {
@@ -613,14 +635,24 @@ public class World extends LevelDBWorld {
 
             boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
             if ( success ) {
+                if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                    Item resultItem = itemInHand.setAmount( itemInHand.getAmount() - 1 );
+                    if ( itemInHand.getAmount() != 0 ) {
+                        player.getInventory().setItemInHand( resultItem );
+                    } else {
+                        player.getInventory().setItemInHand( new ItemAir() );
+                    }
+                    player.getInventory().sendContents( player.getInventory().getItemInHandSlot(), player );
+                }
                 this.playSound( placePosition, LevelSound.PLACE, placedBlock.getRuntimeId() );
             }
             return success;
         }
-        return interact;
+        return true;
     }
 
-    //========= BlockEntitys =========
+    //========= Bloc+üüüüüüüüüüüüüüüü
+    // ##############################################################################################################################kEntitys =========
 
     public BlockEntity getBlockEntity( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );

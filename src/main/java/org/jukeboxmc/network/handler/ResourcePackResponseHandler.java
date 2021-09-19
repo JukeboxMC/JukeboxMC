@@ -6,7 +6,6 @@ import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.packet.type.ResourcePackEntry;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.resourcepack.ResourcePack;
-import org.jukeboxmc.world.Difficulty;
 
 /**
  * @author LucGamesYT
@@ -56,7 +55,7 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 startGamePacket.setPitch( player.getPitch() );
                 startGamePacket.setWorldName( "world" );
                 startGamePacket.setServerEngine( "JukeboxMC" );
-                startGamePacket.setDifficulty( Difficulty.NORMAL ); //TODO
+                startGamePacket.setDifficulty( player.getWorld().getDifficulty() );
                 startGamePacket.setGamerules( player.getWorld().getGamerules() );
                 player.getPlayerConnection().sendPacket( startGamePacket );
 

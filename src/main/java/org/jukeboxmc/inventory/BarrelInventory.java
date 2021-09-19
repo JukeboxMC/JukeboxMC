@@ -5,9 +5,6 @@ import org.jukeboxmc.block.BlockBarrel;
 import org.jukeboxmc.blockentity.BlockEntityBarrel;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelSound;
-import org.jukeboxmc.world.Sound;
-
-import java.util.Optional;
 
 /**
  * @author LucGamesYT

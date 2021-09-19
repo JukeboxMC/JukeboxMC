@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemSoulSoil;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,16 @@ public class BlockSoulSoil extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SOUL_SOIL;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
     }
 
 }

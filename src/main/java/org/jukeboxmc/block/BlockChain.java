@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemChain;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -39,6 +40,16 @@ public class BlockChain extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.HOE;
     }
 
     public void setAxis( Axis axis ) {

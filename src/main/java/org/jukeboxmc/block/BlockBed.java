@@ -92,6 +92,11 @@ public class BlockBed extends BlockWaterlogable {
         return (BlockEntityBed) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
     }
 
+    @Override
+    public double getHardness() {
+        return 0.2;
+    }
+
     public BlockColor getColor() {
         return this.getBlockEntity().getColor();
     }

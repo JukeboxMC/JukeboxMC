@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemDeepslateIronOre;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +22,25 @@ public class BlockDeepslateIronOre extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.DEEPSLATE_IRON_ORE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 4.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.STONE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

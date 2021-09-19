@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCarvedPumpkin;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -33,6 +34,16 @@ public class BlockCarvedPumpkin extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.CARVED_PUMPKIN;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setDirection( Direction direction ) {

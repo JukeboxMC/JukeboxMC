@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemNoteblock;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,16 @@ public class BlockNoteblock extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.NOTEBLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.8;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
 }

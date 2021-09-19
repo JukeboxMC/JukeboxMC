@@ -1,11 +1,6 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;
-import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -18,19 +13,13 @@ public abstract class BlockSlab extends BlockWaterlogable {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        this.setTopSlot( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN );
-        return true;
-    }
-
-    @Override
-    public boolean canBeReplaced( Block block ) {
-        return block instanceof BlockSlab;
-    }
-
-    @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 2;
     }
 
     @Override

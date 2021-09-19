@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityShulkerBox;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.item.ItemUndyedShulkerBox;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -58,4 +59,18 @@ public class BlockUndyedShulkerBox extends Block {
         return BlockType.UNDYED_SHULKER_BOX;
     }
 
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

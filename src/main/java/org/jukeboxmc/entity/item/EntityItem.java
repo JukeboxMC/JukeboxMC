@@ -103,6 +103,7 @@ public class EntityItem extends Entity {
             Server.getInstance().broadcastPacket( takeEntityItemPacket );
 
             this.despawn();
+            this.close();
             player.getInventory().addItem( this.item );
             player.getInventory().sendContents( player );
         }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemMagma;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,21 @@ public class BlockMagma extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.MAGMA;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
 }

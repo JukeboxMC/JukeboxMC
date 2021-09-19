@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLadder;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -52,6 +53,16 @@ public class BlockLadder extends BlockWaterlogable {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.4;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

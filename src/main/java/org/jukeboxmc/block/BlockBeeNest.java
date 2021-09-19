@@ -10,6 +10,9 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -57,6 +60,16 @@ public class BlockBeeNest extends Block {
     @Override
     public BlockEntityBeehive getBlockEntity() {
         return (BlockEntityBeehive) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.emptyList();
     }
 
     public void setHoneyLevel( int value ) { //0-5

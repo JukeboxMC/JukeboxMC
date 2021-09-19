@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntityEnderChest;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemEnderChest;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -57,6 +58,21 @@ public class BlockEnderChest extends BlockWaterlogable {
     @Override
     public BlockEntityEnderChest getBlockEntity() {
         return (BlockEntityEnderChest) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 22.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -4,6 +4,8 @@ import lombok.ToString;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.world.Dimension;
 
+import java.util.Objects;
+
 /**
  * @author Kaooot, LucGamesYT
  * @version 1.0
@@ -190,5 +192,18 @@ public class Vector {
 
         float f = ( z - this.z ) / zDiff;
         return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        Vector vector = (Vector) o;
+        return Float.compare( vector.x, this.x ) == 0 && Float.compare( vector.y, this.y ) == 0 && Float.compare( vector.z, this.z ) == 0 && this.dimension == vector.dimension;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( this.x, this.y, this.z, this.dimension );
     }
 }

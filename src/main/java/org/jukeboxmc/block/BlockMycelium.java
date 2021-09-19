@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemMycelium;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,16 @@ public class BlockMycelium extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.MYCELIUM;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.6;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
     }
 
 }

@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.CoralColor;
 import org.jukeboxmc.item.ItemCoralBlock;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,21 @@ public class BlockCoralBlock extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.CORAL_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 7;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public BlockCoralBlock setCoralColor( CoralColor coralColor ) {

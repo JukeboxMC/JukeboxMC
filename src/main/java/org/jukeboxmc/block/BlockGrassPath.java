@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemGrassPath;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,13 @@ public class BlockGrassPath extends Block {
         return BlockType.GRASS_PATH;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.65;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
+    }
 }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.item.ItemWeb;
 
 /**
@@ -30,6 +31,21 @@ public class BlockWeb extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 4;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SWORD;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
 }

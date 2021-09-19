@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemCalcite;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,20 @@ public class BlockCalcite extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.CALCITE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.75;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

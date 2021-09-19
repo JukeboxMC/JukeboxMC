@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBasalt;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -40,6 +41,16 @@ public class BlockBasalt extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.BASALT;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.25;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setAxis( Axis axis ) {

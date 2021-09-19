@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCobbledDeepslateSlab;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -23,36 +24,31 @@ public class BlockCobbledDeepslateSlab extends BlockSlab {
         Block block = world.getBlock( placePosition );
 
         if ( blockFace == BlockFace.DOWN ) {
-            if ( targetBlock instanceof BlockCobbledDeepslateSlab ) {
-                BlockCobbledDeepslateSlab blockSlab = (BlockCobbledDeepslateSlab) targetBlock;
-                if ( blockSlab.isTopSlot() ) {
-                    world.setBlock( blockPosition, new BlockCobbledDeepslateDoubleSlab() );
-                    return true;
-                }
+            if ( targetBlock instanceof BlockCobbledDeepslateSlab && ( (BlockCobbledDeepslateSlab) targetBlock ).isTopSlot() ) {
+                world.setBlock( blockPosition, new BlockCobbledDeepslateDoubleSlab() );
+                return true;
             } else if ( block instanceof BlockCobbledDeepslateSlab ) {
                 world.setBlock( placePosition, new BlockCobbledDeepslateDoubleSlab() );
                 return true;
             }
         } else if ( blockFace == BlockFace.UP ) {
-            if ( targetBlock instanceof BlockCobbledDeepslateSlab ) {
-                BlockCobbledDeepslateSlab blockSlab = (BlockCobbledDeepslateSlab) targetBlock;
-                if ( !blockSlab.isTopSlot()) {
-                    world.setBlock( blockPosition, new BlockCobbledDeepslateDoubleSlab());
-                    return true;
-                }
+            if ( targetBlock instanceof BlockCobbledDeepslateSlab && !( (BlockCobbledDeepslateSlab) targetBlock ).isTopSlot() ) {
+                world.setBlock( blockPosition, new BlockCobbledDeepslateDoubleSlab() );
+                return true;
             } else if ( block instanceof BlockCobbledDeepslateSlab ) {
-                world.setBlock( placePosition,  new BlockCobbledDeepslateDoubleSlab() );
+                world.setBlock( placePosition, new BlockCobbledDeepslateDoubleSlab() );
                 return true;
             }
         } else {
             if ( block instanceof BlockCobbledDeepslateSlab ) {
-                world.setBlock( placePosition,new BlockCobbledDeepslateDoubleSlab()  );
+                world.setBlock( placePosition, new BlockCobbledDeepslateDoubleSlab() );
                 return true;
+            } else {
+                this.setTopSlot( clickedPosition.getY() > 0.5 && !world.getBlock( blockPosition ).canBeReplaced( this ) );
             }
         }
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
-        world.setBlock( placePosition, block, 1 );
         return true;
     }
 
@@ -64,5 +60,20 @@ public class BlockCobbledDeepslateSlab extends BlockSlab {
     @Override
     public BlockType getBlockType() {
         return BlockType.COBBLED_DEEPSLATE_SLAB;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

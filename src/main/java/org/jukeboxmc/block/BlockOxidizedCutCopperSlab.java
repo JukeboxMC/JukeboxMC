@@ -3,6 +3,8 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemOxidizedCutCopperSlab;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -23,36 +25,30 @@ public class BlockOxidizedCutCopperSlab extends BlockSlab {
         Block block = world.getBlock( placePosition );
 
         if ( blockFace == BlockFace.DOWN ) {
-            if ( targetBlock instanceof BlockOxidizedCutCopperSlab ) {
-                BlockOxidizedCutCopperSlab blockSlab = (BlockOxidizedCutCopperSlab) targetBlock;
-                if ( blockSlab.isTopSlot() ) {
-                    world.setBlock( blockPosition, new BlockOxidizedDoubleCutCopperSlab() );
-                    return true;
-                }
-            } else if ( block instanceof BlockOxidizedCutCopperSlab ) {
+            if ( targetBlock instanceof BlockWeatheredCutCopperSlab && ( (BlockWeatheredCutCopperSlab) targetBlock ).isTopSlot() ) {
+                world.setBlock( blockPosition, new BlockOxidizedDoubleCutCopperSlab() );
+                return true;
+            } else if ( block instanceof BlockWeatheredCutCopperSlab ) {
                 world.setBlock( placePosition, new BlockOxidizedDoubleCutCopperSlab() );
                 return true;
             }
         } else if ( blockFace == BlockFace.UP ) {
-            if ( targetBlock instanceof BlockOxidizedCutCopperSlab ) {
-                BlockOxidizedCutCopperSlab blockSlab = (BlockOxidizedCutCopperSlab) targetBlock;
-                if ( !blockSlab.isTopSlot() ) {
-                    world.setBlock( blockPosition, new BlockOxidizedDoubleCutCopperSlab() );
-                    return true;
-                }
-            } else if ( block instanceof BlockOxidizedCutCopperSlab ) {
+            if ( targetBlock instanceof BlockWeatheredCutCopperSlab && !( (BlockWeatheredCutCopperSlab) targetBlock ).isTopSlot() ) {
+                world.setBlock( blockPosition, new BlockOxidizedDoubleCutCopperSlab() );
+                return true;
+            } else if ( block instanceof BlockWeatheredCutCopperSlab ) {
                 world.setBlock( placePosition, new BlockOxidizedDoubleCutCopperSlab() );
                 return true;
             }
         } else {
-            if ( block instanceof BlockOxidizedCutCopperSlab ) {
+            if ( block instanceof BlockWeatheredCutCopperSlab ) {
                 world.setBlock( placePosition, new BlockOxidizedDoubleCutCopperSlab() );
                 return true;
+            } else {
+                this.setTopSlot( clickedPosition.getY() > 0.5 && !world.getBlock( blockPosition ).canBeReplaced( this ) );
             }
         }
-        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
-        world.setBlock( placePosition, block, 1 );
         return true;
     }
 
@@ -64,5 +60,25 @@ public class BlockOxidizedCutCopperSlab extends BlockSlab {
     @Override
     public BlockType getBlockType() {
         return BlockType.OXIDIZED_CUT_COPPER_SLAB;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.STONE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

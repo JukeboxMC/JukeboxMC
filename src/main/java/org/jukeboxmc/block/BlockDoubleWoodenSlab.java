@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.item.ItemWoodenSlab;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -27,12 +28,23 @@ public class BlockDoubleWoodenSlab extends BlockSlab {
 
     @Override
     public ItemWoodenSlab toItem() {
-        return new ItemWoodenSlab( this.runtimeId );
+        return new ItemWoodenSlab( Block.STATES.get( "minecraft:wooden_slab" ).get( this.blockStates ) );
     }
 
     @Override
     public BlockType getBlockType() {
         return BlockType.WOODEN_SLAB;
+    }
+
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public Block setWoodType( WoodType woodType ) {

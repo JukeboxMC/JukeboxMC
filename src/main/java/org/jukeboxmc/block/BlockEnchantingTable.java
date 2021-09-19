@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntityEnchantmentTable;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemEnchantingTable;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -61,5 +62,20 @@ public class BlockEnchantingTable extends BlockWaterlogable {
     @Override
     public BlockEntityEnchantmentTable getBlockEntity() {
         return (BlockEntityEnchantmentTable) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

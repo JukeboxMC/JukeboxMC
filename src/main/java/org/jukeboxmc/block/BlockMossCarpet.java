@@ -21,4 +21,10 @@ public class BlockMossCarpet extends Block {
     public BlockType getBlockType() {
         return BlockType.MOSS_CARPET;
     }
+
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
 }

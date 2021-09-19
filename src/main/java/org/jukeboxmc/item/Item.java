@@ -4,16 +4,19 @@ import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.BedrockResourceLoader;
+import org.jukeboxmc.world.Sound;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,55 +32,60 @@ public class Item implements Cloneable {
 
     protected int amount;
     protected int meta;
+    protected int durability;
     protected String customName;
-    protected String[] lore;
+    protected List<String> lore;
     protected NbtMap nbt;
 
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
 
     public Item( String identifier ) {
-        this( identifier, 0, 0, null );
+        this( identifier, 0, 0, NbtMap.EMPTY );
     }
 
     public Item( String identifier, int meta, int blockRuntimeId, NbtMap nbt ) {
         this.identifier = identifier;
         this.blockRuntimeId = blockRuntimeId;
         this.meta = meta;
+        this.durability = 0;
         this.amount = 1;
+        this.lore = Collections.emptyList();
         this.nbt = nbt;
         this.canPlaceOn = new ArrayList<>();
         this.canDestroy = new ArrayList<>();
     }
 
     public Item( String identifier, int meta, int blockRuntimeId ) {
-        this( identifier, meta, blockRuntimeId, null );
+        this( identifier, meta, blockRuntimeId, NbtMap.EMPTY );
     }
 
     public Item( String identifier, int blockRuntimeId ) {
-        this( identifier, 0, blockRuntimeId, null );
+        this( identifier, 0, blockRuntimeId, NbtMap.EMPTY );
     }
 
     public Item( ItemType itemType, int amount, int meta, NbtMap nbt ) {
         Item item = itemType.getItem();
         this.blockRuntimeId = item.getBlockRuntimeId();
         this.meta = meta;
+        this.durability = 0;
         this.amount = amount;
         this.nbt = nbt;
+        this.lore = Collections.emptyList();
         this.canPlaceOn = new ArrayList<>();
         this.canDestroy = new ArrayList<>();
     }
 
     public Item( ItemType itemType, int amount, int meta ) {
-        this( itemType, amount, meta, null );
+        this( itemType, amount, meta, NbtMap.EMPTY );
     }
 
     public Item( ItemType itemType, int amount ) {
-        this( itemType, amount, 0, null );
+        this( itemType, amount, 0, NbtMap.EMPTY );
     }
 
     public Item( ItemType itemType ) {
-        this( itemType, 1, 0, null );
+        this( itemType, 1, 0, NbtMap.EMPTY );
     }
 
     public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
@@ -85,6 +93,10 @@ public class Item implements Cloneable {
     }
 
     public boolean useInAir( Player player, Vector clickVector ) {
+        return false;
+    }
+
+    public boolean interact( Player player, BlockFace blockFace, Vector clickedVector, Block clickedBlock ) {
         return false;
     }
 
@@ -99,6 +111,14 @@ public class Item implements Cloneable {
             }
         }
         return ItemType.AIR;
+    }
+
+    public ItemToolType getItemToolType() {
+        return ItemToolType.NONE;
+    }
+
+    public ItemTierType getTierType() {
+        return ItemTierType.NONE;
     }
 
     public int getMaxAmount() {
@@ -116,7 +136,7 @@ public class Item implements Cloneable {
         this.customName = customName;
     }
 
-    public void setLore( String... lore ) {
+    public void setLore( List<String> lore ) {
         this.lore = lore;
     }
 
@@ -124,7 +144,7 @@ public class Item implements Cloneable {
         return this.customName;
     }
 
-    public String[] getLore() {
+    public List<String> getLore() {
         return this.lore;
     }
 
@@ -165,6 +185,50 @@ public class Item implements Cloneable {
         return this;
     }
 
+    public int getDurability() {
+        return this.durability;
+    }
+
+    public Item setDurability( int durability ) {
+        this.durability = durability;
+        return this;
+    }
+
+    public void updateDurability( Player player, boolean durabilityState ) {
+        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+            if ( durabilityState ) {
+                player.getInventory().setItemInHand( new ItemAir() );
+                player.playSound( Sound.RANDOM_BREAK, 1, 1 );
+            } else {
+                player.getInventory().setItemInHand( this );
+            }
+        }
+    }
+
+    public boolean calculateDurability( int durability ) {
+        if ( this instanceof Durability ) {
+            this.durability += durability;
+            return this.durabilityAndCheckAmount( this.durability );
+        }
+        return false;
+    }
+
+    private boolean durabilityAndCheckAmount( int durability ) {
+        if ( this instanceof Durability ) {
+            Durability value = (Durability) this;
+            int maxDurability = value.getMaxDurability();
+            int intdurability = durability;
+            if ( intdurability >= maxDurability ) {
+                if ( --this.amount <= 0 ) {
+                    return true;
+                }
+                intdurability = 0;
+            }
+            this.durability = intdurability;
+        }
+        return false;
+    }
+
     public NbtMap getNBT() {
         return this.nbt;
     }
@@ -193,6 +257,7 @@ public class Item implements Cloneable {
             Item clone = (Item) super.clone();
             clone.amount = this.amount;
             clone.meta = this.meta;
+            clone.durability = this.durability;
             clone.nbt = this.nbt;
             clone.customName = this.customName;
             clone.lore = this.lore;
@@ -206,21 +271,25 @@ public class Item implements Cloneable {
         return this;
     }
 
-    public void toNetwork( NbtMapBuilder builder ) {
+    public NbtMapBuilder toNetwork() {
+        NbtMapBuilder builder = this.nbt == null ? NbtMap.EMPTY.toBuilder() : this.nbt.toBuilder();
         builder.putByte( "Count", (byte) this.amount );
-        builder.putShort( "Damage", (short) this.meta );
+        builder.putInt( "Damage", this.durability );
         builder.putByte( "WasPickedUp", (byte) 0 );
 
-        if ( this.customName != null || this.lore != null ) {
-            NbtMapBuilder displayBuilder = NbtMap.builder();
 
-            if ( this.customName != null )
-                displayBuilder.putString( "Name", this.customName );
-            if ( this.lore != null )
-                displayBuilder.putList( "Lore", NbtType.STRING, Arrays.asList( this.lore ) );
+        NbtMapBuilder displayBuilder = NbtMap.builder();
+        if ( this.customName != null ) {
+            displayBuilder.putString( "Name", this.customName );
+        }
+        if ( !this.lore.isEmpty() ) {
+            displayBuilder.putList( "Lore", NbtType.STRING, this.lore );
+        }
 
+        if ( this.customName != null || !this.lore.isEmpty() ) {
             builder.putCompound( "display", displayBuilder.build() );
         }
+        return builder;
     }
 
 }

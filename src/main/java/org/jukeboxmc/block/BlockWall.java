@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.block.type.WallConnectionType;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 
 /**
@@ -17,11 +18,6 @@ public abstract class BlockWall extends BlockWaterlogable {
     }
 
     @Override
-    public boolean isTransparent() {
-        return true;
-    }
-
-    @Override
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason == UpdateReason.NEIGHBORS ) {
             this.updateWall();
@@ -29,30 +25,24 @@ public abstract class BlockWall extends BlockWaterlogable {
         return super.onUpdate( updateReason );
     }
 
-    protected void updateWall() {
-        for ( Direction value : Direction.values() ) {
-            Block block = this.getSide( value );
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
 
-            if ( this.canConnect( block ) ) {
-                this.connect( value, WallConnectionType.SHORT );
-            } else {
-                this.connect( value, WallConnectionType.NONE );
-            }
-        }
+    @Override
+    public double getHardness() {
+        return 2;
+    }
 
-        if ( this.getWallConnectionType( Direction.NORTH ) == WallConnectionType.SHORT &&
-                this.getWallConnectionType( Direction.SOUTH ) == WallConnectionType.SHORT ) {
-            this.setWallPost( this.getWallConnectionType( Direction.WEST ) != WallConnectionType.NONE || this.getWallConnectionType( Direction.EAST ) != WallConnectionType.NONE );
-        } else if ( this.getWallConnectionType( Direction.WEST ) == WallConnectionType.SHORT && this.getWallConnectionType( Direction.EAST ) == WallConnectionType.SHORT ) {
-            this.setWallPost( this.getWallConnectionType( Direction.SOUTH ) != WallConnectionType.NONE ||
-                    this.getWallConnectionType( Direction.NORTH ) != WallConnectionType.NONE );
-        }
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
 
-        if ( this.getSide( BlockFace.UP ).isSolid() ) {
-            this.setWallPost( true );
-        }
-        this.getWorld().sendBlockUpdate( this );
-        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     @Override
@@ -82,6 +72,32 @@ public abstract class BlockWall extends BlockWaterlogable {
                 this.location.getY() + 1.5f,
                 this.location.getZ() + s
         );
+    }
+
+    protected void updateWall() {
+        for ( Direction value : Direction.values() ) {
+            Block block = this.getSide( value );
+
+            if ( this.canConnect( block ) ) {
+                this.connect( value, WallConnectionType.SHORT );
+            } else {
+                this.connect( value, WallConnectionType.NONE );
+            }
+        }
+
+        if ( this.getWallConnectionType( Direction.NORTH ) == WallConnectionType.SHORT &&
+                this.getWallConnectionType( Direction.SOUTH ) == WallConnectionType.SHORT ) {
+            this.setWallPost( this.getWallConnectionType( Direction.WEST ) != WallConnectionType.NONE || this.getWallConnectionType( Direction.EAST ) != WallConnectionType.NONE );
+        } else if ( this.getWallConnectionType( Direction.WEST ) == WallConnectionType.SHORT && this.getWallConnectionType( Direction.EAST ) == WallConnectionType.SHORT ) {
+            this.setWallPost( this.getWallConnectionType( Direction.SOUTH ) != WallConnectionType.NONE ||
+                    this.getWallConnectionType( Direction.NORTH ) != WallConnectionType.NONE );
+        }
+
+        if ( this.getSide( BlockFace.UP ).isSolid() ) {
+            this.setWallPost( true );
+        }
+        this.getWorld().sendBlockUpdate( this );
+        this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
     }
 
     public boolean canConnect( Block block ) {

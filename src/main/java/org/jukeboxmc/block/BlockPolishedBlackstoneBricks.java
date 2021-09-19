@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemPolishedBlackstoneBricks;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockPolishedBlackstoneBricks extends Block {
 
@@ -16,6 +17,21 @@ public class BlockPolishedBlackstoneBricks extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.POLISHED_BLACKSTONE_BRICKS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
 }

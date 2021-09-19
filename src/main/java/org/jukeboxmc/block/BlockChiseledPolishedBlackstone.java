@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemChiseledPolishedBlackstone;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockChiseledPolishedBlackstone extends Block {
 
@@ -18,4 +19,18 @@ public class BlockChiseledPolishedBlackstone extends Block {
         return BlockType.CHISELED_POLISHED_BLACKSTONE;
     }
 
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
 }

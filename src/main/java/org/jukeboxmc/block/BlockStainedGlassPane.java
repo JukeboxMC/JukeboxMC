@@ -28,6 +28,16 @@ public class BlockStainedGlassPane extends Block {
         return true;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
     public BlockStainedGlassPane setColor( BlockColor color ) {
         this.setState( "color", color.name().toLowerCase() );
         return this;

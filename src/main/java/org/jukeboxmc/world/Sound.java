@@ -792,7 +792,7 @@ public enum Sound {
     USE_WOOD( "use.wood" ),
     VR_STUTTERTURN( "vr.stutterturn" );
 
-    private String sound;
+    private final String sound;
 
     Sound( String sound ) {
         this.sound = sound;

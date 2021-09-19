@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.item.ItemWoodenSlab;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -65,6 +66,11 @@ public class BlockWoodenSlab extends BlockSlab {
     @Override
     public BlockType getBlockType() {
         return BlockType.WOODEN_SLAB;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public BlockWoodenSlab setWoodType( WoodType woodType ) {

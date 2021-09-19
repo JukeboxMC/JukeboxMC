@@ -22,4 +22,9 @@ public class BlockDriedKelpBlock extends Block {
         return BlockType.DRIED_KELP_BLOCK;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
 }

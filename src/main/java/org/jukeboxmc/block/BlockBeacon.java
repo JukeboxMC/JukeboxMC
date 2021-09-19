@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemBeacon;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,18 @@ public class BlockBeacon extends BlockWaterlogable {
         return BlockType.BEACON;
     }
 
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

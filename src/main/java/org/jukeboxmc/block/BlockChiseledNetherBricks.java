@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemChiseledNetherBricks;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockChiseledNetherBricks extends Block {
 
@@ -18,4 +19,18 @@ public class BlockChiseledNetherBricks extends Block {
         return BlockType.CHISELED_NETHER_BRICKS;
     }
 
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

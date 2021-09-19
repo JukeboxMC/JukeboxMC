@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.AnvilDamage;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAnvil;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -44,6 +45,21 @@ public class BlockAnvil extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public BlockAnvil setDamage( AnvilDamage damage ) {

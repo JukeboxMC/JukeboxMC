@@ -3,9 +3,12 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCrimsonSlab;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+
+import java.util.List;
 
 public class BlockDoubleCrimsonSlab extends BlockSlab {
 
@@ -28,6 +31,21 @@ public class BlockDoubleCrimsonSlab extends BlockSlab {
     @Override
     public BlockType getBlockType() {
         return BlockType.CRIMSON_SLAB;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return super.getDrops( itemInHand, 2 );
     }
 
 }

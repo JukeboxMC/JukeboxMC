@@ -22,6 +22,11 @@ public class BlockCactus extends Block {
         return BlockType.CACTUS;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.4;
+    }
+
     public void setAge( int value ) { //0-15
         this.setState( "age", value );
     }

@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.ItemEndRod;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -31,6 +32,11 @@ public class BlockEndRod extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
+import org.jukeboxmc.item.ItemToolType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,16 @@ public abstract class BlockSign extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public List<String> getLines() {

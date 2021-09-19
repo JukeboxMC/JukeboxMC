@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.utils.BinaryStream;
-import org.jukeboxmc.world.LevelEvent;
 
 /**
  * @author LucGamesYT

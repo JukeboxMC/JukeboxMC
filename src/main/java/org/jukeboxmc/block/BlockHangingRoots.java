@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemHangingRoots;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -30,5 +31,15 @@ public class BlockHangingRoots extends Block{
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHEARS;
     }
 }

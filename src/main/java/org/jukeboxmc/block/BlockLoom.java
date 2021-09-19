@@ -2,11 +2,11 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
-import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityLoom;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLoom;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -57,6 +57,16 @@ public class BlockLoom extends Block {
     @Override
     public BlockEntityLoom getBlockEntity() {
         return (BlockEntityLoom) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 2.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setDirection( Direction direction ) {

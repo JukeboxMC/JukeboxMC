@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemDeepslateTiles;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,20 @@ public class BlockDeepslateTiles extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.DEEPSLATE_TILES;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3.5;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 }

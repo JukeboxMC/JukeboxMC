@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemRedNetherBrick;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,18 @@ public class BlockRedNetherBrick extends Block {
         return BlockType.RED_NETHER_BRICK;
     }
 
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

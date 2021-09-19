@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemLightWeightedPressurePlate;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,11 @@ public class BlockLightWeightedPressurePlate extends BlockPressurePlate {
     @Override
     public BlockType getBlockType() {
         return BlockType.LIGHT_WEIGHTED_PRESSURE_PLATE;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setRedstoneSignal( int value ) {

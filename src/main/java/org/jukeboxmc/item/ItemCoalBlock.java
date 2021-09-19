@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockCoalBlock;
+import org.jukeboxmc.block.BlockCoal;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,9 @@ public class ItemCoalBlock extends Item {
     }
 
     @Override
-    public BlockCoalBlock getBlock() {
-        return new BlockCoalBlock();
+    public BlockCoal getBlock() {
+        return new BlockCoal();
     }
+
+
 }

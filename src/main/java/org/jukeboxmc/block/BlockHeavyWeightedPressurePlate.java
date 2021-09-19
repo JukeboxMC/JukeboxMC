@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemHeavyWeightedPressurePlate;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,8 @@ public class BlockHeavyWeightedPressurePlate extends BlockPressurePlate {
         return BlockType.HEAVY_WEIGHTED_PRESSURE_PLATE;
     }
 
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
 }

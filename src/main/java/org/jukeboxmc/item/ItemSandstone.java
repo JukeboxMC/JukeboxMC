@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
+
 import org.jukeboxmc.block.BlockSandstone;
+import org.jukeboxmc.block.BlockType;
 
 /**
  * @author LucGamesYT
@@ -8,27 +10,13 @@ import org.jukeboxmc.block.BlockSandstone;
  */
 public class ItemSandstone extends Item {
 
-    public ItemSandstone() {
-        super ( "minecraft:sandstone" );
+    public ItemSandstone( int blockRuntimeId ) {
+        super( "minecraft:sandstone", blockRuntimeId );
     }
 
     @Override
     public BlockSandstone getBlock() {
-        return new BlockSandstone();
+        return (BlockSandstone) BlockType.getBlock( this.blockRuntimeId );
     }
 
-    public void setSandStoneType( SandStoneType sandStoneType ) {
-        this.setMeta( sandStoneType.ordinal() );
-    }
-
-    public SandStoneType getSandStoneType() {
-        return SandStoneType.values()[this.getMeta()];
-    }
-
-    public enum SandStoneType {
-        SANDSTONE,
-        CHISELED_SANDSTONE,
-        CUT_SANDSTONE,
-        SMOOTH_SANDSTONE
-    }
 }

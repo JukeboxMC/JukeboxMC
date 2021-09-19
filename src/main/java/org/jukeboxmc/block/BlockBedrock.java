@@ -12,14 +12,6 @@ public class BlockBedrock extends Block {
         super( "minecraft:bedrock" );
     }
 
-    public BlockBedrock setInfiniBurn( boolean infiniBurn ) {
-        return this.setState( "infiniburn_bit", infiniBurn ? (byte) 1 : (byte) 0 );
-    }
-
-    public boolean isInfiniBurn() {
-        return this.stateExists( "infiniburn_bit" ) && this.getByteState( "infiniburn_bit" ) == 1;
-    }
-
     @Override
     public ItemBedrock toItem() {
         return new ItemBedrock();
@@ -30,4 +22,21 @@ public class BlockBedrock extends Block {
         return BlockType.BEDROCK;
     }
 
+    @Override
+    public double getHardness() {
+        return -1;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    public BlockBedrock setInfiniBurn( boolean infiniBurn ) {
+        return this.setState( "infiniburn_bit", infiniBurn ? (byte) 1 : (byte) 0 );
+    }
+
+    public boolean isInfiniBurn() {
+        return this.stateExists( "infiniburn_bit" ) && this.getByteState( "infiniburn_bit" ) == 1;
+    }
 }

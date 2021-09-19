@@ -33,6 +33,11 @@ public class BlockGlowFrame extends Block {
         return false;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.2;
+    }
+
     public void setItemFrameMap( boolean value ) {
         this.setState( "item_frame_map_bit", value ? (byte) 1 : (byte) 0 );
     }

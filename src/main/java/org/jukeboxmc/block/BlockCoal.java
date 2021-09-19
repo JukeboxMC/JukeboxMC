@@ -1,14 +1,15 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemCoalBlock;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCoalBlock extends Block {
+public class BlockCoal extends Block {
 
-    public BlockCoalBlock() {
+    public BlockCoal() {
         super( "minecraft:coal_block" );
     }
 
@@ -22,4 +23,18 @@ public class BlockCoalBlock extends Block {
         return BlockType.COAL_BLOCK;
     }
 
+    @Override
+    public double getHardness() {
+        return 5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

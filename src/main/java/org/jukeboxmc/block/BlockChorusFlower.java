@@ -22,6 +22,11 @@ public class BlockChorusFlower extends Block {
         return BlockType.CHORUS_FLOWER;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.4;
+    }
+
     public void setAge( int value ) {
         this.setState( "age", value );
     }

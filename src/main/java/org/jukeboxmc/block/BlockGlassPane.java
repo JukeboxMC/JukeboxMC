@@ -22,4 +22,13 @@ public class BlockGlassPane extends BlockWaterlogable {
         return BlockType.GLASS_PANE;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

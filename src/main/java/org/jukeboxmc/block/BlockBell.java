@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.Attachment;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBell;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -59,6 +60,21 @@ public class BlockBell extends BlockWaterlogable {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setAttachment( Attachment attachment ) {

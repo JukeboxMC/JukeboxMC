@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemAncientDebris;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockAncientDebris extends Block {
 
@@ -16,6 +18,26 @@ public class BlockAncientDebris extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.ANCIENT_DEBRIS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 30;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.DIAMOND;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
 }

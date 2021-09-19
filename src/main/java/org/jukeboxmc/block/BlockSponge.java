@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.SpongeType;
 import org.jukeboxmc.item.ItemSponge;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,16 @@ public class BlockSponge extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SPONGE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.6;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.HOE;
     }
 
     public BlockSponge setSpongeType( SpongeType spongeType ) {

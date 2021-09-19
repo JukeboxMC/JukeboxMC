@@ -26,4 +26,14 @@ public class BlockDragonEgg extends BlockWaterlogable {
     public boolean isTransparent() {
         return true;
     }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

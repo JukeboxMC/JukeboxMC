@@ -22,6 +22,13 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
+    public void removeViewer( Player player ) {
+        if ( player != this.holder ) {
+            super.removeViewer( player );
+        }
+    }
+
+    @Override
     public InventoryType getInventoryType() {
         return InventoryType.PLAYER;
     }
@@ -38,6 +45,7 @@ public class PlayerInventory extends ContainerInventory {
             inventoryContentPacket.setWindowId( WindowId.OPEN_CONTAINER );
             inventoryContentPacket.setItems( this.contents );
             player.getPlayerConnection().sendPacket( inventoryContentPacket );
+            return;
         }
         inventoryContentPacket.setWindowId( WindowId.PLAYER );
         inventoryContentPacket.setItems( this.contents );
@@ -46,14 +54,18 @@ public class PlayerInventory extends ContainerInventory {
 
     @Override
     public void sendContents( int slot, Player player ) {
-        InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
+            InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
+            inventorySlotPacket.setSlot( slot );
+            inventorySlotPacket.setItem( this.contents[slot] );
             inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
-        } else {
-            inventorySlotPacket.setWindowId( WindowId.PLAYER );
+            player.getPlayerConnection().sendPacket( inventorySlotPacket );
         }
+
+        InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setSlot( slot );
         inventorySlotPacket.setItem( this.contents[slot] );
+        inventorySlotPacket.setWindowId( WindowId.PLAYER );
         player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 

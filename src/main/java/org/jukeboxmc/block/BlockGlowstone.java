@@ -22,4 +22,9 @@ public class BlockGlowstone extends Block {
         return BlockType.GLOWSTONE;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
 }

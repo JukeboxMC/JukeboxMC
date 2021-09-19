@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.item.ItemConcrete;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -13,8 +14,6 @@ public class BlockConcrete extends Block {
         super( "minecraft:concrete" );
     }
 
-
-
     @Override
     public ItemConcrete toItem() {
         return new ItemConcrete( this.runtimeId );
@@ -23,6 +22,21 @@ public class BlockConcrete extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.CONCRETE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.8;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public BlockConcrete setColor( BlockColor color ) {

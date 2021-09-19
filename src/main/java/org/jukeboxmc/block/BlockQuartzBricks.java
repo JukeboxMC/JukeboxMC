@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemQuartzBricks;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockQuartzBricks extends Block {
 
@@ -16,6 +17,21 @@ public class BlockQuartzBricks extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.QUARTZ_BRICKS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.8;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
 }

@@ -1,1950 +1,947 @@
-minecraft:yellow_glazed_terracotta
-  - facing_direction
+button_pressed_bit (Byte):
+  - 0
+  - 1
 
-minecraft:lit_blast_furnace
-  - facing_direction
+facing_direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
 
-minecraft:hanging_roots
+direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
 
-minecraft:wooden_button
-  - button_pressed_bit
-  - facing_direction
+door_hinge_bit (Byte):
+  - 0
+  - 1
 
-minecraft:polished_deepslate_slab
-  - top_slot_bit
+open_bit (Byte):
+  - 0
+  - 1
 
-minecraft:double_stone_slab3
-  - stone_slab_type_3
-  - top_slot_bit
+upper_block_bit (Byte):
+  - 0
+  - 1
 
-minecraft:double_stone_slab4
-  - top_slot_bit
-  - stone_slab_type_4
+in_wall_bit (Byte):
+  - 0
+  - 1
 
-minecraft:polished_blackstone_double_slab
-  - top_slot_bit
+redstone_signal (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 
-minecraft:double_stone_slab2
-  - stone_slab_type_2
-  - top_slot_bit
+upside_down_bit (Byte):
+  - 0
+  - 1
 
-minecraft:warped_slab
-  - top_slot_bit
+weirdo_direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
 
-minecraft:acacia_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
+ground_sign_direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
 
-minecraft:beetroot
-  - growth
+rail_data_bit (Byte):
+  - 0
+  - 1
 
-minecraft:crimson_stairs
-  - upside_down_bit
-  - weirdo_direction
+rail_direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
 
-minecraft:cake
-  - bite_counter
+damage (String):
+  - undamaged
+  - slightly_damaged
+  - very_damaged
+  - broken
 
-minecraft:fire
-  - age
+persistent_bit (Byte):
+  - 0
+  - 1
 
-minecraft:deepslate_tiles
+update_bit (Byte):
+  - 0
+  - 1
 
-minecraft:crimson_pressure_plate
-  - redstone_signal
+age_bit (Byte):
+  - 0
+  - 1
 
-minecraft:monster_egg
-  - monster_egg_stone_type
+bamboo_leaf_size (String):
+  - no_leaves
+  - small_leaves
+  - large_leaves
 
-minecraft:wooden_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
+bamboo_stalk_thickness (String):
+  - thin
+  - thick
 
-minecraft:deepslate_tile_stairs
-  - upside_down_bit
-  - weirdo_direction
+sapling_type (String):
+  - oak
+  - spruce
+  - birch
+  - jungle
+  - acacia
+  - dark_oak
 
-minecraft:enchanting_table
+pillar_axis (String):
+  - y
+  - x
+  - z
 
-minecraft:jungle_standing_sign
-  - ground_sign_direction
+head_piece_bit (Byte):
+  - 0
+  - 1
 
-minecraft:deadbush
+occupied_bit (Byte):
+  - 0
+  - 1
 
-minecraft:blackstone_stairs
-  - upside_down_bit
-  - weirdo_direction
+infiniburn_bit (Byte):
+  - 0
+  - 1
 
-minecraft:observer
-  - facing_direction
-  - powered_bit
+honey_level (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
 
-minecraft:warped_fence
+growth (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
 
-minecraft:lantern
+attachment (String):
+  - standing
   - hanging
-
-minecraft:polished_blackstone_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:stone
-  - stone_type
-
-minecraft:unpowered_repeater
-  - repeater_delay
-  - direction
-
-minecraft:element_118
-
-minecraft:undyed_shulker_box
-
-minecraft:redstone_ore
-
-minecraft:seagrass
-  - sea_grass_type
-
-minecraft:amethyst_block
-
-minecraft:element_112
-
-minecraft:turtle_egg
-  - cracked_state
-  - turtle_egg_count
-
-minecraft:element_113
-
-minecraft:big_dripleaf
-  - big_dripleaf_tilt
-  - big_dripleaf_head
-  - direction
-
-minecraft:element_110
-
-minecraft:element_111
-
-minecraft:element_116
-
-minecraft:element_117
-
-minecraft:granite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:movingBlock
-
-minecraft:element_114
-
-minecraft:element_115
-
-minecraft:blue_ice
-
-minecraft:waxed_weathered_cut_copper
-
-minecraft:hard_stained_glass_pane
-  - color
-
-minecraft:birch_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:deny
-
-minecraft:element_99
-
-minecraft:jungle_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:loom
-  - direction
-
-minecraft:element_96
-
-minecraft:element_95
-
-minecraft:oxidized_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:element_98
-
-minecraft:ancient_debris
-
-minecraft:element_97
-
-minecraft:element_92
-
-minecraft:beacon
-
-minecraft:element_91
-
-minecraft:stripped_crimson_stem
-  - pillar_axis
-
-minecraft:element_94
-
-minecraft:element_93
-
-minecraft:powered_comparator
-  - output_subtract_bit
-  - output_lit_bit
-  - direction
-
-minecraft:diorite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:element_90
-
-minecraft:allow
-
-minecraft:bed
-  - head_piece_bit
-  - occupied_bit
-  - direction
-
-minecraft:wood
-  - wood_type
-  - stripped_bit
-  - pillar_axis
-
-minecraft:light_block
-  - block_light_level
-
-minecraft:wool
-  - color
-
-minecraft:element_89
-
-minecraft:element_88
-
-minecraft:colored_torch_bp
-  - color_bit
-  - torch_facing_direction
-
-minecraft:double_wooden_slab
-  - top_slot_bit
-  - wood_type
-
-minecraft:deepslate_emerald_ore
-
-minecraft:element_85
-
-minecraft:small_amethyst_bud
-  - facing_direction
-
-minecraft:element_84
-
-minecraft:polished_blackstone_slab
-  - top_slot_bit
-
-minecraft:element_87
-
-minecraft:stripped_acacia_log
-  - pillar_axis
-
-minecraft:deepslate_brick_slab
-  - top_slot_bit
-
-minecraft:element_86
-
-minecraft:element_81
-
-minecraft:element_80
-
-minecraft:element_83
-
-minecraft:end_rod
-  - facing_direction
-
-minecraft:element_82
-
-minecraft:silver_glazed_terracotta
-  - facing_direction
-
-minecraft:smooth_basalt
-
-minecraft:exposed_cut_copper_slab
-  - top_slot_bit
-
-minecraft:crafting_table
-
-minecraft:lit_redstone_ore
-
-minecraft:lever
-  - open_bit
-  - lever_direction
-
-minecraft:warped_pressure_plate
-  - redstone_signal
-
-minecraft:tnt
-  - explode_bit
-  - allow_underwater_bit
-
-minecraft:cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:lava_cauldron
-  - fill_level
-  - cauldron_liquid
-
-minecraft:dried_kelp_block
-
-minecraft:birch_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:air
-
-minecraft:warped_nylium
-
-minecraft:red_sandstone
-  - sand_stone_type
-
-minecraft:waxed_oxidized_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:brick_block
-
-minecraft:deepslate_copper_ore
-
-minecraft:warped_fungus
-
-minecraft:pumpkin
-  - direction
-
-minecraft:barrel
-  - facing_direction
-  - open_bit
-
-minecraft:light_weighted_pressure_plate
-  - redstone_signal
-
-minecraft:jungle_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:bookshelf
-
-minecraft:orange_glazed_terracotta
-  - facing_direction
-
-minecraft:end_portal_frame
-  - end_portal_eye_bit
-  - direction
-
-minecraft:tuff
-
-minecraft:purpur_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:polished_blackstone_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:waxed_oxidized_copper
-
-minecraft:wall_banner
-  - facing_direction
-
-minecraft:wall_sign
-  - facing_direction
-
-minecraft:waxed_oxidized_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:reeds
-  - age
-
-minecraft:crimson_fungus
-
-minecraft:stained_glass
-  - color
-
-minecraft:mob_spawner
-
-minecraft:repeating_command_block
-  - conditional_bit
-  - facing_direction
-
-minecraft:dirt
-  - dirt_type
-
-minecraft:sea_pickle
-  - cluster_count
-  - dead_bit
-
-minecraft:stripped_dark_oak_log
-  - pillar_axis
-
-minecraft:copper_block
-
-minecraft:weathered_copper
-
-minecraft:waxed_exposed_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:bamboo_sapling
-  - sapling_type
-  - age_bit
-
-minecraft:glass
-
-minecraft:blackstone_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:polished_blackstone_pressure_plate
-  - redstone_signal
-
-minecraft:hardened_clay
-
-minecraft:unlit_redstone_torch
-  - torch_facing_direction
-
-minecraft:end_stone
-
-minecraft:polished_blackstone_brick_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:piston
-  - facing_direction
-
-minecraft:dirt_with_roots
-
-minecraft:element_2
-
-minecraft:element_3
-
-minecraft:element_0
-
-minecraft:element_1
-
-minecraft:element_6
-
-minecraft:element_7
-
-minecraft:element_4
-
-minecraft:red_sandstone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:element_5
-
-minecraft:spruce_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:leaves2
-  - persistent_bit
-  - update_bit
-  - new_leaf_type
-
-minecraft:element_8
-
-minecraft:element_9
-
-minecraft:iron_ore
-
-minecraft:leaves
-  - persistent_bit
-  - update_bit
-  - old_leaf_type
-
-minecraft:sapling
-  - sapling_type
-  - age_bit
-
-minecraft:smooth_sandstone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:exposed_copper
-
-minecraft:gilded_blackstone
-
-minecraft:netherrack
-
-minecraft:carved_pumpkin
-  - direction
-
-minecraft:redstone_torch
-  - torch_facing_direction
-
-minecraft:glow_frame
-  - facing_direction
-  - item_frame_map_bit
-
-minecraft:coral_fan
-  - coral_fan_direction
-  - coral_color
-
-minecraft:element_38
-
-minecraft:element_37
-
-minecraft:crimson_slab
-  - top_slot_bit
-
-minecraft:element_39
-
-minecraft:element_34
-
-minecraft:soul_torch
-  - torch_facing_direction
-
-minecraft:element_33
-
-minecraft:mossy_cobblestone
-
-minecraft:coral_fan_hang
-  - coral_hang_type_bit
-  - coral_direction
-  - dead_bit
-
-minecraft:element_36
-
-minecraft:bee_nest
-  - direction
-  - honey_level
-
-minecraft:calcite
-
-minecraft:element_35
-
-minecraft:furnace
-  - facing_direction
-
-minecraft:element_30
-
-minecraft:smithing_table
-
-minecraft:element_32
-
-minecraft:element_31
-
-minecraft:iron_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:grindstone
-  - attachment
-  - direction
-
-minecraft:lit_deepslate_redstone_ore
-
-minecraft:coral_fan_dead
-  - coral_fan_direction
-  - coral_color
-
-minecraft:brewing_stand
-  - brewing_stand_slot_c_bit
-  - brewing_stand_slot_a_bit
-  - brewing_stand_slot_b_bit
-
-minecraft:birch_standing_sign
-  - ground_sign_direction
-
-minecraft:jungle_pressure_plate
-  - redstone_signal
-
-minecraft:barrier
-
-minecraft:element_27
-
-minecraft:dark_oak_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:element_26
-
-minecraft:element_29
-
-minecraft:element_28
-
-minecraft:element_23
-
-minecraft:waxed_exposed_cut_copper
-
-minecraft:element_22
-
-minecraft:acacia_pressure_plate
-  - redstone_signal
-
-minecraft:element_25
-
-minecraft:exposed_cut_copper
-
-minecraft:crimson_roots
-
-minecraft:element_24
-
-minecraft:jungle_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:element_21
-
-minecraft:ladder
-  - facing_direction
-
-minecraft:cracked_polished_blackstone_bricks
-
-minecraft:element_20
-
-minecraft:melon_block
-
-minecraft:unpowered_comparator
-  - output_subtract_bit
-  - output_lit_bit
-  - direction
-
-minecraft:basalt
-  - pillar_axis
-
-minecraft:chain
-  - pillar_axis
-
-minecraft:flowing_lava
-  - liquid_depth
-
-minecraft:jungle_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:rail
-  - rail_direction
-
-minecraft:pistonArmCollision
-  - facing_direction
-
-minecraft:cobbled_deepslate_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:lapis_block
-
-minecraft:prismarine
-  - prismarine_block_type
-
-minecraft:element_19
-
-minecraft:iron_block
-
-minecraft:element_16
-
-minecraft:element_15
-
-minecraft:element_18
-
-minecraft:end_gateway
-
-minecraft:bell
-  - attachment
-  - toggle_bit
-  - direction
-
-minecraft:element_17
-
-minecraft:prismarine_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:element_12
-
-minecraft:element_11
-
-minecraft:element_14
-
-minecraft:element_13
-
-minecraft:gravel
-
-minecraft:element_10
-
-minecraft:vine
-  - vine_direction_bits
-
-minecraft:red_mushroom_block
-  - huge_mushroom_bits
-
-minecraft:lit_smoker
-  - facing_direction
-
-minecraft:flowering_azalea
-
-minecraft:sweet_berry_bush
-  - growth
-
-minecraft:dark_prismarine_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:glow_lichen
-  - multi_face_direction_bits
-
-minecraft:conduit
-
-minecraft:web
-
-minecraft:weathered_cut_copper
-
-minecraft:trapped_chest
-  - facing_direction
-
-minecraft:dropper
-  - facing_direction
-  - triggered_bit
-
-minecraft:potatoes
-  - growth
-
-minecraft:chest
-  - facing_direction
-
-minecraft:brown_mushroom
-
-minecraft:cyan_glazed_terracotta
-  - facing_direction
-
-minecraft:lit_furnace
-  - facing_direction
-
-minecraft:blackstone_double_slab
-  - top_slot_bit
-
-minecraft:stripped_warped_stem
-  - pillar_axis
-
-minecraft:waxed_oxidized_cut_copper_slab
-  - top_slot_bit
-
-minecraft:cauldron
-  - fill_level
-  - cauldron_liquid
-
-minecraft:yellow_flower
-
-minecraft:oxidized_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:deepslate_tile_double_slab
-  - top_slot_bit
-
-minecraft:portal
-  - portal_axis
-
-minecraft:crimson_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:dark_oak_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:dark_oak_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:dispenser
-  - facing_direction
-  - triggered_bit
-
-minecraft:polished_blackstone
-
-minecraft:element_78
-
-minecraft:waxed_oxidized_cut_copper
-
-minecraft:element_77
-
-minecraft:element_79
-
-minecraft:element_74
-
-minecraft:double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:element_73
-
-minecraft:element_76
-
-minecraft:element_75
-
-minecraft:info_update
-
-minecraft:water
-  - liquid_depth
-
-minecraft:element_70
-
-minecraft:netherite_block
-
-minecraft:deepslate_redstone_ore
-
-minecraft:warped_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:element_72
-
-minecraft:element_71
-
-minecraft:darkoak_wall_sign
-  - facing_direction
-
-minecraft:smooth_red_sandstone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:cobbled_deepslate_double_slab
-  - top_slot_bit
-
-minecraft:acacia_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:flower_pot
-  - update_bit
-
-minecraft:brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:warped_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:azalea_leaves
-  - persistent_bit
-  - update_bit
-
-minecraft:shroomlight
-
-minecraft:smooth_quartz_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:element_67
-
-minecraft:warped_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:element_66
-
-minecraft:element_69
-
-minecraft:weeping_vines
-  - weeping_vines_age
-
-minecraft:element_68
-
-minecraft:heavy_weighted_pressure_plate
-  - redstone_signal
-
-minecraft:element_63
-
-minecraft:element_62
-
-minecraft:redstone_block
-
-minecraft:element_65
-
-minecraft:element_64
-
-minecraft:stripped_spruce_log
-  - pillar_axis
-
-minecraft:element_61
-
-minecraft:element_60
-
-minecraft:sandstone
-  - sand_stone_type
-
-minecraft:cracked_deepslate_bricks
-
-minecraft:pointed_dripstone
-  - dripstone_thickness
-  - hanging
-
-minecraft:warped_hyphae
-  - pillar_axis
-
-minecraft:deepslate_lapis_ore
-
-minecraft:scaffolding
-  - stability
-  - stability_check
-
-minecraft:cartography_table
-
-minecraft:large_amethyst_bud
-  - facing_direction
-
-minecraft:crimson_wall_sign
-  - facing_direction
-
-minecraft:element_59
-
-minecraft:stonecutter_block
-  - facing_direction
-
-minecraft:element_56
-
-minecraft:element_55
-
-minecraft:element_58
-
-minecraft:birch_pressure_plate
-  - redstone_signal
-
-minecraft:element_57
-
-minecraft:sponge
-  - sponge_type
-
-minecraft:warped_wall_sign
-  - facing_direction
-
-minecraft:element_52
-
-minecraft:unknown
-
-minecraft:element_51
-
-minecraft:element_54
-
-minecraft:element_53
-
-minecraft:crimson_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:element_50
-
-minecraft:stripped_oak_log
-  - pillar_axis
-
-minecraft:crimson_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:red_mushroom
-
-minecraft:element_49
-
-minecraft:element_48
-
-minecraft:purple_glazed_terracotta
-  - facing_direction
-
-minecraft:element_45
-
-minecraft:element_44
-
-minecraft:element_47
-
-minecraft:crimson_hyphae
-  - pillar_axis
-
-minecraft:element_46
-
-minecraft:element_41
-
-minecraft:element_40
-
-minecraft:gray_glazed_terracotta
-  - facing_direction
-
-minecraft:element_43
-
-minecraft:element_42
-
-minecraft:camera
-
-minecraft:kelp
-  - kelp_age
-
-minecraft:raw_iron_block
-
-minecraft:spruce_pressure_plate
-  - redstone_signal
-
-minecraft:weathered_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:crying_obsidian
-
-minecraft:soul_fire
-  - age
-
-minecraft:deepslate_brick_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:shulker_box
-  - color
-
-minecraft:polished_blackstone_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:waxed_exposed_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:stained_hardened_clay
-  - color
-
-minecraft:daylight_detector_inverted
-  - redstone_signal
-
-minecraft:hard_glass
-
-minecraft:smooth_stone
-
-minecraft:stone_pressure_plate
-  - redstone_signal
-
-minecraft:quartz_bricks
-
-minecraft:wither_rose
-
-minecraft:deepslate_brick_double_slab
-  - top_slot_bit
-
-minecraft:dripstone_block
-
-minecraft:golden_rail
-  - rail_direction
-  - rail_data_bit
-
-minecraft:polished_diorite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:raw_gold_block
-
-minecraft:chain_command_block
-  - conditional_bit
-  - facing_direction
-
-minecraft:darkoak_standing_sign
-  - ground_sign_direction
-
-minecraft:grass
-
-minecraft:magma
-
-minecraft:oak_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:warped_wart_block
-
-minecraft:tripWire
-  - powered_bit
-  - suspended_bit
-  - disarmed_bit
-  - attached_bit
-
-minecraft:structure_void
-  - structure_void_type
-
-minecraft:moss_block
-
-minecraft:stonecutter
-
-minecraft:acacia_standing_sign
-  - ground_sign_direction
-
-minecraft:polished_blackstone_bricks
-
-minecraft:netherreactor
-
-minecraft:waxed_cut_copper
-
-minecraft:cobblestone_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-  - wall_block_type
-
-minecraft:cave_vines
-  - growing_plant_age
-
-minecraft:carrots
-  - growth
-
-minecraft:sand
-  - sand_type
-
-minecraft:cut_copper
-
-minecraft:chiseled_polished_blackstone
-
-minecraft:warped_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:warped_planks
-
-minecraft:nether_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:hay_block
-  - deprecated
-  - pillar_axis
-
-minecraft:trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:fletching_table
-
-minecraft:stonebrick
-  - stone_brick_type
-
-minecraft:light_blue_glazed_terracotta
-  - facing_direction
-
-minecraft:wheat
-  - growth
-
-minecraft:polished_granite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:mossy_cobblestone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:stickyPistonArmCollision
-  - facing_direction
-
-minecraft:composter
-  - composter_fill_level
-
-minecraft:reserved6
-
-minecraft:jukebox
-
-minecraft:stripped_jungle_log
-  - pillar_axis
-
-minecraft:acacia_wall_sign
-  - facing_direction
-
-minecraft:waxed_weathered_copper
-
-minecraft:cave_vines_head_with_berries
-  - growing_plant_age
-
-minecraft:chorus_flower
-  - age
-
-minecraft:ice
-
-minecraft:waterlily
-
-minecraft:crimson_fence
-
-minecraft:polished_blackstone_brick_double_slab
-  - top_slot_bit
-
-minecraft:standing_banner
-  - ground_sign_direction
-
-minecraft:end_portal
-
-minecraft:birch_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:crimson_planks
-
-minecraft:grass_path
-
-minecraft:lectern
-  - powered_bit
-  - direction
-
-minecraft:powered_repeater
-  - repeater_delay
-  - direction
-
-minecraft:oxidized_cut_copper_slab
-  - top_slot_bit
-
-minecraft:pumpkin_stem
-  - facing_direction
-  - growth
-
-minecraft:hard_stained_glass
-  - color
-
-minecraft:dark_oak_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:campfire
-  - extinguished
-  - direction
-
-minecraft:frosted_ice
-  - age
-
-minecraft:structure_block
-  - structure_block_type
-
-minecraft:spore_blossom
-
-minecraft:budding_amethyst
-
-minecraft:oxidized_copper
-
-minecraft:colored_torch_rg
-  - color_bit
-  - torch_facing_direction
-
-minecraft:acacia_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:powder_snow
-
-minecraft:azalea
-
-minecraft:brown_glazed_terracotta
-  - facing_direction
-
-minecraft:end_bricks
-
-minecraft:hard_glass_pane
-
-minecraft:warped_double_slab
-  - top_slot_bit
-
-minecraft:nether_gold_ore
-
-minecraft:warped_stem
-  - pillar_axis
-
-minecraft:lodestone
-
-minecraft:jigsaw
-  - facing_direction
-  - rotation
-
-minecraft:podzol
-
-minecraft:lightning_rod
-  - facing_direction
-
-minecraft:stripped_crimson_hyphae
-  - pillar_axis
-
-minecraft:spruce_wall_sign
-  - facing_direction
-
-minecraft:acacia_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:brown_mushroom_block
-  - huge_mushroom_bits
-
-minecraft:target
-
-minecraft:polished_deepslate_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:standing_sign
-  - ground_sign_direction
-
-minecraft:log
-  - old_log_type
-  - pillar_axis
-
-minecraft:deepslate_diamond_ore
-
-minecraft:waxed_exposed_cut_copper_slab
-  - top_slot_bit
-
-minecraft:red_nether_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:soul_lantern
-  - hanging
-
-minecraft:chemistry_table
-  - chemistry_table_type
-  - direction
-
-minecraft:honey_block
-
-minecraft:mossy_stone_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:bubble_column
-  - drag_down
-
-minecraft:diamond_ore
-
-minecraft:waxed_weathered_cut_copper_slab
-  - top_slot_bit
-
-minecraft:flowing_water
-  - liquid_depth
-
-minecraft:cracked_nether_bricks
-
-minecraft:deepslate_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:polished_andesite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:iron_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:prismarine_bricks_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:polished_blackstone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:deepslate_coal_ore
-
-minecraft:noteblock
-
-minecraft:polished_basalt
-  - pillar_axis
-
-minecraft:warped_standing_sign
-  - ground_sign_direction
-
-minecraft:magenta_glazed_terracotta
-  - facing_direction
-
-minecraft:redstone_wire
-  - redstone_signal
-
-minecraft:stone_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:black_glazed_terracotta
-  - facing_direction
-
-minecraft:ender_chest
-  - facing_direction
-
-minecraft:frame
-  - facing_direction
-  - item_frame_map_bit
-
-minecraft:crimson_double_slab
-  - top_slot_bit
-
-minecraft:dark_oak_trapdoor
-  - open_bit
-  - upside_down_bit
-  - direction
-
-minecraft:double_plant
-  - upper_block_bit
-  - double_plant_type
-
-minecraft:infested_deepslate
-  - pillar_axis
-
-minecraft:nether_sprouts
-
-minecraft:slime
-
-minecraft:gold_block
-
-minecraft:amethyst_cluster
-  - facing_direction
-
-minecraft:waxed_weathered_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:underwater_torch
-  - torch_facing_direction
-
-minecraft:spruce_standing_sign
-  - ground_sign_direction
-
-minecraft:exposed_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:detector_rail
-  - rail_direction
-  - rail_data_bit
-
-minecraft:respawn_anchor
-  - respawn_anchor_charge
-
-minecraft:deepslate_tile_slab
-  - top_slot_bit
-
-minecraft:snow_layer
-  - covered_bit
-  - height
-
-minecraft:cactus
-  - age
-
-minecraft:cocoa
-  - age
-  - direction
-
-minecraft:crimson_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:twisting_vines
-  - twisting_vines_age
-
-minecraft:red_nether_brick
-
-minecraft:bone_block
-  - deprecated
-  - pillar_axis
-
-minecraft:weathered_cut_copper_slab
-  - top_slot_bit
-
-minecraft:blue_glazed_terracotta
-  - facing_direction
-
-minecraft:invisibleBedrock
-
-minecraft:wooden_pressure_plate
-  - redstone_signal
-
-minecraft:pink_glazed_terracotta
-  - facing_direction
-
-minecraft:sandstone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:white_glazed_terracotta
-  - facing_direction
-
-minecraft:cobbled_deepslate
-
-minecraft:chemical_heat
-
-minecraft:red_glazed_terracotta
-  - facing_direction
-
-minecraft:smoker
-  - facing_direction
-
-minecraft:end_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:concrete
-  - color
-
-minecraft:blackstone
-
-minecraft:hopper
-  - facing_direction
-  - toggle_bit
-
-minecraft:nether_brick_fence
-
-minecraft:waxed_cut_copper_slab
-  - top_slot_bit
-
-minecraft:green_glazed_terracotta
-  - facing_direction
-
-minecraft:cut_copper_slab
-  - top_slot_bit
-
-minecraft:chiseled_nether_bricks
-
-minecraft:log2
-  - new_log_type
-  - pillar_axis
-
-minecraft:redstone_lamp
-
-minecraft:quartz_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:chorus_plant
-
-minecraft:birch_wall_sign
-  - facing_direction
-
-minecraft:dragon_egg
-
-minecraft:soul_soil
-
-minecraft:waxed_weathered_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:stone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:sticky_piston
-  - facing_direction
-
-minecraft:snow
-
-minecraft:skull
-  - facing_direction
-  - no_drop_bit
-
-minecraft:dark_oak_pressure_plate
-  - redstone_signal
-
-minecraft:glass_pane
-
-minecraft:sculk_sensor
-  - powered_bit
-
-minecraft:crimson_nylium
-
-minecraft:spruce_fence_gate
-  - in_wall_bit
-  - open_bit
-  - direction
-
-minecraft:diamond_block
-
-minecraft:tallgrass
-  - tall_grass_type
-
-minecraft:acacia_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:small_dripleaf_block
-  - upper_block_bit
-  - direction
-
-minecraft:farmland
-  - moisturized_amount
-
-minecraft:stone_slab
-  - stone_slab_type
-  - top_slot_bit
-
-minecraft:bedrock
-  - infiniburn_bit
-
-minecraft:coral_block
-  - coral_color
-  - dead_bit
-
-minecraft:lit_redstone_lamp
-
-minecraft:blackstone_slab
-  - top_slot_bit
-
-minecraft:activator_rail
-  - rail_direction
-  - rail_data_bit
-
-minecraft:spruce_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:carpet
-  - color
-
-minecraft:nether_brick
-
-minecraft:nether_wart
-  - age
-
-minecraft:azalea_leaves_flowered
-  - persistent_bit
-  - update_bit
-
-minecraft:soul_sand
-
-minecraft:cave_vines_body_with_berries
-  - growing_plant_age
-
-minecraft:deepslate_gold_ore
-
-minecraft:glowstone
-
-minecraft:nether_wart_block
-
-minecraft:coral_fan_hang2
-  - coral_hang_type_bit
-  - coral_direction
-  - dead_bit
-
-minecraft:coral_fan_hang3
-  - coral_hang_type_bit
-  - coral_direction
-  - dead_bit
-
-minecraft:lime_glazed_terracotta
-  - facing_direction
-
-minecraft:deepslate_tile_wall
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:normal_stone_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:stone_slab2
-  - stone_slab_type_2
-  - top_slot_bit
-
-minecraft:stone_slab4
-  - top_slot_bit
-  - stone_slab_type_4
-
-minecraft:stone_slab3
-  - stone_slab_type_3
-  - top_slot_bit
-
-minecraft:tripwire_hook
-  - powered_bit
-  - attached_bit
-  - direction
-
-minecraft:waxed_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:birch_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:spruce_button
-  - button_pressed_bit
-  - facing_direction
-
-minecraft:border_block
-  - wall_connection_type_east
-  - wall_post_bit
-  - wall_connection_type_south
-  - wall_connection_type_west
-  - wall_connection_type_north
-
-minecraft:cracked_deepslate_tiles
-
-minecraft:jungle_wall_sign
-  - facing_direction
-
-minecraft:stone_brick_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:waxed_exposed_copper
-
-minecraft:gold_ore
-
-minecraft:lava
-  - liquid_depth
-
-minecraft:warped_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:birch_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:tinted_glass
-
-minecraft:polished_blackstone_brick_slab
-  - top_slot_bit
-
-minecraft:stained_glass_pane
-  - color
-
-minecraft:deepslate_bricks
-
-minecraft:purpur_block
-  - chisel_type
-  - pillar_axis
-
-minecraft:daylight_detector
-  - redstone_signal
-
-minecraft:weathered_double_cut_copper_slab
-  - top_slot_bit
-
-minecraft:oxidized_cut_copper
-
-minecraft:polished_deepslate_double_slab
-  - top_slot_bit
-
-minecraft:quartz_block
-  - chisel_type
-  - pillar_axis
-
-minecraft:polished_deepslate
-
-minecraft:coal_ore
-
-minecraft:glowingobsidian
-
-minecraft:stripped_birch_log
-  - pillar_axis
-
-minecraft:fence
-  - wood_type
-
-minecraft:jungle_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:planks
-  - wood_type
-
-minecraft:waxed_copper
-
-minecraft:torch
-  - torch_facing_direction
-
-minecraft:crimson_stem
-  - pillar_axis
-
-minecraft:andesite_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:deepslate_iron_ore
-
-minecraft:coral
-  - coral_color
-  - dead_bit
-
-minecraft:quartz_ore
-
-minecraft:info_update2
-
-minecraft:double_stone_slab
-  - stone_slab_type
-  - top_slot_bit
-
-minecraft:melon_stem
-  - facing_direction
-  - growth
-
-minecraft:polished_deepslate_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:spruce_door
-  - open_bit
-  - upper_block_bit
-  - door_hinge_bit
-  - direction
-
-minecraft:cobblestone
-
-minecraft:coal_block
-
-minecraft:exposed_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:waxed_cut_copper_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:seaLantern
-
-minecraft:wooden_slab
-  - top_slot_bit
-  - wood_type
-
-minecraft:command_block
-  - conditional_bit
-  - facing_direction
-
-minecraft:honeycomb_block
-
-minecraft:lit_pumpkin
-  - direction
-
-minecraft:packed_ice
-
-minecraft:blast_furnace
-  - facing_direction
-
-minecraft:beehive
-  - direction
-  - honey_level
-
-minecraft:red_flower
-  - flower_type
-
-minecraft:stripped_warped_hyphae
-  - pillar_axis
-
-minecraft:concretePowder
-  - color
-
-minecraft:emerald_block
-
-minecraft:iron_bars
-
-minecraft:raw_copper_block
-
-minecraft:lapis_ore
-
-minecraft:moss_carpet
-
-minecraft:bamboo
-  - bamboo_leaf_size
-  - age_bit
-  - bamboo_stalk_thickness
-
-minecraft:element_109
-
-minecraft:mycelium
-
-minecraft:crimson_standing_sign
-  - ground_sign_direction
-
-minecraft:element_107
-
-minecraft:element_108
-
-minecraft:anvil
-  - damage
-  - direction
-
-minecraft:element_101
-
-minecraft:element_102
-
-minecraft:element_100
-
-minecraft:element_105
-
-minecraft:element_106
-
-minecraft:obsidian
-
-minecraft:element_103
-
-minecraft:medium_amethyst_bud
-  - facing_direction
-
-minecraft:element_104
-
-minecraft:cobbled_deepslate_stairs
-  - upside_down_bit
-  - weirdo_direction
-
-minecraft:deepslate
-  - pillar_axis
-
-minecraft:copper_ore
-
-minecraft:chiseled_deepslate
-
-minecraft:clay
-
-minecraft:soul_campfire
-  - extinguished
-  - direction
-
-minecraft:warped_roots
-
-minecraft:emerald_ore
-
-minecraft:cobbled_deepslate_slab
-  - top_slot_bit
+  - side
+  - multiple
+
+toggle_bit (Byte):
+  - 0
+  - 1
+
+big_dripleaf_head (Byte):
+  - 0
+  - 1
+
+big_dripleaf_tilt (String):
+  - none
+  - unstable
+  - partial_tilt
+  - full_tilt
+
+candles (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+lit (Byte):
+  - 0
+  - 1
+
+top_slot_bit (Byte):
+  - 0
+  - 1
+
+wall_connection_type_east (String):
+  - none
+  - short
+  - tall
+
+wall_connection_type_north (String):
+  - none
+  - short
+  - tall
+
+wall_connection_type_south (String):
+  - none
+  - short
+  - tall
+
+wall_connection_type_west (String):
+  - none
+  - short
+  - tall
+
+wall_post_bit (Byte):
+  - 0
+  - 1
+
+deprecated (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+brewing_stand_slot_a_bit (Byte):
+  - 0
+  - 1
+
+brewing_stand_slot_b_bit (Byte):
+  - 0
+  - 1
+
+brewing_stand_slot_c_bit (Byte):
+  - 0
+  - 1
+
+huge_mushroom_bits (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+drag_down (Byte):
+  - 0
+  - 1
+
+age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+bite_counter (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+
+extinguished (Byte):
+  - 0
+  - 1
+
+color (String):
+  - white
+  - orange
+  - magenta
+  - light_blue
+  - yellow
+  - lime
+  - pink
+  - gray
+  - silver
+  - cyan
+  - purple
+  - blue
+  - brown
+  - green
+  - red
+  - black
+
+cauldron_liquid (String):
+  - water
+  - lava
+  - powder_snow
+
+fill_level (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+
+growing_plant_age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+
+conditional_bit (Byte):
+  - 0
+  - 1
+
+chemistry_table_type (String):
+  - compound_creator
+  - material_reducer
+  - element_constructor
+  - lab_table
+
+wall_block_type (String):
+  - cobblestone
+  - mossy_cobblestone
+  - granite
+  - diorite
+  - andesite
+  - sandstone
+  - brick
+  - stone_brick
+  - mossy_stone_brick
+  - nether_brick
+  - end_brick
+  - prismarine
+  - red_sandstone
+  - red_nether_brick
+
+color_bit (Byte):
+  - 0
+  - 1
+
+torch_facing_direction (String):
+  - unknown
+  - west
+  - east
+  - north
+  - south
+  - top
+
+composter_fill_level (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+
+coral_color (String):
+  - blue
+  - pink
+  - purple
+  - red
+  - yellow
+
+dead_bit (Byte):
+  - 0
+  - 1
+
+coral_fan_direction (Integer):
+  - 0
+  - 1
+
+coral_direction (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+coral_hang_type_bit (Byte):
+  - 0
+  - 1
+
+dirt_type (String):
+  - normal
+  - coarse
+
+triggered_bit (Byte):
+  - 0
+  - 1
+
+double_plant_type (String):
+  - sunflower
+  - syringa
+  - grass
+  - fern
+  - rose
+  - paeonia
+
+stone_slab_type (String):
+  - smooth_stone
+  - sandstone
+  - wood
+  - cobblestone
+  - brick
+  - stone_brick
+  - quartz
+  - nether_brick
+
+stone_slab_type_2 (String):
+  - red_sandstone
+  - purpur
+  - prismarine_rough
+  - prismarine_dark
+  - prismarine_brick
+  - mossy_cobblestone
+  - smooth_sandstone
+  - red_nether_brick
+
+stone_slab_type_3 (String):
+  - end_stone_brick
+  - smooth_red_sandstone
+  - polished_andesite
+  - andesite
+  - diorite
+  - polished_diorite
+  - granite
+  - polished_granite
+
+stone_slab_type_4 (String):
+  - mossy_stone_brick
+  - smooth_quartz
+  - stone
+  - cut_sandstone
+  - cut_red_sandstone
+
+wood_type (String):
+  - oak
+  - spruce
+  - birch
+  - jungle
+  - acacia
+  - dark_oak
+
+end_portal_eye_bit (Byte):
+  - 0
+  - 1
+
+moisturized_amount (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+
+liquid_depth (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+item_frame_map_bit (Byte):
+  - 0
+  - 1
+
+multi_face_direction_bits (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
+  - 32
+  - 33
+  - 34
+  - 35
+  - 36
+  - 37
+  - 38
+  - 39
+  - 40
+  - 41
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  - 47
+  - 48
+  - 49
+  - 50
+  - 51
+  - 52
+  - 53
+  - 54
+  - 55
+  - 56
+  - 57
+  - 58
+  - 59
+  - 60
+  - 61
+  - 62
+  - 63
+
+rotation (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+kelp_age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+
+hanging (Byte):
+  - 0
+  - 1
+
+old_leaf_type (String):
+  - oak
+  - spruce
+  - birch
+  - jungle
+
+new_leaf_type (String):
+  - acacia
+  - dark_oak
+
+powered_bit (Byte):
+  - 0
+  - 1
+
+lever_direction (String):
+  - down_east_west
+  - east
+  - west
+  - south
+  - north
+  - up_north_south
+  - up_east_west
+  - down_north_south
+
+block_light_level (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+old_log_type (String):
+  - oak
+  - spruce
+  - birch
+  - jungle
+
+new_log_type (String):
+  - acacia
+  - dark_oak
+
+monster_egg_stone_type (String):
+  - stone
+  - cobblestone
+  - stone_brick
+  - mossy_stone_brick
+  - cracked_stone_brick
+  - chiseled_stone_brick
+
+dripstone_thickness (String):
+  - tip
+  - frustum
+  - middle
+  - base
+  - merge
+
+portal_axis (String):
+  - unknown
+  - x
+  - z
+
+output_lit_bit (Byte):
+  - 0
+  - 1
+
+output_subtract_bit (Byte):
+  - 0
+  - 1
+
+repeater_delay (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+prismarine_block_type (String):
+  - default
+  - dark
+  - bricks
+
+chisel_type (String):
+  - default
+  - chiseled
+  - lines
+  - smooth
+
+flower_type (String):
+  - poppy
+  - orchid
+  - allium
+  - houstonia
+  - tulip_red
+  - tulip_orange
+  - tulip_white
+  - tulip_pink
+  - oxeye
+  - cornflower
+  - lily_of_the_valley
+
+sand_stone_type (String):
+  - default
+  - heiroglyphs
+  - cut
+  - smooth
+
+respawn_anchor_charge (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+
+sand_type (String):
+  - normal
+  - red
+
+stability (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+
+stability_check (Byte):
+  - 0
+  - 1
+
+cluster_count (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+
+sea_grass_type (String):
+  - default
+  - double_top
+  - double_bot
+
+no_drop_bit (Byte):
+  - 0
+  - 1
+
+covered_bit (Byte):
+  - 0
+  - 1
+
+height (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+
+sponge_type (String):
+  - dry
+  - wet
+
+stone_type (String):
+  - stone
+  - granite
+  - granite_smooth
+  - diorite
+  - diorite_smooth
+  - andesite
+  - andesite_smooth
+
+stone_brick_type (String):
+  - default
+  - mossy
+  - cracked
+  - chiseled
+  - smooth
+
+structure_block_type (String):
+  - data
+  - save
+  - load
+  - corner
+  - invalid
+  - export
+
+structure_void_type (String):
+  - void
+  - air
+
+tall_grass_type (String):
+  - default
+  - tall
+  - fern
+  - snow
+
+allow_underwater_bit (Byte):
+  - 0
+  - 1
+
+explode_bit (Byte):
+  - 0
+  - 1
+
+attached_bit (Byte):
+  - 0
+  - 1
+
+disarmed_bit (Byte):
+  - 0
+  - 1
+
+suspended_bit (Byte):
+  - 0
+  - 1
+
+cracked_state (String):
+  - no_cracks
+  - cracked
+  - max_cracked
+
+turtle_egg_count (String):
+  - one_egg
+  - two_egg
+  - three_egg
+  - four_egg
+
+twisting_vines_age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+
+vine_direction_bits (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+weeping_vines_age (Integer):
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+
+stripped_bit (Byte):
+  - 0
+  - 1
 

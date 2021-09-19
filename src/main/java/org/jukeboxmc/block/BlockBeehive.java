@@ -5,6 +5,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityBeehive;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBeehive;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -58,6 +59,16 @@ public class BlockBeehive extends Block {
             return new BlockEntityBeehive( this );
         }
         return blockEntity;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.6;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setHoneyLevel( int value ) { //0-5

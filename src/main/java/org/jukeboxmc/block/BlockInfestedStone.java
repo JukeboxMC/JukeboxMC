@@ -1,7 +1,12 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.MonsterEggStoneType;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemMonsterEgg;
+import org.jukeboxmc.item.ItemToolType;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -21,6 +26,16 @@ public class BlockInfestedStone extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.INFESTED_STONE;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.emptyList();
     }
 
     public BlockInfestedStone setMonsterEggStoneType( MonsterEggStoneType monsterEggStoneType ) {

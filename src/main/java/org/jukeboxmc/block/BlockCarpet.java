@@ -33,6 +33,11 @@ public class BlockCarpet extends BlockWaterlogable {
         return true;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
     public BlockCarpet setColor( BlockColor color ) {
         return this.setState( "color", color.name().toLowerCase() );
     }

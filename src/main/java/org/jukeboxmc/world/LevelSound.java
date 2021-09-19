@@ -342,7 +342,7 @@ public enum LevelSound {
     BIG_DRIPLEAF_TILT_UP( 338 ),
     UNDEFINED( 339 );
 
-    private int id;
+    private final int id;
 
     LevelSound( int id ) {
         this.id = id;

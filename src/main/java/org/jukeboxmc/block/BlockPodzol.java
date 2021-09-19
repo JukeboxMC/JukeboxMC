@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemPodzol;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,16 @@ public class BlockPodzol extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.PODZOL;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
     }
 
 }

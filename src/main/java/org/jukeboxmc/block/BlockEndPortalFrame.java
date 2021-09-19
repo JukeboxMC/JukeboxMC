@@ -8,6 +8,9 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -32,6 +35,21 @@ public class BlockEndPortalFrame extends BlockWaterlogable {
     @Override
     public BlockType getBlockType() {
         return BlockType.END_PORTAL_FRAME;
+    }
+
+    @Override
+    public double getHardness() {
+        return -1;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.emptyList();
     }
 
     public void setEndPortalEye( boolean value ) {

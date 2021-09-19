@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemLapisBlock;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +22,26 @@ public class BlockLapisBlock extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.LAPIS_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.STONE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
 }

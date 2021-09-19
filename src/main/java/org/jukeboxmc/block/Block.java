@@ -7,6 +7,8 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -28,7 +30,7 @@ import static org.jukeboxmc.block.BlockType.Companion.update;
 
 public abstract class Block implements Cloneable {
 
-    private static final Map<String, Map<NbtMap, Integer>> STATES = new LinkedHashMap<>();
+    public static final Map<String, Map<NbtMap, Integer>> STATES = new LinkedHashMap<>();
 
     protected int runtimeId;
     protected String identifier;
@@ -166,7 +168,33 @@ public abstract class Block implements Cloneable {
         return false;
     }
 
-    public List<Item> getDrops() {
+    public double getHardness() {
+        return 0;
+    }
+
+    public boolean canBreakWithHand() {
+        return true;
+    }
+
+    public ItemToolType getToolType() {
+        return ItemToolType.NONE;
+    }
+
+    public ItemTierType getTierType() {
+        return ItemTierType.WOODEN;
+    }
+
+    public List<Item> getDrops( Item itemInHand ) {
+        return this.getDrops( itemInHand, 1 );
+    }
+
+    public List<Item> getDrops( Item itemInHand, int amount ) {
+        if ( itemInHand == null ) {
+            return Collections.singletonList( this.toItem().setAmount( amount ) );
+        }
+        if ( itemInHand.getTierType().ordinal() >= this.getTierType().ordinal() ) {
+            return Collections.singletonList( this.toItem().setAmount( amount ) );
+        }
         return Collections.emptyList();
     }
 
@@ -197,6 +225,95 @@ public abstract class Block implements Cloneable {
                 this.location.getY() + 1,
                 this.location.getZ() + 1
         );
+    }
+
+    //========= Block Break =========
+    public double getBreakTime( Item item, Player player ) {
+        double hardness = this.getHardness();
+        if ( hardness == 0 ) {
+            return 0;
+        }
+
+        BlockType blockType = this.getBlockType();
+        boolean correctTool = this.correctTool0( this.getToolType(), item.getItemToolType() ) || item.getItemToolType().equals( ItemToolType.SHEARS ) && ( blockType.equals( BlockType.WEB ) || blockType.equals( BlockType.LEAVES ) || blockType.equals( BlockType.LEAVES2 ) );
+        boolean canBreakWithHand = this.canBreakWithHand();
+        ItemToolType itemToolType = item.getItemToolType();
+        ItemTierType itemTier = item.getTierType();
+        int efficiencyLoreLevel = 0;
+        int hasteEffectLevel = 0;
+        boolean insideOfWaterWithoutAquaAffinity = false;
+        boolean outOfWaterButNotOnGround = !player.isOnGround();
+        return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
+    }
+
+    private double breakTime0( Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand, BlockType blockType, ItemToolType itemToolType, ItemTierType itemTierType, int efficiencyLoreLevel, int hasteEffectLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
+        double baseTime;
+        if ( canHarvest( item ) || canHarvestWithHand ) {
+            baseTime = 1.5 * blockHardness;
+        } else {
+            baseTime = 5.0 * blockHardness;
+        }
+        double speed = 1.0 / baseTime;
+        if ( correctTool ) {
+            speed *= this.toolBreakTimeBonus0( itemToolType, itemTierType, blockType );
+        }
+        speed += this.speedBonusByEfficiencyLore0( efficiencyLoreLevel );
+        speed *= this.speedRateByHasteLore0( hasteEffectLevel );
+        if ( insideOfWaterWithoutAquaAffinity ) speed *= 0.2;
+        if ( outOfWaterButNotOnGround ) speed *= 0.2;
+        return 1.0 / speed;
+    }
+
+    private double toolBreakTimeBonus0( ItemToolType itemToolType, ItemTierType itemTierType, BlockType blockType ) {
+        if ( itemToolType.equals( ItemToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
+        if ( itemToolType.equals( ItemToolType.SHEARS ) ) {
+            if ( blockType.equals( BlockType.WOOL ) || blockType.equals( BlockType.LEAVES ) || blockType.equals( BlockType.LEAVES2 ) ) {
+                return 5.0;
+            } else if ( blockType.equals( BlockType.WEB ) ) {
+                return 15.0;
+            }
+            return 1.0;
+        }
+        if ( itemToolType.equals( ItemToolType.NONE ) ) return 1.0;
+        switch ( itemTierType ) {
+            case WOODEN:
+                return 2.0;
+            case STONE:
+                return 4.0;
+            case IRON:
+                return 6.0;
+            case DIAMOND:
+                return 8.0;
+            case NETHERITE:
+                return 9.0;
+            case GOLD:
+                return 12.0;
+            default:
+                return 1.0;
+        }
+    }
+
+    private double speedBonusByEfficiencyLore0( int efficiencyLoreLevel ) {
+        if ( efficiencyLoreLevel == 0 ) return 0;
+        return efficiencyLoreLevel * efficiencyLoreLevel + 1;
+    }
+
+    private double speedRateByHasteLore0( int hasteLoreLevel ) {
+        return 1.0 + ( 0.2 * hasteLoreLevel );
+    }
+
+    public boolean canHarvest( Item item ) {
+        return this.getTierType().equals( ItemTierType.NONE ) || this.getToolType().equals( ItemToolType.NONE ) || this.correctTool0( this.getToolType(), item.getItemToolType() ) && item.getTierType().ordinal() >= this.getTierType().ordinal();
+    }
+
+    private boolean correctTool0( ItemToolType blockItemToolType, ItemToolType itemToolType ) {
+        return ( blockItemToolType.equals( ItemToolType.SWORD ) && itemToolType.equals( ItemToolType.SWORD ) ) ||
+                ( blockItemToolType.equals( ItemToolType.SHOVEL ) && itemToolType.equals( ItemToolType.SHOVEL ) ) ||
+                ( blockItemToolType.equals( ItemToolType.PICKAXE ) && itemToolType.equals( ItemToolType.PICKAXE ) ) ||
+                ( blockItemToolType.equals( ItemToolType.AXE ) && itemToolType.equals( ItemToolType.AXE ) ) ||
+                ( blockItemToolType.equals( ItemToolType.HOE ) && itemToolType.equals( ItemToolType.HOE ) ) ||
+                ( blockItemToolType.equals( ItemToolType.SHEARS ) && itemToolType.equals( ItemToolType.SHEARS ) ) ||
+                blockItemToolType == ItemToolType.NONE;
     }
 
     //========= Other =========

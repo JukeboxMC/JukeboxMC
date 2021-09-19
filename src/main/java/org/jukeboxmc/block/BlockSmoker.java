@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntitySmoker;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSmoker;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -56,6 +57,21 @@ public class BlockSmoker extends Block {
     @Override
     public BlockEntitySmoker getBlockEntity() {
         return (BlockEntitySmoker) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 3.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -121,15 +121,6 @@ public class Chunk extends LevelDBChunk {
         }
     }
 
-    public void checkAndCreateSubChunks( int subY, Consumer<Boolean> consumer ) {
-        for ( int y = 0; y <= subY; y++ ) {
-            if ( this.subChunks[y] == null ) {
-                this.subChunks[y] = new SubChunk( y );
-            }
-        }
-        consumer.accept( true );
-    }
-
     public BlockEntity getBlockEntity( int x, int y, int z ) {
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );

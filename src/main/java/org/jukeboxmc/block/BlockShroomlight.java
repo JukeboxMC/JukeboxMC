@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemShroomlight;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,13 @@ public class BlockShroomlight extends Block {
         return BlockType.SHROOMLIGHT;
     }
 
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.HOE;
+    }
 }

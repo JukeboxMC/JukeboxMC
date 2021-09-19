@@ -28,9 +28,9 @@ public class PlaySoundPacket extends Packet {
     public void write( BinaryStream stream ) {
         super.write( stream );
         stream.writeString( this.sound.getSound() );
-        stream.writeSignedVarInt( this.position.getBlockX() );
-        stream.writeUnsignedVarInt( this.position.getBlockY() );
-        stream.writeSignedVarInt( this.position.getBlockZ() );
+        stream.writeSignedVarInt( this.position.getBlockX() * 8 );
+        stream.writeUnsignedVarInt( this.position.getBlockY() * 8 );
+        stream.writeSignedVarInt( this.position.getBlockZ() * 8 );
         stream.writeLFloat( this.volume );
         stream.writeLFloat( this.pitch );
     }

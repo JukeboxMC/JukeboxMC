@@ -22,4 +22,13 @@ public class BlockGlass extends Block {
         return BlockType.GLASS;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

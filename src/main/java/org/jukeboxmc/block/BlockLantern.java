@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLantern;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -19,8 +20,8 @@ public class BlockLantern extends BlockWaterlogable {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        boolean hanging = blockFace != BlockFace.UP && this.isBlockAboveValid() && ( !this.isBlockUnderValid() || blockFace == BlockFace.DOWN );
-        if ( !this.isBlockUnderValid() && !hanging ) {
+        boolean hanging = blockFace != BlockFace.UP && this.isBlockAboveValid() && ( this.isBlockUnderValid() || blockFace == BlockFace.DOWN );
+        if ( this.isBlockUnderValid() && !hanging ) {
             return false;
         }
 
@@ -43,6 +44,21 @@ public class BlockLantern extends BlockWaterlogable {
         return false;
     }
 
+    @Override
+    public double getHardness() {
+        return 3.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
     private boolean isBlockAboveValid() {
         Block up = this.getSide( BlockFace.UP );
         if ( up instanceof BlockLeaves ) {
@@ -59,14 +75,14 @@ public class BlockLantern extends BlockWaterlogable {
     private boolean isBlockUnderValid() {
         Block down = this.getSide( BlockFace.DOWN );
         if ( down instanceof BlockLeaves ) {
-            return false;
-        } else if ( down instanceof BlockFence || down instanceof BlockWall ) {
             return true;
+        } else if ( down instanceof BlockFence || down instanceof BlockWall ) {
+            return false;
         } else if ( down instanceof BlockSlab ) {
-            return ( (BlockSlab) down ).isTopSlot();
+            return !( (BlockSlab) down ).isTopSlot();
         } else if ( down instanceof BlockStairs ) {
-            return ( (BlockStairs) down ).isUpsideDown();
-        } else return down.isSolid();
+            return !( (BlockStairs) down ).isUpsideDown();
+        } else return !down.isSolid();
     }
 
     public void setHanging( boolean value ) {

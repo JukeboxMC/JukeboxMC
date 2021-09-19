@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemMossBlock;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,15 @@ public class BlockMossBlock extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.MOSS_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.HOE;
     }
 }

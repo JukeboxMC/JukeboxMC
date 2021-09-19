@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntityDropper;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDropper;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -56,6 +57,16 @@ public class BlockDropper extends Block {
     @Override
     public BlockEntityDropper getBlockEntity() {
         return (BlockEntityDropper) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 3.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setTriggered( boolean value ) {

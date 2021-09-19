@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.item.ItemConcretePowder;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,16 @@ public class BlockConcretePowder extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.CONCRETEPOWDER;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
     }
 
     public BlockConcretePowder setColor( BlockColor color ) {

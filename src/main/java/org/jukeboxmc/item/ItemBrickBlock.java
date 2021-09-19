@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockBrickBlock;
+import org.jukeboxmc.block.BlockBrick;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemBrickBlock extends Item {
     }
 
     @Override
-    public BlockBrickBlock getBlock() {
-        return new BlockBrickBlock();
+    public BlockBrick getBlock() {
+        return new BlockBrick();
     }
 }

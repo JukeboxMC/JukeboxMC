@@ -2,6 +2,7 @@ package org.jukeboxmc.network.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.type.PlayerAction;
 import org.jukeboxmc.utils.BinaryStream;
@@ -17,7 +18,7 @@ public class PlayerActionPacket extends Packet {
     private long entityId;
     private PlayerAction action;
     private Vector position;
-    private int face;
+    private BlockFace blockFace;
 
     @Override
     public int getPacketId() {
@@ -30,7 +31,7 @@ public class PlayerActionPacket extends Packet {
         this.entityId = stream.readUnsignedVarLong();
         this.action = PlayerAction.values()[stream.readSignedVarInt()];
         this.position = new Vector( stream.readSignedVarInt(), stream.readUnsignedVarInt(), stream.readSignedVarInt() );
-        this.face = stream.readSignedVarInt();
+        this.blockFace = stream.readBlockFace();
     }
 
     @Override
@@ -41,6 +42,6 @@ public class PlayerActionPacket extends Packet {
         stream.writeSignedVarInt( this.position.getBlockX() );
         stream.writeUnsignedVarInt( this.position.getBlockY() );
         stream.writeSignedVarInt( this.position.getBlockZ() );
-        stream.writeSignedVarInt( this.face );
+        stream.writeSignedVarInt( this.blockFace.ordinal() );
     }
 }

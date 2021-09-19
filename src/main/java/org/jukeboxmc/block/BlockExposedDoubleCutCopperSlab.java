@@ -3,6 +3,8 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemExposedCutCopperSlab;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -31,5 +33,25 @@ public class BlockExposedDoubleCutCopperSlab extends BlockSlab {
     @Override
     public BlockType getBlockType() {
         return BlockType.EXPOSED_CUT_COPPER_SLAB;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.STONE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

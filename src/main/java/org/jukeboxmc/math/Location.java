@@ -99,7 +99,7 @@ public class Location extends Vector {
     @Override
     public String toString() {
         return "Location{" +
-                "world=" + world +
+                "world=" + world.getName() +
                 ", yaw=" + yaw +
                 ", pitch=" + pitch +
                 ", x=" + x +

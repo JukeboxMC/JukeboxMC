@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.SandType;
 import org.jukeboxmc.item.ItemSand;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,21 @@ public class BlockSand extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SAND;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.6;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public BlockSand setSandType( SandType sandType ) {

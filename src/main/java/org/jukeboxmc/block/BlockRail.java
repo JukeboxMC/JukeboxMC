@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
 import org.jukeboxmc.item.ItemRail;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -36,6 +37,16 @@ public class BlockRail extends BlockWaterlogable {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.7;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setRailDirection( RailDirection railDirection ) {

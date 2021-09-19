@@ -398,6 +398,9 @@ public class BinaryStream {
         item.setMeta( data );
         item.setAmount( amount );
         item.setNBT( nbt );
+        if ( nbt != null ) {
+            item.setDurability( nbt.getInt( "Damage", 0 ) );
+        }
         item.setBlockRuntimeId( blockRuntimeId );
 
         if ( networkId == this.shildId ) {
@@ -425,13 +428,13 @@ public class BinaryStream {
         // when crafting is false
         this.writeBoolean( false );
 
-        this.writeSignedVarInt( item.getBlock().getRuntimeId() );
+        this.writeSignedVarInt( item.getBlockRuntimeId());
 
         ByteBuf userData = ByteBufAllocator.DEFAULT.ioBuffer();
         BinaryStream binaryStream = new BinaryStream( userData );
 
         try ( LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream( userData ) ) {
-            final NbtMap nbtData = item.getNBT();
+            final NbtMap nbtData = item.toNetwork().build();
 
             if ( nbtData != null && !nbtData.isEmpty() ) {
                 stream.writeShort( -1 );

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemDeepslateCoalOre;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,20 @@ public class BlockDeepslateCoalOre extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.DEEPSLATE_COAL_ORE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 4.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

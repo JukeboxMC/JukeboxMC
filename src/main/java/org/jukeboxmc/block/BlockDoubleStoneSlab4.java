@@ -4,9 +4,12 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlab4Type;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab4;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -27,12 +30,27 @@ public class BlockDoubleStoneSlab4 extends BlockSlab {
 
     @Override
     public ItemStoneSlab4 toItem() {
-        return new ItemStoneSlab4(this.runtimeId);
+        return new ItemStoneSlab4( Block.STATES.get( "minecraft:stone_slab4" ).get( this.blockStates ) );
     }
 
     @Override
     public BlockType getBlockType() {
         return BlockType.STONE_SLAB4;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return super.getDrops( itemInHand, 2 );
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public Block setStoneSlabType( StoneSlab4Type stoneSlabType ) {

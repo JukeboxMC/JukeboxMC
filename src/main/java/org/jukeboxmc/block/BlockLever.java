@@ -22,6 +22,11 @@ public class BlockLever extends BlockWaterlogable {
         return BlockType.LEVER;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
     public void setOpen( boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }

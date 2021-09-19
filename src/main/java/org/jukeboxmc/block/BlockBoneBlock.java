@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBoneBlock;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -40,6 +41,21 @@ public class BlockBoneBlock extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.BONE_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setDeprecated( int value ) { //0-3 Idk what it is

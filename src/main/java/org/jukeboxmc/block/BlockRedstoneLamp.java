@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemRedstoneLamp;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,16 @@ public class BlockRedstoneLamp extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.REDSTONE_LAMP;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.3;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
 }

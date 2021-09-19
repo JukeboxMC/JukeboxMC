@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemCrackedNetherBricks;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockCrackedNetherBricks extends Block {
 
@@ -18,4 +19,19 @@ public class BlockCrackedNetherBricks extends Block {
         return BlockType.CRACKED_NETHER_BRICKS;
     }
 
+
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

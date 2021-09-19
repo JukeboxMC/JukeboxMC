@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
-import org.jukeboxmc.item.ItemNetherBrickBlock;
+import org.jukeboxmc.item.ItemNetherbrick;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -13,13 +14,28 @@ public class BlockNetherBrickBlock extends Block {
     }
 
     @Override
-    public ItemNetherBrickBlock toItem() {
-        return new ItemNetherBrickBlock();
+    public ItemNetherbrick toItem() {
+        return new ItemNetherbrick();
     }
 
     @Override
     public BlockType getBlockType() {
         return BlockType.NETHER_BRICK_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
 }

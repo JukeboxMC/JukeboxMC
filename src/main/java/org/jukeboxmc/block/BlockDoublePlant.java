@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.PlantType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDoublePlant;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -78,13 +79,17 @@ public class BlockDoublePlant extends Block {
 
     @Override
     public boolean canBeReplaced( Block block ) {
-        this.onBlockBreak( block.getLocation() );
         return true;
     }
 
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHEARS;
     }
 
     public BlockDoublePlant setPlantType( PlantType plantType ) {

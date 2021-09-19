@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.PurpurType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemPurpurBlock;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -41,6 +42,21 @@ public class BlockPurpurBlock extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.PURPUR_BLOCK;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setAxis( Axis axis ) {

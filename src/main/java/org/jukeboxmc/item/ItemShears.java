@@ -10,5 +10,8 @@ public class ItemShears extends Item {
         super ( "minecraft:shears" );
     }
 
-
+    @Override
+    public ItemToolType getItemToolType() {
+        return ItemToolType.SHEARS;
+    }
 }

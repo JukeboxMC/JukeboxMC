@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBook;
 import org.jukeboxmc.item.ItemBookshelf;
+import org.jukeboxmc.item.ItemToolType;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -22,4 +28,18 @@ public class BlockBookshelf extends Block {
         return BlockType.BOOKSHELF;
     }
 
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.singletonList( new ItemBook().setAmount( 3 ) );
+    }
 }

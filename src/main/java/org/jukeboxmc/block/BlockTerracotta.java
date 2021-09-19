@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -21,6 +22,21 @@ public abstract class BlockTerracotta extends Block {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this );
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.4;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

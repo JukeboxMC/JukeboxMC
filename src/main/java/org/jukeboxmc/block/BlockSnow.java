@@ -1,6 +1,12 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSnow;
+import org.jukeboxmc.item.ItemSnowball;
+import org.jukeboxmc.item.ItemToolType;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -22,4 +28,21 @@ public class BlockSnow extends Block {
         return BlockType.SNOW;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHOVEL;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        if ( itemInHand.getTierType().ordinal() >= this.getTierType().ordinal() ) {
+            return Collections.singletonList( new ItemSnowball().setAmount( 4 ) );
+        }
+        return Collections.emptyList();
+    }
 }

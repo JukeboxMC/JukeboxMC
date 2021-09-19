@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemSmoothBasalt;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +21,15 @@ public class BlockSmoothBasalt extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.SMOOTH_BASALT;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.25;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 }

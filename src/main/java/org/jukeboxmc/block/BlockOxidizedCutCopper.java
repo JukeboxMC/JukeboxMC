@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemOxidizedCutCopper;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,5 +22,25 @@ public class BlockOxidizedCutCopper extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.OXIDIZED_CUT_COPPER;
+    }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.STONE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 }

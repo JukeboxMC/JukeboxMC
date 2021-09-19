@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.ItemSmallDripleafBlock;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,26 @@ public class BlockSmallDripleafBlock extends Block{
     @Override
     public BlockType getBlockType() {
         return BlockType.SMALL_DRIPLEAF_BLOCK;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public BlockSmallDripleafBlock setUpperBlock( boolean value ) {

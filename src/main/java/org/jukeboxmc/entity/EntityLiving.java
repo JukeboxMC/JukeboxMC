@@ -16,6 +16,7 @@ public abstract class EntityLiving extends Entity {
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
 
     public EntityLiving() {
+        super();
         this.addAttribute( AttributeType.HEALTH );
         this.addAttribute( AttributeType.ABSORPTION );
         this.addAttribute( AttributeType.ATTACK_DAMAGE );

@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.LogType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemLog;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -41,6 +42,16 @@ public class BlockLog extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.LOG;
+    }
+
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public BlockLog setLogType( LogType logType ) {

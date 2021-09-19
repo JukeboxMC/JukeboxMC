@@ -6,9 +6,9 @@ import org.jukeboxmc.item.ItemSealantern;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSealantern extends Block {
+public class BlockSeaLantern extends Block {
 
-    public BlockSealantern() {
+    public BlockSeaLantern() {
         super( "minecraft:sealantern" );
     }
 
@@ -20,6 +20,11 @@ public class BlockSealantern extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.SEALANTERN;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.3;
     }
 
 }

@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntityHopper;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemHopper;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -63,6 +64,21 @@ public class BlockHopper extends BlockWaterlogable {
     @Override
     public BlockEntityHopper getBlockEntity() {
         return (BlockEntityHopper) this.world.getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setToggle( boolean value ) {

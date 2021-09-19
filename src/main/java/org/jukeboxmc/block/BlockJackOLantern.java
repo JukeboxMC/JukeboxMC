@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemJackOLantern;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -33,6 +34,16 @@ public class BlockJackOLantern extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.JACK_O_LANTERN;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setDirection( Direction direction ) {

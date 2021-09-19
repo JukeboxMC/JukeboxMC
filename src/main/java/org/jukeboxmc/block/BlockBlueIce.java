@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemBlueIce;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -22,4 +23,13 @@ public class BlockBlueIce extends Block {
         return BlockType.BLUE_ICE;
     }
 
+    @Override
+    public double getHardness() {
+        return 2.8;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
 }

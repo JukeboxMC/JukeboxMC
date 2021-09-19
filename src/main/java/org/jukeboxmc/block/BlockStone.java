@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.StoneType;
 import org.jukeboxmc.item.ItemStone;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -15,7 +16,7 @@ public class BlockStone extends Block {
 
     @Override
     public ItemStone toItem() {
-        return new ItemStone(this.runtimeId);
+        return new ItemStone( this.runtimeId );
     }
 
     @Override
@@ -23,8 +24,23 @@ public class BlockStone extends Block {
         return BlockType.STONE;
     }
 
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
     public BlockStone setStoneType( StoneType stoneType ) {
-       return this.setState( "stone_type", stoneType.name().toLowerCase() );
+        return this.setState( "stone_type", stoneType.name().toLowerCase() );
     }
 
     public StoneType getStoneType() {

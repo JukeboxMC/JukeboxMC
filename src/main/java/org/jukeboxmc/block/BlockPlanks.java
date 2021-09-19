@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.WoodType;
 import org.jukeboxmc.item.ItemPlanks;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,16 @@ public class BlockPlanks extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.PLANKS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public BlockPlanks setWoodType( WoodType woodType ) {

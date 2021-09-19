@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.LeafType;
 import org.jukeboxmc.item.ItemLeaves;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,16 @@ public class BlockLeaves extends BlockWaterlogable {
     @Override
     public BlockType getBlockType() {
         return BlockType.LEAVES;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.2;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHEARS;
     }
 
     public void setPersistent( boolean value ) {

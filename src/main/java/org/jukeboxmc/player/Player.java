@@ -58,27 +58,34 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private String xuid = null;
     private String minecraftVersion = null;
 
+    private boolean breakingBlock = false;
+    private long lastBreakTime = 0;
+    private Vector lasBreakPosition;
+
     private final Queue<Long> chunkLoadQueue = new LinkedList<>();
     private final Set<Long> loadingChunks = new HashSet<>();
     private final Set<Long> loadedChunks = new HashSet<>();
     private final Set<UUID> emotes = new HashSet<>();
 
     public Player( PlayerConnection playerConnection ) {
+        super();
         this.playerConnection = playerConnection;
         this.server = playerConnection.getServer();
         this.gameMode = this.server.getDefaultGameMode();
 
         this.cursorInventory = new CursorInventory( this, this.entityId );
-        this.craftingTableInventory = new CraftingTableInventory( this  );
+        this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
-        this.anvilInventory = new AnvilInventory( this  );
+        this.anvilInventory = new AnvilInventory( this );
         this.enderChestInventory = new EnderChestInventory( this );
         this.stoneCutterInventory = new StoneCutterInventory( this );
         this.grindstoneInventory = new GrindstoneInventory( this );
 
         this.adventureSettings = new AdventureSettings( this );
         this.chunkComparator = new ChunkComparator( this );
+
+        this.lasBreakPosition = new Vector( 0, 0, 0 );
     }
 
     @Override
@@ -102,11 +109,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                     Server.getInstance().addToMainThread( () -> {
                         this.sendNetworkChunkPublisher();
 
+                        /*
                         for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
-                            if ( entity != null && this != entity ) {
+                            if ( entity != this && entity != null && !entity.isClosed() ) {
                                 entity.spawn( this );
+                                System.out.println("Call3");
                             }
                         }
+                         */
                     } );
                 } );
             }
@@ -288,6 +298,30 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
+    public boolean isBreakingBlock() {
+        return this.breakingBlock;
+    }
+
+    public void setBreakingBlock( boolean breakingBlock ) {
+        this.breakingBlock = breakingBlock;
+    }
+
+    public Vector getLasBreakPosition() {
+        return this.lasBreakPosition;
+    }
+
+    public void setLasBreakPosition( Vector lasBreakPosition ) {
+        this.lasBreakPosition = lasBreakPosition;
+    }
+
+    public long getLastBreakTime() {
+        return this.lastBreakTime;
+    }
+
+    public void setLastBreakTime( long lastBreakTime ) {
+        this.lastBreakTime = lastBreakTime;
+    }
+
     public void setLocale( Locale locale ) {
         this.locale = locale;
     }
@@ -305,6 +339,18 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             return;
         }
         this.gameMode = gameMode;
+
+        AdventureSettings adventureSettings = this.adventureSettings;
+        adventureSettings.setWorldImmutable( ( gameMode.ordinal() & 0x02 ) > 0 );
+        adventureSettings.setBuildAndMine( ( gameMode.ordinal() & 0x02 ) <= 0 );
+        adventureSettings.setWorldBuilder( ( gameMode.ordinal() & 0x02 ) <= 0 );
+        adventureSettings.setCanFly( ( gameMode.ordinal() & 0x01 ) > 0 );
+        adventureSettings.setFlying( gameMode.ordinal() == 0x03 );
+        adventureSettings.setNoClip( gameMode.ordinal() == 0x03 );
+        adventureSettings.setAttackMobs( gameMode.ordinal() < 0x02 );
+        adventureSettings.setAttackPlayers( gameMode.ordinal() < 0x02 );
+        adventureSettings.setNoPvP( gameMode.ordinal() == 0x03 );
+        adventureSettings.update();
 
         SetGamemodePacket setGamemodePacket = new SetGamemodePacket();
         setGamemodePacket.setGameMode( gameMode );
@@ -422,8 +468,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private void joinServer() {
         if ( !this.spawned ) {
-            this.server.getDefaultWorld().addEntity( this );
-
             AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
             availableCommandsPacket.setCommands( this.server.getPluginManager().getCommandManager().getCommands() );
             this.playerConnection.sendPacket( availableCommandsPacket );
@@ -469,18 +513,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.playerConnection.sendPacket( playerListPacket );
             }
 
+            this.getWorld().addEntity( this );
             this.getChunk().addEntity( this );
-
-            for ( Long hash : this.loadedChunks ) {
-                int chunkX = Utils.fromHashX( hash );
-                int chunkZ = Utils.fromHashZ( hash );
-
-                for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
-                    if ( entity != null && this != entity ) {
-                        entity.spawn( this );
-                    }
-                }
-            }
 
             if ( this.chunkLoadQueue.isEmpty() ) {
                 PlayStatusPacket playStatusPacket = new PlayStatusPacket();
@@ -492,12 +526,26 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
                 Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
             }
-            for ( Player onlinePlayer : server.getOnlinePlayers() ) {
+            for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
                 if ( onlinePlayer != null && onlinePlayer.getDimension() == this.getDimension() ) {
                     onlinePlayer.spawn( this );
                     this.spawn( onlinePlayer );
                 }
             }
+           /*
+            for ( Long hash : this.loadedChunks ) {
+                int chunkX = Utils.fromHashX( hash );
+                int chunkZ = Utils.fromHashZ( hash );
+
+                for ( Entity entity : this.getWorld().getChunk( chunkX, chunkZ, this.dimension ).getEntities() ) {
+                    if ( entity != this && entity != null && !entity.isClosed() ) {
+                        entity.spawn( this );
+                        System.out.println("Call1");
+                    }
+                }
+            }
+            */
+            this.spawned = true;
         }
     }
 
@@ -526,7 +574,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         disconnectPacket.setHideDisconnectScreen( hideDisconnectScreen );
         this.playerConnection.sendPacket( disconnectPacket, true );
 
-        this.despawn(this );
+        this.close();
     }
 
     public void disconnect( String disconnectMessage ) {

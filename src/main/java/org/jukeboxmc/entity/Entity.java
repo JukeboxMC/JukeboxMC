@@ -484,7 +484,6 @@ public abstract class Entity {
 
         entity.getChunk().addEntity( this );
         entity.getWorld().addEntity( this );
-
         player.getPlayerConnection().sendPacket( entity.createSpawnPacket() );
         this.spawned = true;
         return this;
@@ -502,7 +501,10 @@ public abstract class Entity {
         RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
         removeEntityPacket.setEntityId( this.entityId );
         player.getPlayerConnection().sendPacket( removeEntityPacket );
+    }
 
+    public void close() {
+        this.despawn();
         this.getChunk().removeEntity( this );
         this.getWorld().removeEntity( this );
         this.closed = true;

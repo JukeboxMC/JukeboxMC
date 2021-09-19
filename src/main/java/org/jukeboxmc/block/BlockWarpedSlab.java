@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.item.ItemWarpedSlab;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -62,4 +63,13 @@ public class BlockWarpedSlab extends BlockSlab {
         return BlockType.WARPED_SLAB;
     }
 
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
 }

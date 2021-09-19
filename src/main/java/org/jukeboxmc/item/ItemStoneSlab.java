@@ -11,7 +11,7 @@ import org.jukeboxmc.block.type.StoneSlabType;
 public class ItemStoneSlab extends Item {
 
     public ItemStoneSlab( int blockRuntimeId ) {
-        super( "double_stone_slab", blockRuntimeId );
+        super( "minecraft:double_stone_slab", blockRuntimeId );
     }
 
     @Override

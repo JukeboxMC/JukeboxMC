@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemEndBricks;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -20,6 +21,21 @@ public class BlockEndBricks extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.END_BRICKS;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.8;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
 }

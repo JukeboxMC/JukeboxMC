@@ -6,6 +6,7 @@ import org.jukeboxmc.blockentity.BlockEntitySkull;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSkull;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -54,6 +55,7 @@ public class BlockSkull extends BlockWaterlogable {
         return true;
     }
 
+    @Override
     public boolean hasBlockEntity() {
         return true;
     }
@@ -61,6 +63,16 @@ public class BlockSkull extends BlockWaterlogable {
     @Override
     public BlockEntitySkull getBlockEntity() {
         return (BlockEntitySkull) this.world.getBlockEntity( this.getLocation(), this.location.getDimension() );
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public BlockSkull setNoDrop( boolean value ) {

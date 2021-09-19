@@ -1,6 +1,6 @@
 package org.jukeboxmc.item;
 
-import org.jukeboxmc.block.BlockSealantern;
+import org.jukeboxmc.block.BlockSeaLantern;
 
 /**
  * @author LucGamesYT
@@ -13,7 +13,7 @@ public class ItemSealantern extends Item {
     }
 
     @Override
-    public BlockSealantern getBlock() {
-        return new BlockSealantern();
+    public BlockSeaLantern getBlock() {
+        return new BlockSeaLantern();
     }
 }

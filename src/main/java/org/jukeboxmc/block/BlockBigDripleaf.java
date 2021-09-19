@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.BigDripleafTilt;
 import org.jukeboxmc.item.ItemBigDripleaf;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -32,6 +33,16 @@ public class BlockBigDripleaf extends Block{
     @Override
     public boolean isSolid() {
         return false;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setBigDripleafTilt( BigDripleafTilt bigDripleafTilt ) {

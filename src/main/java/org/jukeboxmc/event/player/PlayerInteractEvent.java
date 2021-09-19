@@ -2,7 +2,6 @@ package org.jukeboxmc.event.player;
 
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
@@ -15,10 +14,10 @@ import org.jukeboxmc.player.Player;
 @ToString
 public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
 
-    private Action action;
+    private final Action action;
     private Item item;
-    private Block clickedBlock;
-    private Vector touchVector;
+    private final Block clickedBlock;
+    private final Vector touchVector;
 
     /**
      * Creates a new {@link PlayerInteractEvent}
@@ -34,7 +33,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
         this.action = action;
         this.item = item;
         this.touchVector = touchVector;
-        this.clickedBlock = new BlockAir();
+        this.clickedBlock = null;
     }
 
     /**

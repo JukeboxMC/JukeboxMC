@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.StoneBrickType;
 import org.jukeboxmc.item.ItemStonebrick;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -13,8 +14,6 @@ public class BlockStonebrick extends Block {
         super( "minecraft:stonebrick" );
     }
 
-
-
     @Override
     public ItemStonebrick toItem() {
         return new ItemStonebrick( this.runtimeId );
@@ -25,6 +24,20 @@ public class BlockStonebrick extends Block {
         return BlockType.STONEBRICK;
     }
 
+    @Override
+    public double getHardness() {
+        return 2;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
 
     public BlockStonebrick setStoneBrickType( StoneBrickType stoneBrickType ) {
         return this.setState( "stone_brick_type", stoneBrickType.name().toLowerCase() );

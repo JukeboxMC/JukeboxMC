@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.DripstoneThickness;
 import org.jukeboxmc.item.ItemPointedDripstone;
+import org.jukeboxmc.item.ItemToolType;
 
 /**
  * @author LucGamesYT
@@ -21,6 +22,16 @@ public class BlockPointedDripstone extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.POINTED_DRIPSTONE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
     }
 
     public void setDripstoneThickness( DripstoneThickness dripstoneThickness ) {

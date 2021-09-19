@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemDeepslate;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Axis;
 
 /**
@@ -22,6 +23,22 @@ public class BlockDeepslate extends Block {
     public BlockType getBlockType() {
         return BlockType.DEEPSLATE;
     }
+
+    @Override
+    public double getHardness() {
+        return 3;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
 
     public void setAxis( Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );

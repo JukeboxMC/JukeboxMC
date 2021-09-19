@@ -7,6 +7,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -90,6 +91,21 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
                 this.location.getY() + 0.0625f,
                 this.location.getZ() + 0.9375f
         );
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setRedstoneSignal( int value ) {

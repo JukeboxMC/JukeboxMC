@@ -34,6 +34,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     protected final PlayerInventory playerInventory;
 
     public EntityHuman() {
+        super();
         this.uuid = UUID.randomUUID();
         this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, GUIScale.CLASSIC );
         this.playerInventory = new PlayerInventory( this, this.entityId );
@@ -87,6 +88,28 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
             super.spawn( player );
         }
         return this;
+    }
+
+    @Override
+    public Entity spawn() {
+        for ( Player player : this.getWorld().getPlayers() ) {
+            this.spawn( player );
+        }
+        return this;
+    }
+
+    @Override
+    public void despawn( Player player ) {
+        if ( this != player ) {
+            super.despawn( player );
+        }
+    }
+
+    @Override
+    public void despawn() {
+        for ( Player player : this.getWorld().getPlayers() ) {
+            this.despawn( player );
+        }
     }
 
     public UUID getUUID() {

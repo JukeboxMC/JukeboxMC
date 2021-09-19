@@ -5,6 +5,7 @@ import org.jukeboxmc.blockentity.BlockEntityFurnace;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemFurnace;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -39,6 +40,16 @@ public class BlockFurnace extends Block {
     }
 
     @Override
+    public ItemFurnace toItem() {
+        return new ItemFurnace();
+    }
+
+    @Override
+    public BlockType getBlockType() {
+        return BlockType.FURNACE;
+    }
+
+    @Override
     public boolean hasBlockEntity() {
         return true;
     }
@@ -49,13 +60,18 @@ public class BlockFurnace extends Block {
     }
 
     @Override
-    public ItemFurnace toItem() {
-        return new ItemFurnace();
+    public double getHardness() {
+        return 3.5;
     }
 
     @Override
-    public BlockType getBlockType() {
-        return BlockType.FURNACE;
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

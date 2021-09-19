@@ -7,6 +7,7 @@ import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.blockentity.BlockEntityBanner;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
@@ -32,7 +33,7 @@ public abstract class BlockBanner extends BlockWaterlogable {
             blockWallBanner.setBlockFace( blockFace );
             world.setBlock( placePosition, blockWallBanner, 0 );
         }
-        if( block instanceof BlockFlowingWater || block instanceof BlockWater ) {
+        if( block instanceof BlockWater ) {
             world.setBlock( placePosition, block, 1 );
         }
         int type = itemIndHand.getNBT() != null ? itemIndHand.getNBT().getInt( "Type", 0 ) : 0;
@@ -63,6 +64,16 @@ public abstract class BlockBanner extends BlockWaterlogable {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+
+    @Override
+    public double getHardness() {
+        return 1;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.AXE;
     }
 
     public void setSignDirection( SignDirection signDirection ) {

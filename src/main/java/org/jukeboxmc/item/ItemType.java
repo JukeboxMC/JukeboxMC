@@ -74,7 +74,12 @@ public enum ItemType {
     LAPIS_ORE( new ItemLapisOre() ),
     LAPIS_BLOCK( new ItemLapisBlock() ),
     DISPENSER( new ItemDispenser() ),
-    SANDSTONE( new ItemSandstone() ),
+
+    SANDSTONE( BlockType.SANDSTONE.<BlockSandstone>getBlock().setSandStoneType( SandStoneType.DEFAULT ).toItem() ),
+    CHISELED_SANDSTONE( BlockType.SANDSTONE.<BlockSandstone>getBlock().setSandStoneType( SandStoneType.HEIROGLYPHS ).toItem() ),
+    CUT_SANDSTONE( BlockType.SANDSTONE.<BlockSandstone>getBlock().setSandStoneType( SandStoneType.CUT ).toItem() ),
+    SMOOTH_SANDSTONE( BlockType.SANDSTONE.<BlockSandstone>getBlock().setSandStoneType( SandStoneType.SMOOTH ).toItem() ),
+
     NOTEBLOCK( new ItemNoteblock() ),
     BED_BLOCK( new ItemBedBlock() ),
     GOLDEN_RAIL( new ItemGoldenRail() ),
@@ -84,6 +89,8 @@ public enum ItemType {
 
     TALLGRASS( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.TALL ).toItem() ),
     FERN( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.FERN ).toItem() ),
+    DEFAULT( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.DEFAULT ).toItem() ),
+    SNOW1( BlockType.TALLGRASS.<BlockTallGrass>getBlock().setGrassType( GrassType.SNOW ).toItem() ),
 
     DEADBUSH( new ItemDeadbush() ),
     PISTON( new ItemPiston() ),
@@ -371,27 +378,32 @@ public enum ItemType {
     PACKED_ICE( new ItemPackedIce() ),
 
     LARGE_FERN( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).toItem() ),
-    LARGE_FERN_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).setUpperBlock( true ).toItem() ),
+    //LARGE_FERN_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.FERN ).setUpperBlock( true ).toItem() ),
 
     DOUBLE_TALLGRASS( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).toItem() ),
-    DOUBLE_TALLGRASS_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).setUpperBlock( true ).toItem() ),
+    //DOUBLE_TALLGRASS_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.GRASS ).setUpperBlock( true ).toItem() ),
 
     SUNFLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).toItem() ),
-    SUNFLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).setUpperBlock( true ).toItem() ),
+    //SUNFLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SUNFLOWER ).setUpperBlock( true ).toItem() ),
 
     LILLAC_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).toItem() ),
-    LILLAC_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).setUpperBlock( true ).toItem() ),
+    //LILLAC_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.SYRINGA ).setUpperBlock( true ).toItem() ),
 
     ROSE_BUSH( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).toItem() ),
-    ROSE_BUSH_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).setUpperBlock( true ).toItem() ),
+    //ROSE_BUSH_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.ROSE ).setUpperBlock( true ).toItem() ),
 
     PEONY_FLOWER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).toItem() ),
-    PEONY_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).setUpperBlock( true ).toItem() ),
+    //PEONY_FLOWER_UPPER( BlockType.DOUBLE_PLANT.<BlockDoublePlant>getBlock().setPlantType( PlantType.PAEONIA ).setUpperBlock( true ).toItem() ),
 
     STANDING_BANNER( new ItemStandingBanner() ),
     WALL_BANNER( new ItemWallBanner() ),
     DAYLIGHT_DETECTOR_INVERTED( new ItemDaylightDetectorInverted() ),
-    RED_SANDSTONE( new ItemRedSandstone() ),
+
+    RED_SANDSTONE( BlockType.RED_SANDSTONE.<BlockRedSandstone>getBlock().setSandStoneType( SandStoneType.DEFAULT ).toItem() ),
+    CHISELED_RED_SANDSTONE( BlockType.RED_SANDSTONE.<BlockRedSandstone>getBlock().setSandStoneType( SandStoneType.HEIROGLYPHS ).toItem() ),
+    CUT_RED_SANDSTONE( BlockType.RED_SANDSTONE.<BlockRedSandstone>getBlock().setSandStoneType( SandStoneType.CUT ).toItem() ),
+    SMOOTH_RED_SANDSTONE( BlockType.RED_SANDSTONE.<BlockRedSandstone>getBlock().setSandStoneType( SandStoneType.SMOOTH ).toItem() ),
+
     RED_SANDSTONE_STAIRS( new ItemRedSandstoneStairs() ),
     REAL_DOUBLE_RED_SANDSTONE_SLAB( new ItemRealDoubleRedSandstoneSlab() ),
     SPRUCE_FENCE_GATE( new ItemSpruceFenceGate() ),
@@ -1400,7 +1412,25 @@ public enum ItemType {
     SPYGLASS( new ItemSpyglass() ),
     WEATHERED_CUT_COPPER_STAIRS( new ItemWeatheredCutCopperStairs() ),
     EXPOSED_COPPER( new ItemExposedCopper() ),
-    COBBLED_DEEPSLATE_SLAB( new ItemCobbledDeepslateSlab() );
+    COBBLED_DEEPSLATE_SLAB( new ItemCobbledDeepslateSlab() ),
+
+    CANDLE( new ItemCandle() ),
+    WHITE_CANDLE( new ItemWhiteCandle() ),
+    ORANGE_CANDLE( new ItemOrangeCandle() ),
+    MAGENTA_CANDLE( new ItemMagentaCandle() ),
+    LIGHT_BLUE_CANDLE( new ItemLightBlueCandle() ),
+    YELLOW_CANDLE( new ItemYellowCandle() ),
+    LIME_CANDLE( new ItemLimeCandle() ),
+    PINK_CANDLE( new ItemPinkCandle() ),
+    LIGHT_GRAY( new ItemLightGrayCandle() ),
+    GRAY_CANDLE( new ItemGrayCandle() ),
+    CYAN_CANDLE( new ItemCyanCandle() ),
+    PURPLE_CANDLE( new ItemPurpleCandle() ),
+    BLUE_CANDLE( new ItemLightBlueCandle() ),
+    BROWN_CANDLE( new ItemBrownCandle() ),
+    GREEN_CANDLE( new ItemGreenCandle() ),
+    RED_CANDLE( new ItemRedCandle() ),
+    BLACK_CANDLE( new ItemBlackCandle() );
 
     private static final Map<ItemType, Item> cachedItems = new HashMap<>();
 
@@ -1418,8 +1448,7 @@ public enum ItemType {
     }
 
     public static Item getItemFormNetwork( int networkId, int meta ) {
-        for ( ItemType itemType : values() ) {
-            Item item = itemType.getItem();
+        for ( Item item : cachedItems.values() ) {
             if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
                 return item;
             } else if ( item.getRuntimeId() == networkId ) {

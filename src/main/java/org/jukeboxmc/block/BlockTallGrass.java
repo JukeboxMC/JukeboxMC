@@ -1,7 +1,13 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.GrassType;
-import org.jukeboxmc.item.ItemTallgrass;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemTallGrass;
+import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -14,8 +20,17 @@ public class BlockTallGrass extends Block {
     }
 
     @Override
-    public ItemTallgrass toItem() {
-        return new ItemTallgrass( this.runtimeId );
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block blockDown = world.getBlock( blockPosition );
+        if ( blockDown.getBlockType().equals( BlockType.GRASS ) || blockDown.getBlockType().equals( BlockType.DIRT ) || blockDown.getBlockType().equals( BlockType.PODZOL ) ) {
+            world.setBlock( placePosition, this );
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public ItemTallGrass toItem() {
+        return new ItemTallGrass( this.runtimeId );
     }
 
     @Override
@@ -41,6 +56,11 @@ public class BlockTallGrass extends Block {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.SHEARS;
     }
 
     public BlockTallGrass setGrassType( GrassType grassType ) {

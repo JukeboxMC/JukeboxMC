@@ -1,6 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemRespawnAnchor;
+import org.jukeboxmc.item.ItemTierType;
+import org.jukeboxmc.item.ItemToolType;
 
 public class BlockRespawnAnchor extends Block {
 
@@ -17,6 +19,26 @@ public class BlockRespawnAnchor extends Block {
     @Override
     public BlockType getBlockType() {
         return BlockType.RESPAWN_ANCHOR;
+    }
+
+    @Override
+    public double getHardness() {
+        return 50;
+    }
+
+    @Override
+    public ItemToolType getToolType() {
+        return ItemToolType.PICKAXE;
+    }
+
+    @Override
+    public ItemTierType getTierType() {
+        return ItemTierType.DIAMOND;
+    }
+
+    @Override
+    public boolean canBreakWithHand() {
+        return false;
     }
 
     public void setRespawnAnchorCharge( int value ) { //0-4

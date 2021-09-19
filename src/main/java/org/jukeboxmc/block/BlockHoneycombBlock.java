@@ -22,4 +22,9 @@ public class BlockHoneycombBlock extends Block {
         return BlockType.HONEYCOMB_BLOCK;
     }
 
+    @Override
+    public double getHardness() {
+        return 0.6;
+    }
+
 }
