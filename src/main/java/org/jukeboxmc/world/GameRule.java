@@ -27,6 +27,7 @@ public final class GameRule<T> {
     public static final GameRule<Boolean> SHOW_COORDINATES = new GameRule<>( "showCoordinates", Boolean.class );
     public static final GameRule<Boolean> TNT_EXPLODES = new GameRule<>( "tntExplodes", Boolean.class );
     public static final GameRule<Boolean> SHOW_DEATH_MESSAGE = new GameRule<>( "showDeathMessage", Boolean.class );
+    public static final GameRule<Boolean> RESPAWN_BLOCKS_EXPLODE = new GameRule<>( "respawnBlocksExplode", Boolean.class );
 
     private final String name;
     private final Class<T> value;

@@ -27,6 +27,7 @@ public class Skin {
     private String skinColor = "#0";
     private String armSize = "wide";
     private String playFabId = "";
+    private String geometryDataEngineVersion = "";
 
     private Image skinData;
     private Image capeData;
@@ -35,6 +36,7 @@ public class Skin {
     private boolean isPersona;
     private boolean isCapeOnClassic;
     private boolean isTrusted = false;
+    private boolean isPrimaryUser = true;
 
     private List<SkinAnimation> skinAnimations = new ArrayList<>();
     private List<PersonaPiece> personaPieces = new ArrayList<>();
@@ -108,6 +110,14 @@ public class Skin {
         this.playFabId = playFabId;
     }
 
+    public String getGeometryDataEngineVersion() {
+        return this.geometryDataEngineVersion;
+    }
+
+    public void setGeometryDataEngineVersion( String geometryDataEngineVersion ) {
+        this.geometryDataEngineVersion = geometryDataEngineVersion;
+    }
+
     public Image getSkinData() {
         return this.skinData;
     }
@@ -154,6 +164,14 @@ public class Skin {
 
     public void setTrusted( boolean trusted ) {
         this.isTrusted = trusted;
+    }
+
+    public boolean isPrimaryUser() {
+        return this.isPrimaryUser;
+    }
+
+    public void setPrimaryUser( boolean primaryUser ) {
+        this.isPrimaryUser = primaryUser;
     }
 
     public List<SkinAnimation> getSkinAnimations() {

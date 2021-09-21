@@ -3428,8 +3428,24 @@
     "id" : -165
   },
   {
+    "name" : "minecraft:sculk",
+    "id" : -458
+  },
+  {
+    "name" : "minecraft:sculk_catalyst",
+    "id" : -460
+  },
+  {
     "name" : "minecraft:sculk_sensor",
     "id" : -307
+  },
+  {
+    "name" : "minecraft:sculk_shrieker",
+    "id" : -461
+  },
+  {
+    "name" : "minecraft:sculk_vein",
+    "id" : -459
   },
   {
     "name" : "minecraft:scute",

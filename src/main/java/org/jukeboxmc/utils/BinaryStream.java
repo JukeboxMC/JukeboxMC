@@ -550,10 +550,8 @@ public class BinaryStream {
 
         this.writeSkinImage( skin.getCapeData() );
         this.writeString( skin.getGeometryData() );
+        this.writeString( skin.getGeometryDataEngineVersion() );
         this.writeString( skin.getAnimationData() );
-        this.writeBoolean( skin.isPremium() );
-        this.writeBoolean( skin.isPersona() );
-        this.writeBoolean( skin.isPersona() );
         this.writeString( skin.getCapeId() );
         this.writeString( skin.getFullSkinId() );
         this.writeString( skin.getArmSize() );
@@ -592,6 +590,11 @@ public class BinaryStream {
         } else {
             this.writeLInt( 0 );
         }
+
+        this.writeBoolean( skin.isPremium() );
+        this.writeBoolean( skin.isPersona() );
+        this.writeBoolean( skin.isCapeOnClassic() );
+        this.writeBoolean( skin.isPrimaryUser() );
     }
 
     public void writeSkinImage( Image image ) {

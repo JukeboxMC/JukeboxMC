@@ -360,6 +360,7 @@ public class World extends LevelDBWorld {
         this.setGameRule( GameRule.SHOW_COORDINATES, true );
         this.setGameRule( GameRule.TNT_EXPLODES, true );
         this.setGameRule( GameRule.SHOW_DEATH_MESSAGE, true );
+        this.setGameRule( GameRule.RESPAWN_BLOCKS_EXPLODE, true );
     }
 
     public void setGameRule( GameRule<?> gameRule, Object object ) {

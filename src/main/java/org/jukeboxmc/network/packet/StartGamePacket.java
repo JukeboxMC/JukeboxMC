@@ -110,9 +110,11 @@ public class StartGamePacket extends Packet {
         stream.writeBoolean( false ); //Only spawn v1 villagers
 
         stream.writeString( Protocol.MINECRAFT_VERSION );
+        stream.writeInt( 16 ); //Limited world width
         stream.writeInt( 16 ); //Limited world height
-        stream.writeInt( 16 ); //Limited world length
         stream.writeBoolean( false ); //Has new nether
+        stream.writeString( "" ); //edu shared uri resource button name
+        stream.writeString( "" ); //edu shared uri resource link uri
         stream.writeBoolean( false ); //Experimental gameplay
 
         stream.writeString( this.worldId );

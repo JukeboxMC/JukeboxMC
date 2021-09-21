@@ -31,7 +31,7 @@ public class BlockPalette {
     public static final List<BlockData> BLOCK_DATA = new CopyOnWriteArrayList<>();
 
     public static void init() {
-        InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "blockpalette.nbt" );
+        InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "block_palette.nbt" );
         if ( resourceAsStream != null ) {
             try ( NBTInputStream nbtReader = new NBTInputStream( new DataInputStream( new GZIPInputStream( resourceAsStream ) ) ) ) {
                 NbtMap nbtMap = (NbtMap) nbtReader.readTag();
