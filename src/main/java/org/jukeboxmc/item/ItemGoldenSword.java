@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.item.type.Durability;
+
 /**
  * @author LucGamesYT
  * @version 1.0

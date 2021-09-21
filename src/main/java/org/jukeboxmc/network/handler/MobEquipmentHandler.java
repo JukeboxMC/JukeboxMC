@@ -19,8 +19,8 @@ public class MobEquipmentHandler implements PacketHandler<MobEquipmentPacket> {
     @Override
     public void handle( MobEquipmentPacket packet, Server server, Player player ) {
         Inventory inventory = player.getInventory( Objects.requireNonNull( WindowId.getWindowIdById( packet.getWindowId() ) ) );
-
         if ( inventory != null ) {
+
             Item item = inventory.getItem( packet.getHotbarSlot() );
 
             if ( !item.equals( packet.getItem() ) ) {
@@ -31,9 +31,8 @@ public class MobEquipmentHandler implements PacketHandler<MobEquipmentPacket> {
             if ( inventory instanceof PlayerInventory ) {
                 PlayerInventory playerInventory = (PlayerInventory) inventory;
                 playerInventory.setItemInHandSlot( packet.getHotbarSlot() );
+                player.setAction( false );
             }
-
-            player.setAction( false );
         }
     }
 }

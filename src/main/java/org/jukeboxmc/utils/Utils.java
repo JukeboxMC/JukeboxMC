@@ -55,6 +55,10 @@ public class Utils {
         return value * y;
     }
 
+    public static float clamp(float v, float min, float max) {
+        return (v < min ? min : (Math.min(v, max)));
+    }
+
     public static ByteBuf allocate( byte[] data ) {
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
         buf.writeBytes( data );

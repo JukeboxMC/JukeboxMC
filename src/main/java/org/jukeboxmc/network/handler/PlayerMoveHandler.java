@@ -51,6 +51,25 @@ public class PlayerMoveHandler implements PacketHandler<PlayerMovePacket> {
                 }
             }
 
+            float moveX = toLocation.getX() - player.getLastLocation().getX();
+            float moveZ = toLocation.getZ() - player.getLastLocation().getZ();
+
+            float distance = (float) Math.sqrt( moveX * moveX + moveZ * moveZ );
+
+            if ( distance >= 0.01 ) {
+                float swimmingValue = player.isSwimming() || player.isInWater() ? 0.15f * distance : 0f;
+                if ( swimmingValue != 0 ) {
+                    distance = 0;
+                }
+                if ( player.isOnGround() ) {
+                    if ( player.isSprinting() ) {
+                        player.exhaust( ( 0.6f * distance + swimmingValue ) );
+                    } else {
+                        player.exhaust( ( 0.1f * distance + swimmingValue ) );
+                    }
+                }
+            }
+
             for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
                 if ( onlinePlayer != player ) {
                     onlinePlayer.movePlayer( player, PlayerMoveMode.NORMAL );

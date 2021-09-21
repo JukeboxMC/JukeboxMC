@@ -32,6 +32,7 @@ public class PacketRegistry {
         this.packetHandlerMap.put( CommandRequestPacket.class, new CommandRequestHandler() );
         this.packetHandlerMap.put( PlayerActionPacket.class, new PlayerActionHandler() );
         this.packetHandlerMap.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
+        this.packetHandlerMap.put( EntityEventPacket.class, new EntityEventHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
@@ -78,6 +79,8 @@ public class PacketRegistry {
                 return new BlockPickRequestPacket();
             case Protocol.COMMAND_REQUEST_PACKET:
                 return new CommandRequestPacket();
+            case Protocol.ENTITY_EVENT_PACKET:
+                return new EntityEventPacket();
             default:
                 return null;
         }

@@ -21,10 +21,10 @@ import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockBreakEvent;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
-import org.jukeboxmc.item.Durability;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -72,7 +72,6 @@ public class World extends LevelDBWorld {
 
         this.blockUpdateList = new BlockUpdateList();
         this.spawnLocation = new Location( this, 0, 73, 0 );
-        this.difficulty = Difficulty.NORMAL;
 
         this.chunkMap.computeIfAbsent( Dimension.OVERWORLD, o -> new HashMap<>() );
         this.chunkMap.computeIfAbsent( Dimension.NETHER, o -> new HashMap<>() );
@@ -136,7 +135,7 @@ public class World extends LevelDBWorld {
         compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
         compound.putInt( "SpawnY", this.spawnLocation.getBlockY() );
         compound.putInt( "SpawnZ", this.spawnLocation.getBlockZ() );
-        compound.putInt( "Difficulty", this.difficulty.ordinal() );
+        compound.putInt( "Difficulty", this.difficulty == null ? Difficulty.NORMAL.ordinal() : this.difficulty.ordinal() );
 
         compound.putString( "LevelName", this.name );
         compound.putLong( "Time", 0 ); //TODO
@@ -511,10 +510,13 @@ public class World extends LevelDBWorld {
                 this.removeBlockEntity( breakPosition, breakPosition.getDimension() );
             }
 
+
             if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
                 if ( item instanceof Durability ) {
-                    item.updateDurability( player, item.calculateDurability( 1 ) );
+                    item.updateItem( player, item.calculateDurability( 1 ) );
                 }
+
+                player.exhaust( 0.025f );
 
                 List<EntityItem> itemDrops = new ArrayList<>();
                 for ( Item droppedItem : blockBreakEvent.getDrops() ) {

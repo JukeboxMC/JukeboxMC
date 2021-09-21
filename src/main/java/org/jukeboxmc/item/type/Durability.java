@@ -1,4 +1,4 @@
-package org.jukeboxmc.item;
+package org.jukeboxmc.item.type;
 
 /**
  * @author LucGamesYT

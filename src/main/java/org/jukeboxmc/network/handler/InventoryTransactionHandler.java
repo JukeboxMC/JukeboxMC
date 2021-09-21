@@ -12,6 +12,7 @@ import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -26,6 +27,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
     public void handle( InventoryTransactionPacket packet, Server server, Player player ) {
         switch ( packet.getType() ) {
             case InventoryTransactionPacket.TYPE_NORMAL:
+                player.setAction( false );
                 for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
                     switch ( transaction.getSourceType() ) {
                         case 0: // Slot Change Action
@@ -108,7 +110,19 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                                 player.getInventory().getItemInHand(),
                                 directionVector );
                         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
+
+                        if ( !player.getGameMode().equals( GameMode.CREATIVE ) ) {
+                            player.getInventory().setItemInHand( playerInteractEvent.getItem() );
+                        }
+
+                        if ( !player.hasAction() ) {
+                            player.setAction( true );
+                            break;
+                        }
+                        player.setAction( false );
+
                         player.getInventory().getItemInHand().useInAir( player, directionVector );
+
                         break;
                     case 2://Break
                         player.getWorld().breakBlock( player, blockPosition, player.getInventory().getItemInHand() );
@@ -122,8 +136,13 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 Server.getInstance().getLogger().debug( "RELEASE" );
+                if ( player.hasAction() ) {
+                    //player.getInventory().sendContents( player );
+                    player.setAction( false );
+                }
                 break;
             default:
+                player.setAction( false );
                 break;
         }
     }

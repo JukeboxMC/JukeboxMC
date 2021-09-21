@@ -101,6 +101,13 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                     player.setGliding( false );
                 }
                 break;
+            case JUMP:
+                if ( player.isSprinting() ) {
+                    player.exhaust( 0.8f );
+                } else {
+                    player.exhaust( 0.2f );
+                }
+                break;
             case START_BREAK:
                 long currentBreakTime = System.currentTimeMillis();
                 Block startBreakBlock = player.getWorld().getBlock( packet.getPosition() );

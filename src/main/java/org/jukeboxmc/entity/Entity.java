@@ -2,6 +2,8 @@ package org.jukeboxmc.entity;
 
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockWater;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
@@ -190,12 +192,12 @@ public abstract class Entity {
         float diffZ = z - k;
 
         if ( !this.getWorld().getBlockAt( i, j, k, this.dimension ).isTransparent() ) {
-            boolean flag = this.getWorld().getBlockAt( i - 1, j, k, this.dimension  ).isTransparent();
-            boolean flag1 = this.getWorld().getBlockAt( i + 1, j, k, this.dimension  ).isTransparent();
-            boolean flag2 = this.getWorld().getBlockAt( i, j - 1, k, this.dimension  ).isTransparent();
-            boolean flag3 = this.getWorld().getBlockAt( i, j + 1, k, this.dimension  ).isTransparent();
-            boolean flag4 = this.getWorld().getBlockAt( i, j, k - 1, this.dimension  ).isTransparent();
-            boolean flag5 = this.getWorld().getBlockAt( i, j, k + 1, this.dimension  ).isTransparent();
+            boolean flag = this.getWorld().getBlockAt( i - 1, j, k, this.dimension ).isTransparent();
+            boolean flag1 = this.getWorld().getBlockAt( i + 1, j, k, this.dimension ).isTransparent();
+            boolean flag2 = this.getWorld().getBlockAt( i, j - 1, k, this.dimension ).isTransparent();
+            boolean flag3 = this.getWorld().getBlockAt( i, j + 1, k, this.dimension ).isTransparent();
+            boolean flag4 = this.getWorld().getBlockAt( i, j, k - 1, this.dimension ).isTransparent();
+            boolean flag5 = this.getWorld().getBlockAt( i, j, k + 1, this.dimension ).isTransparent();
 
             int direction = -1;
             double limit = 9999;
@@ -232,7 +234,7 @@ public abstract class Entity {
             float force = new Random().nextFloat() * 0.2f + 0.1f;
 
             if ( direction == 0 ) {
-                this.velocity = this.velocity.subtract( force, 0 ,0 );
+                this.velocity = this.velocity.subtract( force, 0, 0 );
                 return;
             }
 
@@ -242,7 +244,7 @@ public abstract class Entity {
             }
 
             if ( direction == 2 ) {
-                this.velocity = this.velocity.subtract( 0, force ,0 );
+                this.velocity = this.velocity.subtract( 0, force, 0 );
                 return;
             }
 
@@ -527,6 +529,18 @@ public abstract class Entity {
     }
 
     public boolean canPassThrough() {
+        return false;
+    }
+
+    public boolean isInWater() {
+        float y = this.location.getY() + this.getEyeHeight();
+        Block block = this.location.getWorld().getBlock( new Vector( (float) Math.floor( this.location.getX() ), (float) Math.floor( y ), (float) Math.floor( this.location.getZ() ) ) );
+
+        if ( block instanceof BlockWater ) {
+            BlockWater blockWater = (BlockWater) block;
+            float f = (float) ( ( block.getLocation().getBlockY() + 1 ) - ( blockWater.getLiquidDepth() - 0.1111111 ) );
+            return y < f;
+        }
         return false;
     }
 

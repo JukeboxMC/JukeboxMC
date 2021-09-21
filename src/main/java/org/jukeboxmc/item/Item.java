@@ -5,6 +5,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
@@ -194,11 +195,17 @@ public class Item implements Cloneable {
         return this;
     }
 
-    public void updateDurability( Player player, boolean durabilityState ) {
+    public void updateItem( Player player, boolean durabilityState ) {
+        this.updateItem( player, durabilityState, true );
+    }
+
+    public void updateItem( Player player, boolean durabilityState, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
             if ( durabilityState ) {
                 player.getInventory().setItemInHand( new ItemAir() );
-                player.playSound( Sound.RANDOM_BREAK, 1, 1 );
+                if ( playSound ) {
+                    player.playSound( Sound.RANDOM_BREAK, 1, 1 );
+                }
             } else {
                 player.getInventory().setItemInHand( this );
             }

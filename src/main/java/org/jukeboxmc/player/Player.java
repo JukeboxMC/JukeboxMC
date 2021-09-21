@@ -6,7 +6,11 @@ import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.entity.metadata.EntityFlag;
+import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
@@ -21,6 +25,7 @@ import org.jukeboxmc.network.packet.type.TablistType;
 import org.jukeboxmc.network.packet.type.TextType;
 import org.jukeboxmc.utils.ChunkComparator;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -53,6 +58,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
     private int viewDistance = 8;
+    private int inAirTicks = 0;
 
     private String name = null;
     private String xuid = null;
@@ -61,6 +67,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private boolean breakingBlock = false;
     private long lastBreakTime = 0;
     private Vector lasBreakPosition;
+
+    private long actionStart = -1;
+
+    private boolean isDead = false;
 
     private final Queue<Long> chunkLoadQueue = new LinkedList<>();
     private final Set<Long> loadingChunks = new HashSet<>();
@@ -113,11 +123,60 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         this.updateAttributes();
 
-
         Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.dimension, null );
         if ( nearbyEntities != null ) {
             for ( Entity nearbyEntity : nearbyEntities ) {
                 nearbyEntity.onCollideWithPlayer( this );
+            }
+        }
+
+        if ( !this.onGround ) {
+            ++this.inAirTicks;
+        } else {
+            if ( this.inAirTicks > 0 ) {
+                this.inAirTicks = 0;
+            }
+        }
+
+        if ( !this.isDead ) {
+            Attribute hungerAttribute = this.getAttribute( AttributeType.PLAYER_HUNGER );
+            float hunger = hungerAttribute.getCurrentValue();
+            float health = -1;
+            Difficulty difficulty = this.getWorld().getDifficulty();
+            if ( difficulty.equals( Difficulty.PEACEFUL ) && this.foodTicks % 10 == 0 ) {
+                if ( hunger < hungerAttribute.getMaxValue() ) {
+                    this.addHunger( 1 );
+                }
+                if ( this.foodTicks % 20 == 0 ) {
+                    health = this.getHealth();
+                    if ( health < this.getAttribute( AttributeType.HEALTH ).getMaxValue() ) {
+                        this.setHeal( 1, EntityHealEvent.Cause.SATURATION );
+                    }
+                }
+            }
+            if ( this.foodTicks == 0 ) {
+                if ( hunger >= 18 ) {
+                    if ( health == -1 ) {
+                        health = this.getHealth();
+                    }
+
+                    if ( health < 20 ) {
+                        this.setHeal( 1, EntityHealEvent.Cause.SATURATION );
+                        this.exhaust( 3 );
+                    }
+                } else if ( hunger <= 0 ) {
+                    if ( health == -1 ) {
+                        health = this.getHealth();
+                    }
+
+                    if ( ( health > 10 && difficulty.equals( Difficulty.NORMAL ) ) || ( difficulty.equals( Difficulty.HARD ) && health > 1 ) ) {
+                        //TODO this.damage
+                    }
+                }
+            }
+            this.foodTicks++;
+            if ( this.foodTicks >= 80 ) {
+                this.foodTicks = 0;
             }
         }
     }
@@ -268,6 +327,18 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.needNewChunks();
     }
 
+    public int getInAirTicks() {
+        return this.inAirTicks;
+    }
+
+    public void addInAirTicks() {
+        this.inAirTicks++;
+    }
+
+    public void setInAirTicks( int value ) {
+        this.inAirTicks = value;
+    }
+
     @Override
     public String getName() {
         return this.name;
@@ -321,6 +392,27 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public void setLastBreakTime( long lastBreakTime ) {
         this.lastBreakTime = lastBreakTime;
+    }
+
+    public long getActionStart() {
+        return this.actionStart;
+    }
+
+    public boolean hasAction() {
+        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION );
+    }
+
+    public void setAction( boolean value ) {
+        this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, value ) );
+        if ( value ) {
+            this.actionStart = this.server.getCurrentTick();
+        } else {
+            this.actionStart = -1;
+        }
+    }
+
+    public void resetActionStart() {
+        this.actionStart = Server.getInstance().getCurrentTick();
     }
 
     public void setLocale( Locale locale ) {
@@ -671,7 +763,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.playerConnection.sendPacket( playerMovePacket );
     }
 
-    private void updateAttributes() {
+    public void updateAttributes() {
         UpdateAttributesPacket updateAttributesPacket = null;
         for ( Attribute attribute : this.getAttributes() ) {
             if ( attribute.isDirty() ) {

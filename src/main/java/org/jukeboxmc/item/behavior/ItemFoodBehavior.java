@@ -1,30 +1,19 @@
-package org.jukeboxmc.item;
+package org.jukeboxmc.item.behavior;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerConsumeItemEvent;
-import org.jukeboxmc.item.behavior.ItemFoodBehavior;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemHoneyBottle extends ItemFoodBehavior {
+public abstract class ItemFoodBehavior extends Item {
 
-    public ItemHoneyBottle() {
-        super ( "minecraft:honey_bottle" );
-    }
-
-    @Override
-    public float getSaturation() {
-        return 1.2f;
-    }
-
-    @Override
-    public int getHunger() {
-        return 6;
+    public ItemFoodBehavior( String identifier ) {
+        super( identifier );
     }
 
     @Override
@@ -39,20 +28,13 @@ public class ItemHoneyBottle extends ItemFoodBehavior {
             player.addHunger( this.getHunger() );
             float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
             player.setSaturation( saturation );
+            this.updateItem( player, false );
         }
-        this.updateItem( player, false );
         return false;
     }
 
-    @Override
-    public void updateItem( Player player, boolean playSound ) {
-        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-            boolean removeItem = ( this.amount -= 1 ) <= 0;
-            if ( removeItem ) {
-                player.getInventory().setItemInHand( new ItemAir() );
-            }
-            player.getInventory().setItemInHand( this );
-            player.getInventory().addItem( new ItemGlassBottle() );
-        }
-    }
+    public abstract float getSaturation();
+
+    public abstract int getHunger();
+
 }

@@ -1,0 +1,28 @@
+package org.jukeboxmc.event.player;
+
+import org.jukeboxmc.event.Cancellable;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.player.Player;
+
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class PlayerConsumeItemEvent extends PlayerEvent implements Cancellable {
+
+    private final Item item;
+
+    /**
+     * Creates a new {@link PlayerEvent}
+     *
+     * @param player who represents the player which comes with this event
+     */
+    public PlayerConsumeItemEvent( Player player, Item item ) {
+        super( player );
+        this.item = item;
+    }
+
+    public Item getItem() {
+        return this.item;
+    }
+}

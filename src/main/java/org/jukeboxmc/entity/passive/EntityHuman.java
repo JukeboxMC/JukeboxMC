@@ -1,11 +1,13 @@
 package org.jukeboxmc.entity.passive;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.event.player.PlayerFoodLevelChangeEvent;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.inventory.PlayerInventory;
 import org.jukeboxmc.item.ItemType;
@@ -17,6 +19,7 @@ import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.GUIScale;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.utils.Utils;
 
 import java.util.Random;
 import java.util.UUID;
@@ -30,6 +33,8 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     protected UUID uuid;
     protected Skin skin;
     protected DeviceInfo deviceInfo;
+
+    protected int foodTicks;
 
     protected final PlayerInventory playerInventory;
 
@@ -162,16 +167,6 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
         }
     }
 
-    public boolean hasAction() {
-        return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION );
-    }
-
-    public void setAction( boolean value ) {
-        if ( value != this.hasAction() ) {
-            this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.ACTION, value ) );
-        }
-    }
-
     public boolean isSwimming() {
         return this.metadata.getDataFlag( MetadataFlag.INDEX, EntityFlag.SWIMMING );
     }
@@ -195,19 +190,27 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     // =========== Attribute ===========
 
     public boolean isHungry() {
-        Attribute attribute = this.getAttribute( AttributeType.HEALTH );
+        Attribute attribute = this.getAttribute( AttributeType.PLAYER_HUNGER );
         return attribute.getCurrentValue() < attribute.getMaxValue();
     }
 
-    public float getHunger() {
-        return this.getAttributeValue( AttributeType.PLAYER_HUNGER );
+    public int getHunger() {
+        return (int) this.getAttributeValue( AttributeType.PLAYER_HUNGER );
     }
 
-    public void setHunger( float value ) {
-        if ( value > 20 || value < 0 ) {
-            return;
+    public void setHunger( int value ) {
+        Attribute attribute = this.getAttribute( AttributeType.PLAYER_HUNGER );
+        float old = attribute.getCurrentValue();
+        this.setAttributes( AttributeType.PLAYER_HUNGER, Utils.clamp( value, attribute.getMinValue(), attribute.getMaxValue() ) );
+        if ( ( old < 17 && value >= 17 ) ||
+                ( old < 6 && value >= 6 ) ||
+                ( old > 0 && value == 0 ) ) {
+            this.foodTicks = 0;
         }
-        this.setAttributes( AttributeType.PLAYER_HUNGER, value );
+    }
+
+    public void addHunger( int value ) {
+        this.setHunger( this.getHunger() + value );
     }
 
     public float getSaturation() {
@@ -215,7 +218,16 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     public void setSaturation( float value ) {
-        this.setAttributes( AttributeType.PLAYER_SATURATION, value );
+        Attribute attribute = this.getAttribute( AttributeType.PLAYER_SATURATION );
+        this.setAttributes( AttributeType.PLAYER_SATURATION, Utils.clamp( value, attribute.getMinValue(), attribute.getMaxValue() ) );
+    }
+
+    public float getExhaustion() {
+        return this.getAttributeValue( AttributeType.PLAYER_EXHAUSTION );
+    }
+
+    public void setExhaustion( float value ) {
+        this.setAttributes( AttributeType.PLAYER_EXHAUSTION, value );
     }
 
     public float getExperience() {
@@ -233,4 +245,39 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     public void setLevel( float value ) {
         this.setAttributes( AttributeType.PLAYER_LEVEL, value );
     }
+
+    // =========== Other ===========
+
+    public void exhaust( float value ) {
+        float exhaustion = this.getExhaustion() + value;
+
+        while ( exhaustion >= 4 ) {
+            exhaustion -= 4;
+
+            float saturation = this.getSaturation();
+            if ( saturation > 0 ) {
+                saturation = Math.max( 0, saturation - 1 );
+                this.setSaturation( saturation );
+            } else {
+                int hunger = this.getHunger();
+                if ( hunger > 0 ) {
+                    if ( this instanceof Player ) {
+                        Player player = (Player) this;
+                        PlayerFoodLevelChangeEvent playerFoodLevelChangeEvent = new PlayerFoodLevelChangeEvent( player, hunger, saturation );
+                        Server.getInstance().getPluginManager().callEvent( playerFoodLevelChangeEvent );
+                        if ( playerFoodLevelChangeEvent.isCancelled() ) {
+                            player.updateAttributes();
+                            return;
+                        }
+                        this.setHunger( Math.max( 0, playerFoodLevelChangeEvent.getFoodLevel() - 1 ) );
+                    } else {
+                        this.setHunger( Math.max( 0, hunger - 1 ) );
+                    }
+                }
+            }
+        }
+        this.setExhaustion( exhaustion );
+    }
+
+
 }

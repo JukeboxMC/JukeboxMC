@@ -25,7 +25,7 @@ public enum AttributeType {
     //Player
     PLAYER_HUNGER( "minecraft:player.hunger", 0, 20, 20 ),
     PLAYER_SATURATION( "minecraft:player.saturation", 0, 20, 20 ),
-    PLAYER_EXHAUSTION( "minecraft:player.exhaustion", 0, 5, 0 ),
+    PLAYER_EXHAUSTION( "minecraft:player.exhaustion", 0, 5, 0.41f ),
     PLAYER_LEVEL( "minecraft:player.level", 0, 24791, 0 ),
     PLAYER_EXPERIENCE( "minecraft:player.experience", 0, 1, 0 );
 

@@ -1,7 +1,9 @@
 package org.jukeboxmc.entity;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.event.entity.EntityHealEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,6 +60,15 @@ public abstract class EntityLiving extends Entity {
             value = 0;
         }
         this.setAttributes( AttributeType.HEALTH, value );
+    }
+
+    public void setHeal( float value, EntityHealEvent.Cause cause ) {
+        EntityHealEvent entityHealEvent = new EntityHealEvent( this,this.getHealth() + value, cause );
+        Server.getInstance().getPluginManager().callEvent( entityHealEvent );
+        if ( entityHealEvent.isCancelled() ) {
+            return;
+        }
+        this.setHealth( Math.min( 20, Math.max( 0, entityHealEvent.getHeal() ) ) );
     }
 
     public float getAbsorption() {
