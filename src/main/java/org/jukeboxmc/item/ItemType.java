@@ -1430,7 +1430,13 @@ public enum ItemType {
     BROWN_CANDLE( new ItemBrownCandle() ),
     GREEN_CANDLE( new ItemGreenCandle() ),
     RED_CANDLE( new ItemRedCandle() ),
-    BLACK_CANDLE( new ItemBlackCandle() );
+    BLACK_CANDLE( new ItemBlackCandle() ),
+
+    //NOTE: Only in item and block palette but the item/block is not in the game yet
+    SCULK_SHRIEKER( new ItemSculkShrieker() ),
+    SCULK( new ItemSculk() ),
+    SCULK_CATALYST( new ItemSculkCatalyst() ),
+    SCULK_VEIN( new ItemSculkVein() );
 
     private static final Map<ItemType, Item> cachedItems = new HashMap<>();
 

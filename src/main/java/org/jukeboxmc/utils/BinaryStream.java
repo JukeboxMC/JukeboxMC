@@ -428,7 +428,7 @@ public class BinaryStream {
         // when crafting is false
         this.writeBoolean( false );
 
-        this.writeSignedVarInt( item.getBlockRuntimeId());
+        this.writeSignedVarInt( item.getBlockRuntimeId() );
 
         ByteBuf userData = ByteBufAllocator.DEFAULT.ioBuffer();
         BinaryStream binaryStream = new BinaryStream( userData );
