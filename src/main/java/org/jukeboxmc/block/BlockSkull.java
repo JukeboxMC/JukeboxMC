@@ -6,7 +6,7 @@ import org.jukeboxmc.blockentity.BlockEntitySkull;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemSkull;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;

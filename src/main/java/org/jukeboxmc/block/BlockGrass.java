@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemGrass;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 import java.util.Collections;
 import java.util.List;

@@ -5,6 +5,8 @@ import org.jukeboxmc.block.BlockGrass;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.type.Durability;
+import org.jukeboxmc.item.type.ItemTierType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 

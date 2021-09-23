@@ -3,7 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.BigDripleafTilt;
 import org.jukeboxmc.item.ItemBigDripleaf;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

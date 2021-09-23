@@ -466,6 +466,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 return this.getInventory();
             case CURSOR_DEPRECATED:
                 return this.getCursorInventory();
+            case ARMOR_DEPRECATED:
+                return this.getArmorInventory();
             default:
                 return this.getCurrentInventory();
         }
@@ -587,6 +589,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.playerConnection.sendPacket( setEntityDataPacket );
 
             this.playerInventory.addViewer( this );
+            this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
             this.craftingTableInventory.addViewer( this );
             this.cartographyTableInventory.addViewer( this );

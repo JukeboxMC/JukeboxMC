@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.RailDirection;
 import org.jukeboxmc.item.ItemRail;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

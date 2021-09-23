@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.type.SpongeType;
 import org.jukeboxmc.item.ItemSponge;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

@@ -1,7 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemRedstoneBlock;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

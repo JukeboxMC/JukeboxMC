@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.ItemLightningRod;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

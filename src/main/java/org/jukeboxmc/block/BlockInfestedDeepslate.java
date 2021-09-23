@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemInfestedDeepslate;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Axis;
 
 import java.util.Collections;

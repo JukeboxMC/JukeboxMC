@@ -3,7 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.type.MonsterEggStoneType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemMonsterEgg;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 import java.util.Collections;
 import java.util.List;

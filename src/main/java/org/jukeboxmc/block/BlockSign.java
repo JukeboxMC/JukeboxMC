@@ -2,7 +2,7 @@ package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 import java.util.ArrayList;
 import java.util.List;

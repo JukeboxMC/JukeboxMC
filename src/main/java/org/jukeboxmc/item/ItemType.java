@@ -980,7 +980,7 @@ public enum ItemType {
     IRON_CHESTPLATE( new ItemIronChestplate() ),
     IRON_LEGGINGS( new ItemIronLeggings() ),
     IRON_BOOTS( new ItemIronBoots() ),
-    DIAMOND_HELMET( new ItemDiamondHelment() ),
+    DIAMOND_HELMET( new ItemDiamondHelmet() ),
     DIAMOND_CHESTPLATE( new ItemDiamondChestplate() ),
     DIAMOND_LEGGINGS( new ItemDiamondLeggings() ),
     DIAMOND_BOOTS( new ItemDiamondBoots() ),

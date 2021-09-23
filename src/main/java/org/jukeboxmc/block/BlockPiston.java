@@ -4,7 +4,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemPiston;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;

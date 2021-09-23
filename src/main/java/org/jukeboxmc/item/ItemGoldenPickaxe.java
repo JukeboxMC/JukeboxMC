@@ -1,6 +1,8 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.item.type.Durability;
+import org.jukeboxmc.item.type.ItemTierType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

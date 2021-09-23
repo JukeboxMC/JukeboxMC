@@ -62,4 +62,5 @@ public interface Protocol {
     byte PLAY_SOUND_PACKET = 0x56;
     byte BLOCK_EVENT_PACKET = 0x1a;
     byte ENTITY_EVENT_PACKET = 0x1b;
+    byte MOB_ARMOR_EQUIPMENT_PACKET = 0x20;
 }

@@ -4,7 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.block.type.WallConnectionType;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 
 /**

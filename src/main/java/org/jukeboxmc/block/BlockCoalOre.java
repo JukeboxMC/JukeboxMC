@@ -1,7 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemCoalOre;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 /**
  * @author LucGamesYT

@@ -7,6 +7,7 @@ package org.jukeboxmc.inventory;
 public enum InventoryType {
 
     PLAYER,
+    ARMOR,
     CURSOR,
     FURNACE,
     WORKBENCH,

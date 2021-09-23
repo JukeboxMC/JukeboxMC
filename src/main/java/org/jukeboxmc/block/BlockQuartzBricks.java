@@ -1,7 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemQuartzBricks;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 public class BlockQuartzBricks extends Block {
 

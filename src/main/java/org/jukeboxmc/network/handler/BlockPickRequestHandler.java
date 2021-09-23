@@ -27,7 +27,10 @@ public class BlockPickRequestHandler implements PacketHandler<BlockPickRequestPa
                 Server.getInstance().getLogger().warn( "User try to pick air" );
                 return;
             }
-            player.getInventory().addItem( item );
+            if ( !player.getInventory().contains( item ) ) {
+                player.getInventory().addItem( item );
+            }
+
         }
     }
 }

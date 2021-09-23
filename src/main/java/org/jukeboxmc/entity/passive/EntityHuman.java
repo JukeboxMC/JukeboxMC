@@ -8,6 +8,7 @@ import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.event.player.PlayerFoodLevelChangeEvent;
+import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.inventory.PlayerInventory;
 import org.jukeboxmc.item.ItemType;
@@ -37,12 +38,14 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     protected int foodTicks;
 
     protected final PlayerInventory playerInventory;
+    protected final ArmorInventory armorInventory;
 
     public EntityHuman() {
         super();
         this.uuid = UUID.randomUUID();
         this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, GUIScale.CLASSIC );
         this.playerInventory = new PlayerInventory( this, this.entityId );
+        this.armorInventory = new ArmorInventory( this, this.entityId );
 
         this.addAttribute( AttributeType.PLAYER_HUNGER );
         this.addAttribute( AttributeType.PLAYER_SATURATION );
@@ -143,6 +146,10 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
 
     public PlayerInventory getInventory() {
         return this.playerInventory;
+    }
+
+    public ArmorInventory getArmorInventory() {
+        return this.armorInventory;
     }
 
     // =========== Metadata ===========

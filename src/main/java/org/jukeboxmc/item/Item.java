@@ -5,7 +5,11 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.enchantment.Enchantment;
+import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.item.type.Durability;
+import org.jukeboxmc.item.type.ItemTierType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
@@ -16,10 +20,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.BedrockResourceLoader;
 import org.jukeboxmc.world.Sound;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -38,8 +39,10 @@ public class Item implements Cloneable {
     protected List<String> lore;
     protected NbtMap nbt;
 
+    protected Map<EnchantmentType, Enchantment> enchantments;
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
+
 
     public Item( String identifier ) {
         this( identifier, 0, 0, NbtMap.EMPTY );
@@ -53,6 +56,7 @@ public class Item implements Cloneable {
         this.amount = 1;
         this.lore = Collections.emptyList();
         this.nbt = nbt;
+        this.enchantments = new HashMap<>();
         this.canPlaceOn = new ArrayList<>();
         this.canDestroy = new ArrayList<>();
     }
@@ -97,6 +101,10 @@ public class Item implements Cloneable {
         return false;
     }
 
+    public boolean onUse( Player player ) {
+        return false;
+    }
+
     public boolean interact( Player player, BlockFace blockFace, Vector clickedVector, Block clickedBlock ) {
         return false;
     }
@@ -133,6 +141,21 @@ public class Item implements Cloneable {
         return new BlockAir();
     }
 
+    public int getRuntimeId() {
+        if ( !BedrockResourceLoader.getItemIdByName().containsKey( this.identifier ) ) {
+            return -158;
+        }
+        return BedrockResourceLoader.getItemIdByName().get( this.identifier );
+    }
+
+    public int getBlockRuntimeId() {
+        return this.blockRuntimeId;
+    }
+
+    public void setBlockRuntimeId( int blockRuntimeId ) {
+        this.blockRuntimeId = blockRuntimeId;
+    }
+
     public void setCustomName( String customName ) {
         this.customName = customName;
     }
@@ -149,27 +172,8 @@ public class Item implements Cloneable {
         return this.lore;
     }
 
-    public int getRuntimeId() {
-        if ( !BedrockResourceLoader.getItemIdByName().containsKey( this.identifier ) ) {
-            return -158;
-        }
-        return BedrockResourceLoader.getItemIdByName().get( this.identifier );
-    }
-
-    public int getBlockRuntimeId() {
-        return this.blockRuntimeId;
-    }
-
-    public void setBlockRuntimeId( int blockRuntimeId ) {
-        this.blockRuntimeId = blockRuntimeId;
-    }
-
     public int getAmount() {
         return this.amount;
-    }
-
-    public Item decreaseAmount() {
-        return this.setAmount( this.getAmount() - 1 );
     }
 
     public Item setAmount( int amount ) {
@@ -193,6 +197,24 @@ public class Item implements Cloneable {
     public Item setDurability( int durability ) {
         this.durability = durability;
         return this;
+    }
+
+    public Item decreaseAmount() {
+        return this.setAmount( this.getAmount() - 1 );
+    }
+
+    public Item addEnchantment( EnchantmentType enchantmentType, short level ) {
+        Enchantment enchantment = enchantmentType.getEnchantment();
+        this.enchantments.put( enchantmentType, enchantment.setLevel( level > enchantment.getMaxLevel() ? 1 : level ) );
+        return this;
+    }
+
+    public Enchantment getEnchantment( EnchantmentType enchantmentType ) {
+        return this.enchantments.get( enchantmentType );
+    }
+
+    public Collection<Enchantment> getEntchantments() {
+        return this.enchantments.values();
     }
 
     public void updateItem( Player player, boolean durabilityState ) {
@@ -284,6 +306,17 @@ public class Item implements Cloneable {
         builder.putInt( "Damage", this.durability );
         builder.putByte( "WasPickedUp", (byte) 0 );
 
+        if ( !this.enchantments.isEmpty() ) {
+            List<NbtMap> enchantmentNBT = new ArrayList<>();
+            for ( Enchantment enchantment : this.enchantments.values() ) {
+                enchantmentNBT.add( NbtMap.builder()
+                        .putShort( "id", enchantment.getId() )
+                        .putShort( "lvl", enchantment.getLevel() )
+                        .build()
+                );
+            }
+            builder.putList( "ench", NbtType.COMPOUND, enchantmentNBT );
+        }
 
         NbtMapBuilder displayBuilder = NbtMap.builder();
         if ( this.customName != null ) {

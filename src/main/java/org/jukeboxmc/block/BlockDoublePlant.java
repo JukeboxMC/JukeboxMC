@@ -4,7 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.PlantType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemDoublePlant;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;

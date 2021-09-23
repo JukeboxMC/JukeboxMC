@@ -3,7 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBook;
 import org.jukeboxmc.item.ItemBookshelf;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 import java.util.Collections;
 import java.util.List;

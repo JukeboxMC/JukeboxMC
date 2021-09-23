@@ -7,7 +7,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;

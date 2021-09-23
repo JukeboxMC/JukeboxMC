@@ -5,7 +5,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.block.type.Attachment;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBell;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;

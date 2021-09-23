@@ -12,7 +12,6 @@ import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
-import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -111,17 +110,17 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                                 directionVector );
                         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
 
-                        if ( !player.getGameMode().equals( GameMode.CREATIVE ) ) {
-                            player.getInventory().setItemInHand( playerInteractEvent.getItem() );
-                        }
+                        if ( player.getInventory().getItemInHand().useInAir( player, directionVector ) ) {
+                            if ( !player.hasAction() ) {
+                                player.setAction( true );
+                                break;
+                            }
+                            player.setAction( false );
 
-                        if ( !player.hasAction() ) {
-                            player.setAction( true );
-                            break;
+                            if ( !player.getInventory().getItemInHand().onUse( player ) ) {
+                                player.getInventory().sendContents( player );
+                            }
                         }
-                        player.setAction( false );
-
-                        player.getInventory().getItemInHand().useInAir( player, directionVector );
 
                         break;
                     case 2://Break

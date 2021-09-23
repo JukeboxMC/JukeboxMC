@@ -1,8 +1,8 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.item.ItemNetheriteBlock;
-import org.jukeboxmc.item.ItemTierType;
-import org.jukeboxmc.item.ItemToolType;
+import org.jukeboxmc.item.type.ItemTierType;
+import org.jukeboxmc.item.type.ItemToolType;
 
 public class BlockNetheriteBlock extends Block {
 
