@@ -52,6 +52,7 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 startGamePacket.setWorldSpawn( worldSpawn );
                 startGamePacket.setYaw( player.getYaw() );
                 startGamePacket.setPitch( player.getPitch() );
+                startGamePacket.setWorldTime( player.getWorld().getWorldTime() );
                 startGamePacket.setWorldName( "world" );
                 startGamePacket.setServerEngine( "JukeboxMC" );
                 startGamePacket.setDifficulty( player.getWorld().getDifficulty() );

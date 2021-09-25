@@ -69,6 +69,10 @@ public abstract class EntityLiving extends Entity {
             this.attackCoolDown--;
         }
 
+        if ( this.isOnLadder() ) {
+            this.fallDistance = 0;
+        }
+
         if ( this.fireTicks > 0 ) {
             if ( this.fireTicks % 20 == 0 ) {
                 this.damage( new EntityDamageEvent( this, 1, EntityDamageEvent.DamageSource.ON_FIRE ) );

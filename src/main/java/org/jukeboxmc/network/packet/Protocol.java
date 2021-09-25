@@ -66,4 +66,5 @@ public interface Protocol {
     byte RESPAWN_POSITION_PACKET = 0x2d;
     byte SET_SPAWN_POSITION_PACKET = 0x2b;
     byte ENTITY_FALL_PACKET = 0x25;
+    byte SET_TIME_PACKET = 0x0a;
 }

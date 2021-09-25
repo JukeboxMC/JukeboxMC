@@ -27,6 +27,7 @@ public class StartGamePacket extends Packet {
     private Vector position;
     private float yaw;
     private float pitch;
+    private int worldTime;
     private String worldId = "";
     private String worldName;
     private Vector worldSpawn;
@@ -71,7 +72,7 @@ public class StartGamePacket extends Packet {
 
         stream.writeBoolean( true ); //Achievement disabled
 
-        stream.writeSignedVarInt( 0 ); //Day cycle time
+        stream.writeSignedVarInt( this.worldTime ); //Day cycle time
         stream.writeSignedVarInt( 0 ); //Edu odder
         stream.writeBoolean( false ); //Edu features
         stream.writeString( "" ); //Edu product id

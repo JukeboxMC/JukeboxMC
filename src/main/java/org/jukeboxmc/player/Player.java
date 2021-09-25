@@ -140,7 +140,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             }
         }
 
-        if ( !this.onGround ) {
+        if ( !this.onGround && !this.isOnLadder() ) {
             ++this.inAirTicks;
             if ( this.inAirTicks > 5) {
                 if ( this.location.getY() > this.highestPosition ) {

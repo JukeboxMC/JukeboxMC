@@ -55,6 +55,8 @@ public class World extends LevelDBWorld {
     private final WorldGenerator worldGenerator;
     private final BlockUpdateList blockUpdateList;
 
+    private int worldTime;
+
     public final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new ConcurrentHashMap<>();
 
     protected final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
@@ -82,6 +84,17 @@ public class World extends LevelDBWorld {
     }
 
     public void update( long currentTick ) {
+        if ( this.getGameRule( GameRule.DO_DAYLIGHT_CYCLE ) ) {
+            this.worldTime++;
+            while ( this.worldTime >= 24000 ) {
+                this.worldTime -= 24000;
+            }
+
+            SetTimePacket setTimePacket = new SetTimePacket();
+            setTimePacket.setWorldTime( this.worldTime );
+            this.server.broadcastPacket( setTimePacket );
+        }
+
         for ( Entity entity : this.entities.values() ) {
             entity.update( currentTick );
         }
@@ -336,6 +349,18 @@ public class World extends LevelDBWorld {
         SetDifficultyPacket setDifficultyPacket = new SetDifficultyPacket();
         setDifficultyPacket.setDifficulty( difficulty );
         this.sendWorldPacket( setDifficultyPacket );
+    }
+
+    public int getWorldTime() {
+        return this.worldTime;
+    }
+
+    public void setWorldTime( int worldTime ) {
+        this.worldTime = worldTime;
+
+        SetTimePacket setTimePacket = new SetTimePacket();
+        setTimePacket.setWorldTime( worldTime );
+        this.server.broadcastPacket( setTimePacket );
     }
 
     public void initGameRules() {

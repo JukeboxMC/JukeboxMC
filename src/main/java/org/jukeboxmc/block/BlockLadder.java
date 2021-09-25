@@ -31,6 +31,11 @@ public class BlockLadder extends BlockWaterlogable {
     }
 
     @Override
+    public void enterBlock( Player player ) {
+        player.setFallDistance( 0 );
+    }
+
+    @Override
     public ItemLadder toItem() {
         return new ItemLadder();
     }

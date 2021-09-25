@@ -8,6 +8,7 @@ import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.inventory.InventoryClickEvent;
 import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
+import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
@@ -44,10 +45,18 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                                     Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
 
                                     if ( !inventoryClickEvent.isCancelled() ) {
-                                        inventory.setItem( slot, targetItem );
+                                        if ( inventory instanceof ArmorInventory ) {
+                                            inventory.setItem( slot, targetItem );
+                                            for ( Player onlinePlayer : server.getOnlinePlayers() ) {
+                                                player.getArmorInventory().sendArmorContent( onlinePlayer );
+                                            }
+                                        } else {
+                                            inventory.setItem( slot, targetItem );
+                                        }
                                     } else {
                                         player.getCursorInventory().sendContents( player );
                                         player.getInventory().sendContents( player );
+                                        player.getArmorInventory().sendArmorContent( player );
                                     }
                                 } else {
                                     Server.getInstance().getLogger().info( "Inventory with id " + transaction.getWindowId() + " is missing" );

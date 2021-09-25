@@ -28,17 +28,20 @@ public abstract class ItemFoodBehavior extends Item {
 
     @Override
     public boolean onUse( Player player ) {
-        PlayerConsumeItemEvent playerConsumeItemEvent = new PlayerConsumeItemEvent( player, this );
-        Server.getInstance().getPluginManager().callEvent( playerConsumeItemEvent );
-        if ( playerConsumeItemEvent.isCancelled() ) {
-            player.getInventory().sendContents( player );
-            return false;
+        if ( player.isHungry() ) {
+            PlayerConsumeItemEvent playerConsumeItemEvent = new PlayerConsumeItemEvent( player, this );
+            Server.getInstance().getPluginManager().callEvent( playerConsumeItemEvent );
+            if ( playerConsumeItemEvent.isCancelled() ) {
+                player.getInventory().sendContents( player );
+                return false;
+            }
+            player.addHunger( this.getHunger() );
+            float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
+            player.setSaturation( saturation );
+            this.updateItem( player, false );
+            return true;
         }
-        player.addHunger( this.getHunger() );
-        float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
-        player.setSaturation( saturation );
-        this.updateItem( player, false );
-        return true;
+        return false;
     }
 
     public abstract float getSaturation();
