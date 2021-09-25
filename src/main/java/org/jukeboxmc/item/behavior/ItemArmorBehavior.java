@@ -13,6 +13,11 @@ public abstract class ItemArmorBehavior extends Item {
         super( identifier );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
     public abstract ArmorTierType getArmorTierType();
 
     public abstract int getArmorPoints();

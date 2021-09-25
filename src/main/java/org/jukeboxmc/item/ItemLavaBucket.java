@@ -17,4 +17,9 @@ public class ItemLavaBucket extends ItemBucketBehavior {
     public BlockLava getBlock() {
         return new BlockLava();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

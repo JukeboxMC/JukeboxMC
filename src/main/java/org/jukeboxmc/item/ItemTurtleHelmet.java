@@ -38,4 +38,9 @@ public class ItemTurtleHelmet extends ItemArmorBehavior implements Durability {
     public int getMaxDurability() {
         return 275;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

@@ -16,4 +16,9 @@ public class ItemCampfire extends Item {
     public BlockCampfire getBlock() {
         return new BlockCampfire();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

@@ -10,5 +10,10 @@ public class ItemEnderPearl extends Item {
         super ( "minecraft:ender_pearl" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
+
 
 }

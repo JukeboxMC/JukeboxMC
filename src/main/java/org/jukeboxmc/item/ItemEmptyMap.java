@@ -10,6 +10,11 @@ public class ItemEmptyMap extends Item {
         super ( "minecraft:empty_map" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
     public void setMapType( MapType mapType ) {
         if ( mapType == MapType.EMPTY ) {
             this.setMeta( 0 );

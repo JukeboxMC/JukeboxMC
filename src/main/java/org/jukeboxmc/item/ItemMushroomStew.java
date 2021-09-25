@@ -13,6 +13,11 @@ public class ItemMushroomStew extends ItemFoodBehavior {
     }
 
     @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
+    @Override
     public float getSaturation() {
         return 7.2f;
     }
@@ -21,4 +26,5 @@ public class ItemMushroomStew extends ItemFoodBehavior {
     public int getHunger() {
         return 6;
     }
+
 }

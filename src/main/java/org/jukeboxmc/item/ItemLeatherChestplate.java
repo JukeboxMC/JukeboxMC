@@ -38,4 +38,9 @@ public class ItemLeatherChestplate extends ItemArmorBehavior implements Durabili
     public int getMaxDurability() {
         return 80;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

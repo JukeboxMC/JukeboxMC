@@ -16,4 +16,9 @@ public class ItemWarpedSign extends Item {
     public BlockWarpedStandingSign getBlock() {
         return new BlockWarpedStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

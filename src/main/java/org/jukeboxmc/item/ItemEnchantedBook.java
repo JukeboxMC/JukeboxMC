@@ -10,5 +10,9 @@ public class ItemEnchantedBook extends Item {
         super ( "minecraft:enchanted_book" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

@@ -16,4 +16,9 @@ public class ItemStandingSign extends Item {
     public BlockStandingSign getBlock() {
         return new BlockStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

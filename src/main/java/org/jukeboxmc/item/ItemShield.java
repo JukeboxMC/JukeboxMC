@@ -10,5 +10,9 @@ public class ItemShield extends Item {
         super ( "minecraft:shield" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

@@ -10,5 +10,8 @@ public class ItemDiamondHorseArmor extends Item {
         super ( "minecraft:diamond_horse_armor" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

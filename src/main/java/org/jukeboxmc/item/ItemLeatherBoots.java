@@ -38,4 +38,9 @@ public class ItemLeatherBoots extends ItemArmorBehavior implements Durability {
     public int getArmorPoints() {
         return 1;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

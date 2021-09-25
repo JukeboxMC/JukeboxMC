@@ -10,5 +10,9 @@ public class ItemCrossbow extends Item {
         super ( "minecraft:crossbow" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

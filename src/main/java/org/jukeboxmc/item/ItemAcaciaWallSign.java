@@ -16,4 +16,9 @@ public class ItemAcaciaWallSign extends Item {
     public BlockAcaciaWallSign getBlock() {
         return new BlockAcaciaWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

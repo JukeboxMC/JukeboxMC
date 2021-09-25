@@ -16,4 +16,9 @@ public class ItemShears extends Item {
     public ItemToolType getItemToolType() {
         return ItemToolType.SHEARS;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

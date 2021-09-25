@@ -10,5 +10,9 @@ public class ItemCarrotOnAStick extends Item {
         super ( "minecraft:carrot_on_a_stick" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

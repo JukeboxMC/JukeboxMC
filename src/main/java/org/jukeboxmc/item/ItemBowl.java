@@ -10,5 +10,8 @@ public class ItemBowl extends Item {
         super ( "minecraft:bowl" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

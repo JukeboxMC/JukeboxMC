@@ -43,4 +43,9 @@ public class ItemNetheriteAxe extends Item implements Durability {
     public int getMaxDurability() {
         return 2031;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

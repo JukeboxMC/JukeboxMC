@@ -18,6 +18,11 @@ public class ItemBed extends Item {
         return new BlockBed();
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
     public void setColor( BlockColor blockColor ) {
         this.setMeta( blockColor.ordinal() );
     }

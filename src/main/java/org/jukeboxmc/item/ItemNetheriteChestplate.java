@@ -38,4 +38,9 @@ public class ItemNetheriteChestplate extends ItemArmorBehavior implements Durabi
     public int getMaxDurability() {
         return 592;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

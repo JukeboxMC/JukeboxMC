@@ -10,5 +10,8 @@ public class ItemSnowball extends Item {
         super ( "minecraft:snowball" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

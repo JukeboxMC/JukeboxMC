@@ -10,5 +10,9 @@ public class ItemChestMinecart extends Item {
         super ( "minecraft:chest_minecart" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

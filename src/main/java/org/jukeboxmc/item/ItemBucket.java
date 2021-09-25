@@ -12,4 +12,8 @@ public class ItemBucket extends ItemBucketBehavior {
         super ( "minecraft:bucket" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

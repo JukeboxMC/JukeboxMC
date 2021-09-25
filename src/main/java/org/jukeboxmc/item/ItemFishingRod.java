@@ -10,5 +10,8 @@ public class ItemFishingRod extends Item {
         super ( "minecraft:fishing_rod" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

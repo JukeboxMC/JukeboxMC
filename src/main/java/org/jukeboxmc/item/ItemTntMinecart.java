@@ -10,5 +10,8 @@ public class ItemTntMinecart extends Item {
         super ( "minecraft:tnt_minecart" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

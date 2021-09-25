@@ -43,4 +43,9 @@ public class ItemDiamondPickaxe extends Item implements Durability {
     public int getMaxDurability() {
         return 1561;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

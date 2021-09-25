@@ -43,4 +43,9 @@ public class ItemGoldenAxe extends Item implements Durability {
     public int getMaxDurability() {
         return 32;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

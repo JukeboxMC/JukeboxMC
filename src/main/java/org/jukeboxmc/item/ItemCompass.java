@@ -10,5 +10,9 @@ public class ItemCompass extends Item {
         super ( "minecraft:compass" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

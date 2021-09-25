@@ -16,4 +16,9 @@ public class ItemJungleStandingSign extends Item {
     public BlockJungleStandingSign getBlock() {
         return new BlockJungleStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

@@ -16,4 +16,9 @@ public class ItemSpruceSign extends Item {
     public BlockSpruceStandingSign getBlock() {
         return new BlockSpruceStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

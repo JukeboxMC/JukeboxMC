@@ -10,5 +10,9 @@ public class ItemWriteableBook extends Item {
         super ( "minecraft:writable_book" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

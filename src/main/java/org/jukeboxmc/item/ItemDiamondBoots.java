@@ -38,4 +38,9 @@ public class ItemDiamondBoots extends ItemArmorBehavior implements Durability {
     public int getMaxDurability() {
         return 429;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

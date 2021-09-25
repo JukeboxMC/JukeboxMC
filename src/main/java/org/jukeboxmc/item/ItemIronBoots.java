@@ -38,4 +38,9 @@ public class ItemIronBoots extends ItemArmorBehavior implements Durability {
     public int getMaxDurability() {
         return 195;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

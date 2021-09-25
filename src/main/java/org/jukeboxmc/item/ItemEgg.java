@@ -10,5 +10,8 @@ public class ItemEgg extends Item {
         super ( "minecraft:egg" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

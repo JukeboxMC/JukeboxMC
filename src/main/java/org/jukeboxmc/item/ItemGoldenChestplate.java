@@ -38,4 +38,9 @@ public class ItemGoldenChestplate extends ItemArmorBehavior implements Durabilit
     public int getMaxDurability() {
         return 112;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

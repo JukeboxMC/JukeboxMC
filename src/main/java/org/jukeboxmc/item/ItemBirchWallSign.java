@@ -16,4 +16,9 @@ public class ItemBirchWallSign extends Item {
     public BlockBirchWallSign getBlock() {
         return new BlockBirchWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

@@ -43,4 +43,9 @@ public class ItemIronSword extends Item implements Durability {
     public int getMaxDurability() {
         return 250;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

@@ -16,4 +16,9 @@ public class ItemBirchSign extends Item {
     public BlockBirchStandingSign getBlock() {
         return new BlockBirchStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

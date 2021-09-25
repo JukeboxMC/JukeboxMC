@@ -38,4 +38,9 @@ public class ItemNetheriteBoots extends ItemArmorBehavior implements Durability 
     public int getMaxDurability() {
         return 481;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

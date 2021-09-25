@@ -16,4 +16,9 @@ public class ItemJungleWallSign extends Item {
     public BlockJungleWallSign getBlock() {
         return new BlockJungleWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

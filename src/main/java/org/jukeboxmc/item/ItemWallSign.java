@@ -12,9 +12,13 @@ public class ItemWallSign extends Item {
         super ( "minecraft:wall_sign" );
     }
 
-
     @Override
     public BlockOakWallSign getBlock() {
         return new BlockOakWallSign();
+    }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
     }
 }

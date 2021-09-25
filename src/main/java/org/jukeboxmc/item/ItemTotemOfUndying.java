@@ -10,5 +10,9 @@ public class ItemTotemOfUndying extends Item {
         super ( "minecraft:totem_of_undying" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

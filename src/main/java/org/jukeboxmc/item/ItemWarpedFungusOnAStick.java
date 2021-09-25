@@ -10,5 +10,9 @@ public class ItemWarpedFungusOnAStick extends Item {
         super ( "minecraft:warped_fungus_on_a_stick" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

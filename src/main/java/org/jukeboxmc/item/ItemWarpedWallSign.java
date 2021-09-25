@@ -16,4 +16,9 @@ public class ItemWarpedWallSign extends Item {
     public BlockWarpedWallSign getBlock() {
         return new BlockWarpedWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

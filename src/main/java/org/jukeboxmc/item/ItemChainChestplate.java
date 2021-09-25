@@ -38,4 +38,9 @@ public class ItemChainChestplate extends ItemArmorBehavior implements Durability
     public int getMaxDurability() {
         return 240;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

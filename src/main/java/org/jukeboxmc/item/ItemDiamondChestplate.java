@@ -38,4 +38,9 @@ public class ItemDiamondChestplate extends ItemArmorBehavior implements Durabili
     public int getMaxDurability() {
         return 528;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

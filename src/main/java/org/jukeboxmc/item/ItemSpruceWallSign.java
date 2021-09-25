@@ -16,4 +16,9 @@ public class ItemSpruceWallSign extends Item {
     public BlockSpruceWallSign getBlock() {
         return new BlockSpruceWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

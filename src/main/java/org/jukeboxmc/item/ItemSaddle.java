@@ -10,5 +10,8 @@ public class ItemSaddle extends Item {
         super ( "minecraft:saddle" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

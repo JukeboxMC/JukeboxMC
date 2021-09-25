@@ -38,4 +38,9 @@ public class ItemNetheriteHelmet extends ItemArmorBehavior implements Durability
     public int getMaxDurability() {
         return 407;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

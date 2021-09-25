@@ -38,4 +38,9 @@ public class ItemDiamondLeggings extends ItemArmorBehavior implements Durability
     public int getMaxDurability() {
         return 495;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

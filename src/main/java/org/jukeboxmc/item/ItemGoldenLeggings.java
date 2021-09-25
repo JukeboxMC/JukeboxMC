@@ -38,4 +38,9 @@ public class ItemGoldenLeggings extends ItemArmorBehavior implements Durability 
     public int getMaxDurability() {
         return 105;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

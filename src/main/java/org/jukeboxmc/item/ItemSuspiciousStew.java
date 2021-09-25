@@ -13,6 +13,11 @@ public class ItemSuspiciousStew extends ItemFoodBehavior {
     }
 
     @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
+    @Override
     public float getSaturation() {
         return 7.2f;
     }

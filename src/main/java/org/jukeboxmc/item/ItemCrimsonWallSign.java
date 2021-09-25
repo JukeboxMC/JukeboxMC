@@ -16,4 +16,9 @@ public class ItemCrimsonWallSign extends Item {
     public BlockCrimsonWallSign getBlock() {
         return new BlockCrimsonWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

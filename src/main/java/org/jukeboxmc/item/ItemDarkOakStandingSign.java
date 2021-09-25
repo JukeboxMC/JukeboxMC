@@ -16,4 +16,9 @@ public class ItemDarkOakStandingSign extends Item {
     public BlockDarkOakStandingSign getBlock() {
         return new BlockDarkOakStandingSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

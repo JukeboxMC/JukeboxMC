@@ -17,4 +17,9 @@ public class ItemWaterBucket extends ItemBucketBehavior {
     public BlockWater getBlock() {
         return new BlockWater();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

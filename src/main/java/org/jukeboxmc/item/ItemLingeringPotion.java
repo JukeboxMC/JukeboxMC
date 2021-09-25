@@ -10,6 +10,11 @@ public class ItemLingeringPotion extends Item {
         super ( "minecraft:lingering_potion" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
     public void setPotionType( PotionType potionType ) {
         this.setMeta( potionType.ordinal() );
     }

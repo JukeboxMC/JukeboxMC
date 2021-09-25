@@ -10,5 +10,8 @@ public class ItemIronHorseArmor extends Item {
         super ( "minecraft:iron_horse_armor" );
     }
 
-
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

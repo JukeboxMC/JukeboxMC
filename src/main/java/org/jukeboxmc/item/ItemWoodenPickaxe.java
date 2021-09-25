@@ -43,4 +43,9 @@ public class ItemWoodenPickaxe extends Item implements Durability {
     public int getMaxDurability() {
         return 59;
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 }

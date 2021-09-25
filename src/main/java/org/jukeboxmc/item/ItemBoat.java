@@ -10,5 +10,9 @@ public class ItemBoat extends Item {
         super ( "minecraft:boat" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
 
 }

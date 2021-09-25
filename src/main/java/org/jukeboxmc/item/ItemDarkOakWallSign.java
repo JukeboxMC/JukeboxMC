@@ -16,4 +16,9 @@ public class ItemDarkOakWallSign extends Item {
     public BlockDarkOakWallSign getBlock() {
         return new BlockDarkOakWallSign();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

@@ -17,6 +17,11 @@ public class ItemBanner extends Item {
         return new BlockStandingBanner();
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
+
     public void setColor( BannerColor bannerColor ) {
         this.setMeta( bannerColor.ordinal() );
     }

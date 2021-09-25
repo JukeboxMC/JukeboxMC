@@ -18,16 +18,6 @@ public class ItemHoneyBottle extends ItemFoodBehavior {
     }
 
     @Override
-    public float getSaturation() {
-        return 1.2f;
-    }
-
-    @Override
-    public int getHunger() {
-        return 6;
-    }
-
-    @Override
     public boolean useInAir( Player player, Vector clickVector ) {
         if ( player.isHungry() ) {
             PlayerConsumeItemEvent playerConsumeItemEvent = new PlayerConsumeItemEvent( player, this );
@@ -54,5 +44,20 @@ public class ItemHoneyBottle extends ItemFoodBehavior {
             player.getInventory().setItemInHand( this );
             player.getInventory().addItem( new ItemGlassBottle() );
         }
+    }
+
+    @Override
+    public float getSaturation() {
+        return 1.2f;
+    }
+
+    @Override
+    public int getHunger() {
+        return 6;
+    }
+
+    @Override
+    public int getMaxAmount() {
+        return 1;
     }
 }

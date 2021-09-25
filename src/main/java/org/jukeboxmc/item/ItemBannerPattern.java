@@ -16,4 +16,9 @@ public class ItemBannerPattern extends Item {
     public BlockStandingBanner getBlock() {
         return new BlockStandingBanner();
     }
+
+    @Override
+    public int getMaxAmount() {
+        return 16;
+    }
 }

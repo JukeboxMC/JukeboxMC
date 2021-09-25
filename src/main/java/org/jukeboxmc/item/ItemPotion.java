@@ -10,6 +10,11 @@ public class ItemPotion extends Item {
         super ( "minecraft:potion" );
     }
 
+    @Override
+    public int getMaxAmount() {
+        return 1;
+    }
+
     public void setPotionType( PotionType potionType ) {
         this.setMeta( potionType.ordinal() );
     }
