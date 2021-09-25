@@ -1,9 +1,6 @@
 package org.jukeboxmc.command;
 
-import org.jukeboxmc.command.jukebox.GameModeCommand;
-import org.jukeboxmc.command.jukebox.PluginsCommand;
-import org.jukeboxmc.command.jukebox.StopCommand;
-import org.jukeboxmc.command.jukebox.TeleportCommand;
+import org.jukeboxmc.command.jukebox.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +19,8 @@ public class CommandManager {
                 GameModeCommand.class,
                 PluginsCommand.class,
                 TeleportCommand.class,
-                StopCommand.class
+                StopCommand.class,
+                TimeCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

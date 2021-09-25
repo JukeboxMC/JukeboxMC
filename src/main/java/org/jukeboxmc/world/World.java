@@ -400,6 +400,12 @@ public class World extends LevelDBWorld {
         return this.gamerules;
     }
 
+    public void updateGameRules() {
+        GameRulesChangedPacket gameRulesChangedPacket = new GameRulesChangedPacket();
+        gameRulesChangedPacket.setGamerules( this.gamerules );
+        this.sendWorldPacket( gameRulesChangedPacket );
+    }
+
     public void addEntity( Entity entity ) {
         if ( !this.entities.containsKey( entity.getEntityId() ) ) {
             this.entities.put( entity.getEntityId(), entity );

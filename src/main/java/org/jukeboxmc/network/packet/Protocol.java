@@ -67,4 +67,5 @@ public interface Protocol {
     byte SET_SPAWN_POSITION_PACKET = 0x2b;
     byte ENTITY_FALL_PACKET = 0x25;
     byte SET_TIME_PACKET = 0x0a;
+    byte GAME_RULES_CHANGED_PACKET = 0x48;
 }
