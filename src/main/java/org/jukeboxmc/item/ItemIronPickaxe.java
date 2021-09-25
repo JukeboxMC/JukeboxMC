@@ -1,8 +1,11 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.item.type.ItemTierType;
 import org.jukeboxmc.item.type.ItemToolType;
+import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
@@ -12,6 +15,18 @@ public class ItemIronPickaxe extends Item implements Durability {
 
     public ItemIronPickaxe() {
         super ( "minecraft:iron_pickaxe" );
+    }
+
+    @Override
+    public void addToHand( Player player ) {
+        Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
+        attribute.setCurrentValue( 4 );
+    }
+
+    @Override
+    public void removeFromHand( Player player ) {
+        Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
+        attribute.setCurrentValue( attribute.getMinValue() );
     }
 
     @Override

@@ -1,13 +1,19 @@
 package org.jukeboxmc.entity;
 
+import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
+import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.network.packet.EntityEventPacket;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
@@ -15,16 +21,198 @@ import java.util.Map;
  */
 public abstract class EntityLiving extends Entity {
 
+    protected int deadTimer = 0;
+    protected int fireTicks = 0;
+    protected float lastDamage = 0;
+    protected byte attackCoolDown = 0;
+
+    protected EntityDamageEvent.DamageSource lastDamageSource;
+    protected Entity lastDamageEntity;
+
+
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
 
     public EntityLiving() {
-        super();
         this.addAttribute( AttributeType.HEALTH );
         this.addAttribute( AttributeType.ABSORPTION );
         this.addAttribute( AttributeType.ATTACK_DAMAGE );
         this.addAttribute( AttributeType.FOLLOW_RANGE );
         this.addAttribute( AttributeType.MOVEMENT );
         this.addAttribute( AttributeType.KNOCKBACK_RESISTENCE );
+    }
+
+    @Override
+    public void update( long currentTick ) {
+        if ( !( this.isDead || this.getHealth() <= 0 ) ) {
+            super.update( currentTick );
+        }
+
+        if ( this.lastDamageEntity != null && this.lastDamageEntity.isDead() ) {
+            this.lastDamageEntity = null;
+        }
+
+        if ( this.getHealth() < 1 ) {
+            if ( this.deadTimer > 0 && this.deadTimer-- > 1 ) {
+                this.despawn();
+                this.isDead = true;
+                this.deadTimer = 0;
+            }
+        } else {
+            this.deadTimer = 0;
+        }
+
+        if ( this.isDead() || this.getHealth() <= 0 ) {
+            return;
+        }
+
+        if ( this.attackCoolDown > 0 ) {
+            this.attackCoolDown--;
+        }
+
+        if ( this.fireTicks > 0 ) {
+            if ( this.fireTicks % 20 == 0 ) {
+                this.damage( new EntityDamageEvent( this, 1, EntityDamageEvent.DamageSource.ON_FIRE ) );
+            }
+            this.fireTicks--;
+            if ( this.fireTicks == 0 ) {
+                this.setBurning( false );
+            }
+        }
+    }
+
+    @Override
+    public boolean damage( EntityDamageEvent event ) {
+        if ( this.getHealth() <= 0 ) {
+            return false;
+        }
+
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FIRE ) ||
+                event.getDamageSource().equals( EntityDamageEvent.DamageSource.LAVA ) ||
+                event.getDamageSource().equals( EntityDamageEvent.DamageSource.ON_FIRE ) ) {
+            return false;
+        }
+
+        float damage = this.applyArmorReduction( event, false );
+
+        float absorption = this.getAbsorption();
+        if ( absorption > 0 ) {
+            damage = Math.max( damage - absorption, 0 );
+        }
+
+        if ( this.attackCoolDown > 0 && damage <= this.lastDamage ) {
+            return false;
+        }
+
+        event.setFinalDamage( damage );
+        if ( !super.damage( event ) ) {
+            return false;
+        }
+
+        float damageToBeDealt;
+
+        if ( damage != event.getFinalDamage() ) {
+            damageToBeDealt = event.getFinalDamage();
+        } else {
+            damageToBeDealt = applyArmorReduction( event, true );
+
+            absorption = this.getAbsorption();
+            if ( absorption > 0 ) {
+                float oldDamage = damageToBeDealt;
+                damageToBeDealt = Math.max( damage - absorption, 0 );
+                this.setAbsorption( absorption - ( oldDamage - damageToBeDealt ) );
+            }
+        }
+
+        float health = ( this.getHealth() - damageToBeDealt );
+
+        if ( health > 0 ) {
+            EntityEventPacket entityEventPacket = new EntityEventPacket();
+            entityEventPacket.setEntityId( this.entityId );
+            entityEventPacket.setEntityEventType( EntityEventType.HURT );
+            Server.getInstance().broadcastPacket( entityEventPacket );
+        }
+
+        if ( event instanceof EntityDamageByEntityEvent ) {
+            EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
+            Entity damager = damageByEntityEvent.getDamager();
+            float diffX = this.getX() - damager.getX();
+            float diffZ = this.getZ() - damager.getZ();
+
+            float distance = (float) Math.sqrt( diffX * diffX + diffZ * diffZ );
+            if ( distance > 0.0 ) {
+                float baseModifier = 0.4F;
+
+                distance = 1 / distance;
+
+                Vector velocity = this.getVelocity();
+                velocity = velocity.divide( 2f, 2f, 2f );
+                velocity = velocity.add(
+                        ( diffX * distance * baseModifier ),
+                        baseModifier,
+                        ( diffZ * distance * baseModifier )
+                );
+
+                if ( velocity.getY() > baseModifier ) {
+                    velocity.setY( baseModifier );
+                }
+
+                this.setVelocity( velocity, true );
+            }
+        }
+
+        this.lastDamage = damage;
+        this.lastDamageSource = event.getDamageSource();
+        this.lastDamageEntity = ( event instanceof EntityDamageByEntityEvent ) ? ( (EntityDamageByEntityEvent) event ).getDamager() : null;
+        this.attackCoolDown = 10;
+        this.setHealth( health <= 0 ? 0 : health );
+        return true;
+    }
+
+    @Override
+    public void fall() {
+        float damage = (float) FastMath.floor( this.fallDistance - 3f );
+        if ( damage > 0 ) {
+            this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
+        }
+    }
+
+    public void setBurning( long value, TimeUnit timeUnit ) {
+        int newFireTicks = (int) ( timeUnit.toMillis( value ) / 50 );
+        if ( newFireTicks > this.fireTicks ) {
+            this.fireTicks = newFireTicks;
+            this.setBurning( true );
+        } else if ( newFireTicks == 0 ) {
+            this.fireTicks = 0;
+            this.setBurning( false );
+        }
+    }
+
+    protected void kill() {
+        this.deadTimer = 20;
+
+        EntityEventPacket entityEventPacket = new EntityEventPacket();
+        entityEventPacket.setEntityId( this.entityId );
+        entityEventPacket.setEntityEventType( EntityEventType.DEATH );
+        Server.getInstance().broadcastPacket( entityEventPacket );
+
+        this.fireTicks = 0;
+        this.setBurning( false );
+    }
+
+    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+        return event.getDamage();
+    }
+
+    public Entity getLastDamageEntity() {
+        return this.lastDamageEntity;
+    }
+
+    public float getLastDamage() {
+        return this.lastDamage;
+    }
+
+    public EntityDamageEvent.DamageSource getLastDamageSource() {
+        return this.lastDamageSource;
     }
 
     public void addAttribute( AttributeType attributeType ) {
@@ -56,14 +244,15 @@ public abstract class EntityLiving extends Entity {
     }
 
     public void setHealth( float value ) {
-        if ( value < 0 ) {
-            value = 0;
+        if ( value < 1 ) {
+            this.kill();
         }
-        this.setAttributes( AttributeType.HEALTH, value );
+        Attribute attribute = this.getAttribute( AttributeType.HEALTH );
+        attribute.setCurrentValue( value );
     }
 
     public void setHeal( float value, EntityHealEvent.Cause cause ) {
-        EntityHealEvent entityHealEvent = new EntityHealEvent( this,this.getHealth() + value, cause );
+        EntityHealEvent entityHealEvent = new EntityHealEvent( this, this.getHealth() + value, cause );
         Server.getInstance().getPluginManager().callEvent( entityHealEvent );
         if ( entityHealEvent.isCancelled() ) {
             return;

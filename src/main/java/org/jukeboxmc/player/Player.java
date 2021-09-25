@@ -4,18 +4,28 @@ import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.EntityEventType;
 import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
+import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
+import org.jukeboxmc.event.player.PlayerDeathEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
+import org.jukeboxmc.event.player.PlayerRespawnEvent;
 import org.jukeboxmc.inventory.*;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
+import org.jukeboxmc.item.enchantment.EnchantmentSharpness;
+import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
@@ -68,9 +78,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private long lastBreakTime = 0;
     private Vector lasBreakPosition;
 
-    private long actionStart = -1;
+    private Location respawnLocation = null;
+    private Location spawnLocation = null;
 
-    private boolean isDead = false;
+    private long actionStart = -1;
 
     private final Queue<Long> chunkLoadQueue = new LinkedList<>();
     private final Set<Long> loadingChunks = new HashSet<>();
@@ -78,7 +89,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final Set<UUID> emotes = new HashSet<>();
 
     public Player( PlayerConnection playerConnection ) {
-        super();
         this.playerConnection = playerConnection;
         this.server = playerConnection.getServer();
         this.gameMode = this.server.getDefaultGameMode();
@@ -120,8 +130,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 } );
             }
         }
+        super.update( currentTick );
 
-        this.updateAttributes();
 
         Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.dimension, null );
         if ( nearbyEntities != null ) {
@@ -132,9 +142,21 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         if ( !this.onGround ) {
             ++this.inAirTicks;
+            if ( this.inAirTicks > 5) {
+                if ( this.location.getY() > this.highestPosition ) {
+                    this.highestPosition = this.location.getY();
+                }
+            }
         } else {
             if ( this.inAirTicks > 0 ) {
                 this.inAirTicks = 0;
+            }
+
+            this.fallDistance = this.highestPosition - this.location.getY();
+            if ( this.fallDistance > 0 ) {
+                this.fall();
+                this.highestPosition = this.location.getY();
+                this.fallDistance = 0;
             }
         }
 
@@ -170,7 +192,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                     }
 
                     if ( ( health > 10 && difficulty.equals( Difficulty.NORMAL ) ) || ( difficulty.equals( Difficulty.HARD ) && health > 1 ) ) {
-                        //TODO this.damage
+                        this.damage( new EntityDamageEvent( this, 1, EntityDamageEvent.DamageSource.STARVE ) );
                     }
                 }
             }
@@ -179,6 +201,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.foodTicks = 0;
             }
         }
+
+        this.updateAttributes();
     }
     // ========== Chunk ==========
 
@@ -394,6 +418,29 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.lastBreakTime = lastBreakTime;
     }
 
+    public Location getRespawnLocation() {
+        return respawnLocation;
+    }
+
+    public void setRespawnLocation( Location respawnLocation ) {
+        this.respawnLocation = respawnLocation;
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    public void setSpawnLocation( Location spawnLocation ) {
+        this.spawnLocation = spawnLocation;
+
+        SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
+        setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.SpawnType.PLAYER );
+        setSpawnPositionPacket.setPlayerPosition( this.spawnLocation );
+        setSpawnPositionPacket.setDimension( this.dimension );
+        setSpawnPositionPacket.setWorldSpawn( this.getWorld().getSpawnLocation( this.dimension ) );
+        this.playerConnection.sendPacket( setSpawnPositionPacket );
+    }
+
     public long getActionStart() {
         return this.actionStart;
     }
@@ -559,10 +606,244 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
+    public List<Item> getDrops() {
+        List<Item> drops = new ArrayList<>();
+        for ( Item content : this.playerInventory.getContents() ) {
+            if ( content != null && !( content instanceof ItemAir ) ) {
+                drops.add( content );
+            }
+        }
+        for ( Item content : this.cursorInventory.getContents() ) {
+            if ( content != null && !( content instanceof ItemAir ) ) {
+                drops.add( content );
+            }
+        }
+        for ( Item content : this.armorInventory.getContents() ) {
+            if ( content != null && !( content instanceof ItemAir ) ) {
+                drops.add( content );
+            }
+        }
+        return drops;
+    }
+
     // ========== Feature Methode ==========
+
+    @Override
+    public void sendMessage( String message ) {
+        this.sendMessage( message, TextType.RAW );
+    }
+
+    @Override
+    public boolean hasPermission( String permission ) {
+        return true;
+    }
+
+    @Override
+    public boolean hasPermission( String permission, boolean defaultValue ) {
+        return true;
+    }
+
+    @Override
+    public boolean damage( EntityDamageEvent event ) {
+        if ( this.adventureSettings.isCanFly() && event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ) {
+            return false;
+        }
+        return !this.gameMode.equals( GameMode.CREATIVE ) && !this.gameMode.equals( GameMode.SPECTATOR ) && super.damage( event );
+    }
+
+    @Override
+    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ||
+                event.getDamageSource().equals( EntityDamageEvent.DamageSource.VOID ) ||
+                event.getDamageSource().equals( EntityDamageEvent.DamageSource.DROWNING ) ) {
+            return event.getDamage();
+        }
+
+        float damage = event.getDamage();
+        float maxReductionDiff = 25.0f - this.armorInventory.getTotalArmorValue();
+        float amplifiedDamage = damage * maxReductionDiff;
+        if ( damageArmor ) {
+            this.armorInventory.damageEvenly( damage );
+        }
+
+        return amplifiedDamage / 25.0F;
+    }
+
+    @Override
+    protected void kill() {
+        if ( !this.isDead ) {
+            super.kill();
+            EntityEventPacket entityEventPacket = new EntityEventPacket();
+            entityEventPacket.setEntityId( this.entityId );
+            entityEventPacket.setEntityEventType( EntityEventType.DEATH );
+            this.playerConnection.sendPacket( entityEventPacket );
+
+            String deathMessage;
+            switch ( this.lastDamageSource ) {
+                case ENTITY_ATTACK:
+                    deathMessage = this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
+                    break;
+                case FALL:
+                    deathMessage = this.getNameTag() + " fell from a high place";
+                    break;
+                case LAVA:
+                    deathMessage = this.getNameTag() + " tried to swim in lava";
+                    break;
+                case FIRE:
+                    deathMessage = this.getNameTag() + " went up in flames";
+                    break;
+                case VOID:
+                    deathMessage = this.getNameTag() + " fell out of the world";
+                    break;
+                case CACTUS:
+                    deathMessage = this.getNameTag() + " was pricked to death";
+                    break;
+                case STARVE:
+                    deathMessage = this.getNameTag() + " starved to death";
+                    break;
+                case ON_FIRE:
+                    deathMessage = this.getNameTag() + " burned to death";
+                    break;
+                case DROWNING:
+                    deathMessage = this.getNameTag() + " drowned";
+                    break;
+                case HARM_EFFECT:
+                    deathMessage = this.getNameTag() + " was killed by magic";
+                    break;
+                case ENTITY_EXPLODE:
+                    deathMessage = this.getNameTag() + " blew up";
+                    break;
+                case PROJECTILE:
+                    deathMessage = this.getNameTag() + " has been shot";
+                    break;
+                case API:
+                    deathMessage = this.getNameTag() + " was killed by setting health to 0";
+                    break;
+                case COMMAND:
+                    deathMessage = this.getNameTag() + " died";
+                    break;
+                default:
+                    deathMessage = this.getNameTag() + " died for unknown reasons";
+                    break;
+            }
+
+            PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent( this, deathMessage, true, this.getDrops() );
+            this.server.getPluginManager().callEvent( playerDeathEvent );
+
+            if ( playerDeathEvent.isDropInventory() ) {
+                for ( Item drop : playerDeathEvent.getDrops() ) {
+                    this.getWorld().dropItem( drop, this.location, null ).spawn();
+                }
+
+                this.playerInventory.clear();
+                this.cursorInventory.clear();
+                this.armorInventory.clear();
+            }
+
+            if ( playerDeathEvent.getDeathMessage() != null && !playerDeathEvent.getDeathMessage().isEmpty() ) {
+                this.server.broadcastMessage( playerDeathEvent.getDeathMessage() );
+            }
+
+            this.respawnLocation = this.getWorld().getSpawnLocation( this.dimension ).add( 0, this.getEyeHeight(), 0 );
+
+            RespawnPositionPacket respawnPositionPacket = new RespawnPositionPacket();
+            respawnPositionPacket.setEntityId( this.entityId );
+            respawnPositionPacket.setRespawnState( RespawnPositionPacket.RespawnState.SEARCHING_FOR_SPAWN );
+            respawnPositionPacket.setPosition( this.respawnLocation );
+            this.playerConnection.sendPacket( respawnPositionPacket );
+        }
+    }
+
+    public boolean attackWithItemInHand( Entity target ) {
+        if ( target instanceof Player ) {
+            Player player = (Player) target;
+
+            boolean success = false;
+
+            EntityDamageEvent.DamageSource damageSource = EntityDamageEvent.DamageSource.ENTITY_ATTACK;
+            float damage = this.getAttackDamage();
+
+            EnchantmentSharpness sharpness = (EnchantmentSharpness) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.SHARPNESS );
+            if ( sharpness != null ) {
+                damage += sharpness.getLevel() * 1.25f;
+            }
+
+            int knockbackLevel = 0;
+
+            EnchantmentKnockback knockback = (EnchantmentKnockback) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.KNOCKBACK );
+            if ( knockback != null ) {
+                knockbackLevel += knockback.getLevel();
+            }
+
+            if ( damage > 0 ) {
+                boolean crit = this.fallDistance > 0 && !this.onGround && !this.isOnLadder() && !this.isInWater();
+                if ( crit && damage > 0.0f ) {
+                    damage *= 1.5;
+                }
+                if ( ( success = player.damage( new EntityDamageByEntityEvent( player, this, damage, damageSource ) ) ) ) {
+                    if ( knockbackLevel > 0 ) {
+                        Vector targetVelocity = target.getVelocity();
+                        player.setVelocity( targetVelocity.add(
+                                (float) ( -Math.sin( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ),
+                                0.1f,
+                                (float) ( Math.cos( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ) ) );
+
+                        Vector ownVelocity = this.getVelocity();
+                        ownVelocity.setX( ownVelocity.getX() * 0.6F );
+                        ownVelocity.setZ( ownVelocity.getZ() * 0.6F );
+                        this.setVelocity( ownVelocity );
+
+                        this.setSprinting( false );
+                    }
+                }
+            }
+            this.exhaust( 0.3f );
+            return success;
+        }
+        return false;
+    }
+
+    public void respawn() {
+        if ( this.isDead ) {
+            PlayerRespawnEvent playerRespawnEvent = new PlayerRespawnEvent( this, this.respawnLocation );
+            this.server.getPluginManager().callEvent( playerRespawnEvent );
+
+            this.lastDamageEntity = null;
+            this.lastDamageSource = null;
+            this.lastDamage = 0;
+
+            this.updateMetadata();
+            for ( Attribute attribute : this.attributes.values() ) {
+                attribute.reset();
+            }
+            this.updateAttributes();
+
+            this.teleport( playerRespawnEvent.getRespawnLocation() );
+            this.respawnLocation = null;
+
+            this.spawn();
+
+            this.setVelocity( Vector.zero() );
+
+            this.playerInventory.sendContents( this );
+            this.cursorInventory.sendContents( this );
+            this.armorInventory.sendArmorContent( this );
+
+            EntityEventPacket entityEventPacket = new EntityEventPacket();
+            entityEventPacket.setEntityId( this.entityId );
+            entityEventPacket.setEntityEventType( EntityEventType.RESPAWN );
+            this.getWorld().sendDimensionPacket( entityEventPacket, this.dimension );
+
+            this.playerInventory.getItemInHand().addToHand( this );
+
+            this.isDead = false;
+        }
+    }
 
     private void joinServer() {
         if ( !this.spawned ) {
+            this.server.addPlayer( this );
+
             AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
             availableCommandsPacket.setCommands( this.server.getPluginManager().getCommandManager().getCommands() );
             this.playerConnection.sendPacket( availableCommandsPacket );
@@ -588,6 +869,13 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             setEntityDataPacket.setTick( this.server.getCurrentTick() );
             this.playerConnection.sendPacket( setEntityDataPacket );
 
+            this.getWorld().setSpawnLocation( this.getWorld().getSpawnLocation( this.dimension ) );
+
+            if ( this.spawnLocation == null ) {
+                Location spawnLocation = this.getWorld().getSpawnLocation( this.dimension );
+                this.setSpawnLocation( spawnLocation );
+            }
+
             this.playerInventory.addViewer( this );
             this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
@@ -596,7 +884,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.smithingTableInventory.addViewer( this );
             this.anvilInventory.addViewer( this );
 
-            this.server.addPlayer( this );
             this.server.addToTablist( this );
             if ( this.server.getOnlinePlayers().size() > 1 ) {
                 PlayerListPacket playerListPacket = new PlayerListPacket();
@@ -628,6 +915,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                     this.spawn( onlinePlayer );
                 }
             }
+
+            for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
+                onlinePlayer.getArmorInventory().sendContents( this );
+                this.getArmorInventory().sendArmorContent( onlinePlayer );
+            }
+            this.highestPosition = this.location.getY();
             this.spawned = true;
         }
     }
@@ -672,21 +965,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         textPacket.setXuid( this.xuid );
         textPacket.setDeviceId( this.deviceInfo.getDeviceId() );
         this.playerConnection.sendPacket( textPacket );
-    }
-
-    @Override
-    public void sendMessage( String message ) {
-        this.sendMessage( message, TextType.RAW );
-    }
-
-    @Override
-    public boolean hasPermission( String permission ) {
-        return true;
-    }
-
-    @Override
-    public boolean hasPermission( String permission, boolean defaultValue ) {
-        return true;
     }
 
     public void sendTip( String message ) {
@@ -803,5 +1081,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         playSoundPacket.setVolume( volume );
         playSoundPacket.setPitch( pitch );
         this.playerConnection.sendPacket( playSoundPacket );
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( !( obj instanceof Player ) ) {
+            return false;
+        }
+        Player other = (Player) obj;
+        return Objects.equals( this.uuid, other.uuid ) && this.entityId == other.entityId;
     }
 }

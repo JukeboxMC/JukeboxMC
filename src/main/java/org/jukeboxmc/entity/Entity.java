@@ -3,11 +3,14 @@ package org.jukeboxmc.entity;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockLadder;
+import org.jukeboxmc.block.BlockVine;
 import org.jukeboxmc.block.BlockWater;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.entity.EntityVelocityEvent;
 import org.jukeboxmc.math.AxisAlignedBB;
@@ -33,6 +36,7 @@ public abstract class Entity {
     public static long entityCount = 1;
     protected long entityId;
 
+    protected float highestPosition = 0;
     protected float fallDistance = 0;
     protected float gravity = 0.08f;
     protected float drag = 0.02f;
@@ -41,6 +45,7 @@ public abstract class Entity {
     protected boolean onGround = false;
     protected boolean spawned = false;
     protected boolean closed = false;
+    protected boolean isDead = false;
 
     protected boolean isCollidedVertically;
     protected boolean isCollidedHorizontally;
@@ -163,7 +168,7 @@ public abstract class Entity {
     protected void updateFallState( float dY ) {
         if ( this.onGround ) {
             if ( this.fallDistance > 0 ) {
-                //this.handleFall();
+                this.fall();
             }
             this.fallDistance = 0;
         } else if ( dY < 0 ) {
@@ -287,11 +292,31 @@ public abstract class Entity {
 
     public abstract Packet createSpawnPacket();
 
+    protected void fall() {
+
+    }
+
     public void onCollideWithPlayer( Player player ) {
     }
 
     public long getEntityId() {
         return this.entityId;
+    }
+
+    public float getFallDistance() {
+        return this.fallDistance;
+    }
+
+    public void setFallDistance( float fallDistance ) {
+        this.fallDistance = fallDistance;
+    }
+
+    public float getHighestPosition() {
+        return this.highestPosition;
+    }
+
+    public void setHighestPosition( float highestPosition ) {
+        this.highestPosition = highestPosition;
     }
 
     public boolean isOnGround() {
@@ -308,6 +333,10 @@ public abstract class Entity {
 
     public boolean isClosed() {
         return this.closed;
+    }
+
+    public boolean isDead() {
+        return this.isDead;
     }
 
     public Location getLocation() {
@@ -520,6 +549,7 @@ public abstract class Entity {
         this.getChunk().removeEntity( this );
         this.getWorld().removeEntity( this );
         this.closed = true;
+        this.isDead = true;
     }
 
     public void despawn() {
@@ -533,15 +563,28 @@ public abstract class Entity {
     }
 
     public boolean isInWater() {
-        float y = this.location.getY() + this.getEyeHeight();
-        Block block = this.location.getWorld().getBlock( new Vector( (float) Math.floor( this.location.getX() ), (float) Math.floor( y ), (float) Math.floor( this.location.getZ() ) ) );
-
+        Vector eyeLocation = this.getLocation().add( 0, this.getEyeHeight(), 0 );
+        Block block = this.getWorld().getBlock( eyeLocation);
         if ( block instanceof BlockWater ) {
-            BlockWater blockWater = (BlockWater) block;
-            float f = (float) ( ( block.getLocation().getBlockY() + 1 ) - ( blockWater.getLiquidDepth() - 0.1111111 ) );
-            return y < f;
+            float yLiquid = (float) ( ( block.getLocation().getY() + 1 + ( (BlockWater) block ).getLiquidDepth() - 0.12 ) );
+            return eyeLocation.getY() < yLiquid;
         }
+
         return false;
+    }
+
+    protected boolean isOnLadder() {
+        Location location = this.getLocation();
+        Block block = location.getWorld().getBlock( location );
+        return block instanceof BlockLadder || block instanceof BlockVine;
+    }
+
+    public boolean damage( EntityDamageEvent event ) {
+        if ( this.isDead ) {
+            return false;
+        }
+        Server.getInstance().getPluginManager().callEvent( event );
+        return !event.isCancelled();
     }
 
     // ========== Metadata ==========

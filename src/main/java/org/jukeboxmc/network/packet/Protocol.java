@@ -63,4 +63,7 @@ public interface Protocol {
     byte BLOCK_EVENT_PACKET = 0x1a;
     byte ENTITY_EVENT_PACKET = 0x1b;
     byte MOB_ARMOR_EQUIPMENT_PACKET = 0x20;
+    byte RESPAWN_POSITION_PACKET = 0x2d;
+    byte SET_SPAWN_POSITION_PACKET = 0x2b;
+    byte ENTITY_FALL_PACKET = 0x25;
 }

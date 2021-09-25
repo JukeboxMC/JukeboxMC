@@ -55,6 +55,26 @@ public class Location extends Vector {
         this( world, vector.getX(), vector.getY(), vector.getZ(), 0, 0, Dimension.OVERWORLD );
     }
 
+    @Override
+    public Location add( float x, float y, float z ) {
+        return new Location( this.world, this.x + x, this.y + y, this.z + z, this.dimension );
+    }
+
+    @Override
+    public Location subtract( float x, float y, float z ) {
+        return new Location( this.world, this.x - x, this.y - y, this.z - z, this.dimension );
+    }
+
+    @Override
+    public Location multiply( float x, float y, float z ) {
+        return new Location( this.world, this.x * x, this.y * y, this.z * z, this.dimension );
+    }
+
+    @Override
+    public Location divide( float x, float y, float z ) {
+        return new Location( this.world, this.x / x, this.y / y, this.z / z, this.dimension );
+    }
+
     public World getWorld() {
         return this.world;
     }
@@ -95,6 +115,7 @@ public class Location extends Vector {
         double y = Math.cos( pitch );
         return new Vector( (float) x, (float) y, (float) z ).normalize();
     }
+
 
     @Override
     public String toString() {

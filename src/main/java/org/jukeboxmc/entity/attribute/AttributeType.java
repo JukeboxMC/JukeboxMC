@@ -7,12 +7,12 @@ package org.jukeboxmc.entity.attribute;
 public enum AttributeType {
 
     //Base Entity
-    ABSORPTION( "minecraft:absorption", 0, 0, 0 ),
+    ABSORPTION( "minecraft:absorption", 0, Float.MAX_VALUE, 0 ),
     KNOCKBACK_RESISTENCE( "minecraft:knockback_resistance", 0, 1, 0 ),
     HEALTH( "minecraft:health", 0, 20, 20 ),
     MOVEMENT( "minecraft:movement", 0, 1, 0.1f ),
     FOLLOW_RANGE( "minecraft:follow_range", 0, 2048, 16 ),
-    ATTACK_DAMAGE( "minecraft:attack_damage", 0, Float.MAX_VALUE, 1 ),
+    ATTACK_DAMAGE( "minecraft:attack_damage", 1, Float.MAX_VALUE, 1 ),
     LUCK( "minecraft:luck", -1024, 1024, 0 ),
     FALL_DAMAGE( "minecraft:fall_damage", 0, Float.MAX_VALUE, 1 ),
 

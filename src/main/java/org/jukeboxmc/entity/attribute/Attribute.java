@@ -1,9 +1,12 @@
 package org.jukeboxmc.entity.attribute;
 
+import lombok.ToString;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class Attribute implements Cloneable {
 
     private final String key;

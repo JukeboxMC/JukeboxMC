@@ -109,6 +109,14 @@ public class Item implements Cloneable {
         return false;
     }
 
+    public void addToHand( Player player ) {
+
+    }
+
+    public void removeFromHand( Player player ) {
+
+    }
+
     public String getIdentifier() {
         return this.identifier;
     }
@@ -284,6 +292,7 @@ public class Item implements Cloneable {
     public Item clone() {
         try {
             Item clone = (Item) super.clone();
+            clone.identifier = this.identifier;
             clone.amount = this.amount;
             clone.meta = this.meta;
             clone.durability = this.durability;
@@ -293,6 +302,7 @@ public class Item implements Cloneable {
             clone.canPlaceOn = this.canPlaceOn;
             clone.canDestroy = this.canDestroy;
             clone.blockRuntimeId = this.blockRuntimeId;
+            clone.enchantments = this.enchantments;
             return clone;
         } catch ( CloneNotSupportedException e ) {
             e.printStackTrace();

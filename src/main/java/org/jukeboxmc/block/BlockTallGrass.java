@@ -4,10 +4,14 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.GrassType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemTallGrass;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -61,6 +65,14 @@ public class BlockTallGrass extends Block {
     @Override
     public ItemToolType getToolType() {
         return ItemToolType.SHEARS;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        if ( itemInHand.getItemToolType().equals( ItemToolType.SHEARS ) ) {
+            return Collections.singletonList( ItemType.TALLGRASS.getItem() );
+        }
+        return Collections.emptyList();
     }
 
     public BlockTallGrass setGrassType( GrassType grassType ) {

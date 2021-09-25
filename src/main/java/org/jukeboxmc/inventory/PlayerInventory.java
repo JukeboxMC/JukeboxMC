@@ -1,6 +1,5 @@
 package org.jukeboxmc.inventory;
 
-import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -76,9 +75,12 @@ public class PlayerInventory extends ContainerInventory {
 
     @Override
     public void setItem( int slot, Item item ) {
+        Item oldItem = this.getItem( slot );
         super.setItem( slot, item );
 
         if ( slot == this.itemInHandSlot && this.holder instanceof Player ) {
+            oldItem.removeFromHand( (Player) this.holder );
+            item.addToHand( (Player) this.holder );
             this.updateItemInHandForAll();
         }
     }
@@ -98,7 +100,14 @@ public class PlayerInventory extends ContainerInventory {
 
     public void setItemInHandSlot( int itemInHandSlot ) {
         if ( itemInHandSlot >= 0 && itemInHandSlot < 9 ) {
+            Item oldItem = this.getItemInHand();
+            oldItem.removeFromHand( (Player) this.holder );
+
             this.itemInHandSlot = itemInHandSlot;
+
+            Item item = this.getItemInHand();
+            item.addToHand( (Player) this.holder );
+
             this.updateItemInHandForAll();
         }
     }
@@ -132,7 +141,7 @@ public class PlayerInventory extends ContainerInventory {
 
             MobEquipmentPacket mobEquipmentPacket = this.createMobEquipmentPacket( entityHuman );
 
-            for ( Player onlinePlayers : Server.getInstance().getOnlinePlayers() ) { //Get world players
+            for ( Player onlinePlayers : entityHuman.getWorld().getPlayers() ) { //Get world players
                 if ( onlinePlayers != entityHuman ) {
                     onlinePlayers.getPlayerConnection().sendPacket( mobEquipmentPacket );
                 }

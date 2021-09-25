@@ -108,6 +108,9 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                     player.exhaust( 0.2f );
                 }
                 break;
+            case RESPAWN:
+                player.respawn();
+                break;
             case START_BREAK:
                 long currentBreakTime = System.currentTimeMillis();
                 Block startBreakBlock = player.getWorld().getBlock( packet.getPosition() );

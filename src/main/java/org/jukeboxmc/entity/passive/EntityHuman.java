@@ -22,6 +22,7 @@ import org.jukeboxmc.player.info.GUIScale;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.utils.Utils;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -41,7 +42,6 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     protected final ArmorInventory armorInventory;
 
     public EntityHuman() {
-        super();
         this.uuid = UUID.randomUUID();
         this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, GUIScale.CLASSIC );
         this.playerInventory = new PlayerInventory( this, this.entityId );
@@ -94,6 +94,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     public Entity spawn( Player player ) {
         if ( this != player ) {
             super.spawn( player );
+
         }
         return this;
     }
@@ -286,5 +287,16 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
         this.setExhaustion( exhaustion );
     }
 
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        EntityHuman that = (EntityHuman) o;
+        return this.uuid.equals( that.uuid );
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash( uuid );
+    }
 }

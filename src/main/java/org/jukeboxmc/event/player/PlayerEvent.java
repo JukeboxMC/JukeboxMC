@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public abstract class PlayerEvent extends Event {
 
-    private Player player;
+    private final Player player;
 
     /**
      * Creates a new {@link PlayerEvent}

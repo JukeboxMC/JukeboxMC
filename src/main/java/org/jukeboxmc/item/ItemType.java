@@ -1456,9 +1456,9 @@ public enum ItemType {
     public static Item getItemFormNetwork( int networkId, int meta ) {
         for ( Item item : cachedItems.values() ) {
             if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
-                return item;
+                return item.clone();
             } else if ( item.getRuntimeId() == networkId ) {
-                return item;
+                return item.clone();
             }
         }
         return ItemType.AIR.getItem();

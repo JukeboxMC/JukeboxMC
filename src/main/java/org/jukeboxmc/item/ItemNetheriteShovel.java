@@ -4,6 +4,8 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockGrass;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.item.type.ItemTierType;
 import org.jukeboxmc.item.type.ItemToolType;
@@ -28,6 +30,18 @@ public class ItemNetheriteShovel extends Item implements Durability {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void addToHand( Player player ) {
+        Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
+        attribute.setCurrentValue( 5 );
+    }
+
+    @Override
+    public void removeFromHand( Player player ) {
+        Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
+        attribute.setCurrentValue( attribute.getMinValue() );
     }
 
     @Override

@@ -33,6 +33,10 @@ public class PacketRegistry {
         this.packetHandlerMap.put( PlayerActionPacket.class, new PlayerActionHandler() );
         this.packetHandlerMap.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
         this.packetHandlerMap.put( EntityEventPacket.class, new EntityEventHandler() );
+        this.packetHandlerMap.put( MobArmorEquipmentPacket.class, new MobArmorEquipmentHandler() );
+        this.packetHandlerMap.put( RespawnPositionPacket.class, new RespawnPositionHandler() );
+        this.packetHandlerMap.put( EntityFallPacket.class, new EntityFallHandler() );
+        this.packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
@@ -81,6 +85,12 @@ public class PacketRegistry {
                 return new CommandRequestPacket();
             case Protocol.ENTITY_EVENT_PACKET:
                 return new EntityEventPacket();
+            case Protocol.RESPAWN_POSITION_PACKET:
+                return new RespawnPositionPacket();
+            case Protocol.ENTITY_FALL_PACKET:
+                return new EntityFallPacket();
+            case Protocol.LEVEL_SOUND_EVENT_PACKET:
+                return new LevelSoundEventPacket();
             default:
                 return null;
         }

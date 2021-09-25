@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.inventory.InventoryClickEvent;
 import org.jukeboxmc.event.player.PlayerDropItemEvent;
@@ -12,6 +13,7 @@ import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -132,6 +134,24 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 break;
             case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY:
                 Server.getInstance().getLogger().debug( "USE_ON_ENTITY" );
+                switch ( packet.getActionType() ) {
+                    case 0: //Entity Interact
+                        break;
+                    case 1: //Entity Attack
+                        Entity entity = player.getWorld().getEntity( packet.getEntityId() );
+                        if ( entity != null ) {
+                            if ( player.attackWithItemInHand( entity ) ) {
+                                if ( !player.getGameMode().equals( GameMode.CREATIVE ) ){
+                                    Item itemInHand = player.getInventory().getItemInHand();
+                                    itemInHand.updateItem( player, itemInHand.calculateDurability( 1 ) );
+                                }
+                            }
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 Server.getInstance().getLogger().debug( "RELEASE" );

@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import org.jukeboxmc.Server;
-import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.network.packet.*;
 import org.jukeboxmc.network.packet.type.ResourcePackEntry;
 import org.jukeboxmc.player.Player;
@@ -43,13 +43,12 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 player.getPlayerConnection().sendPacket( resourcePackStackPacket );
                 break;
             case COMPLETED:
-                Vector worldSpawn = new Vector( 0, 73, 0 );
-
+                Location worldSpawn = player.getWorld().getSpawnLocation( player.getDimension() );
                 StartGamePacket startGamePacket = new StartGamePacket();
                 startGamePacket.setEntityId( player.getEntityId() );
                 startGamePacket.setEntityRuntimeId( player.getEntityId() );
                 startGamePacket.setGameMode( player.getGameMode() );
-                startGamePacket.setPosition( worldSpawn );
+                startGamePacket.setPosition( player.getSpawnLocation() != null ? player.getSpawnLocation() :  worldSpawn );
                 startGamePacket.setWorldSpawn( worldSpawn );
                 startGamePacket.setYaw( player.getYaw() );
                 startGamePacket.setPitch( player.getPitch() );

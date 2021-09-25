@@ -343,7 +343,7 @@ public class World extends LevelDBWorld {
         this.setGameRule( GameRule.DO_DAYLIGHT_CYCLE, true );
         this.setGameRule( GameRule.DO_ENTITY_DROPS, true );
         this.setGameRule( GameRule.DO_FIRE_TICK, true );
-        this.setGameRule( GameRule.DO_IMMEDIATE_RESPAWN, true );
+        this.setGameRule( GameRule.DO_IMMEDIATE_RESPAWN, false );
         this.setGameRule( GameRule.DO_MOB_LOOT, true );
         this.setGameRule( GameRule.DO_MOB_SPAWNING, true );
         this.setGameRule( GameRule.DO_TILE_DROPS, true );
@@ -353,7 +353,7 @@ public class World extends LevelDBWorld {
         this.setGameRule( GameRule.FIRE_DAMAGE, true );
         this.setGameRule( GameRule.KEEP_INVENTORY, true );
         this.setGameRule( GameRule.MOB_GRIEFING, true );
-        this.setGameRule( GameRule.NATURAL_REGENERATION, true );
+        this.setGameRule( GameRule.NATURAL_REGENERATION, false );
         this.setGameRule( GameRule.PVP, true );
         this.setGameRule( GameRule.RANDOM_TICK_SPEED, 1 );
         this.setGameRule( GameRule.SEND_COMMAND_FEEDBACK, true );
@@ -409,11 +409,19 @@ public class World extends LevelDBWorld {
 
     public void setSpawnLocation( Location spawnLocation ) {
         this.spawnLocation = spawnLocation;
+
+        for ( Player player : this.getPlayers() ) {
+            SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
+            setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.SpawnType.WORLD );
+            setSpawnPositionPacket.setPlayerPosition( player.getSpawnLocation() );
+            setSpawnPositionPacket.setWorldSpawn( this.spawnLocation );
+            player.getPlayerConnection().sendPacket( setSpawnPositionPacket );
+        }
     }
 
     public Location getSpawnLocation( Dimension dimension ) {
-        if ( dimension.equals( Dimension.OVERWORLD ) ) {
-            return new Location( this, this.spawnLocation.divide( 8, 0, 8 ) );
+        if ( !dimension.equals( Dimension.OVERWORLD ) ) {
+            return new Location( this, this.spawnLocation.divide( 8, 1, 8 ) );
         } else {
             return new Location( this, this.spawnLocation );
         }
@@ -654,8 +662,7 @@ public class World extends LevelDBWorld {
         return true;
     }
 
-    //========= Bloc+üüüüüüüüüüüüüüüü
-    // ##############################################################################################################################kEntitys =========
+    //========= BlockEntitys =========
 
     public BlockEntity getBlockEntity( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
