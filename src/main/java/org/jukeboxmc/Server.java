@@ -6,6 +6,7 @@ import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.config.Config;
+import org.jukeboxmc.config.ConfigType;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
@@ -165,7 +166,7 @@ public class Server {
     }
 
     private void initServerConfig() {
-        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json" );
+        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json", ConfigType.JSON );
         this.serverConfig.addDefault( "address", "0.0.0.0" );
         this.serverConfig.addDefault( "port", 19132 );
         this.serverConfig.addDefault( "maxplayers", 20 );
