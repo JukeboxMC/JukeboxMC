@@ -120,7 +120,6 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
         AxisAlignedBB boundingBox = this.getBoundingBox();
 
         for ( Entity entity : this.world.getNearbyEntities( boundingBox, this.location.getDimension(), null ) ) {
-            System.out.println("Entity: " + entity.getName() );
             if ( entity instanceof EntityHuman ) {
                 return 15;
             }
@@ -139,10 +138,8 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
             this.world.setBlock( this.location, this );
             if ( !isPowered && wasPowered ) {
                 this.world.playSound( this.location, LevelSound.POWER_OFF );
-                System.out.println("OFF");
             } else if ( isPowered && !wasPowered ) {
                 this.world.playSound( this.location, LevelSound.POWER_ON );
-                System.out.println("ON");
             }
         }
 
