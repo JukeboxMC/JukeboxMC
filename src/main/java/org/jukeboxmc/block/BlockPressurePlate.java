@@ -48,21 +48,6 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     }
 
     @Override
-    public boolean isSolid() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransparent() {
-        return true;
-    }
-
-    @Override
-    public boolean canPassThrough() {
-        return true;
-    }
-
-    @Override
     public void enterBlock( Player player ) {
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL,
                 player.getInventory().getItemInHand(), this );
@@ -82,13 +67,28 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
     }
 
     @Override
+    public boolean isSolid() {
+        return false;
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
+    @Override
     public AxisAlignedBB getBoundingBox() {
         return new AxisAlignedBB(
                 this.location.getX() + 0.0625f,
                 this.location.getY(),
                 this.location.getZ() + 0.0625f,
                 this.location.getX() + 0.9375f,
-                this.location.getY() + 0.0625f,
+                this.location.getY() + 1f,
                 this.location.getZ() + 0.9375f
         );
     }
@@ -120,6 +120,7 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
         AxisAlignedBB boundingBox = this.getBoundingBox();
 
         for ( Entity entity : this.world.getNearbyEntities( boundingBox, this.location.getDimension(), null ) ) {
+            System.out.println("Entity: " + entity.getName() );
             if ( entity instanceof EntityHuman ) {
                 return 15;
             }
@@ -135,10 +136,13 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
 
         if ( oldSignal != redstoneStrength ) {
             this.setRedstoneSignal( redstoneStrength );
+            this.world.setBlock( this.location, this );
             if ( !isPowered && wasPowered ) {
                 this.world.playSound( this.location, LevelSound.POWER_OFF );
+                System.out.println("OFF");
             } else if ( isPowered && !wasPowered ) {
                 this.world.playSound( this.location, LevelSound.POWER_ON );
+                System.out.println("ON");
             }
         }
 
