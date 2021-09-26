@@ -1,6 +1,11 @@
 package org.jukeboxmc.block;
 
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemTurtleEgg;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -15,6 +20,36 @@ public class BlockTurtleEgg extends BlockWaterlogable {
     @Override
     public ItemTurtleEgg toItem() {
         return new ItemTurtleEgg();
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+        Block clickedBlock = world.getBlock( blockPosition );
+        if ( clickedBlock instanceof BlockTurtleEgg ) {
+            BlockTurtleEgg blockTurtleEgg = (BlockTurtleEgg) clickedBlock;
+            if ( blockTurtleEgg.getIdentifier().equals( itemIndHand.getIdentifier() ) ) {
+                TurtleEggCount turtleEggCount = blockTurtleEgg.getTurtleEggCount();
+                if ( turtleEggCount.equals( TurtleEggCount.ONE_EGG ) ) {
+                    this.setTurtleEggCount( TurtleEggCount.TWO_EGG );
+                    world.setBlock( blockPosition, this );
+                    return true;
+                } else if ( turtleEggCount.equals( TurtleEggCount.TWO_EGG ) ) {
+                    this.setTurtleEggCount( TurtleEggCount.THREE_EGG );
+                    world.setBlock( blockPosition, this );
+                    return true;
+                } else if ( turtleEggCount.equals( TurtleEggCount.THREE_EGG ) ) {
+                    this.setTurtleEggCount( TurtleEggCount.FOUR_EGG );
+                    world.setBlock( blockPosition, this );
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
+        return true;
     }
 
     @Override

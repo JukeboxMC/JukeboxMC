@@ -9,10 +9,7 @@ import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockSlab;
-import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.*;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -568,7 +565,11 @@ public class World extends LevelDBWorld {
             }
         }
 
-        this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
+        if ( blockBreakEvent.getBlock() instanceof BlockTurtleEgg ) {
+            this.playSound( breakPosition, LevelSound.BLOCK_TURTLE_EGG_CRACK );
+        } else {
+            this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
+        }
         this.sendLevelEvent( breakPosition, LevelEvent.PARTICLE_DESTROY_BLOCK, breakBlock.getRuntimeId() );
     }
 
