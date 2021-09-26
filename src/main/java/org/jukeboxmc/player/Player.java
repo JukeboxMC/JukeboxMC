@@ -932,7 +932,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         if ( packetSendEvent.isCancelled() ) {
             return;
         }
-        this.playerConnection.sendPacket( packet, direct );
+        this.playerConnection.sendPacket( packetSendEvent.getPacket(), direct );
     }
 
     public void sendPacket( Packet packet ) {
