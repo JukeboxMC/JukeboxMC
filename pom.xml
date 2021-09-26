@@ -28,6 +28,7 @@
             <groupId>network.ycc</groupId>
             <artifactId>netty-raknet-server</artifactId>
             <version>0.8-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -162,7 +163,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.org.jukeboxmc.JukeboxMC</mainClass>
+                            <mainClass>org.jukeboxmc.JukeboxMC</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
