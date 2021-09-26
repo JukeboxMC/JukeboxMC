@@ -88,6 +88,7 @@ public class Chunk extends LevelDBChunk {
         Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
         block.setLocation( new Location( this.world, new Vector( x, y, z ) ) );
         block.setLayer( layer );
+        block.setPlaced( true );
         return block;
     }
 

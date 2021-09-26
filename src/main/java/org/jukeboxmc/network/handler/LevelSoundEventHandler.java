@@ -12,6 +12,16 @@ public class LevelSoundEventHandler implements PacketHandler<LevelSoundEventPack
 
     @Override
     public void handle( LevelSoundEventPacket packet, Server server, Player player ) {
-       player.getWorld().sendChunkPacket( player.getChunkX(), player.getChunkZ(), packet );
+        switch ( packet.getLevelSound() ) {
+            case LAND:
+            case ATTACK_NODAMAGE:
+            case FALL:
+            case HIT:
+            case ATTACK_STRONG:
+                player.getWorld().sendChunkPacket( player.getChunkX(), player.getChunkZ(), packet );
+                break;
+            default:
+                break;
+        }
     }
 }

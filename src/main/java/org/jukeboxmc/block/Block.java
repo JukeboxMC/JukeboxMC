@@ -454,6 +454,7 @@ public abstract class Block implements Cloneable {
         block.identifier = this.identifier;
         block.runtimeId = this.runtimeId;
         block.layer = this.layer;
+        block.placed = this.placed;
         block.blockStates = this.blockStates.toBuilder().build();
         return block;
     }

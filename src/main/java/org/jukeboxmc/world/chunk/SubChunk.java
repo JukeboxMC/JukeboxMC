@@ -8,6 +8,7 @@ import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.World;
 
 import java.util.*;
 

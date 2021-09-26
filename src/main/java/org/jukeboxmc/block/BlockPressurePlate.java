@@ -135,7 +135,6 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
 
         if ( oldSignal != redstoneStrength ) {
             this.setRedstoneSignal( redstoneStrength );
-            this.world.setBlock( this.location, this );
             if ( !isPowered && wasPowered ) {
                 this.world.playSound( this.location, LevelSound.POWER_OFF );
             } else if ( isPowered && !wasPowered ) {

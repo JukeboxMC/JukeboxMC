@@ -52,12 +52,10 @@ public abstract class BlockCandleBehavior extends Block {
         }
         if ( this.isLit() && !itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( false );
-            this.world.setBlock( blockPosition, this );
             this.world.playSound( blockPosition, LevelSound.FIZZ );
             return true;
         } else if ( !this.isLit() && itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( true );
-            this.world.setBlock( blockPosition, this );
             this.world.playSound( blockPosition, LevelSound.IGNITE );
             return true;
         }
