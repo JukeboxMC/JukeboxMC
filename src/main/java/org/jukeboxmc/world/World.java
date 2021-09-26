@@ -462,7 +462,7 @@ public class World extends LevelDBWorld {
     }
 
     public Block getBlock( Vector location, int layer ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, location.getDimension() );
+        Chunk chunk = this.getChunk( location.getChunkX(), location.getChunkZ(), location.getDimension() );
         return chunk.getBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer );
     }
 
@@ -470,16 +470,41 @@ public class World extends LevelDBWorld {
         return this.getBlock( new Vector( x, y, z ), 0 );
     }
 
+    public Block getBlock( int x, int y, int z, Dimension dimension ) {
+        return this.getBlock( new Vector( x, y, z, dimension ), 0 );
+    }
+
     public Block getBlock( int x, int y, int z, int layer ) {
         return this.getBlock( new Vector( x, y, z ), layer );
     }
 
-    public Block getBlockAt( int x, int y, int z, Dimension dimension ) {
-        return this.getBlockAt( x, y, z, dimension, 0 );
+    public Block getBlock( int x, int y, int z, Dimension dimension, int layer ) {
+        return this.getBlock( new Vector( x, y, z, dimension ), layer );
     }
 
-    public Block getBlockAt( int x, int y, int z, Dimension dimension, int layer ) {
-        return this.getBlock( new Vector( x, y, z, dimension ), layer );
+    public int getBlockRuntimeId( Vector location ) {
+        return this.getBlockRuntimeId( location, 0 );
+    }
+
+    public int getBlockRuntimeId( Vector location, int layer ) {
+        Chunk chunk = this.getChunk( location.getChunkX(), location.getChunkZ(), location.getDimension() );
+        return chunk.getRuntimeId( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer );
+    }
+
+    public int getBlockRuntimeId( int x, int y, int z ) {
+        return this.getBlockRuntimeId( new Vector( x, y, z ), 0 );
+    }
+
+    public int getBlockRuntimeId( int x, int y, int z, Dimension dimension ) {
+        return this.getBlockRuntimeId( new Vector( x, y, z, dimension ), 0 );
+    }
+
+    public int getBlockRuntimeId( int x, int y, int z, int layer ) {
+        return this.getBlockRuntimeId( new Vector( x, y, z ), layer );
+    }
+
+    public int getBlockRuntimeId( int x, int y, int z, Dimension dimension, int layer ) {
+        return this.getBlockRuntimeId( new Vector( x, y, z, dimension ), layer );
     }
 
     public void setBlock( Vector location, Block block ) {
@@ -500,9 +525,7 @@ public class World extends LevelDBWorld {
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
         block.setLocation( blockLocation );
-
         block.setLayer( layer );
-        block.setPlaced( true );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setPosition( location );

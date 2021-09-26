@@ -50,20 +50,20 @@ public abstract class BlockLiquid extends Block {
             if ( decay > 0 ) {
                 int smallestFlowDecay = -100;
                 this.adjacentSources = 0;
-                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() - 1 ), smallestFlowDecay );
-                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() + 1 ), smallestFlowDecay );
-                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX() - 1, (int) this.location.getY(), (int) this.location.getZ() ), smallestFlowDecay );
-                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX() + 1, (int) this.location.getY(), (int) this.location.getZ() ), smallestFlowDecay );
+                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() - 1, this.location.getDimension() ), smallestFlowDecay );
+                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() + 1, this.location.getDimension() ), smallestFlowDecay );
+                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX() - 1, (int) this.location.getY(), (int) this.location.getZ(), this.location.getDimension() ), smallestFlowDecay );
+                smallestFlowDecay = this.getSmallestFlowDecay( this.world.getBlock( (int) this.location.getX() + 1, (int) this.location.getY(), (int) this.location.getZ(), this.location.getDimension() ), smallestFlowDecay );
                 int newDecay = smallestFlowDecay + multiplier;
                 if ( newDecay >= 8 || smallestFlowDecay < 0 ) {
                     newDecay = -1;
                 }
-                int topFlowDecay = this.getFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() + 1, (int) this.location.getZ() ) );
+                int topFlowDecay = this.getFlowDecay( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() + 1, (int) this.location.getZ(), this.location.getDimension() ) );
                 if ( topFlowDecay >= 0 ) {
                     newDecay = topFlowDecay | 0x08;
                 }
                 if ( this.adjacentSources >= 2 && this instanceof BlockWater ) {
-                    Block bottomBlock = this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() - 1, (int) this.location.getZ() );
+                    Block bottomBlock = this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() - 1, (int) this.location.getZ(), this.location.getDimension() );
                     if ( bottomBlock.isSolid() ) {
                         newDecay = 0;
                     } else if ( bottomBlock instanceof BlockWater && ( (BlockWater) bottomBlock ).getLiquidDepth() == 0 ) {
@@ -95,7 +95,7 @@ public abstract class BlockLiquid extends Block {
                 }
             }
             if ( decay >= 0 ) {
-                Block bottomBlock = this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() - 1, (int) this.location.getZ() );
+                Block bottomBlock = this.world.getBlock( (int) this.location.getX(), (int) this.location.getY() - 1, (int) this.location.getZ(), this.location.getDimension() );
                 this.flowIntoBlock( bottomBlock, decay | 0x08 );
                 if ( decay == 0 || !( usesWaterLogging() ? bottomBlock.canWaterloggingFlowInto() : bottomBlock.canBeFlowedInto() ) ) {
                     int adjacentDecay;
@@ -107,16 +107,16 @@ public abstract class BlockLiquid extends Block {
                     if ( adjacentDecay < 8 ) {
                         boolean[] flags = this.getOptimalFlowDirections();
                         if ( flags[0] ) {
-                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX() - 1, (int) this.location.getY(), (int) this.location.getZ() ), adjacentDecay );
+                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX() - 1, (int) this.location.getY(), (int) this.location.getZ(), this.location.getDimension() ), adjacentDecay );
                         }
                         if ( flags[1] ) {
-                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX() + 1, (int) this.location.getY(), (int) this.location.getZ() ), adjacentDecay );
+                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX() + 1, (int) this.location.getY(), (int) this.location.getZ(), this.location.getDimension() ), adjacentDecay );
                         }
                         if ( flags[2] ) {
-                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() - 1 ), adjacentDecay );
+                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() - 1, this.location.getDimension() ), adjacentDecay );
                         }
                         if ( flags[3] ) {
-                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() + 1 ), adjacentDecay );
+                            this.flowIntoBlock( this.world.getBlock( (int) this.location.getX(), (int) this.location.getY(), (int) this.location.getZ() + 1, this.location.getDimension() ), adjacentDecay );
                         }
                     }
                 }
@@ -229,12 +229,12 @@ public abstract class BlockLiquid extends Block {
             } else {
                 ++z;
             }
-            Block block = this.world.getBlock( x, y, z );
+            Block block = this.world.getBlock( x, y, z, this.location.getDimension() );
             if ( !this.canFlowInto( block ) ) {
                 this.flowCostVisited.put( Utils.blockHash( x, y, z ), BLOCKED );
             } else if ( usesWaterLogging() ?
-                    this.world.getBlock( x, y - 1, z ).canWaterloggingFlowInto() :
-                    this.world.getBlock( x, y - 1, z ).canBeFlowedInto() ) {
+                    this.world.getBlock( x, y - 1, z, this.location.getDimension() ).canWaterloggingFlowInto() :
+                    this.world.getBlock( x, y - 1, z, this.location.getDimension() ).canBeFlowedInto() ) {
                 this.flowCostVisited.put( Utils.blockHash( x, y, z ), CAN_FLOW_DOWN );
                 flowCost[j] = maxCost = 0;
             } else if ( maxCost > 0 ) {
@@ -277,12 +277,12 @@ public abstract class BlockLiquid extends Block {
             }
             long hash = Utils.blockHash( x, blockY, z );
             if ( !this.flowCostVisited.containsKey( hash ) ) {
-                Block blockSide = this.world.getBlock( x, blockY, z );
+                Block blockSide = this.world.getBlock( x, blockY, z, this.location.getDimension() );
                 if ( !this.canFlowInto( blockSide ) ) {
                     this.flowCostVisited.put( hash, BLOCKED );
                 } else if ( usesWaterLogging() ?
-                        this.world.getBlock( x, blockY - 1, z ).canWaterloggingFlowInto() :
-                        this.world.getBlock( x, blockY - 1, z ).canBeFlowedInto() ) {
+                        this.world.getBlock( x, blockY - 1, z, this.location.getDimension() ).canWaterloggingFlowInto() :
+                        this.world.getBlock( x, blockY - 1, z, this.location.getDimension() ).canBeFlowedInto() ) {
                     this.flowCostVisited.put( hash, CAN_FLOW_DOWN );
                 } else {
                     this.flowCostVisited.put( hash, CAN_FLOW );
