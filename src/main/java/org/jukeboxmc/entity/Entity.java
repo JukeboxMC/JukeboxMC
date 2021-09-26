@@ -196,13 +196,13 @@ public abstract class Entity {
         float diffY = y - j;
         float diffZ = z - k;
 
-        if ( !this.getWorld().getBlockAt( i, j, k, this.dimension ).isTransparent() ) {
-            boolean flag = this.getWorld().getBlockAt( i - 1, j, k, this.dimension ).isTransparent();
-            boolean flag1 = this.getWorld().getBlockAt( i + 1, j, k, this.dimension ).isTransparent();
-            boolean flag2 = this.getWorld().getBlockAt( i, j - 1, k, this.dimension ).isTransparent();
-            boolean flag3 = this.getWorld().getBlockAt( i, j + 1, k, this.dimension ).isTransparent();
-            boolean flag4 = this.getWorld().getBlockAt( i, j, k - 1, this.dimension ).isTransparent();
-            boolean flag5 = this.getWorld().getBlockAt( i, j, k + 1, this.dimension ).isTransparent();
+        if ( !this.getWorld().getBlock( i, j, k, this.dimension ).isTransparent() ) {
+            boolean flag = this.getWorld().getBlock( i - 1, j, k, this.dimension ).isTransparent();
+            boolean flag1 = this.getWorld().getBlock( i + 1, j, k, this.dimension ).isTransparent();
+            boolean flag2 = this.getWorld().getBlock( i, j - 1, k, this.dimension ).isTransparent();
+            boolean flag3 = this.getWorld().getBlock( i, j + 1, k, this.dimension ).isTransparent();
+            boolean flag4 = this.getWorld().getBlock( i, j, k - 1, this.dimension ).isTransparent();
+            boolean flag5 = this.getWorld().getBlock( i, j, k + 1, this.dimension ).isTransparent();
 
             int direction = -1;
             double limit = 9999;

@@ -37,7 +37,6 @@ public abstract class Block implements Cloneable {
     protected NbtMap blockStates;
 
     protected World world;
-    protected boolean placed;
     protected Location location;
     protected int layer = 0;
 
@@ -75,7 +74,6 @@ public abstract class Block implements Cloneable {
 
         this.blockStates = blockStates;
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
-        this.placed = false;
     }
 
     public <B extends Block> B setState( String state, Object value ) {
@@ -98,7 +96,7 @@ public abstract class Block implements Cloneable {
         if ( Server.getInstance().isInitiating() ) {
             update( this.runtimeId, this );
         }
-        if ( this.getWorld() != null && this.placed ) {
+        if ( this.checkValidity() ) {
             this.getWorld().sendBlockUpdate( this );
             this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         }
@@ -364,7 +362,7 @@ public abstract class Block implements Cloneable {
         int x = this.location.getBlockX() + position.getBlockX();
         int y = this.location.getBlockY() + position.getBlockY();
         int z = this.location.getBlockZ() + position.getBlockZ();
-        return this.world.getBlockAt( x, y, z, this.location.getDimension(), layer );
+        return this.world.getBlock( x, y, z, this.location.getDimension(), layer );
     }
 
     public int getRuntimeId() {
@@ -408,8 +406,8 @@ public abstract class Block implements Cloneable {
         return this.world.getChunk( this.location.getBlockX() >> 4, this.location.getBlockZ() >> 4, this.location.getDimension() );
     }
 
-    public void setPlaced( boolean placed ) {
-        this.placed = placed;
+    public boolean checkValidity() {
+        return this.world != null && this.location != null && this.world.getBlockRuntimeId( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer ) == this.runtimeId;
     }
 
     public String getName() {
@@ -454,7 +452,6 @@ public abstract class Block implements Cloneable {
         block.identifier = this.identifier;
         block.runtimeId = this.runtimeId;
         block.layer = this.layer;
-        block.placed = this.placed;
         block.blockStates = this.blockStates.toBuilder().build();
         return block;
     }
