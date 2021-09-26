@@ -33,7 +33,7 @@ public abstract class ContainerInventory extends Inventory {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
         inventoryContentPacket.setWindowId( WindowId.OPEN_CONTAINER );
         inventoryContentPacket.setItems( this.getContents() );
-        player.getPlayerConnection().sendPacket( inventoryContentPacket );
+        player.sendPacket( inventoryContentPacket );
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class ContainerInventory extends Inventory {
         inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
         inventorySlotPacket.setSlot( slot );
         inventorySlotPacket.setItem( this.contents[slot] );
-        player.getPlayerConnection().sendPacket( inventorySlotPacket );
+        player.sendPacket( inventorySlotPacket );
     }
 
     public void addViewer( Player player, Vector position, byte windowId ) {
@@ -51,7 +51,7 @@ public abstract class ContainerInventory extends Inventory {
         containerOpenPacket.setWindowId( windowId );
         containerOpenPacket.setWindowTypeId( this.getWindowTypeId() );
         containerOpenPacket.setPosition( position );
-        player.getPlayerConnection().sendPacket( containerOpenPacket );
+        player.sendPacket( containerOpenPacket );
 
         super.addViewer( player );
 

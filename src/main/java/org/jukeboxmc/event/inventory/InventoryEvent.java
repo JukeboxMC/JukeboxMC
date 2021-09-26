@@ -9,7 +9,7 @@ import org.jukeboxmc.inventory.Inventory;
  */
 public abstract class InventoryEvent extends Event {
 
-    private Inventory inventory;
+    private final Inventory inventory;
 
     /**
      * Creates a new {@link InventoryEvent}

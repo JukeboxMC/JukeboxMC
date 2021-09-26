@@ -43,12 +43,12 @@ public class PlayerInventory extends ContainerInventory {
         if ( player.getCurrentInventory() == this ) {
             inventoryContentPacket.setWindowId( WindowId.OPEN_CONTAINER );
             inventoryContentPacket.setItems( this.contents );
-            player.getPlayerConnection().sendPacket( inventoryContentPacket );
+            player.sendPacket( inventoryContentPacket );
             return;
         }
         inventoryContentPacket.setWindowId( WindowId.PLAYER );
         inventoryContentPacket.setItems( this.contents );
-        player.getPlayerConnection().sendPacket( inventoryContentPacket );
+        player.sendPacket( inventoryContentPacket );
     }
 
     @Override
@@ -58,14 +58,14 @@ public class PlayerInventory extends ContainerInventory {
             inventorySlotPacket.setSlot( slot );
             inventorySlotPacket.setItem( this.contents[slot] );
             inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
+            player.sendPacket( inventorySlotPacket );
         }
 
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setSlot( slot );
         inventorySlotPacket.setItem( this.contents[slot] );
         inventorySlotPacket.setWindowId( WindowId.PLAYER );
-        player.getPlayerConnection().sendPacket( inventorySlotPacket );
+        player.sendPacket( inventorySlotPacket );
     }
 
     @Override
@@ -130,7 +130,7 @@ public class PlayerInventory extends ContainerInventory {
     public void sendItemInHand() {
         if ( this.holder instanceof Player ) {
             Player player = (Player) this.holder;
-            player.getPlayerConnection().sendPacket( this.createMobEquipmentPacket( player ) );
+            player.sendPacket( this.createMobEquipmentPacket( player ) );
             this.sendContents( this.itemInHandSlot, player );
         }
     }

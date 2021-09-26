@@ -11,8 +11,8 @@ import org.jukeboxmc.player.Player;
  */
 public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellable {
 
-    private Item bucket;
-    private Item itemInHand;
+    private final Item bucket;
+    private final Item itemInHand;
     private Block clickedBlock;
 
     /**

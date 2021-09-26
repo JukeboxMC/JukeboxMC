@@ -29,7 +29,7 @@ public class CursorInventory extends Inventory {
         inventorySlotPacket.setWindowId( WindowId.CURSOR_DEPRECATED );
         inventorySlotPacket.setItem( this.contents[slot] );
         inventorySlotPacket.setSlot( slot );
-        player.getPlayerConnection().sendPacket( inventorySlotPacket );
+        player.sendPacket( inventorySlotPacket );
     }
 
     @Override

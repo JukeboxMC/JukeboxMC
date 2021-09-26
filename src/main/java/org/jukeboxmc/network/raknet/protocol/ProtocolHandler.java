@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.player.Player;
@@ -40,7 +41,12 @@ public class ProtocolHandler extends SimpleChannelInboundHandler<Packet> {
         this.server.addToMainThread( () -> {
             PacketHandler<Packet> packetHandler = (PacketHandler<Packet>) this.server.getPacketRegistry().getPacketHandler( packet.getClass() );
             if ( packetHandler != null ) {
-                packetHandler.handle( packet, this.server, this.server.getPlayer( clientAddress ) );
+                PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.server.getPlayer( clientAddress ), packet );
+                this.server.getPluginManager().callEvent( packetReceiveEvent );
+                if ( packetReceiveEvent.isCancelled() ) {
+                    return;
+                }
+                packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.server.getPlayer( clientAddress ) );
             }
         } );
     }

@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public class PlayerToggleSprintEvent extends PlayerEvent implements Cancellable {
 
-    private boolean isSprinting;
+    private final boolean isSprinting;
 
     /**
      * Creates a new {@link PlayerToggleSprintEvent}

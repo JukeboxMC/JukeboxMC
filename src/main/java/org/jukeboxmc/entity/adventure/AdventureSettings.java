@@ -127,7 +127,7 @@ public class AdventureSettings {
         adventureSettingsPacket.setCommandPermission( 0 );
         adventureSettingsPacket.setPlayerPermission( 2 ); //(Operator) TODO PlayerPermission
         adventureSettingsPacket.setEntityId( this.player.getEntityId() );
-        this.player.getPlayerConnection().sendPacket( adventureSettingsPacket );
+        this.player.sendPacket( adventureSettingsPacket );
     }
 
     public boolean isWorldImmutable() {

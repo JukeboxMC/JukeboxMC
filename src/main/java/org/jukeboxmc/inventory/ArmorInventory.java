@@ -71,7 +71,7 @@ public class ArmorInventory extends ContainerInventory {
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
             inventoryContentPacket.setItems( this.contents );
-            player.getPlayerConnection().sendPacket( inventoryContentPacket );
+            player.sendPacket( inventoryContentPacket );
         } else {
             this.sendMobArmor( player );
         }
@@ -84,7 +84,7 @@ public class ArmorInventory extends ContainerInventory {
             inventorySlotPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
             inventorySlotPacket.setSlot( slot );
             inventorySlotPacket.setItem( this.contents[slot] );
-            player.getPlayerConnection().sendPacket( inventorySlotPacket );
+            player.sendPacket( inventorySlotPacket );
         } else {
             this.sendMobArmor( player );
         }
@@ -97,7 +97,7 @@ public class ArmorInventory extends ContainerInventory {
         mobArmorEquipmentPacket.setChestplate( this.contents[1] );
         mobArmorEquipmentPacket.setLeggings( this.contents[2] );
         mobArmorEquipmentPacket.setBoots( this.contents[3] );
-        player.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
+        player.sendPacket( mobArmorEquipmentPacket );
     }
 
     public void sendArmorContent( Player player ) {

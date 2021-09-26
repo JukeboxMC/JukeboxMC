@@ -10,10 +10,10 @@ import org.jukeboxmc.player.Player;
  */
 public class BlockPlaceEvent extends BlockEvent implements Cancellable {
 
-    private Player player;
+    private final Player player;
     private Block placedBlock;
-    private Block replacedBlock;
-    private Block clickedBlock;
+    private final Block replacedBlock;
+    private final Block clickedBlock;
 
     /**
      * Creates a new {@link BlockPlaceEvent}

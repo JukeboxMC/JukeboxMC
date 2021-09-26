@@ -44,14 +44,14 @@ public class LoginHandler implements PacketHandler<LoginPacket> {
             status = PlayStatus.LOGIN_FAILED_SERVER_FULL;
         }
         playStatusPacket.setStatus( status );
-        player.getPlayerConnection().sendPacket( playStatusPacket );
+        player.sendPacket( playStatusPacket );
 
         if ( status.equals( PlayStatus.LOGIN_SUCCESS ) ) {
             ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
             resourcePacksInfoPacket.setForceServerPacks( server.isForceResourcePacks() );
             resourcePacksInfoPacket.setScripting( false );
             resourcePacksInfoPacket.setForceServerPacks( false );
-            player.getPlayerConnection().sendPacket( resourcePacksInfoPacket );
+            player.sendPacket( resourcePacksInfoPacket );
         }
     }
 }

@@ -9,6 +9,7 @@ import org.jukeboxmc.config.Config;
 import org.jukeboxmc.config.ConfigType;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
@@ -387,13 +388,13 @@ public class Server {
 
     public void broadcastPacket( Packet packet ) {
         for ( Player player : this.players.values() ) {
-            player.getPlayerConnection().sendPacket( packet );
+            player.sendPacket( packet );
         }
     }
 
     public void broadcastPacket( Set<Player> players, Packet packet ) {
         for ( Player player : players ) {
-            player.getPlayerConnection().sendPacket( packet );
+            player.sendPacket( packet );
         }
     }
 
@@ -469,10 +470,21 @@ public class Server {
 
     public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
+            File file = new File( "./worlds", worldName );
+            boolean worldExists = file.exists();
+
             World world = new World( worldName, this, worldGenerator );
-            if ( world.loadLevelFile() && world.open() ) {
-                world.prepareSpawnRegion();
-                this.worlds.put( worldName.toLowerCase(), world );
+            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, true, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
+            this.pluginManager.callEvent( worldLoadEvent );
+            if ( worldLoadEvent.isCancelled() ) {
+                return false;
+            }
+
+            if ( worldLoadEvent.getWorld().loadLevelFile() && worldLoadEvent.getWorld().open() ) {
+                if ( worldLoadEvent.isPrepareWorld() ) {
+                    worldLoadEvent.getWorld().prepareSpawnRegion();
+                }
+                this.worlds.put( worldName.toLowerCase(), worldLoadEvent.getWorld() );
                 this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;
             } else {

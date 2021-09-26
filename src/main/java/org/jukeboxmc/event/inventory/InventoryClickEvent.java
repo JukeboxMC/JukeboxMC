@@ -11,7 +11,7 @@ import org.jukeboxmc.player.Player;
  */
 public class InventoryClickEvent extends InventoryEvent implements Cancellable {
 
-    private Player player;
+    private final Player player;
 
     private Item sourceItem;
     private Item targetItem;

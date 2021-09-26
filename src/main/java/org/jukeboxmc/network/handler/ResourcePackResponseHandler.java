@@ -33,14 +33,14 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                         resourcePackDataInfoPacket.setCompressedResourcePackSize(resourcePack.getSize());
                         resourcePackDataInfoPacket.setResourcePackSha256(resourcePack.getSha256());
 
-                        player.getPlayerConnection().sendPacket(resourcePackDataInfoPacket);
+                        player.sendPacket(resourcePackDataInfoPacket);
                     }
                 }
                 break;
             case HAVE_ALL_PACKS:
                 ResourcePackStackPacket resourcePackStackPacket = new ResourcePackStackPacket();
                 resourcePackStackPacket.setMustAccept( Server.getInstance().isForceResourcePacks() );
-                player.getPlayerConnection().sendPacket( resourcePackStackPacket );
+                player.sendPacket( resourcePackStackPacket );
                 break;
             case COMPLETED:
                 Location worldSpawn = player.getWorld().getSpawnLocation( player.getDimension() );
@@ -57,11 +57,11 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 startGamePacket.setServerEngine( "JukeboxMC" );
                 startGamePacket.setDifficulty( player.getWorld().getDifficulty() );
                 startGamePacket.setGamerules( player.getWorld().getGamerules() );
-                player.getPlayerConnection().sendPacket( startGamePacket );
+                player.sendPacket( startGamePacket );
 
-                player.getPlayerConnection().sendPacket( new AvailableActorIdentifiersPacket() );
-                player.getPlayerConnection().sendPacket( new BiomeDefinitionListPacket() );
-                player.getPlayerConnection().sendPacket( new CreativeContentPacket() );
+                player.sendPacket( new AvailableActorIdentifiersPacket() );
+                player.sendPacket( new BiomeDefinitionListPacket() );
+                player.sendPacket( new CreativeContentPacket() );
                 break;
         }
     }

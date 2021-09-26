@@ -41,6 +41,11 @@ public class BlockBreakEvent extends BlockEvent implements Cancellable {
         return this.player;
     }
 
+    @Override
+    public Block getBlock() {
+        return this.block;
+    }
+
     /**
      * Modifies the block which was broken
      *

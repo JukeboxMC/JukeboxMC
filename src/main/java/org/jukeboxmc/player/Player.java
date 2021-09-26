@@ -16,6 +16,7 @@ import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
+import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerDeathEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
@@ -142,7 +143,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         if ( !this.onGround && !this.isOnLadder() ) {
             ++this.inAirTicks;
-            if ( this.inAirTicks > 5) {
+            if ( this.inAirTicks > 5 ) {
                 if ( this.location.getY() > this.highestPosition ) {
                     this.highestPosition = this.location.getY();
                 }
@@ -925,11 +926,25 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
+    public void sendPacket( Packet packet, boolean direct ) {
+        PacketSendEvent packetSendEvent = new PacketSendEvent( this, packet );
+        this.server.getPluginManager().callEvent( packetSendEvent );
+        if ( packetSendEvent.isCancelled() ) {
+            return;
+        }
+        this.playerConnection.sendPacket( packet, direct );
+    }
+
+    public void sendPacket( Packet packet ) {
+        this.sendPacket( packet, false );
+    }
+
     public void leaveServer( String reason ) {
         this.getWorld().removeEntity( this );
         this.getChunk().removeEntity( this );
 
         this.getInventory().removeViewer( this );
+        this.getArmorInventory().removeViewer( this );
         this.getCursorInventory().removeViewer( this );
 
         this.server.removeFromTablist( this.uuid );
@@ -944,12 +959,16 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.server.getLogger().info( this.name + " logged out reason: " + reason );
     }
 
+    @Override
+    public void close() {
+        this.leaveServer( "Disconnect" );
+    }
+
     public void disconnect( String disconnectMessage, boolean hideDisconnectScreen ) {
         DisconnectPacket disconnectPacket = new DisconnectPacket();
         disconnectPacket.setDisconnectMessage( disconnectMessage );
         disconnectPacket.setHideDisconnectScreen( hideDisconnectScreen );
-        this.playerConnection.sendPacket( disconnectPacket, true );
-
+        this.sendPacket( disconnectPacket, true );
         this.close();
     }
 

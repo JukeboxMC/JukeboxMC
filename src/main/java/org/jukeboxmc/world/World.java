@@ -443,7 +443,7 @@ public class World extends LevelDBWorld {
             setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.SpawnType.WORLD );
             setSpawnPositionPacket.setPlayerPosition( player.getSpawnLocation() );
             setSpawnPositionPacket.setWorldSpawn( this.spawnLocation );
-            player.getPlayerConnection().sendPacket( setSpawnPositionPacket );
+            player.sendPacket( setSpawnPositionPacket );
         }
     }
 
@@ -750,14 +750,14 @@ public class World extends LevelDBWorld {
 
     public void sendWorldPacket( Packet packet ) {
         for ( Player player : this.getPlayers() ) {
-            player.getPlayerConnection().sendPacket( packet );
+            player.sendPacket( packet );
         }
     }
 
     public void sendDimensionPacket( Packet packet, Dimension dimension ) {
         for ( Player player : this.getPlayers() ) {
             if ( player.getDimension().equals( dimension ) ) {
-                player.getPlayerConnection().sendPacket( packet );
+                player.sendPacket( packet );
             }
         }
     }
@@ -765,7 +765,7 @@ public class World extends LevelDBWorld {
     public void sendChunkPacket( int chunkX, int chunkZ, Packet packet ) {
         for ( Player player : this.getPlayers() ) {
             if ( player != null && player.isChunkLoaded( chunkX, chunkZ ) ) {
-                player.getPlayerConnection().sendPacket( packet );
+                player.sendPacket( packet );
             }
         }
     }
@@ -794,7 +794,7 @@ public class World extends LevelDBWorld {
         levelEventPacket.setData( data );
 
         if ( player != null ) {
-            player.getPlayerConnection().sendPacket( levelEventPacket );
+            player.sendPacket( levelEventPacket );
         } else {
             this.sendChunkPacket( position.getBlockX() >> 4, position.getBlockZ() >> 4, levelEventPacket );
         }
@@ -836,7 +836,7 @@ public class World extends LevelDBWorld {
         if ( player == null ) {
             this.sendChunkPacket( position.getBlockX() >> 4, position.getBlockZ() >> 4, levelSoundEventPacket );
         } else {
-            player.getPlayerConnection().sendPacket( levelSoundEventPacket );
+            player.sendPacket( levelSoundEventPacket );
         }
     }
 
@@ -869,7 +869,7 @@ public class World extends LevelDBWorld {
         levelEventPacket.setPosition( position );
 
         if ( player != null ) {
-            player.getPlayerConnection().sendPacket( levelEventPacket );
+            player.sendPacket( levelEventPacket );
         } else {
             this.sendChunkPacket( position.getChunkX(), position.getChunkZ(), levelEventPacket );
         }

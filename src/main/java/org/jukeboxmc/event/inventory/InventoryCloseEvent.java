@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public class InventoryCloseEvent extends InventoryEvent {
 
-    private Player player;
+    private final Player player;
 
     /**
      * Creates a new {@link InventoryCloseEvent}

@@ -84,6 +84,8 @@ public abstract class Block implements Cloneable {
             throw new AssertionError( "State " + state + " type is not the same for value  " + value );
         }
 
+        boolean valid = this.checkValidity();
+
         NbtMapBuilder nbtMapBuilder = this.blockStates.toBuilder();
         nbtMapBuilder.put( state, value );
         for ( Map.Entry<NbtMap, Integer> entry : STATES.get( this.identifier ).entrySet() ) {
@@ -92,11 +94,12 @@ public abstract class Block implements Cloneable {
                 this.blockStates = blockMap;
             }
         }
+
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
         if ( Server.getInstance().isInitiating() ) {
             update( this.runtimeId, this );
         }
-        if ( this.checkValidity() ) {
+        if ( valid ) {
             this.getWorld().sendBlockUpdate( this );
             this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
         }
@@ -430,7 +433,7 @@ public abstract class Block implements Cloneable {
         updateBlockPacket.setPosition( this.location );
         updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setLayer( this.layer );
-        player.getPlayerConnection().sendPacket( updateBlockPacket );
+        player.sendPacket( updateBlockPacket );
     }
 
     @Override

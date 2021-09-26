@@ -45,7 +45,6 @@ public abstract class BlockButton extends BlockWaterlogable {
         this.setButtonPressed( true );
         this.world.playSound( this.location, LevelSound.POWER_ON );
         this.world.scheduleBlockUpdate( this.location, 20 );
-        System.out.println("CALL");
         return true;
     }
 

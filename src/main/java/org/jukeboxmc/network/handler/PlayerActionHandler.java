@@ -27,7 +27,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
 
         switch ( playerAction ) {
             case DIMENSION_CHANGE_ACK:
-                player.getPlayerConnection().sendPacket( new PlayStatusPacket( PlayStatus.PLAYER_SPAWN ) );
+                player.sendPacket( new PlayStatusPacket( PlayStatus.PLAYER_SPAWN ) );
                 break;
             case START_SNEAK:
                 PlayerToggleSneakEvent playerToggleSneakEvent = new PlayerToggleSneakEvent( player, true );

@@ -17,7 +17,7 @@ public class RespawnPositionHandler implements PacketHandler<RespawnPositionPack
             respawnPositionPacket.setEntityId( player.getEntityId() );
             respawnPositionPacket.setRespawnState( RespawnPositionPacket.RespawnState.READY_TO_SPAWN );
             respawnPositionPacket.setPosition( player.getSpawnLocation() );
-            player.getPlayerConnection().sendPacket( respawnPositionPacket );
+            player.sendPacket( respawnPositionPacket );
         }
     }
 }

@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public class PlayerToggleSwimEvent extends PlayerEvent implements Cancellable {
 
-    private boolean isSwimming;
+    private final boolean isSwimming;
 
     /**
      * Creates a new {@link PlayerToggleSwimEvent}

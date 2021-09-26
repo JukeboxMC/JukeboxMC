@@ -14,6 +14,6 @@ public class TickSyncHandler implements PacketHandler<TickSyncPacket>{
     public void handle( TickSyncPacket packet, Server server, Player player ) {
         TickSyncPacket tickSyncPacket = new TickSyncPacket();
         tickSyncPacket.setResponseTimestamp( packet.getResponseTimestamp() );
-        player.getPlayerConnection().sendPacket( tickSyncPacket );
+        player.sendPacket( tickSyncPacket );
     }
 }

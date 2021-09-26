@@ -520,7 +520,7 @@ public abstract class Entity {
 
             entity.getChunk().addEntity( this );
             entity.getWorld().addEntity( this );
-            player.getPlayerConnection().sendPacket( entity.createSpawnPacket() );
+            player.sendPacket( entity.createSpawnPacket() );
             this.spawned = true;
             this.spawnedFor.add( player.getEntityId() );
         }
@@ -539,7 +539,7 @@ public abstract class Entity {
         if ( this.spawnedFor.contains( player.getEntityId() ) ) {
             RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
             removeEntityPacket.setEntityId( this.entityId );
-            player.getPlayerConnection().sendPacket( removeEntityPacket );
+            player.sendPacket( removeEntityPacket );
             this.spawnedFor.remove( player.getEntityId() );
         }
     }

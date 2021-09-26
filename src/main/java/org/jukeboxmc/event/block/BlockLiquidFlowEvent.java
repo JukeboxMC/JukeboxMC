@@ -10,9 +10,9 @@ import org.jukeboxmc.event.Cancellable;
  */
 public class BlockLiquidFlowEvent extends BlockEvent implements Cancellable {
 
-    private Block blockTo;
-    private BlockLiquid source;
-    private int newFlowDecay;
+    private final Block blockTo;
+    private final BlockLiquid source;
+    private final int newFlowDecay;
 
     /**
      * Creates a new {@link BlockLiquidFlowEvent}

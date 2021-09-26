@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public class PlayerToggleSneakEvent extends PlayerEvent implements Cancellable {
 
-    private boolean isSneaking;
+    private final boolean isSneaking;
 
     /**
      * Creates a new {@link PlayerToggleSneakEvent}
