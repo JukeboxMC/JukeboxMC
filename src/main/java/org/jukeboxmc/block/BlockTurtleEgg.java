@@ -5,6 +5,7 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemTurtleEgg;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 /**
@@ -50,6 +51,11 @@ public class BlockTurtleEgg extends BlockWaterlogable {
         }
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         return true;
+    }
+
+    @Override
+    public void playBlockBreakSound() {
+        this.world.playSound( this.location, LevelSound.BLOCK_TURTLE_EGG_CRACK );
     }
 
     @Override

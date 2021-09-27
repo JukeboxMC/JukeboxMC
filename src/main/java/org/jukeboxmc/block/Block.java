@@ -16,6 +16,7 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -139,6 +140,10 @@ public abstract class Block implements Cloneable {
     public boolean onBlockBreak( Vector breakPosition ) {
         this.world.setBlock( breakPosition, new BlockAir() );
         return true;
+    }
+
+    public void playBlockBreakSound() {
+        this.world.playSound( this.location, LevelSound.BREAK, this.runtimeId );
     }
 
     public boolean canBeReplaced( Block block ) {

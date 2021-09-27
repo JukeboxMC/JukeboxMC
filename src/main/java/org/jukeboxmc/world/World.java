@@ -588,11 +588,7 @@ public class World extends LevelDBWorld {
             }
         }
 
-        if ( blockBreakEvent.getBlock() instanceof BlockTurtleEgg ) {
-            this.playSound( breakPosition, LevelSound.BLOCK_TURTLE_EGG_CRACK );
-        } else {
-            this.playSound( breakPosition, LevelSound.BREAK, breakBlock.getRuntimeId() );
-        }
+        blockBreakEvent.getBlock().playBlockBreakSound();
         this.sendLevelEvent( breakPosition, LevelEvent.PARTICLE_DESTROY_BLOCK, breakBlock.getRuntimeId() );
     }
 
