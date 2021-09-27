@@ -2,6 +2,7 @@ package org.jukeboxmc.player;
 
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityEventType;
@@ -88,6 +89,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final Set<Long> loadingChunks = new HashSet<>();
     private final Set<Long> loadedChunks = new HashSet<>();
     private final Set<UUID> emotes = new HashSet<>();
+
+    private final Map<UUID, List<String>> permissions = new HashMap<>();
 
     public Player( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
@@ -636,12 +639,32 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     @Override
     public boolean hasPermission( String permission ) {
-        return true;
+        return this.permissions.containsKey( this.uuid ) && this.permissions.get( this.uuid ).contains( permission.toLowerCase() ) || this.isOp();
     }
 
-    @Override
-    public boolean hasPermission( String permission, boolean defaultValue ) {
-        return true;
+    public void addPermission( String permission ) {
+        if ( !this.permissions.containsKey( this.uuid ) ) {
+            this.permissions.put( this.uuid, new ArrayList<>() );
+        }
+        this.permissions.get( this.uuid ).add( permission.toLowerCase() );
+    }
+
+    public void removePermission( String permission ) {
+        if ( this.permissions.containsKey( this.uuid ) ) {
+            this.permissions.get( this.uuid ).remove( permission );
+        }
+    }
+
+    public boolean isOp() {
+        return this.adventureSettings.isOperator();
+    }
+
+
+    public void setOp( boolean value ) {
+        this.sendCommandData();
+        this.adventureSettings.setOperator( value );
+        this.adventureSettings.update();
+        this.sendCommandData();
     }
 
     @Override
@@ -845,9 +868,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         if ( !this.spawned ) {
             this.server.addPlayer( this );
 
-            AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
-            availableCommandsPacket.setCommands( this.server.getPluginManager().getCommandManager().getCommands() );
-            this.playerConnection.sendPacket( availableCommandsPacket );
+            if ( this.server.isOperatorInFile( this.name ) ) {
+                this.adventureSettings.setOperator( true );
+            }
 
             this.adventureSettings.setWorldImmutable( this.gameMode.ordinal() == 3 );
             this.adventureSettings.setCanFly( this.gameMode.ordinal() > 0 );
@@ -857,6 +880,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.adventureSettings.setAttackPlayers( this.gameMode.ordinal() < 2 );
             this.adventureSettings.setNoPvP( this.gameMode.ordinal() == 3 );
             this.adventureSettings.update();
+
+            this.sendCommandData();
 
             UpdateAttributesPacket updateAttributesPacket = new UpdateAttributesPacket();
             updateAttributesPacket.setEntityId( this.entityId );
@@ -965,6 +990,19 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     @Override
     public void close() {
         this.leaveServer( "Disconnect" );
+    }
+
+    public void sendCommandData() {
+        AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
+        List<Command> commandList = new ArrayList<>();
+        for ( Command command : this.server.getPluginManager().getCommandManager().getCommands() ) {
+            if ( !this.hasPermission( command.getPermission() ) ) {
+                continue;
+            }
+            commandList.add( command );
+        }
+        availableCommandsPacket.setCommands( commandList );
+        this.playerConnection.sendPacket( availableCommandsPacket );
     }
 
     public void disconnect( String disconnectMessage, boolean hideDisconnectScreen ) {

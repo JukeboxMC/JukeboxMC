@@ -100,7 +100,7 @@ public class Config {
         }
     }
 
-    public void addDefault( String key, String value ) {
+    public void addDefault( String key, Object value ) {
         if ( !this.exists( key ) ) {
             this.set( key, value );
             this.save();
@@ -126,26 +126,12 @@ public class Config {
         return this.configSection.getString( key );
     }
 
-    public void addDefault( String key, int value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
-    }
-
     public List<Integer> getIntegerList( String key ) {
         return this.configSection.getIntegerList( key );
     }
 
     public int getInt( String key ) {
         return this.configSection.getInt( key );
-    }
-
-    public void addDefault( String key, long value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
     }
 
     public List<Long> getLongList( String key ) {
@@ -156,26 +142,12 @@ public class Config {
         return this.configSection.getLong( key );
     }
 
-    public void addDefault( String key, double value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
-    }
-
     public List<Double> getDoubleList( String key ) {
         return this.configSection.getDoubleList( key );
     }
 
     public double getDouble( String key ) {
         return this.configSection.getDouble( key );
-    }
-
-    public void addDefault( String key, float value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
     }
 
     public List<Float> getFloatList( String key ) {
@@ -186,13 +158,6 @@ public class Config {
         return this.configSection.getFloat( key );
     }
 
-    public void addDefault( String key, byte value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
-    }
-
     public List<Byte> getByteList( String key ) {
         return this.configSection.getByteList( key );
     }
@@ -201,26 +166,12 @@ public class Config {
         return this.configSection.getByte( key );
     }
 
-    public void addDefault( String key, short value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
-    }
-
     public List<Short> getShortList( String key ) {
         return this.configSection.getShortList( key );
     }
 
     public short getShort( String key ) {
         return this.configSection.getShort( key );
-    }
-
-    public void addDefault( String key, boolean value ) {
-        if ( !this.exists( key ) ) {
-            this.set( key, value );
-            this.save();
-        }
     }
 
     public List<Boolean> getBooleanList( String key ) {

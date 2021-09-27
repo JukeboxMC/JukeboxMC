@@ -24,15 +24,5 @@ public interface CommandSender {
      */
     boolean hasPermission( String permission );
 
-    /**
-     * Proofs whether the client owns the specified permission and sets a default value
-     *
-     * @param permission   which should be checked for
-     * @param defaultValue which will be used when the client does not own the given permission
-     *
-     * @return whether the client possesses the permission
-     */
-    boolean hasPermission( String permission, boolean defaultValue );
-
     Server getServer();
 }

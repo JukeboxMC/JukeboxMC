@@ -50,6 +50,7 @@ public class Server {
     private static Server instance;
     private final Logger logger;
     private Config serverConfig;
+    private Config operatorConfig;
     private GameMode defaultGameMode;
     private final PacketRegistry packetRegistry;
     private final RakNetListener rakNetListener;
@@ -102,6 +103,8 @@ public class Server {
         this.packetRegistry = new PacketRegistry();
 
         this.initServerConfig();
+        this.initOperatorConfig();
+
         this.consoleSender = new ConsoleSender( this );
         this.terminalConsole = new TerminalConsole( this );
         this.terminalConsole.startConsole();
@@ -187,6 +190,12 @@ public class Server {
         this.submotd = this.serverConfig.getString( "submotd" );
         this.defaultGameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
+    }
+
+    private void initOperatorConfig() {
+        this.operatorConfig = new Config( new File( System.getProperty( "user.dir" ) ), "operators.json", ConfigType.JSON );
+        this.operatorConfig.addDefault( "operators", new ArrayList<String>() );
+        this.operatorConfig.save();
     }
 
     public void shutdown() {
@@ -342,6 +351,28 @@ public class Server {
 
     public boolean isForceResourcePacks() {
         return this.serverConfig.getBoolean( "forceResourcePacks" );
+    }
+
+    public boolean isOperatorInFile( String playerName ) {
+        return this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName );
+    }
+
+    public void addOperatorToFile( String playerName ) {
+        if ( this.operatorConfig.exists( "operators" ) && !this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
+            List<String> operators = this.operatorConfig.getStringList( "operators" );
+            operators.add( playerName );
+            this.operatorConfig.set( "operators", operators );
+            this.operatorConfig.save();
+        }
+    }
+
+    public void removeOperatorFromFile( String playerName ) {
+        if ( this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
+            List<String> operators = this.operatorConfig.getStringList( "operators" );
+            operators.remove( playerName );
+            this.operatorConfig.set( "operators", operators );
+            this.operatorConfig.save();
+        }
     }
 
     public boolean isInitiating() {

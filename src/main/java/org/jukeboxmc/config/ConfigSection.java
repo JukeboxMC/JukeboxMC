@@ -228,14 +228,14 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     public List<String> getStringList( String key ) {
-        List<?> value = this.getList( key );
-        if ( value == null ) {
-            return new ArrayList<>( 0 );
+        List value = this.getList(key);
+        if (value == null) {
+            return new ArrayList<>(0);
         }
         List<String> result = new ArrayList<>();
-        for ( Object o : value ) {
-            if ( o instanceof String || o instanceof Number || o instanceof Boolean || o instanceof Character ) {
-                result.add( String.valueOf( o ) );
+        for (Object o : value) {
+            if (o instanceof String || o instanceof Number || o instanceof Boolean || o instanceof Character) {
+                result.add(String.valueOf(o));
             }
         }
         return result;

@@ -21,7 +21,9 @@ public class CommandManager {
                 TeleportCommand.class,
                 StopCommand.class,
                 TimeCommand.class,
-                SaveCommand.class
+                SaveCommand.class,
+                OperatorCommand.class,
+                RemoveOperatorCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

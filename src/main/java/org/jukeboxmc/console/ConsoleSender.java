@@ -26,11 +26,6 @@ public class ConsoleSender implements CommandSender {
     }
 
     @Override
-    public boolean hasPermission( String permission, boolean defaultValue ) {
-        return true;
-    }
-
-    @Override
     public Server getServer() {
         return this.server;
     }
