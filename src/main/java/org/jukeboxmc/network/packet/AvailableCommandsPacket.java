@@ -94,7 +94,10 @@ public class AvailableCommandsPacket extends Packet {
                 stream.writeLInt( new ArrayList<>( enums.values() ).indexOf( enums.get( commandName ) ) );
             }
 
+            //parameter
+            stream.writeUnsignedVarInt( 1 );
             stream.writeUnsignedVarInt( 0 );
+
         }
         stream.writeUnsignedVarInt( 0 ); // soft enums size
         stream.writeUnsignedVarInt( 0 );
