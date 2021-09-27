@@ -940,23 +940,26 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void leaveServer( String reason ) {
-        this.getWorld().removeEntity( this );
-        this.getChunk().removeEntity( this );
+        if ( this.spawned ) {
+            this.getWorld().removeEntity( this );
+            this.getChunk().removeEntity( this );
 
-        this.getInventory().removeViewer( this );
-        this.getArmorInventory().removeViewer( this );
-        this.getCursorInventory().removeViewer( this );
+            this.getInventory().removeViewer( this );
+            this.getArmorInventory().removeViewer( this );
+            this.getCursorInventory().removeViewer( this );
 
-        this.server.removeFromTablist( this.uuid );
-        this.server.removePlayer( this );
-        this.despawn();
+            this.server.removeFromTablist( this.uuid );
+            this.server.removePlayer( this );
+            this.despawn();
 
-        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this, "§e" + this.name + " left the game" );
-        Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
-        if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
-            this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
+            PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this, "§e" + this.name + " left the game" );
+            Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
+            if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
+                this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
+            }
+            this.server.getLogger().info( this.name + " logged out reason: " + reason );
+
         }
-        this.server.getLogger().info( this.name + " logged out reason: " + reason );
     }
 
     @Override

@@ -103,6 +103,10 @@ public class Location extends Vector {
         return this.world.getBlock( this );
     }
 
+    public Block getBlock( int layer ) {
+        return this.world.getBlock( this, layer );
+    }
+
     public Chunk getChunk() {
         return this.world.getChunk( this.getBlockX() >> 4, this.getBlockZ() >> 4, this.dimension );
     }

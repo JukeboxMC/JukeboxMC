@@ -217,6 +217,13 @@ public abstract class Block implements Cloneable {
         return false;
     }
 
+    public void setBlock( Block block ) {
+        this.world.setBlock( this.location, block );
+    }
+    public void setBlock( Block block, int layer ) {
+        this.world.setBlock( this.location, block, layer );
+    }
+
     public AxisAlignedBB getBoundingBox() {
         return new AxisAlignedBB(
                 this.location.getX(),
