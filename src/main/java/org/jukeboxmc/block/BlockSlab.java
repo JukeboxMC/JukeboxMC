@@ -45,8 +45,9 @@ public abstract class BlockSlab extends BlockWaterlogable {
         }
     }
 
-    public void setTopSlot( boolean value ) {
+    public BlockSlab setTopSlot( boolean value ) {
         this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
+        return this;
     }
 
     public boolean isTopSlot() {

@@ -1,5 +1,6 @@
 package org.jukeboxmc.item;
 
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockStoneSlab;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.type.StoneSlabType;

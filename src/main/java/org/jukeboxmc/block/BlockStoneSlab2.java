@@ -3,6 +3,7 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlab2Type;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemStoneSlab;
 import org.jukeboxmc.item.ItemStoneSlab2;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
@@ -55,7 +56,10 @@ public class BlockStoneSlab2 extends BlockSlab {
 
     @Override
     public ItemStoneSlab2 toItem() {
-        return new ItemStoneSlab2( this.runtimeId );
+        BlockStoneSlab2 blockStoneSlab = new BlockStoneSlab2();
+        blockStoneSlab.setStoneSlabType( this.getStoneSlabType() );
+        blockStoneSlab.setTopSlot( false );
+        return new ItemStoneSlab2( blockStoneSlab.getRuntimeId() );
     }
 
     @Override

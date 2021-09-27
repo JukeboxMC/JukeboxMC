@@ -20,7 +20,8 @@ public class CommandManager {
                 PluginsCommand.class,
                 TeleportCommand.class,
                 StopCommand.class,
-                TimeCommand.class
+                TimeCommand.class,
+                SaveCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

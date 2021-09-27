@@ -4,6 +4,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlabType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab;
+import org.jukeboxmc.item.ItemStoneSlab2;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -55,7 +56,10 @@ public class BlockStoneSlab extends BlockSlab {
 
     @Override
     public ItemStoneSlab toItem() {
-        return new ItemStoneSlab( this.runtimeId );
+        BlockStoneSlab blockStoneSlab = new BlockStoneSlab();
+        blockStoneSlab.setStoneSlabType( this.getStoneSlabType() );
+        blockStoneSlab.setTopSlot( false );
+        return new ItemStoneSlab( blockStoneSlab.getRuntimeId() );
     }
 
     @Override
@@ -74,7 +78,7 @@ public class BlockStoneSlab extends BlockSlab {
     }
 
     public BlockStoneSlab setStoneSlabType( StoneSlabType stoneSlabType ) {
-       return this.setState( "stone_slab_type", stoneSlabType.name().toLowerCase() );
+        return this.setState( "stone_slab_type", stoneSlabType.name().toLowerCase() );
     }
 
     public StoneSlabType getStoneSlabType() {
