@@ -375,12 +375,12 @@ public class Server {
         }
     }
 
-    public boolean isInitiating() {
-        return INITIATING.get();
-    }
-
     public void dispatchCommand( CommandSender commandSender, String command ) {
         this.pluginManager.getCommandManager().handleCommandInput( commandSender, "/" + command );
+    }
+
+    public boolean isInitiating() {
+        return INITIATING.get();
     }
 
     // =========== Player ===========

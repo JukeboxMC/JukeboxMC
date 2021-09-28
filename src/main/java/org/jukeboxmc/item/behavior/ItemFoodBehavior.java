@@ -23,6 +23,7 @@ public abstract class ItemFoodBehavior extends Item {
             return true;
         }
         player.setHunger( player.getHunger() );
+        player.getInventory().sendContents( player );
         return false;
     }
 
@@ -38,7 +39,8 @@ public abstract class ItemFoodBehavior extends Item {
             player.addHunger( this.getHunger() );
             float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
             player.setSaturation( saturation );
-            this.updateItem( player, false );
+            this.setAmount( this.amount - 1 );
+            this.updateItem( player, this.amount - 1 <= 0 );
             return true;
         }
         return false;

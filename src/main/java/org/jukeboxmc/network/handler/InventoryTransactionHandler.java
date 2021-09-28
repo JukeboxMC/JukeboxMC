@@ -165,7 +165,6 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 Server.getInstance().getLogger().debug( "RELEASE" );
                 if ( player.hasAction() ) {
-                    //player.getInventory().sendContents( player );
                     player.setAction( false );
                 }
                 break;
