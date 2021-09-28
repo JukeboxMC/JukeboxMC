@@ -8,6 +8,9 @@ import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.Options;
+import org.iq80.leveldb.impl.Iq80DBFactory;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -32,7 +35,6 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.generator.WorldGenerator;
-import org.jukeboxmc.world.leveldb.LevelDBWorld;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,32 +47,42 @@ import java.util.concurrent.*;
  * @author LucGamesYT
  * @version 1.0
  */
-public class World extends LevelDBWorld {
+public class World {
+
+    private DB db;
+    private final File worldFolder;
+    private final File worldFile;
 
     private final String name;
     private final Server server;
     private final WorldGenerator worldGenerator;
     private final BlockUpdateList blockUpdateList;
 
+    private Location spawnLocation;
+    private Difficulty difficulty;
     private int worldTime;
 
-    public final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new ConcurrentHashMap<>();
+    private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    protected final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
-
-    protected final Map<GameRule<?>, Object> gamerules = new ConcurrentHashMap<>();
-    protected final Map<Long, Entity> entities = new ConcurrentHashMap<>();
+    private final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new ConcurrentHashMap<>();
+    private final Map<GameRule<?>, Object> gamerules = new ConcurrentHashMap<>();
+    private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
     private final ExecutorService chunkThread = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
-        super( name );
+        this.worldFolder = new File( "./worlds/" + name );
+        this.worldFile = new File( this.worldFolder, "level.dat" );
+
+        if ( !this.worldFolder.exists() ) {
+            this.worldFolder.mkdirs();
+        }
+
         this.name = name;
         this.server = server;
         this.worldGenerator = worldGenerator;
 
         this.blockUpdateList = new BlockUpdateList();
-        this.spawnLocation = new Location( this, 0, 73, 0 );
 
         this.chunkMap.computeIfAbsent( Dimension.OVERWORLD, o -> new HashMap<>() );
         this.chunkMap.computeIfAbsent( Dimension.NETHER, o -> new HashMap<>() );
@@ -118,6 +130,39 @@ public class World extends LevelDBWorld {
         }
     }
 
+    public boolean open() {
+        try {
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().createIfMissing( true ) );
+            return true;
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean loadLevelFile() {
+        try ( FileInputStream stream = new FileInputStream( this.worldFile ) ) {
+            stream.skip( 8 );
+            byte[] data = new byte[stream.available()];
+            stream.read( data );
+
+            ByteBuf allocate = Utils.allocate( data );
+            try {
+                NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
+                NbtMap nbt = (NbtMap) networkReader.readTag();
+                this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 5 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+                this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
+                this.worldTime = nbt.getInt( "Time", 1000 );
+                return true;
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @SneakyThrows
     private void saveLevelDatFile() {
         File worldFolder = new File( "./worlds/" + this.name );
@@ -142,13 +187,13 @@ public class World extends LevelDBWorld {
 
         compound.putInt( "StorageVersion", 8 );
 
-        compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
-        compound.putInt( "SpawnY", this.spawnLocation.getBlockY() );
-        compound.putInt( "SpawnZ", this.spawnLocation.getBlockZ() );
+        compound.putInt( "SpawnX", this.spawnLocation != null ? this.spawnLocation.getBlockX() : 0 );
+        compound.putInt( "SpawnY", this.spawnLocation != null ? this.spawnLocation.getBlockY() : 10 );
+        compound.putInt( "SpawnZ", this.spawnLocation != null ? this.spawnLocation.getBlockZ() : 0 );
         compound.putInt( "Difficulty", this.difficulty == null ? Difficulty.NORMAL.ordinal() : this.difficulty.ordinal() );
 
         compound.putString( "LevelName", this.name );
-        compound.putLong( "Time", 0 ); //TODO
+        compound.putLong( "Time", this.worldTime );
 
 
         for ( Map.Entry<GameRule<?>, Object> entry : this.gamerules.entrySet() ) {
@@ -395,6 +440,15 @@ public class World extends LevelDBWorld {
 
     public Map<GameRule<?>, Object> getGamerules() {
         return this.gamerules;
+    }
+
+    public GameRule<?> getGameRuleByName( String name ) {
+        for ( GameRule<?> gameRule : this.gamerules.keySet() ) {
+            if ( gameRule.getName().equalsIgnoreCase( name ) ) {
+                return gameRule;
+            }
+        }
+        return null;
     }
 
     public void updateGameRules() {

@@ -18,6 +18,7 @@ public abstract class Command {
     private String name = "";
     private String description = "";
     private String permission = "";
+    private String permissionMessage = "";
 
     private final List<String> aliases = new ArrayList<>();
 
@@ -46,6 +47,10 @@ public abstract class Command {
             if ( clazz.isAnnotationPresent( Alias.class ) ) {
                 this.aliases.add( clazz.getAnnotation( Alias.class ).value() );
             }
+        }
+
+        if ( clazz.isAnnotationPresent( PermissionMessage.class ) ) {
+            this.permissionMessage = clazz.getAnnotation( PermissionMessage.class ).value();
         }
     }
 

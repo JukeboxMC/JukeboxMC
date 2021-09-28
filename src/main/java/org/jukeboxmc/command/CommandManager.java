@@ -23,7 +23,8 @@ public class CommandManager {
                 TimeCommand.class,
                 SaveCommand.class,
                 OperatorCommand.class,
-                RemoveOperatorCommand.class
+                RemoveOperatorCommand.class,
+                GameRulesCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {
@@ -64,7 +65,11 @@ public class CommandManager {
             }
 
             if ( targetCommand.getPermission() != null && !commandSender.hasPermission( targetCommand.getPermission() ) ) {
-                commandSender.sendMessage( "You don't have permission to do that" );
+                if ( targetCommand.getPermissionMessage() != null && !targetCommand.getPermissionMessage().isEmpty() ) {
+                    commandSender.sendMessage( targetCommand.getPermissionMessage() );
+                } else {
+                    commandSender.sendMessage( "You don't have permission to do that" );
+                }
                 return;
             }
 
