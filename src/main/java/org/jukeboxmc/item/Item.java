@@ -211,9 +211,9 @@ public class Item implements Cloneable {
         return this.setAmount( this.getAmount() - 1 );
     }
 
-    public Item addEnchantment( EnchantmentType enchantmentType, short level ) {
+    public Item addEnchantment( EnchantmentType enchantmentType, int level ) {
         Enchantment enchantment = enchantmentType.getEnchantment();
-        this.enchantments.put( enchantmentType, enchantment.setLevel( level > enchantment.getMaxLevel() ? 1 : level ) );
+        this.enchantments.put( enchantmentType, enchantment.setLevel( (short) (level > enchantment.getMaxLevel() ? 1 : level) ) );
         return this;
     }
 
@@ -225,13 +225,13 @@ public class Item implements Cloneable {
         return this.enchantments.values();
     }
 
-    public void updateItem( Player player, boolean durabilityState ) {
-        this.updateItem( player, durabilityState, true );
+    public void updateItem( Player player, int amount ) {
+        this.updateItem( player, amount, true );
     }
 
-    public void updateItem( Player player, boolean durabilityState, boolean playSound ) {
+    public void updateItem( Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-            if ( durabilityState ) {
+            if ( this.calculateDurability( amount ) ) {
                 player.getInventory().setItemInHand( new ItemAir() );
                 if ( playSound ) {
                     player.playSound( Sound.RANDOM_BREAK, 1, 1 );

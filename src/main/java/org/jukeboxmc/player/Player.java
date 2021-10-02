@@ -684,7 +684,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
 
         float damage = event.getDamage();
-        float maxReductionDiff = 25.0f - this.armorInventory.getTotalArmorValue();
+        float maxReductionDiff = 25.0f - this.armorInventory.getTotalArmorValue() * 0.04f;
         float amplifiedDamage = damage * maxReductionDiff;
         if ( damageArmor ) {
             this.armorInventory.damageEvenly( damage );
@@ -827,6 +827,11 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return false;
     }
 
+    @Override
+    public boolean canCollideWith( Entity entity ) {
+        return false;
+    }
+
     public void respawn() {
         if ( this.isDead ) {
             PlayerRespawnEvent playerRespawnEvent = new PlayerRespawnEvent( this, this.respawnLocation );
@@ -847,6 +852,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
             this.spawn();
 
+            this.setBurning( false );
             this.setVelocity( Vector.zero() );
 
             this.playerInventory.sendContents( this );

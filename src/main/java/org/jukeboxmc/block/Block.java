@@ -225,6 +225,7 @@ public abstract class Block implements Cloneable {
     public void setBlock( Block block ) {
         this.world.setBlock( this.location, block );
     }
+
     public void setBlock( Block block, int layer ) {
         this.world.setBlock( this.location, block, layer );
     }

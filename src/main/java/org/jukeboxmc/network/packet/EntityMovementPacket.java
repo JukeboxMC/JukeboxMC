@@ -47,8 +47,8 @@ public class EntityMovementPacket extends Packet {
         stream.writeLFloat( this.y );
         stream.writeLFloat( this.z );
 
-        stream.writeByte( (byte) ( this.pitch / 360f / 256f ) );
-        stream.writeByte( (byte) ( this.headYaw / 360f / 256f ) );
-        stream.writeByte( (byte) ( this.yaw / 360f / 256f ) );
+        stream.writeByte( (byte) ( this.pitch / (360f / 256f) ) );
+        stream.writeByte( (byte) ( this.headYaw / (360f / 256f) ) );
+        stream.writeByte( (byte) ( this.yaw / (360f / 256f) ) );
     }
 }

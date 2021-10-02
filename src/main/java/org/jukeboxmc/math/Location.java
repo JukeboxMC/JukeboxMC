@@ -57,22 +57,22 @@ public class Location extends Vector {
 
     @Override
     public Location add( float x, float y, float z ) {
-        return new Location( this.world, this.x + x, this.y + y, this.z + z, this.dimension );
+        return new Location( this.world, this.x + x, this.y + y, this.z + z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
     public Location subtract( float x, float y, float z ) {
-        return new Location( this.world, this.x - x, this.y - y, this.z - z, this.dimension );
+        return new Location( this.world, this.x - x, this.y - y, this.z - z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
     public Location multiply( float x, float y, float z ) {
-        return new Location( this.world, this.x * x, this.y * y, this.z * z, this.dimension );
+        return new Location( this.world, this.x * x, this.y * y, this.z * z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
     public Location divide( float x, float y, float z ) {
-        return new Location( this.world, this.x / x, this.y / y, this.z / z, this.dimension );
+        return new Location( this.world, this.x / x, this.y / y, this.z / z, this.yaw, this.pitch, this.dimension );
     }
 
     public World getWorld() {

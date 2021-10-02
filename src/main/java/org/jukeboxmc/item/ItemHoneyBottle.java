@@ -3,7 +3,6 @@ package org.jukeboxmc.item;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerConsumeItemEvent;
 import org.jukeboxmc.item.behavior.ItemFoodBehavior;
-import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
@@ -18,7 +17,7 @@ public class ItemHoneyBottle extends ItemFoodBehavior {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
+    public boolean onUse( Player player ) {
         if ( player.isHungry() ) {
             PlayerConsumeItemEvent playerConsumeItemEvent = new PlayerConsumeItemEvent( player, this );
             Server.getInstance().getPluginManager().callEvent( playerConsumeItemEvent );
@@ -30,14 +29,14 @@ public class ItemHoneyBottle extends ItemFoodBehavior {
             float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
             player.setSaturation( saturation );
         }
-        this.updateItem( player, false );
+        this.updateItem( player, 1 );
         return false;
     }
 
     @Override
-    public void updateItem( Player player, boolean playSound ) {
+    public void updateItem( Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-            boolean removeItem = ( this.amount -= 1 ) <= 0;
+            boolean removeItem = ( this.amount -= amount ) <= 0;
             if ( removeItem ) {
                 player.getInventory().setItemInHand( new ItemAir() );
             }

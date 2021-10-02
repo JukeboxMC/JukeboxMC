@@ -8,7 +8,7 @@ public class EnchantmentPower extends Enchantment {
 
     @Override
     public short getId() {
-        return 34;
+        return 19;
     }
 
     @Override

@@ -159,7 +159,7 @@ public abstract class Inventory {
         return Arrays.asList( this.contents ).contains( item ); //Iknow its not the best check TODO!
     }
 
-    public int getSlotSize() {
+    public int getSize() {
         return this.slotSize;
     }
 

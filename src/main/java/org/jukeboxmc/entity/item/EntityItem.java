@@ -2,6 +2,7 @@ package org.jukeboxmc.entity.item;
 
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.event.player.PlayerPickupItemEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
@@ -29,6 +30,8 @@ public class EntityItem extends Entity {
 
     @Override
     public void update( long currentTick ) {
+        super.update( currentTick );
+
         if ( this.closed ) {
             return;
         }
@@ -55,9 +58,13 @@ public class EntityItem extends Entity {
             this.updateMovement();
         }
 
-        if ( this.isCollided && !this.isReset &&  this.velocity.squaredLength() < 0.01f ) {
+        if ( this.isCollided && !this.isReset && this.velocity.squaredLength() < 0.01f ) {
             this.setVelocity( Vector.zero() );
             this.isReset = true;
+        }
+
+        if ( this.age >= TimeUnit.MINUTES.toMillis( 5 ) / 50 ) {
+            this.close();
         }
     }
 
@@ -74,6 +81,11 @@ public class EntityItem extends Entity {
     @Override
     public float getHeight() {
         return 0.25f;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.ITEM;
     }
 
     @Override
@@ -102,11 +114,15 @@ public class EntityItem extends Entity {
             takeEntityItemPacket.setEntityItemId( this.entityId );
             Server.getInstance().broadcastPacket( takeEntityItemPacket );
 
-            this.despawn();
             this.close();
             player.getInventory().addItem( this.item );
             player.getInventory().sendContents( player );
         }
+    }
+
+    @Override
+    public boolean canCollideWith( Entity entity ) {
+        return false;
     }
 
     public Item getItem() {
@@ -126,7 +142,7 @@ public class EntityItem extends Entity {
     }
 
     public void setPickupDelay( long duration, TimeUnit timeUnit ) {
-        this.pickupDelay = Server.getInstance().getCurrentTick() + timeUnit.toMillis( duration );
+        this.pickupDelay = Server.getInstance().getCurrentTick() + timeUnit.toMillis( duration ) / 50;
     }
 
     public Player getPlayerHasThrown() {

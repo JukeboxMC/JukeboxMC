@@ -40,7 +40,7 @@ public abstract class ItemFoodBehavior extends Item {
             float saturation = Math.min( player.getSaturation() + this.getSaturation(), player.getHunger() );
             player.setSaturation( saturation );
             this.setAmount( this.amount - 1 );
-            this.updateItem( player, this.amount - 1 <= 0 );
+            player.getInventory().setItemInHand( this );
             return true;
         }
         return false;

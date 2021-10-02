@@ -22,10 +22,7 @@ import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -36,6 +33,7 @@ public abstract class Entity {
     public static long entityCount = 1;
     protected long entityId;
 
+    protected long age = 0;
     protected float highestPosition = 0;
     protected float fallDistance = 0;
     protected float gravity = 0.08f;
@@ -88,7 +86,7 @@ public abstract class Entity {
     }
 
     public void update( long currentTick ) {
-
+        this.age++;
     }
 
     // ========== Movement ==========
@@ -153,7 +151,7 @@ public abstract class Entity {
             this.lastLocation.setZ( this.location.getZ() );
             this.lastLocation.setYaw( this.location.getYaw() );
             this.lastLocation.setPitch( this.location.getPitch() );
-            this.sendEntityMovePacket( new Location( this.location.getWorld(), this.location.getX(), this.location.getY() + 0.125f, this.location.getZ(), this.location.getYaw(), this.getPitch(), this.dimension ), this.onGround );
+            this.sendEntityMovePacket( new Location( this.location.getWorld(), this.location.getX(), this.location.getY() + 0, this.location.getZ(), this.location.getYaw(), this.getPitch(), this.dimension ), this.onGround );
         }
 
         if ( diffMotion > 0.0025 || ( diffMotion > 0.0001 && this.getVelocity().squaredLength() <= 0.0001 ) ) {
@@ -181,6 +179,10 @@ public abstract class Entity {
         this.isCollidedHorizontally = ( movX != dx || movZ != dz );
         this.isCollided = ( this.isCollidedHorizontally || this.isCollidedVertically );
         this.onGround = ( movY != dy && movY < 0 );
+    }
+
+    public boolean canCollideWith( Entity entity ) {
+        return entity != null && this != entity;
     }
 
     protected void checkObstruction( float x, float y, float z ) {
@@ -290,7 +292,21 @@ public abstract class Entity {
 
     public abstract float getHeight();
 
-    public abstract Packet createSpawnPacket();
+    public abstract EntityType getEntityType();
+
+    public Packet createSpawnPacket() {
+        EntitySpawnPacket entitySpawnPacket = new EntitySpawnPacket();
+        entitySpawnPacket.setEntityId( this.entityId );
+        entitySpawnPacket.setEntityType( this.getEntityType() );
+        entitySpawnPacket.setPosition( this.location.add( 0, this.getEyeHeight(), 0 ) );
+        entitySpawnPacket.setVelocity( this.velocity );
+        entitySpawnPacket.setYaw( this.location.getYaw() );
+        entitySpawnPacket.setPitch( this.location.getPitch() );
+        entitySpawnPacket.setHeadYaw( this.location.getYaw() );
+        entitySpawnPacket.setAttributes( null );
+        entitySpawnPacket.setMetadata( this.metadata );
+        return entitySpawnPacket;
+    }
 
     protected void fall() {
 
@@ -309,6 +325,14 @@ public abstract class Entity {
 
     public void setFallDistance( float fallDistance ) {
         this.fallDistance = fallDistance;
+    }
+
+    public long getAge() {
+        return this.age;
+    }
+
+    public void setAge( long age ) {
+        this.age = age;
     }
 
     public float getHighestPosition() {
@@ -530,7 +554,6 @@ public abstract class Entity {
     public Entity spawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
             this.spawn( player );
-
         }
         return this;
     }
@@ -711,5 +734,18 @@ public abstract class Entity {
         if ( value != this.isImmobile() ) {
             this.updateMetadata( this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.IMMOBILE, value ) );
         }
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        Entity entity = (Entity) o;
+        return entityId == entity.entityId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( entityId );
     }
 }

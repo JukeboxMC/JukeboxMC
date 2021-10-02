@@ -12,7 +12,10 @@ import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.Iq80DBFactory;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.block.*;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockSlab;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -627,7 +630,7 @@ public class World {
 
             if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
                 if ( item instanceof Durability ) {
-                    item.updateItem( player, item.calculateDurability( 1 ) );
+                    item.updateItem( player, 1 );
                 }
 
                 player.exhaust( 0.025f );
@@ -833,6 +836,10 @@ public class World {
         this.sendLevelEvent( null, position, levelEvent, 0 );
     }
 
+    public void sendLevelEvent( Player player, Vector position, LevelEvent levelEvent ) {
+        this.sendLevelEvent( player, position, levelEvent, 0 );
+    }
+
     public void sendLevelEvent( Vector position, LevelEvent levelEvent, int data ) {
         this.sendLevelEvent( null, position, levelEvent, data );
     }
@@ -935,7 +942,7 @@ public class World {
         entityItem.setItem( item );
         entityItem.setVelocity( velocity, false );
         entityItem.setLocation( new Location( this, location ) );
-        entityItem.setPickupDelay( 20, TimeUnit.MILLISECONDS );
+        entityItem.setPickupDelay( 1, TimeUnit.SECONDS );
         return entityItem;
     }
 
@@ -955,7 +962,13 @@ public class World {
                         if ( !iterateEntities.equals( entity ) ) {
                             AxisAlignedBB boundingBox = iterateEntities.getBoundingBox();
                             if ( boundingBox.intersectsWith( bb ) ) {
-                                targetEntity.add( iterateEntities );
+                                if ( entity != null ) {
+                                    if ( entity.canCollideWith( iterateEntities ) ) {
+                                        targetEntity.add( iterateEntities );
+                                    }
+                                } else {
+                                    targetEntity.add( iterateEntities );
+                                }
                             }
                         }
                     }

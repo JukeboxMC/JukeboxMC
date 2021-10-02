@@ -26,7 +26,7 @@ public class ItemDiamondShovel extends Item implements Durability {
     public boolean interact( Player player, BlockFace blockFace, Vector clickedVector, Block clickedBlock ) {
         if ( clickedBlock instanceof BlockGrass ) {
             player.getWorld().setBlock( clickedBlock.getLocation(), BlockType.GRASS_PATH.getBlock() );
-            this.updateItem( player, this.calculateDurability( 1 ) );
+            this.updateItem( player, 1 );
             return true;
         }
         return false;

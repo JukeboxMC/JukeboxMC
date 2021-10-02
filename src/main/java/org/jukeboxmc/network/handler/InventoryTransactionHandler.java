@@ -12,6 +12,7 @@ import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemBow;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
 import org.jukeboxmc.player.GameMode;
@@ -150,9 +151,9 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                         Entity entity = player.getWorld().getEntity( packet.getEntityId() );
                         if ( entity != null ) {
                             if ( player.attackWithItemInHand( entity ) ) {
-                                if ( !player.getGameMode().equals( GameMode.CREATIVE ) ){
+                                if ( !player.getGameMode().equals( GameMode.CREATIVE ) ) {
                                     Item itemInHand = player.getInventory().getItemInHand();
-                                    itemInHand.updateItem( player, itemInHand.calculateDurability( 1 ) );
+                                    itemInHand.updateItem( player, 1 );
                                 }
                             }
                         }
@@ -164,9 +165,14 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 break;
             case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
                 Server.getInstance().getLogger().debug( "RELEASE" );
-                if ( player.hasAction() ) {
-                    player.setAction( false );
+                if ( packet.getActionType() == 0 ) { // Release item ( shoot bow )
+                    // Check if the item is a bow
+                    if ( player.getInventory().getItemInHand() instanceof ItemBow ) {
+                        ( (ItemBow) player.getInventory().getItemInHand() ).shoot( player );
+                    }
                 }
+
+                player.setAction( false );
                 break;
             default:
                 player.setAction( false );

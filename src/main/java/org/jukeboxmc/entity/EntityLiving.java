@@ -90,12 +90,6 @@ public abstract class EntityLiving extends Entity {
             return false;
         }
 
-        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FIRE ) ||
-                event.getDamageSource().equals( EntityDamageEvent.DamageSource.LAVA ) ||
-                event.getDamageSource().equals( EntityDamageEvent.DamageSource.ON_FIRE ) ) {
-            return false;
-        }
-
         float damage = this.applyArmorReduction( event, false );
 
         float absorption = this.getAbsorption();
@@ -117,8 +111,7 @@ public abstract class EntityLiving extends Entity {
         if ( damage != event.getFinalDamage() ) {
             damageToBeDealt = event.getFinalDamage();
         } else {
-            damageToBeDealt = applyArmorReduction( event, true );
-
+            damageToBeDealt = this.applyArmorReduction( event, true );
             absorption = this.getAbsorption();
             if ( absorption > 0 ) {
                 float oldDamage = damageToBeDealt;
@@ -144,7 +137,7 @@ public abstract class EntityLiving extends Entity {
 
             float distance = (float) Math.sqrt( diffX * diffX + diffZ * diffZ );
             if ( distance > 0.0 ) {
-                float baseModifier = 0.4F;
+                float baseModifier = 0.3F;
 
                 distance = 1 / distance;
 

@@ -3,6 +3,7 @@ package org.jukeboxmc.entity.passive;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
+import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.metadata.EntityFlag;
@@ -67,6 +68,11 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     @Override
     public float getHeight() {
         return 1.8f;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.HUMAN;
     }
 
     @Override
