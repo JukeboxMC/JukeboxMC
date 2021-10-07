@@ -136,7 +136,12 @@ public abstract class Inventory {
             if ( content != null && content.getItemType() != ItemType.AIR ) {
                 if ( content.getItemType() == item.getItemType() && content.getMeta() == item.getMeta() ) {
                     content.setAmount( content.getAmount() - item.getAmount() );
-                    this.setItem( i, content );
+                    if ( content.getAmount() <= 0 ) {
+                        this.setItem( i, new ItemAir() );
+                    } else {
+                        this.setItem( i, content );
+                    }
+                    break;
                 }
             }
         }

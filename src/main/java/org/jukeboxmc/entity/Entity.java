@@ -327,6 +327,14 @@ public abstract class Entity {
         this.fallDistance = fallDistance;
     }
 
+    public float getGravity() {
+        return this.gravity;
+    }
+
+    public void setGravity( float gravity ) {
+        this.gravity = gravity;
+    }
+
     public long getAge() {
         return this.age;
     }

@@ -81,10 +81,14 @@ public class PlayerMoveHandler implements PacketHandler<PlayerMovePacket> {
         if ( to.getWorld() != from.getWorld() || from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ() ) {
             Block block = from.getBlock();
-            block.leaveBlock( player );
+            if ( block != null ) {
+                block.leaveBlock( player );
+            }
 
             block = to.getBlock();
-            block.enterBlock( player );
+            if ( block != null ) {
+                block.enterBlock( player );
+            }
         }
     }
 }

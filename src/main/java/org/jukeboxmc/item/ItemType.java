@@ -1464,6 +1464,15 @@ public enum ItemType {
         return ItemType.AIR.getItem();
     }
 
+    public static Item get( String identifier ) {
+        for ( Item item : cachedItems.values() ) {
+            if ( identifier.equals( item.getIdentifier() ) ) {
+                return item.clone();
+            }
+        }
+        return ItemType.AIR.getItem();
+    }
+
     public static Map<ItemType, Item> getCachedItems() {
         return cachedItems;
     }

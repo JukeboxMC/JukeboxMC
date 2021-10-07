@@ -28,6 +28,7 @@ public class ProjectileLaunchEvent extends EntityEvent implements Cancellable {
 
     public enum Cause {
         BOW,
+        CROSSBOW,
         EXP_BOTTLE,
         FISHING_ROD,
         ENDER_PEARL,

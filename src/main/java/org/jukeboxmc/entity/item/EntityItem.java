@@ -24,10 +24,6 @@ public class EntityItem extends Entity {
     private boolean isReset;
     private Player playerHasThrown;
 
-    public EntityItem() {
-        this.gravity = 0.04f;
-    }
-
     @Override
     public void update( long currentTick ) {
         super.update( currentTick );
@@ -37,7 +33,7 @@ public class EntityItem extends Entity {
         }
         if ( !this.isImmobile() ) {
             if ( !this.isOnGround() ) {
-                this.velocity = this.velocity.subtract( 0, this.gravity, 0 );
+                this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
             }
 
             this.checkObstruction( this.location.getX(), this.location.getY(), this.location.getZ() );
@@ -81,6 +77,11 @@ public class EntityItem extends Entity {
     @Override
     public float getHeight() {
         return 0.25f;
+    }
+
+    @Override
+    public float getGravity() {
+        return 0.04f;
     }
 
     @Override
@@ -131,10 +132,6 @@ public class EntityItem extends Entity {
 
     public void setItem( Item item ) {
         this.item = item;
-    }
-
-    public float getGravity() {
-        return this.gravity;
     }
 
     public long getPickupDelay() {

@@ -32,7 +32,7 @@ public abstract class EntityProjectile extends Entity {
             return;
         }
 
-        this.velocity = this.velocity.subtract( 0, 0.08f, 0 );
+        this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
         Location location = this.location;
         Vector moveVector = new Vector( this.location.getX() + this.velocity.getX(), this.location.getY() + this.velocity.getY(), this.location.getZ() + this.velocity.getZ() );
 

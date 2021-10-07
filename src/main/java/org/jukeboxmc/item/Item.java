@@ -29,7 +29,7 @@ import java.util.*;
 @ToString
 public class Item implements Cloneable {
 
-    private String identifier;
+    protected String identifier;
     protected int blockRuntimeId;
 
     protected int amount;
@@ -213,7 +213,7 @@ public class Item implements Cloneable {
 
     public Item addEnchantment( EnchantmentType enchantmentType, int level ) {
         Enchantment enchantment = enchantmentType.getEnchantment();
-        this.enchantments.put( enchantmentType, enchantment.setLevel( (short) (level > enchantment.getMaxLevel() ? 1 : level) ) );
+        this.enchantments.put( enchantmentType, enchantment.setLevel( (short) ( level > enchantment.getMaxLevel() ? 1 : level ) ) );
         return this;
     }
 
@@ -232,11 +232,13 @@ public class Item implements Cloneable {
     public void updateItem( Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
             if ( this.calculateDurability( amount ) ) {
+                System.out.println(1);
                 player.getInventory().setItemInHand( new ItemAir() );
                 if ( playSound ) {
                     player.playSound( Sound.RANDOM_BREAK, 1, 1 );
                 }
             } else {
+                System.out.println("Dura: " + this.durability );
                 player.getInventory().setItemInHand( this );
             }
         }
@@ -311,7 +313,14 @@ public class Item implements Cloneable {
     }
 
     public NbtMapBuilder toNetwork() {
+        return this.toNetwork( false );
+    }
+
+    public NbtMapBuilder toNetwork( boolean withName ) {
         NbtMapBuilder builder = this.nbt == null ? NbtMap.EMPTY.toBuilder() : this.nbt.toBuilder();
+        if ( withName ) {
+            builder.putString( "Name", this.identifier );
+        }
         builder.putByte( "Count", (byte) this.amount );
         builder.putInt( "Damage", this.durability );
         builder.putByte( "WasPickedUp", (byte) 0 );

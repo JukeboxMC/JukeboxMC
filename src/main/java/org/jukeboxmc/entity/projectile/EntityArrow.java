@@ -31,7 +31,7 @@ public class EntityArrow extends EntityProjectile {
     public void update( long currentTick ) {
         super.update( currentTick );
 
-        if ( this.onGround || this.isCollided ) {
+        if ( this.onGround || this.isCollided || this.hadCollision ) {
             this.canBePickedUp = true;
         }
 

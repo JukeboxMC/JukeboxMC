@@ -90,6 +90,9 @@ public class ItemBow extends Item implements Durability {
             EnchantmentInfinity enchantmentInfinity = (EnchantmentInfinity) this.getEnchantment( EnchantmentType.INFINITY );
             if ( enchantmentInfinity == null ) {
                 this.updateItem( player, 1 );
+                if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                    player.getInventory().removeItem( new ItemArrow() );
+                }
             } else {
                 arrow.setWasInfinityArrow( true );
             }
