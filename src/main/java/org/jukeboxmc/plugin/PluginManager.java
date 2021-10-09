@@ -88,7 +88,6 @@ public class PluginManager {
             return null;
         }
 
-        this.logger.info( "Loaded plugin " + config.getName() + " Version: " + config.getVersion() + " successfully!" );
         this.pluginMap.put( config.getName(), plugin );
 
         plugin.onStartup();
@@ -149,6 +148,7 @@ public class PluginManager {
 
         try {
             plugin.setEnabled( true );
+            this.logger.info( "Loaded plugin " + plugin.getName() + " Version: " + plugin.getVersion() + " successfully!" );
         } catch ( RuntimeException e ) {
             e.printStackTrace();
             return false;
