@@ -170,7 +170,7 @@ public class Server {
     }
 
     private void initServerConfig() {
-        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ) ), "properties.json", ConfigType.JSON );
+        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
         this.serverConfig.addDefault( "address", "0.0.0.0" );
         this.serverConfig.addDefault( "port", 19132 );
         this.serverConfig.addDefault( "maxplayers", 20 );
@@ -193,7 +193,7 @@ public class Server {
     }
 
     private void initOperatorConfig() {
-        this.operatorConfig = new Config( new File( System.getProperty( "user.dir" ) ), "operators.json", ConfigType.JSON );
+        this.operatorConfig = new Config( new File( System.getProperty( "user.dir" ), "operators.json" ), ConfigType.JSON );
         this.operatorConfig.addDefault( "operators", new ArrayList<String>() );
         this.operatorConfig.save();
     }

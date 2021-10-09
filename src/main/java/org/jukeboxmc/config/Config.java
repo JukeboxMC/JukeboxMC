@@ -24,10 +24,10 @@ public class Config {
     private final File file;
 
     @SneakyThrows
-    public Config( File path, String fileName, ConfigType configType ) {
+    public Config( File file, ConfigType configType ) {
+        this.file = file;
         this.configType = configType;
         this.configSection = new ConfigSection();
-        this.file = new File( path, fileName );
         if ( !this.file.getParentFile().exists() ) {
             this.file.getParentFile().mkdirs();
         }
