@@ -15,8 +15,6 @@
 
 package org.jukeboxmc.scheduler;
 
-import org.jukeboxmc.logger.Logger;
-
 /**
  * @author WaterdogPE
  * @version 1.0
@@ -47,7 +45,7 @@ public class TaskHandler {
         try {
             this.task.run();
         } catch ( Exception e ) {
-            Logger.getInstance().error( "Exception while running task!" + e );
+            e.printStackTrace();
         }
     }
 

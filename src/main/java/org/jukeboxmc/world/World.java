@@ -71,8 +71,6 @@ public class World {
     private final Map<GameRule<?>, Object> gamerules = new ConcurrentHashMap<>();
     private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
-    private final ExecutorService chunkThread = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
-
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         this.worldFolder = new File( "./worlds/" + name );
         this.worldFile = new File( this.worldFolder, "level.dat" );
@@ -104,7 +102,7 @@ public class World {
 
             SetTimePacket setTimePacket = new SetTimePacket();
             setTimePacket.setWorldTime( this.worldTime );
-            this.server.broadcastPacket( setTimePacket );
+            this.sendWorldPacket( setTimePacket );
         }
 
         for ( Entity entity : this.entities.values() ) {
@@ -329,11 +327,15 @@ public class World {
                 val map = this.chunkMap.get( dimension );
                 return map.get( Utils.toLong( chunkX, chunkZ ) );
             }
-        }, this.chunkThread );
+        } );
     }
 
     public Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
         return this.loadChunkSync( chunkX, chunkZ, dimension );
+    }
+
+    public boolean isChunkLoaded( int chunkX, int chunkZ ) {
+        return this.chunkMap.get( Dimension.OVERWORLD ).containsKey( Utils.toLong( chunkX, chunkZ ) );
     }
 
     public void clearChunks() {

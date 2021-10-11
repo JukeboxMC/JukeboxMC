@@ -45,7 +45,7 @@ public class PlayerMoveHandler implements PacketHandler<PlayerMovePacket> {
                 toChunk.addEntity( player );
 
                 for ( Entity entity : toChunk.getEntities() ) {
-                    if ( !( entity instanceof Player ) && !entity.isClosed() ) {
+                    if ( !( entity instanceof Player ) && !entity.isClosed() && player.getLastLocation().getWorld().equals( player.getWorld() ) ) {
                         entity.spawn( player );
                     }
                 }

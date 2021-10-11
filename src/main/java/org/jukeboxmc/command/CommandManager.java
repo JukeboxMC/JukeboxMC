@@ -24,7 +24,8 @@ public class CommandManager {
                 SaveCommand.class,
                 OperatorCommand.class,
                 RemoveOperatorCommand.class,
-                GameRulesCommand.class
+                GameRulesCommand.class,
+                WorldTeleportCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

@@ -203,6 +203,7 @@ public class Server {
             this.running = false;
             this.logger.info( "Shutdown server..." );
 
+            System.out.println(Thread.currentThread().getName());
             for ( Player player : this.getOnlinePlayers() ) {
                 player.disconnect( "Server shutdown" );
             }
@@ -473,12 +474,21 @@ public class Server {
     }
 
     public World getWorld( String name ) {
+        if ( !this.isWorldLoaded( name ) ) {
+            if ( this.loadOrCreateWorld( name ) ) {
+                return this.worlds.get( name.toLowerCase() );
+            }
+        }
         for ( World world : this.worlds.values() ) {
             if ( world.getName().equalsIgnoreCase( name ) ) {
                 return world;
             }
         }
         return null;
+    }
+
+    public boolean isWorldLoaded( String name ) {
+        return this.worlds.containsKey( name.toLowerCase() );
     }
 
     public WorldGenerator getOverworldGenerator() {

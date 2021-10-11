@@ -8,6 +8,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
@@ -38,6 +39,7 @@ import java.util.function.Consumer;
 public class Chunk extends LevelDBChunk {
 
     public static final int CHUNK_LAYERS = 2;
+    private static final BlockAir BLOCK_AIR = new BlockAir();
 
     public SubChunk[] subChunks;
     private final World world;
@@ -65,24 +67,36 @@ public class Chunk extends LevelDBChunk {
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {
+        if ( y < 0 || y > 255 ) {
+            return BLOCK_AIR.getRuntimeId();
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         return this.subChunks[subY].getRuntimeId( x & 15, y & 15, z & 15, layer );
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
+        if ( location.getY() < 0 || location.getY() > 266 ) {
+            return;
+        }
         int subY = location.getBlockY() >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, layer, runtimeId );
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
+        if ( y < 0 || y > 255 ) {
+            return;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
+        if ( y < 0 || y > 255 ) {
+            return BLOCK_AIR;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
@@ -92,6 +106,9 @@ public class Chunk extends LevelDBChunk {
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
+        if ( y < 0 || y > 255 ) {
+            return;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
@@ -122,18 +139,27 @@ public class Chunk extends LevelDBChunk {
     }
 
     public BlockEntity getBlockEntity( int x, int y, int z ) {
+        if ( y < 0 || y > 255 ) {
+            return null;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         return this.subChunks[subY].getBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
+        if ( y < 0 || y > 255 ) {
+            return;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
     }
 
     public void removeBlockEntity( int x, int y, int z ) {
+        if ( y < 0 || y > 255 ) {
+            return;
+        }
         int subY = y >> 4;
         this.checkAndCreateSubChunks( subY );
         this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
@@ -250,7 +276,7 @@ public class Chunk extends LevelDBChunk {
         buffer.writeByte( (byte) Chunk.CHUNK_LAYERS );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            Integer[] layerBlocks = subChunk.blocks[layer];
+            int[] layerBlocks = subChunk.blocks[layer];
             int[] blockIds = new int[4096];
 
             Map<Integer, Integer> indexList = new LinkedHashMap<>();
@@ -299,7 +325,6 @@ public class Chunk extends LevelDBChunk {
         writeBatch.put( subChunkKey, buffer.array() );
     }
 
-
     public BinaryStream writeChunk() {
         BinaryStream binaryStream = new BinaryStream();
         for ( SubChunk subChunk : this.subChunks ) {
@@ -309,7 +334,6 @@ public class Chunk extends LevelDBChunk {
         }
         binaryStream.writeBytes( this.biomes );
         binaryStream.writeUnsignedVarInt( 0 );
-
 
         List<BlockEntity> blockEntitys = this.getBlockEntitys();
         if ( !blockEntitys.isEmpty() ) {

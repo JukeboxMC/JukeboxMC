@@ -314,12 +314,12 @@ public enum ItemType {
 
     QUARTZ_STAIRS( new ItemQuartzStairs() ),
     DOUBLE_WOODEN_SLAB( new ItemDoubleWoodenSlab() ),
-    OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.OAK ).toItem() ),
-    SPRUCE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.SPRUCE ).toItem() ),
-    BIRCH_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.BIRCH ).toItem() ),
-    JUNGLE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.JUNGLE ).toItem() ),
-    ACACIA_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.ACACIA ).toItem() ),
-    DARK_OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.DARK_OAK ).toItem() ),
+    OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.OAK ).setTopSlot( false ).toItem() ),
+    SPRUCE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.SPRUCE ).setTopSlot( false ).toItem() ),
+    BIRCH_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.BIRCH ).setTopSlot( false ).toItem() ),
+    JUNGLE_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.JUNGLE ).setTopSlot( false ).toItem() ),
+    ACACIA_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.ACACIA ).setTopSlot( false ).toItem() ),
+    DARK_OAK_WOODEN_SLAB( BlockType.WOODEN_SLAB.<BlockWoodenSlab>getBlock().setWoodType( WoodType.DARK_OAK ).setTopSlot( false ).toItem() ),
 
     WHITE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.WHITE ).toItem() ),
     SILVER_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.SILVER ).toItem() ),

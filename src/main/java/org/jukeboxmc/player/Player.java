@@ -129,13 +129,15 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 World world = this.getWorld();
                 world.loadChunkAsync( chunkX, chunkZ, this.dimension ).whenComplete( ( chunk, throwable ) -> {
                     this.sendChunk( chunk );
+                    this.sendNetworkChunkPublisher();
                 } ).thenRun( () -> {
                     Server.getInstance().addToMainThread( this::sendNetworkChunkPublisher );
                 } );
+
             }
         }
-        super.update( currentTick );
 
+        super.update( currentTick );
 
         Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.dimension, null );
         if ( nearbyEntities != null ) {
@@ -215,6 +217,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             int currentXChunk = Utils.blockToChunk( this.location.getBlockX() );
             int currentZChunk = Utils.blockToChunk( this.location.getBlockZ() );
             int viewDistance = this.getViewDistance();
+            //int viewDistance = 4;
 
             List<Long> toSendChunks = new ArrayList<>();
             for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
@@ -1046,32 +1049,37 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         World world = location.getWorld();
 
         if ( currentWorld != world ) {
+            this.despawn();
+            currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
+
             this.getChunk().removeEntity( this );
             currentWorld.removeEntity( this );
 
-            this.despawn();
             this.resetChunks();
 
-            this.setLocation( new Location( world, world.getSpawnLocation( this.getDimension() ) ) );
+            this.setLocation( location );
 
             world.addEntity( this );
             this.getChunk().addEntity( this );
-
-            this.spawn();
-            this.movePlayer( location, mode );
+            this.server.getScheduler().scheduleDelayed( () -> {
+                this.spawn();
+                world.getPlayers().forEach( player -> player.spawn(this) );
+                this.movePlayer( location, mode );
+            }, 10 );
             return;
         }
 
+        this.fallDistance = 0;
         this.setLocation( location );
         this.movePlayer( location, mode );
     }
 
     public void teleport( Vector vector ) {
-        this.teleport( new Location( this.getWorld(), vector ), PlayerMoveMode.RESET );
+        this.teleport( new Location( this.getWorld(), vector ), PlayerMoveMode.TELEPORT );
     }
 
     public void teleport( Location location ) {
-        this.teleport( location, PlayerMoveMode.RESET );
+        this.teleport( location, PlayerMoveMode.TELEPORT );
     }
 
     public void teleport( Player player ) {
