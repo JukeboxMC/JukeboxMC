@@ -232,13 +232,11 @@ public class Item implements Cloneable {
     public void updateItem( Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
             if ( this.calculateDurability( amount ) ) {
-                System.out.println(1);
                 player.getInventory().setItemInHand( new ItemAir() );
                 if ( playSound ) {
                     player.playSound( Sound.RANDOM_BREAK, 1, 1 );
                 }
             } else {
-                System.out.println("Dura: " + this.durability );
                 player.getInventory().setItemInHand( this );
             }
         }

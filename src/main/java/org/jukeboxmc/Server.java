@@ -203,7 +203,6 @@ public class Server {
             this.running = false;
             this.logger.info( "Shutdown server..." );
 
-            System.out.println(Thread.currentThread().getName());
             for ( Player player : this.getOnlinePlayers() ) {
                 player.disconnect( "Server shutdown" );
             }
