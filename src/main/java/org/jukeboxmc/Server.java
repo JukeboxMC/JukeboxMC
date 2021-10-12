@@ -205,8 +205,6 @@ public class Server {
             this.running = false;
             this.logger.info( "Shutdown server..." );
 
-            System.out.println( Thread.currentThread().getName() );
-
             for ( Player player : this.getOnlinePlayers() ) {
                 player.disconnect( "Server shutdown" );
             }
@@ -524,7 +522,7 @@ public class Server {
                 return false;
             }
 
-            if ( worldLoadEvent.getWorld().loadLevelFile() && worldLoadEvent.getWorld().open() ) {
+            if ( worldLoadEvent.getWorld().open() ) {
                 if ( worldLoadEvent.isPrepareWorld() ) {
                     worldLoadEvent.getWorld().prepareSpawnRegion();
                 }

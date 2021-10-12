@@ -96,7 +96,10 @@ public class World {
         this.chunkMap.computeIfAbsent( Dimension.THE_END, o -> new Long2ObjectOpenHashMap<>() );
 
         this.initGameRules();
-        this.saveLevelDatFile();
+        if ( !this.loadLevelFile() ) {
+            this.saveLevelDatFile();
+        }
+
     }
 
     public void update( long currentTick ) {
@@ -157,7 +160,8 @@ public class World {
             try {
                 NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
                 NbtMap nbt = (NbtMap) networkReader.readTag();
-                this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 5 ) + 1.62f, nbt.getInt( "SpawnZ", 0 ) );
+
+                this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ), nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 this.worldTime = nbt.getInt( "Time", 1000 );
                 return true;
@@ -195,7 +199,7 @@ public class World {
         compound.putInt( "StorageVersion", 8 );
 
         compound.putInt( "SpawnX", this.spawnLocation != null ? this.spawnLocation.getBlockX() : 0 );
-        compound.putInt( "SpawnY", this.spawnLocation != null ? this.spawnLocation.getBlockY() : 10 );
+        compound.putInt( "SpawnY", this.spawnLocation != null ? this.spawnLocation.getBlockY() : 64 );
         compound.putInt( "SpawnZ", this.spawnLocation != null ? this.spawnLocation.getBlockZ() : 0 );
         compound.putInt( "Difficulty", this.difficulty == null ? Difficulty.NORMAL.ordinal() : this.difficulty.ordinal() );
 

@@ -26,36 +26,31 @@ public class BlockWoodenSlab extends BlockSlab {
         Block block = world.getBlock( placePosition );
 
         if ( blockFace == BlockFace.DOWN ) {
-            if ( targetBlock instanceof BlockWoodenSlab ) {
-                BlockWoodenSlab blockSlab = (BlockWoodenSlab) targetBlock;
-                if ( blockSlab.isTopSlot() ) {
-                    world.setBlock( blockPosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
-                    return true;
-                }
-            } else if ( block instanceof BlockWoodenSlab ) {
+            if ( targetBlock instanceof BlockWoodenSlab && ( (BlockWoodenSlab) targetBlock ).isTopSlot() && ( (BlockWoodenSlab) targetBlock ).getWoodType().equals( this.getWoodType() ) ) {
+                world.setBlock( blockPosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
+                return true;
+            } else if ( block instanceof BlockWoodenSlab && ( (BlockWoodenSlab) block ).getWoodType().equals( this.getWoodType() ) ) {
                 world.setBlock( placePosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
                 return true;
             }
         } else if ( blockFace == BlockFace.UP ) {
-            if ( targetBlock instanceof BlockWoodenSlab ) {
-                BlockWoodenSlab blockSlab = (BlockWoodenSlab) targetBlock;
-                if ( !blockSlab.isTopSlot() ) {
-                    world.setBlock( blockPosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
-                    return true;
-                }
-            } else if ( block instanceof BlockWoodenSlab ) {
+            if ( targetBlock instanceof BlockWoodenSlab && !( (BlockWoodenSlab) targetBlock ).isTopSlot() && ( (BlockWoodenSlab) targetBlock ).getWoodType().equals( this.getWoodType() ) ) {
+                world.setBlock( blockPosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
+                return true;
+            } else if ( block instanceof BlockWoodenSlab && ( (BlockWoodenSlab) block ).getWoodType().equals( this.getWoodType() ) ) {
                 world.setBlock( placePosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
                 return true;
             }
         } else {
-            if ( block instanceof BlockWoodenSlab ) {
+            if ( block instanceof BlockWoodenSlab && ( (BlockWoodenSlab) block ).getWoodType().equals( this.getWoodType() ) ) {
                 world.setBlock( placePosition, new BlockDoubleWoodenSlab().setWoodType( this.getWoodType() ) );
                 return true;
+            } else {
+                this.setTopSlot( clickedPosition.getY() > 0.5 && !world.getBlock( blockPosition ).canBeReplaced( this ) );
             }
         }
         super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         world.setBlock( placePosition, this );
-        world.setBlock( placePosition, block, 1 );
         return true;
     }
 
