@@ -1,5 +1,7 @@
 package org.jukeboxmc.block;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import lombok.SneakyThrows;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -20,7 +22,10 @@ import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.jukeboxmc.block.BlockType.Companion.update;
 
@@ -31,7 +36,7 @@ import static org.jukeboxmc.block.BlockType.Companion.update;
 
 public abstract class Block implements Cloneable {
 
-    public static final Map<String, Map<NbtMap, Integer>> STATES = new LinkedHashMap<>();
+    public static final Object2ObjectMap<String, Object2ObjectMap<NbtMap, Integer>> STATES = new Object2ObjectLinkedOpenHashMap<>();
 
     protected int runtimeId;
     protected String identifier;
@@ -49,7 +54,7 @@ public abstract class Block implements Cloneable {
         this.identifier = identifier.toLowerCase();
 
         if ( !STATES.containsKey( this.identifier ) ) {
-            Map<NbtMap, Integer> toRuntimeId = new LinkedHashMap<>();
+            Object2ObjectMap<NbtMap, Integer> toRuntimeId = new Object2ObjectLinkedOpenHashMap<>();
             for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifier ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }

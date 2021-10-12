@@ -1,5 +1,7 @@
 package org.jukeboxmc;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.BlockPalette;
@@ -79,10 +81,10 @@ public class Server {
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );
 
-    private final Map<InetSocketAddress, Player> players = new HashMap<>();
-    private final Map<String, World> worlds = new HashMap<>();
-    private final Map<String, WorldGenerator> worldGenerator = new HashMap<>();
-    private final Map<UUID, TablistEntry> playerListEntry = new HashMap<>();
+    private final Object2ObjectMap<InetSocketAddress, Player> players = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<String, World> worlds = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<String, WorldGenerator> worldGenerator = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<UUID, TablistEntry> playerListEntry = new Object2ObjectOpenHashMap<>();
     private final BlockingQueue<Runnable> mainThreadWork = new LinkedBlockingQueue<>();
 
     @SneakyThrows
@@ -202,6 +204,8 @@ public class Server {
         if ( this.running ) {
             this.running = false;
             this.logger.info( "Shutdown server..." );
+
+            System.out.println( Thread.currentThread().getName() );
 
             for ( Player player : this.getOnlinePlayers() ) {
                 player.disconnect( "Server shutdown" );

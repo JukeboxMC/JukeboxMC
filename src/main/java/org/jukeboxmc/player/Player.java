@@ -287,7 +287,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void sendChunk( Chunk chunk ) {
-        this.playerConnection.sendPacket( chunk.createLevelChunkPacket() );
+        this.playerConnection.sendPacket( chunk.createLevelChunkPacket(), true );
         this.server.addToMainThread( () -> {
             this.loadingChunks.remove( chunk.toChunkHash() );
             this.loadedChunks.add( chunk.toChunkHash() );
@@ -318,6 +318,16 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             iterator.remove();
         }
         return chunkList;
+    }
+
+    public void loadChunk( int chunkX, int chunkZ, boolean async ) {
+        if ( async ) {
+            this.location.getWorld().loadChunkAsync( chunkX, chunkZ, this.dimension ).whenComplete( ( chunk, throwable ) -> {
+                this.sendChunk( chunk );
+            } );
+        } else {
+            this.sendChunk( this.location.getWorld().loadChunkSync( chunkX, chunkZ, this.dimension ) );
+        }
     }
     // ========== Other ==========
 
@@ -944,6 +954,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
                 Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
             }
+            this.server.getLogger().info( this.name + " logged in [World=" + this.getWorld().getName() + ", X=" + this.getBlockX() + ", Y=" + this.getBlockY() + ", Z=" + this.getBlockZ() + ", Dimension=" + this.getDimension().name() + "]" );
+
             for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
                 if ( onlinePlayer != null && onlinePlayer.getDimension() == this.getDimension() ) {
                     onlinePlayer.spawn( this );
@@ -1058,14 +1070,15 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.resetChunks();
 
             this.setLocation( location );
+            this.needNewChunks();
+
+            this.loadChunk( location.getChunkX(), location.getChunkZ(), false );
 
             world.addEntity( this );
             this.getChunk().addEntity( this );
-            this.server.getScheduler().scheduleDelayed( () -> {
-                this.spawn();
-                world.getPlayers().forEach( player -> player.spawn(this) );
-                this.movePlayer( location, mode );
-            }, 10 );
+            this.spawn();
+            world.getPlayers().forEach( player -> player.spawn( this ) );
+            this.movePlayer( location, mode );
             return;
         }
 

@@ -4,6 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
@@ -67,9 +71,11 @@ public class World {
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    private final Map<Dimension, HashMap<Long, Chunk>> chunkMap = new ConcurrentHashMap<>();
-    private final Map<GameRule<?>, Object> gamerules = new ConcurrentHashMap<>();
-    private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
+    private final Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> chunkMap = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<Entity> entities = new Long2ObjectOpenHashMap<>();
+
+    private final ExecutorService chunkThread = Executors.newWorkStealingPool();
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         this.worldFolder = new File( "./worlds/" + name );
@@ -85,9 +91,9 @@ public class World {
 
         this.blockUpdateList = new BlockUpdateList();
 
-        this.chunkMap.computeIfAbsent( Dimension.OVERWORLD, o -> new HashMap<>() );
-        this.chunkMap.computeIfAbsent( Dimension.NETHER, o -> new HashMap<>() );
-        this.chunkMap.computeIfAbsent( Dimension.THE_END, o -> new HashMap<>() );
+        this.chunkMap.computeIfAbsent( Dimension.OVERWORLD, o -> new Long2ObjectOpenHashMap<>() );
+        this.chunkMap.computeIfAbsent( Dimension.NETHER, o -> new Long2ObjectOpenHashMap<>() );
+        this.chunkMap.computeIfAbsent( Dimension.THE_END, o -> new Long2ObjectOpenHashMap<>() );
 
         this.initGameRules();
         this.saveLevelDatFile();
@@ -327,7 +333,7 @@ public class World {
                 val map = this.chunkMap.get( dimension );
                 return map.get( Utils.toLong( chunkX, chunkZ ) );
             }
-        } );
+        }, this.chunkThread );
     }
 
     public Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
