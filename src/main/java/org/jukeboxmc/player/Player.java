@@ -89,6 +89,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final Set<Long> loadingChunks = new HashSet<>();
     private final Set<Long> loadedChunks = new HashSet<>();
     private final Set<UUID> emotes = new HashSet<>();
+    private final Set<UUID> hiddenPlayers = new HashSet<>();
 
     private final Map<UUID, List<String>> permissions = new HashMap<>();
 
@@ -1168,6 +1169,24 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         playSoundPacket.setVolume( volume );
         playSoundPacket.setPitch( pitch );
         this.playerConnection.sendPacket( playSoundPacket );
+    }
+
+    public boolean canSeePlayer( Player player ) {
+        return !this.hiddenPlayers.contains( player.getUUID() );
+    }
+
+    public void hidePlayer( Player player ) {
+        if ( this != player ) {
+            player.despawn( this );
+            this.hiddenPlayers.add( player.getUUID() );
+        }
+    }
+
+    public void showPlayer( Player player ) {
+        if ( this != player ) {
+            player.spawn( this );
+            this.hiddenPlayers.remove( player.getUUID() );
+        }
     }
 
     @Override
