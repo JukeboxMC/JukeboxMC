@@ -19,4 +19,6 @@ public @interface Permission {
      * @return a fresh {@link String}
      */
     String value() default "";
+
+    boolean showNoPermissionMessage() default false;
 }

@@ -67,12 +67,14 @@ public class CommandManager {
             }
 
             if ( targetCommand.getPermission() != null && !commandSender.hasPermission( targetCommand.getPermission() ) ) {
-                if ( targetCommand.getPermissionMessage() != null && !targetCommand.getPermissionMessage().isEmpty() ) {
-                    commandSender.sendMessage( targetCommand.getPermissionMessage() );
-                } else {
-                    commandSender.sendMessage( "You don't have permission to do that" );
+                if ( targetCommand.isShowNoPermissionMessage() ) {
+                    if ( targetCommand.getPermissionMessage() != null && !targetCommand.getPermissionMessage().isEmpty() ) {
+                        commandSender.sendMessage( targetCommand.getPermissionMessage() );
+                    } else {
+                        commandSender.sendMessage( "You don't have permission to do that" );
+                    }
+                    return;
                 }
-                return;
             }
 
             String[] params;
