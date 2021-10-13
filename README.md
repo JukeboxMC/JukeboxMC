@@ -19,7 +19,7 @@ Maven:
  - Download: https://maven.apache.org/download.cgi
  - Install: https://maven.apache.org/install
 
-GIT: https://git-scm.com/downloads
+Git: https://git-scm.com/downloads
 
 ## IMPORTANT
 This server software is not yet ready!
