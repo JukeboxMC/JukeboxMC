@@ -1,9 +1,12 @@
 package org.jukeboxmc.network.packet.type;
 
+import lombok.ToString;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class ResourcePackEntry {
 
     private final String uuid;

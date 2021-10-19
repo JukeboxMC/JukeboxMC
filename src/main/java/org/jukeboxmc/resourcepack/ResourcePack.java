@@ -1,5 +1,7 @@
 package org.jukeboxmc.resourcepack;
 
+import lombok.ToString;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.io.IOException;
  * @author Kaooot
  * @version 1.0
  */
+@ToString(exclude = {"file"})
 public class ResourcePack {
 
     private final File file;

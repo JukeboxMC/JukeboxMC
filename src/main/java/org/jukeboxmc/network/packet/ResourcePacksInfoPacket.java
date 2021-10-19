@@ -35,9 +35,7 @@ public class ResourcePacksInfoPacket extends Packet {
         stream.writeLShort( 0 ); // behaviour packs amount
 
         Collection<ResourcePack> resourcePacks = Server.getInstance().getResourcePackManager().retrieveResourcePacks();
-
         stream.writeLShort( resourcePacks.size() );
-
         for ( ResourcePack resourcePack : resourcePacks ) {
             stream.writeString( resourcePack.getUuid() );
             stream.writeString( resourcePack.getVersion() );

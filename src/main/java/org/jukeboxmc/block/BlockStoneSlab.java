@@ -4,7 +4,6 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.StoneSlabType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemStoneSlab;
-import org.jukeboxmc.item.ItemStoneSlab2;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;

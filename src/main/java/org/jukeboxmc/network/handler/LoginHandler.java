@@ -48,9 +48,9 @@ public class LoginHandler implements PacketHandler<LoginPacket> {
 
         if ( status.equals( PlayStatus.LOGIN_SUCCESS ) ) {
             ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
-            resourcePacksInfoPacket.setForceServerPacks( server.isForceResourcePacks() );
-            resourcePacksInfoPacket.setScripting( false );
+            resourcePacksInfoPacket.setForceAccept( false );
             resourcePacksInfoPacket.setForceServerPacks( false );
+            resourcePacksInfoPacket.setScripting( false );
             player.sendPacket( resourcePacksInfoPacket );
         }
     }

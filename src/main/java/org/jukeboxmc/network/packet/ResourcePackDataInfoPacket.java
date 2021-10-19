@@ -27,13 +27,13 @@ public class ResourcePackDataInfoPacket extends Packet {
     @Override
     public void write( BinaryStream stream ) {
         super.write(stream);
-
         stream.writeString( this.resourcePackUuid );
         stream.writeLInt( this.maxChunkSize );
         stream.writeLInt( this.chunkCount );
         stream.writeLLong( this.compressedResourcePackSize );
+        stream.writeUnsignedVarInt( this.resourcePackSha256.length );
         stream.writeBytes( this.resourcePackSha256 );
         stream.writeBoolean( false ); // premium
-        stream.writeByte( ResourcePackDataInfoType.RESOURCE.ordinal() );
+        stream.writeByte( (byte) ResourcePackDataInfoType.RESOURCE.ordinal() );
     }
 }

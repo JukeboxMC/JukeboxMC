@@ -32,7 +32,6 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                         resourcePackDataInfoPacket.setChunkCount((int) (resourcePack.getSize() / maxChunkSize));
                         resourcePackDataInfoPacket.setCompressedResourcePackSize(resourcePack.getSize());
                         resourcePackDataInfoPacket.setResourcePackSha256(resourcePack.getSha256());
-
                         player.sendPacket(resourcePackDataInfoPacket);
                     }
                 }

@@ -37,6 +37,8 @@ public class PacketRegistry {
         this.packetHandlerMap.put( RespawnPositionPacket.class, new RespawnPositionHandler() );
         this.packetHandlerMap.put( EntityFallPacket.class, new EntityFallHandler() );
         this.packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
+        this.packetHandlerMap.put( ResourcePackChunkRequestPacket.class, new ResourcePackChunkRequestHandler() );
+        this.packetHandlerMap.put( PacketViolationWarningPacket.class, new PacketViolationWarningHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
@@ -91,6 +93,10 @@ public class PacketRegistry {
                 return new EntityFallPacket();
             case Protocol.LEVEL_SOUND_EVENT_PACKET:
                 return new LevelSoundEventPacket();
+            case Protocol.RESOURCE_PACK_CHUNK_REQUEST_PACKET:
+                return new ResourcePackChunkRequestPacket();
+            case Protocol.PACKET_VIOLATION_WARNING_PACKET:
+                return new PacketViolationWarningPacket();
             default:
                 return null;
         }
