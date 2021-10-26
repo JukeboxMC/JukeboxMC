@@ -109,11 +109,6 @@ public class EntityArrow extends EntityProjectile {
     }
 
     @Override
-    public boolean hasCritical() {
-        return this.force == 2;
-    }
-
-    @Override
     public float getDamage() {
         if ( this.powerModifier > 0 ) {
             return 2 + ( this.powerModifier * 0.5f + 0.5f );

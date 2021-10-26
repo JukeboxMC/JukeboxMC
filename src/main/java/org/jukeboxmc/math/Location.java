@@ -124,13 +124,13 @@ public class Location extends Vector {
     @Override
     public String toString() {
         return "Location{" +
-                "world=" + world.getName() +
-                ", yaw=" + yaw +
-                ", pitch=" + pitch +
-                ", x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                ", dimension=" + dimension +
+                "world=" + this.world.getName() +
+                ", x=" + this.x +
+                ", y=" + this.y +
+                ", z=" + this.z +
+                ", yaw=" + this.yaw +
+                ", pitch=" + this.pitch +
+                ", dimension=" + this.dimension.name() +
                 '}';
     }
 }

@@ -28,11 +28,14 @@ public abstract class EntityProjectile extends Entity {
     public void update( long currentTick ) {
         super.update( currentTick );
 
-        if ( this.closed || this.hadCollision ) {
+        if ( this.closed ) {
             return;
         }
 
-        this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
+        if ( !this.isCollided ) {
+            this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
+        }
+
         Location location = this.location;
         Vector moveVector = new Vector( this.location.getX() + this.velocity.getX(), this.location.getY() + this.velocity.getY(), this.location.getZ() + this.velocity.getZ() );
 
@@ -105,7 +108,9 @@ public abstract class EntityProjectile extends Entity {
             this.velocity.setX( 0 );
             this.velocity.setY( 0 );
             this.velocity.setZ( 0 );
-            this.getWorld().playSound( this.location, LevelSound.BOW_HIT );
+            if ( this instanceof EntityArrow ) {
+                this.getWorld().playSound( this.location, LevelSound.BOW_HIT );
+            }
             this.updateMovement();
             return;
         } else if ( !this.isCollided && this.hadCollision ) {
@@ -125,8 +130,6 @@ public abstract class EntityProjectile extends Entity {
     public boolean canCollideWith( Entity entity ) {
         return ( entity instanceof EntityLiving ) && !this.onGround;
     }
-
-    public abstract boolean hasCritical();
 
     public abstract float getDamage();
 

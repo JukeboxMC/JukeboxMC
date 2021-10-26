@@ -39,13 +39,13 @@ public class EntityItem extends Entity {
             this.checkObstruction( this.location.getX(), this.location.getY(), this.location.getZ() );
             this.move( this.velocity );
 
-            float friction = 1 - this.drag;
+            float friction = 1 - this.getDrag();
 
             if ( this.onGround && ( Math.abs( this.velocity.getX() ) > 0.00001 || Math.abs( this.velocity.getZ() ) > 0.00001 ) ) {
                 friction *= 0.6f;
             }
 
-            this.velocity = this.velocity.multiply( friction, 1 - this.drag, friction );
+            this.velocity = this.velocity.multiply( friction, 1 - this.getDrag(), friction );
 
             if ( this.onGround ) {
                 this.velocity = this.velocity.multiply( 0, -0.5f, 0 );

@@ -43,6 +43,7 @@ properties.json
 operators.json
 logs
 plugins
+resource_packs
 
 #IntelliJ
 /out/

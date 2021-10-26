@@ -73,7 +73,7 @@ public class World {
 
     private final Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> chunkMap = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
-    private final Long2ObjectMap<Entity> entities = new Long2ObjectOpenHashMap<>();
+    private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
     private final ExecutorService chunkThread = Executors.newWorkStealingPool();
 
@@ -114,8 +114,12 @@ public class World {
             this.sendWorldPacket( setTimePacket );
         }
 
-        for ( Entity entity : this.entities.values() ) {
-            entity.update( currentTick );
+        if ( this.entities.size() > 0) {
+            for ( Entity entity : this.entities.values() ) {
+                if ( entity != null ) {
+                    entity.update( currentTick );
+                }
+            }
         }
 
         while ( !this.blockUpdateNormals.isEmpty() ) {

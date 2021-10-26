@@ -103,39 +103,46 @@ public abstract class Entity {
         float movZ = velocity.getZ();
 
         List<AxisAlignedBB> list = this.getWorld().getCollisionCubes( this, this.boundingBox.addCoordinates( velocity.getX(), velocity.getY(), velocity.getZ() ), false );
+        if ( list != null ) {
 
-        for ( AxisAlignedBB bb : list ) {
-            velocity.setY( bb.calculateYOffset( this.boundingBox, velocity.getY() ) );
-        }
-        this.boundingBox.offset( 0, velocity.getY(), 0 );
+            for ( AxisAlignedBB bb : list ) {
+                movY = bb.calculateYOffset( this.boundingBox, movY );
+            }
+            this.boundingBox.offset( 0, movY, 0 );
 
-        for ( AxisAlignedBB bb : list ) {
-            velocity.setX( bb.calculateXOffset( this.boundingBox, velocity.getX() ) );
-        }
-        this.boundingBox.offset( velocity.getX(), 0, 0 );
+            for ( AxisAlignedBB bb : list ) {
+                movX = bb.calculateXOffset( this.boundingBox, movX );
+            }
+            this.boundingBox.offset( movX, 0, 0 );
 
-        for ( AxisAlignedBB bb : list ) {
-            velocity.setZ( bb.calculateZOffset( this.boundingBox, velocity.getZ() ) );
-        }
-        this.boundingBox.offset( 0, 0, velocity.getZ() );
+            for ( AxisAlignedBB bb : list ) {
+                movZ = bb.calculateZOffset( this.boundingBox, movZ );
+            }
+            this.boundingBox.offset( 0, 0, movZ );
 
-        this.location.setX( ( this.boundingBox.getMinX() + this.boundingBox.getMaxX() ) / 2 );
-        this.location.setY( this.boundingBox.getMinY() - this.ySize );
-        this.location.setZ( ( this.boundingBox.getMinZ() + this.boundingBox.getMaxZ() ) / 2 );
+            if ( movX != 0 || movY != 0 || movZ != 0 ) {
+                this.location.setX( ( this.boundingBox.getMinX() + this.boundingBox.getMaxX() ) / 2 );
+                this.location.setY( this.boundingBox.getMinY() - this.ySize );
+                this.location.setZ( ( this.boundingBox.getMinZ() + this.boundingBox.getMaxZ() ) / 2 );
+            }
 
-        this.checkGroundState( movX, movY, movZ, velocity.getX(), velocity.getY(), velocity.getZ() );
-        this.updateFallState( velocity.getY() );
+            this.checkGroundState( movX, movY, movZ, velocity.getX(), velocity.getY(), velocity.getZ() );
+            this.updateFallState( movY );
 
-        if ( movX != velocity.getX() ) {
-            this.velocity.setX( 0 );
-        }
+            if ( movX != velocity.getX() ) {
+                this.velocity.setX( 0 );
+            }
 
-        if ( movY != velocity.getY() ) {
-            this.velocity.setY( 0 );
-        }
+            if ( movY != velocity.getY() ) {
+                this.velocity.setY( 0 );
+            }
 
-        if ( movZ != velocity.getZ() ) {
-            this.velocity.setZ( 0 );
+            if ( movZ != velocity.getZ() ) {
+                this.velocity.setZ( 0 );
+            }
+
+        } else {
+            this.boundingBox.offset( movX, movY, movZ );
         }
     }
 
@@ -335,6 +342,10 @@ public abstract class Entity {
         this.gravity = gravity;
     }
 
+    public float getDrag() {
+        return this.drag;
+    }
+
     public long getAge() {
         return this.age;
     }
@@ -475,7 +486,7 @@ public abstract class Entity {
                 location.getY(),
                 location.getZ() - ( this.getWidth() / 2 ),
                 location.getX() + ( this.getWidth() / 2 ),
-                location.getY() + this.getEyeHeight(),
+                location.getY() + this.getHeight(),
                 location.getZ() + ( this.getWidth() / 2 )
         );
     }
@@ -595,7 +606,7 @@ public abstract class Entity {
 
     public boolean isInWater() {
         Vector eyeLocation = this.getLocation().add( 0, this.getEyeHeight(), 0 );
-        Block block = this.getWorld().getBlock( eyeLocation);
+        Block block = this.getWorld().getBlock( eyeLocation );
         if ( block instanceof BlockWater ) {
             float yLiquid = (float) ( ( block.getLocation().getY() + 1 + ( (BlockWater) block ).getLiquidDepth() - 0.12 ) );
             return eyeLocation.getY() < yLiquid;
@@ -749,7 +760,7 @@ public abstract class Entity {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
         Entity entity = (Entity) o;
-        return entityId == entity.entityId;
+        return this.entityId == entity.entityId;
     }
 
     @Override
