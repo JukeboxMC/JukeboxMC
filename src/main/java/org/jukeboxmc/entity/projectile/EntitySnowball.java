@@ -63,7 +63,7 @@ public class EntitySnowball extends EntityProjectile {
         return 0.03f;
     }
 
-    protected void displaySnowballPoofParticle( Location location ) {
+    private void displaySnowballPoofParticle( Location location ) {
         for ( int i = 0; i < 6; i++ ) {
             this.getWorld().spawnParticle( Particle.SNOWBALL_POOF, location.add( 0f, 0.5f, 0f ) );
         }

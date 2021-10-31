@@ -12,6 +12,7 @@ import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.entity.projectile.EntityFishingHook;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
@@ -57,6 +58,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private GameMode gameMode;
     private final AdventureSettings adventureSettings;
     private final ChunkComparator chunkComparator;
+    private EntityFishingHook entityFishingHook;
 
     private ContainerInventory currentInventory;
     private final CursorInventory cursorInventory;
@@ -517,6 +519,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public AdventureSettings getAdventureSettings() {
         return this.adventureSettings;
+    }
+
+    public EntityFishingHook getEntityFishingHook() {
+        return this.entityFishingHook;
+    }
+
+    public void setEntityFishingHook( EntityFishingHook entityFishingHook ) {
+        this.entityFishingHook = entityFishingHook;
     }
 
     public Set<UUID> getEmotes() {

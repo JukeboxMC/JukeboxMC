@@ -2,6 +2,7 @@ package org.jukeboxmc.entity.projectile;
 
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
+import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.event.entity.EntityCollisionWithEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
@@ -97,6 +98,11 @@ public abstract class EntityProjectile extends Entity {
                 this.hitEntity = hitEntity;
                 this.updateMovement();
                 this.close();
+                if ( this instanceof EntityFishingHook ) {
+                    if ( this.shooter instanceof Player ) {
+                        ( (Player) this.shooter ).setEntityFishingHook( null );
+                    }
+                }
                 return;
             }
         }
@@ -147,5 +153,6 @@ public abstract class EntityProjectile extends Entity {
 
     public void setShooter( EntityLiving shooter ) {
         this.shooter = shooter;
+        this.metadata.setLong( MetadataFlag.OWNER_EID, shooter.getEntityId() );
     }
 }
