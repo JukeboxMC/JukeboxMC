@@ -32,7 +32,8 @@ public class ProjectileLaunchEvent extends EntityEvent implements Cancellable {
         EXP_BOTTLE,
         FISHING_ROD,
         ENDER_PEARL,
-        SNOWBALL
+        SNOWBALL,
+        EGG
 
     }
 }

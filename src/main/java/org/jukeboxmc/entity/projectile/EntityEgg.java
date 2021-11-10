@@ -1,10 +1,15 @@
 package org.jukeboxmc.entity.projectile;
 
 import org.jukeboxmc.entity.EntityType;
+import org.jukeboxmc.item.ItemEgg;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.world.Particle;
 
-public class EntitySnowball extends EntityProjectile {
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class EntityEgg extends EntityProjectile {
 
     private boolean closeDelay = false;
 
@@ -21,7 +26,7 @@ public class EntitySnowball extends EntityProjectile {
 
         if ( this.age > 1200 || this.isCollided ) {
             this.updateMovement();
-            this.spawnSnowballParticle( this.location );
+            this.spawnEggParticle( this.location );
             this.closeDelay = true;
         }
 
@@ -30,7 +35,7 @@ public class EntitySnowball extends EntityProjectile {
 
     @Override
     public String getName() {
-        return "Snowball";
+        return "Egg";
     }
 
     @Override
@@ -45,7 +50,7 @@ public class EntitySnowball extends EntityProjectile {
 
     @Override
     public EntityType getEntityType() {
-        return EntityType.SNOWBALL;
+        return EntityType.EGG;
     }
 
     @Override
@@ -53,19 +58,10 @@ public class EntitySnowball extends EntityProjectile {
         return 0;
     }
 
-    @Override
-    public float getDrag() {
-        return 0.01f;
-    }
-
-    @Override
-    public float getGravity() {
-        return 0.03f;
-    }
-
-    private void spawnSnowballParticle( Location location ) {
+    private void spawnEggParticle( Location location ) {
+        ItemEgg itemEgg = new ItemEgg();
         for ( int i = 0; i < 6; i++ ) {
-            this.getWorld().spawnParticle( Particle.SNOWBALL_POOF, location.add( 0f, 0.5f, 0f ) );
+            this.getWorld().spawnParticle( Particle.ITEM_BREAK, location.add( 0f, 0.5f, 0f ), (itemEgg.getRuntimeId() << 16 | itemEgg.getMeta()) );
         }
     }
 }
