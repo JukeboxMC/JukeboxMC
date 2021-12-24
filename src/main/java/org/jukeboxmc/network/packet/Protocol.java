@@ -6,8 +6,8 @@ package org.jukeboxmc.network.packet;
  */
 public interface Protocol {
 
-    int CURRENT_PROTOCOL = 471;
-    String MINECRAFT_VERSION = "1.17.40";
+    int CURRENT_PROTOCOL = 475;
+    String MINECRAFT_VERSION = "1.18.2";
 
     int BATCH_PACKET = 0xfe;
     byte LOGIN_PACKET = 0x01;

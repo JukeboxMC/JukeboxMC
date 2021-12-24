@@ -43,7 +43,7 @@ public class StartGamePacket extends Packet {
 
     @Override
     public void write( BinaryStream stream ) {
-        super.write(stream);
+        super.write( stream );
         stream.writeSignedVarLong( this.entityId );
         stream.writeUnsignedVarLong( this.entityRuntimeId );
         stream.writeSignedVarInt( this.gameMode.ordinal() );
@@ -110,7 +110,7 @@ public class StartGamePacket extends Packet {
         stream.writeBoolean( false ); //World template option locked
         stream.writeBoolean( false ); //Only spawn v1 villagers
 
-        stream.writeString( Protocol.MINECRAFT_VERSION );
+        stream.writeString( "1.17.40" );
         stream.writeInt( 16 ); //Limited world width
         stream.writeInt( 16 ); //Limited world height
         stream.writeBoolean( false ); //Has new nether
@@ -134,7 +134,7 @@ public class StartGamePacket extends Packet {
 
         List<Map<String, Object>> itemPalette = BedrockResourceLoader.getItemPalettes();
         stream.writeUnsignedVarInt( itemPalette.size() ); //Item palette
-        for( Map<String, Object> item : itemPalette ) {
+        for ( Map<String, Object> item : itemPalette ) {
             stream.writeString( (String) item.get( "name" ) );
             stream.writeLShort( (int) (double) item.get( "id" ) );
             stream.writeBoolean( false );
@@ -143,5 +143,6 @@ public class StartGamePacket extends Packet {
         stream.writeString( "" );
         stream.writeBoolean( false ); //New inventory system
         stream.writeString( this.serverEngine );
+        stream.writeLLong( 0 ); // BlockRegistryChecksum
     }
 }
