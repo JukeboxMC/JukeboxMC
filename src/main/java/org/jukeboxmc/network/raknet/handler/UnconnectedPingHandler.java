@@ -37,7 +37,7 @@ public class UnconnectedPingHandler extends UdpPacketHandler<UnconnectedPing> {
             ServerInfo serverInfo = new ServerInfo();
             serverInfo.setServerId( this.server.getServerId() );
             serverInfo.setMotd( this.server.getMotd() );
-            serverInfo.setSubmotd( this.server.getSubmotd() );
+            serverInfo.setSubmotd( this.server.getSubMotd() );
             serverInfo.setMaxPlayers( this.server.getMaxPlayers() );
             serverInfo.setDefaultGameMode( this.server.getDefaultGameMode() );
 
