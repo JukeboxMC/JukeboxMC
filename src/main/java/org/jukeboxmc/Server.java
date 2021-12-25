@@ -319,7 +319,7 @@ public class Server {
         return this.subMotd;
     }
 
-    public void setSubmotd( String subMotd ) {
+    public void setSubMotd( String subMotd ) {
         this.subMotd= subMotd;
     }
 
