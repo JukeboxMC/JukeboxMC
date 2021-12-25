@@ -26,7 +26,7 @@ public class ServerInfo {
         return this.motd;
     }
 
-    public String getSubmotd() {
+    public String getSubMotd() {
         return this.subMotd;
     }
 
