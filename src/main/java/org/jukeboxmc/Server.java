@@ -178,7 +178,7 @@ public class Server {
         this.serverConfig.addDefault( "maxplayers", 20 );
         this.serverConfig.addDefault( "viewdistance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
-        this.serverConfig.addDefault( "submotd", "A fresh JukeboxMC Server" );
+        this.serverConfig.addDefault( "subMotd", "A fresh JukeboxMC Server" );
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
@@ -189,7 +189,7 @@ public class Server {
         this.serverConfig.save();
 
         this.motd = this.serverConfig.getString( "motd" );
-        this.subMotd = this.serverConfig.getString( "submotd" );
+        this.subMotd = this.serverConfig.getString( "subMotd" );
         this.defaultGameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
     }
