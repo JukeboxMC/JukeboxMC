@@ -22,6 +22,13 @@ Maven:
 Git: https://git-scm.com/downloads
 
 ## How to create a plugin
+
+_Notice: Please use **Java 8**!_
+
+**_With Maven:_**
+
+Please add this code to your pom.xml! (Only **for Maven**!)
+
 ```xml
 <repository>
     <id>jitpack.io</id>
@@ -33,6 +40,21 @@ Git: https://git-scm.com/downloads
     <artifactId>JukeboxMC</artifactId>
     <version>Tag</version>
 </dependency>
+```
+**_With Gradle:_**
+
+Please add this code to your build.gradle! (Only **for Gradle**!)
+
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'com.github.LucGamesYT:JukeboxMC:Tag'
+}
 ```
 
 ## IMPORTANT
