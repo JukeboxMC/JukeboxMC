@@ -21,5 +21,19 @@ Maven:
 
 Git: https://git-scm.com/downloads
 
+## How to create a plugin
+```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+
+<dependency>
+    <groupId>com.github.LucGamesYT</groupId>
+    <artifactId>JukeboxMC</artifactId>
+    <version>Tag</version>
+</dependency>
+```
+
 ## IMPORTANT
 This server software is not yet ready!
