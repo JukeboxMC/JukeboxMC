@@ -12,7 +12,7 @@ public class PluginYAML {
     public String version;
     public String author;
     public String main;
-
+    public List<String> authors;
     public List<String> depends;
 
     public String getAuthor() {
@@ -29,6 +29,10 @@ public class PluginYAML {
 
     public String getVersion() {
         return this.version;
+    }
+
+    public List<String> getAuthors() {
+        return this.authors;
     }
 
     public List<String> getDepends() {

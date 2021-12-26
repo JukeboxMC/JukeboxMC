@@ -9,11 +9,11 @@ import lombok.ToString;
 @ToString
 public class DeviceInfo {
 
-    private String deviceName;
-    private String deviceId;
-    private long clientId;
-    private Device device;
-    private GUIScale guiScale;
+    private final String deviceName;
+    private final String deviceId;
+    private final long clientId;
+    private final Device device;
+    private final GUIScale guiScale;
 
     public DeviceInfo( String deviceName, String deviceId, long clientId, Device device, GUIScale guiScale ) {
         this.deviceName = deviceName;

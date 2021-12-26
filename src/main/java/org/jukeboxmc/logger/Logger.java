@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class Logger {
 
-    private static Logger instance = new Logger();
+    private static final Logger instance = new Logger();
 
     public static Logger getInstance() {
         return instance;

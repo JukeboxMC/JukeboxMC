@@ -14,7 +14,7 @@ public class ServerInfo {
 
     private long serverId;
     private String motd;
-    private String submotd;
+    private String subMotd;
     private int maxPlayers;
     private GameMode defaultGameMode;
 
@@ -26,8 +26,8 @@ public class ServerInfo {
         return this.motd;
     }
 
-    public String getSubmotd() {
-        return this.submotd;
+    public String getSubMotd() {
+        return this.subMotd;
     }
 
     public int getMaxPlayers() {
@@ -47,7 +47,7 @@ public class ServerInfo {
     }
 
     public void setSubmotd( final String submotd ) {
-        this.submotd = submotd;
+        this.subMotd = submotd;
     }
 
     public void setMaxPlayers( final int maxPlayers ) {
@@ -68,7 +68,7 @@ public class ServerInfo {
         stringJoiner.add( Integer.toString( Server.getInstance().getOnlinePlayers().size() ) );
         stringJoiner.add( Integer.toString( this.maxPlayers ) );
         stringJoiner.add( Long.toString( this.serverId ) );
-        stringJoiner.add( this.submotd );
+        stringJoiner.add( this.subMotd );
         stringJoiner.add( this.defaultGameMode.getIdentifier() );
         stringJoiner.add( "1" );
 

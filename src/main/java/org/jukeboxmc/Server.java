@@ -69,7 +69,7 @@ public class Server {
     private final File pluginFolder;
 
     private String motd;
-    private String submotd;
+    private String subMotd;
 
     private final long mainThreadId;
     private final long serverId;
@@ -189,7 +189,7 @@ public class Server {
         this.serverConfig.save();
 
         this.motd = this.serverConfig.getString( "motd" );
-        this.submotd = this.serverConfig.getString( "submotd" );
+        this.subMotd = this.serverConfig.getString( "submotd" );
         this.defaultGameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
     }
@@ -315,12 +315,12 @@ public class Server {
         this.motd = motd;
     }
 
-    public String getSubmotd() {
-        return this.submotd;
+    public String getSubMotd() {
+        return this.subMotd;
     }
 
-    public void setSubmotd( String submotd ) {
-        this.submotd = submotd;
+    public void setSubMotd( String subMotd ) {
+        this.subMotd= subMotd;
     }
 
     public GameMode getDefaultGameMode() {
