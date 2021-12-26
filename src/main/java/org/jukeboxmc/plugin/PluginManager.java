@@ -22,6 +22,7 @@ import java.util.stream.Stream;
  * @author WaterdogPE
  * @version 1.0
  */
+
 public class PluginManager {
 
     private final Logger logger;

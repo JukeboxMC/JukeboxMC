@@ -1,6 +1,6 @@
 # JukeboxMC
 Why did I start JukeboxMC ?
-Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also I always wanted to have my own server software that I can design the way I want :P
+Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also, I always wanted to have my own server software that I can design the way I want :P
 
 ## Links
 __Discord__: https://discord.gg/Jatt7tfRBF
@@ -22,6 +22,13 @@ Maven:
 Git: https://git-scm.com/downloads
 
 ## How to create a plugin
+
+_Notice: Please use **Java 8**!_
+
+**_With Maven:_**
+
+Please add this code to your pom.xml! (Only **for Maven**!)
+
 ```xml
 <repository>
     <id>jitpack.io</id>
@@ -34,6 +41,21 @@ Git: https://git-scm.com/downloads
     <version>Tag</version>
 </dependency>
 ```
+**_With Gradle:_**
+
+Please add this code to your build.gradle! (Only **for Gradle**!)
+
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'com.github.LucGamesYT:JukeboxMC:Tag'
+}
+```
 
 ## IMPORTANT
-This server software is not yet ready!
+This server software is not yet ready! Feel free to improve code and contribute!
