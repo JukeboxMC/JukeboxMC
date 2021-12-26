@@ -23,7 +23,6 @@ import java.util.stream.Stream;
  * @version 1.0
  */
 
-//TODO @LucDevOfficial
 public class PluginManager {
 
     private final Logger logger;
