@@ -12,9 +12,9 @@ import org.jukeboxmc.world.chunk.Chunk;
  */
 public class FlatGenerator extends WorldGenerator {
 
-    private BlockGrass blockGrass;
-    private BlockDirt blockDirt;
-    private BlockBedrock blockBedrock;
+    private final BlockGrass blockGrass;
+    private final BlockDirt blockDirt;
+    private final BlockBedrock blockBedrock;
 
     public FlatGenerator() {
         this.blockGrass = new BlockGrass();
