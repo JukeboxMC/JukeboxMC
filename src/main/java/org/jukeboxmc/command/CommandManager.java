@@ -26,7 +26,8 @@ public class CommandManager {
                 RemoveOperatorCommand.class,
                 GameRulesCommand.class,
                 WorldTeleportCommand.class,
-                SetWorldSpawnCommand.class
+                SetWorldSpawnCommand.class,
+                SpawnCommand.class
         );
 
         for ( final Class<? extends Command> commandClass : commands ) {

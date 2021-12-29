@@ -9,6 +9,7 @@ import org.jukeboxmc.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -158,6 +159,10 @@ public abstract class Plugin {
 
     public String getAuthor() {
         return this.description.getAuthor();
+    }
+
+    public List<String> getAuthors() {
+        return this.description.getAuthors();
     }
 
     public Server getServer() {
