@@ -41,6 +41,11 @@ public class CommandManager {
 
     public void handleCommandInput( CommandSender commandSender, String input ) {
         try {
+            if(input.equals("/")){
+                commandSender.sendMessage("§7For a list of all commands use §f/help.");
+                return;
+            }
+
             final String[] commandParts = input.substring( 1 ).split( " " );
             final String commandIdentifier = commandParts[0];
 
