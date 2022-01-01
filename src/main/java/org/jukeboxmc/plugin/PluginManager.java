@@ -101,6 +101,10 @@ public class PluginManager {
         }
         return plugin;
     }
+	
+	public Boolean isPluginLoaded(String pluginName){
+        return this.getPluginByName(pluginName) != null;
+    }
 
     public void enableAllPlugins() {
         LinkedList<Plugin> failed = new LinkedList<>();
