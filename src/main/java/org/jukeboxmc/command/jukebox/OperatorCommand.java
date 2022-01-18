@@ -27,7 +27,7 @@ public class OperatorCommand extends Command {
 
                 if ( target != null ) {
                     if ( target.isOp() ) {
-                        commandSender.sendMessage( "The player " + playerName + " is already a operator" );
+                        commandSender.sendMessage( "The player " + playerName + " is already an operator" );
                         return;
                     }
                     target.setOp( true );
@@ -37,10 +37,10 @@ public class OperatorCommand extends Command {
                     if ( !Server.getInstance().isOperatorInFile( playerName ) ) {
                         Server.getInstance().addOperatorToFile( playerName );
                     } else {
-                        commandSender.sendMessage( "The player " + playerName + " is already a operator" );
+                        commandSender.sendMessage( "The player " + playerName + " is already an operator" );
                     }
                 }
-                commandSender.sendMessage( "The player " + playerName + " is now a operator" );
+                commandSender.sendMessage( "The player " + playerName + " is now an operator" );
             } else {
                 commandSender.sendMessage( "§cYou must specify a name" );
             }
