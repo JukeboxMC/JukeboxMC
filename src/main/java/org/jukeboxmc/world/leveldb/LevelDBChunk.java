@@ -11,8 +11,9 @@ import org.jukeboxmc.nbt.NBTInputStream;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
-import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.world.Biome;
+import org.jukeboxmc.world.Palette;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
 
@@ -28,8 +29,14 @@ public class LevelDBChunk {
 
     protected boolean populated = true;
 
-    protected byte[] biomes = new byte[16 * 16];
+    protected Palette[] biomes = new Palette[25];
     protected short[] height = new short[16 * 16];
+
+    protected LevelDBChunk() {
+        for ( int i = 0; i < this.biomes.length; i++ ) {
+            this.biomes[i] = new Palette( Biome.PLAINS.getId() );
+        }
+    }
 
     public void loadSection( SubChunk chunk, byte[] chunkData ) {
         BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );
@@ -41,11 +48,10 @@ public class LevelDBChunk {
                 buffer.readByte();
                 for ( int layer = 0; layer < storages; layer++ ) {
                     byte data = buffer.readByte();
-                    boolean isPersistent = ( ( data >> 8 ) & 1 ) != 1;
+                    boolean persistent = ( ( data >> 8 ) & 1 ) != 1;
                     byte wordTemplate = (byte) ( data >>> 1 );
 
-                    Palette palette = new Palette( buffer, wordTemplate, true );
-                    short[] indexes = palette.getIndexes();
+                    short[] indices = Palette.parseIndices( buffer, wordTemplate );
                     int needed = buffer.readLInt();
 
                     Map<Short, Integer> chunkPalette = new HashMap<>();
@@ -67,8 +73,8 @@ public class LevelDBChunk {
                         }
                     }
 
-                    for ( short index = 0; index < indexes.length; index++ ) {
-                        chunk.blocks[layer][index] = chunkPalette.get( indexes[index] );
+                    for ( short index = 0; index < indices.length; index++ ) {
+                        chunk.blocks[layer].set( index, chunkPalette.get( indices[index] ) );
                     }
                 }
                 break;
@@ -77,11 +83,10 @@ public class LevelDBChunk {
             case 1:
                 for ( int layer = 0; layer < storages; layer++ ) {
                     byte data = buffer.readByte();
-                    boolean isPersistent = ( ( data >> 8 ) & 1 ) != 1;
+                    boolean persistent = ( ( data >> 8 ) & 1 ) != 1;
                     byte wordTemplate = (byte) ( data >>> 1 );
 
-                    Palette palette = new Palette( buffer, wordTemplate, true );
-                    short[] indexes = palette.getIndexes();
+                    short[] indices = Palette.parseIndices( buffer, wordTemplate );
                     int needed = buffer.readLInt();
 
                     Map<Short, Integer> chunkPalette = new HashMap<>();
@@ -103,8 +108,8 @@ public class LevelDBChunk {
                         }
                     }
 
-                    for ( short index = 0; index < indexes.length; index++ ) {
-                        chunk.blocks[layer][index] = chunkPalette.get( indexes[index] );
+                    for ( short index = 0; index < indices.length; index++ ) {
+                        chunk.blocks[layer].set( index, chunkPalette.get( indices[index] ) );
                     }
                 }
                 break;

@@ -59,10 +59,23 @@ public class Utils {
         return (v < min ? min : (Math.min(v, max)));
     }
 
+    public static int divisible(int n, int d) {
+        int i = 0;
+        while(n % d == 0) {
+            n /= d;
+            i++;
+        }
+        return i;
+    }
+
     public static ByteBuf allocate( byte[] data ) {
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
         buf.writeBytes( data );
         return buf;
+    }
+
+    public static int getIndex( int x, int y, int z ) {
+        return ( x << 8 ) + ( z << 4 ) + y;
     }
 
     public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {
