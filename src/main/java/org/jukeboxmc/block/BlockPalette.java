@@ -27,6 +27,7 @@ public class BlockPalette {
     public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
 
     public static Map<BlockData, Integer> TEST = new HashMap<>();
+    public static Map<String, Integer> DEFAULTS = new HashMap<>();
 
     public static final List<BlockData> BLOCK_DATA = new CopyOnWriteArrayList<>();
 
@@ -40,6 +41,7 @@ public class BlockPalette {
                     BLOCK_PALETTE.put( runtimeId, blockMap );
 
                     TEST.put( new BlockData( blockMap.getString( "name" ), blockMap.getCompound( "states" ) ), runtimeId );
+                    DEFAULTS.putIfAbsent( blockMap.getString( "name" ), runtimeId );
                 }
             } catch ( IOException e ) {
                 e.printStackTrace();
@@ -52,8 +54,36 @@ public class BlockPalette {
     }
 
     public static int getRuntimeId( String identifier, NbtMap compound ) {
-        return TEST.getOrDefault( new BlockData( identifier, compound ), 134 );
+        return TEST.computeIfAbsent( new BlockData( identifier, compound ), ourData -> {
+            if ( ourData.getStates().isEmpty() ) {
+                return DEFAULTS.getOrDefault( identifier, 134 );
+            }
+
+            block_loop:
+            for ( Map.Entry<BlockData, Integer> entry : TEST.entrySet() ) {
+                BlockData otherData = entry.getKey();
+                if ( otherData.getIdentifier().equalsIgnoreCase( ourData.getIdentifier() ) ) {
+                    for ( Map.Entry<String, Object> stateEntry : ourData.getStates().entrySet() ) {
+                        if ( !otherData.getStates().containsKey( stateEntry.getKey() ) ) {
+                            continue block_loop;
+                        }
+
+                        if ( !otherData.getStates().get( stateEntry.getKey() ).equals( stateEntry.getKey() ) ) {
+                            continue block_loop;
+                        }
+                    }
+
+                    return entry.getValue();
+                }
+            }
+            System.out.println( " " + ourData.identifier + " [" + compound + "] konnte nicht gefunden werden!" );
+            return 134;
+        } );
     }
+
+   /* public static int getRuntimeId( String identifier, NbtMap states ) {
+        return TEST.getOrDefault( new BlockData( identifier, states ), 134 );
+    }*/
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
         for ( Integer runtimeId : BLOCK_PALETTE.keySet() ) {
