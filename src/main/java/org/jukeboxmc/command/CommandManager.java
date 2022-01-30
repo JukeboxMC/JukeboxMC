@@ -30,7 +30,7 @@ public class CommandManager {
                 SpawnCommand.class
         );
 
-        for ( final Class<? extends Command> commandClass : commands ) {
+        for( Class<? extends Command> commandClass : commands ) {
             try {
                 this.registerCommand( commandClass.newInstance() );
             } catch ( InstantiationException | IllegalAccessException e ) {
@@ -114,7 +114,7 @@ public class CommandManager {
     }
 
     private Command getCommandByNameOrAlias( String identifier ) {
-        for ( final Command command : this.commands ) {
+        for( Command command : this.commands ) {
             if ( command.getName().equalsIgnoreCase( identifier ) || ( command.getAliases() != null &&
                     command.getAliases().contains( identifier ) ) ) {
                 return command;

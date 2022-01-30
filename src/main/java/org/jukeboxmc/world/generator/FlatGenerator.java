@@ -26,7 +26,9 @@ public class FlatGenerator extends WorldGenerator {
     public void generate( Chunk chunk ) {
         for ( int blockX = 0; blockX < 16; blockX++ ) {
             for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
-                chunk.setBiome( blockX, blockZ, Biome.PLAINS );
+                for ( int blockY = 0; blockY < 16; blockY++ ) {
+                    chunk.setBiome( blockX, blockY, blockZ, Biome.PLAINS );
+                }
 
                 chunk.setBlock( blockX, 0, blockZ, 0, this.blockBedrock );
                 chunk.setBlock( blockX, 1, blockZ, 0, this.blockDirt );

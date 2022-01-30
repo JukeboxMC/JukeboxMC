@@ -36,7 +36,10 @@ public class BlockLog extends Block {
 
     @Override
     public ItemLog toItem() {
-        return new ItemLog( this.runtimeId );
+        BlockLog blockLog = new BlockLog();
+        blockLog.setLogType( this.getLogType() );
+        blockLog.setAxis( Axis.Y );
+        return new ItemLog( blockLog.getRuntimeId() );
     }
 
     @Override

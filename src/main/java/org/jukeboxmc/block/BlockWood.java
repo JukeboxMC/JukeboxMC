@@ -37,7 +37,10 @@ public class BlockWood extends Block {
 
     @Override
     public ItemWood toItem() {
-        return new ItemWood( this.runtimeId );
+        BlockWood blockWood = new BlockWood();
+        blockWood.setWoodType( this.getWoodType() );
+        blockWood.setAxis( Axis.Y );
+        return new ItemWood( blockWood.getRuntimeId() );
     }
 
     @Override

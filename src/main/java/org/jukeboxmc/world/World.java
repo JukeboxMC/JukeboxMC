@@ -114,7 +114,7 @@ public class World {
             this.sendWorldPacket( setTimePacket );
         }
 
-        if ( this.entities.size() > 0) {
+        if ( this.entities.size() > 0 ) {
             for ( Entity entity : this.entities.values() ) {
                 if ( entity != null ) {
                     entity.update( currentTick );
@@ -210,7 +210,6 @@ public class World {
         compound.putString( "LevelName", this.name );
         compound.putLong( "Time", this.worldTime );
 
-
         for ( Map.Entry<GameRule<?>, Object> entry : this.gamerules.entrySet() ) {
             compound.put( entry.getKey().getName(), entry.getKey().toCompoundValue( entry.getValue() ) );
         }
@@ -256,12 +255,11 @@ public class World {
             chunk.chunkVersion = version[0];
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
-            for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
+            for ( int sectionY = -4; sectionY < 20; sectionY++ ) {
                 byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ) );
 
                 if ( chunkData != null ) {
-                    chunk.checkAndCreateSubChunks( sectionY );
-                    chunk.loadSection( chunk.subChunks[sectionY], chunkData );
+                    chunk.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                 }
             }
 
@@ -270,10 +268,11 @@ public class World {
                 chunk.loadBlockEntitys( chunk, blockEntitys );
             }
 
-            byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
+            //TODO: Implement biomes again
+            /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
             if ( biomes != null ) {
                 chunk.loadHeightAndBiomes( biomes );
-            }
+            }*/
 
             val map = this.chunkMap.get( dimension );
             map.put( chunk.toChunkHash(), chunk );
@@ -315,12 +314,11 @@ public class World {
                 chunk.chunkVersion = version[0];
                 chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
-                for ( int sectionY = 0; sectionY < 16; sectionY++ ) {
+                for ( int sectionY = -4; sectionY < 20; sectionY++ ) {
                     byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ) );
 
                     if ( chunkData != null ) {
-                        chunk.checkAndCreateSubChunks( sectionY );
-                        chunk.loadSection( chunk.subChunks[sectionY], chunkData );
+                        chunk.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                     }
                 }
 
@@ -329,10 +327,11 @@ public class World {
                     chunk.loadBlockEntitys( chunk, blockEntitys );
                 }
 
-                byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
+                //TODO: Implement biomes again
+                /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
                 if ( biomes != null ) {
                     chunk.loadHeightAndBiomes( biomes );
-                }
+                }*/
 
                 val map = this.chunkMap.get( dimension );
                 map.put( chunk.toChunkHash(), chunk );
@@ -812,7 +811,7 @@ public class World {
 
     public Biome getBiome( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        return chunk.getBiome( location.getBlockX() & 15, location.getBlockZ() & 15 );
+        return chunk.getBiome( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15 );
     }
 
     //========= Other =========

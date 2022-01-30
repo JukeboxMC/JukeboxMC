@@ -19,10 +19,10 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.network.packet.LevelChunkPacket;
 import org.jukeboxmc.utils.BinaryStream;
-import org.jukeboxmc.utils.Palette;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
+import org.jukeboxmc.world.Palette;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
 
@@ -41,7 +41,7 @@ public class Chunk extends LevelDBChunk {
     public static final int CHUNK_LAYERS = 2;
     private static final BlockAir BLOCK_AIR = new BlockAir();
 
-    public SubChunk[] subChunks;
+    private SubChunk[] subChunks;
     private final World world;
     private final int chunkX;
     private final int chunkZ;
@@ -55,7 +55,7 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.dimension = dimension;
-        this.subChunks = new SubChunk[16];
+        this.subChunks = new SubChunk[25];
     }
 
     public int getHeightMap( int x, int z ) {
@@ -67,51 +67,41 @@ public class Chunk extends LevelDBChunk {
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return BLOCK_AIR.getRuntimeId();
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        return this.subChunks[subY].getRuntimeId( x & 15, y & 15, z & 15, layer );
+        return this.getSubChunk( y ).getRuntimeId( x & 15, y & 15, z & 15, layer );
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
-        if ( location.getY() < 0 || location.getY() > 266 ) {
+        if ( location.getY() < -64 || location.getY() > 319 ) {
             return;
         }
-        int subY = location.getBlockY() >> 4;
-        this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, layer, runtimeId );
+        this.getSubChunk( location.getBlockY() ).setBlock( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, layer, runtimeId );
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
+        this.getSubChunk( y ).setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return BLOCK_AIR;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        Block block = this.subChunks[subY].getBlock( x & 15, y & 15, z & 15, layer );
+        Block block = this.getSubChunk( y ).getBlock( x & 15, y & 15, z & 15, layer );
         block.setLocation( new Location( this.world, new Vector( x, y, z ) ) );
         block.setLayer( layer );
         return block;
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].setBlock( x & 15, y & 15, z & 15, layer, block );
+        this.getSubChunk( y ).setBlock( x & 15, y & 15, z & 15, layer, block );
     }
 
     public Dimension getDimension() {
@@ -122,47 +112,62 @@ public class Chunk extends LevelDBChunk {
         this.dimension = dimension;
     }
 
-    public Biome getBiome( int x, int z ) {
-        return Biome.findById( this.biomes[( x << 4 ) | z] & 0xFF );
+    public Biome getBiome( int x, int y, int z ) {
+        if ( y < -64 || y > 319 ) {
+            return Biome.PLAINS;
+        }
+        return Biome.findById( this.biomes[this.getSubY( y )].get( Utils.getIndex( x & 15, y & 15, z & 15 ) ) );
     }
 
-    public void setBiome( int x, int z, Biome biome ) {
-        this.biomes[( x << 4 ) | z] = (byte) biome.getId();
+    public void setBiome( int x, int y, int z, Biome biome ) {
+        if ( y < -64 || y > 319 ) {
+            return;
+        }
+        this.biomes[this.getSubY( y )].set( Utils.getIndex( x, y, z ), biome.getId() );
     }
 
-    public void checkAndCreateSubChunks( int subY ) {
-        for ( int y = 0; y <= subY; y++ ) {
-            if ( this.subChunks[y] == null ) {
-                this.subChunks[y] = new SubChunk( y );
+    public SubChunk getSubChunk( int y ) {
+        if ( y < -64 || y > 319 ) {
+            return null;
+        }
+
+        int subY = this.getSubY( y );
+        for ( int y0 = 0; y0 <= subY; y0++ ) {
+            if ( this.subChunks[y0] == null ) {
+                this.subChunks[y0] = new SubChunk( y0 );
             }
         }
+
+        return this.subChunks[subY];
+    }
+
+    public int getSubY( int y ) {
+        if ( y < -64 || y > 319 ) {
+            return -1;
+        }
+
+        return ( y >> 4 ) + 4;
     }
 
     public BlockEntity getBlockEntity( int x, int y, int z ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return null;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        return this.subChunks[subY].getBlockEntity( x & 15, y & 15, z & 15 );
+        return this.getSubChunk( y ).getBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
+        this.getSubChunk( y ).setBlockEntity( x & 15, y & 15, z & 15, blockEntity );
     }
 
     public void removeBlockEntity( int x, int y, int z ) {
-        if ( y < 0 || y > 255 ) {
+        if ( y < -64 || y > 319 ) {
             return;
         }
-        int subY = y >> 4;
-        this.checkAndCreateSubChunks( subY );
-        this.subChunks[subY].removeBlockEntity( x & 15, y & 15, z & 15 );
+        this.getSubChunk( y ).removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
     public List<BlockEntity> getBlockEntitys() {
@@ -221,7 +226,7 @@ public class Chunk extends LevelDBChunk {
             if ( this.subChunks[subY] == null ) {
                 continue;
             }
-            this.saveChunkSlice( subY, writeBatch );
+            this.saveChunkSlice( subY - 4, writeBatch );
         }
 
         byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
@@ -251,14 +256,15 @@ public class Chunk extends LevelDBChunk {
             writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
-        byte[] biomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
+        //TODO: Implement biomes again (find out which new key is used, and which format biomes are saved)
+        /*byte[] biomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
         BinaryStream biomeBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
             biomeBuffer.writeLShort( height );
         }
         biomeBuffer.writeBytes( this.biomes );
-        writeBatch.put( biomesKey, biomeBuffer.array() );
+        writeBatch.put( biomesKey, biomeBuffer.array() );*/
 
         db.write( writeBatch );
         try {
@@ -270,49 +276,17 @@ public class Chunk extends LevelDBChunk {
 
     private void saveChunkSlice( int subY, WriteBatch writeBatch ) {
         BinaryStream buffer = new BinaryStream();
-        SubChunk subChunk = this.subChunks[subY];
+        SubChunk subChunk = this.subChunks[subY + 4];
 
-        buffer.writeByte( (byte) 8 );
+        buffer.writeByte( (byte) 9 );
         buffer.writeByte( (byte) Chunk.CHUNK_LAYERS );
+        buffer.writeByte( (byte) subY );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            int[] layerBlocks = subChunk.blocks[layer];
-            int[] blockIds = new int[4096];
+            Map<Integer, Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, false );
+            buffer.writeLInt( runtimeIds.size() );
 
-            Map<Integer, Integer> indexList = new LinkedHashMap<>();
-            List<Integer> runtimeIds = new ArrayList<>();
-
-            Integer foundIndex = 0;
-            int nextIndex = 0;
-            int lastRuntimeId = -1;
-
-            for ( short blockIndex = 0; blockIndex < layerBlocks.length; blockIndex++ ) {
-                int runtimeId = layerBlocks[blockIndex];
-                if ( runtimeId != lastRuntimeId ) {
-                    foundIndex = indexList.get( runtimeId );
-                    if ( foundIndex == null ) {
-                        runtimeIds.add( runtimeId );
-                        indexList.put( runtimeId, nextIndex );
-                        foundIndex = nextIndex;
-                        nextIndex++;
-                    }
-                    lastRuntimeId = runtimeId;
-                }
-                blockIds[blockIndex] = foundIndex;
-            }
-
-            float numberOfBits = Utils.log2( indexList.size() ) + 1;
-            int amountOfBlocks = (int) FastMath.floor( 32 / numberOfBits );
-            Palette palette = new Palette( buffer, amountOfBlocks, false );
-
-            byte paletteWord = (byte) ( (byte) ( palette.getPaletteVersion().getVersionId() << 1 ) | 1 );
-            buffer.writeByte( paletteWord );
-            palette.addIndexIDs( blockIds );
-            palette.finish();
-
-            buffer.writeLInt( indexList.size() );
-
-            for ( int runtimeId : runtimeIds ) {
+            for ( int runtimeId : runtimeIds.keySet() ) {
                 try {
                     NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer.getBuffer() ) );
                     networkWriter.writeTag( BlockPalette.getBlockNBT( runtimeId ) );
@@ -332,8 +306,12 @@ public class Chunk extends LevelDBChunk {
                 subChunk.writeTo( binaryStream );
             }
         }
-        binaryStream.writeBytes( this.biomes );
-        binaryStream.writeUnsignedVarInt( 0 );
+
+        for ( Palette biome : this.biomes ) {
+            biome.writeTo( binaryStream, true );
+        }
+
+        binaryStream.writeByte( 0 ); // education edition - border blocks
 
         List<BlockEntity> blockEntitys = this.getBlockEntitys();
         if ( !blockEntitys.isEmpty() ) {
@@ -352,7 +330,13 @@ public class Chunk extends LevelDBChunk {
     }
 
     public int getAvailableSubChunks() {
-        return Arrays.stream( this.subChunks ).mapToInt( o -> o == null ? 0 : 1 ).sum();
+        int sum = 0;
+        for ( SubChunk o : this.subChunks ) {
+            if ( o != null ) {
+                sum++;
+            }
+        }
+        return sum;
     }
 
     public LevelChunkPacket createLevelChunkPacket() {

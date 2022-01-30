@@ -110,7 +110,7 @@ public class StartGamePacket extends Packet {
         stream.writeBoolean( false ); //World template option locked
         stream.writeBoolean( false ); //Only spawn v1 villagers
 
-        stream.writeString( "1.17.40" );
+        stream.writeString( Protocol.MINECRAFT_VERSION );
         stream.writeInt( 16 ); //Limited world width
         stream.writeInt( 16 ); //Limited world height
         stream.writeBoolean( false ); //Has new nether

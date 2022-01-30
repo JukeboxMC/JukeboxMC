@@ -27,6 +27,7 @@ public class BlockPalette {
     public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
 
     public static Map<BlockData, Integer> TEST = new HashMap<>();
+    public static Map<String, Integer> DEFAULTS = new HashMap<>();
 
     public static final List<BlockData> BLOCK_DATA = new CopyOnWriteArrayList<>();
 
@@ -40,6 +41,7 @@ public class BlockPalette {
                     BLOCK_PALETTE.put( runtimeId, blockMap );
 
                     TEST.put( new BlockData( blockMap.getString( "name" ), blockMap.getCompound( "states" ) ), runtimeId );
+                    DEFAULTS.putIfAbsent( blockMap.getString( "name" ), runtimeId );
                 }
             } catch ( IOException e ) {
                 e.printStackTrace();
@@ -51,8 +53,8 @@ public class BlockPalette {
         return BLOCK_PALETTE.get( runtimeId );
     }
 
-    public static int getRuntimeId( String identifier, NbtMap compound ) {
-        return TEST.getOrDefault( new BlockData( identifier, compound ), 134 );
+    public static int getRuntimeId( String identifier, NbtMap states ) {
+        return TEST.getOrDefault( new BlockData( identifier, states ), 134 );
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
