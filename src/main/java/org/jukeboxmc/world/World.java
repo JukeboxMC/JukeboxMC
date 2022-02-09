@@ -268,10 +268,9 @@ public class World {
                 chunk.loadBlockEntities( chunk, blockEntities );
             }
 
-            //TODO: Implement biomes again
-            /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
-            if ( biomes != null ) {
-                chunk.loadHeightAndBiomes( biomes );
+            /*byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
+            if ( heightAndBiomes != null ) {
+                chunk.loadHeightAndBiomes( heightAndBiomes );
             }*/
 
             val map = this.chunkMap.get( dimension );
@@ -327,10 +326,9 @@ public class World {
                     chunk.loadBlockEntities( chunk, blockEntities );
                 }
 
-                //TODO: Implement biomes again
-                /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
-                if ( biomes != null ) {
-                    chunk.loadHeightAndBiomes( biomes );
+                /*byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
+                if ( heightAndBiomes != null ) {
+                    chunk.loadHeightAndBiomes( heightAndBiomes );
                 }*/
 
                 val map = this.chunkMap.get( dimension );

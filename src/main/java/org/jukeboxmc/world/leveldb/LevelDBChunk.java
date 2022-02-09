@@ -116,6 +116,7 @@ public class LevelDBChunk {
         for ( int i = 0; i < this.height.length; i++ ) {
             this.height[i] = (short) stream.readUnsignedShort();
         }
+
         System.arraycopy( heightAndBiomes, 512, this.biomes, 0, 256 );
     }
 

@@ -8,7 +8,7 @@ import org.jukeboxmc.utils.Utils;
 import java.util.*;
 
 /**
- * @author LucGamesYT
+ * @author Kevims KCodeYT
  * @version 1.0
  */
 public class Palette {
@@ -19,12 +19,20 @@ public class Palette {
         Arrays.fill( this.values = new int[4096], first );
     }
 
-    public void set( int index, int Value ) {
-        this.values[index] = Value;
+    public void setFirst( int first ) {
+        Arrays.fill( this.values, first );
+    }
+
+    public void set( int index, int value ) {
+        this.values[index] = value;
     }
 
     public int get( int index ) {
         return this.values[index];
+    }
+
+    public void copyTo( Palette palette ) {
+        System.arraycopy( this.values, 0, palette.values, 0, this.values.length );
     }
 
     public Map<Integer, Integer> writeTo( BinaryStream binaryStream, boolean writeIds ) {
