@@ -255,8 +255,7 @@ public class Chunk extends LevelDBChunk {
             writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
-        //TODO: Implement biomes again (find out which new key is used, and which format biomes are saved)
-        byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
+        byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
         BinaryStream heightAndBiomesBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
