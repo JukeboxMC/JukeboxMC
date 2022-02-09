@@ -812,6 +812,11 @@ public class World {
         return chunk.getBiome( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15 );
     }
 
+    public void setBiome( Vector location, Dimension dimension, Biome biome ) {
+        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
+        chunk.setBiome( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, biome );
+    }
+
     //========= Other =========
 
     public void sendWorldPacket( Packet packet ) {
