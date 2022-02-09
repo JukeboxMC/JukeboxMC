@@ -169,11 +169,11 @@ public class Chunk extends LevelDBChunk {
         this.getSubChunk( y ).removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
-    public List<BlockEntity> getBlockEntitys() {
+    public List<BlockEntity> getBlockEntities() {
         List<BlockEntity> blockEntities = new ArrayList<>();
         for ( SubChunk subChunk : this.subChunks ) {
-            if ( subChunk != null && subChunk.getBlockEntitys() != null ) {
-                blockEntities.addAll( subChunk.getBlockEntitys() );
+            if ( subChunk != null && subChunk.getBlockEntities() != null ) {
+                blockEntities.addAll( subChunk.getBlockEntities() );
             }
         }
         return blockEntities;
@@ -241,7 +241,7 @@ public class Chunk extends LevelDBChunk {
 
         BinaryStream blockEntityBuffer = new BinaryStream();
         NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( blockEntityBuffer.getBuffer() ) );
-        for ( BlockEntity blockEntity : this.getBlockEntitys() ) {
+        for ( BlockEntity blockEntity : this.getBlockEntities() ) {
             try {
                 NbtMap build = blockEntity.toCompound().build();
                 networkWriter.writeTag( build );
@@ -331,7 +331,7 @@ public class Chunk extends LevelDBChunk {
 
         binaryStream.writeByte( 0 ); // education edition - border blocks
 
-        List<BlockEntity> blockEntities = this.getBlockEntitys();
+        List<BlockEntity> blockEntities = this.getBlockEntities();
         if ( !blockEntities.isEmpty() ) {
             NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( binaryStream.getBuffer() ) );
 

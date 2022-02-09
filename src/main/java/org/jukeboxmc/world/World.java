@@ -783,7 +783,7 @@ public class World {
         return true;
     }
 
-    //========= BlockEntitys =========
+    //========= BlockEntities =========
 
     public BlockEntity getBlockEntity( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
@@ -800,9 +800,9 @@ public class World {
         chunk.removeBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
     }
 
-    public Collection<BlockEntity> getBlockEntitys( Vector location, Dimension dimension ) {
+    public Collection<BlockEntity> getBlockEntities( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        return chunk.getBlockEntitys();
+        return chunk.getBlockEntities();
     }
 
     //========= Biome =========
