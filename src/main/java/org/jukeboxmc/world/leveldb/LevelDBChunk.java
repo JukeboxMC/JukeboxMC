@@ -114,10 +114,43 @@ public class LevelDBChunk {
     public void loadHeightAndBiomes( byte[] heightAndBiomes ) {
         BinaryStream stream = new BinaryStream( Unpooled.wrappedBuffer( heightAndBiomes ) );
         for ( int i = 0; i < this.height.length; i++ ) {
-            this.height[i] = (short) stream.readUnsignedShort();
+            this.height[i] = stream.readLShort();
         }
 
-        System.arraycopy( heightAndBiomes, 512, this.biomes, 0, 256 );
+        Palette last = null;
+        int paletteVer;
+        int biomeHeader;
+
+        for ( Palette biomePalette : this.biomes ) {
+            biomeHeader = stream.readByte() & 0xFF;
+
+            if ( biomeHeader == 0xFF || biomeHeader == 0 ) {
+                if ( last != null ) {
+                    last.copyTo( biomePalette );
+                }
+
+                continue;
+            }
+
+            last = biomePalette;
+            paletteVer = biomeHeader >> 1;
+
+            if ( paletteVer == 0 ) {
+                biomePalette.setFirst( stream.readLInt() );
+                continue;
+            }
+
+            short[] indices = Palette.parseIndices( stream, paletteVer );
+            int[] biomeIds = new int[stream.readByte() & 0xFF];
+
+            for ( int i = 0; i < biomeIds.length; i++ ) {
+                biomeIds[i] = stream.readInt();
+            }
+
+            for ( int i = 0; i < indices.length; i++ ) {
+                biomePalette.set( i, biomeIds[indices[i]] );
+            }
+        }
     }
 
     public void setPopulated( boolean populated ) {

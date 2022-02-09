@@ -79,7 +79,7 @@ public class SubChunk {
         binaryStream.writeByte( Chunk.CHUNK_LAYERS );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ )
-            this.blocks[layer].writeTo( binaryStream, true );
+            this.blocks[layer].writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
     }
 
 }
