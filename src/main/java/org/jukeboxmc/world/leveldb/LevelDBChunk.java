@@ -29,7 +29,7 @@ public class LevelDBChunk {
 
     protected boolean populated = true;
 
-    protected Palette[] biomes = new Palette[25];
+    protected Palette[] biomes = new Palette[24];
     protected short[] height = new short[16 * 16];
 
     protected LevelDBChunk() {
@@ -40,46 +40,15 @@ public class LevelDBChunk {
 
     public void loadSection( SubChunk chunk, byte[] chunkData ) {
         BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );
-        byte subchunkVersion = buffer.readByte();
+        byte subChunkVersion = buffer.readByte();
         int storages = 1;
-        switch ( subchunkVersion ) {
+        switch ( subChunkVersion ) {
             case 9:
-                storages = buffer.readByte();
-                buffer.readByte();
-                for ( int layer = 0; layer < storages; layer++ ) {
-                    byte data = buffer.readByte();
-                    boolean persistent = ( ( data >> 8 ) & 1 ) != 1;
-                    byte wordTemplate = (byte) ( data >>> 1 );
-
-                    short[] indices = Palette.parseIndices( buffer, wordTemplate );
-                    int needed = buffer.readLInt();
-
-                    Map<Short, Integer> chunkPalette = new HashMap<>();
-                    short i = 0;
-                    NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( buffer.getBuffer() ) );
-                    while ( i < needed ) {
-                        try {
-                            NbtMap compound = (NbtMap) reader.readTag();
-                            String identifier = compound.getString( "name" );
-                            NbtMap states = compound.getCompound( "states" );
-                            if ( states != null ) {
-                                chunkPalette.put( i++, BlockPalette.getRuntimeId( identifier, states ) );
-                            } else {
-                                chunkPalette.put( i++, BlockPalette.getRuntimeId( identifier, NbtMap.EMPTY ) );
-                            }
-                        } catch ( IOException e ) {
-                            e.printStackTrace();
-                            break;
-                        }
-                    }
-
-                    for ( short index = 0; index < indices.length; index++ ) {
-                        chunk.blocks[layer].set( index, chunkPalette.get( indices[index] ) );
-                    }
-                }
-                break;
             case 8:
                 storages = buffer.readByte();
+                if ( subChunkVersion == 9 ) {
+                    buffer.readByte(); // same as sub chunk height
+                }
             case 1:
                 for ( int layer = 0; layer < storages; layer++ ) {
                     byte data = buffer.readByte();
@@ -116,8 +85,7 @@ public class LevelDBChunk {
         }
     }
 
-
-    public void loadBlockEntitys( Chunk chunk, byte[] blockEntityData ) {
+    public void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
         ByteBuf data = Utils.allocate( blockEntityData );
 
         NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( data ) );

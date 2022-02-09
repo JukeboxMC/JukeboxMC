@@ -263,9 +263,9 @@ public class World {
                 }
             }
 
-            byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
-            if ( blockEntitys != null ) {
-                chunk.loadBlockEntitys( chunk, blockEntitys );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
+            if ( blockEntities != null ) {
+                chunk.loadBlockEntities( chunk, blockEntities );
             }
 
             //TODO: Implement biomes again
@@ -322,9 +322,9 @@ public class World {
                     }
                 }
 
-                byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
-                if ( blockEntitys != null ) {
-                    chunk.loadBlockEntitys( chunk, blockEntitys );
+                byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
+                if ( blockEntities != null ) {
+                    chunk.loadBlockEntities( chunk, blockEntities );
                 }
 
                 //TODO: Implement biomes again

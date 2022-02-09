@@ -55,7 +55,7 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.dimension = dimension;
-        this.subChunks = new SubChunk[25];
+        this.subChunks = new SubChunk[24];
     }
 
     public int getHeightMap( int x, int z ) {
@@ -313,11 +313,11 @@ public class Chunk extends LevelDBChunk {
 
         binaryStream.writeByte( 0 ); // education edition - border blocks
 
-        List<BlockEntity> blockEntitys = this.getBlockEntitys();
-        if ( !blockEntitys.isEmpty() ) {
+        List<BlockEntity> blockEntities = this.getBlockEntitys();
+        if ( !blockEntities.isEmpty() ) {
             NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( binaryStream.getBuffer() ) );
 
-            for ( BlockEntity blockEntity : blockEntitys ) {
+            for ( BlockEntity blockEntity : blockEntities ) {
                 try {
                     NbtMap build = blockEntity.toCompound().build();
                     writer.writeTag( build );
