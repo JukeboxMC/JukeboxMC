@@ -316,7 +316,7 @@ public class BinaryStream {
         return array;
     }
 
-    // ========== Minecarft ==========
+    // ========== Minecraft ==========
 
     private final int shildId = ItemType.SHIELD.getItem().getRuntimeId();
 

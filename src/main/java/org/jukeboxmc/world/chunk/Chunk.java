@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.ToString;
-import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
@@ -35,7 +34,7 @@ import java.util.function.Consumer;
  * @version 1.0
  */
 
-@ToString ( exclude = { "subChunks" } )
+@ToString(exclude = {"subChunks"})
 public class Chunk extends LevelDBChunk {
 
     public static final int CHUNK_LAYERS = 2;
@@ -55,7 +54,7 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.dimension = dimension;
-        this.subChunks = new SubChunk[25];
+        this.subChunks = new SubChunk[24];
     }
 
     public int getHeightMap( int x, int z ) {
@@ -170,11 +169,11 @@ public class Chunk extends LevelDBChunk {
         this.getSubChunk( y ).removeBlockEntity( x & 15, y & 15, z & 15 );
     }
 
-    public List<BlockEntity> getBlockEntitys() {
+    public List<BlockEntity> getBlockEntities() {
         List<BlockEntity> blockEntities = new ArrayList<>();
         for ( SubChunk subChunk : this.subChunks ) {
-            if ( subChunk != null && subChunk.getBlockEntitys() != null ) {
-                blockEntities.addAll( subChunk.getBlockEntitys() );
+            if ( subChunk != null && subChunk.getBlockEntities() != null ) {
+                blockEntities.addAll( subChunk.getBlockEntities() );
             }
         }
         return blockEntities;
@@ -242,7 +241,7 @@ public class Chunk extends LevelDBChunk {
 
         BinaryStream blockEntityBuffer = new BinaryStream();
         NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( blockEntityBuffer.getBuffer() ) );
-        for ( BlockEntity blockEntity : this.getBlockEntitys() ) {
+        for ( BlockEntity blockEntity : this.getBlockEntities() ) {
             try {
                 NbtMap build = blockEntity.toCompound().build();
                 networkWriter.writeTag( build );
@@ -256,15 +255,33 @@ public class Chunk extends LevelDBChunk {
             writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
-        //TODO: Implement biomes again (find out which new key is used, and which format biomes are saved)
-        /*byte[] biomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2d );
-        BinaryStream biomeBuffer = new BinaryStream();
+        byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+        BinaryStream heightAndBiomesBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
-            biomeBuffer.writeLShort( height );
+            heightAndBiomesBuffer.writeLShort( height );
         }
-        biomeBuffer.writeBytes( this.biomes );
-        writeBatch.put( biomesKey, biomeBuffer.array() );*/
+
+        Palette last = null;
+
+        for ( Palette biomePalette : this.biomes ) {
+            if ( biomePalette.equals( last ) ) {
+                heightAndBiomesBuffer.writeByte( 0xFF );
+                continue;
+            }
+
+            last = biomePalette;
+
+            if ( biomePalette.isAllEqual() ) {
+                heightAndBiomesBuffer.writeByte( 1 );
+                heightAndBiomesBuffer.writeLInt( biomePalette.get( 0 ) );
+                continue;
+            }
+
+            biomePalette.writeTo( heightAndBiomesBuffer, Palette.WriteType.WRITE_DISK );
+        }
+
+        writeBatch.put( heightAndBiomesKey, heightAndBiomesBuffer.array() );
 
         db.write( writeBatch );
         try {
@@ -283,7 +300,7 @@ public class Chunk extends LevelDBChunk {
         buffer.writeByte( (byte) subY );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            Map<Integer, Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, false );
+            Map<Integer, Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, Palette.WriteType.NONE );
             buffer.writeLInt( runtimeIds.size() );
 
             for ( int runtimeId : runtimeIds.keySet() ) {
@@ -308,16 +325,16 @@ public class Chunk extends LevelDBChunk {
         }
 
         for ( Palette biome : this.biomes ) {
-            biome.writeTo( binaryStream, true );
+            biome.writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
         }
 
         binaryStream.writeByte( 0 ); // education edition - border blocks
 
-        List<BlockEntity> blockEntitys = this.getBlockEntitys();
-        if ( !blockEntitys.isEmpty() ) {
+        List<BlockEntity> blockEntities = this.getBlockEntities();
+        if ( !blockEntities.isEmpty() ) {
             NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( binaryStream.getBuffer() ) );
 
-            for ( BlockEntity blockEntity : blockEntitys ) {
+            for ( BlockEntity blockEntity : blockEntities ) {
                 try {
                     NbtMap build = blockEntity.toCompound().build();
                     writer.writeTag( build );

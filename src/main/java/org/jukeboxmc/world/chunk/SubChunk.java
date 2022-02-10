@@ -25,13 +25,13 @@ public class SubChunk {
     private final int y;
 
     public Palette[] blocks;
-    private final Int2ObjectMap<BlockEntity> blockEntitys;
+    private final Int2ObjectMap<BlockEntity> blockEntities;
 
     public SubChunk( int subChunkY ) {
         this.y = subChunkY;
 
         this.blocks = new Palette[Chunk.CHUNK_LAYERS];
-        this.blockEntitys = new Int2ObjectOpenHashMap<>();
+        this.blockEntities = new Int2ObjectOpenHashMap<>();
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
             this.blocks[layer] = new Palette( AIR_RUNTIME );
         }
@@ -59,19 +59,19 @@ public class SubChunk {
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
-        this.blockEntitys.put( Utils.getIndex( x, y, z ), blockEntity );
+        this.blockEntities.put( Utils.getIndex( x, y, z ), blockEntity );
     }
 
     public BlockEntity getBlockEntity( int x, int y, int z ) {
-        return this.blockEntitys.get( Utils.getIndex( x, y, z ) );
+        return this.blockEntities.get( Utils.getIndex( x, y, z ) );
     }
 
     public void removeBlockEntity( int x, int y, int z ) {
-        this.blockEntitys.remove( Utils.getIndex( x, y, z ) );
+        this.blockEntities.remove( Utils.getIndex( x, y, z ) );
     }
 
-    public Collection<BlockEntity> getBlockEntitys() {
-        return this.blockEntitys.values();
+    public Collection<BlockEntity> getBlockEntities() {
+        return this.blockEntities.values();
     }
 
     public void writeTo( BinaryStream binaryStream ) {
@@ -79,7 +79,7 @@ public class SubChunk {
         binaryStream.writeByte( Chunk.CHUNK_LAYERS );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ )
-            this.blocks[layer].writeTo( binaryStream, true );
+            this.blocks[layer].writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
     }
 
 }

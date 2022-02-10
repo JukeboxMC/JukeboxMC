@@ -263,16 +263,15 @@ public class World {
                 }
             }
 
-            byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
-            if ( blockEntitys != null ) {
-                chunk.loadBlockEntitys( chunk, blockEntitys );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
+            if ( blockEntities != null ) {
+                chunk.loadBlockEntities( chunk, blockEntities );
             }
 
-            //TODO: Implement biomes again
-            /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
-            if ( biomes != null ) {
-                chunk.loadHeightAndBiomes( biomes );
-            }*/
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
+            if ( heightAndBiomes != null ) {
+                chunk.loadHeightAndBiomes( heightAndBiomes );
+            }
 
             val map = this.chunkMap.get( dimension );
             map.put( chunk.toChunkHash(), chunk );
@@ -322,16 +321,15 @@ public class World {
                     }
                 }
 
-                byte[] blockEntitys = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
-                if ( blockEntitys != null ) {
-                    chunk.loadBlockEntitys( chunk, blockEntitys );
+                byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
+                if ( blockEntities != null ) {
+                    chunk.loadBlockEntities( chunk, blockEntities );
                 }
 
-                //TODO: Implement biomes again
-                /*byte[] biomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2d ) );
-                if ( biomes != null ) {
-                    chunk.loadHeightAndBiomes( biomes );
-                }*/
+                byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
+                if ( heightAndBiomes != null ) {
+                    chunk.loadHeightAndBiomes( heightAndBiomes );
+                }
 
                 val map = this.chunkMap.get( dimension );
                 map.put( chunk.toChunkHash(), chunk );
@@ -785,7 +783,7 @@ public class World {
         return true;
     }
 
-    //========= BlockEntitys =========
+    //========= BlockEntities =========
 
     public BlockEntity getBlockEntity( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
@@ -802,9 +800,9 @@ public class World {
         chunk.removeBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
     }
 
-    public Collection<BlockEntity> getBlockEntitys( Vector location, Dimension dimension ) {
+    public Collection<BlockEntity> getBlockEntities( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        return chunk.getBlockEntitys();
+        return chunk.getBlockEntities();
     }
 
     //========= Biome =========
@@ -812,6 +810,11 @@ public class World {
     public Biome getBiome( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
         return chunk.getBiome( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15 );
+    }
+
+    public void setBiome( Vector location, Dimension dimension, Biome biome ) {
+        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
+        chunk.setBiome( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, biome );
     }
 
     //========= Other =========

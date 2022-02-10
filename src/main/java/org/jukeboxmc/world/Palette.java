@@ -8,7 +8,7 @@ import org.jukeboxmc.utils.Utils;
 import java.util.*;
 
 /**
- * @author LucGamesYT
+ * @author Kevims KCodeYT
  * @version 1.0
  */
 public class Palette {
@@ -19,20 +19,53 @@ public class Palette {
         Arrays.fill( this.values = new int[4096], first );
     }
 
-    public void set( int index, int Value ) {
-        this.values[index] = Value;
+    public void setFirst( int first ) {
+        Arrays.fill( this.values, first );
+    }
+
+    public void set( int index, int value ) {
+        this.values[index] = value;
     }
 
     public int get( int index ) {
         return this.values[index];
     }
 
-    public Map<Integer, Integer> writeTo( BinaryStream binaryStream, boolean writeIds ) {
+    public void copyTo( Palette palette ) {
+        System.arraycopy( this.values, 0, palette.values, 0, this.values.length );
+    }
+
+    public boolean isAllEqual() {
+        int first = this.values[0];
+
+        for ( int i = 1; i < this.values.length; i++ ) {
+            if ( first != this.values[i] ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        Palette palette = (Palette) o;
+        return Arrays.equals( values, palette.values );
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode( values );
+    }
+
+    public Map<Integer, Integer> writeTo( BinaryStream binaryStream, WriteType writeType ) {
         Integer foundIndex = 0;
         int nextIndex = 0;
         int lastRuntimeId = -1;
 
-        final int[] blockIds = new int[4096];
+        final int[] indices = new int[4096];
         final Map<Integer, Integer> indexList = new LinkedHashMap<>();
         final List<Integer> runtimeIds = new ArrayList<>();
 
@@ -50,15 +83,22 @@ public class Palette {
                 lastRuntimeId = runtimeId;
             }
 
-            blockIds[index] = foundIndex;
+            indices[index] = foundIndex;
         }
 
-        Palette.writeWords( binaryStream, (int) Math.floor( 32 / ( Utils.log2( indexList.size() ) + 1D ) ), blockIds );
+        Palette.writeWords( binaryStream, (int) Math.floor( 32 / ( Utils.log2( indexList.size() ) + 1D ) ), indices );
 
-        if ( writeIds ) {
-            binaryStream.writeSignedVarInt( runtimeIds.size() );
-            for( int runtimeId : runtimeIds )
-                binaryStream.writeSignedVarInt( runtimeId );
+        switch(writeType) {
+            case WRITE_NETWORK:
+                binaryStream.writeSignedVarInt( runtimeIds.size() );
+                for ( int runtimeId : runtimeIds )
+                    binaryStream.writeSignedVarInt( runtimeId );
+                break;
+            case WRITE_DISK:
+                binaryStream.writeByte( runtimeIds.size() );
+                for ( int runtimeId : runtimeIds )
+                    binaryStream.writeInt( runtimeId );
+                break;
         }
 
         return indexList;
@@ -117,7 +157,7 @@ public class Palette {
         int bits = 0;
         int wordsWritten = 0;
 
-        for( int word : words ) {
+        for ( int word : words ) {
             if ( wordsWritten == paletteVersion.words ) {
                 binaryStream.writeLInt( bits );
                 bits = 0;
@@ -131,7 +171,7 @@ public class Palette {
         binaryStream.writeLInt( bits );
     }
 
-    @RequiredArgsConstructor ( access = AccessLevel.PRIVATE )
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     private enum PaletteVersion {
         P1( 1, 32, true ),
         P2( 2, 16, true ),
@@ -145,6 +185,12 @@ public class Palette {
         private final int id;
         private final int words;
         private final boolean writable;
+    }
+
+    public enum WriteType {
+        NONE,
+        WRITE_NETWORK,
+        WRITE_DISK
     }
 
 }
