@@ -133,6 +133,11 @@ public class LevelDBChunk {
                 continue;
             }
 
+            if ( paletteVer == 0 ) {
+                biomePalette.setFirst( stream.readLInt() );
+                continue;
+            }
+
             last = biomePalette;
 
             short[] indices = Palette.parseIndices( stream, paletteVer );

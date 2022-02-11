@@ -271,6 +271,11 @@ public class Chunk extends LevelDBChunk {
                 continue;
             }
 
+            if ( biomePalette.isAllEqual() ) {
+                heightAndBiomesBuffer.writeByte( 1 );
+                continue;
+            }
+
             last = biomePalette;
             biomePalette.writeTo( heightAndBiomesBuffer, Palette.WriteType.WRITE_DISK );
         }
