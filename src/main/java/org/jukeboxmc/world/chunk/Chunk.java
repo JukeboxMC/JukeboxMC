@@ -45,7 +45,7 @@ public class Chunk extends LevelDBChunk {
     private final int chunkX;
     private final int chunkZ;
     public Dimension dimension;
-    public byte chunkVersion = 21;
+    public byte chunkVersion = 39;
 
     private final Map<Long, Entity> entities = new HashMap<>();
 
@@ -255,6 +255,7 @@ public class Chunk extends LevelDBChunk {
             writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
+        //TODO: needs more testing and fixes
         byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
         BinaryStream heightAndBiomesBuffer = new BinaryStream();
 
@@ -266,18 +267,11 @@ public class Chunk extends LevelDBChunk {
 
         for ( Palette biomePalette : this.biomes ) {
             if ( biomePalette.equals( last ) ) {
-                heightAndBiomesBuffer.writeByte( 0xFF );
+                heightAndBiomesBuffer.writeByte( 0x7F << 1 | 1 );
                 continue;
             }
 
             last = biomePalette;
-
-            if ( biomePalette.isAllEqual() ) {
-                heightAndBiomesBuffer.writeByte( 1 );
-                heightAndBiomesBuffer.writeLInt( biomePalette.get( 0 ) );
-                continue;
-            }
-
             biomePalette.writeTo( heightAndBiomesBuffer, Palette.WriteType.WRITE_DISK );
         }
 

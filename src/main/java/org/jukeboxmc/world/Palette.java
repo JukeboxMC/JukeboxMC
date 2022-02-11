@@ -19,10 +19,6 @@ public class Palette {
         Arrays.fill( this.values = new int[4096], first );
     }
 
-    public void setFirst( int first ) {
-        Arrays.fill( this.values, first );
-    }
-
     public void set( int index, int value ) {
         this.values[index] = value;
     }
@@ -33,18 +29,6 @@ public class Palette {
 
     public void copyTo( Palette palette ) {
         System.arraycopy( this.values, 0, palette.values, 0, this.values.length );
-    }
-
-    public boolean isAllEqual() {
-        int first = this.values[0];
-
-        for ( int i = 1; i < this.values.length; i++ ) {
-            if ( first != this.values[i] ) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @Override
@@ -95,9 +79,9 @@ public class Palette {
                     binaryStream.writeSignedVarInt( runtimeId );
                 break;
             case WRITE_DISK:
-                binaryStream.writeByte( runtimeIds.size() );
+                binaryStream.writeLInt( runtimeIds.size() );
                 for ( int runtimeId : runtimeIds )
-                    binaryStream.writeInt( runtimeId );
+                    binaryStream.writeLInt( runtimeId );
                 break;
         }
 
