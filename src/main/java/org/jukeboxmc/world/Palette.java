@@ -95,9 +95,9 @@ public class Palette {
                     binaryStream.writeSignedVarInt( runtimeId );
                 break;
             case WRITE_DISK:
-                binaryStream.writeByte( runtimeIds.size() );
+                binaryStream.writeLInt( runtimeIds.size() );
                 for ( int runtimeId : runtimeIds )
-                    binaryStream.writeInt( runtimeId );
+                    binaryStream.writeLInt( runtimeId );
                 break;
         }
 

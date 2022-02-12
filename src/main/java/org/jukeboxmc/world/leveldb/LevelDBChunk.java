@@ -123,8 +123,9 @@ public class LevelDBChunk {
 
         for ( Palette biomePalette : this.biomes ) {
             biomeHeader = stream.readByte() & 0xFF;
+            paletteVer = biomeHeader >> 1;
 
-            if ( biomeHeader == 0xFF || biomeHeader == 0 ) {
+            if ( paletteVer == 0x7F ) {
                 if ( last != null ) {
                     last.copyTo( biomePalette );
                 }
@@ -133,7 +134,6 @@ public class LevelDBChunk {
             }
 
             last = biomePalette;
-            paletteVer = biomeHeader >> 1;
 
             if ( paletteVer == 0 ) {
                 biomePalette.setFirst( stream.readLInt() );
@@ -141,10 +141,10 @@ public class LevelDBChunk {
             }
 
             short[] indices = Palette.parseIndices( stream, paletteVer );
-            int[] biomeIds = new int[stream.readByte() & 0xFF];
+            int[] biomeIds = new int[stream.readLInt()];
 
             for ( int i = 0; i < biomeIds.length; i++ ) {
-                biomeIds[i] = stream.readInt();
+                biomeIds[i] = stream.readLInt();
             }
 
             for ( int i = 0; i < indices.length; i++ ) {
