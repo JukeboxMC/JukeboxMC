@@ -3,8 +3,7 @@ package org.jukeboxmc.scheduler;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.jukeboxmc.Server;
 
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -129,7 +128,9 @@ public class Scheduler {
         }
 
         TaskHandler removed = this.taskHandlerMap.remove( taskHandler.getTaskId() );
-        removed.cancel();
+        if ( removed != null ) {
+            removed.cancel();
+        }
     }
 
     public void shutdown() {
