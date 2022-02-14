@@ -178,11 +178,9 @@ public class World {
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 this.worldTime = nbt.getInt( "Time", 1000 );
                 return true;
-            } catch ( IOException e ) {
-                e.printStackTrace();
+            } catch ( IOException ignore ) {
             }
-        } catch ( IOException e ) {
-            e.printStackTrace();
+        } catch ( IOException ignore ) {
         }
         return false;
     }
@@ -211,10 +209,19 @@ public class World {
 
         compound.putInt( "StorageVersion", 8 );
 
-        compound.putInt( "SpawnX", this.spawnLocation != null ? this.spawnLocation.getBlockX() : 0 );
-        compound.putInt( "SpawnY", this.spawnLocation != null ? this.spawnLocation.getBlockY() : 64 );
-        compound.putInt( "SpawnZ", this.spawnLocation != null ? this.spawnLocation.getBlockZ() : 0 );
-        compound.putInt( "Difficulty", this.difficulty == null ? Difficulty.NORMAL.ordinal() : this.difficulty.ordinal() );
+        if ( this.spawnLocation == null ) {
+            this.spawnLocation = new Location( this, 0, 64, 0 );
+        }
+
+        compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
+        compound.putInt( "SpawnY", this.spawnLocation.getBlockY() );
+        compound.putInt( "SpawnZ", this.spawnLocation.getBlockZ() );
+
+        if ( this.difficulty == null ) {
+            this.difficulty = Difficulty.NORMAL;
+        }
+
+        compound.putInt( "Difficulty", this.difficulty.ordinal() );
 
         compound.putString( "LevelName", this.name );
         compound.putLong( "Time", this.worldTime );
