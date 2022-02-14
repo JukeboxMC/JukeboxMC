@@ -4,12 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
-import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
@@ -42,7 +39,6 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkCache;
-import org.jukeboxmc.world.chunk.ChunkFuture;
 import org.jukeboxmc.world.generator.WorldGenerator;
 
 import java.io.File;
@@ -73,7 +69,7 @@ public class World {
     private int worldTime;
 
     private ChunkCache chunkCache;
-    private final Queue<ChunkFuture> chunkLoadQueue = new ArrayBlockingQueue<>( 4096 );
+    private final Queue<CompletableFuture<Chunk>> chunkLoadQueue = new ArrayBlockingQueue<>( 4096 );
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
@@ -104,11 +100,11 @@ public class World {
     public void update( long currentTick ) {
         int loading = 0;
         while ( !this.chunkLoadQueue.isEmpty() && ++loading < 25 ) {
-            ChunkFuture chunkFuture = this.chunkLoadQueue.poll();
+            CompletableFuture<Chunk> chunkFuture = this.chunkLoadQueue.poll();
 
             this.server.getScheduler().addTask( () -> {
                 try {
-                    chunkFuture.run();
+                    //chunkFuture.run();
                 } catch ( Throwable throwable ) {
                     throwable.printStackTrace();
                 }
@@ -294,7 +290,7 @@ public class World {
             return cacheChunk;
         }
 
-        ChunkFuture foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
+        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
         if ( foundFuture != null ) {
             try {
                 return foundFuture.get();
@@ -324,40 +320,25 @@ public class World {
         this.chunkCache.clearChunks();
     }
 
-    public synchronized ChunkFuture requestChunk( int chunkX, int chunkZ, Dimension dimension ) {
+    public synchronized CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ, Dimension dimension ) {
         Chunk foundChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
         if ( foundChunk != null ) {
-            return ChunkFuture.completed( this.server.getScheduler(), foundChunk );
+            return CompletableFuture.completedFuture( foundChunk );
         }
 
-        ChunkFuture foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
+        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
         if ( foundFuture != null ) {
             return foundFuture;
         }
-
-        final AtomicBoolean atomicBoolean = new AtomicBoolean( false );
-
-        ChunkFuture chunkFuture = new ChunkFuture( this.server.getScheduler(), () -> {
+        CompletableFuture<Chunk> chunkFuture = CompletableFuture.supplyAsync( () -> {
             return this.loadChunkAsync( chunkX, chunkZ, dimension );
-        } ).onFinish( ( chunk, throwable ) -> {
+        }, this.server.getScheduler() );
+        chunkFuture.whenCompleteAsync( ( chunk, throwable ) -> {
             this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
             this.chunkCache.putChunk( chunk, dimension );
-            atomicBoolean.set( true );
-        } );
+        }, this.server.getScheduler() );
 
-        this.server.getScheduler().scheduleDelayed( () -> {
-            if ( !atomicBoolean.get() ) {
-                System.out.println( "WAS CHUNK DONE? " + chunkFuture.isDone() );
-                System.out.println( "CHUNK " + chunkX + ":" + chunkZ + " WASNT LOAD IN TIME" );
-
-                this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
-                this.loadChunk( chunkX, chunkZ, dimension );
-            }
-        }, 20 * 15 );
-
-        //this.chunkLoadQueue.offer( chunkFuture );
         this.chunkCache.putFuture( chunkX, chunkZ, dimension, chunkFuture );
-        this.server.getScheduler().addTask( chunkFuture, 0, 0, true );
         return chunkFuture;
     }
 

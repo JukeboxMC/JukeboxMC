@@ -10,9 +10,8 @@ import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Dimension;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author LucGamesYT, geNAZt
@@ -22,7 +21,7 @@ public class ChunkCache {
 
     private final DB db;
     private final Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks;
-    private final Object2ObjectMap<Dimension, Long2ObjectMap<ChunkFuture>> chunkFutures;
+    private final Object2ObjectMap<Dimension, Long2ObjectMap<CompletableFuture<Chunk>>> chunkFutures;
 
     public ChunkCache( DB db ) {
         this.db = db;
@@ -35,11 +34,11 @@ public class ChunkCache {
         }
     }
 
-    public synchronized void putFuture( int chunkX, int chunkZ, Dimension dimension, ChunkFuture chunkFuture ) {
+    public synchronized void putFuture( int chunkX, int chunkZ, Dimension dimension, CompletableFuture<Chunk> chunkFuture ) {
         this.chunkFutures.get( dimension ).put( Utils.toLong( chunkX, chunkZ ), chunkFuture );
     }
 
-    public synchronized ChunkFuture getFuture( int chunkX, int chunkZ, Dimension dimension ) {
+    public synchronized CompletableFuture<Chunk> getFuture( int chunkX, int chunkZ, Dimension dimension ) {
         return this.chunkFutures.get( dimension ).get( Utils.toLong( chunkX, chunkZ ) );
     }
 
@@ -50,7 +49,7 @@ public class ChunkCache {
     public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
         long chunkHash = Utils.toLong( chunkX, chunkZ );
 
-        ChunkFuture chunkFuture = this.chunkFutures.get( dimension ).get( chunkHash );
+        CompletableFuture<Chunk> chunkFuture = this.chunkFutures.get( dimension ).get( chunkHash );
         if ( chunkFuture != null ) {
             try {
                 return chunkFuture.get();

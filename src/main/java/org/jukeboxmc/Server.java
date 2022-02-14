@@ -143,23 +143,6 @@ public class Server {
 
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
 
-        new Thread( () -> {
-            try {
-                long lastTick = 0;
-                while ( this.running ) {
-                    if ( lastTick == this.currentTick ) {
-                        for ( StackTraceElement traceElement : this.mainThread.getStackTrace() )
-                            System.out.println( "\tat " + traceElement );
-                    }
-
-                    lastTick = this.currentTick;
-                    Thread.sleep( 250 );
-                }
-            } catch ( InterruptedException e ) {
-                e.printStackTrace();
-            }
-        } ).start();
-
         long tpsTimeMillisStarted = System.currentTimeMillis();
         long tpsTickStarted = this.currentTick;
         long deltaTime = 50;
@@ -545,7 +528,7 @@ public class Server {
             boolean worldExists = file.exists();
 
             World world = new World( worldName, this, worldGenerator );
-            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, false, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
+            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, true, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
             this.pluginManager.callEvent( worldLoadEvent );
             if ( worldLoadEvent.isCancelled() ) {
                 return false;

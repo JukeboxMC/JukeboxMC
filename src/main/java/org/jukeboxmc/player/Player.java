@@ -42,10 +42,10 @@ import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
-import org.jukeboxmc.world.chunk.ChunkFuture;
 
 import java.net.InetSocketAddress;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author LucGamesYT
@@ -132,42 +132,26 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         this.needNewChunks();
 
-        if ( !this.chunkSendQueue.isEmpty() ) {
-            int sent = 0;
-
-            while ( !this.chunkSendQueue.isEmpty() && sent <= 4 ) {
-                long chunkHash = this.chunkSendQueue.poll();
-
-                this.sendChunk( this.getWorld().getChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ), this.dimension ) );
-                sent++;
-            }
-        }
-
-        if ( !this.requiredChunks.isEmpty() ) {
-            for ( long chunkHash : requiredChunks ) {
-                if ( this.loadedChunks.contains( chunkHash ) || this.loadingChunks.contains( chunkHash ) || this.chunkLoadQueue.contains( chunkHash ) ) {
-                    continue;
-                }
-
-                this.chunkLoadQueue.add( chunkHash );
-            }
-        }
-
         if ( !this.chunkLoadQueue.isEmpty() ) {
             int load = 0;
-
             while ( !this.chunkLoadQueue.isEmpty() && load <= 4 ) {
                 long chunkHash = this.chunkLoadQueue.poll();
-
                 if ( this.loadingChunks.contains( chunkHash ) || this.loadedChunks.contains( chunkHash ) ) {
                     continue;
                 }
-
                 this.requestChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ) );
                 load++;
             }
-
             this.chunkLoadQueue.clear();
+        }
+
+        if ( !this.chunkSendQueue.isEmpty() ) {
+            int sent = 0;
+            while ( !this.chunkSendQueue.isEmpty() && sent <= 4 ) {
+                long chunkHash = this.chunkSendQueue.poll();
+                this.sendChunk( this.getWorld().getChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ), this.dimension ) );
+                sent++;
+            }
         }
     }
 
@@ -288,10 +272,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
                 this.server.getScheduler().addTask( () -> {
                     if ( !toSendChunks.isEmpty() ) {
-                        this.sendNetworkChunkPublisher();
                         this.chunkLoadQueue.addAll( toSendChunks );
-                        this.requiredChunks.clear();
-                        this.requiredChunks.addAll( requiredChunks );
                     }
 
                     Iterator<Long> iterator = this.loadedChunks.iterator();
@@ -326,14 +307,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }, 0, 0, true );
     }
 
-    public ChunkFuture requestChunk( int chunkX, int chunkZ ) {
+    public CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ ) {
         try {
             long chunkHash = Utils.toLong( chunkX, chunkZ );
 
             this.loadingChunks.add( chunkHash );
-            return this.getWorld().requestChunk( chunkX, chunkZ, this.dimension ).onFinish( ( chunk, throwable ) -> {
+            return this.getWorld().requestChunk( chunkX, chunkZ, this.dimension ).whenCompleteAsync( ( chunk, throwable ) -> {
                 this.chunkSendQueue.offer( chunkHash );
-            } );
+            }, server.getScheduler() );
         } catch ( Throwable throwable ) {
             throwable.printStackTrace();
             return null;
