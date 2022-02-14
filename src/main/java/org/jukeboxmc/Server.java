@@ -40,6 +40,7 @@ import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -71,7 +72,7 @@ public class Server {
     private String motd;
     private String subMotd;
 
-    private final long mainThreadId;
+    private final Thread mainThread;
     private final long serverId;
     private long currentTick = 0;
 
@@ -92,7 +93,7 @@ public class Server {
         Server.setInstance( this );
 
         Thread.currentThread().setName( "JukeboxMC Main-Thread" );
-        this.mainThreadId = Thread.currentThread().getId();
+        this.mainThread = Thread.currentThread();
         this.logger = logger;
 
         this.pluginFolder = new File( "./plugins" );
@@ -142,7 +143,9 @@ public class Server {
 
         Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
 
-        long deltaTime = 50L;
+        long tpsTimeMillisStarted = System.currentTimeMillis();
+        long tpsTickStarted = this.currentTick;
+        long deltaTime = 50;
         while ( this.running ) {
             this.currentTick++;
             Thread.sleep( FastMath.max( 0, 50 - deltaTime ) );
@@ -156,17 +159,26 @@ public class Server {
 
             this.scheduler.onTick( this.currentTick );
 
-            if ( this.currentTick % 20 == 0 ) {
-                this.currentTps = 1000.0 / ( 50 - deltaTime );
-                if ( this.currentTps > 20 ) {
-                    this.currentTps = 20;
-                }
+            for ( Player player : this.players.values() ) {
+                player.updateChunks( this.currentTick );
             }
+
             for ( World world : this.worlds.values() ) {
                 if ( world != null ) {
                     world.update( this.currentTick );
                 }
             }
+
+            if ( System.currentTimeMillis() >= tpsTimeMillisStarted + TimeUnit.SECONDS.toMillis( 1 ) ) {
+                this.currentTps = this.currentTick - tpsTickStarted;
+                if ( this.currentTps > 20 ) {
+                    this.currentTps = 20;
+                }
+
+                tpsTickStarted = this.currentTick;
+                tpsTimeMillisStarted = System.currentTimeMillis();
+            }
+
             deltaTime = System.currentTimeMillis() - startTime;
         }
     }
@@ -228,7 +240,7 @@ public class Server {
     }
 
     public boolean isMainThread() {
-        return this.mainThreadId == Thread.currentThread().getId();
+        return this.mainThread == Thread.currentThread();
     }
 
     public void addToMainThread( Runnable runnable ) {
@@ -320,7 +332,7 @@ public class Server {
     }
 
     public void setSubMotd( String subMotd ) {
-        this.subMotd= subMotd;
+        this.subMotd = subMotd;
     }
 
     public GameMode getDefaultGameMode() {

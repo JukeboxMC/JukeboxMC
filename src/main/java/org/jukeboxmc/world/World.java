@@ -4,12 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
-import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
@@ -41,6 +38,7 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.ChunkCache;
 import org.jukeboxmc.world.generator.WorldGenerator;
 
 import java.io.File;
@@ -49,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author LucGamesYT
@@ -62,16 +61,17 @@ public class World {
 
     private final String name;
     private final Server server;
-    private final WorldGenerator worldGenerator;
+    private final WorldGenerator worldGenerator; //TODO: Map with dimensions
     private final BlockUpdateList blockUpdateList;
 
     private Location spawnLocation;
     private Difficulty difficulty;
     private int worldTime;
 
-    private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
+    private ChunkCache chunkCache;
+    private final Queue<CompletableFuture<Chunk>> chunkLoadQueue = new ArrayBlockingQueue<>( 4096 );
 
-    private final Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> chunkMap = new Object2ObjectOpenHashMap<>();
+    private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
     private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
@@ -91,18 +91,26 @@ public class World {
 
         this.blockUpdateList = new BlockUpdateList();
 
-        this.chunkMap.computeIfAbsent( Dimension.OVERWORLD, o -> new Long2ObjectOpenHashMap<>() );
-        this.chunkMap.computeIfAbsent( Dimension.NETHER, o -> new Long2ObjectOpenHashMap<>() );
-        this.chunkMap.computeIfAbsent( Dimension.THE_END, o -> new Long2ObjectOpenHashMap<>() );
-
         this.initGameRules();
         if ( !this.loadLevelFile() ) {
             this.saveLevelDatFile();
         }
-
     }
 
     public void update( long currentTick ) {
+        int loading = 0;
+        while ( !this.chunkLoadQueue.isEmpty() && ++loading < 25 ) {
+            CompletableFuture<Chunk> chunkFuture = this.chunkLoadQueue.poll();
+
+            this.server.getScheduler().addTask( () -> {
+                try {
+                    //chunkFuture.run();
+                } catch ( Throwable throwable ) {
+                    throwable.printStackTrace();
+                }
+            }, 0, 0, true );
+        }
+
         if ( this.getGameRule( GameRule.DO_DAYLIGHT_CYCLE ) ) {
             this.worldTime++;
             while ( this.worldTime >= 24000 ) {
@@ -147,6 +155,7 @@ public class World {
     public boolean open() {
         try {
             this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().createIfMissing( true ) );
+            this.chunkCache = new ChunkCache( this.db );
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -225,10 +234,9 @@ public class World {
         }
     }
 
-    public Chunk loadChunkSync( int chunkX, int chunkZ, Dimension dimension ) {
-        if ( !this.chunkMap.get( dimension ).containsKey( Utils.toLong( chunkX, chunkZ ) ) ) {
+    private Chunk loadChunkAsync( int chunkX, int chunkZ, Dimension dimension ) {
+        try {
             Chunk chunk = new Chunk( this, chunkX, chunkZ, dimension );
-
             byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ) );
             if ( version == null ) {
                 version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x76 ) );
@@ -241,12 +249,8 @@ public class World {
                 } else {
                     worldGenerator = Server.getInstance().getOverworldGenerator();
                 }
-                try {
-                    worldGenerator.generate( chunk );
-                } finally {
-                    val map = this.chunkMap.get( dimension );
-                    map.put( chunk.toChunkHash(), chunk );
-                }
+
+                worldGenerator.generate( chunk );
                 return chunk;
             }
 
@@ -273,103 +277,94 @@ public class World {
                 chunk.loadHeightAndBiomes( heightAndBiomes );
             }
 
-            val map = this.chunkMap.get( dimension );
-            map.put( chunk.toChunkHash(), chunk );
             return chunk;
-        } else {
-            val map = this.chunkMap.get( dimension );
-            return map.get( Utils.toLong( chunkX, chunkZ ) );
+        } catch ( Throwable throwable ) {
+            throwable.printStackTrace();
+            return new Chunk( this, chunkX, chunkZ, dimension );
         }
     }
 
-    public CompletableFuture<Chunk> loadChunkAsync( int chunkX, int chunkZ, Dimension dimension ) {
-        return CompletableFuture.supplyAsync( () -> {
-            if ( !this.chunkMap.get( dimension ).containsKey( Utils.toLong( chunkX, chunkZ ) ) ) {
-                Chunk chunk = new Chunk( this, chunkX, chunkZ, dimension );
+    public Chunk loadChunk( int chunkX, int chunkZ, Dimension dimension ) {
+        Chunk cacheChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
+        if ( cacheChunk != null ) {
+            return cacheChunk;
+        }
 
-                byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ) );
-                if ( version == null ) {
-                    version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x76 ) );
-                }
-
-                if ( version == null ) {
-                    WorldGenerator worldGenerator;
-                    if ( this.worldGenerator != null ) {
-                        worldGenerator = this.worldGenerator;
-                    } else {
-                        worldGenerator = Server.getInstance().getOverworldGenerator();
-                    }
-                    try {
-                        worldGenerator.generate( chunk );
-                    } finally {
-                        val map = this.chunkMap.get( dimension );
-                        map.put( chunk.toChunkHash(), chunk );
-                    }
-                    return chunk;
-                }
-
-                byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x36 ) );
-
-                chunk.chunkVersion = version[0];
-                chunk.setPopulated( finalized == null || finalized[0] == 2 );
-
-                for ( int sectionY = -4; sectionY < 20; sectionY++ ) {
-                    byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ) );
-
-                    if ( chunkData != null ) {
-                        chunk.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
-                    }
-                }
-
-                byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
-                if ( blockEntities != null ) {
-                    chunk.loadBlockEntities( chunk, blockEntities );
-                }
-
-                byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
-                if ( heightAndBiomes != null ) {
-                    chunk.loadHeightAndBiomes( heightAndBiomes );
-                }
-
-                val map = this.chunkMap.get( dimension );
-                map.put( chunk.toChunkHash(), chunk );
-                return chunk;
-            } else {
-                val map = this.chunkMap.get( dimension );
-                return map.get( Utils.toLong( chunkX, chunkZ ) );
+        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
+        if ( foundFuture != null ) {
+            try {
+                return foundFuture.get();
+            } catch ( InterruptedException | ExecutionException e ) {
+                return null;
             }
-        }, this.chunkThread );
+        }
+
+        Chunk chunk = this.loadChunkAsync( chunkX, chunkZ, dimension );
+        this.chunkCache.putChunk( chunk, dimension );
+        return chunk;
     }
 
     public Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.loadChunkSync( chunkX, chunkZ, dimension );
+        Chunk chunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
+        if ( chunk == null ) {
+            chunk = this.loadChunk( chunkX, chunkZ, dimension );
+        }
+        return chunk;
     }
 
-    public boolean isChunkLoaded( int chunkX, int chunkZ ) {
-        return this.chunkMap.get( Dimension.OVERWORLD ).containsKey( Utils.toLong( chunkX, chunkZ ) );
+    public boolean isChunkLoaded( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkCache.isChunkLoaded( chunkX, chunkZ, dimension );
     }
 
     public void clearChunks() {
-        this.chunkMap.clear();
+        this.chunkCache.clearChunks();
+    }
+
+    public synchronized CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ, Dimension dimension ) {
+        Chunk foundChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
+        if ( foundChunk != null ) {
+            return CompletableFuture.completedFuture( foundChunk );
+        }
+
+        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
+        if ( foundFuture != null ) {
+            return foundFuture;
+        }
+        CompletableFuture<Chunk> chunkFuture = CompletableFuture.supplyAsync( () -> {
+            return this.loadChunkAsync( chunkX, chunkZ, dimension );
+        }, this.server.getScheduler() );
+        chunkFuture.whenCompleteAsync( ( chunk, throwable ) -> {
+            this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
+            this.chunkCache.putChunk( chunk, dimension );
+        }, this.server.getScheduler() );
+
+        this.chunkCache.putFuture( chunkX, chunkZ, dimension, chunkFuture );
+        return chunkFuture;
     }
 
     public void prepareSpawnRegion() {
         int spawnRadius = 4;
 
-        int chunkX = Utils.blockToChunk( this.spawnLocation.getBlockX() );
-        int chunkZ = Utils.blockToChunk( this.spawnLocation.getBlockZ() );
+        int chunkX = this.spawnLocation.getChunkX();
+        int chunkZ = this.spawnLocation.getChunkZ();
 
         for ( int i = chunkX - spawnRadius; i <= chunkX + spawnRadius; i++ ) {
             for ( int j = chunkZ - spawnRadius; j <= chunkZ + spawnRadius; j++ ) {
-                this.loadChunkSync( chunkX, chunkZ, Dimension.OVERWORLD );
+                this.loadChunk( chunkX, chunkZ, Dimension.OVERWORLD );
             }
         }
     }
 
     public void save() {
-        this.chunkMap.forEach( ( dimension, chunkMap ) -> chunkMap.values().forEach( chunk -> chunk.save( this.db ) ) );
-        this.saveLevelDatFile();
-        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+        this.server.getScheduler().executeAsync( () -> {
+            try {
+                this.chunkCache.saveAll();
+                this.saveLevelDatFile();
+                Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+            } catch ( Throwable e ) {
+                e.printStackTrace();
+            }
+        } );
     }
 
     public void close() {
@@ -592,6 +587,7 @@ public class World {
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
+
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
         block.setLocation( blockLocation );
@@ -764,7 +760,6 @@ public class World {
             if ( blockPlaceEvent.isCancelled() ) {
                 return false;
             }
-
             boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
             if ( success ) {
                 if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {

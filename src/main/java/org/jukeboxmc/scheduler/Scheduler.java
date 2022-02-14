@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author WaterdogPE
  * @version 1.0
  */
-public class Scheduler {
+public class Scheduler implements Executor {
 
     private static Scheduler instance;
     private final Server server;
@@ -129,7 +129,9 @@ public class Scheduler {
         }
 
         TaskHandler removed = this.taskHandlerMap.remove( taskHandler.getTaskId() );
-        removed.cancel();
+        if ( removed != null ) {
+            removed.cancel();
+        }
     }
 
     public void shutdown() {
@@ -150,4 +152,8 @@ public class Scheduler {
         return this.server.getCurrentTick();
     }
 
+    @Override
+    public void execute( Runnable command ) {
+        this.addTask( command, 0, 0, false );
+    }
 }
