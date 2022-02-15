@@ -7,7 +7,6 @@ import org.jukeboxmc.block.type.WoodType;
  * @author LucGamesYT
  * @version 1.0
  */
-//TODO
 public class ItemFence extends Item {
 
     public ItemFence() {

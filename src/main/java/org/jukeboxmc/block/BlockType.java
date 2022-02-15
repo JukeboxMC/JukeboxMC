@@ -708,7 +708,6 @@ public enum BlockType {
     RED_CANDLE( new BlockRedCandle() ),
     BLACK_CANDLE( new BlockBlackCandle() ),
 
-    //NOTE: Only in item and block palette but the item/block is not in the game yet
     SCULK_SHRIEKER( new BlockSculkShrieker() ),
     SCULK( new BlockSculk() ),
     SCULK_CATALYST( new BlockSculkCatalyst() ),

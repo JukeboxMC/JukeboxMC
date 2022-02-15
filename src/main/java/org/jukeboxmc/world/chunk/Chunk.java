@@ -3,6 +3,9 @@ package org.jukeboxmc.world.chunk;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import lombok.ToString;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
@@ -34,20 +37,20 @@ import java.util.function.Consumer;
  * @version 1.0
  */
 
-@ToString(exclude = {"subChunks"})
+@ToString ( exclude = { "subChunks" } )
 public class Chunk extends LevelDBChunk {
 
     public static final int CHUNK_LAYERS = 2;
     private static final BlockAir BLOCK_AIR = new BlockAir();
 
-    private SubChunk[] subChunks;
+    private final SubChunk[] subChunks;
     private final World world;
     private final int chunkX;
     private final int chunkZ;
     public Dimension dimension;
     public byte chunkVersion = 39;
 
-    private final Map<Long, Entity> entities = new HashMap<>();
+    private final Long2ObjectMap<Entity> entities = new Long2ObjectOpenHashMap<>();
 
     public Chunk( World world, int chunkX, int chunkZ, Dimension dimension ) {
         this.world = world;
@@ -115,14 +118,31 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return Biome.PLAINS;
         }
-        return Biome.findById( this.biomes[this.getSubY( y )].get( Utils.getIndex( x & 15, y & 15, z & 15 ) ) );
+        return Biome.findById( this.getBiomePalette( y ).get( Utils.getIndex( x & 15, y & 15, z & 15 ) ) );
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.biomes[this.getSubY( y )].set( Utils.getIndex( x, y, z ), biome.getId() );
+        this.getBiomePalette( y ).set( Utils.getIndex( x, y, z ), biome.getId() );
+    }
+
+    @Override
+    public Palette getBiomePalette( int y ) {
+        if ( y < -64 || y > 319 ) {
+            return null;
+        }
+
+        int subY = this.getSubY( y );
+        for ( int y0 = 0; y0 <= subY; y0++ ) {
+            if ( this.biomes[y0] == null ) {
+                this.biomes[y0] = new Palette( Biome.OCEAN.getId() );
+                this.subChunks[y0] = new SubChunk( y0 );
+            }
+        }
+
+        return this.biomes[subY];
     }
 
     public SubChunk getSubChunk( int y ) {
@@ -133,6 +153,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.subChunks[y0] == null ) {
+                this.biomes[y0] = new Palette( Biome.OCEAN.getId() );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -266,6 +287,10 @@ public class Chunk extends LevelDBChunk {
         Palette last = null;
 
         for ( Palette biomePalette : this.biomes ) {
+            if ( biomePalette == null ) {
+                break;
+            }
+
             if ( biomePalette.equals( last ) ) {
                 heightAndBiomesBuffer.writeByte( 0x7F << 1 | 1 );
                 continue;
@@ -300,7 +325,7 @@ public class Chunk extends LevelDBChunk {
         buffer.writeByte( (byte) subY );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            Map<Integer, Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, Palette.WriteType.NONE );
+            Int2ObjectMap<Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, Palette.WriteType.NONE );
             buffer.writeLInt( runtimeIds.size() );
 
             for ( int runtimeId : runtimeIds.keySet() ) {
@@ -324,8 +349,12 @@ public class Chunk extends LevelDBChunk {
             }
         }
 
-        for ( Palette biome : this.biomes ) {
-            biome.writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
+        for ( Palette biomePalette : this.biomes ) {
+            if ( biomePalette == null ) {
+                break;
+            }
+
+            biomePalette.writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
         }
 
         binaryStream.writeByte( 0 ); // education edition - border blocks

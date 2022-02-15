@@ -14,6 +14,6 @@ public class ItemString extends Item {
 
     @Override
     public BlockTripwire getBlock() {
-        return new BlockTripwire(); //Maybe
+        return new BlockTripwire();
     }
 }

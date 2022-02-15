@@ -1,5 +1,6 @@
 package org.jukeboxmc.player;
 
+import it.unimi.dsi.fastutil.longs.*;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
@@ -71,7 +72,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final GrindstoneInventory grindstoneInventory;
 
     private int protocol = Protocol.CURRENT_PROTOCOL;
-    private int viewDistance = 8;
     private int inAirTicks = 0;
 
     private String name = null;
@@ -87,13 +87,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private long actionStart = -1;
 
-    private final ChunkComparator chunkComparator;
-    private final Queue<Long> chunkSendQueue;
-    private final Queue<Long> chunkLoadQueue;
+    private int viewDistance = 8;
+    private long[] chunksInRadius = new long[8 * 8 * 4];
 
-    private final Set<Long> requiredChunks = new HashSet<>();
-    private final Set<Long> loadingChunks = new HashSet<>();
-    private final Set<Long> loadedChunks = new HashSet<>();
+    private final LongPriorityQueue chunkSendQueue;
+    private final LongPriorityQueue chunkLoadQueue;
+
+    private final LongSet loadingChunks = new LongOpenHashSet();
+    private final LongSet loadedChunks = new LongOpenHashSet();
 
     private volatile boolean requestedChunks = false;
 
@@ -118,9 +119,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         this.adventureSettings = new AdventureSettings( this );
 
-        this.chunkComparator = new ChunkComparator( this );
-        this.chunkSendQueue = new PriorityQueue<>( 4096, this.chunkComparator );
-        this.chunkLoadQueue = new PriorityQueue<>( 4096, this.chunkComparator );
+        ChunkComparator chunkComparator = new ChunkComparator( this );
+        this.chunkSendQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
+        this.chunkLoadQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
 
         this.lasBreakPosition = new Vector( 0, 0, 0 );
     }
@@ -135,7 +136,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         if ( !this.chunkLoadQueue.isEmpty() ) {
             int load = 0;
             while ( !this.chunkLoadQueue.isEmpty() && load <= 4 ) {
-                long chunkHash = this.chunkLoadQueue.poll();
+                long chunkHash = this.chunkLoadQueue.dequeueLong();
                 if ( this.loadingChunks.contains( chunkHash ) || this.loadedChunks.contains( chunkHash ) ) {
                     continue;
                 }
@@ -148,7 +149,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         if ( !this.chunkSendQueue.isEmpty() ) {
             int sent = 0;
             while ( !this.chunkSendQueue.isEmpty() && sent <= 4 ) {
-                long chunkHash = this.chunkSendQueue.poll();
+                long chunkHash = this.chunkSendQueue.dequeueLong();
                 this.sendChunk( this.getWorld().getChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ), this.dimension ) );
                 sent++;
             }
@@ -236,6 +237,11 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
     // ========== Chunk ==========
 
+    /*
+    Ja hab es versucht sync zu machen aber dann ging nix mehr xD
+
+     */
+
     public void needNewChunks() {
         if ( this.requestedChunks ) return;
 
@@ -244,15 +250,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         int currentXChunk = Utils.blockToChunk( this.location.getBlockX() );
         int currentZChunk = Utils.blockToChunk( this.location.getBlockZ() );
         int viewDistance = this.getViewDistance();
-        //int viewDistance = 4;
-
-        Set<Long> toSendChunks = new HashSet<>();
-        Set<Long> requiredChunks = new HashSet<>();
-        Set<Long> loadedChunks = new HashSet<>( this.loadedChunks );
-        Set<Long> loadingChunks = new HashSet<>( this.loadingChunks );
-
-        this.server.getScheduler().addTask( () -> {
+        //Irgendwo hier muss das passieren xD dachte vlt gibt es viele einträge in listen maps etc aber dem ist nicht so 3k einträge sind ja nicht viel, ja hmm, aber benutzt ja keine sets mehr
+        //abgesehen von den loadedChunks, loadingChunks halt xd JA Ich schau nochmal was er sagt
+        //Nukkit hat es ja auch geschafft xD ja idk wie xd
+        this.server.getScheduler().executeAsync( () -> {
             try {
+                int index = 0;
                 for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
                     for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
                         float distance = (float) FastMath.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
@@ -261,23 +264,26 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                         if ( chunkDistance <= viewDistance ) {
                             long hash = Utils.toLong( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
 
-                            requiredChunks.add( hash );
-
-                            if ( !loadedChunks.contains( hash ) && !loadingChunks.contains( hash ) ) {
-                                toSendChunks.add( hash );
+                            if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
+                                this.chunksInRadius[index++] = hash;
                             }
                         }
                     }
                 }
-
-                this.server.getScheduler().addTask( () -> {
-                    if ( !toSendChunks.isEmpty() ) {
-                        this.chunkLoadQueue.addAll( toSendChunks );
+                //Du muisst auf record memory gehen sonst siehst du net woran es liegtah wtf xd ya 100% was mit chunks zu tun
+                final int chunkCount = index; // upsie
+                this.server.getScheduler().execute( () -> {
+                    if ( chunkCount > 0 ) {
+                        // Wir möchten nicht eine ArrayList erstellen, nein danke IntelliJ
+                        //noinspection ALL
+                        for ( int i = 0; i < chunkCount; i++ ) {
+                            this.chunkLoadQueue.enqueue( this.chunksInRadius[i] );
+                        }
                     }
 
-                    Iterator<Long> iterator = this.loadedChunks.iterator();
+                    LongIterator iterator = this.loadedChunks.iterator();
                     while ( iterator.hasNext() ) {
-                        long hash = iterator.next();
+                        long hash = iterator.nextLong();
                         int x = Utils.fromHashX( hash );
                         int z = Utils.fromHashZ( hash );
 
@@ -286,25 +292,23 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                         }
                     }
 
-                    Iterator<Long> loadingIterator = this.loadingChunks.iterator();
+                    LongIterator loadingIterator = this.loadingChunks.iterator();
                     while ( loadingIterator.hasNext() ) {
-                        Long hash = loadingIterator.next();
-                        if ( hash != null ) {
-                            int x = Utils.fromHashX( hash );
-                            int z = Utils.fromHashZ( hash );
+                        long hash = loadingIterator.nextLong();
+                        int x = Utils.fromHashX( hash );
+                        int z = Utils.fromHashZ( hash );
 
-                            if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
-                                loadingIterator.remove();
-                            }
+                        if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
+                            loadingIterator.remove();
                         }
                     }
-                }, 0, 0, false );
+                } );
             } catch ( Exception e ) {
                 e.printStackTrace();
             } finally {
                 this.requestedChunks = false;
             }
-        }, 0, 0, true );
+        });
     }
 
     public CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ ) {
@@ -313,7 +317,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
             this.loadingChunks.add( chunkHash );
             return this.getWorld().requestChunk( chunkX, chunkZ, this.dimension ).whenCompleteAsync( ( chunk, throwable ) -> {
-                this.chunkSendQueue.offer( chunkHash );
+                this.chunkSendQueue.enqueue( chunkHash );
             }, server.getScheduler() );
         } catch ( Throwable throwable ) {
             throwable.printStackTrace();
@@ -327,16 +331,17 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void sendChunk( Chunk chunk ) {
-        this.server.getScheduler().addTask( () -> {
+        this.server.getScheduler().executeAsync( () -> {
             this.sendNetworkChunkPublisher();
+            //maybe weil ich es direct sende? nein nein
             this.playerConnection.sendPacket( chunk.createLevelChunkPacket(), true );
 
-            this.server.getScheduler().addTask( () -> {
+            this.server.getScheduler().execute( () -> {
                 long chunkHash = chunk.toChunkHash();
                 this.loadingChunks.remove( chunkHash );
                 this.loadedChunks.add( chunkHash );
-            }, 0, 0, false );
-        }, 0, 0, true );
+            });
+        });
     }
 
     public void sendNetworkChunkPublisher() {
@@ -394,6 +399,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public void setViewDistance( int viewDistance ) {
         this.viewDistance = viewDistance;
+        this.chunksInRadius = new long[viewDistance * viewDistance * 4];
 
         this.joinServer();
 

@@ -25,12 +25,16 @@ public class LevelChunkPacket extends Packet {
 
     @Override
     public void write( BinaryStream stream ) {
-        super.write(stream);
-        stream.writeSignedVarInt( this.chunkX );
-        stream.writeSignedVarInt( this.chunkZ );
-        stream.writeUnsignedVarInt( this.subChunkCount );
-        stream.writeBoolean( false );
-        stream.writeUnsignedVarInt( this.data.readableBytes() );
-        stream.writeBuffer( this.data );
+        try {
+            super.write(stream);
+            stream.writeSignedVarInt( this.chunkX );
+            stream.writeSignedVarInt( this.chunkZ );
+            stream.writeUnsignedVarInt( this.subChunkCount );
+            stream.writeBoolean( false );
+            stream.writeUnsignedVarInt( this.data.readableBytes() );
+            stream.writeBuffer( this.data );
+        } finally {
+            this.data.release();
+        }
     }
 }

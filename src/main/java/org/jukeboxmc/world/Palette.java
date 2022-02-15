@@ -1,11 +1,15 @@
 package org.jukeboxmc.world;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Utils;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * @author Kevims KCodeYT
@@ -13,38 +17,61 @@ import java.util.*;
  */
 public class Palette {
 
-    private final int[] values;
+    private static final ThreadLocal<Integer[]> INDICES = ThreadLocal.withInitial( () -> new Integer[4096] );
+    private static final int PALETTE_SIZE = 4096;
+    private static final Integer ZERO = 0;
+
+    private int[] values;
+    private int first;
+    private boolean allEqual;
 
     public Palette( int first ) {
-        Arrays.fill( this.values = new int[4096], first );
+        this.setFirst( first );
     }
 
     public void setFirst( int first ) {
-        Arrays.fill( this.values, first );
+        this.values = null;
+        this.first = first;
+        this.allEqual = true;
     }
 
     public void set( int index, int value ) {
+        if ( this.allEqual && this.first == value ) {
+            return;
+        }
+
+        if ( this.allEqual ) {
+            this.allEqual = false;
+            Arrays.fill( this.values = new int[PALETTE_SIZE], this.first );
+        }
+
         this.values[index] = value;
     }
 
     public int get( int index ) {
+        if ( this.allEqual ) {
+            return this.first;
+        }
+
         return this.values[index];
     }
 
     public void copyTo( Palette palette ) {
-        System.arraycopy( this.values, 0, palette.values, 0, this.values.length );
+        if ( this.allEqual && palette.allEqual ) {
+            palette.values = this.values;
+        } else if ( this.allEqual && !palette.allEqual ) {
+            palette.values = this.values;
+            palette.allEqual = true;
+        } else if ( !this.allEqual && palette.allEqual ) {
+            System.arraycopy( this.values, 0, palette.values = new int[PALETTE_SIZE], 0, this.values.length );
+            palette.allEqual = false;
+        } else {
+            System.arraycopy( this.values, 0, palette.values = new int[PALETTE_SIZE], 0, this.values.length );
+        }
     }
 
     public boolean isAllEqual() {
-        int first = this.values[0];
-
-        for ( int i = 1; i < this.values.length; i++ ) {
-            if ( first != this.values[i] ) {
-                return false;
-            }
-        }
-
-        return true;
+        return this.allEqual;
     }
 
     @Override
@@ -60,35 +87,43 @@ public class Palette {
         return Arrays.hashCode( values );
     }
 
-    public Map<Integer, Integer> writeTo( BinaryStream binaryStream, WriteType writeType ) {
-        Integer foundIndex = 0;
-        int nextIndex = 0;
-        int lastRuntimeId = -1;
+    //Dachte hier fehlt vlt auch irgendwo nh .release hmm eigentlich nicht, aber sollte auch nicht daran liegen
 
-        final int[] indices = new int[4096];
-        final Map<Integer, Integer> indexList = new LinkedHashMap<>();
-        final List<Integer> runtimeIds = new ArrayList<>();
+    public Int2ObjectMap<Integer> writeTo( BinaryStream binaryStream, WriteType writeType ) {
+        final Integer[] indices = INDICES.get();
+        final Int2ObjectMap<Integer> indexList = new Int2ObjectOpenHashMap<>();
+        final IntList runtimeIds = new IntArrayList();
 
-        for ( short index = 0; index < this.values.length; index++ ) {
-            final int runtimeId = this.values[index];
-            if ( runtimeId != lastRuntimeId ) {
-                foundIndex = indexList.get( runtimeId );
-                if ( foundIndex == null ) {
-                    runtimeIds.add( runtimeId );
-                    indexList.put( runtimeId, nextIndex );
-                    foundIndex = nextIndex;
-                    nextIndex++;
+        if ( this.allEqual ) {
+            runtimeIds.add( this.first );
+            indexList.put( this.first, ZERO );
+            Arrays.fill( indices, ZERO );
+        } else {
+            Integer foundIndex = 0;
+            Integer nextIndex = 0;
+            int lastRuntimeId = -1;
+
+            for ( short index = 0; index < this.values.length; index++ ) {
+                final int runtimeId = this.values[index];
+                if ( runtimeId != lastRuntimeId ) {
+                    foundIndex = indexList.get( runtimeId );
+                    if ( foundIndex == null ) {
+                        runtimeIds.add( runtimeId );
+                        indexList.put( runtimeId, nextIndex );
+                        foundIndex = nextIndex;
+                        nextIndex++;
+                    }
+
+                    lastRuntimeId = runtimeId;
                 }
 
-                lastRuntimeId = runtimeId;
+                indices[index] = foundIndex;
             }
-
-            indices[index] = foundIndex;
         }
 
         Palette.writeWords( binaryStream, (int) Math.floor( 32 / ( Utils.log2( indexList.size() ) + 1D ) ), indices );
 
-        switch(writeType) {
+        switch ( writeType ) {
             case WRITE_NETWORK:
                 binaryStream.writeSignedVarInt( runtimeIds.size() );
                 for ( int runtimeId : runtimeIds )
@@ -139,7 +174,7 @@ public class Palette {
         return indices;
     }
 
-    public static void writeWords( BinaryStream binaryStream, int version, int[] words ) {
+    public static void writeWords( BinaryStream binaryStream, int version, Integer[] words ) {
         PaletteVersion paletteVersion = null;
         for ( PaletteVersion value : PaletteVersion.values() ) {
             if ( value.words <= version && value.writable ) {
@@ -157,7 +192,7 @@ public class Palette {
         int bits = 0;
         int wordsWritten = 0;
 
-        for ( int word : words ) {
+        for ( Integer word : words ) {
             if ( wordsWritten == paletteVersion.words ) {
                 binaryStream.writeLInt( bits );
                 bits = 0;
@@ -171,7 +206,7 @@ public class Palette {
         binaryStream.writeLInt( bits );
     }
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    @RequiredArgsConstructor ( access = AccessLevel.PRIVATE )
     private enum PaletteVersion {
         P1( 1, 32, true ),
         P2( 2, 16, true ),

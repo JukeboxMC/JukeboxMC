@@ -12,7 +12,6 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Utils;
-import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Palette;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
@@ -25,7 +24,7 @@ import java.util.Map;
  * @author LucGamesYT
  * @version 1.0
  */
-public class LevelDBChunk {
+public abstract class LevelDBChunk {
 
     protected boolean populated = true;
 
@@ -33,9 +32,6 @@ public class LevelDBChunk {
     protected short[] height = new short[16 * 16];
 
     protected LevelDBChunk() {
-        for ( int i = 0; i < this.biomes.length; i++ ) {
-            this.biomes[i] = new Palette( Biome.PLAINS.getId() );
-        }
     }
 
     public void loadSection( SubChunk chunk, byte[] chunkData ) {
@@ -120,8 +116,10 @@ public class LevelDBChunk {
         Palette last = null;
         int paletteVer;
         int biomeHeader;
+        Palette biomePalette;
 
-        for ( Palette biomePalette : this.biomes ) {
+        for ( int y = -4; y < this.biomes.length - 4; y++ ) {
+            biomePalette = this.getBiomePalette( y << 4 );
             biomeHeader = stream.readByte() & 0xFF;
             paletteVer = biomeHeader >> 1;
 
@@ -152,6 +150,8 @@ public class LevelDBChunk {
             }
         }
     }
+
+    public abstract Palette getBiomePalette( int y );
 
     public void setPopulated( boolean populated ) {
         this.populated = populated;

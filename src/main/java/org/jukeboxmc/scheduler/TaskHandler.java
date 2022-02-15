@@ -33,6 +33,7 @@ public class TaskHandler {
     private long nextRunTick;
 
     private boolean cancelled;
+    private boolean runOnce;
 
     public TaskHandler( Runnable task, int taskId, boolean async ) {
         this.task = task;

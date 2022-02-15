@@ -147,7 +147,7 @@ public enum ItemType {
     DIAMOND_ORE( new ItemDiamondOre() ),
     DIAMOND_BLOCK( new ItemDiamondBlock() ),
     CRAFTING_BLOCK( new ItemCraftingTable() ),
-    WHEAT_BLOCK( new ItemWheatBlock() ), //Maybe WHEAT
+    WHEAT_BLOCK( new ItemWheatBlock() ),
     FARMLAND( new ItemFarmland() ),
     FURNACE( new ItemFurnace() ),
     STANDING_SIGN( new ItemStandingSign() ),
@@ -924,9 +924,9 @@ public enum ItemType {
     STRIPPED_WARPED_HYPHAE( new ItemStrippedWarpedHyphae() ),
     CHISELED_NETHER_BRICKS( new ItemChiseledNetherBricks() ),
     CRACKED_NETHER_BRICKS( new ItemCrackedNetherBricks() ),
-    QUARTZ_BRICKS( new ItemQuartzBricks() ), //To here are blocks
+    QUARTZ_BRICKS( new ItemQuartzBricks() ),
     GLASS_PANE( new ItemGlassPane() ),
-    IRON_SHOVEL( new ItemIronShovel() ), //From here items
+    IRON_SHOVEL( new ItemIronShovel() ),
     IRON_PICKAXE( new ItemIronPickaxe() ),
     IRON_AXE( new ItemIronAxe() ),
     FLINT_AND_STEEL( new ItemFlintAndSteel() ),
@@ -1027,7 +1027,7 @@ public enum ItemType {
     COOKIE( new ItemCookie() ),
     MAP( new ItemFilledMap() ),
     SHEARS( new ItemShears() ),
-    MELON( new ItemMelonSlice() ), //Maybe wrong
+    MELON( new ItemMelonSlice() ),
     PUMPKIN_SEEDS( new ItemPumpkinSeeds() ),
     MELON_SEEDS( new ItemMelonSeeds() ),
     BEEF( new ItemBeef() ),
@@ -1199,7 +1199,7 @@ public enum ItemType {
     LLAMA_SPAWN_EGG( new ItemLlamaSpawnEgg() ),
     SKELETON_HORSE_SPAWN_EGG( new ItemSkeletonHorseSpawnEgg() ),
     BLAZE_SPAWN_EGG( new ItemBlazeSpawnEgg() ),
-    VEX_SPAWN_EGG( new ItemVexSpawnEgg() ), //
+    VEX_SPAWN_EGG( new ItemVexSpawnEgg() ),
     SQUID_SPAWN_EGG( new ItemSquidSpawnEgg() ),
     ORANGE_DYE( new ItemOrangeDye() ),
     VILLAGER_SPAWN_EGG( new ItemVillagerSpawnEgg() ),

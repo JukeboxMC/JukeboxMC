@@ -47,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author LucGamesYT
@@ -69,7 +68,6 @@ public class World {
     private int worldTime;
 
     private ChunkCache chunkCache;
-    private final Queue<CompletableFuture<Chunk>> chunkLoadQueue = new ArrayBlockingQueue<>( 4096 );
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
@@ -99,17 +97,6 @@ public class World {
 
     public void update( long currentTick ) {
         int loading = 0;
-        while ( !this.chunkLoadQueue.isEmpty() && ++loading < 25 ) {
-            CompletableFuture<Chunk> chunkFuture = this.chunkLoadQueue.poll();
-
-            this.server.getScheduler().addTask( () -> {
-                try {
-                    //chunkFuture.run();
-                } catch ( Throwable throwable ) {
-                    throwable.printStackTrace();
-                }
-            }, 0, 0, true );
-        }
 
         if ( this.getGameRule( GameRule.DO_DAYLIGHT_CYCLE ) ) {
             this.worldTime++;
@@ -327,6 +314,10 @@ public class World {
         this.chunkCache.clearChunks();
     }
 
+    public Collection<Chunk> getChunks( Dimension dimension ) {
+        return this.chunkCache.getChunks( dimension );
+    }
+
     public synchronized CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ, Dimension dimension ) {
         Chunk foundChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
         if ( foundChunk != null ) {
@@ -339,7 +330,7 @@ public class World {
         }
         CompletableFuture<Chunk> chunkFuture = CompletableFuture.supplyAsync( () -> {
             return this.loadChunkAsync( chunkX, chunkZ, dimension );
-        }, this.server.getScheduler() );
+        }, this.server.getScheduler().getThreadedExecutor() );
         chunkFuture.whenCompleteAsync( ( chunk, throwable ) -> {
             this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
             this.chunkCache.putChunk( chunk, dimension );
@@ -805,6 +796,14 @@ public class World {
     public Collection<BlockEntity> getBlockEntities( Vector location, Dimension dimension ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
         return chunk.getBlockEntities();
+    }
+
+    public Collection<BlockEntity> getBlockEntities( Dimension dimension ) {
+        Set<BlockEntity> blockEntities = new HashSet<>();
+        for ( Chunk chunk : this.getChunks( dimension ) ) {
+            blockEntities.addAll( chunk.getBlockEntities() );
+        }
+        return blockEntities;
     }
 
     //========= Biome =========

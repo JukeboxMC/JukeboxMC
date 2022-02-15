@@ -9,6 +9,7 @@ import org.iq80.leveldb.DB;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Dimension;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -84,6 +85,10 @@ public class ChunkCache {
 
     public synchronized void clearChunks() {
         this.cachedChunks.clear();
+    }
+
+    public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
+        return this.cachedChunks.get( dimension ).values();
     }
 
     public synchronized void saveAll() {

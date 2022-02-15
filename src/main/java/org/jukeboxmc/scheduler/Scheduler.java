@@ -1,6 +1,7 @@
 package org.jukeboxmc.scheduler;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lombok.Getter;
 import org.jukeboxmc.Server;
 
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ public class Scheduler implements Executor {
     private static Scheduler instance;
     private final Server server;
 
+    @Getter
     private final ExecutorService threadedExecutor;
 
     private final Map<Integer, TaskHandler> taskHandlerMap = new ConcurrentHashMap<>();
@@ -35,6 +37,45 @@ public class Scheduler implements Executor {
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
         builder.setNameFormat( "JukeboxMC Scheduler Executor" );
         this.threadedExecutor = new ThreadPoolExecutor( Runtime.getRuntime().availableProcessors(), Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new SynchronousQueue<>(), builder.build() );
+    }
+
+    public void onTick( long currentTick ) {
+        TaskHandler task;
+        while ( ( task = this.pendingTasks.poll() ) != null ) {
+            long tick = Math.max( currentTick, task.getNextRunTick() );
+            this.assignedTasks.computeIfAbsent( tick, integer -> new LinkedList<>() ).add( task );
+        }
+
+        LinkedList<TaskHandler> queued = this.assignedTasks.remove( currentTick );
+        if ( queued == null ) return;
+
+        for ( TaskHandler taskHandler : queued ) {
+            this.runTask( taskHandler, currentTick );
+        }
+
+    }
+
+    private void runTask( TaskHandler taskHandler, long currentTick ) {
+        if ( taskHandler.isCancelled() ) {
+            this.taskHandlerMap.remove( taskHandler.getTaskId() );
+            return;
+        }
+
+        if ( taskHandler.isAsync() ) {
+            this.threadedExecutor.execute( () -> taskHandler.onRun( currentTick ) );
+        } else {
+            taskHandler.onRun( currentTick );
+        }
+
+        if ( taskHandler.calculateNextTick( currentTick ) ) {
+            this.pendingTasks.add( taskHandler );
+            return;
+        }
+
+        TaskHandler removed = this.taskHandlerMap.remove( taskHandler.getTaskId() );
+        if ( removed != null ) {
+            removed.cancel();
+        }
     }
 
     public static Scheduler getInstance() {
@@ -73,7 +114,7 @@ public class Scheduler implements Executor {
         return this.addTask( task, delay, period, async );
     }
 
-    public TaskHandler addTask( Runnable runnable, int delay, int period, boolean async ) {
+    private TaskHandler addTask( Runnable runnable, int delay, int period, boolean async ) {
         if ( delay < 0 || period < 0 ) {
             throw new RuntimeException( "Attempted to register a task with negative delay or period!" );
         }
@@ -96,44 +137,6 @@ public class Scheduler implements Executor {
         return handler;
     }
 
-    public void onTick( long currentTick ) {
-        TaskHandler task;
-        while ( ( task = this.pendingTasks.poll() ) != null ) {
-            long tick = Math.max( currentTick, task.getNextRunTick() );
-            this.assignedTasks.computeIfAbsent( tick, integer -> new LinkedList<>() ).add( task );
-        }
-
-        LinkedList<TaskHandler> queued = this.assignedTasks.remove( currentTick );
-        if ( queued == null ) return;
-
-        for ( TaskHandler taskHandler : queued ) {
-            this.runTask( taskHandler, currentTick );
-        }
-    }
-
-    private void runTask( TaskHandler taskHandler, long currentTick ) {
-        if ( taskHandler.isCancelled() ) {
-            this.taskHandlerMap.remove( taskHandler.getTaskId() );
-            return;
-        }
-
-        if ( taskHandler.isAsync() ) {
-            this.threadedExecutor.execute( () -> taskHandler.onRun( currentTick ) );
-        } else {
-            taskHandler.onRun( currentTick );
-        }
-
-        if ( taskHandler.calculateNextTick( currentTick ) ) {
-            this.pendingTasks.add( taskHandler );
-            return;
-        }
-
-        TaskHandler removed = this.taskHandlerMap.remove( taskHandler.getTaskId() );
-        if ( removed != null ) {
-            removed.cancel();
-        }
-    }
-
     public void shutdown() {
         this.server.getLogger().debug( "Scheduler shutdown initialized!" );
         this.threadedExecutor.shutdown();
@@ -154,6 +157,7 @@ public class Scheduler implements Executor {
 
     @Override
     public void execute( Runnable command ) {
-        this.addTask( command, 0, 0, false );
+        // Oh warum es wohl im main thread läuft
+        Server.getInstance().addToMainThread( command );
     }
 }
