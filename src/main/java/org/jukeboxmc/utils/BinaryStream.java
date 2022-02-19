@@ -53,6 +53,10 @@ public class BinaryStream {
         return this.buffer.readByte();
     }
 
+    public short readUnsignedByte() {
+        return this.buffer.readUnsignedByte();
+    }
+
     public void writeByte( int value ) {
         this.buffer.writeByte( value );
     }
@@ -439,8 +443,9 @@ public class BinaryStream {
             if ( nbtData != null && !nbtData.isEmpty() ) {
                 stream.writeShort( -1 );
                 stream.writeByte( 1 );
-                NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream );
-                networkWriter.writeTag( nbtData );
+                try (NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream )){
+                    networkWriter.writeTag( nbtData );
+                }
             } else {
                 userData.writeShortLE( 0 );
             }
@@ -480,10 +485,12 @@ public class BinaryStream {
                 stream.writeShort( -1 );
                 stream.writeByte( 1 );
 
-                NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream );
-                ByteArrayInputStream inputStream = new ByteArrayInputStream( nbtData );
-                NBTInputStream readerLE = NbtUtils.createReaderLE( inputStream );
-                networkWriter.writeTag( readerLE.readTag() );
+                try (NBTOutputStream networkWriter = NbtUtils.createWriterLE( stream )){
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream( nbtData );
+                    try (NBTInputStream readerLE = NbtUtils.createReaderLE( inputStream )){
+                        networkWriter.writeTag( readerLE.readTag() );
+                    }
+                }
             } else {
                 stream.writeShort( 0 );
             }

@@ -1,5 +1,11 @@
 package org.jukeboxmc.block;
 
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jukeboxmc.JukeboxMC;
@@ -10,8 +16,9 @@ import org.jukeboxmc.nbt.NbtType;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
@@ -23,13 +30,11 @@ import java.util.zip.GZIPInputStream;
 public class BlockPalette {
 
     private static final AtomicInteger RUNTIME_COUNTER = new AtomicInteger( 0 );
-    public static final Map<Integer, Block> RUNTIME_TO_BLOCK = new LinkedHashMap<>();
-    public static final Map<Integer, NbtMap> BLOCK_PALETTE = new LinkedHashMap<>();
+    public static final Int2ObjectMap<Block> RUNTIME_TO_BLOCK = new Int2ObjectOpenHashMap<>(8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
+    public static final Int2ObjectMap<NbtMap> BLOCK_PALETTE = new Int2ObjectLinkedOpenHashMap<>(8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
 
-    public static Map<BlockData, Integer> TEST = new HashMap<>();
-    public static Map<String, Integer> DEFAULTS = new HashMap<>();
-
-    public static final List<BlockData> BLOCK_DATA = new CopyOnWriteArrayList<>();
+    public static Object2IntMap<BlockData> BLOCK_DATA = new Object2IntOpenHashMap<>(8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
+    public static Object2IntMap<String> DEFAULTS = new Object2IntOpenHashMap<>(8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
 
     public static void init() {
         InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "block_palette.nbt" );
@@ -40,7 +45,7 @@ public class BlockPalette {
                     int runtimeId = RUNTIME_COUNTER.getAndIncrement();
                     BLOCK_PALETTE.put( runtimeId, blockMap );
 
-                    TEST.put( new BlockData( blockMap.getString( "name" ), blockMap.getCompound( "states" ) ), runtimeId );
+                    BLOCK_DATA.put( new BlockData( blockMap.getString( "name" ), blockMap.getCompound( "states" ) ), runtimeId );
                     DEFAULTS.putIfAbsent( blockMap.getString( "name" ), runtimeId );
                 }
             } catch ( IOException e ) {
@@ -54,11 +59,11 @@ public class BlockPalette {
     }
 
     public static int getRuntimeId( String identifier, NbtMap states ) {
-        return TEST.getOrDefault( new BlockData( identifier, states ), 134 );
+        return BLOCK_DATA.getOrDefault( new BlockData( identifier, states ), 134 );
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
-        for ( Integer runtimeId : BLOCK_PALETTE.keySet() ) {
+        for ( int runtimeId : BLOCK_PALETTE.keySet() ) {
             if ( BLOCK_PALETTE.get( runtimeId ).equals( blockMap ) ) {
                 return runtimeId;
             }

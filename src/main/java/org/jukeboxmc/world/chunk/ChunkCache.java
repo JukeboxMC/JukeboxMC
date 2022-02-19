@@ -91,6 +91,14 @@ public class ChunkCache {
         return this.cachedChunks.get( dimension ).values();
     }
 
+    public Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> getCachedChunks() {
+        return this.cachedChunks;
+    }
+
+    public Object2ObjectMap<Dimension, Long2ObjectMap<CompletableFuture<Chunk>>> getChunkFutures() {
+        return this.chunkFutures;
+    }
+
     public synchronized void saveAll() {
         for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> dimensionEntry : this.cachedChunks.entrySet() ) {
             for ( Chunk chunk : dimensionEntry.getValue().values() ) {

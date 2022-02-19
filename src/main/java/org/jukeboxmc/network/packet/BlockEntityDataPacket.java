@@ -48,8 +48,7 @@ public class BlockEntityDataPacket extends Packet {
         stream.writeUnsignedVarInt( this.blockPosition.getBlockY() );
         stream.writeSignedVarInt( this.blockPosition.getBlockZ() );
 
-        try {
-            NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( new ByteBufOutputStream( stream.getBuffer() ) );
+        try (NBTOutputStream networkWriter = NbtUtils.createNetworkWriter( new ByteBufOutputStream( stream.getBuffer() ) )){
             networkWriter.writeTag( this.nbt );
         } catch ( IOException e ) {
             e.printStackTrace();

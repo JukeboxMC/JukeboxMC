@@ -3,7 +3,6 @@ package org.jukeboxmc.world.chunk;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import lombok.ToString;
@@ -11,7 +10,6 @@ import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
@@ -24,9 +22,9 @@ import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
-import org.jukeboxmc.world.Palette;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
+import org.jukeboxmc.world.palette.Palette;
 
 import java.io.IOException;
 import java.util.*;
@@ -118,18 +116,18 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return Biome.PLAINS;
         }
-        return Biome.findById( this.getBiomePalette( y ).get( Utils.getIndex( x & 15, y & 15, z & 15 ) ) );
+        return this.getBiomePalette( y ).get( Utils.getIndex( x & 15, y & 15, z & 15 ) );
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.getBiomePalette( y ).set( Utils.getIndex( x, y, z ), biome.getId() );
+        this.getBiomePalette( y ).set( Utils.getIndex( x, y, z ), biome );
     }
 
     @Override
-    public Palette getBiomePalette( int y ) {
+    public Palette<Biome> getBiomePalette( int y ) {
         if ( y < -64 || y > 319 ) {
             return null;
         }
@@ -137,7 +135,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.biomes[y0] == null ) {
-                this.biomes[y0] = new Palette( Biome.OCEAN.getId() );
+                this.biomes[y0] = new Palette<>( Biome.OCEAN );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -153,7 +151,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.subChunks[y0] == null ) {
-                this.biomes[y0] = new Palette( Biome.OCEAN.getId() );
+                this.biomes[y0] = new Palette<>( Biome.OCEAN );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -261,14 +259,18 @@ public class Chunk extends LevelDBChunk {
 
 
         BinaryStream blockEntityBuffer = new BinaryStream();
-        NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( blockEntityBuffer.getBuffer() ) );
-        for ( BlockEntity blockEntity : this.getBlockEntities() ) {
-            try {
-                NbtMap build = blockEntity.toCompound().build();
-                networkWriter.writeTag( build );
-            } catch ( IOException e ) {
-                e.printStackTrace();
+
+        try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( blockEntityBuffer.getBuffer() ) ) ) {
+            for ( BlockEntity blockEntity : this.getBlockEntities() ) {
+                try {
+                    NbtMap build = blockEntity.toCompound().build();
+                    networkWriter.writeTag( build );
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
             }
+        } catch ( IOException e ) {
+            e.printStackTrace();
         }
 
         if ( blockEntityBuffer.readableBytes() > 0 ) {
@@ -284,26 +286,13 @@ public class Chunk extends LevelDBChunk {
             heightAndBiomesBuffer.writeLShort( height );
         }
 
-        Palette last = null;
-
-        for ( Palette biomePalette : this.biomes ) {
+        Palette<Biome> last = null;
+        for ( Palette<Biome> biomePalette : this.biomes ) {
             if ( biomePalette == null ) {
                 break;
             }
 
-            if ( biomePalette.equals( last ) ) {
-                heightAndBiomesBuffer.writeByte( 0x7F << 1 | 1 );
-                continue;
-            }
-
-            last = biomePalette;
-
-            if ( biomePalette.isAllEqual() ) {
-                heightAndBiomesBuffer.writeByte( 1 );
-                continue;
-            }
-
-            biomePalette.writeTo( heightAndBiomesBuffer, Palette.WriteType.WRITE_DISK );
+            biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
         }
 
         writeBatch.put( heightAndBiomesKey, heightAndBiomesBuffer.array() );
@@ -325,54 +314,49 @@ public class Chunk extends LevelDBChunk {
         buffer.writeByte( (byte) subY );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            Int2ObjectMap<Integer> runtimeIds = subChunk.blocks[layer].writeTo( buffer, Palette.WriteType.NONE );
-            buffer.writeLInt( runtimeIds.size() );
-
-            for ( int runtimeId : runtimeIds.keySet() ) {
-                try {
-                    NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer.getBuffer() ) );
-                    networkWriter.writeTag( BlockPalette.getBlockNBT( runtimeId ) );
-                } catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-            }
+            subChunk.blocks[layer].writeToStoragePersistent( buffer, Block::getBlockStates );
         }
+
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, buffer.array() );
     }
 
     public BinaryStream writeChunk() {
-        BinaryStream binaryStream = new BinaryStream();
+        BinaryStream buffer = new BinaryStream();
         for ( SubChunk subChunk : this.subChunks ) {
             if ( subChunk != null ) {
-                subChunk.writeTo( binaryStream );
+                subChunk.writeToNetwork( buffer );
             }
         }
 
-        for ( Palette biomePalette : this.biomes ) {
+        for ( Palette<Biome> biomePalette : this.biomes ) {
             if ( biomePalette == null ) {
                 break;
             }
 
-            biomePalette.writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
+            biomePalette.writeToNetwork( buffer, Biome::getId );
         }
 
-        binaryStream.writeByte( 0 ); // education edition - border blocks
+        buffer.writeByte( 0 ); // education edition - border blocks
 
         List<BlockEntity> blockEntities = this.getBlockEntities();
         if ( !blockEntities.isEmpty() ) {
-            NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( binaryStream.getBuffer() ) );
-
-            for ( BlockEntity blockEntity : blockEntities ) {
-                try {
-                    NbtMap build = blockEntity.toCompound().build();
-                    writer.writeTag( build );
-                } catch ( IOException e ) {
-                    e.printStackTrace();
+            try ( NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( buffer.getBuffer() ) ) ) {
+                for ( BlockEntity blockEntity : blockEntities ) {
+                    try {
+                        NbtMap build = blockEntity.toCompound().build();
+                        writer.writeTag( build );
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch ( IOException e ) {
+                e.printStackTrace();
             }
+
         }
-        return binaryStream;
+
+        return buffer;
     }
 
     public int getAvailableSubChunks() {

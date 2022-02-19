@@ -4,12 +4,13 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Utils;
-import org.jukeboxmc.world.Palette;
+import org.jukeboxmc.world.palette.Palette;
 
 import java.util.Collection;
 
@@ -19,12 +20,12 @@ import java.util.Collection;
  */
 public class SubChunk {
 
-    private static final int AIR_RUNTIME = BlockType.AIR.getBlock().getRuntimeId();
+    private static final BlockAir AIR = BlockType.AIR.getBlock();
 
     @Getter
     private final int y;
 
-    public Palette[] blocks;
+    public Palette<Block>[] blocks;
     private final Int2ObjectMap<BlockEntity> blockEntities;
 
     public SubChunk( int subChunkY ) {
@@ -33,29 +34,28 @@ public class SubChunk {
         this.blocks = new Palette[Chunk.CHUNK_LAYERS];
         this.blockEntities = new Int2ObjectOpenHashMap<>();
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            this.blocks[layer] = new Palette( AIR_RUNTIME );
+            this.blocks[layer] = new Palette<>( AIR.clone() );
         }
     }
 
     public void setBlock( int index, int layer, int runtimeId ) {
-        this.blocks[layer].set( index, runtimeId );
+        this.blocks[layer].set( index, BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone() );
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
-        this.blocks[layer].set( Utils.getIndex( x, y, z ), runtimeId );
+        this.blocks[layer].set( Utils.getIndex( x, y, z ), BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone() );
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
-        this.blocks[layer].set( Utils.getIndex( x, y, z ), block.getRuntimeId() );
+        this.blocks[layer].set( Utils.getIndex( x, y, z ), block.clone() );
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {
-        return this.blocks[layer].get( Utils.getIndex( x, y, z ) );
+        return this.blocks[layer].get( Utils.getIndex( x, y, z ) ).getRuntimeId();
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        int runtimeId = this.blocks[layer].get( Utils.getIndex( x, y, z ) );
-        return BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
+        return this.blocks[layer].get( Utils.getIndex( x, y, z ) ).clone();
     }
 
     public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
@@ -74,12 +74,12 @@ public class SubChunk {
         return this.blockEntities.values();
     }
 
-    public void writeTo( BinaryStream binaryStream ) {
-        binaryStream.writeByte( 8 );
-        binaryStream.writeByte( Chunk.CHUNK_LAYERS );
+    public void writeToNetwork( BinaryStream buffer ) {
+        buffer.writeByte( 8 );
+        buffer.writeByte( Chunk.CHUNK_LAYERS );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ )
-            this.blocks[layer].writeTo( binaryStream, Palette.WriteType.WRITE_NETWORK );
+            this.blocks[layer].writeToNetwork( buffer, Block::getRuntimeId );
     }
 
 }

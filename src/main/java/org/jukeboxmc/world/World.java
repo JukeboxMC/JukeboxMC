@@ -11,7 +11,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
+import org.iq80.leveldb.ReadOptions;
 import org.iq80.leveldb.impl.Iq80DBFactory;
+import org.iq80.leveldb.impl.SnapshotImpl;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
@@ -73,7 +75,7 @@ public class World {
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
     private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
-    private final ExecutorService chunkThread = Executors.newWorkStealingPool();
+    private final ExecutorService chunkThread = Executors.newSingleThreadExecutor();
 
     public World( String name, Server server, WorldGenerator worldGenerator ) {
         this.worldFolder = new File( "./worlds/" + name );
@@ -96,8 +98,6 @@ public class World {
     }
 
     public void update( long currentTick ) {
-        int loading = 0;
-
         if ( this.getGameRule( GameRule.DO_DAYLIGHT_CYCLE ) ) {
             this.worldTime++;
             while ( this.worldTime >= 24000 ) {
@@ -157,8 +157,7 @@ public class World {
             stream.read( data );
 
             ByteBuf allocate = Utils.allocate( data );
-            try {
-                NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
+            try ( NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) ) ) {
                 NbtMap nbt = (NbtMap) networkReader.readTag();
 
                 this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ), nbt.getInt( "SpawnZ", 0 ) );
@@ -186,8 +185,11 @@ public class World {
                 byte[] data = new byte[stream.available()];
                 stream.read( data );
                 ByteBuf allocate = Utils.allocate( data );
-                NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) );
-                compound = ( (NbtMap) reader.readTag() ).toBuilder();
+                try ( NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) ) ) {
+                    compound = ( (NbtMap) reader.readTag() ).toBuilder();
+                }
+                ;
+
             }
             levelDat.delete();
         } else {
@@ -221,19 +223,25 @@ public class World {
             stream.write( new byte[8] );
 
             ByteBuf data = PooledByteBufAllocator.DEFAULT.heapBuffer();
-            NBTOutputStream writer = NbtUtils.createWriterLE( new ByteBufOutputStream( data ) );
-            writer.writeTag( compound.build() );
-            stream.write( data.array(), data.arrayOffset(), data.readableBytes() );
-            data.release();
+            try ( NBTOutputStream writer = NbtUtils.createWriterLE( new ByteBufOutputStream( data ) ) ) {
+                writer.writeTag( compound.build() );
+                stream.write( data.array(), data.arrayOffset(), data.readableBytes() );
+            } finally {
+                data.release();
+            }
+
         }
     }
 
     private Chunk loadChunkAsync( int chunkX, int chunkZ, Dimension dimension ) {
+        SnapshotImpl snapshot = (SnapshotImpl) this.db.getSnapshot();
         try {
+            ReadOptions readOptions = new ReadOptions().snapshot( snapshot );
+
             Chunk chunk = new Chunk( this, chunkX, chunkZ, dimension );
-            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ) );
+            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ), readOptions );
             if ( version == null ) {
-                version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x76 ) );
+                version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x76 ), readOptions );
             }
 
             if ( version == null ) {
@@ -248,33 +256,34 @@ public class World {
                 return chunk;
             }
 
-            byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x36 ) );
+            byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x36 ), readOptions );
 
             chunk.chunkVersion = version[0];
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
             for ( int sectionY = -4; sectionY < 20; sectionY++ ) {
-                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ) );
+                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ), readOptions );
 
                 if ( chunkData != null ) {
                     chunk.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                 }
             }
 
-            byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ) );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ), readOptions );
             if ( blockEntities != null ) {
                 chunk.loadBlockEntities( chunk, blockEntities );
             }
 
-            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ) );
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ), readOptions );
             if ( heightAndBiomes != null ) {
                 chunk.loadHeightAndBiomes( heightAndBiomes );
             }
-
             return chunk;
         } catch ( Throwable throwable ) {
             throwable.printStackTrace();
             return new Chunk( this, chunkX, chunkZ, dimension );
+        } finally {
+            snapshot.close();
         }
     }
 
@@ -330,7 +339,7 @@ public class World {
         }
         CompletableFuture<Chunk> chunkFuture = CompletableFuture.supplyAsync( () -> {
             return this.loadChunkAsync( chunkX, chunkZ, dimension );
-        }, this.server.getScheduler().getThreadedExecutor() );
+        }, this.chunkThread );
         chunkFuture.whenCompleteAsync( ( chunk, throwable ) -> {
             this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
             this.chunkCache.putChunk( chunk, dimension );

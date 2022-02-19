@@ -12,13 +12,12 @@ import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtUtils;
 import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.utils.Utils;
-import org.jukeboxmc.world.Palette;
+import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
+import org.jukeboxmc.world.palette.Palette;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author LucGamesYT
@@ -28,7 +27,7 @@ public abstract class LevelDBChunk {
 
     protected boolean populated = true;
 
-    protected Palette[] biomes = new Palette[24];
+    protected Palette<Biome>[] biomes = new Palette[24];
     protected short[] height = new short[16 * 16];
 
     protected LevelDBChunk() {
@@ -36,122 +35,97 @@ public abstract class LevelDBChunk {
 
     public void loadSection( SubChunk chunk, byte[] chunkData ) {
         BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );
-        byte subChunkVersion = buffer.readByte();
-        int storages = 1;
-        switch ( subChunkVersion ) {
-            case 9:
-            case 8:
-                storages = buffer.readByte();
-                if ( subChunkVersion == 9 ) {
-                    buffer.readByte(); // same as sub chunk height
-                }
-            case 1:
-                for ( int layer = 0; layer < storages; layer++ ) {
-                    byte data = buffer.readByte();
-                    boolean persistent = ( ( data >> 8 ) & 1 ) != 1;
-                    byte wordTemplate = (byte) ( data >>> 1 );
-
-                    short[] indices = Palette.parseIndices( buffer, wordTemplate );
-                    int needed = buffer.readLInt();
-
-                    Map<Short, Integer> chunkPalette = new HashMap<>();
-                    short i = 0;
-                    NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( buffer.getBuffer() ) );
-                    while ( i < needed ) {
+        try {
+            byte subChunkVersion = buffer.readByte();
+            int storages = 1;
+            switch ( subChunkVersion ) {
+                case 9:
+                case 8:
+                    storages = buffer.readByte();
+                    if ( subChunkVersion == 9 ) {
+                        buffer.readByte(); // same as sub chunk height
+                    }
+                case 1:
+                    for ( int layer = 0; layer < storages; layer++ ) {
                         try {
-                            NbtMap compound = (NbtMap) reader.readTag();
-                            String identifier = compound.getString( "name" );
-                            NbtMap states = compound.getCompound( "states" );
-                            if ( states != null ) {
-                                chunkPalette.put( i++, BlockPalette.getRuntimeId( identifier, states ) );
-                            } else {
-                                chunkPalette.put( i++, BlockPalette.getRuntimeId( identifier, NbtMap.EMPTY ) );
-                            }
-                        } catch ( IOException e ) {
-                            e.printStackTrace();
-                            break;
+                            buffer.getBuffer().markReaderIndex();
+                            chunk.blocks[layer].readFromStoragePersistent( buffer, compound -> {
+                                String identifier = compound.getString( "name" );
+                                NbtMap states = compound.getCompound( "states" );
+                                int runtimeId;
+
+                                if ( states != null ) {
+                                    runtimeId = BlockPalette.getRuntimeId( identifier, states );
+                                } else {
+                                    runtimeId = BlockPalette.getRuntimeId( identifier, NbtMap.EMPTY );
+                                }
+
+                                return BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
+                            } );
+                        } catch ( IllegalArgumentException e ) {
+                            buffer.getBuffer().resetReaderIndex();
+                            chunk.blocks[layer].readFromStorageRuntime( buffer, runtimeId -> BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone(), null );
                         }
                     }
-
-                    for ( short index = 0; index < indices.length; index++ ) {
-                        chunk.blocks[layer].set( index, chunkPalette.get( indices[index] ) );
-                    }
-                }
-                break;
+                    break;
+            }
+        } finally {
+            buffer.getBuffer().release();
         }
     }
 
     public void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
         ByteBuf data = Utils.allocate( blockEntityData );
 
-        NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( data ) );
-        while ( data.readableBytes() > 0 ) {
-            try {
-                NbtMap nbtMap = (NbtMap) reader.readTag();
+        try {
+            NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( data ) );
+            while ( data.readableBytes() > 0 ) {
+                try {
+                    NbtMap nbtMap = (NbtMap) reader.readTag();
 
-                int x = nbtMap.getInt( "x", 0 );
-                int y = nbtMap.getInt( "y", 0 );
-                int z = nbtMap.getInt( "z", 0 );
+                    int x = nbtMap.getInt( "x", 0 );
+                    int y = nbtMap.getInt( "y", 0 );
+                    int z = nbtMap.getInt( "z", 0 );
 
-                Block block = chunk.getBlock( x, y, z, 0 );
-                if ( block != null && block.hasBlockEntity() ) {
-                    BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
-                    if ( blockEntity != null ) {
-                        blockEntity.setCompound( nbtMap );
-                        chunk.setBlockEntity( x, y, z, blockEntity );
+                    Block block = chunk.getBlock( x, y, z, 0 );
+                    if ( block != null && block.hasBlockEntity() ) {
+                        BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
+                        if ( blockEntity != null ) {
+                            blockEntity.setCompound( nbtMap );
+                            chunk.setBlockEntity( x, y, z, blockEntity );
+                        }
                     }
+                } catch ( IOException e ) {
+                    break;
                 }
-            } catch ( IOException e ) {
-                break;
             }
+        } finally {
+            data.release();
         }
     }
 
     public void loadHeightAndBiomes( byte[] heightAndBiomes ) {
-        BinaryStream stream = new BinaryStream( Unpooled.wrappedBuffer( heightAndBiomes ) );
-        for ( int i = 0; i < this.height.length; i++ ) {
-            this.height[i] = stream.readLShort();
-        }
-
-        Palette last = null;
-        int paletteVer;
-        int biomeHeader;
-        Palette biomePalette;
-
-        for ( int y = -4; y < this.biomes.length - 4; y++ ) {
-            biomePalette = this.getBiomePalette( y << 4 );
-            biomeHeader = stream.readByte() & 0xFF;
-            paletteVer = biomeHeader >> 1;
-
-            if ( paletteVer == 0x7F ) {
-                if ( last != null ) {
-                    last.copyTo( biomePalette );
-                }
-
-                continue;
+        BinaryStream buffer = new BinaryStream( Unpooled.wrappedBuffer( heightAndBiomes ) );
+        try {
+            for ( int i = 0; i < this.height.length; i++ ) {
+                this.height[i] = buffer.readLShort();
             }
 
-            last = biomePalette;
+            Palette<Biome> last = null;
+            Palette<Biome> biomePalette;
+            for ( int y = -4; y < this.biomes.length - 4; y++ ) {
+                biomePalette = this.getBiomePalette( y << 4 );
 
-            if ( paletteVer == 0 ) {
-                biomePalette.setFirst( stream.readLInt() );
-                continue;
+                biomePalette.readFromStorageRuntime( buffer, Biome::findById, last );
+
+                last = biomePalette;
             }
-
-            short[] indices = Palette.parseIndices( stream, paletteVer );
-            int[] biomeIds = new int[stream.readLInt()];
-
-            for ( int i = 0; i < biomeIds.length; i++ ) {
-                biomeIds[i] = stream.readLInt();
-            }
-
-            for ( int i = 0; i < indices.length; i++ ) {
-                biomePalette.set( i, biomeIds[indices[i]] );
-            }
+        } finally {
+            buffer.release();
         }
     }
 
-    public abstract Palette getBiomePalette( int y );
+    public abstract Palette<Biome> getBiomePalette( int y );
 
     public void setPopulated( boolean populated ) {
         this.populated = populated;

@@ -55,13 +55,13 @@ public class Utils {
         return value * y;
     }
 
-    public static float clamp(float v, float min, float max) {
-        return (v < min ? min : (Math.min(v, max)));
+    public static float clamp( float v, float min, float max ) {
+        return ( v < min ? min : ( Math.min( v, max ) ) );
     }
 
-    public static int divisible(int n, int d) {
+    public static int divisible( int n, int d ) {
         int i = 0;
-        while(n % d == 0) {
+        while ( n % d == 0 ) {
             n /= d;
             i++;
         }
@@ -76,6 +76,11 @@ public class Utils {
 
     public static int getIndex( int x, int y, int z ) {
         return ( x << 8 ) + ( z << 4 ) + y;
+    }
+
+    public static int ceil( float floatNumber ) {
+        int truncated = (int) floatNumber;
+        return floatNumber > truncated ? truncated + 1 : truncated;
     }
 
     public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {
