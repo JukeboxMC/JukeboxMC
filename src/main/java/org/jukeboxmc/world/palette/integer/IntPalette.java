@@ -1,8 +1,9 @@
-package org.jukeboxmc.world.palette;
+package org.jukeboxmc.world.palette.integer;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
-import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jukeboxmc.nbt.NBTInputStream;
@@ -14,24 +15,23 @@ import org.jukeboxmc.world.palette.bitarray.BitArray;
 import org.jukeboxmc.world.palette.bitarray.BitArrayVersion;
 
 import java.io.IOException;
-import java.util.List;
 
 @Getter
 @EqualsAndHashCode
-public class Palette<V> {
+public class IntPalette {
 
     public static final int SIZE = 4096;
 
-    private final List<V> palette;
+    private final IntList palette;
     private BitArray bitArray;
 
-    public Palette( V first ) {
+    public IntPalette( int first ) {
         this( first, BitArrayVersion.V2 );
     }
 
-    public Palette( V first, BitArrayVersion version ) {
+    public IntPalette( int first, BitArrayVersion version ) {
         this.bitArray = version.createArray( SIZE );
-        this.palette = new ReferenceArrayList<>( 16 );
+        this.palette = new IntArrayList( 16 );
         this.palette.add( first );
     }
 
@@ -55,29 +55,29 @@ public class Palette<V> {
         return ( header & 1 ) == 0;
     }
 
-    public V get( int index ) {
-        return this.palette.get( this.bitArray.get( index ) );
+    public int get( int index ) {
+        return this.palette.getInt( this.bitArray.get( index ) );
     }
 
-    public void set( int index, V value ) {
+    public void set( int index, int value ) {
         this.bitArray.set( index, this.paletteIndexFor( value ) );
     }
 
-    public void writeToNetwork( BinaryStream buffer, RuntimeDataSerializer<V> serializer ) {
-        buffer.writeByte( Palette.getPaletteHeader( this.bitArray.getVersion(), true ) );
+    public void writeToNetwork( BinaryStream buffer, IntRuntimeDataSerializer serializer ) {
+        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), true ) );
 
         for ( int word : this.bitArray.getWords() ) {
             buffer.writeLInt( word );
         }
 
         this.bitArray.writeSizeToNetwork( buffer, this.palette.size() );
-        for ( V value : this.palette ) {
+        for ( int value : this.palette ) {
             buffer.writeSignedVarInt( serializer.serialize( value ) );
         }
     }
 
-    public void writeToStoragePersistent( BinaryStream buffer, PersistentDataSerializer<V> serializer ) {
-        buffer.writeByte( Palette.getPaletteHeader( this.bitArray.getVersion(), false ) );
+    public void writeToStoragePersistent( BinaryStream buffer, IntPersistentDataSerializer serializer ) {
+        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), false ) );
 
         for ( int word : this.bitArray.getWords() ) {
             buffer.writeLInt( word );
@@ -87,7 +87,7 @@ public class Palette<V> {
 
         try ( final ByteBufOutputStream bufOutputStream = new ByteBufOutputStream( buffer.getBuffer() );
               final NBTOutputStream outputStream = NbtUtils.createWriterLE( bufOutputStream ) ) {
-            for ( V value : this.palette ) {
+            for ( int value : this.palette ) {
                 outputStream.writeTag( serializer.serialize( value ) );
             }
         } catch ( IOException e ) {
@@ -95,34 +95,34 @@ public class Palette<V> {
         }
     }
 
-    public void writeToStorageRuntime( BinaryStream buffer, RuntimeDataSerializer<V> serializer, Palette<V> last ) {
+    public void writeToStorageRuntime( BinaryStream buffer, IntRuntimeDataSerializer serializer, IntPalette last ) {
         if ( last != null && last.palette.equals( this.palette ) ) {
-            buffer.writeByte( Palette.getCopyLastFlagHeader() );
+            buffer.writeByte( IntPalette.getCopyLastFlagHeader() );
             return;
         }
 
         if ( this.isEmpty() ) {
-            buffer.writeByte( Palette.getPaletteHeader( BitArrayVersion.V0, true ) );
-            buffer.writeLInt( serializer.serialize( this.palette.get( 0 ) ) );
+            buffer.writeByte( IntPalette.getPaletteHeader( BitArrayVersion.V0, true ) );
+            buffer.writeLInt( serializer.serialize( this.palette.getInt( 0 ) ) );
             return;
         }
 
-        buffer.writeByte( Palette.getPaletteHeader( this.bitArray.getVersion(), true ) );
+        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), true ) );
 
         for ( int word : this.bitArray.getWords() ) {
             buffer.writeLInt( word );
         }
 
         buffer.writeLInt( this.palette.size() );
-        for ( V value : this.palette ) {
+        for ( int value : this.palette ) {
             buffer.writeLInt( serializer.serialize( value ) );
         }
     }
 
-    public void readFromStoragePersistent( BinaryStream buffer, PersistentDataDeserializer<V> deserializer ) {
+    public void readFromStoragePersistent( BinaryStream buffer, IntPersistentDataDeserializer deserializer ) {
         final short header = buffer.readUnsignedByte();
 
-        final BitArrayVersion version = Palette.getVersionFromHeader( header );
+        final BitArrayVersion version = IntPalette.getVersionFromHeader( header );
         final int wordCount = version.getWordsForSize( SIZE );
         final int[] words = new int[wordCount];
         for ( int i = 0; i < wordCount; i++ ) {
@@ -143,10 +143,10 @@ public class Palette<V> {
         }
     }
 
-    public void readFromStorageRuntime( BinaryStream buffer, RuntimeDataDeserializer<V> deserializer, Palette<V> last ) {
+    public void readFromStorageRuntime( BinaryStream buffer, IntRuntimeDataDeserializer deserializer, IntPalette last ) {
         final short header = buffer.readUnsignedByte();
 
-        if ( Palette.hasCopyLastFlag( header ) ) {
+        if ( IntPalette.hasCopyLastFlag( header ) ) {
             if ( last == null ) {
                 throw new IllegalArgumentException( "Palette has copy last flag but no last entry!" );
             }
@@ -155,7 +155,7 @@ public class Palette<V> {
             return;
         }
 
-        final BitArrayVersion version = Palette.getVersionFromHeader( header );
+        final BitArrayVersion version = IntPalette.getVersionFromHeader( header );
         if ( version == BitArrayVersion.V0 ) {
             this.bitArray = version.createArray( SIZE, null );
             this.palette.clear();
@@ -188,7 +188,7 @@ public class Palette<V> {
         this.bitArray = newBitArray;
     }
 
-    public int paletteIndexFor( V value ) {
+    public int paletteIndexFor( int value ) {
         int index = this.palette.indexOf( value );
         if ( index != -1 ) return index;
 
@@ -214,7 +214,7 @@ public class Palette<V> {
         return true;
     }
 
-    public void copyTo( Palette<V> palette ) {
+    public void copyTo( IntPalette palette ) {
         palette.bitArray = this.bitArray.copy();
         palette.palette.clear();
         palette.palette.addAll( this.palette );

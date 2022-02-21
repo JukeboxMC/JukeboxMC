@@ -188,8 +188,6 @@ public class World {
                 try ( NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) ) ) {
                     compound = ( (NbtMap) reader.readTag() ).toBuilder();
                 }
-                ;
-
             }
             levelDat.delete();
         } else {
@@ -261,7 +259,7 @@ public class World {
             chunk.chunkVersion = version[0];
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
 
-            for ( int sectionY = -4; sectionY < 20; sectionY++ ) {
+            for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
                 byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ), readOptions );
 
                 if ( chunkData != null ) {

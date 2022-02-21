@@ -250,9 +250,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         int currentXChunk = Utils.blockToChunk( this.location.getBlockX() );
         int currentZChunk = Utils.blockToChunk( this.location.getBlockZ() );
         int viewDistance = this.getViewDistance();
-        //Irgendwo hier muss das passieren xD dachte vlt gibt es viele einträge in listen maps etc aber dem ist nicht so 3k einträge sind ja nicht viel, ja hmm, aber benutzt ja keine sets mehr
-        //abgesehen von den loadedChunks, loadingChunks halt xd JA Ich schau nochmal was er sagt
-        //Nukkit hat es ja auch geschafft xD ja idk wie xd
         this.server.getScheduler().executeAsync( () -> {
             try {
                 int index = 0;
@@ -267,15 +264,15 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                             if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
                                 this.chunksInRadius[index++] = hash;
                             }
+                        } else {
+                            //Chunk unload queue
+                            //Checkn ob spieler den chunk in sichtweite haben wenn ja unloaden
                         }
                     }
                 }
-                //Du muisst auf record memory gehen sonst siehst du net woran es liegtah wtf xd ya 100% was mit chunks zu tun
-                final int chunkCount = index; // upsie
+                final int chunkCount = index;
                 this.server.getScheduler().execute( () -> {
                     if ( chunkCount > 0 ) {
-                        // Wir möchten nicht eine ArrayList erstellen, nein danke IntelliJ
-                        //noinspection ALL
                         for ( int i = 0; i < chunkCount; i++ ) {
                             this.chunkLoadQueue.enqueue( this.chunksInRadius[i] );
                         }

@@ -10,6 +10,7 @@ import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
@@ -24,7 +25,7 @@ import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.leveldb.LevelDBChunk;
-import org.jukeboxmc.world.palette.Palette;
+import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
 import java.util.*;
@@ -58,6 +59,18 @@ public class Chunk extends LevelDBChunk {
         this.subChunks = new SubChunk[24];
     }
 
+    public int getMinY() {
+        return this.dimension == Dimension.OVERWORLD ? -64 : 0;
+    }
+
+    public int getMaxY() {
+        return switch ( this.dimension ) {
+            case OVERWORLD -> 319;
+            case NETHER -> 127;
+            case THE_END -> 255;
+        };
+    }
+
     public int getHeightMap( int x, int z ) {
         return this.height[( z << 4 ) | x] & 0xFF;
     }
@@ -70,28 +83,28 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return BLOCK_AIR.getRuntimeId();
         }
-        return this.getSubChunk( y ).getRuntimeId( x & 15, y & 15, z & 15, layer );
+        return this.getSubChunk( y ).getRuntimeId( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer );
     }
 
     public void setBlock( Vector location, int layer, int runtimeId ) {
         if ( location.getY() < -64 || location.getY() > 319 ) {
             return;
         }
-        this.getSubChunk( location.getBlockY() ).setBlock( location.getBlockX() & 15, location.getBlockY() & 15, location.getBlockZ() & 15, layer, runtimeId );
+        this.getSubChunk( location.getBlockY() ).setBlock( location.getBlockX() & 15, ( location.getBlockY() - this.getMinY() ) & 15, location.getBlockZ() & 15, layer, runtimeId );
     }
 
     public void setBlock( int x, int y, int z, int layer, int runtimeId ) {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.getSubChunk( y ).setBlock( x & 15, y & 15, z & 15, layer, runtimeId );
+        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, runtimeId );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
         if ( y < -64 || y > 319 ) {
             return BLOCK_AIR;
         }
-        Block block = this.getSubChunk( y ).getBlock( x & 15, y & 15, z & 15, layer );
+        Block block = this.getSubChunk( y ).getBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer );
         block.setLocation( new Location( this.world, new Vector( x, y, z ) ) );
         block.setLayer( layer );
         return block;
@@ -101,7 +114,7 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.getSubChunk( y ).setBlock( x & 15, y & 15, z & 15, layer, block );
+        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, block );
     }
 
     public Dimension getDimension() {
@@ -116,18 +129,18 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return Biome.PLAINS;
         }
-        return this.getBiomePalette( y ).get( Utils.getIndex( x & 15, y & 15, z & 15 ) );
+        return this.getBiomePalette( y ).get( Utils.getIndex( x & 15, ( y - this.getMinY() ) & 15, z & 15 ) );
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.getBiomePalette( y ).set( Utils.getIndex( x, y, z ), biome );
+        this.getBiomePalette( y ).set( Utils.getIndex( x & 15, ( y - this.getMinY() ) & 15, z & 15 ), biome );
     }
 
     @Override
-    public Palette<Biome> getBiomePalette( int y ) {
+    public ObjectPalette<Biome> getBiomePalette( int y ) {
         if ( y < -64 || y > 319 ) {
             return null;
         }
@@ -135,7 +148,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.biomes[y0] == null ) {
-                this.biomes[y0] = new Palette<>( Biome.OCEAN );
+                this.biomes[y0] = new ObjectPalette<>( Biome.OCEAN );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -151,7 +164,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.subChunks[y0] == null ) {
-                this.biomes[y0] = new Palette<>( Biome.OCEAN );
+                this.biomes[y0] = new ObjectPalette<>( Biome.OCEAN );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -286,8 +299,8 @@ public class Chunk extends LevelDBChunk {
             heightAndBiomesBuffer.writeLShort( height );
         }
 
-        Palette<Biome> last = null;
-        for ( Palette<Biome> biomePalette : this.biomes ) {
+        ObjectPalette<Biome> last = null;
+        for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
             if ( biomePalette == null ) {
                 break;
             }
@@ -314,7 +327,7 @@ public class Chunk extends LevelDBChunk {
         buffer.writeByte( (byte) subY );
 
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            subChunk.blocks[layer].writeToStoragePersistent( buffer, Block::getBlockStates );
+            subChunk.blocks[layer].writeToStoragePersistent( buffer, BlockPalette::getBlockNBT );
         }
 
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
@@ -329,7 +342,7 @@ public class Chunk extends LevelDBChunk {
             }
         }
 
-        for ( Palette<Biome> biomePalette : this.biomes ) {
+        for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
             if ( biomePalette == null ) {
                 break;
             }

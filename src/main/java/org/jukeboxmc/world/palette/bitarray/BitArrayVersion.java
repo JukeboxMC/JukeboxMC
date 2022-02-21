@@ -1,5 +1,7 @@
 package org.jukeboxmc.world.palette.bitarray;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import org.jukeboxmc.utils.Utils;
 
 public enum BitArrayVersion {
@@ -13,6 +15,8 @@ public enum BitArrayVersion {
     V2( 2, 16, V3 ),
     V1( 1, 32, V2 ),
     V0( 0, 0, V1 );
+
+    private static final IntList ARRAY_LENGTHS = new IntArrayList();
 
     private static final BitArrayVersion[] VALUES = values();
 

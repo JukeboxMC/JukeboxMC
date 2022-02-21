@@ -15,9 +15,10 @@ import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
-import org.jukeboxmc.world.palette.Palette;
+import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -27,7 +28,7 @@ public abstract class LevelDBChunk {
 
     protected boolean populated = true;
 
-    protected Palette<Biome>[] biomes = new Palette[24];
+    protected ObjectPalette<Biome>[] biomes = new ObjectPalette[24];
     protected short[] height = new short[16 * 16];
 
     protected LevelDBChunk() {
@@ -52,25 +53,17 @@ public abstract class LevelDBChunk {
                             chunk.blocks[layer].readFromStoragePersistent( buffer, compound -> {
                                 String identifier = compound.getString( "name" );
                                 NbtMap states = compound.getCompound( "states" );
-                                int runtimeId;
-
-                                if ( states != null ) {
-                                    runtimeId = BlockPalette.getRuntimeId( identifier, states );
-                                } else {
-                                    runtimeId = BlockPalette.getRuntimeId( identifier, NbtMap.EMPTY );
-                                }
-
-                                return BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone();
+                                return BlockPalette.getRuntimeId( identifier, Objects.requireNonNullElse( states, NbtMap.EMPTY ) );
                             } );
                         } catch ( IllegalArgumentException e ) {
                             buffer.getBuffer().resetReaderIndex();
-                            chunk.blocks[layer].readFromStorageRuntime( buffer, runtimeId -> BlockPalette.RUNTIME_TO_BLOCK.get( runtimeId ).clone(), null );
+                            chunk.blocks[layer].readFromStorageRuntime( buffer, runtimeId -> runtimeId, null );
                         }
                     }
                     break;
             }
         } finally {
-            buffer.getBuffer().release();
+            buffer.release();
         }
     }
 
@@ -111,8 +104,8 @@ public abstract class LevelDBChunk {
                 this.height[i] = buffer.readLShort();
             }
 
-            Palette<Biome> last = null;
-            Palette<Biome> biomePalette;
+            ObjectPalette<Biome> last = null;
+            ObjectPalette<Biome> biomePalette;
             for ( int y = -4; y < this.biomes.length - 4; y++ ) {
                 biomePalette = this.getBiomePalette( y << 4 );
 
@@ -125,7 +118,7 @@ public abstract class LevelDBChunk {
         }
     }
 
-    public abstract Palette<Biome> getBiomePalette( int y );
+    public abstract ObjectPalette<Biome> getBiomePalette( int y );
 
     public void setPopulated( boolean populated ) {
         this.populated = populated;
