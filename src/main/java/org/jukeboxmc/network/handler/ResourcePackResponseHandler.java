@@ -43,11 +43,12 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 break;
             case COMPLETED:
                 Location worldSpawn = player.getWorld().getSpawnLocation( player.getDimension() );
+                worldSpawn.add( 0, player.getEyeHeight() , 0 );
                 StartGamePacket startGamePacket = new StartGamePacket();
                 startGamePacket.setEntityId( player.getEntityId() );
                 startGamePacket.setEntityRuntimeId( player.getEntityId() );
                 startGamePacket.setGameMode( player.getGameMode() );
-                startGamePacket.setPosition( player.getSpawnLocation() != null ? player.getSpawnLocation() :  worldSpawn );
+                startGamePacket.setPosition( player.getSpawnLocation() != null ? player.getSpawnLocation().add( 0, player.getEyeHeight(), 0 ) :  worldSpawn );
                 startGamePacket.setWorldSpawn( worldSpawn );
                 startGamePacket.setYaw( player.getYaw() );
                 startGamePacket.setPitch( player.getPitch() );
