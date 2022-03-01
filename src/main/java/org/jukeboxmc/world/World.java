@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author LucGamesYT
@@ -68,6 +69,11 @@ public class World {
     private Location spawnLocation;
     private Difficulty difficulty;
     private int worldTime;
+
+    private boolean autoSave = true;
+    private long autoSaveTicker = 0;
+    private long autoSaveTick = TimeUnit.SECONDS.toMillis( 5 ) / 50;
+    private AtomicBoolean autoSaving = new AtomicBoolean(false );
 
     private ChunkCache chunkCache;
 
@@ -107,6 +113,19 @@ public class World {
             SetTimePacket setTimePacket = new SetTimePacket();
             setTimePacket.setWorldTime( this.worldTime );
             this.sendWorldPacket( setTimePacket );
+        }
+
+        if ( this.autoSave && !this.autoSaving.get() && ++this.autoSaveTicker >= this.autoSaveTick ) {
+            this.autoSaveTicker = 0;
+            this.autoSaving.set( true );
+            this.server.getScheduler().executeAsync( () -> {
+                try {
+                    this.save();
+                    this.autoSaving.set( false );
+                } catch ( Throwable e ) {
+                    e.printStackTrace();
+                }
+            } );
         }
 
         if ( this.entities.size() > 0 ) {
@@ -361,15 +380,9 @@ public class World {
     }
 
     public void save() {
-        this.server.getScheduler().executeAsync( () -> {
-            try {
-                this.chunkCache.saveAll();
-                this.saveLevelDatFile();
-                Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
-            } catch ( Throwable e ) {
-                e.printStackTrace();
-            }
-        } );
+        this.chunkCache.saveAll();
+        this.saveLevelDatFile();
+        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
     }
 
     public void close() {
@@ -419,6 +432,30 @@ public class World {
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.setWorldTime( worldTime );
         this.server.broadcastPacket( setTimePacket );
+    }
+
+    public void setAutoSave( boolean autoSave ) {
+        this.autoSave = autoSave;
+    }
+
+    public boolean isAutoSave() {
+        return this.autoSave;
+    }
+
+    public void setAutoSaveTick( long autoSaveTick ) {
+        this.autoSaveTick = autoSaveTick;
+    }
+
+    public void setAutoSaveTick( TimeUnit timeUnit, long value ) {
+        this.autoSaveTick = timeUnit.toMillis( value ) / 50;
+    }
+
+    public long getAutoSaveTick() {
+        return this.autoSaveTick;
+    }
+
+    public boolean isAutoSaving() {
+        return this.autoSaving.get();
     }
 
     public void initGameRules() {

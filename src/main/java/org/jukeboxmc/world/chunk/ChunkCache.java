@@ -99,9 +99,11 @@ public class ChunkCache {
         return this.chunkFutures;
     }
 
-    public synchronized void saveAll() {
-        for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> dimensionEntry : this.cachedChunks.entrySet() ) {
-            for ( Chunk chunk : dimensionEntry.getValue().values() ) {
+    public void saveAll() {
+        Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks = new Object2ObjectOpenHashMap<>(this.cachedChunks);
+        cachedChunks.replaceAll( ( k, v ) -> new Long2ObjectOpenHashMap<>( v ) );
+        for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> entry : cachedChunks.entrySet() ) {
+            for ( Chunk chunk : entry.getValue().values() ) {
                 if ( chunk != null ) {
                     chunk.save( this.db );
                 }
