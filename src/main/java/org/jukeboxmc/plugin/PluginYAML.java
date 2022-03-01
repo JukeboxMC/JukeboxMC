@@ -12,6 +12,7 @@ public class PluginYAML {
     public String version;
     public String author;
     public String main;
+    public PluginLoadOrder load = PluginLoadOrder.POSTWORLD;
     public List<String> authors;
     public List<String> depends;
 
@@ -39,4 +40,7 @@ public class PluginYAML {
         return this.depends;
     }
 
+    public PluginLoadOrder getLoadOrder() {
+        return this.load;
+    }
 }

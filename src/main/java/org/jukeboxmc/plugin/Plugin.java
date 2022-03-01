@@ -165,6 +165,10 @@ public abstract class Plugin {
         return this.description.getAuthors();
     }
 
+    public PluginLoadOrder getLoadOrder() {
+        return this.description.getLoadOrder();
+    }
+
     public Server getServer() {
         return this.server;
     }

@@ -102,12 +102,14 @@ public class PluginManager {
         return plugin;
     }
 
-    public void enableAllPlugins() {
+    public void enableAllPlugins( PluginLoadOrder pluginLoadOrder ) {
         LinkedList<Plugin> failed = new LinkedList<>();
 
         for ( Plugin plugin : this.pluginMap.values() ) {
-            if ( !this.enablePlugin( plugin, null ) ) {
-                failed.add( plugin );
+            if ( plugin.getLoadOrder().equals( pluginLoadOrder ) ) {
+                if ( !this.enablePlugin( plugin, null ) ) {
+                    failed.add( plugin );
+                }
             }
         }
 

@@ -25,6 +25,7 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.plugin.PluginLoadOrder;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.resourcepack.ResourcePackManager;
 import org.jukeboxmc.scheduler.Scheduler;
@@ -126,18 +127,21 @@ public class Server {
         this.resourcePackManager = new ResourcePackManager();
         this.resourcePackManager.loadResourcePacks();
 
+        this.pluginManager = new PluginManager( this );
+        this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
+
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.registerGenerator( "Flat", FlatGenerator.class );
 
-        this.pluginManager = new PluginManager( this );
-        this.pluginManager.enableAllPlugins();
-
         this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
+
 
         String defaultWorldName = this.getDefaultWorldName();
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
+
+        this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );
 
         this.rakNetListener = new RakNetListener( this.serverId );
         this.rakNetListener.bind();
