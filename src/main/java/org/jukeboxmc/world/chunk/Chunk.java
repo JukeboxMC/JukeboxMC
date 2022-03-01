@@ -11,6 +11,7 @@ import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
@@ -100,6 +101,27 @@ public class Chunk extends LevelDBChunk {
         this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, runtimeId );
     }
 
+    public void setBlock( int x, int y, int z, int layer, BlockType blockType ) {
+        if ( y < -64 || y > 319 ) {
+            return;
+        }
+        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, blockType.getBlock() );
+    }
+
+    public void setBlock( int x, int y, int z, BlockType blockType ) {
+        if ( y < -64 || y > 319 ) {
+            return;
+        }
+        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, 0, blockType.getBlock() );
+    }
+
+    public void setBlock( int x, int y, int z, int layer, Block block ) {
+        if ( y < -64 || y > 319 ) {
+            return;
+        }
+        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, block );
+    }
+
     public Block getBlock( int x, int y, int z, int layer ) {
         if ( y < -64 || y > 319 ) {
             return BLOCK_AIR;
@@ -108,13 +130,6 @@ public class Chunk extends LevelDBChunk {
         block.setLocation( new Location( this.world, new Vector( x, y, z ) ) );
         block.setLayer( layer );
         return block;
-    }
-
-    public void setBlock( int x, int y, int z, int layer, Block block ) {
-        if ( y < -64 || y > 319 ) {
-            return;
-        }
-        this.getSubChunk( y ).setBlock( x & 15, ( y - this.getMinY() ) & 15, z & 15, layer, block );
     }
 
     public Dimension getDimension() {

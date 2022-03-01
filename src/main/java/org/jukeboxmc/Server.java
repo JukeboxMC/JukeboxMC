@@ -128,10 +128,11 @@ public class Server {
 
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.registerGenerator( "Flat", FlatGenerator.class );
-        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins();
+
+        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
 
         String defaultWorldName = this.getDefaultWorldName();
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
@@ -528,7 +529,7 @@ public class Server {
             boolean worldExists = file.exists();
 
             World world = new World( worldName, this, worldGenerator );
-            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, true, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
+            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, false, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
             this.pluginManager.callEvent( worldLoadEvent );
             if ( worldLoadEvent.isCancelled() ) {
                 return false;

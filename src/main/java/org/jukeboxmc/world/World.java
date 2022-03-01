@@ -197,7 +197,7 @@ public class World {
         compound.putInt( "StorageVersion", 8 );
 
         if ( this.spawnLocation == null ) {
-            this.spawnLocation = new Location( this, 0, 64, 0 );
+            this.spawnLocation = this.worldGenerator.getSpawnLocation() != null ? new Location( this, this.worldGenerator.getSpawnLocation() ) : new Location( this, 0, 64, 0 );
         }
 
         compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );

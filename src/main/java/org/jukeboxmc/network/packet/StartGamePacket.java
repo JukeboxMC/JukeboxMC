@@ -50,7 +50,7 @@ public class StartGamePacket extends Packet {
 
         //Position
         stream.writeLFloat( this.position.getX() );
-        stream.writeLFloat( this.position.getY() );
+        stream.writeLFloat( this.position.getY() + 1.62f );
         stream.writeLFloat( this.position.getZ() );
         stream.writeLFloat( this.pitch );
         stream.writeLFloat( this.yaw );

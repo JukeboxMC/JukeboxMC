@@ -76,8 +76,8 @@ public abstract class Entity {
         this.metadata.setDataFlag( MetadataFlag.INDEX, EntityFlag.CAN_CLIMB, true );
 
         World defaultWorld = Server.getInstance().getDefaultWorld();
-        this.location = new Location( defaultWorld, 0, 73, 0, 0, 0, this.dimension );
-        this.lastLocation = new Location( defaultWorld, 0, 0, 0, 0, 0, this.dimension );
+        this.location = defaultWorld.getSpawnLocation( this.dimension );
+        this.lastLocation = defaultWorld.getSpawnLocation( this.dimension );
         this.velocity = new Vector( 0, 0, 0, this.dimension );
         this.lastVector = new Vector( 0, 0, 0, this.dimension );
 
