@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockRedstoneOre;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.utils.BinaryStream;
@@ -46,7 +47,13 @@ public class SubChunk {
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
+        if ( block instanceof BlockRedstoneOre ) {
+            System.out.println( "A: " + BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer].get( Utils.getIndex( x, y, z ) )).getName() + " Index: " + Utils.getIndex( x, y, z ) );
+        }
         this.blocks[layer].set( Utils.getIndex( x, y, z ), block.getRuntimeId() );
+        if ( block instanceof BlockRedstoneOre ) {
+            System.out.println( "B: " + BlockPalette.RUNTIME_TO_BLOCK.get( this.blocks[layer].get( Utils.getIndex( x, y, z ) ) ).getName() + " Index: " + Utils.getIndex( x, y, z ));
+        }
     }
 
     public int getRuntimeId( int x, int y, int z, int layer ) {

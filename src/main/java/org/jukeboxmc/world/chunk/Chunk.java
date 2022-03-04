@@ -244,6 +244,10 @@ public class Chunk extends LevelDBChunk {
         return this.subChunks;
     }
 
+    public World getWorld() {
+        return this.world;
+    }
+
     public void addEntity( Entity entity ) {
         if ( !this.entities.containsKey( entity.getEntityId() ) ) {
             this.entities.put( entity.getEntityId(), entity );

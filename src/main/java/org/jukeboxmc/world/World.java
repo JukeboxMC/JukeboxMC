@@ -72,7 +72,7 @@ public class World {
 
     private boolean autoSave = true;
     private long autoSaveTicker = 0;
-    private long autoSaveTick = TimeUnit.SECONDS.toMillis( 5 ) / 50;
+    private long autoSaveTick = TimeUnit.MINUTES.toMillis( 5 ) / 50;
     private AtomicBoolean autoSaving = new AtomicBoolean(false );
 
     private ChunkCache chunkCache;

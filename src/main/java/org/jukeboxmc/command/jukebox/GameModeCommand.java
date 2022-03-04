@@ -16,7 +16,7 @@ import org.jukeboxmc.player.Player;
  */
 @Name ( "gamemode" )
 @Alias ( "gm" )
-@Description ( "Updates your gamemode | experimental" )
+@Description ( "Change your gamemode" )
 @Permission ( "org.jukeboxmc.command.gamemode" )
 public class GameModeCommand extends Command {
 
