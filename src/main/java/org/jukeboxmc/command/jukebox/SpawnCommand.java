@@ -11,7 +11,7 @@ import org.jukeboxmc.world.Dimension;
  * @author Luca W. | GPS_Gamer
  **/
 
-@Name ( "spawn" )
+@Name ( "spawnpoint" )
 @Description ( "Teleport you to the world spawn" )
 public class SpawnCommand extends Command {
 

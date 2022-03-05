@@ -699,7 +699,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     @Override
     public boolean hasPermission( String permission ) {
-        return this.permissions.containsKey( this.uuid ) && this.permissions.get( this.uuid ).contains( permission.toLowerCase() ) || this.isOp();
+        return this.permissions.containsKey( this.uuid ) && this.permissions.get( this.uuid ).contains( permission.toLowerCase() ) || this.isOp() || permission.isEmpty();
     }
 
     public void addPermission( String permission ) {
