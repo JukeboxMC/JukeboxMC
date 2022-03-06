@@ -6,10 +6,10 @@ package org.jukeboxmc.block.direction;
  */
 public enum Direction {
 
-    SOUTH,
-    WEST,
     NORTH,
-    EAST;
+    EAST,
+    SOUTH,
+    WEST;
 
     public Direction opposite() {
         switch ( this ) {

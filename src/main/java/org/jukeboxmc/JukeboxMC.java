@@ -1,8 +1,16 @@
 package org.jukeboxmc;
 
-import io.netty.util.ResourceLeakDetector;
-import org.jukeboxmc.logger.Logger;
-import org.jukeboxmc.network.packet.Protocol;
+import org.jukeboxmc.console.ConsoleSender;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.plugin.PluginManager;
+import org.jukeboxmc.scheduler.Scheduler;
+import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.generator.WorldGenerator;
+
+import java.net.InetSocketAddress;
+import java.util.Collection;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
@@ -10,35 +18,93 @@ import org.jukeboxmc.network.packet.Protocol;
  */
 public class JukeboxMC {
 
-    private static JukeboxMC instance;
-    private final Logger logger;
-    private final Server server;
+    private static Server server;
 
-    public static void main( String[] args ) {
-        JukeboxMC.setJukeboxMC( new JukeboxMC() );
+    public static void setServer( Server server ) {
+        JukeboxMC.server = server;
     }
 
-    private JukeboxMC() {
-        ResourceLeakDetector.setLevel( ResourceLeakDetector.Level.DISABLED );
-        this.logger = new Logger();
-
-        this.logger.info( "Starting JukeboxMC (Bedrock Edition " + Protocol.MINECRAFT_VERSION + " with Protocol " + Protocol.CURRENT_PROTOCOL + ")" );
-        this.server = new Server( this.logger );
+    public static Scheduler getScheduler() {
+        return server.getScheduler();
     }
 
-    public static void setJukeboxMC( JukeboxMC instance ) {
-        JukeboxMC.instance = instance;
+    public static World getDefaultWorld() {
+        return server.getDefaultWorld();
     }
 
-    public static JukeboxMC getJukeboxMC() {
-        return instance;
+    public static Collection<World> getWorlds() {
+        return server.getWorlds();
     }
 
-    public Server getServer() {
-        return this.server;
+    public static World getWorld( String name ) {
+        return server.getWorld( name );
     }
 
-    public Logger getLogger() {
-        return this.logger;
+    public static boolean loadOrCreateWorld( String name ) {
+        return server.loadOrCreateWorld( name );
+    }
+
+    public static boolean loadOrCreateWorld( String name, WorldGenerator worldGenerator ) {
+        return server.loadOrCreateWorld( name, worldGenerator );
+    }
+
+    public static void unloadWorld( String name ) {
+        server.unloadWorld( name );
+    }
+
+    public static void unloadWorld( String worldName, Consumer<Player> consumer ) {
+        server.unloadWorld( worldName, consumer );
+    }
+
+    public static boolean isWorldLoaded( String name ) {
+        return server.isWorldLoaded( name );
+    }
+
+    public static void registerWorldGenerator( String name, Class<WorldGenerator> clazz ) {
+        server.registerGenerator( name, clazz );
+    }
+
+    public static Player getPlayer( String name ) {
+        return server.getPlayer( name );
+    }
+
+    public static Player getPlayer( UUID uuid ) {
+        return server.getPlayer( uuid );
+    }
+
+    public static int getMaxPlayers() {
+        return server.getMaxPlayers();
+    }
+
+    public static Collection<Player> getOnlinePlayers() {
+        return server.getOnlinePlayers();
+    }
+
+    public static PluginManager getPluginManager() {
+        return server.getPluginManager();
+    }
+
+    public static ConsoleSender getConsoleSender() {
+        return server.getConsoleSender();
+    }
+
+    public static double getCurrentTps() {
+        return server.getCurrentTps();
+    }
+
+    public static InetSocketAddress getAddress() {
+        return server.getAddress();
+    }
+
+    public static int getPort() {
+        return server.getPort();
+    }
+
+    public static void dispatchCommand( ConsoleSender consoleSender, String command ) {
+        server.dispatchCommand( consoleSender, command );
+    }
+
+    public static void broadcastMessage( String message ) {
+        server.broadcastMessage( message );
     }
 }

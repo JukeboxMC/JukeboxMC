@@ -169,7 +169,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.jukeboxmc.JukeboxMC</mainClass>
+                            <mainClass>org.jukeboxmc.Bootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

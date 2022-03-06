@@ -572,16 +572,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     // ========== Inventory ==========
 
     public Inventory getInventory( WindowId windowId ) {
-        switch ( windowId ) {
-            case PLAYER:
-                return this.getInventory();
-            case CURSOR_DEPRECATED:
-                return this.getCursorInventory();
-            case ARMOR_DEPRECATED:
-                return this.getArmorInventory();
-            default:
-                return this.getCurrentInventory();
-        }
+        return switch ( windowId ) {
+            case PLAYER -> this.getInventory();
+            case CURSOR_DEPRECATED -> this.getCursorInventory();
+            case ARMOR_DEPRECATED -> this.getArmorInventory();
+            default -> this.getCurrentInventory();
+        };
     }
 
     public ContainerInventory getCurrentInventory() {
@@ -762,54 +758,22 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             entityEventPacket.setEntityEventType( EntityEventType.DEATH );
             this.playerConnection.sendPacket( entityEventPacket );
 
-            String deathMessage;
-            switch ( this.lastDamageSource ) {
-                case ENTITY_ATTACK:
-                    deathMessage = this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
-                    break;
-                case FALL:
-                    deathMessage = this.getNameTag() + " fell from a high place";
-                    break;
-                case LAVA:
-                    deathMessage = this.getNameTag() + " tried to swim in lava";
-                    break;
-                case FIRE:
-                    deathMessage = this.getNameTag() + " went up in flames";
-                    break;
-                case VOID:
-                    deathMessage = this.getNameTag() + " fell out of the world";
-                    break;
-                case CACTUS:
-                    deathMessage = this.getNameTag() + " was pricked to death";
-                    break;
-                case STARVE:
-                    deathMessage = this.getNameTag() + " starved to death";
-                    break;
-                case ON_FIRE:
-                    deathMessage = this.getNameTag() + " burned to death";
-                    break;
-                case DROWNING:
-                    deathMessage = this.getNameTag() + " drowned";
-                    break;
-                case HARM_EFFECT:
-                    deathMessage = this.getNameTag() + " was killed by magic";
-                    break;
-                case ENTITY_EXPLODE:
-                    deathMessage = this.getNameTag() + " blew up";
-                    break;
-                case PROJECTILE:
-                    deathMessage = this.getNameTag() + " has been shot";
-                    break;
-                case API:
-                    deathMessage = this.getNameTag() + " was killed by setting health to 0";
-                    break;
-                case COMMAND:
-                    deathMessage = this.getNameTag() + " died";
-                    break;
-                default:
-                    deathMessage = this.getNameTag() + " died for unknown reasons";
-                    break;
-            }
+            String deathMessage = switch ( this.lastDamageSource ) {
+                case ENTITY_ATTACK -> this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
+                case FALL -> this.getNameTag() + " fell from a high place";
+                case LAVA -> this.getNameTag() + " tried to swim in lava";
+                case FIRE -> this.getNameTag() + " went up in flames";
+                case VOID -> this.getNameTag() + " fell out of the world";
+                case CACTUS -> this.getNameTag() + " was pricked to death";
+                case STARVE -> this.getNameTag() + " starved to death";
+                case ON_FIRE -> this.getNameTag() + " burned to death";
+                case DROWNING -> this.getNameTag() + " drowned";
+                case HARM_EFFECT -> this.getNameTag() + " was killed by magic";
+                case ENTITY_EXPLODE -> this.getNameTag() + " blew up";
+                case PROJECTILE -> this.getNameTag() + " has been shot";
+                case API -> this.getNameTag() + " was killed by setting health to 0";
+                case COMMAND -> this.getNameTag() + " died";
+            };
 
             PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent( this, deathMessage, true, this.getDrops() );
             this.server.getPluginManager().callEvent( playerDeathEvent );

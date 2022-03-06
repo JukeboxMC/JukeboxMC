@@ -92,6 +92,7 @@ public class Server {
     @SneakyThrows
     public Server( Logger logger ) {
         Server.setInstance( this );
+        JukeboxMC.setServer( this );
 
         Thread.currentThread().setName( "JukeboxMC Main-Thread" );
         this.mainThread = Thread.currentThread();
@@ -423,6 +424,15 @@ public class Server {
     public Player getPlayer( String name ) {
         for ( Player player : this.players.values() ) {
             if ( player.getName().equalsIgnoreCase( name ) ) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Player getPlayer( UUID uuid ) {
+        for ( Player player : this.players.values() ) {
+            if ( player.getUUID().equals( uuid ) ) {
                 return player;
             }
         }
