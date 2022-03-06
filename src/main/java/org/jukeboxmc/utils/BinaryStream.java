@@ -414,7 +414,17 @@ public class BinaryStream {
         return item;
     }
 
+    public void writeIngredient( Item item ) {
+        this.writeSignedVarInt( item.getRuntimeId() );
+        this.writeSignedVarInt( item.getMeta() == -1 ? Short.MAX_VALUE : item.getMeta() );
+        this.writeSignedVarInt( item.getAmount() );
+    }
+
     public void writeItem( Item item ) {
+        this.writeItem( item, false );
+    }
+
+    public void writeItem( Item item, boolean crafting ) {
         if ( item == null || item.getRuntimeId() == -158 ) {
             this.writeByte( 0 );
             return;
@@ -429,8 +439,10 @@ public class BinaryStream {
         this.writeLShort( amount );
         this.writeUnsignedVarInt( meta );
 
-        // when crafting is false
-        this.writeBoolean( false );
+       if ( !crafting ) {
+           this.writeBoolean( true );
+           this.writeSignedVarInt( 1 );
+       }
 
         this.writeSignedVarInt( item.getBlockRuntimeId() );
 

@@ -34,13 +34,14 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
                     switch ( transaction.getSourceType() ) {
                         case 0: // Slot Change Action
+                            System.out.println( transaction.toString() );
                             Item sourceItem = transaction.getOldItem();
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
 
                             WindowId windowIdById = WindowId.getWindowIdById( transaction.getWindowId() );
                             if ( windowIdById != null ) {
-                                Inventory inventory = player.getInventory( windowIdById );
+                                Inventory inventory = this.getInventory( player, transaction );
                                 if ( inventory != null ) {
                                     InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( inventory, player, sourceItem, targetItem, slot );
                                     Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
@@ -177,6 +178,26 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             default:
                 player.setAction( false );
                 break;
+        }
+    }
+
+    private Inventory getInventory( Player player, InventoryTransactionPacket.Transaction transaction ) {
+        switch ( WindowId.getWindowIdById( transaction.getWindowId() ) ) {
+            case PLAYER:
+                return player.getInventory();
+            case CURSOR_DEPRECATED:
+                int slot = transaction.getSlot();
+                if ( slot >= 28 && slot <= 31 ) {
+                    //PlayerCrafting
+                } else if ( slot >= 32 && slot <= 40 ) {
+                    //CraftingTable
+                } else {
+                    return player.getCursorInventory();
+                }
+            case ARMOR_DEPRECATED:
+                return player.getArmorInventory();
+            default:
+                return player.getCurrentInventory();
         }
     }
 

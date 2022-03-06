@@ -1,6 +1,9 @@
 package org.jukeboxmc.config;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 import org.yaml.snakeyaml.DumperOptions;
@@ -22,81 +25,84 @@ public class Config {
     private Properties properties;
 
     private final File file;
+    private final InputStream inputStream;
 
     @SneakyThrows
     public Config( File file, ConfigType configType ) {
         this.file = file;
+        this.inputStream = null;
         this.configType = configType;
         this.configSection = new ConfigSection();
-        if ( !this.file.getParentFile().exists() ) {
-            this.file.getParentFile().mkdirs();
-        }
-        if ( !this.file.exists() ) {
-            this.file.createNewFile();
-        }
 
-        if ( configType.equals( ConfigType.JSON ) ) {
-            GsonBuilder gson = new GsonBuilder();
-            gson.setPrettyPrinting();
-            gson.registerTypeAdapter( Double.class, (JsonSerializer<Double>) ( src, typeOfSrc, context ) -> {
-                if ( src == src.intValue() ) {
-                    return new JsonPrimitive( src.intValue() );
-                } else if ( src == src.longValue() ) {
-                    return new JsonPrimitive( src.longValue() );
+        this.load();
+    }
+
+    @SneakyThrows
+    public Config( InputStream inputStream, ConfigType configType ) {
+        this.file = null;
+        this.inputStream = inputStream;
+        this.configType = configType;
+        this.configSection = new ConfigSection();
+        this.load();
+    }
+
+    @SneakyThrows
+    public void load() {
+        try ( InputStreamReader reader = new InputStreamReader( this.file == null ? this.inputStream : new FileInputStream( this.file ) ) ) {
+            switch ( this.configType ) {
+                case JSON -> {
+                    GsonBuilder gson = new GsonBuilder();
+                    gson.setPrettyPrinting();
+                    gson.registerTypeAdapter( Double.class, (JsonSerializer<Double>) ( src, typeOfSrc, context ) -> {
+                        if ( src == src.intValue() ) {
+                            return new JsonPrimitive( src.intValue() );
+                        } else if ( src == src.longValue() ) {
+                            return new JsonPrimitive( src.longValue() );
+                        }
+                        return new JsonPrimitive( src );
+                    } );
+                    this.gson = gson.create();
+                    this.configSection = new ConfigSection( this.gson.fromJson( reader, new TypeToken<LinkedHashMap<String, Object>>() {
+                    }.getType() ) );
                 }
-                return new JsonPrimitive( src );
-            } );
-            this.gson = gson.create();
-            JsonElement parse = new JsonParser().parse( new FileReader( this.file ) );
-            this.configSection = new ConfigSection( this.gson.fromJson( parse, new TypeToken<LinkedHashMap<String, Object>>() {
-            }.getType() ) );
-        } else if ( configType.equals( ConfigType.YAML ) ) {
-            DumperOptions dumperOptions = new DumperOptions();
-            dumperOptions.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
-            this.yaml = new Yaml( dumperOptions );
-            this.configSection = new ConfigSection( this.yaml.loadAs( new FileReader( this.file ), LinkedHashMap.class ) );
-        } else if ( configType.equals( ConfigType.PROPERTIES ) ) {
-            this.properties = new Properties();
-            this.properties.load( new BufferedReader( new InputStreamReader( new FileInputStream( this.file ) ) ) );
+                case YAML -> {
+                    DumperOptions dumperOptions = new DumperOptions();
+                    dumperOptions.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
+                    this.yaml = new Yaml( dumperOptions );
+                    this.configSection = new ConfigSection( this.yaml.loadAs( reader, LinkedHashMap.class ) );
+                }
+                case PROPERTIES -> {
+                    this.properties = new Properties();
+                    this.properties.load( reader );
+                }
+            }
         }
     }
 
     public boolean exists( String key ) {
-        switch ( this.configType ) {
-            case JSON:
-            case YAML:
-                return this.configSection.exists( key );
-            case PROPERTIES:
-                return this.properties.getProperty( key ) != null;
-        }
-        return false;
+        return switch ( this.configType ) {
+            case JSON, YAML -> this.configSection.exists( key );
+            case PROPERTIES -> this.properties.getProperty( key ) != null;
+        };
     }
 
     public void set( String key, Object object ) {
         switch ( this.configType ) {
-            case JSON:
-            case YAML:
-                this.configSection.set( key, object );
-                break;
-            case PROPERTIES:
-                this.properties.setProperty( key, String.valueOf( object ) );
-                break;
-            default:
-                break;
+            case JSON, YAML -> this.configSection.set( key, object );
+            case PROPERTIES -> this.properties.setProperty( key, String.valueOf( object ) );
         }
     }
 
     public void remove( String key ) {
         switch ( this.configType ) {
-            case JSON:
-            case YAML:
+            case JSON, YAML -> {
                 this.configSection.remove( key );
                 this.save();
-                break;
-            case PROPERTIES:
+            }
+            case PROPERTIES -> {
                 this.properties.remove( key );
                 this.save();
-                break;
+            }
         }
     }
 
@@ -108,14 +114,10 @@ public class Config {
     }
 
     public Object get( String key ) {
-        switch ( this.configType ) {
-            case JSON:
-            case YAML:
-                return this.configSection.get( key );
-            case PROPERTIES:
-                return this.properties.getProperty( key );
-        }
-        return null;
+        return switch ( this.configType ) {
+            case JSON, YAML -> this.configSection.get( key );
+            case PROPERTIES -> this.properties.getProperty( key );
+        };
     }
 
     public List<String> getStringList( String key ) {
@@ -182,11 +184,8 @@ public class Config {
         return this.configSection.getBoolean( key );
     }
 
-    public Map<String, Object> getMap( String key ) {
-        if ( this.configSection.containsKey( key ) && this.get( key ) instanceof Map ) {
-            return (Map<String, Object>) this.get( key );
-        }
-        return new HashMap<>();
+    public Map<String, Object> getMap() {
+        return this.configSection;
     }
 
     public Set<String> getKeys() {
@@ -197,23 +196,26 @@ public class Config {
         return this.configSection.values();
     }
 
+    public ConfigSection getConfigSection() {
+        return configSection;
+    }
+
+    @SneakyThrows
     public void save() {
-        try ( FileWriter fileWriter = new FileWriter( this.file ) ) {
+        if ( this.file == null ) {
+            throw new IOException( "This config can not be saved!" );
+        }
+
+        if ( !this.file.getParentFile().exists() ) {
+            this.file.getParentFile().mkdirs();
+        }
+
+        try ( OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( this.file ) ) ) {
             switch ( this.configType ) {
-                case JSON:
-                    fileWriter.write( this.gson.toJson( this.configSection ) );
-                    break;
-                case YAML:
-                    fileWriter.write( this.yaml.dump( this.configSection ) );
-                    break;
-                case PROPERTIES:
-                    this.properties.store( fileWriter, "" );
-                    break;
-                default:
-                    break;
+                case JSON -> this.gson.toJson( this.configSection, writer );
+                case YAML -> this.yaml.dump( this.configSection, writer );
+                case PROPERTIES -> this.properties.store( writer, "" );
             }
-        } catch ( IOException e ) {
-            e.printStackTrace();
         }
     }
 

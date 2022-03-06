@@ -11,6 +11,7 @@ import org.jukeboxmc.config.Config;
 import org.jukeboxmc.config.ConfigType;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
+import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
@@ -64,6 +65,7 @@ public class Server {
     private final ConsoleSender consoleSender;
     private final TerminalConsole terminalConsole;
     private final Scheduler scheduler;
+    private final CraftingManager craftingManager;
 
     private World defaultWorld;
     private final WorldGenerator overWorldGenerator;
@@ -140,8 +142,9 @@ public class Server {
         String defaultWorldName = this.getDefaultWorldName();
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
+            this.defaultWorld.setAutoSave( false ); //TODO
         }
-
+        this.craftingManager = new CraftingManager();
         this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );
 
         this.rakNetListener = new RakNetListener( this.serverId );
@@ -295,6 +298,10 @@ public class Server {
 
     public PluginManager getPluginManager() {
         return this.pluginManager;
+    }
+
+    public CraftingManager getCraftingManager() {
+        return craftingManager;
     }
 
     public Scheduler getScheduler() {

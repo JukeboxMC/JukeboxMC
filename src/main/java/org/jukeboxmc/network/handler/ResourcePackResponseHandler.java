@@ -62,6 +62,10 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
                 player.sendPacket( new AvailableActorIdentifiersPacket() );
                 player.sendPacket( new BiomeDefinitionListPacket() );
                 player.sendPacket( new CreativeContentPacket() );
+
+                CraftingDataPacket craftingDataPacket = new CraftingDataPacket();
+                craftingDataPacket.setCraftingData( server.getCraftingManager().getCraftingData() );
+                player.sendPacket( craftingDataPacket );
                 break;
         }
     }
