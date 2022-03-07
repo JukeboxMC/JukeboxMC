@@ -99,9 +99,6 @@ public class CraftingManager {
             int networkId = (int) (double) recipe.get( "networkId" );
             this.craftingData.add( new CraftingData( craftingDataType, recipeId, width, height, inputId, inputDamage, inputItems, outputItems, uuid, craftingTag, priority, networkId ) );
         }
-        System.out.println( "Inputs: " + inputsX );
-        System.out.println( "Outputs: " + outputsX );
-
         List<Map<String, Object>> containerMixes = (List<Map<String, Object>>) config.getMap().get( "containerMixes" );
         for ( Map<String, Object> recipe : containerMixes ) {
             int inputId = (int) (double) recipe.get( "inputId" );
@@ -120,7 +117,6 @@ public class CraftingManager {
             int outputMeta = (int) (double) recipe.get( "outputMeta" );
             this.potionMixData.add( new PotionMixData( inputId, inputMeta, reagentId, reagentMeta, outputId, outputMeta ) );
         }
-        System.out.println( this.craftingData.size() );
         try {
             recipesStream.close();
         } catch ( IOException e ) {

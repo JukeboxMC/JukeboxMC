@@ -28,9 +28,4 @@ public class CraftingData {
     private final int priority;
     private final int networkId;
 
-    public void checkNull(CraftingDataType craftingDataType) {
-
-            System.out.println((recipeId == null) + ", " + width + ", " + height  + ", " + inputId
-                    + ", " + inputDamage  + ", " + (inputs == null)  + ", " + (outputs == null)  + ", " + (uuid == null)  + ", " + (craftingTag == null)  + ", " + priority  + ", " + networkId);
-    }
 }

@@ -84,8 +84,6 @@ public class CraftingDataPacket extends Packet {
                         }
                         stream.writeItem( craftingData.getOutputs().get( 0 ), true );
                         stream.writeString( craftingData.getCraftingTag() );
-                        System.out.println(craftingData.getOutputs().get( 0 ).toString());
-                        System.out.println("ID: " + craftingData.getInputId() + " Meta: " + craftingData.getInputDamage() + " Tag: " + craftingData.getCraftingTag());
                     }
                     break;
                 case MULTI:

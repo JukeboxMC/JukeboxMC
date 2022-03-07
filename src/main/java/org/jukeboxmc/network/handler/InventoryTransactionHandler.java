@@ -34,7 +34,6 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
                     switch ( transaction.getSourceType() ) {
                         case 0: // Slot Change Action
-                            System.out.println( transaction.toString() );
                             Item sourceItem = transaction.getOldItem();
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
