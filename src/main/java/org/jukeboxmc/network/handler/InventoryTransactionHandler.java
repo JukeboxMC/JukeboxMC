@@ -32,36 +32,33 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             case InventoryTransactionPacket.TYPE_NORMAL:
                 player.setAction( false );
                 for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
+                    Inventory inventory = this.getInventory( player, transaction );
                     switch ( transaction.getSourceType() ) {
                         case 0: // Slot Change Action
                             Item sourceItem = transaction.getOldItem();
                             Item targetItem = transaction.getNewItem();
                             int slot = transaction.getSlot();
 
-                            WindowId windowIdById = WindowId.getWindowIdById( transaction.getWindowId() );
-                            if ( windowIdById != null ) {
-                                Inventory inventory = this.getInventory( player, transaction );
-                                if ( inventory != null ) {
-                                    InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( inventory, player, sourceItem, targetItem, slot );
-                                    Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
+                            if ( inventory != null ) {
+                                InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( inventory, player, sourceItem, targetItem, slot );
+                                Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
 
-                                    if ( !inventoryClickEvent.isCancelled() ) {
-                                        if ( inventory instanceof ArmorInventory ) {
-                                            inventory.setItem( slot, targetItem );
-                                            for ( Player onlinePlayer : server.getOnlinePlayers() ) {
-                                                player.getArmorInventory().sendArmorContent( onlinePlayer );
-                                            }
-                                        } else {
-                                            inventory.setItem( slot, targetItem );
+                                if ( !inventoryClickEvent.isCancelled() ) {
+                                    if ( inventory instanceof ArmorInventory ) {
+                                        inventory.setItem( slot, targetItem );
+                                        for ( Player onlinePlayer : server.getOnlinePlayers() ) {
+                                            player.getArmorInventory().sendArmorContent( onlinePlayer );
                                         }
                                     } else {
-                                        player.getCursorInventory().sendContents( player );
-                                        player.getInventory().sendContents( player );
-                                        player.getArmorInventory().sendArmorContent( player );
+                                        inventory.setItem( slot, targetItem );
                                     }
                                 } else {
-                                    Server.getInstance().getLogger().info( "Inventory with id " + transaction.getWindowId() + " is missing" );
+                                    player.getCursorInventory().sendContents( player );
+                                    player.getInventory().sendContents( player );
+                                    player.getArmorInventory().sendArmorContent( player );
                                 }
+                            } else {
+                                Server.getInstance().getLogger().info( "Inventory with id " + transaction.getWindowId() + " is missing" );
                             }
                             break;
                         case 2:
@@ -180,6 +177,45 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
         }
     }
 
+
+    private Inventory getInventory( Player player, InventoryTransactionPacket.Transaction transaction ) {
+        switch ( WindowId.getWindowIdById( transaction.getWindowId() ) ) {
+            case PLAYER:
+                return player.getInventory();
+            case CURSOR_DEPRECATED:
+                /*
+                Inventory inventory;
+                if ( transaction.getSlot() > 0 ) {
+                    if ( transaction.getSlot() == 50 ) {
+                        transaction.setSlot( 0 );
+                        inventory = player.getCursorInventory();
+                    } else {
+                        if ( transaction.getSlot() >= 28 && transaction.getSlot() <= 31 ) {
+                            inventory = player.getCraftingTableInventory();
+                            inventory.setSlotSize( 4 );
+                            transaction.setSlot( transaction.getSlot() - 28 );
+                        } else if ( transaction.getSlot() >= 32 && transaction.getSlot() <= 40 ) {
+                            inventory = player.getCraftingTableInventory();
+                            inventory.setSlotSize( 9 );
+                            transaction.setSlot( transaction.getSlot() - 32 );
+                        } else {
+                            inventory = player.getCursorInventory();
+                        }
+                    }
+                } else {
+                    inventory = player.getCursorInventory();
+                }
+                 */
+                return player.getCursorInventory();
+            case ARMOR_DEPRECATED:
+                return player.getArmorInventory();
+            default:
+                return player.getCurrentInventory();
+        }
+    }
+
+
+/*
     private Inventory getInventory( Player player, InventoryTransactionPacket.Transaction transaction ) {
         switch ( WindowId.getWindowIdById( transaction.getWindowId() ) ) {
             case PLAYER:
@@ -188,8 +224,10 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 int slot = transaction.getSlot();
                 if ( slot >= 28 && slot <= 31 ) {
                     //PlayerCrafting
+                    return player.getCursorInventory();
                 } else if ( slot >= 32 && slot <= 40 ) {
                     //CraftingTable
+                    return player.getCraftingTableInventory();
                 } else {
                     return player.getCursorInventory();
                 }
@@ -199,6 +237,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 return player.getCurrentInventory();
         }
     }
+ */
 
     public boolean canInteract() {
         return !( System.currentTimeMillis() - this.spamCheckTime < 100 );

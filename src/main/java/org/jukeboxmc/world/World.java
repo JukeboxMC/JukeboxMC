@@ -293,7 +293,7 @@ public class World {
 
             byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ), readOptions );
             if ( heightAndBiomes != null ) {
-                chunk.loadHeightAndBiomes( heightAndBiomes );
+                //chunk.loadHeightAndBiomes( heightAndBiomes );
             }
             return chunk;
         } catch ( Throwable throwable ) {

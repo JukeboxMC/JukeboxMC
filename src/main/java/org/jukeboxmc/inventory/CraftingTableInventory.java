@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
 public class CraftingTableInventory extends ContainerInventory {
 
     public CraftingTableInventory( InventoryHolder holder ) {
-        super( holder, -1, 10 );
+        super( holder, -1, 9 );
     }
 
     @Override

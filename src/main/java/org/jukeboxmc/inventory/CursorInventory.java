@@ -18,6 +18,10 @@ public class CursorInventory extends Inventory {
         this.setItem( 0, item );
     }
 
+    public Item getItem() {
+        return this.getItem( 0 );
+    }
+
     @Override
     public void sendContents( Player player ) {
         this.sendContents( 0, player );

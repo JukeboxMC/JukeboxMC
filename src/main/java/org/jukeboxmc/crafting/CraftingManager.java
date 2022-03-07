@@ -35,8 +35,6 @@ public class CraftingManager {
         if ( recipesStream == null ) {
             throw new AssertionError( "Unable to find recipes.json" );
         }
-        int inputsX = 0;
-        int outputsX = 0;
         Config config = new Config( recipesStream, ConfigType.JSON );
         List<Map<String, Object>> recipes = (List<Map<String, Object>>) config.getMap().get( "recipes" );
         for ( Map<String, Object> recipe : recipes ) {
@@ -49,7 +47,6 @@ public class CraftingManager {
 
             List<Item> inputItems = new ArrayList<>();
             if ( recipe.containsKey( "inputs" ) ) {
-                inputsX++;
                 List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" ); //TODO
                 for ( Map<String, Object> input : inputs ) {
                     int id = (int) (double) input.get( "id" );
@@ -63,7 +60,6 @@ public class CraftingManager {
                     int netId = (int) (double) input.get( "netId" );
 
                     String identifier = BedrockResourceLoader.getItemNameById().get( id );
-
                     Item item = new Item( identifier, damage, blockRuntimeId );
                     item.setAmount( count );
                     inputItems.add( item );
@@ -73,7 +69,6 @@ public class CraftingManager {
             List<Item> outputItems = new ArrayList<>();
             List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" ); //TODO
             if ( recipe.containsKey( "outputs" ) ) {
-                outputsX++;
                 for ( Map<String, Object> output : outputs ) {
                     int id = (int) (double) output.get( "id" );
                     int damage = (int) (double) output.get( "damage" );
@@ -86,7 +81,6 @@ public class CraftingManager {
                     int netId = (int) (double) output.get( "netId" );
 
                     String identifier = BedrockResourceLoader.getItemNameById().get( id );
-
                     Item item = new Item( identifier, damage, blockRuntimeId );
                     item.setAmount( count );
                     outputItems.add( item );

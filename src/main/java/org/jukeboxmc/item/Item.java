@@ -5,6 +5,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.item.enchantment.Enchantment;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.item.type.Durability;
@@ -42,7 +43,6 @@ public class Item implements Cloneable {
     protected Map<EnchantmentType, Enchantment> enchantments;
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
-
 
     public Item( String identifier ) {
         this( identifier, 0, 0, NbtMap.EMPTY );

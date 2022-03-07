@@ -46,6 +46,10 @@ public abstract class Inventory {
         return WindowTypeId.INVENTORY;
     }
 
+    public Set<Player> getViewer() {
+        return this.viewer;
+    }
+
     public void addViewer( Player player ) {
         this.sendContents( player );
         this.viewer.add( player );
@@ -166,6 +170,10 @@ public abstract class Inventory {
 
     public int getSize() {
         return this.slotSize;
+    }
+
+    public void setSlotSize( int slotSize ) {
+        this.slotSize = slotSize;
     }
 
     public long getHolderId() {

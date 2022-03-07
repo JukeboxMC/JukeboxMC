@@ -163,7 +163,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.biomes[y0] == null ) {
-                this.biomes[y0] = new ObjectPalette<>( Biome.OCEAN );
+                this.biomes[y0] = new ObjectPalette<>( Biome.PLAINS );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -179,7 +179,7 @@ public class Chunk extends LevelDBChunk {
         int subY = this.getSubY( y );
         for ( int y0 = 0; y0 <= subY; y0++ ) {
             if ( this.subChunks[y0] == null ) {
-                this.biomes[y0] = new ObjectPalette<>( Biome.OCEAN );
+                this.biomes[y0] = new ObjectPalette<>( Biome.PLAINS );
                 this.subChunks[y0] = new SubChunk( y0 );
             }
         }
@@ -311,6 +311,7 @@ public class Chunk extends LevelDBChunk {
         }
 
         //TODO: needs more testing and fixes
+       /*
         byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
         BinaryStream heightAndBiomesBuffer = new BinaryStream();
 
@@ -328,6 +329,7 @@ public class Chunk extends LevelDBChunk {
         }
 
         writeBatch.put( heightAndBiomesKey, heightAndBiomesBuffer.array() );
+      */
 
         db.write( writeBatch );
         try {
