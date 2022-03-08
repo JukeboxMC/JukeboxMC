@@ -39,6 +39,7 @@ public class PacketRegistry {
         this.packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
         this.packetHandlerMap.put( ResourcePackChunkRequestPacket.class, new ResourcePackChunkRequestHandler() );
         this.packetHandlerMap.put( PacketViolationWarningPacket.class, new PacketViolationWarningHandler() );
+        this.packetHandlerMap.put( CraftingEventPacket.class, new CraftingEventHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
@@ -97,6 +98,8 @@ public class PacketRegistry {
                 return new ResourcePackChunkRequestPacket();
             case Protocol.PACKET_VIOLATION_WARNING_PACKET:
                 return new PacketViolationWarningPacket();
+            case Protocol.CRAFTING_EVENT_PACKET:
+                return new CraftingEventPacket();
             default:
                 return null;
         }

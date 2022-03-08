@@ -74,4 +74,5 @@ public interface Protocol {
     byte RESOURCE_PACK_CHUNK_DATA_PACKET = 0x53;
     int PACKET_VIOLATION_WARNING_PACKET = 0x9c;
     byte CRAFTING_DATA_PACKET = 0x34;
+    byte CRAFTING_EVENT_PACKET = 0x35;
 }
