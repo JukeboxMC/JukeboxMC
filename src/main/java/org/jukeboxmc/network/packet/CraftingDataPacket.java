@@ -95,9 +95,22 @@ public class CraftingDataPacket extends Packet {
             }
         }
 
+        stream.writeUnsignedVarInt( this.potionMixData.size() );
+        for ( PotionMixData potionMixData : this.potionMixData ) {
+            stream.writeSignedVarInt( potionMixData.getInputId() );
+            stream.writeSignedVarInt( potionMixData.getInputMeta() );
+            stream.writeSignedVarInt( potionMixData.getReagentId() );
+            stream.writeSignedVarInt( potionMixData.getReagentMeta() );
+            stream.writeSignedVarInt( potionMixData.getOutputId() );
+            stream.writeSignedVarInt( potionMixData.getOutputMeta() );
+        }
 
-        stream.writeUnsignedVarInt( 0 );
-        stream.writeUnsignedVarInt( 0 );
+        stream.writeUnsignedVarInt( this.containerMixData.size() );
+        for ( ContainerMixData containerMixData : this.containerMixData ) {
+            stream.writeSignedVarInt( containerMixData.getInputId() );
+            stream.writeSignedVarInt( containerMixData.getReagentId() );
+            stream.writeSignedVarInt( containerMixData.getOutputId() );
+        }
 
         stream.writeUnsignedVarInt( 0 );
         stream.writeBoolean( true );
