@@ -162,7 +162,7 @@ public class InventoryTransactionPacket extends Packet {
         public InventoryAction createInventory( Player player ) {
             switch ( this.sourceType ) {
                 case SOURCE_CONTAINER:
-                    Inventory inventory = player.getInventory( WindowId.getWindowIdById( this.windowId ) );
+                    Inventory inventory = player.getInventory( WindowId.getWindowIdById( this.windowId ), this.slot );
                     if ( inventory != null ) {
                         return new SlotChangeAction( inventory, this.slot, this.oldItem, this.newItem );
                     }

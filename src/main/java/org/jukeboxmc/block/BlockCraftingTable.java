@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.inventory.CraftingInputInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemCraftingTable;
 import org.jukeboxmc.item.type.ItemToolType;
@@ -29,7 +30,8 @@ public class BlockCraftingTable extends Block {
 
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        player.openInventory( player.getCraftingTableInventory(), blockPosition );
+        player.getCraftingInputInventory().clear();
+        player.openInventory( player.getCraftingInputInventory(), blockPosition );
         return true;
     }
 

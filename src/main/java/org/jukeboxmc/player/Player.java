@@ -62,8 +62,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private EntityFishingHook entityFishingHook;
 
     private ContainerInventory currentInventory;
+    private final CraftingInputInventory craftingInputInventory;
     private final CursorInventory cursorInventory;
-    private final CraftingTableInventory craftingTableInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
     private final AnvilInventory anvilInventory;
@@ -108,8 +108,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.server = playerConnection.getServer();
         this.gameMode = this.server.getDefaultGameMode();
 
+        this.craftingInputInventory = new CraftingInputInventory( this );
         this.cursorInventory = new CursorInventory( this, this.entityId );
-        this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
         this.anvilInventory = new AnvilInventory( this );
@@ -236,11 +236,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.updateAttributes();
     }
     // ========== Chunk ==========
-
-    /*
-    Ja hab es versucht sync zu machen aber dann ging nix mehr xD
-
-     */
 
     public void needNewChunks() {
         if ( this.requestedChunks ) return;
@@ -571,13 +566,25 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     // ========== Inventory ==========
 
-    public Inventory getInventory( WindowId windowId ) {
-        return switch ( windowId ) {
-            case PLAYER -> this.getInventory();
-            case CURSOR_DEPRECATED -> this.getCursorInventory();
-            case ARMOR_DEPRECATED -> this.getArmorInventory();
-            default -> this.getCurrentInventory();
-        };
+    public Inventory getInventory( WindowId windowId, int slot ) {
+        switch ( windowId ) {
+            case PLAYER:
+                return this.getInventory();
+            case CURSOR_DEPRECATED:
+                if ( slot >= 28 && slot <= 31 ) {
+                    //PlayerCrafting
+                    return this.getCraftingInputInventory();
+                } else if ( slot >= 32 && slot <= 40 ) {
+                    //CraftingTable
+                    return this.getCraftingInputInventory();
+                } else {
+                    return this.getCursorInventory();
+                }
+            case ARMOR_DEPRECATED:
+                return this.getArmorInventory();
+            default:
+                return this.getCurrentInventory();
+        }
     }
 
     public ContainerInventory getCurrentInventory() {
@@ -588,8 +595,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.cursorInventory;
     }
 
-    public CraftingTableInventory getCraftingTableInventory() {
-        return this.craftingTableInventory;
+    public CraftingInputInventory getCraftingInputInventory() {
+        return this.craftingInputInventory;
     }
 
     public CartographyTableInventory getCartographyTableInventory() {
@@ -932,10 +939,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.setSpawnLocation( spawnLocation );
             }
 
+            this.craftingInputInventory.addViewer( this );
             this.playerInventory.addViewer( this );
             this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
-            this.craftingTableInventory.addViewer( this );
             this.cartographyTableInventory.addViewer( this );
             this.smithingTableInventory.addViewer( this );
             this.anvilInventory.addViewer( this );
