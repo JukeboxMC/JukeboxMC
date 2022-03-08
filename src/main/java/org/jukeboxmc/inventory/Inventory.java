@@ -60,15 +60,21 @@ public abstract class Inventory {
     }
 
     public void setItem( int slot, Item item ) {
+        this.setItem( slot, item, true );
+    }
+
+    public void setItem( int slot, Item item, boolean sendContent ) {
         if ( slot < 0 || slot >= this.slotSize ) {
             return;
         }
         if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
-            this.contents[slot] = ItemType.AIR.getItem();
+            this.contents[slot] = ItemType.AIR.getItem().setAmount( 0 );
         }
         this.contents[slot] = item;
-        for ( Player player : this.viewer ) {
-            this.sendContents( slot, player );
+        if ( sendContent ) {
+            for ( Player player : this.viewer ) {
+                this.sendContents( slot, player );
+            }
         }
     }
 
@@ -126,6 +132,37 @@ public abstract class Inventory {
                     this.setItem( i, clone );
                     return true;
                 }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean addItem( Item item, int slot ) {
+        if ( this.canAddItem( item ) ) {
+            Item clone = item.clone();
+
+            if ( contents[slot].equals( clone ) && contents[slot].getAmount() <= contents[slot].getMaxAmount() ) {
+                if ( contents[slot].getAmount() + clone.getAmount() <= contents[slot].getMaxAmount() ) {
+                    contents[slot].setAmount( contents[slot].getAmount() + clone.getAmount() );
+                    clone.setAmount( 0 );
+                } else {
+                    int amountToDecrease = contents[slot].getMaxAmount() - contents[slot].getAmount();
+                    contents[slot].setAmount( contents[slot].getMaxAmount() );
+                    clone.setAmount( clone.getAmount() - amountToDecrease );
+                }
+
+                this.setItem( slot, contents[slot] );
+
+                if ( clone.getAmount() == 0 ) {
+                    return true;
+                }
+            }
+
+            if ( contents[slot] instanceof ItemAir ) {
+                this.setItem( slot, clone );
+                return true;
             }
         } else {
             return false;

@@ -8,6 +8,7 @@ public class ItemAir extends Item {
 
     public ItemAir() {
         super( "minecraft:air" );
+        this.amount = 0;
     }
 
     @Override

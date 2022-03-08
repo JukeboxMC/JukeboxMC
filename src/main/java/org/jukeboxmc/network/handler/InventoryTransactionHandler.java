@@ -4,19 +4,20 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.entity.item.EntityItem;
-import org.jukeboxmc.event.inventory.InventoryClickEvent;
-import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
-import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
+import org.jukeboxmc.inventory.transaction.InventoryAction;
+import org.jukeboxmc.inventory.transaction.InventoryTransaction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBow;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.InventoryTransactionPacket;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -28,68 +29,29 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
 
     @Override
     public void handle( InventoryTransactionPacket packet, Server server, Player player ) {
+        List<InventoryAction> actions = new ArrayList<>();
+
+        for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
+            InventoryAction inventoryAction = transaction.createInventory( player );
+            if ( inventoryAction != null){
+                actions.add( inventoryAction );
+            }
+        }
+
+        if ( packet.getType() == InventoryTransactionPacket.TYPE_NORMAL ) {
+            InventoryTransaction transaction = new InventoryTransaction(player, actions);
+            transaction.execute();
+            return;
+        }
+
         switch ( packet.getType() ) {
-            case InventoryTransactionPacket.TYPE_NORMAL:
-                player.setAction( false );
-                for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
-                    Inventory inventory = this.getInventory( player, transaction );
-                    switch ( transaction.getSourceType() ) {
-                        case 0: // Slot Change Action
-                            Item sourceItem = transaction.getOldItem();
-                            Item targetItem = transaction.getNewItem();
-                            int slot = transaction.getSlot();
-
-                            if ( inventory != null ) {
-                                InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( inventory, player, sourceItem, targetItem, slot );
-                                Server.getInstance().getPluginManager().callEvent( inventoryClickEvent );
-
-                                if ( !inventoryClickEvent.isCancelled() ) {
-                                    if ( inventory instanceof ArmorInventory ) {
-                                        inventory.setItem( slot, targetItem );
-                                        for ( Player onlinePlayer : server.getOnlinePlayers() ) {
-                                            player.getArmorInventory().sendArmorContent( onlinePlayer );
-                                        }
-                                    } else {
-                                        inventory.setItem( slot, targetItem );
-                                    }
-                                } else {
-                                    player.getCursorInventory().sendContents( player );
-                                    player.getInventory().sendContents( player );
-                                    player.getArmorInventory().sendArmorContent( player );
-                                }
-                            } else {
-                                Server.getInstance().getLogger().info( "Inventory with id " + transaction.getWindowId() + " is missing" );
-                            }
-                            break;
-                        case 2:
-                            PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent( player, transaction.getNewItem() );
-                            Server.getInstance().getPluginManager().callEvent( playerDropItemEvent );
-                            if ( playerDropItemEvent.isCancelled() ) {
-                                player.getInventory().sendContents( player );
-                                return;
-                            }
-                            EntityItem entityItem = player.getWorld().dropItem(
-                                    playerDropItemEvent.getItem(),
-                                    player.getLocation().add( 0, player.getEyeHeight(), 0 ),
-                                    player.getLocation().getDirection().multiply( 0.4f, 0.4f, 0.4f ) );
-                            entityItem.setPlayerHasThrown( player );
-                            entityItem.spawn();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-            case InventoryTransactionPacket.TYPE_USE_ITEM:
+            case InventoryTransactionPacket.TYPE_USE_ITEM -> {
                 Vector blockPosition = packet.getBlockPosition();
                 blockPosition.setDimension( player.getDimension() );
-
                 Vector clickPosition = packet.getClickPosition();
                 clickPosition.setDimension( player.getDimension() );
-
                 BlockFace blockFace = packet.getBlockFace();
                 Block block = player.getWorld().getBlock( blockPosition );
-
                 switch ( packet.getActionType() ) {
                     case 0: //Use click block
                         if ( !this.canInteract() ) {
@@ -138,8 +100,8 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     default:
                         break;
                 }
-                break;
-            case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY:
+            }
+            case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY -> {
                 Server.getInstance().getLogger().debug( "USE_ON_ENTITY" );
                 switch ( packet.getActionType() ) {
                     case 0: //Entity Interact
@@ -159,8 +121,8 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     default:
                         break;
                 }
-                break;
-            case InventoryTransactionPacket.TYPE_RELEASE_ITEM:
+            }
+            case InventoryTransactionPacket.TYPE_RELEASE_ITEM -> {
                 Server.getInstance().getLogger().debug( "RELEASE" );
                 if ( packet.getActionType() == 0 ) { // Release item ( shoot bow )
                     // Check if the item is a bow
@@ -168,12 +130,9 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                         ( (ItemBow) player.getInventory().getItemInHand() ).shoot( player );
                     }
                 }
-
                 player.setAction( false );
-                break;
-            default:
-                player.setAction( false );
-                break;
+            }
+            default -> player.setAction( false );
         }
     }
 

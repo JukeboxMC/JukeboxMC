@@ -352,7 +352,7 @@ public class BinaryStream {
         int networkId = this.readSignedVarInt();
 
         if ( networkId == 0 ) {
-            return ItemType.AIR.getItem();
+            return ItemType.AIR.getItem().setAmount( 0 );
         }
 
         byte amount = (byte) this.readLShort();
