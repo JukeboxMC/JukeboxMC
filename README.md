@@ -23,7 +23,7 @@ Git: https://git-scm.com/downloads
 
 ## How to create a plugin
 
-_Notice: Please use **Java 8**!_
+_Notice: Please use **Java 16**!_
 
 **_With Maven:_**
 
