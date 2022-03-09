@@ -11,7 +11,7 @@ import org.jukeboxmc.player.Player;
 public class CursorInventory extends Inventory {
 
     public CursorInventory( InventoryHolder holder, long holderId ) {
-        super( holder, holderId, 1 );
+        super( holder, holderId, 51 );
     }
 
     public void setItem( Item item ) {

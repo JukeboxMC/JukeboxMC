@@ -7,7 +7,6 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
-import org.jukeboxmc.inventory.transaction.CraftingTransaction;
 import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.inventory.transaction.InventoryTransaction;
 import org.jukeboxmc.item.Item;
@@ -32,23 +31,41 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
     public void handle( InventoryTransactionPacket packet, Server server, Player player ) {
         List<InventoryAction> actions = new ArrayList<>();
 
-        if ( packet.isCraftingPart() ) {
-            return;
-        }
-
         for ( InventoryTransactionPacket.Transaction transaction : packet.getTransactions() ) {
             InventoryAction inventoryAction = transaction.createInventory( player );
-            if ( inventoryAction != null){
+            if ( inventoryAction != null ) {
                 actions.add( inventoryAction );
+            } else {
+                break;
             }
+        }
+
+        if ( packet.isCraftingPart ) {
+            if ( player.getCraftingTransaction() == null ) {
+                player.createCraftingTransaction( actions );
+            } else {
+                for ( InventoryAction action : actions ) {
+                    player.getCraftingTransaction().addAction( action );
+                }
+            }
+
+            if ( player.getCraftingTransaction().getPrimaryOutput() != null && player.getCraftingTransaction().canExecute() ) {
+                player.getCraftingTransaction().execute();
+                player.resetCraftingTransaction();
+            }
+            return;
+        } else if ( player.getCraftingTransaction() != null ) {
+            if ( player.getCraftingTransaction().checkForCraftingPart( actions ) ) {
+                for ( InventoryAction action : actions ) {
+                    player.getCraftingTransaction().addAction( action );
+                }
+            }
+            return;
         }
 
         if ( packet.getType() == InventoryTransactionPacket.TYPE_NORMAL ) {
-            InventoryTransaction transaction = new InventoryTransaction(player, actions);
-            if ( !transaction.execute() ) {
-
-            }
-            return;
+            InventoryTransaction transaction = new InventoryTransaction( player, actions );
+            transaction.execute();
         }
 
         switch ( packet.getType() ) {

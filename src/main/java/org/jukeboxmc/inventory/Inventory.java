@@ -170,6 +170,21 @@ public abstract class Inventory {
         return true;
     }
 
+    public void removeItem( int slot, Item item ) {
+        Item content = this.getItem( slot );
+
+        if ( content != null && content.getItemType() != ItemType.AIR ) {
+            if ( content.getItemType() == item.getItemType() && content.getMeta() == item.getMeta() ) {
+                content.setAmount( content.getAmount() - item.getAmount() );
+                if ( content.getAmount() <= 0 ) {
+                    this.setItem( slot, new ItemAir() );
+                } else {
+                    this.setItem( slot, content );
+                }
+            }
+        }
+    }
+
     public void removeItem( Item item ) {
         for ( int i = 0; i < this.slotSize; i++ ) {
             Item content = this.getItem( i );

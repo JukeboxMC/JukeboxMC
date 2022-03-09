@@ -6,9 +6,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.inventory.transaction.InventoryAction;
-import org.jukeboxmc.inventory.transaction.action.CreativeInventoryAction;
-import org.jukeboxmc.inventory.transaction.action.DropItemAction;
-import org.jukeboxmc.inventory.transaction.action.SlotChangeAction;
+import org.jukeboxmc.inventory.transaction.action.*;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -27,6 +25,7 @@ public class InventoryTransactionPacket extends Packet {
     public static final int TYPE_USE_ITEM = 2;
     public static final int TYPE_USE_ITEM_ON_ENTITY = 3;
     public static final int TYPE_RELEASE_ITEM = 4;
+    public boolean isCraftingPart = false;
 
     private int requestId;
     private SlotChange[] slotChange;
@@ -118,12 +117,14 @@ public class InventoryTransactionPacket extends Packet {
     }
 
     @Data
-    public static class Transaction {
+    public class Transaction {
         private static final int SOURCE_CONTAINER = 0;
         private static final int SOURCE_WORLD = 2;
         private static final int SOURCE_CREATIVE = 3;
         private static final int SOURCE_CRAFTING_GRID = 100;
         private static final int SOURCE_WTF_IS_DIS = 99999;
+        private static final int SOURCE_TYPE_CRAFTING_RESULT = -4;
+        private static final int SOURCE_TYPE_CRAFTING_USE_INGREDIENT = -5;
 
         private int sourceType;
         private int windowId;
@@ -139,12 +140,22 @@ public class InventoryTransactionPacket extends Packet {
 
             switch ( this.sourceType ) {
                 case SOURCE_CONTAINER:
-                case SOURCE_WTF_IS_DIS:
-                case SOURCE_CRAFTING_GRID:
                     this.windowId = stream.readSignedVarInt();
                     break;
                 case SOURCE_WORLD:
                     this.unknown = stream.readUnsignedVarInt();
+                    break;
+                case SOURCE_WTF_IS_DIS:
+                case SOURCE_CRAFTING_GRID:
+                    this.windowId = stream.readSignedVarInt();
+                    switch ( this.windowId ) {
+                        case SOURCE_TYPE_CRAFTING_RESULT:
+                        case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+                            InventoryTransactionPacket.this.isCraftingPart = true;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;
@@ -171,6 +182,17 @@ public class InventoryTransactionPacket extends Packet {
                     return new DropItemAction( this.oldItem, this.newItem );
                 case SOURCE_CREATIVE:
                     return new CreativeInventoryAction( this.oldItem, this.newItem );
+                case SOURCE_WTF_IS_DIS:
+                case SOURCE_CRAFTING_GRID:
+                    switch ( this.windowId ) {
+                        case SOURCE_TYPE_CRAFTING_RESULT:
+                            return new CraftingTakeResultAction( this.oldItem, this.newItem );
+                        case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+                            return new CraftingTransferMaterialAction( this.oldItem, this.newItem );
+                        default:
+                            break;
+                    }
+                    break;
                 default:
                     break;
             }

@@ -32,19 +32,19 @@ public class SlotChangeAction extends InventoryAction {
         return inventorySlot;
     }
 
-    public boolean isValid( Player source ) {
+    public boolean isValid( Player player ) {
         Item check = inventory.getItem( this.inventorySlot );
         return check.equalsExact( this.sourceItem );
     }
 
-    public boolean execute( Player source ) {
+    public boolean execute( Player player ) {
         this.inventory.setItem( this.inventorySlot, this.targetItem, false );
         return true;
     }
 
-    public void onExecuteSuccess( Player source ) {
+    public void onExecuteSuccess( Player player ) {
         Set<Player> viewers = new HashSet<>( this.inventory.getViewer() );
-        viewers.remove( source );
+        viewers.remove( player );
 
         for ( Player viewer : viewers ) {
             this.inventory.sendContents( this.inventorySlot, viewer );
@@ -52,8 +52,8 @@ public class SlotChangeAction extends InventoryAction {
 
     }
 
-    public void onExecuteFail( Player source ) {
-        this.inventory.sendContents( this.inventorySlot, source );
+    public void onExecuteFail( Player player ) {
+        this.inventory.sendContents( this.inventorySlot, player );
     }
 
     @Override

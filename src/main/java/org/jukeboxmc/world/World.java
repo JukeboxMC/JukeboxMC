@@ -71,6 +71,7 @@ public class World {
     private int worldTime;
 
     private boolean autoSave = true;
+    private boolean showAutoSaveMessage = true;
     private long autoSaveTicker = 0;
     private long autoSaveTick = TimeUnit.MINUTES.toMillis( 5 ) / 50;
     private AtomicBoolean autoSaving = new AtomicBoolean(false );
@@ -382,7 +383,14 @@ public class World {
     public void save() {
         this.chunkCache.saveAll();
         this.saveLevelDatFile();
-        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+
+        if ( this.autoSave ) {
+            if ( this.showAutoSaveMessage ) {
+                Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+            }
+        } else {
+            Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+        }
     }
 
     public void close() {
@@ -440,6 +448,14 @@ public class World {
 
     public boolean isAutoSave() {
         return this.autoSave;
+    }
+
+    public void setShowAutoSaveMessage( boolean showAutoSaveMessage ) {
+        this.showAutoSaveMessage = showAutoSaveMessage;
+    }
+
+    public boolean isShowAutoSaveMessage() {
+        return this.showAutoSaveMessage;
     }
 
     public void setAutoSaveTick( long autoSaveTick ) {

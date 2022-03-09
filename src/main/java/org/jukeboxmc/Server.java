@@ -142,7 +142,6 @@ public class Server {
         String defaultWorldName = this.getDefaultWorldName();
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
-            this.defaultWorld.setAutoSave( false ); //TODO
         }
         this.craftingManager = new CraftingManager();
         this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );

@@ -13,10 +13,10 @@ public class InventoryClickEvent extends InventoryEvent implements Cancellable {
 
     private final Player player;
 
-    private Item sourceItem;
-    private Item targetItem;
+    private final Item sourceItem;
+    private final Item targetItem;
 
-    private int slot;
+    private final int slot;
 
     /**
      * Creates a new {@link InventoryClickEvent}
@@ -54,30 +54,12 @@ public class InventoryClickEvent extends InventoryEvent implements Cancellable {
     }
 
     /**
-     * Modifies the old {@link Item}
-     *
-     * @param sourceItem which should be modified
-     */
-    public void setSourceItem( Item sourceItem ) {
-        this.sourceItem = sourceItem;
-    }
-
-    /**
      * Retrieves the new {@link Item}
      *
      * @return a fresh {@link Item}
      */
     public Item getTargetItem() {
         return this.targetItem;
-    }
-
-    /**
-     * Modifies the new {@link Item}
-     *
-     * @param targetItem which should be modified
-     */
-    public void setTargetItem( Item targetItem ) {
-        this.targetItem = targetItem;
     }
 
     /**
@@ -89,12 +71,4 @@ public class InventoryClickEvent extends InventoryEvent implements Cancellable {
         return slot;
     }
 
-    /**
-     * Modifies the slot
-     *
-     * @param slot which should be modified
-     */
-    public void setSlot( int slot ) {
-        this.slot = slot;
-    }
 }

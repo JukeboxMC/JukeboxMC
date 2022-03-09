@@ -97,12 +97,6 @@ public class InventoryTransaction {
         action.onAddToTransaction( this );
     }
 
-    /**
-     * This method should not be used by plugins, it's used to add tracked inventories for InventoryActions
-     * involving inventories.
-     *
-     * @param inventory to add
-     */
     public void addInventory( Inventory inventory ) {
         this.inventories.add( inventory );
     }
@@ -114,6 +108,7 @@ public class InventoryTransaction {
             }
 
             if ( !action.isValid( this.source ) ) {
+                System.out.println("NOT VALID");
                 return false;
             }
 
@@ -162,7 +157,7 @@ public class InventoryTransaction {
     protected boolean callExecuteEvent() {
         SlotChangeAction from = null;
         SlotChangeAction to = null;
-        Player who = null;
+        Player player = null;
 
         for ( InventoryAction action : this.actions ) {
             if ( !( action instanceof SlotChangeAction ) ) {
@@ -171,7 +166,7 @@ public class InventoryTransaction {
             SlotChangeAction slotChange = (SlotChangeAction) action;
 
             if ( slotChange.getInventory().getInventoryHolder() instanceof Player ) {
-                who = (Player) slotChange.getInventory().getInventoryHolder();
+                player = (Player) slotChange.getInventory().getInventoryHolder();
             }
 
             if ( from == null ) {
@@ -181,19 +176,15 @@ public class InventoryTransaction {
             }
         }
 
-        if ( who != null && to != null ) {
+        if ( player != null && to != null ) {
             if ( from.getTargetItem().getAmount() > from.getSourceItem().getAmount() ) {
                 from = to;
             }
 
-            InventoryClickEvent ev2 = new InventoryClickEvent( from.getInventory(), who, from.getSourceItem(), from.getTargetItem(), from.getSlot() );
-            this.source.getServer().getPluginManager().callEvent( ev2 );
-
-            if ( ev2.isCancelled() ) {
-                return false;
-            }
+            InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( from.getInventory(), player, from.getSourceItem(), from.getTargetItem(), from.getSlot() );
+            this.source.getServer().getPluginManager().callEvent( inventoryClickEvent );
+            return !inventoryClickEvent.isCancelled();
         }
-
         return true;
     }
 

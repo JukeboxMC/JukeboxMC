@@ -17,11 +17,11 @@ public class CreativeInventoryAction extends InventoryAction {
     protected int actionType;
 
     public CreativeInventoryAction( Item source, Item target ) {
-        super(source, target);
+        super( source, target );
     }
 
-    public boolean isValid( Player source) {
-        if ( source.getGameMode().equals( GameMode.CREATIVE ) ) {
+    public boolean isValid( Player player ) {
+        if ( player.getGameMode().equals( GameMode.CREATIVE ) ) {
             return this.actionType == TYPE_DELETE_ITEM || BedrockResourceLoader.getCreativeItems().stream().anyMatch( value -> value.get( "id" ).equals( this.sourceItem.getIdentifier() ) );
         }
         return false;
@@ -31,11 +31,13 @@ public class CreativeInventoryAction extends InventoryAction {
         return actionType;
     }
 
-    public boolean execute(Player source) {
+    public boolean execute( Player source ) {
         return true;
     }
 
-    public void onExecuteSuccess(Player source) {}
+    public void onExecuteSuccess( Player source ) {
+    }
 
-    public void onExecuteFail(Player source) {}
+    public void onExecuteFail( Player source ) {
+    }
 }

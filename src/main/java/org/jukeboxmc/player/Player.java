@@ -25,6 +25,8 @@ import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.event.player.PlayerRespawnEvent;
 import org.jukeboxmc.inventory.*;
+import org.jukeboxmc.inventory.transaction.CraftingTransaction;
+import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
@@ -61,8 +63,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final AdventureSettings adventureSettings;
     private EntityFishingHook entityFishingHook;
 
+    private CraftingTransaction craftingTransaction;
+
     private ContainerInventory currentInventory;
-    private final CraftingInputInventory craftingInputInventory;
     private final CursorInventory cursorInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
@@ -108,7 +111,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.server = playerConnection.getServer();
         this.gameMode = this.server.getDefaultGameMode();
 
-        this.craftingInputInventory = new CraftingInputInventory( this );
         this.cursorInventory = new CursorInventory( this, this.entityId );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
@@ -364,6 +366,18 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     // ========== Other ==========
 
+    public CraftingTransaction createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
+        return this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
+    }
+
+    public CraftingTransaction getCraftingTransaction() {
+        return this.craftingTransaction;
+    }
+
+    public void resetCraftingTransaction() {
+        this.craftingTransaction = null;
+    }
+
     public PlayerConnection getPlayerConnection() {
         return this.playerConnection;
     }
@@ -567,24 +581,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     // ========== Inventory ==========
 
     public Inventory getInventory( WindowId windowId, int slot ) {
-        switch ( windowId ) {
-            case PLAYER:
-                return this.getInventory();
-            case CURSOR_DEPRECATED:
-                if ( slot >= 28 && slot <= 31 ) {
-                    //PlayerCrafting
-                    return this.getCraftingInputInventory();
-                } else if ( slot >= 32 && slot <= 40 ) {
-                    //CraftingTable
-                    return this.getCraftingInputInventory();
-                } else {
-                    return this.getCursorInventory();
-                }
-            case ARMOR_DEPRECATED:
-                return this.getArmorInventory();
-            default:
-                return this.getCurrentInventory();
-        }
+        return switch ( windowId ) {
+            case PLAYER -> this.getInventory();
+            case CURSOR_DEPRECATED -> this.getCursorInventory();
+            case ARMOR_DEPRECATED -> this.getArmorInventory();
+            default -> this.getCurrentInventory();
+        };
     }
 
     public ContainerInventory getCurrentInventory() {
@@ -593,10 +595,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public CursorInventory getCursorInventory() {
         return this.cursorInventory;
-    }
-
-    public CraftingInputInventory getCraftingInputInventory() {
-        return this.craftingInputInventory;
     }
 
     public CartographyTableInventory getCartographyTableInventory() {
@@ -939,7 +937,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.setSpawnLocation( spawnLocation );
             }
 
-            this.craftingInputInventory.addViewer( this );
             this.playerInventory.addViewer( this );
             this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
