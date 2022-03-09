@@ -137,6 +137,13 @@ public class World {
             }
         }
 
+        Collection<BlockEntity> blockEntities = this.getBlockEntities( Dimension.OVERWORLD );
+        if ( blockEntities.size() > 0 ) {
+            for ( BlockEntity blockEntity : blockEntities ) {
+
+            }
+        }
+
         while ( !this.blockUpdateNormals.isEmpty() ) {
             BlockUpdateNormal updateNormal = this.blockUpdateNormals.poll();
             updateNormal.getBlock().onUpdate( UpdateReason.NORMAL );
@@ -294,7 +301,7 @@ public class World {
 
             byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ), readOptions );
             if ( heightAndBiomes != null ) {
-                //chunk.loadHeightAndBiomes( heightAndBiomes );
+                chunk.loadHeightAndBiomes( heightAndBiomes );
             }
             return chunk;
         } catch ( Throwable throwable ) {
