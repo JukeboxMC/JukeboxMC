@@ -25,6 +25,8 @@ import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.event.player.PlayerRespawnEvent;
 import org.jukeboxmc.inventory.*;
+import org.jukeboxmc.inventory.transaction.CraftingTransaction;
+import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
@@ -61,9 +63,11 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final AdventureSettings adventureSettings;
     private EntityFishingHook entityFishingHook;
 
+    private CraftingTransaction craftingTransaction;
+
     private ContainerInventory currentInventory;
-    private final CursorInventory cursorInventory;
     private final CraftingTableInventory craftingTableInventory;
+    private final CursorInventory cursorInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
     private final AnvilInventory anvilInventory;
@@ -237,11 +241,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
     // ========== Chunk ==========
 
-    /*
-    Ja hab es versucht sync zu machen aber dann ging nix mehr xD
-
-     */
-
     public void needNewChunks() {
         if ( this.requestedChunks ) return;
 
@@ -368,6 +367,18 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     // ========== Other ==========
+
+    public CraftingTransaction createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
+        return this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
+    }
+
+    public CraftingTransaction getCraftingTransaction() {
+        return this.craftingTransaction;
+    }
+
+    public void resetCraftingTransaction() {
+        this.craftingTransaction = null;
+    }
 
     public PlayerConnection getPlayerConnection() {
         return this.playerConnection;
@@ -571,7 +582,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     // ========== Inventory ==========
 
-    public Inventory getInventory( WindowId windowId ) {
+    public Inventory getInventory( WindowId windowId, int slot ) {
         return switch ( windowId ) {
             case PLAYER -> this.getInventory();
             case CURSOR_DEPRECATED -> this.getCursorInventory();
@@ -584,12 +595,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.currentInventory;
     }
 
-    public CursorInventory getCursorInventory() {
-        return this.cursorInventory;
-    }
-
     public CraftingTableInventory getCraftingTableInventory() {
         return this.craftingTableInventory;
+    }
+
+    public CursorInventory getCursorInventory() {
+        return this.cursorInventory;
     }
 
     public CartographyTableInventory getCartographyTableInventory() {
@@ -932,10 +943,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.setSpawnLocation( spawnLocation );
             }
 
+            this.craftingTableInventory.addViewer( this );
             this.playerInventory.addViewer( this );
             this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );
-            this.craftingTableInventory.addViewer( this );
             this.cartographyTableInventory.addViewer( this );
             this.smithingTableInventory.addViewer( this );
             this.anvilInventory.addViewer( this );

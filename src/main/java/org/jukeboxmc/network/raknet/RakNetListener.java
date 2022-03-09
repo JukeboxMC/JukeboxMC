@@ -75,7 +75,7 @@ public class RakNetListener {
                             channelConfig.setAllocator( PooledByteBufAllocator.DEFAULT );
 
                             RakNet.Config rakNetConfig = (RakNet.Config) channelConfig;
-                            rakNetConfig.setMaxQueuedBytes( 8 * 1024 * 1024 );
+                            rakNetConfig.setMaxQueuedBytes( 32 * 1024 * 1024 );
 
                             channel.pipeline().addFirst( "timeout", new ReadTimeoutHandler( 20, TimeUnit.SECONDS ) );
                             channel.pipeline().addLast( UserDataCodec.NAME, new UserDataCodec( Protocol.BATCH_PACKET ) );

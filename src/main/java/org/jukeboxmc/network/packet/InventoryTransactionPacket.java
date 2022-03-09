@@ -3,8 +3,13 @@ package org.jukeboxmc.network.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.inventory.Inventory;
+import org.jukeboxmc.inventory.WindowId;
+import org.jukeboxmc.inventory.transaction.InventoryAction;
+import org.jukeboxmc.inventory.transaction.action.*;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.BinaryStream;
 
 /**
@@ -12,7 +17,7 @@ import org.jukeboxmc.utils.BinaryStream;
  * @version 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode ( callSuper = true )
 public class InventoryTransactionPacket extends Packet {
 
     public static final int TYPE_NORMAL = 0;
@@ -20,6 +25,7 @@ public class InventoryTransactionPacket extends Packet {
     public static final int TYPE_USE_ITEM = 2;
     public static final int TYPE_USE_ITEM_ON_ENTITY = 3;
     public static final int TYPE_RELEASE_ITEM = 4;
+    public boolean isCraftingPart = false;
 
     private int requestId;
     private SlotChange[] slotChange;
@@ -46,14 +52,14 @@ public class InventoryTransactionPacket extends Packet {
 
     @Override
     public void read( BinaryStream stream ) {
-        super.read(stream);
+        super.read( stream );
         this.requestId = stream.readSignedVarInt();
-        if (this.requestId != 0) {
+        if ( this.requestId != 0 ) {
             int length = stream.readUnsignedVarInt();
             this.slotChange = new SlotChange[length];
-            for (int i = 0; i < length; i++) {
+            for ( int i = 0; i < length; i++ ) {
                 this.slotChange[i] = new SlotChange();
-                this.slotChange[i].read(stream);
+                this.slotChange[i].read( stream );
             }
         }
 
@@ -61,21 +67,21 @@ public class InventoryTransactionPacket extends Packet {
 
         int actionCount = stream.readUnsignedVarInt();
         this.transactions = new Transaction[actionCount];
-        for (int i = 0; i < actionCount; i++) {
+        for ( int i = 0; i < actionCount; i++ ) {
             Transaction networkTransaction = new Transaction();
-            networkTransaction.read(stream, this.hasNetworkIds);
+            networkTransaction.read( stream, this.hasNetworkIds );
             this.transactions[i] = networkTransaction;
         }
 
-        switch (this.type) {
+        switch ( this.type ) {
             case TYPE_USE_ITEM:
                 this.actionType = stream.readUnsignedVarInt();
-                this.blockPosition = new Vector(stream.readSignedVarInt(), stream.readUnsignedVarInt(), stream.readSignedVarInt());
+                this.blockPosition = new Vector( stream.readSignedVarInt(), stream.readUnsignedVarInt(), stream.readSignedVarInt() );
                 this.blockFace = stream.readBlockFace();
                 this.hotbarSlot = stream.readSignedVarInt();
                 this.itemInHand = stream.readItem();
-                this.playerPosition = new Vector(stream.readLFloat(), stream.readLFloat(), stream.readLFloat());
-                this.clickPosition = new Vector(stream.readLFloat(), stream.readLFloat(), stream.readLFloat());
+                this.playerPosition = new Vector( stream.readLFloat(), stream.readLFloat(), stream.readLFloat() );
+                this.clickPosition = new Vector( stream.readLFloat(), stream.readLFloat(), stream.readLFloat() );
                 this.blockRuntimeId = stream.readUnsignedVarInt();
                 break;
             case TYPE_USE_ITEM_ON_ENTITY:
@@ -83,14 +89,14 @@ public class InventoryTransactionPacket extends Packet {
                 this.actionType = stream.readUnsignedVarInt();
                 this.hotbarSlot = stream.readSignedVarInt();
                 this.itemInHand = stream.readItem();
-                this.firstVector = new Vector(stream.readLFloat(), stream.readLFloat(), stream.readLFloat());
-                this.secondVector = new Vector(stream.readLFloat(), stream.readLFloat(), stream.readLFloat());
+                this.firstVector = new Vector( stream.readLFloat(), stream.readLFloat(), stream.readLFloat() );
+                this.secondVector = new Vector( stream.readLFloat(), stream.readLFloat(), stream.readLFloat() );
                 break;
             case TYPE_RELEASE_ITEM:
                 this.actionType = stream.readUnsignedVarInt();
                 this.hotbarSlot = stream.readSignedVarInt();
                 this.itemInHand = stream.readItem();
-                this.playerPosition = new Vector(stream.readLFloat(), stream.readLFloat(), stream.readLFloat());
+                this.playerPosition = new Vector( stream.readLFloat(), stream.readLFloat(), stream.readLFloat() );
                 break;
             default:
                 break;
@@ -102,21 +108,23 @@ public class InventoryTransactionPacket extends Packet {
         private byte containerId;
         private byte[] slotChanged;
 
-        public void read(BinaryStream stream) {
+        public void read( BinaryStream stream ) {
             this.containerId = stream.readByte();
             int count = stream.readUnsignedVarInt();
             this.slotChanged = new byte[count];
-            stream.readBytes(this.slotChanged);
+            stream.readBytes( this.slotChanged );
         }
     }
 
     @Data
-    public static class Transaction {
+    public class Transaction {
         private static final int SOURCE_CONTAINER = 0;
         private static final int SOURCE_WORLD = 2;
         private static final int SOURCE_CREATIVE = 3;
         private static final int SOURCE_CRAFTING_GRID = 100;
         private static final int SOURCE_WTF_IS_DIS = 99999;
+        private static final int SOURCE_TYPE_CRAFTING_RESULT = -4;
+        private static final int SOURCE_TYPE_CRAFTING_USE_INGREDIENT = -5;
 
         private int sourceType;
         private int windowId;
@@ -127,17 +135,27 @@ public class InventoryTransactionPacket extends Packet {
 
         private int newNetworkId;
 
-        public void read(BinaryStream stream, boolean hasNetworkID) {
+        public void read( BinaryStream stream, boolean hasNetworkID ) {
             this.sourceType = stream.readUnsignedVarInt();
 
-            switch (this.sourceType) {
+            switch ( this.sourceType ) {
                 case SOURCE_CONTAINER:
-                case SOURCE_WTF_IS_DIS:
-                case SOURCE_CRAFTING_GRID:
                     this.windowId = stream.readSignedVarInt();
                     break;
                 case SOURCE_WORLD:
                     this.unknown = stream.readUnsignedVarInt();
+                    break;
+                case SOURCE_WTF_IS_DIS:
+                case SOURCE_CRAFTING_GRID:
+                    this.windowId = stream.readSignedVarInt();
+                    switch ( this.windowId ) {
+                        case SOURCE_TYPE_CRAFTING_RESULT:
+                        case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+                            InventoryTransactionPacket.this.isCraftingPart = true;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;
@@ -147,9 +165,38 @@ public class InventoryTransactionPacket extends Packet {
             this.oldItem = stream.readItem();
             this.newItem = stream.readItem();
 
-            if (hasNetworkID) {
+            if ( hasNetworkID ) {
                 this.newNetworkId = stream.readSignedVarInt();
             }
+        }
+
+        public InventoryAction createInventory( Player player ) {
+            switch ( this.sourceType ) {
+                case SOURCE_CONTAINER:
+                    Inventory inventory = player.getInventory( WindowId.getWindowIdById( this.windowId ), this.slot );
+                    if ( inventory != null ) {
+                        return new SlotChangeAction( inventory, this.slot, this.oldItem, this.newItem );
+                    }
+                    return null;
+                case SOURCE_WORLD:
+                    return new DropItemAction( this.oldItem, this.newItem );
+                case SOURCE_CREATIVE:
+                    return new CreativeInventoryAction( this.oldItem, this.newItem );
+                case SOURCE_WTF_IS_DIS:
+                case SOURCE_CRAFTING_GRID:
+                    switch ( this.windowId ) {
+                        case SOURCE_TYPE_CRAFTING_RESULT:
+                            return new CraftingTakeResultAction( this.oldItem, this.newItem );
+                        case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+                            return new CraftingTransferMaterialAction( this.oldItem, this.newItem );
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return null;
         }
     }
 }

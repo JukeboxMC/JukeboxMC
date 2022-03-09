@@ -40,7 +40,7 @@ public class ProtocolDecoder extends MessageToMessageDecoder<ByteBuf> {
             packet.read( binaryStream );
             out.add( packet );
         } else {
-           // this.server.getLogger().info( "Packet with the id " + packetId + " is missing!" );
+           this.server.getLogger().info( "Packet with the id " + packetId + " is missing!" );
         }
     }
 }

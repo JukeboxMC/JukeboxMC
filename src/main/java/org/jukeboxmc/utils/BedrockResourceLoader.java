@@ -21,6 +21,7 @@ public class BedrockResourceLoader {
     private static List<Map<String, Object>> itemPalettes = new ArrayList<>();
     private static List<Map<String, Object>> creativeItems = new ArrayList<>();
     private static final Map<String, Integer> itemIdByName = new HashMap<>();
+    private static final Map<Integer, String> itemNameById = new HashMap<>();
 
     private static byte[] biomeDefinitions;
     private static byte[] entityIdentifiers;
@@ -42,6 +43,7 @@ public class BedrockResourceLoader {
 
         for ( Map<String, Object> objectMap : itemPalettes ) {
             BedrockResourceLoader.itemIdByName.put( (String) objectMap.get( "name" ), (int) (double) objectMap.get( "id" ) );
+            BedrockResourceLoader.itemNameById.put( (int) (double) objectMap.get( "id" ), (String) objectMap.get( "name" ) );
         }
 
         try ( InputStream biomeDefinitionsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "biome_definitions.dat" ) ) {
@@ -71,6 +73,10 @@ public class BedrockResourceLoader {
 
     public static Map<String, Integer> getItemIdByName() {
         return itemIdByName;
+    }
+
+    public static Map<Integer, String> getItemNameById() {
+        return itemNameById;
     }
 
     public static byte[] getBiomeDefinitions() {

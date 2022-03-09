@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
@@ -26,7 +25,6 @@ import java.util.*;
  * @author LucGamesYT
  * @version 1.0
  */
-@ToString
 public class Item implements Cloneable {
 
     protected String identifier;
@@ -42,7 +40,6 @@ public class Item implements Cloneable {
     protected Map<EnchantmentType, Enchantment> enchantments;
     protected List<Block> canPlaceOn;
     protected List<Block> canDestroy;
-
 
     public Item( String identifier ) {
         this( identifier, 0, 0, NbtMap.EMPTY );
@@ -185,6 +182,10 @@ public class Item implements Cloneable {
     }
 
     public Item setAmount( int amount ) {
+        if ( amount > this.getMaxAmount() ) {
+            this.amount = this.getMaxAmount();
+            return this;
+        }
         this.amount = amount;
         return this;
     }
@@ -288,6 +289,10 @@ public class Item implements Cloneable {
         }
     }
 
+    public boolean equalsExact( Item item ) {
+        return this.equals( item ) && this.amount == item.amount;
+    }
+
     @Override
     public Item clone() {
         try {
@@ -308,6 +313,16 @@ public class Item implements Cloneable {
             e.printStackTrace();
         }
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "identifier='" + identifier + '\'' +
+                ", blockRuntimeId=" + blockRuntimeId +
+                ", amount=" + amount +
+                ", meta=" + meta +
+                '}';
     }
 
     public NbtMapBuilder toNetwork() {

@@ -11,11 +11,15 @@ import org.jukeboxmc.player.Player;
 public class CursorInventory extends Inventory {
 
     public CursorInventory( InventoryHolder holder, long holderId ) {
-        super( holder, holderId, 1 );
+        super( holder, holderId, 51 );
     }
 
     public void setItem( Item item ) {
         this.setItem( 0, item );
+    }
+
+    public Item getItem() {
+        return this.getItem( 0 );
     }
 
     @Override

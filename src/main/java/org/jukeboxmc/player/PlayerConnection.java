@@ -35,7 +35,7 @@ public class PlayerConnection {
             this.rakNetSession.writeAndFlush( stream.getBuffer() );
         } else {
             this.rakNetSession.write( stream.getBuffer() );
-        } // hmm idk eeey :(
+        }
     }
 
     public void sendPacket( Packet packet ) {
