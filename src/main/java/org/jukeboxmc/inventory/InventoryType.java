@@ -10,7 +10,7 @@ public enum InventoryType {
     ARMOR,
     CURSOR,
     FURNACE,
-    CRAFTING,
+    WORKBENCH,
     CARTOGRAPHY_TABLE,
     SMITHING_TABLE,
     BLAST_FURNACE,

@@ -66,6 +66,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private CraftingTransaction craftingTransaction;
 
     private ContainerInventory currentInventory;
+    private final CraftingTableInventory craftingTableInventory;
     private final CursorInventory cursorInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
@@ -112,6 +113,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.gameMode = this.server.getDefaultGameMode();
 
         this.cursorInventory = new CursorInventory( this, this.entityId );
+        this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
         this.anvilInventory = new AnvilInventory( this );
@@ -593,6 +595,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         return this.currentInventory;
     }
 
+    public CraftingTableInventory getCraftingTableInventory() {
+        return this.craftingTableInventory;
+    }
+
     public CursorInventory getCursorInventory() {
         return this.cursorInventory;
     }
@@ -937,6 +943,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.setSpawnLocation( spawnLocation );
             }
 
+            this.craftingTableInventory.addViewer( this );
             this.playerInventory.addViewer( this );
             this.armorInventory.addViewer( this );
             this.cursorInventory.addViewer( this );

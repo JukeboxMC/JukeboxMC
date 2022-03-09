@@ -106,7 +106,7 @@ public class EntityItem extends Entity {
         if ( Server.getInstance().getCurrentTick() > this.pickupDelay && !this.closed && !player.isDead() ) {
             PlayerPickupItemEvent playerPickupItemEvent = new PlayerPickupItemEvent( player, this.item );
             Server.getInstance().getPluginManager().callEvent( playerPickupItemEvent );
-            if ( playerPickupItemEvent.isCancelled() ) {
+            if ( playerPickupItemEvent.isCancelled() || !player.getInventory().canAddItem( this.item )) {
                 return;
             }
 
