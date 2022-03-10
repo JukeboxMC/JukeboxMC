@@ -1,7 +1,7 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockCoal;
-import org.jukeboxmc.item.type.ItemBurnable;
+import org.jukeboxmc.item.type.Burnable;
 
 import java.time.Duration;
 
@@ -9,7 +9,7 @@ import java.time.Duration;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemCoalBlock extends Item implements ItemBurnable {
+public class ItemCoalBlock extends Item implements Burnable {
 
     public ItemCoalBlock() {
         super ( "minecraft:coal_block" );
@@ -22,6 +22,6 @@ public class ItemCoalBlock extends Item implements ItemBurnable {
 
     @Override
     public Duration getBurnTime() {
-        return Duration.ofMillis( 800000 );
+        return Duration.ofMillis( 16000 );
     }
 }

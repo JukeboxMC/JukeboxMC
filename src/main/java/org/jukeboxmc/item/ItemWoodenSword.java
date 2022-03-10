@@ -2,16 +2,19 @@ package org.jukeboxmc.item;
 
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.item.type.ItemTierType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.player.Player;
 
+import java.time.Duration;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemWoodenSword extends Item implements Durability {
+public class ItemWoodenSword extends Item implements Durability, Burnable {
 
     public ItemWoodenSword() {
         super ( "minecraft:wooden_sword" );
@@ -47,5 +50,10 @@ public class ItemWoodenSword extends Item implements Durability {
     @Override
     public int getMaxAmount() {
         return 1;
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 200 );
     }
 }

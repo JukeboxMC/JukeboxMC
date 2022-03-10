@@ -4,6 +4,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.projectile.EntityArrow;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
 import org.jukeboxmc.item.enchantment.*;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -11,13 +12,14 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Sound;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemBow extends Item implements Durability {
+public class ItemBow extends Item implements Durability, Burnable {
 
     public ItemBow() {
         super( "minecraft:bow" );
@@ -101,5 +103,10 @@ public class ItemBow extends Item implements Durability {
             arrow.setBurning( flameModifier > 0 );
             player.playSound( Sound.RANDOM_BOW, 1, 1 );
         }
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 200 );
     }
 }

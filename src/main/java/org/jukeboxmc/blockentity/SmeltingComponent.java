@@ -11,7 +11,7 @@ import org.jukeboxmc.inventory.WindowTypeId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.type.ItemBurnable;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.SetContainerDataPacket;
 import org.jukeboxmc.player.Player;
@@ -117,14 +117,14 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
     private boolean checkForRefuel() {
         if ( this.canProduceOutput() ) {
             Item fuelItem = this.inventory.getItem( 1 );
-            if ( fuelItem instanceof ItemBurnable ) {
-                Duration duration = ( (ItemBurnable) fuelItem ).getBurnTime();
+            if ( fuelItem instanceof Burnable ) {
+                Duration duration = ( (Burnable) fuelItem ).getBurnTime();
                 if ( duration != null ) {
                     if ( fuelItem.getAmount() > 0 ) {
                         this.inventory.setItem( 1, fuelItem.decreaseAmount() );
 
                         int diff = this.inventory instanceof FurnaceInventory ? 1 : 2;
-                        this.burnDuration = (short) Math.ceil( ( (double) duration.toMillis() / 50 ) / (double) diff );
+                        this.burnDuration = (short) Math.ceil( ( (double) duration.toMillis() ) / (double) diff );
                         //this.burnDuration = (short) (duration.toMillis() / 50);
                         this.burnTime = this.burnDuration;
                         return true;

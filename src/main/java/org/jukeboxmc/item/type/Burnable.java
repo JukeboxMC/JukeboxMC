@@ -6,7 +6,7 @@ import java.time.Duration;
  * @author LucGamesYT
  * @version 1.0
  */
-public interface ItemBurnable {
+public interface Burnable {
 
     Duration getBurnTime();
 }

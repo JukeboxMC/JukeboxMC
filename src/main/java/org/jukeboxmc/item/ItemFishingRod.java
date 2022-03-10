@@ -2,16 +2,19 @@ package org.jukeboxmc.item;
 
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.LevelSound;
 
+import java.time.Duration;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemFishingRod extends Item implements Durability {
+public class ItemFishingRod extends Item implements Durability, Burnable {
 
     public ItemFishingRod() {
         super( "minecraft:fishing_rod" );
@@ -55,5 +58,10 @@ public class ItemFishingRod extends Item implements Durability {
     @Override
     public int getMaxDurability() {
         return 384;
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 300 );
     }
 }

@@ -2,12 +2,15 @@ package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockFence;
 import org.jukeboxmc.block.type.WoodType;
+import org.jukeboxmc.item.type.Burnable;
+
+import java.time.Duration;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemFence extends Item {
+public class ItemFence extends Item implements Burnable {
 
     public ItemFence() {
         super( "minecraft:fence" );
@@ -78,4 +81,8 @@ public class ItemFence extends Item {
         }
     }
 
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 300 );
+    }
 }

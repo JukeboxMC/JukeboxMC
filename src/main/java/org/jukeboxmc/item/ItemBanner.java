@@ -1,12 +1,15 @@
 package org.jukeboxmc.item;
 
 import org.jukeboxmc.block.BlockStandingBanner;
+import org.jukeboxmc.item.type.Burnable;
+
+import java.time.Duration;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemBanner extends Item {
+public class ItemBanner extends Item implements Burnable {
 
     public ItemBanner() {
         super ( "minecraft:banner" );
@@ -28,6 +31,11 @@ public class ItemBanner extends Item {
 
     public BannerColor getColor() {
         return BannerColor.values()[this.getMeta()];
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 300 );
     }
 
     public enum BannerColor {
