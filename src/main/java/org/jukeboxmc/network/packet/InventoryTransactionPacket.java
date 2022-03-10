@@ -175,7 +175,6 @@ public class InventoryTransactionPacket extends Packet {
                 case SOURCE_CONTAINER:
                     Inventory inventory = player.getInventory( WindowId.getWindowIdById( this.windowId ), this.slot );
                     if ( inventory != null ) {
-                        System.out.println(inventory.getClass().getSimpleName() + " | " + this.slot + " Old: " + this.oldItem.getName() + " New: " + this.newItem.getName());
                         return new SlotChangeAction( inventory, this.slot, this.oldItem, this.newItem );
                     }
                     return null;
