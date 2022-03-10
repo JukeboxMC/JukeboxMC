@@ -4,10 +4,12 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.utils.Pair;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
@@ -23,6 +25,7 @@ public abstract class Inventory {
     protected long holderId;
 
     protected final Set<Player> viewer = new HashSet<>();
+    private Set<Consumer<Pair<Integer, Item>>> changeObservers;
 
     public Inventory( InventoryHolder holder, long holderId, int slotSize ) {
         this.holder = holder;
@@ -44,6 +47,20 @@ public abstract class Inventory {
 
     public WindowTypeId getWindowTypeId() {
         return WindowTypeId.INVENTORY;
+    }
+
+    public void addObserver(Consumer<Pair<Integer, Item>> consumer) {
+        if (this.changeObservers == null) {
+            this.changeObservers = new HashSet<>();
+        }
+
+        this.changeObservers.add(consumer);
+
+        for (int i = 0; i < this.contents.length; i++) {
+            Item item = this.contents[i];
+            consumer.accept(Pair.of(i, item));
+        }
+        this.changeObservers = null;
     }
 
     public Set<Player> getViewer() {
@@ -68,9 +85,11 @@ public abstract class Inventory {
             return;
         }
         if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
-            this.contents[slot] = ItemType.AIR.getItem().setAmount( 0 );
+            this.contents[slot] = ItemType.AIR.getItem();
+        } else {
+            this.contents[slot] = item;
         }
-        this.contents[slot] = item;
+
         if ( sendContent ) {
             for ( Player player : this.viewer ) {
                 this.sendContents( slot, player );

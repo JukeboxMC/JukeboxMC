@@ -75,4 +75,5 @@ public interface Protocol {
     int PACKET_VIOLATION_WARNING_PACKET = 0x9c;
     byte CRAFTING_DATA_PACKET = 0x34;
     byte CRAFTING_EVENT_PACKET = 0x35;
+    byte SET_CONTAINER_DATA_PACKET = 0x33;
 }

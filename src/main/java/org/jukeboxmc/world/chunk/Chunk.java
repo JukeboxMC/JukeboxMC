@@ -310,15 +310,12 @@ public class Chunk extends LevelDBChunk {
             writeBatch.put( blockEntityKey, blockEntityBuffer.array() );
         }
 
-        //TODO: needs more testing and fixes
-
         byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
         BinaryStream heightAndBiomesBuffer = new BinaryStream();
 
         for ( short height : this.height ) {
             heightAndBiomesBuffer.writeLShort( height );
         }
-
         ObjectPalette<Biome> last = null;
         for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
             if ( biomePalette == null ) {
@@ -328,14 +325,10 @@ public class Chunk extends LevelDBChunk {
 
                 continue;
             }
-
             biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
             last = biomePalette;
         }
-
         writeBatch.put( heightAndBiomesKey, heightAndBiomesBuffer.array() );
-
-
         db.write( writeBatch );
         try {
             writeBatch.close();

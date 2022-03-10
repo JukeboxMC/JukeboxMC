@@ -9,15 +9,13 @@ import org.jukeboxmc.crafting.data.ContainerMixData;
 import org.jukeboxmc.crafting.data.CraftingData;
 import org.jukeboxmc.crafting.data.CraftingDataType;
 import org.jukeboxmc.crafting.data.PotionMixData;
+import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.utils.BedrockResourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -29,6 +27,8 @@ public class CraftingManager {
     private final List<CraftingData> craftingData = new ObjectArrayList<>();
     private final List<PotionMixData> potionMixData = new ObjectArrayList<>();
     private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
+
+    private final Set<SmeltingRecipe> smeltingRecipes = new HashSet<>();
 
     public CraftingManager() {
         InputStream recipesStream = Server.class.getClassLoader().getResourceAsStream( "recipes.json" );
@@ -87,6 +87,18 @@ public class CraftingManager {
                 }
             }
 
+            if ( craftingDataType.equals( CraftingDataType.FURNACE ) || craftingDataType.equals( CraftingDataType.FURNACE_DATA ) ) {
+                Item input = new Item( BedrockResourceLoader.getItemNameById().get( inputId ) );
+                if ( inputDamage != 32767 ) {
+                    input.setMeta( inputDamage );
+                }
+                Item output = outputItems.get( 0 );
+                if ( output.getMeta() == 32767 ) {
+                    output.setMeta( 0 );
+                }
+                this.smeltingRecipes.add( new SmeltingRecipe( input, output ) );
+            }
+
             UUID uuid = recipe.get( "uuid" ) != null ? UUID.fromString( (String) recipe.get( "uuid" ) ) : null;
             String craftingTag = (String) recipe.get( "craftingTag" );
             int priority = (int) (double) recipe.get( "priority" );
@@ -111,10 +123,15 @@ public class CraftingManager {
             int outputMeta = (int) (double) recipe.get( "outputMeta" );
             this.potionMixData.add( new PotionMixData( inputId, inputMeta, reagentId, reagentMeta, outputId, outputMeta ) );
         }
+
         try {
             recipesStream.close();
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+    }
+
+    public SmeltingRecipe getSmeltingRecipe( Item input ) {
+        return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().equals( input ) ).findFirst().orElse( null );
     }
 }

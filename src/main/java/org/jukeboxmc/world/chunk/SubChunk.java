@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.block.BlockRedstoneOre;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.utils.BinaryStream;

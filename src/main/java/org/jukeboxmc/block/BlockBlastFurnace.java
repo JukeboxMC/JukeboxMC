@@ -3,8 +3,10 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityBlastFurnace;
 import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.inventory.BlastFurnaceInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemFurnace;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -36,6 +38,22 @@ public class BlockBlastFurnace extends Block {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onBlockBreak( Vector breakPosition ) {
+        BlockEntityBlastFurnace blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            BlastFurnaceInventory furnaceInventory = blockEntity.getBlastFurnaceInventory();
+            for ( Item content : furnaceInventory.getContents() ) {
+                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
+                }
+            }
+            furnaceInventory.clear();
+            furnaceInventory.getViewer().clear();
+        }
+        return super.onBlockBreak( breakPosition );
     }
 
     @Override

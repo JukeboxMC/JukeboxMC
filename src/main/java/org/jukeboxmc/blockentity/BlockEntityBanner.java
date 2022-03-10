@@ -27,8 +27,8 @@ public class BlockEntityBanner extends BlockEntity {
     }
 
     @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
         this.baseColor = compound.getInt( "Base", 0 );
         this.type = compound.getInt( "Type", 0 );
 

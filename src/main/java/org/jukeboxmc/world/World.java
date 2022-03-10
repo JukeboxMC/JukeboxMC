@@ -140,7 +140,9 @@ public class World {
         Collection<BlockEntity> blockEntities = this.getBlockEntities( Dimension.OVERWORLD );
         if ( blockEntities.size() > 0 ) {
             for ( BlockEntity blockEntity : blockEntities ) {
-
+                if ( blockEntity != null ) {
+                    blockEntity.update( currentTick );
+                }
             }
         }
 

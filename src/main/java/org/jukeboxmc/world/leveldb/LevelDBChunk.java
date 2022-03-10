@@ -84,7 +84,7 @@ public abstract class LevelDBChunk {
                     if ( block != null && block.hasBlockEntity() ) {
                         BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
                         if ( blockEntity != null ) {
-                            blockEntity.setCompound( nbtMap );
+                            blockEntity.fromCompound( nbtMap );
                             chunk.setBlockEntity( x, y, z, blockEntity );
                         }
                     }

@@ -17,8 +17,8 @@ public class BlockEntityContainer extends BlockEntity {
     }
 
     @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
         this.customName = compound.getString( "CustomName" );
     }
 

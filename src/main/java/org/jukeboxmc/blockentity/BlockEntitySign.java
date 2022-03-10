@@ -28,8 +28,8 @@ public class BlockEntitySign extends BlockEntityContainer {
     }
 
     @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
         String text = compound.getString( "Text", "" );
         this.lines.addAll( Arrays.asList( text.split( "\n" ) ) );
     }
