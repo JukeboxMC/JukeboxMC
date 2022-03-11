@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
@@ -27,7 +28,11 @@ public abstract class BlockEntity {
         return false;
     }
 
-    public void setCompound( NbtMap compound ) {
+    public void update( long currentTick ) {
+
+    }
+
+    public void fromCompound( NbtMap compound ) {
         this.isMoveable = compound.getBoolean( "isMovable", true );
     }
 
@@ -51,6 +56,39 @@ public abstract class BlockEntity {
         blockEntityDataPacket.setNbt( this.toCompound().build() );
         world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
         world.setBlockEntity( location, this, location.getDimension() );
+    }
+
+    public void fromItem( Item item, NbtMapBuilder builder ) {
+        builder.putString( "Name", item.getIdentifier() );
+        builder.putShort( "Damage", (short) item.getMeta() );
+        builder.putByte( "Count", (byte) item.getMeta() );
+
+        if ( item.getNBT() != null ) {
+            NbtMap nbt = item.getNBT();
+            builder.putCompound( "tag", nbt );
+        }
+    }
+
+    public Item getItemStack( NbtMap compound ) {
+        if ( compound == null ) {
+            return new ItemAir();
+        }
+
+        short data = compound.getShort( "Damage", (short) 0 );
+        byte amount = compound.getByte( "Count", (byte) 0 );
+        String name = compound.getString( "Name", null );
+
+        NbtMap tag = compound.getCompound( "tag" );
+
+        if ( name != null ) {
+            Item item = new Item( name );
+            item.setAmount( amount );
+            item.setMeta( data );
+            item.setNBT( tag );
+            return item;
+        }
+
+        return new ItemAir();
     }
 
     public Block getBlock() {

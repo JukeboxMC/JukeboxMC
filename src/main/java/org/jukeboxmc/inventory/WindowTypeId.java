@@ -40,7 +40,8 @@ public enum WindowTypeId {
     CARTOGRAPHY( (byte) 30 ),
     HUD( (byte) 31 ),
     JIGSAW_EDITOR( (byte) 32 ),
-    SMITHING_TABLE( (byte) 33 );
+    SMITHING_TABLE( (byte) 33 ),
+    OPEN_CONTAINER( (byte) 60 );
 
     private final byte id;
 

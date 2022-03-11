@@ -108,7 +108,6 @@ public class InventoryTransaction {
             }
 
             if ( !action.isValid( this.source ) ) {
-                System.out.println("NOT VALID");
                 return false;
             }
 

@@ -19,8 +19,8 @@ public class BlockEntitySkull extends BlockEntity {
     }
 
     @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
         this.skullMeta = compound.getByte( "SkullType" );
         this.rotation = compound.getByte( "Rot" );
     }

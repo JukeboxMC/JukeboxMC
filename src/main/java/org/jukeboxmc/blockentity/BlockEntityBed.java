@@ -18,8 +18,8 @@ public class BlockEntityBed extends BlockEntityContainer {
     }
 
     @Override
-    public void setCompound( NbtMap compound ) {
-        super.setCompound( compound );
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
         this.color = compound.getByte( "color" );
     }
 

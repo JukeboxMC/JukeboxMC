@@ -12,9 +12,12 @@ import org.jukeboxmc.config.ConfigType;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.crafting.CraftingManager;
+import org.jukeboxmc.crafting.recipes.Recipe;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
+import org.jukeboxmc.item.ItemIronOre;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.item.ItemWoodenButton;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.network.packet.PacketRegistry;
@@ -130,6 +133,8 @@ public class Server {
         this.resourcePackManager = new ResourcePackManager();
         this.resourcePackManager.loadResourcePacks();
 
+        this.craftingManager = new CraftingManager();
+
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
@@ -143,7 +148,6 @@ public class Server {
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
-        this.craftingManager = new CraftingManager();
         this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );
 
         this.rakNetListener = new RakNetListener( this.serverId );
@@ -203,6 +207,7 @@ public class Server {
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.addDefault( "online-mode", true );
+        this.serverConfig.addDefault( "use-proxy", false );
         this.serverConfig.addDefault( "spawn-protection", true );
         this.serverConfig.addDefault( "spawn-protection-radius", 16 );
         this.serverConfig.addDefault( "forceResourcePacks", false );
@@ -365,6 +370,10 @@ public class Server {
 
     public boolean isOnlineMode() {
         return this.serverConfig.getBoolean( "online-mode" );
+    }
+
+    public boolean isUsingProxy() {
+        return this.serverConfig.getBoolean( "use-proxy" );
     }
 
     public boolean hasSpawnProtection() {

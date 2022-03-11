@@ -6,17 +6,20 @@ import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.item.type.ItemTierType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
+import java.time.Duration;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemWoodenShovel extends Item implements Durability {
+public class ItemWoodenShovel extends Item implements Durability, Burnable {
 
     public ItemWoodenShovel() {
         super ( "minecraft:wooden_shovel" );
@@ -62,5 +65,10 @@ public class ItemWoodenShovel extends Item implements Durability {
     @Override
     public int getMaxAmount() {
         return 1;
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 200 );
     }
 }

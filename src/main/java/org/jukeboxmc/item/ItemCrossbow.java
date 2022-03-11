@@ -3,6 +3,7 @@ package org.jukeboxmc.item;
 import org.jukeboxmc.entity.projectile.EntityArrow;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
 import org.jukeboxmc.item.enchantment.*;
+import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
@@ -12,13 +13,14 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Sound;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemCrossbow extends Item implements Durability {
+public class ItemCrossbow extends Item implements Durability, Burnable {
 
     private boolean canShoot;
 
@@ -138,5 +140,10 @@ public class ItemCrossbow extends Item implements Durability {
             return item;
         }
         return null;
+    }
+
+    @Override
+    public Duration getBurnTime() {
+        return Duration.ofMillis( 200 );
     }
 }

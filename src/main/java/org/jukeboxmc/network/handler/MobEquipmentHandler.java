@@ -8,8 +8,6 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.network.packet.MobEquipmentPacket;
 import org.jukeboxmc.player.Player;
 
-import java.util.Objects;
-
 /**
  * @author LucGamesYT
  * @version 1.0
