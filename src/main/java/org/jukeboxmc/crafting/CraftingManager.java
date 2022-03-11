@@ -99,12 +99,6 @@ public class CraftingManager {
                     output.setMeta( 0 );
                 }
                 this.smeltingRecipes.add( new SmeltingRecipe( input, output ) );
-            } else if ( craftingDataType.equals( CraftingDataType.SHAPELESS ) || craftingDataType.equals( CraftingDataType.SHAPED ) ) {
-                Item output = outputItems.get( 0 );
-                if ( output.getMeta() == 32767 ) {
-                    output.setMeta( 0 );
-                }
-                this.recipes.add( new Recipe( inputItems, output ) );
             }
 
             UUID uuid = recipe.get( "uuid" ) != null ? UUID.fromString( (String) recipe.get( "uuid" ) ) : null;
@@ -138,15 +132,15 @@ public class CraftingManager {
         }
     }
 
+    public void registerRecipe( String recipeId, Recipe recipe ) {
+        try {
+            this.craftingData.add( recipe.doRegister( this, recipeId ) );
+        } catch ( RuntimeException e ) {
+            Server.getInstance().getLogger().error( "Could not register recipe " + recipeId + "!", e );
+        }
+    }
+
     public SmeltingRecipe getSmeltingRecipe( Item input ) {
         return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().equals( input ) ).findFirst().orElse( null );
-    }
-
-    public Recipe getRecipe( Item output ) {
-        return this.recipes.stream().filter( recipe -> recipe.getOutput().equals( output ) ).findFirst().orElse( null );
-    }
-
-    public void addRecipe( CraftingData craftingData ) {
-        this.craftingData.add( craftingData );
     }
 }

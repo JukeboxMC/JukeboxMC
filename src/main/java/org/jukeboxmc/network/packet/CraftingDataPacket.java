@@ -34,9 +34,15 @@ public class CraftingDataPacket extends Packet {
         super.write( stream );
 
         stream.writeUnsignedVarInt( this.craftingData.size() );
+        int customNetId = 0;
         for ( CraftingData craftingData : this.craftingData ) {
             CraftingDataType type = craftingData.getType();
             stream.writeSignedVarInt( type.ordinal() );
+            int networkId = craftingData.getNetworkId();
+            if(networkId == 0xDEADBEEF) {
+                networkId = networkId + ++customNetId;
+            }
+
             switch ( type ) {
                 case SHAPELESS:
                 case SHULKER_BOX:
@@ -55,7 +61,7 @@ public class CraftingDataPacket extends Packet {
                     stream.writeUUID( craftingData.getUuid() );
                     stream.writeString( craftingData.getCraftingTag() );
                     stream.writeSignedVarInt( craftingData.getPriority() );
-                    stream.writeUnsignedVarInt( craftingData.getNetworkId() );
+                    stream.writeUnsignedVarInt( networkId );
                     break;
                 case SHAPED:
                 case SHAPED_CHEMISTRY:
@@ -73,7 +79,7 @@ public class CraftingDataPacket extends Packet {
                     stream.writeUUID( craftingData.getUuid() );
                     stream.writeString( craftingData.getCraftingTag() );
                     stream.writeSignedVarInt( craftingData.getPriority() );
-                    stream.writeUnsignedVarInt( craftingData.getNetworkId() );
+                    stream.writeUnsignedVarInt( networkId );
                     break;
                 case FURNACE:
                 case FURNACE_DATA:
@@ -88,7 +94,7 @@ public class CraftingDataPacket extends Packet {
                     break;
                 case MULTI:
                     stream.writeUUID( craftingData.getUuid() );
-                    stream.writeUnsignedVarInt( craftingData.getNetworkId() );
+                    stream.writeUnsignedVarInt( networkId );
                     break;
                 default:
                     break;

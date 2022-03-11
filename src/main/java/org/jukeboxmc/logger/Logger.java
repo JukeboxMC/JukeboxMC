@@ -31,6 +31,10 @@ public class Logger {
         log.error( message );
     }
 
+    public void error( String message, Throwable throwable ) {
+        log.error( message, throwable );
+    }
+
     public void debug( Object message ) {
         log.debug( message );
     }

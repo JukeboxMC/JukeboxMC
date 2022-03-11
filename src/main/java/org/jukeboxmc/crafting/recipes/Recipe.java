@@ -1,6 +1,8 @@
 package org.jukeboxmc.crafting.recipes;
 
-import lombok.ToString;
+import lombok.RequiredArgsConstructor;
+import org.jukeboxmc.crafting.CraftingManager;
+import org.jukeboxmc.crafting.data.CraftingData;
 import org.jukeboxmc.item.Item;
 
 import java.util.List;
@@ -9,22 +11,11 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-@ToString
-public class Recipe {
+@RequiredArgsConstructor
+public abstract class Recipe {
 
-    private final List<Item> input;
-    private final Item output;
+    public abstract List<Item> getOutputs();
 
-    public Recipe( List<Item> input, Item output ) {
-        this.input = input;
-        this.output = output;
-    }
+    public abstract CraftingData doRegister( CraftingManager craftingManager, String recipeId );
 
-    public List<Item> getInput() {
-        return this.input;
-    }
-
-    public Item getOutput() {
-        return this.output;
-    }
 }
