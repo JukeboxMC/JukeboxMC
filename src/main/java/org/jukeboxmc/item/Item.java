@@ -157,16 +157,19 @@ public class Item implements Cloneable {
         return this.blockRuntimeId;
     }
 
-    public void setBlockRuntimeId( int blockRuntimeId ) {
+    public Item setBlockRuntimeId( int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
+        return this;
     }
 
-    public void setCustomName( String customName ) {
+    public Item setCustomName( String customName ) {
         this.customName = customName;
+        return this;
     }
 
-    public void setLore( List<String> lore ) {
+    public Item setLore( List<String> lore ) {
         this.lore = lore;
+        return this;
     }
 
     public String getCustomName() {

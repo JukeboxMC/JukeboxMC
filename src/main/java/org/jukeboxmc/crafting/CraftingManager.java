@@ -9,6 +9,7 @@ import org.jukeboxmc.crafting.data.ContainerMixData;
 import org.jukeboxmc.crafting.data.CraftingData;
 import org.jukeboxmc.crafting.data.CraftingDataType;
 import org.jukeboxmc.crafting.data.PotionMixData;
+import org.jukeboxmc.crafting.recipes.Recipe;
 import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.utils.BedrockResourceLoader;
@@ -29,6 +30,7 @@ public class CraftingManager {
     private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
 
     private final Set<SmeltingRecipe> smeltingRecipes = new HashSet<>();
+    private final Set<Recipe> recipes = new HashSet<>();
 
     public CraftingManager() {
         InputStream recipesStream = Server.class.getClassLoader().getResourceAsStream( "recipes.json" );
@@ -97,6 +99,12 @@ public class CraftingManager {
                     output.setMeta( 0 );
                 }
                 this.smeltingRecipes.add( new SmeltingRecipe( input, output ) );
+            } else if ( craftingDataType.equals( CraftingDataType.SHAPELESS ) || craftingDataType.equals( CraftingDataType.SHAPED ) ) {
+                Item output = outputItems.get( 0 );
+                if ( output.getMeta() == 32767 ) {
+                    output.setMeta( 0 );
+                }
+                this.recipes.add( new Recipe( inputItems, output ) );
             }
 
             UUID uuid = recipe.get( "uuid" ) != null ? UUID.fromString( (String) recipe.get( "uuid" ) ) : null;
@@ -123,7 +131,6 @@ public class CraftingManager {
             int outputMeta = (int) (double) recipe.get( "outputMeta" );
             this.potionMixData.add( new PotionMixData( inputId, inputMeta, reagentId, reagentMeta, outputId, outputMeta ) );
         }
-
         try {
             recipesStream.close();
         } catch ( IOException e ) {
@@ -133,5 +140,13 @@ public class CraftingManager {
 
     public SmeltingRecipe getSmeltingRecipe( Item input ) {
         return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().equals( input ) ).findFirst().orElse( null );
+    }
+
+    public Recipe getRecipe( Item output ) {
+        return this.recipes.stream().filter( recipe -> recipe.getOutput().equals( output ) ).findFirst().orElse( null );
+    }
+
+    public void addRecipe( CraftingData craftingData ) {
+        this.craftingData.add( craftingData );
     }
 }
