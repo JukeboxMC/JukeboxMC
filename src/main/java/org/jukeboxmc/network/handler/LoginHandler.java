@@ -29,6 +29,11 @@ public class LoginHandler implements PacketHandler<LoginPacket> {
         player.setMinecraftVersion( packet.getGameVersion() );
         player.setLocale( packet.getLanguageCode() != null ? Locale.forLanguageTag( packet.getLanguageCode().replace( "_", "-" ) ) : Locale.US );
 
+        if ( !server.isOnlineMode() && !server.isUsingProxy() ) {
+            player.disconnect( "You must be loged in with your xbox account." );
+            return;
+        }
+
         PlayStatusPacket playStatusPacket = new PlayStatusPacket();
         PlayStatus status = PlayStatus.LOGIN_SUCCESS;
 

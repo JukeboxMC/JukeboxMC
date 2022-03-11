@@ -203,6 +203,7 @@ public class Server {
         this.serverConfig.addDefault( "defaultworld", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.addDefault( "online-mode", true );
+        this.serverConfig.addDefault( "use-proxy", false );
         this.serverConfig.addDefault( "spawn-protection", true );
         this.serverConfig.addDefault( "spawn-protection-radius", 16 );
         this.serverConfig.addDefault( "forceResourcePacks", false );
@@ -365,6 +366,10 @@ public class Server {
 
     public boolean isOnlineMode() {
         return this.serverConfig.getBoolean( "online-mode" );
+    }
+
+    public boolean isUsingProxy() {
+        return this.serverConfig.getBoolean( "use-proxy" );
     }
 
     public boolean hasSpawnProtection() {
