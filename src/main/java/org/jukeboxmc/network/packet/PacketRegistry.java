@@ -40,6 +40,7 @@ public class PacketRegistry {
         this.packetHandlerMap.put( ResourcePackChunkRequestPacket.class, new ResourcePackChunkRequestHandler() );
         this.packetHandlerMap.put( PacketViolationWarningPacket.class, new PacketViolationWarningHandler() );
         this.packetHandlerMap.put( CraftingEventPacket.class, new CraftingEventHandler() );
+        this.packetHandlerMap.put( ModalResponsePacket.class, new ModalResponseHandler() );
     }
 
     public PacketHandler<? extends Packet> getPacketHandler( Class<? extends Packet> clazz ) {
@@ -47,61 +48,35 @@ public class PacketRegistry {
     }
 
     public Packet getPacket( int packetId ) {
-        switch ( packetId ) {
-            case Protocol.LOGIN_PACKET:
-                return new LoginPacket();
-            case Protocol.CLIENT_CACHE_STATUS_PACKET:
-                return new ClientCacheStatusPacket();
-            case Protocol.RESOURCE_PACK_RESPONSE_PACKET:
-                return new ResourcePackResponsePacket();
-            case Protocol.BLOCK_ENTITY_DATA_PACKET:
-                return new BlockEntityDataPacket();
-            case Protocol.CONTAINER_CLOSE_PACKET:
-                return new ContainerClosePacket();
-            case Protocol.REQUEST_CHUNK_RADIUS_PACKET:
-                return new RequestChunkRadiusPacket();
-            case Protocol.TICK_SYNC_PACKET:
-                return new TickSyncPacket();
-            case Protocol.SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET:
-                return new SetLocalPlayerAsInitializedPacket();
-            case Protocol.INTERACT_PACKET:
-                return new InteractPacket();
-            case Protocol.PLAYER_MOVE_PACKET:
-                return new PlayerMovePacket();
-            case Protocol.TEXT_PACKET:
-                return new TextPacket();
-            case Protocol.INVENTORY_TRANSACTION_PACKET:
-                return new InventoryTransactionPacket();
-            case Protocol.MOB_EQUIPMENT_PACKET:
-                return new MobEquipmentPacket();
-            case Protocol.ANIMATE_PACKET:
-                return new AnimatePacket();
-            case Protocol.PLAYER_ACTION_PACKET:
-                return new PlayerActionPacket();
-            case Protocol.EMOTE_LIST_PACKET:
-                return new EmoteListPacket();
-            case Protocol.ADVENTURER_SETTINGS_PACKET:
-                return new AdventureSettingsPacket();
-            case Protocol.BLOCK_PICK_REQUEST_PACKET:
-                return new BlockPickRequestPacket();
-            case Protocol.COMMAND_REQUEST_PACKET:
-                return new CommandRequestPacket();
-            case Protocol.ENTITY_EVENT_PACKET:
-                return new EntityEventPacket();
-            case Protocol.RESPAWN_POSITION_PACKET:
-                return new RespawnPositionPacket();
-            case Protocol.ENTITY_FALL_PACKET:
-                return new EntityFallPacket();
-            case Protocol.LEVEL_SOUND_EVENT_PACKET:
-                return new LevelSoundEventPacket();
-            case Protocol.RESOURCE_PACK_CHUNK_REQUEST_PACKET:
-                return new ResourcePackChunkRequestPacket();
-            case Protocol.PACKET_VIOLATION_WARNING_PACKET:
-                return new PacketViolationWarningPacket();
-            case Protocol.CRAFTING_EVENT_PACKET:
-                return new CraftingEventPacket();
-            default:
-                return null;
-        }
+        return switch ( packetId ) {
+            case Protocol.LOGIN_PACKET -> new LoginPacket();
+            case Protocol.CLIENT_CACHE_STATUS_PACKET -> new ClientCacheStatusPacket();
+            case Protocol.RESOURCE_PACK_RESPONSE_PACKET -> new ResourcePackResponsePacket();
+            case Protocol.BLOCK_ENTITY_DATA_PACKET -> new BlockEntityDataPacket();
+            case Protocol.CONTAINER_CLOSE_PACKET -> new ContainerClosePacket();
+            case Protocol.REQUEST_CHUNK_RADIUS_PACKET -> new RequestChunkRadiusPacket();
+            case Protocol.TICK_SYNC_PACKET -> new TickSyncPacket();
+            case Protocol.SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET -> new SetLocalPlayerAsInitializedPacket();
+            case Protocol.INTERACT_PACKET -> new InteractPacket();
+            case Protocol.PLAYER_MOVE_PACKET -> new PlayerMovePacket();
+            case Protocol.TEXT_PACKET -> new TextPacket();
+            case Protocol.INVENTORY_TRANSACTION_PACKET -> new InventoryTransactionPacket();
+            case Protocol.MOB_EQUIPMENT_PACKET -> new MobEquipmentPacket();
+            case Protocol.ANIMATE_PACKET -> new AnimatePacket();
+            case Protocol.PLAYER_ACTION_PACKET -> new PlayerActionPacket();
+            case Protocol.EMOTE_LIST_PACKET -> new EmoteListPacket();
+            case Protocol.ADVENTURER_SETTINGS_PACKET -> new AdventureSettingsPacket();
+            case Protocol.BLOCK_PICK_REQUEST_PACKET -> new BlockPickRequestPacket();
+            case Protocol.COMMAND_REQUEST_PACKET -> new CommandRequestPacket();
+            case Protocol.ENTITY_EVENT_PACKET -> new EntityEventPacket();
+            case Protocol.RESPAWN_POSITION_PACKET -> new RespawnPositionPacket();
+            case Protocol.ENTITY_FALL_PACKET -> new EntityFallPacket();
+            case Protocol.LEVEL_SOUND_EVENT_PACKET -> new LevelSoundEventPacket();
+            case Protocol.RESOURCE_PACK_CHUNK_REQUEST_PACKET -> new ResourcePackChunkRequestPacket();
+            case Protocol.PACKET_VIOLATION_WARNING_PACKET -> new PacketViolationWarningPacket();
+            case Protocol.CRAFTING_EVENT_PACKET -> new CraftingEventPacket();
+            case Protocol.MODAL_RESPONSE_PACKET -> new ModalResponsePacket();
+            default -> null;
+        };
     }
 }
