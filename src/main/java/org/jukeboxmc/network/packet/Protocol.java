@@ -76,4 +76,7 @@ public interface Protocol {
     byte CRAFTING_DATA_PACKET = 0x34;
     byte CRAFTING_EVENT_PACKET = 0x35;
     byte SET_CONTAINER_DATA_PACKET = 0x33;
+    byte REMOVE_OBJECTIVE_PACKET = 0x6a;
+    byte SET_OBJECTIVE_PACKET = 0x6b;
+    byte SET_SCORE_PACKET = 0x6c;
 }

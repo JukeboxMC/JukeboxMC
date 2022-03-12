@@ -14,7 +14,7 @@ public class PacketViolationWarningPacket extends Packet {
 
     private PacketViolationType type;
     private PacketViolationSeverity severity;
-    private int packetId;
+    private int causePacketId;
     private String context;
 
     @Override
@@ -27,7 +27,7 @@ public class PacketViolationWarningPacket extends Packet {
         super.read( stream );
         this.type = PacketViolationType.values()[stream.readSignedVarInt() + 1];
         this.severity = PacketViolationSeverity.values()[stream.readSignedVarInt() + 1];
-        this.packetId = stream.readSignedVarInt();
+        this.causePacketId = stream.readSignedVarInt();
         this.context = stream.readString();
     }
 

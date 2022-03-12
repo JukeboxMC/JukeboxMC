@@ -12,6 +12,6 @@ public class PacketViolationWarningHandler implements PacketHandler<PacketViolat
 
     @Override
     public void handle( PacketViolationWarningPacket packet, Server server, Player player ) {
-        server.getLogger().info( "[ViolationWarning] Type: " + packet.getType().name() + " Severity: " + packet.getSeverity().name() + " PacketId: 0x" + Integer.toHexString( packet.getPacketId() ) + " Context: " + packet.getContext() );
+        server.getLogger().info( "[ViolationWarning] Type: " + packet.getType().name() + " Severity: " + packet.getSeverity().name() + " PacketId: 0x" + Integer.toHexString( packet.getCausePacketId() ) + " Context: " + packet.getContext() );
     }
 }
