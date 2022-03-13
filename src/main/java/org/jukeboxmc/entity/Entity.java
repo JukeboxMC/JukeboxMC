@@ -10,6 +10,7 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.entity.metadata.EntityFlag;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.entity.metadata.MetadataFlag;
+import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntitySpawnEvent;
 import org.jukeboxmc.event.entity.EntityVelocityEvent;
@@ -17,6 +18,7 @@ import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.*;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
@@ -624,6 +626,12 @@ public abstract class Entity {
     public boolean damage( EntityDamageEvent event ) {
         if ( this.isDead ) {
             return false;
+        }
+        if ( event instanceof EntityDamageByEntityEvent ) {
+            Entity damager = ( (EntityDamageByEntityEvent) event ).getDamager();
+            if ( damager instanceof Player ) {
+                return !( (Player) damager ).getGameMode().equals( GameMode.SPECTATOR );
+            }
         }
         Server.getInstance().getPluginManager().callEvent( event );
         return !event.isCancelled();

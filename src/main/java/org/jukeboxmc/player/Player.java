@@ -556,6 +556,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
         this.gameMode = gameMode;
 
+        if(this.gameMode.equals( GameMode.SPECTATOR )) {
+            this.despawn();
+        } else {
+            this.spawn();
+        }
+
         AdventureSettings adventureSettings = this.adventureSettings;
         adventureSettings.setWorldImmutable( ( gameMode.ordinal() & 0x02 ) > 0 );
         adventureSettings.setBuildAndMine( ( gameMode.ordinal() & 0x02 ) <= 0 );
@@ -569,7 +575,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         adventureSettings.update();
 
         SetGamemodePacket setGamemodePacket = new SetGamemodePacket();
-        setGamemodePacket.setGameMode( gameMode );
+        setGamemodePacket.setGameMode( this.gameMode != GameMode.SPECTATOR ? this.gameMode : GameMode.CREATIVE );
         this.playerConnection.sendPacket( setGamemodePacket );
     }
 

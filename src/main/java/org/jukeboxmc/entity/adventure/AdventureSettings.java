@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.adventure;
 
+import lombok.ToString;
 import org.jukeboxmc.network.packet.AdventureSettingsPacket;
 import org.jukeboxmc.player.Player;
 
@@ -7,6 +8,7 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class AdventureSettings {
 
     private Player player;

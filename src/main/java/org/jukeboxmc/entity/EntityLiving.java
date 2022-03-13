@@ -9,6 +9,7 @@ import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.EntityEventPacket;
+import org.jukeboxmc.player.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -132,6 +133,9 @@ public abstract class EntityLiving extends Entity {
         if ( event instanceof EntityDamageByEntityEvent ) {
             EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
             Entity damager = damageByEntityEvent.getDamager();
+            if ( damager instanceof Player ) {
+                //return ( (Player) damager ).getGameMode().equals( GameMode.SPECTATOR );
+            }
             float diffX = this.getX() - damager.getX();
             float diffZ = this.getZ() - damager.getZ();
 

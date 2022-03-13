@@ -689,6 +689,11 @@ public class World {
     public void breakBlock( Player player, Vector breakPosition, Item item ) {
         Block breakBlock = this.getBlock( breakPosition );
 
+        if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
+            breakBlock.sendBlockUpdate( player );
+            return;
+        }
+
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops( item ) );
         Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
 
@@ -821,10 +826,14 @@ public class World {
                 }
             }
 
+            if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
+                return false;
+            }
+
             BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent( player, placedBlock, replacedBlock, clickedBlock );
             Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
 
-            if ( blockPlaceEvent.isCancelled() ) {
+            if ( blockPlaceEvent.isCancelled()) {
                 return false;
             }
             boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
