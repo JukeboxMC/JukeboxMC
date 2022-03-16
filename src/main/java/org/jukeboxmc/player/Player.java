@@ -109,7 +109,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private final Set<UUID> emotes = new HashSet<>();
     private final Set<UUID> hiddenPlayers = new HashSet<>();
 
-    private final Map<UUID, List<String>> permissions = new HashMap<>();
+    private final Map<UUID, Set<String>> permissions = new HashMap<>();
 
     private int formId;
     private int serverSettingsForm = -1;
@@ -726,21 +726,38 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public void addPermission( String permission ) {
         if ( !this.permissions.containsKey( this.uuid ) ) {
-            this.permissions.put( this.uuid, new ArrayList<>() );
+            this.permissions.put( this.uuid, new HashSet<>() );
         }
         this.permissions.get( this.uuid ).add( permission.toLowerCase() );
+        this.sendCommandData();
+    }
+
+    public void addPermissions( List<String> permissions ) {
+        if ( !this.permissions.containsKey( this.uuid ) ) {
+            this.permissions.put( this.uuid, new HashSet<>(permissions) );
+        } else {
+            this.permissions.get( this.uuid ).addAll( permissions );
+        }
+        this.sendCommandData();
     }
 
     public void removePermission( String permission ) {
         if ( this.permissions.containsKey( this.uuid ) ) {
             this.permissions.get( this.uuid ).remove( permission );
+            this.sendCommandData();
+        }
+    }
+
+    public void removePermissions( List<String> permissions ) {
+        if ( this.permissions.containsKey( this.uuid ) ) {
+            this.permissions.get( this.uuid ).removeAll( permissions );
+            this.sendCommandData();
         }
     }
 
     public boolean isOp() {
         return this.adventureSettings.isOperator();
     }
-
 
     public void setOp( boolean value ) {
         this.sendCommandData();

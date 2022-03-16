@@ -73,7 +73,7 @@ public class CommandManager {
                     if ( targetCommand.getPermissionMessage() != null && !targetCommand.getPermissionMessage().isEmpty() ) {
                         commandSender.sendMessage( targetCommand.getPermissionMessage() );
                     } else {
-                        commandSender.sendMessage( "You don't have permission to do that" );
+                        commandSender.sendMessage( "§cYou don't have permission to do that" );
                     }
                     return;
                 }

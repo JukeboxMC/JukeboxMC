@@ -20,5 +20,5 @@ public @interface Permission {
      */
     String value() default "";
 
-    boolean showNoPermissionMessage() default false;
+    boolean showNoPermissionMessage() default true;
 }

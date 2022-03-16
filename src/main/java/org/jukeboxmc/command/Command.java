@@ -19,7 +19,7 @@ public abstract class Command {
     private String description = "";
     private String permission = "";
     private String permissionMessage = "";
-    private boolean showNoPermissionMessage = false;
+    private boolean showNoPermissionMessage = true;
 
     private final List<String> aliases = new ArrayList<>();
 
