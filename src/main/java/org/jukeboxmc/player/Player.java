@@ -732,7 +732,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.sendCommandData();
     }
 
-    public void addPermissions( List<String> permissions ) {
+    public void addPermissions( Collection<String> permissions ) {
         if ( !this.permissions.containsKey( this.uuid ) ) {
             this.permissions.put( this.uuid, new HashSet<>(permissions) );
         } else {
@@ -748,7 +748,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
-    public void removePermissions( List<String> permissions ) {
+    public void removePermissions( Collection<String> permissions ) {
         if ( this.permissions.containsKey( this.uuid ) ) {
             this.permissions.get( this.uuid ).removeAll( permissions );
             this.sendCommandData();
