@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
+import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
@@ -41,7 +44,9 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkCache;
+import org.jukeboxmc.world.chunk.ChunkLoader;
 import org.jukeboxmc.world.generator.WorldGenerator;
+import org.jukeboxmc.world.leveldb.LevelDB;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,28 +68,30 @@ public class World {
 
     private final String name;
     private final Server server;
-    private final WorldGenerator worldGenerator; //TODO: Map with dimensions
     private final BlockUpdateList blockUpdateList;
 
     private Location spawnLocation;
     private Difficulty difficulty;
     private int worldTime;
+    private long seed = -1;
 
     private boolean autoSave = true;
     private boolean showAutoSaveMessage = true;
     private long autoSaveTicker = 0;
     private long autoSaveTick = TimeUnit.MINUTES.toMillis( 5 ) / 50;
-    private AtomicBoolean autoSaving = new AtomicBoolean(false );
+    private AtomicBoolean autoSaving = new AtomicBoolean( false );
 
     private ChunkCache chunkCache;
 
+    private final Long2ObjectMap<Set<ChunkLoader>> chunkLoaders = new Long2ObjectOpenHashMap<>();
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
     private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
     private final ExecutorService chunkThread = Executors.newSingleThreadExecutor();
+    private final ThreadLocal<WorldGenerator> generatorThreadLocal;
 
-    public World( String name, Server server, WorldGenerator worldGenerator ) {
+    public World( String name, Server server ) {
         this.worldFolder = new File( "./worlds/" + name );
         this.worldFile = new File( this.worldFolder, "level.dat" );
 
@@ -94,10 +101,8 @@ public class World {
 
         this.name = name;
         this.server = server;
-        this.worldGenerator = worldGenerator;
-
+        this.generatorThreadLocal = ThreadLocal.withInitial( Server::createWorldGenerator );
         this.blockUpdateList = new BlockUpdateList();
-
         this.initGameRules();
         if ( !this.loadLevelFile() ) {
             this.saveLevelDatFile();
@@ -192,6 +197,7 @@ public class World {
                 this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ), nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 this.worldTime = nbt.getInt( "Time", 1000 );
+                this.seed = nbt.getLong( "RandomSeed", ThreadLocalRandom.current().nextLong() );
                 return true;
             } catch ( IOException ignore ) {
             }
@@ -226,7 +232,7 @@ public class World {
         compound.putInt( "StorageVersion", 8 );
 
         if ( this.spawnLocation == null ) {
-            this.spawnLocation = this.worldGenerator.getSpawnLocation() != null ? new Location( this, this.worldGenerator.getSpawnLocation() ) : new Location( this, 0, 64, 0 );
+            this.spawnLocation = this.getWorldGenerator().getSpawnLocation() != null ? new Location( this, this.getWorldGenerator().getSpawnLocation() ) : new Location( this, 0, 64, 0 );
         }
 
         compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
@@ -241,6 +247,11 @@ public class World {
 
         compound.putString( "LevelName", this.name );
         compound.putLong( "Time", this.worldTime );
+
+        if ( this.seed == -1 ) {
+            this.seed = ThreadLocalRandom.current().nextLong();
+        }
+        compound.putLong( "RandomSeed", this.seed );
 
         for ( Map.Entry<GameRule<?>, Object> entry : this.gamerules.entrySet() ) {
             compound.put( entry.getKey().getName(), entry.getKey().toCompoundValue( entry.getValue() ) );
@@ -259,87 +270,225 @@ public class World {
 
         }
     }
+    private CompletableFuture<Boolean> loadChunkAsync( Chunk chunk ) {
+        return CompletableFuture.supplyAsync( () -> {
+            try ( SnapshotImpl snapshot = (SnapshotImpl) this.db.getSnapshot() ) {
+                ReadOptions readOptions = new ReadOptions().snapshot( snapshot );
 
-    private Chunk loadChunkAsync( int chunkX, int chunkZ, Dimension dimension ) {
-        SnapshotImpl snapshot = (SnapshotImpl) this.db.getSnapshot();
-        try {
-            ReadOptions readOptions = new ReadOptions().snapshot( snapshot );
-
-            Chunk chunk = new Chunk( this, chunkX, chunkZ, dimension );
-            byte[] version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2C ), readOptions );
-            if ( version == null ) {
-                version = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x76 ), readOptions );
-            }
-
-            if ( version == null ) {
-                WorldGenerator worldGenerator;
-                if ( this.worldGenerator != null ) {
-                    worldGenerator = this.worldGenerator;
-                } else {
-                    worldGenerator = Server.getInstance().getOverworldGenerator();
+                byte[] version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2C ), readOptions );
+                if ( version == null ) {
+                    version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x76 ), readOptions );
                 }
 
-                worldGenerator.generate( chunk );
-                return chunk;
+                if ( version == null ) {
+                    return false;
+                }
+
+                byte[] finalized = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x36 ), readOptions );
+
+                chunk.chunkVersion = version[0];
+                chunk.setGenerated( true );
+                chunk.setPopulated( true );
+
+                for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
+                    byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ), readOptions );
+
+                    if ( chunkData != null ) {
+                        LevelDB.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
+                    }
+                }
+
+                byte[] blockEntities = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x31 ), readOptions );
+                if ( blockEntities != null ) {
+                    LevelDB.loadBlockEntities( chunk, blockEntities );
+                }
+
+                byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2b ), readOptions );
+                if ( heightAndBiomes != null ) {
+                    LevelDB.loadHeightAndBiomes( chunk, heightAndBiomes );
+                }
+
+                return true;
+            } catch ( Throwable throwable ) {
+                throwable.printStackTrace();
+                return false;
+            }
+        } );
+    }
+
+    private boolean loadChunk( Chunk chunk ) {
+        try ( SnapshotImpl snapshot = (SnapshotImpl) this.db.getSnapshot() ) {
+            ReadOptions readOptions = new ReadOptions().snapshot( snapshot );
+
+            byte[] version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2C ), readOptions );
+            if ( version == null ) {
+                version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x76 ), readOptions );
             }
 
-            byte[] finalized = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x36 ), readOptions );
+            if ( version == null ) {
+                return false;
+            }
+
+            byte[] finalized = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x36 ), readOptions );
 
             chunk.chunkVersion = version[0];
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
+            chunk.setGenerated( true );
 
             for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
-                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunkX, chunkZ, dimension, (byte) 0x2f, (byte) sectionY ), readOptions );
+                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ), readOptions );
 
                 if ( chunkData != null ) {
-                    chunk.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
+                    LevelDB.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                 }
             }
 
-            byte[] blockEntities = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x31 ), readOptions );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x31 ), readOptions );
             if ( blockEntities != null ) {
-                chunk.loadBlockEntities( chunk, blockEntities );
+                LevelDB.loadBlockEntities( chunk, blockEntities );
             }
 
-            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunkX, chunkZ, dimension, (byte) 0x2b ), readOptions );
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2b ), readOptions );
             if ( heightAndBiomes != null ) {
-                chunk.loadHeightAndBiomes( heightAndBiomes );
+                LevelDB.loadHeightAndBiomes( chunk, heightAndBiomes );
             }
-            return chunk;
+
+            return true;
         } catch ( Throwable throwable ) {
             throwable.printStackTrace();
-            return new Chunk( this, chunkX, chunkZ, dimension );
-        } finally {
-            snapshot.close();
+            return false;
         }
     }
 
-    public Chunk loadChunk( int chunkX, int chunkZ, Dimension dimension ) {
-        Chunk cacheChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
-        if ( cacheChunk != null ) {
-            return cacheChunk;
+    public void addLoadChunkTask( Chunk chunk, boolean direct, BooleanConsumer consumer ) {
+        if ( direct ) {
+            boolean result = this.loadChunk( chunk );
+
+            consumer.accept( result );
+
+            final Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
+
+            if ( chunkLoaders != null ) {
+                for ( ChunkLoader loader : chunkLoaders ) {
+                    loader.chunkLoadCallback( chunk, result );
+                }
+            }
+            return;
+        }
+        this.server.getScheduler().executeAsync( () -> {
+            final boolean result = this.loadChunk( chunk );
+
+            consumer.accept( result );
+
+            final Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
+
+            if ( chunkLoaders != null ) {
+                for ( ChunkLoader loader : chunkLoaders ) {
+                    loader.chunkLoadCallback( chunk, result );
+                }
+            }
+        } );
+    }
+
+    public void addGenerationTask( Chunk chunk, Chunk[] chunks ) {
+        this.server.getScheduler().executeAsync( () -> {
+            final WorldGenerator generator = this.generatorThreadLocal.get();
+
+            try {
+                generator.init( this, chunk, chunks );
+
+                for ( Chunk nChunk : chunks ) {
+                    if ( !nChunk.isGenerated() ) {
+                        try {
+                            generator.generate( nChunk.getChunkX(), nChunk.getChunkZ() );
+                        } finally {
+                            nChunk.setGenerated( true );
+                        }
+                    }
+                }
+
+                try {
+                    generator.populate( chunk.getChunkX(), chunk.getChunkZ() );
+                } finally {
+                    chunk.setPopulated( true );
+                }
+            } finally {
+                generator.clear();
+            }
+
+            this.server.getScheduler().execute( () -> {
+                final Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
+
+                if ( chunkLoaders != null ) {
+                    for ( ChunkLoader loader : chunkLoaders ) {
+                        loader.chunkGenerationCallback( chunk );
+                    }
+                }
+            } );
+        } );
+    }
+
+    public Chunk getChunk( int x, int z, Dimension dimension ) {
+        return this.getChunk( x, z, true, true, false, dimension );
+    }
+
+    public Chunk getChunk( int x, int z, boolean load, Dimension dimension ) {
+        return this.getChunk( x, z, load, true, false, dimension );
+    }
+
+    public Chunk getChunk( int x, int z, boolean load, boolean generate, Dimension dimension ) {
+        return this.getChunk( x, z, load, generate, false, dimension );
+    }
+
+    public Chunk getChunk( int x, int z, boolean load, boolean generate, boolean direct, Dimension dimension ) {
+        final long key = Utils.toLong( x, z );
+
+        Chunk chunk = this.chunkCache.getChunk( x, z, Dimension.OVERWORLD );
+        if ( chunk != null || !load ) {
+            if ( chunk != null && !chunk.isPopulated() && generate ) {
+                this.generateChunk( chunk );
+            }
+
+            return chunk;
         }
 
-        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
-        if ( foundFuture != null ) {
-            try {
-                return foundFuture.get();
-            } catch ( InterruptedException | ExecutionException e ) {
-                return null;
+        chunk = new Chunk( this, x, z, Dimension.OVERWORLD );
+        this.chunkCache.putChunk( chunk, Dimension.OVERWORLD );
+
+        final Chunk fChunk = chunk;
+        this.addLoadChunkTask( chunk, direct, success -> {
+            if ( !success && generate ) this.generateChunk( fChunk );
+        } );
+
+        return chunk;
+    }
+
+    private void generateChunk( Chunk chunk ) {
+        final int x = chunk.getChunkX();
+        final int z = chunk.getChunkZ();
+        final Chunk[] chunks = new Chunk[9];
+
+        int index = 0;
+        for ( int nX = -1; nX <= 1; nX++ ) {
+            for ( int nZ = -1; nZ <= 1; nZ++ ) {
+                final Chunk nChunk;
+                if ( nX != 0 || nZ != 0 )
+                    nChunk = this.getChunk( x + nX, z + nZ, true, false, true, Dimension.OVERWORLD );
+                else nChunk = chunk;
+
+                chunks[index++] = nChunk;
             }
         }
 
-        Chunk chunk = this.loadChunkAsync( chunkX, chunkZ, dimension );
-        this.chunkCache.putChunk( chunk, dimension );
-        return chunk;
+        this.addGenerationTask( chunk, chunks );
     }
 
-    public Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
-        Chunk chunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
-        if ( chunk == null ) {
-            chunk = this.loadChunk( chunkX, chunkZ, dimension );
-        }
-        return chunk;
+    public synchronized void addChunkLoader( int chunkX, int chunkZ, ChunkLoader chunkLoader ) {
+        this.chunkLoaders.computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).add( chunkLoader );
+    }
+
+    public synchronized void removeChunkLoader( int chunkX, int chunkZ, ChunkLoader chunkLoader ) {
+        this.chunkLoaders.computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).remove( chunkLoader );
     }
 
     public boolean isChunkLoaded( int chunkX, int chunkZ, Dimension dimension ) {
@@ -354,37 +503,15 @@ public class World {
         return this.chunkCache.getChunks( dimension );
     }
 
-    public synchronized CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ, Dimension dimension ) {
-        Chunk foundChunk = this.chunkCache.getChunk( chunkX, chunkZ, dimension );
-        if ( foundChunk != null ) {
-            return CompletableFuture.completedFuture( foundChunk );
-        }
-
-        CompletableFuture<Chunk> foundFuture = this.chunkCache.getFuture( chunkX, chunkZ, dimension );
-        if ( foundFuture != null ) {
-            return foundFuture;
-        }
-        CompletableFuture<Chunk> chunkFuture = CompletableFuture.supplyAsync( () -> {
-            return this.loadChunkAsync( chunkX, chunkZ, dimension );
-        }, this.chunkThread );
-        chunkFuture.whenCompleteAsync( ( chunk, throwable ) -> {
-            this.chunkCache.removeFuture( chunkX, chunkZ, dimension );
-            this.chunkCache.putChunk( chunk, dimension );
-        }, this.server.getScheduler() );
-
-        this.chunkCache.putFuture( chunkX, chunkZ, dimension, chunkFuture );
-        return chunkFuture;
-    }
-
     public void prepareSpawnRegion() {
-        int spawnRadius = 4;
+        int spawnRadius = 8;
 
         int chunkX = this.spawnLocation.getChunkX();
         int chunkZ = this.spawnLocation.getChunkZ();
 
-        for ( int i = chunkX - spawnRadius; i <= chunkX + spawnRadius; i++ ) {
-            for ( int j = chunkZ - spawnRadius; j <= chunkZ + spawnRadius; j++ ) {
-                this.loadChunk( chunkX, chunkZ, Dimension.OVERWORLD );
+        for ( int x = chunkX - spawnRadius; x <= chunkX + spawnRadius; x++ ) {
+            for ( int z = chunkZ - spawnRadius; z <= chunkZ + spawnRadius; z++ ) {
+                this.getChunk( x, z, true, true, true, Dimension.OVERWORLD );
             }
         }
     }
@@ -424,7 +551,7 @@ public class World {
     }
 
     public WorldGenerator getWorldGenerator() {
-        return this.worldGenerator;
+        return this.generatorThreadLocal.get();
     }
 
     public Difficulty getDifficulty() {
@@ -449,6 +576,14 @@ public class World {
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.setWorldTime( worldTime );
         this.server.broadcastPacket( setTimePacket );
+    }
+
+    public long getSeed() {
+        return this.seed;
+    }
+
+    public void setSeed( long seed ) {
+        this.seed = seed;
     }
 
     public void setAutoSave( boolean autoSave ) {
@@ -833,7 +968,7 @@ public class World {
             BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent( player, placedBlock, replacedBlock, clickedBlock );
             Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
 
-            if ( blockPlaceEvent.isCancelled()) {
+            if ( blockPlaceEvent.isCancelled() ) {
                 return false;
             }
             boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );

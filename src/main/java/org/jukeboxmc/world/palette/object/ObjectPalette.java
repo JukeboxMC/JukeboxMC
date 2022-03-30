@@ -60,7 +60,8 @@ public class ObjectPalette<V> {
     }
 
     public void set( int index, V value ) {
-        this.bitArray.set( index, this.paletteIndexFor( value ) );
+        int indexFor = this.paletteIndexFor( value );
+        this.bitArray.set( index, indexFor );
     }
 
     public void writeToNetwork( BinaryStream buffer, ObjectRuntimeDataSerializer<V> serializer ) {

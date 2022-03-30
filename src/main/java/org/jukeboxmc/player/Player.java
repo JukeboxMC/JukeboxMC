@@ -49,16 +49,16 @@ import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.ChunkLoader;
 
 import java.net.InetSocketAddress;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class Player extends EntityHuman implements InventoryHolder, CommandSender {
+public class Player extends EntityHuman implements InventoryHolder, CommandSender, ChunkLoader {
 
     private final PlayerConnection playerConnection;
     private final Server server;
@@ -140,7 +140,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void updateChunks( long currentTick ) {
-        if ( this.closed || !this.spawned ) {
+        if ( this.closed ) {
             return;
         }
 
@@ -148,7 +148,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
             int load = 0;
-            while ( !this.chunkLoadQueue.isEmpty() && load <= 4 ) {
+            while ( !this.chunkLoadQueue.isEmpty() && load <= 50 ) {
                 long chunkHash = this.chunkLoadQueue.dequeueLong();
                 if ( this.loadingChunks.contains( chunkHash ) || this.loadedChunks.contains( chunkHash ) ) {
                     continue;
@@ -159,13 +159,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             this.chunkLoadQueue.clear();
         }
 
-        if ( !this.chunkSendQueue.isEmpty() ) {
-            int sent = 0;
-            while ( !this.chunkSendQueue.isEmpty() && sent <= 4 ) {
-                long chunkHash = this.chunkSendQueue.dequeueLong();
-                this.sendChunk( this.getWorld().getChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ), this.dimension ) );
-                sent++;
-            }
+        if(!this.spawned && this.loadedChunks.size() > 46) {
+            this.joinServer();
         }
     }
 
@@ -272,9 +267,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                             if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
                                 this.chunksInRadius[index++] = hash;
                             }
-                        } else {
-                            //Chunk unload queue
-                            //Checkn ob spieler den chunk in sichtweite haben wenn ja unloaden
                         }
                     }
                 }
@@ -293,6 +285,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                         int z = Utils.fromHashZ( hash );
 
                         if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
+                            this.getWorld().removeChunkLoader( x, z, this );
+                            //this.sendNetworkChunkPublisher();
                             iterator.remove();
                         }
                     }
@@ -304,6 +298,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                         int z = Utils.fromHashZ( hash );
 
                         if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
+                            //this.sendNetworkChunkPublisher();
                             loadingIterator.remove();
                         }
                     }
@@ -316,17 +311,19 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         });
     }
 
-    public CompletableFuture<Chunk> requestChunk( int chunkX, int chunkZ ) {
-        try {
-            long chunkHash = Utils.toLong( chunkX, chunkZ );
+    public void requestChunk( int chunkX, int chunkZ ) {
+        Chunk chunk = this.getWorld().getChunk( chunkX, chunkZ, true, true, this.dimension );
 
-            this.loadingChunks.add( chunkHash );
-            return this.getWorld().requestChunk( chunkX, chunkZ, this.dimension ).whenCompleteAsync( ( chunk, throwable ) -> {
-                this.chunkSendQueue.enqueue( chunkHash );
-            }, server.getScheduler() );
-        } catch ( Throwable throwable ) {
-            throwable.printStackTrace();
-            return null;
+        long chunkHash = Utils.toLong( chunkX, chunkZ );
+        if ( this.loadedChunks.contains( chunkHash ) ) {
+            return;
+        }
+
+        this.getWorld().addChunkLoader( chunkX, chunkZ, this );
+        chunk.addEntity( this );
+
+        if(chunk.isPopulated()) {
+            this.sendChunk( chunk );
         }
     }
 
@@ -338,13 +335,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     public void sendChunk( Chunk chunk ) {
         this.server.getScheduler().executeAsync( () -> {
             this.sendNetworkChunkPublisher();
-            //maybe weil ich es direct sende? nein nein
             this.playerConnection.sendPacket( chunk.createLevelChunkPacket(), true );
 
             this.server.getScheduler().execute( () -> {
                 long chunkHash = chunk.toChunkHash();
+                this.loadedChunks.add( chunk.toChunkHash() );
                 this.loadingChunks.remove( chunkHash );
-                this.loadedChunks.add( chunkHash );
             });
         });
     }
@@ -377,8 +373,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     // ========== Other ==========
 
-    public CraftingTransaction createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
-        return this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
+    public void createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
+        this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
     }
 
     public CraftingTransaction getCraftingTransaction() {
@@ -417,8 +413,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     public void setViewDistance( int viewDistance ) {
         this.viewDistance = viewDistance;
         this.chunksInRadius = new long[viewDistance * viewDistance * 4];
-
-        this.joinServer();
 
         ChunkRadiusUpdatedPacket chunkRadiusUpdatedPacket = new ChunkRadiusUpdatedPacket();
         chunkRadiusUpdatedPacket.setChunkRadius( viewDistance );
@@ -939,6 +933,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private void joinServer() {
         if ( !this.spawned ) {
+            this.spawned = true;
             this.server.addPlayer( this );
 
             if ( this.server.isOperatorInFile( this.name ) ) {
@@ -996,13 +991,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             }
 
             World world = this.getWorld();
-            Chunk chunk;
-            if ( !world.isChunkLoaded( this.getChunkX(), this.getChunkZ(), this.getDimension() ) ) {
-                chunk = world.loadChunk( this.getChunkX(), this.getChunkZ(), this.getDimension() );
-            } else {
-                chunk = world.getChunk( this.getChunkX(), this.getChunkZ(), this.getDimension() );
-            }
-            this.sendChunk( chunk );
             world.addEntity( this );
 
             PlayStatusPacket playStatusPacket = new PlayStatusPacket();
@@ -1028,7 +1016,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.getArmorInventory().sendArmorContent( onlinePlayer );
             }
             this.highestPosition = this.location.getY();
-            this.spawned = true;
         }
     }
 
@@ -1131,8 +1118,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
             this.setLocation( location );
             this.needNewChunks();
-
-            location.getWorld().loadChunk( location.getChunkX(), location.getChunkZ(), this.dimension );
 
             world.addEntity( this );
             this.getChunk().addEntity( this );
@@ -1327,5 +1312,17 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
         Player other = (Player) obj;
         return Objects.equals( this.uuid, other.uuid ) && this.entityId == other.entityId;
+    }
+
+    @Override
+    public void chunkLoadCallback( Chunk chunk, boolean success ) {
+       if ( success ) {
+           this.sendChunk( chunk );
+       }
+    }
+
+    @Override
+    public void chunkGenerationCallback( Chunk chunk ) {
+        this.sendChunk( chunk );
     }
 }

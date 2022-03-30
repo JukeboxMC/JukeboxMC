@@ -35,9 +35,12 @@ import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
+import org.jukeboxmc.world.generator.TerraGenerator;
 import org.jukeboxmc.world.generator.WorldGenerator;
+import org.jukeboxmc.world.generator.terra.TerraPlatform;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
@@ -68,12 +71,12 @@ public class Server {
     private final CraftingManager craftingManager;
 
     private World defaultWorld;
-    private final WorldGenerator overWorldGenerator;
 
     private final File pluginFolder;
 
     private String motd;
     private String subMotd;
+    private static String GENERATOR_NAME;
 
     private final Thread mainThread;
     private final long serverId;
@@ -87,7 +90,7 @@ public class Server {
 
     private final Object2ObjectMap<InetSocketAddress, Player> players = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<String, World> worlds = new Object2ObjectOpenHashMap<>();
-    private final Object2ObjectMap<String, WorldGenerator> worldGenerator = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<String, Class<? extends WorldGenerator>> worldGenerator = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<UUID, TablistEntry> playerListEntry = new Object2ObjectOpenHashMap<>();
     private final BlockingQueue<Runnable> mainThreadWork = new LinkedBlockingQueue<>();
 
@@ -137,9 +140,10 @@ public class Server {
 
         this.registerGenerator( "Empty", EmptyGenerator.class );
         this.registerGenerator( "Flat", FlatGenerator.class );
-
-        this.overWorldGenerator = this.worldGenerator.get( this.serverConfig.getString( "generator" ) );
-
+        this.registerGenerator( "Terra", TerraGenerator.class );
+        if ( GENERATOR_NAME.equalsIgnoreCase( "Terra" ) ) {
+            TerraPlatform.getInstance();
+        }
 
         String defaultWorldName = this.getDefaultWorldName();
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
@@ -214,6 +218,7 @@ public class Server {
         this.subMotd = this.serverConfig.getString( "subMotd" );
         this.defaultGameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
         this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
+        GENERATOR_NAME = this.serverConfig.getString( "generator" );
     }
 
     private void initOperatorConfig() {
@@ -244,7 +249,7 @@ public class Server {
             this.scheduler.shutdown();
             this.rakNetListener.close();
             this.logger.info( "Shutdown successfully" );
-            System.exit( 0 );
+            System.exit( -1 );
         }
 
     }
@@ -531,30 +536,19 @@ public class Server {
         return this.worlds.containsKey( name.toLowerCase() );
     }
 
-    public WorldGenerator getOverworldGenerator() {
-        return this.overWorldGenerator;
-    }
 
     public void registerGenerator( String name, Class<? extends WorldGenerator> clazz ) {
-        if ( !this.worldGenerator.containsKey( name ) ) {
-            try {
-                this.worldGenerator.put( name.toLowerCase(), clazz.newInstance() );
-            } catch ( InstantiationException | IllegalAccessException e ) {
-                e.printStackTrace();
-            }
+        if ( !worldGenerator.containsKey( name ) ) {
+           worldGenerator.put( name.toLowerCase(), clazz );
         }
     }
 
     public boolean loadOrCreateWorld( String worldName ) {
-        return this.loadOrCreateWorld( worldName, this.overWorldGenerator );
-    }
-
-    public boolean loadOrCreateWorld( String worldName, WorldGenerator worldGenerator ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             File file = new File( "./worlds", worldName );
             boolean worldExists = file.exists();
 
-            World world = new World( worldName, this, worldGenerator );
+            World world = new World( worldName, this );
             WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, false, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
             this.pluginManager.callEvent( worldLoadEvent );
             if ( worldLoadEvent.isCancelled() ) {
@@ -609,6 +603,15 @@ public class Server {
         } else {
             this.logger.warn( "The world \"" + worldName + "\" was not found" );
         }
+    }
+
+    public static WorldGenerator createWorldGenerator() {
+        try {
+            return worldGenerator.get( GENERATOR_NAME ).getConstructor( Random.class ).newInstance( new Random() );
+        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return new EmptyGenerator( new Random() );
     }
 
 }

@@ -560,13 +560,13 @@ public abstract class Entity {
             if ( entitySpawnEvent.isCancelled() ) {
                 return this;
             }
+
             Entity entity = entitySpawnEvent.getEntity();
             entity.setLocation( this.location );
 
             entity.getChunk().addEntity( this );
             entity.getWorld().addEntity( this );
             player.sendPacket( entity.createSpawnPacket() );
-            this.spawned = true;
             this.spawnedFor.add( player.getEntityId() );
         }
         return this;

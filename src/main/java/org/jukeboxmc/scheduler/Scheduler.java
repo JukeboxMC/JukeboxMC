@@ -36,7 +36,7 @@ public class Scheduler implements Executor {
 
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
         builder.setNameFormat( "JukeboxMC Scheduler Executor" );
-        this.threadedExecutor = new ThreadPoolExecutor( Runtime.getRuntime().availableProcessors(), Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new SynchronousQueue<>(), builder.build() );
+        this.threadedExecutor = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors(), builder.build() );
     }
 
     public void onTick( long currentTick ) {
@@ -127,8 +127,7 @@ public class Scheduler implements Executor {
         handler.setPeriod( period );
         handler.setNextRunTick( handler.isDelayed() ? currentTick + delay : currentTick );
 
-        if ( runnable instanceof Task ) {
-            Task task = (Task) runnable;
+        if ( runnable instanceof Task task ) {
             task.setHandler( handler );
         }
 
@@ -157,7 +156,6 @@ public class Scheduler implements Executor {
 
     @Override
     public void execute( Runnable command ) {
-        // Oh warum es wohl im main thread läuft
         Server.getInstance().addToMainThread( command );
     }
 }

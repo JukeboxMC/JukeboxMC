@@ -1,7 +1,8 @@
 package org.jukeboxmc.world.generator;
 
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.world.chunk.Chunk;
+
+import java.util.Random;
 
 /**
  * @author LucGamesYT
@@ -9,8 +10,17 @@ import org.jukeboxmc.world.chunk.Chunk;
  */
 public class EmptyGenerator extends WorldGenerator {
 
+    public EmptyGenerator( Random random ) {
+        super( random );
+    }
+
     @Override
-    public void generate( Chunk chunk ) {
+    public void generate( int chunkX, int chunkZ ) {
+
+    }
+
+    @Override
+    public void populate( int chunkX, int chunkZ ) {
 
     }
 
@@ -18,4 +28,5 @@ public class EmptyGenerator extends WorldGenerator {
     public Vector getSpawnLocation() {
         return new Vector( 0, 64, 0 );
     }
+
 }

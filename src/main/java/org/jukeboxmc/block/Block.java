@@ -2,6 +2,7 @@ package org.jukeboxmc.block;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -33,7 +34,7 @@ import static org.jukeboxmc.block.BlockType.Companion.update;
  * @author LucGamesYT
  * @version 1.0
  */
-
+@EqualsAndHashCode(exclude = {"location", "layer", "world"})
 public abstract class Block implements Cloneable {
 
     public static final Object2ObjectMap<String, Object2ObjectMap<NbtMap, Integer>> STATES = new Object2ObjectLinkedOpenHashMap<>();

@@ -35,18 +35,6 @@ public class ChunkCache {
         }
     }
 
-    public synchronized void putFuture( int chunkX, int chunkZ, Dimension dimension, CompletableFuture<Chunk> chunkFuture ) {
-        this.chunkFutures.get( dimension ).put( Utils.toLong( chunkX, chunkZ ), chunkFuture );
-    }
-
-    public synchronized CompletableFuture<Chunk> getFuture( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.chunkFutures.get( dimension ).get( Utils.toLong( chunkX, chunkZ ) );
-    }
-
-    public synchronized void removeFuture( int chunkX, int chunkZ, Dimension dimension ) {
-        this.chunkFutures.get( dimension ).remove( Utils.toLong( chunkX, chunkZ ) );
-    }
-
     public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
         long chunkHash = Utils.toLong( chunkX, chunkZ );
 

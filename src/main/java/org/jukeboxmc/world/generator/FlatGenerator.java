@@ -7,6 +7,8 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.util.Random;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -17,14 +19,16 @@ public class FlatGenerator extends WorldGenerator {
     private final BlockDirt blockDirt;
     private final BlockBedrock blockBedrock;
 
-    public FlatGenerator() {
+    public FlatGenerator( Random random ) {
+        super( random );
         this.blockGrass = new BlockGrass();
         this.blockDirt = new BlockDirt();
         this.blockBedrock = new BlockBedrock();
     }
 
     @Override
-    public void generate( Chunk chunk ) {
+    public void generate( int chunkX, int chunkZ ) {
+        Chunk chunk = this.getChunk( chunkX, chunkZ );
         for ( int blockX = 0; blockX < 16; blockX++ ) {
             for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                 for ( int blockY = 0; blockY < 16; blockY++ ) {
@@ -37,6 +41,11 @@ public class FlatGenerator extends WorldGenerator {
                 chunk.setBlock( blockX, 3, blockZ, 0, this.blockGrass );
             }
         }
+    }
+
+    @Override
+    public void populate( int chunkX, int chunkZ ) {
+
     }
 
     @Override

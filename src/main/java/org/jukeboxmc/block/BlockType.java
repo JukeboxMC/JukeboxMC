@@ -2,9 +2,12 @@ package org.jukeboxmc.block;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.item.Item;
 
+import static org.jukeboxmc.block.BlockType.Companion.identifierToBlock;
 import static org.jukeboxmc.block.BlockType.Companion.runtimeIdToBlock;
 
 /**
@@ -158,17 +161,7 @@ public enum BlockType {
     POTATOES( new BlockPotatoes() ),
     WOODEN_BUTTON( new BlockWoodenButton() ),
     SKULL( new BlockSkull() ),
-
-    /*
-    ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
-    SLIGHTLY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.SLIGHTLY_DAMAGED ).toItem() ),
-    VERY_DAMAGED_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.VERY_DAMAGED ).toItem() ),
-    BROKEN_ANVIL( BlockType.ANVIL.<BlockAnvil>getBlock().setDamage( AnvilDamage.UNDAMAGED ).toItem() ),
-
-     */
-
     ANVIL( new BlockAnvil() ),
-
     TRAPPED_CHEST( new BlockTrappedChest() ),
     LIGHT_WEIGHTED_PRESSURE_PLATE( new BlockLightWeightedPressurePlate() ),
     HEAVY_WEIGHTED_PRESSURE_PLATE( new BlockHeavyWeightedPressurePlate() ),
@@ -718,6 +711,7 @@ public enum BlockType {
     BlockType( Block block ) {
         this.block = block;
         Companion.update( block.getRuntimeId(), block );
+        Companion.update( block.getIdentifier(), block );
     }
 
     public <B extends Block> B getBlock() {
@@ -735,8 +729,16 @@ public enum BlockType {
         return runtimeIdToBlock.get( runtimeId ).clone();
     }
 
+    public static Block getBlock( String identifier ) {
+        if ( !identifierToBlock.containsKey( identifier ) ) {
+            return new BlockAir().clone();
+        }
+        return identifierToBlock.get( identifier ).clone();
+    }
+
     public static class Companion {
         static final Int2ObjectMap<Block> runtimeIdToBlock = new Int2ObjectOpenHashMap<>();
+        static final Object2ObjectMap<String, Block> identifierToBlock = new Object2ObjectOpenHashMap<>();
 
         public static void update( int runtimeId, Block block ) {
             if ( Server.getInstance().isInitiating() ) {
@@ -744,7 +746,14 @@ public enum BlockType {
             } else {
                 throw new RuntimeException( "Can not update block type because server is already initiated!" );
             }
+        }
 
+        public static void update( String identifier, Block block ) {
+            if ( Server.getInstance().isInitiating() ) {
+                identifierToBlock.put( identifier, block.clone() );
+            } else {
+                throw new RuntimeException( "Can not update block type because server is already initiated!" );
+            }
         }
     }
 }

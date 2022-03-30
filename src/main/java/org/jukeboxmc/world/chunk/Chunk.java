@@ -25,7 +25,6 @@ import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.leveldb.LevelDBChunk;
 import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
@@ -38,17 +37,21 @@ import java.util.function.Consumer;
  */
 
 @ToString ( exclude = { "subChunks" } )
-public class Chunk extends LevelDBChunk {
+public class Chunk {
 
     public static final int CHUNK_LAYERS = 2;
     private static final BlockAir BLOCK_AIR = new BlockAir();
 
+    private final ObjectPalette<Biome>[] biomes;
+    private final short[] height;
     private final SubChunk[] subChunks;
     private final World world;
     private final int chunkX;
     private final int chunkZ;
     public Dimension dimension;
     public byte chunkVersion = 39;
+    private boolean populated;
+    private boolean generated;
 
     private final Long2ObjectMap<Entity> entities = new Long2ObjectOpenHashMap<>();
 
@@ -57,7 +60,30 @@ public class Chunk extends LevelDBChunk {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.dimension = dimension;
-        this.subChunks = new SubChunk[24];
+
+        int fullHeight = Math.abs( this.getMinY() ) + Math.abs( this.getMaxY() ) + 1;
+
+        this.subChunks = new SubChunk[fullHeight >> 4];
+        this.height = new short[16 * 16];
+        this.biomes = new ObjectPalette[fullHeight >> 4];
+        this.populated = false;
+        this.generated = false;
+    }
+
+    public void setGenerated( boolean generated ) {
+        this.generated = generated;
+    }
+
+    public boolean isGenerated() {
+        return generated;
+    }
+
+    public void setPopulated( boolean populated ) {
+        this.populated = populated;
+    }
+
+    public boolean isPopulated() {
+        return populated;
     }
 
     public int getMinY() {
@@ -144,17 +170,16 @@ public class Chunk extends LevelDBChunk {
         if ( y < -64 || y > 319 ) {
             return Biome.PLAINS;
         }
-        return this.getBiomePalette( y ).get( Utils.getIndex( x & 15, ( y - this.getMinY() ) & 15, z & 15 ) );
+        return this.getBiomePalette( y ).get( Utils.getIndex( x & 15, y & 15, z & 15 ) );
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
         if ( y < -64 || y > 319 ) {
             return;
         }
-        this.getBiomePalette( y ).set( Utils.getIndex( x & 15, ( y - this.getMinY() ) & 15, z & 15 ), biome );
+        this.getBiomePalette( y ).set( Utils.getIndex( x & 15, y & 15, z & 15 ), biome );
     }
 
-    @Override
     public ObjectPalette<Biome> getBiomePalette( int y ) {
         if ( y < -64 || y > 319 ) {
             return null;
@@ -169,6 +194,10 @@ public class Chunk extends LevelDBChunk {
         }
 
         return this.biomes[subY];
+    }
+
+    public short[] getHeight() {
+        return height;
     }
 
     public SubChunk getSubChunk( int y ) {
@@ -322,7 +351,6 @@ public class Chunk extends LevelDBChunk {
                 if ( last != null ) {
                     last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
                 }
-
                 continue;
             }
             biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );

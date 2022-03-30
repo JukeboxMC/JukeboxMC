@@ -33,7 +33,9 @@ public class Config {
         this.inputStream = null;
         this.configType = configType;
         this.configSection = new ConfigSection();
-
+        if ( !this.file.exists() ) {
+            this.file.createNewFile();
+        }
         this.load();
     }
 
