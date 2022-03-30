@@ -88,7 +88,6 @@ public class World {
     private final Object2ObjectMap<GameRule<?>, Object> gamerules = new Object2ObjectOpenHashMap<>();
     private final Map<Long, Entity> entities = new ConcurrentHashMap<>();
 
-    private final ExecutorService chunkThread = Executors.newSingleThreadExecutor();
     private final ThreadLocal<WorldGenerator> generatorThreadLocal;
 
     public World( String name, Server server ) {
@@ -270,6 +269,7 @@ public class World {
 
         }
     }
+
     private CompletableFuture<Boolean> loadChunkAsync( Chunk chunk ) {
         return CompletableFuture.supplyAsync( () -> {
             try ( SnapshotImpl snapshot = (SnapshotImpl) this.db.getSnapshot() ) {
@@ -287,7 +287,7 @@ public class World {
                 byte[] finalized = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x36 ), readOptions );
 
                 chunk.chunkVersion = version[0];
-                chunk.setGenerated( true );
+                chunk.setPopulated( finalized == null || finalized[0] == 2 );
                 chunk.setPopulated( true );
 
                 for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
@@ -443,27 +443,27 @@ public class World {
     public Chunk getChunk( int x, int z, boolean load, boolean generate, boolean direct, Dimension dimension ) {
         final long key = Utils.toLong( x, z );
 
-        Chunk chunk = this.chunkCache.getChunk( x, z, Dimension.OVERWORLD );
+        Chunk chunk = this.chunkCache.getChunk( x, z, dimension );
         if ( chunk != null || !load ) {
             if ( chunk != null && !chunk.isPopulated() && generate ) {
-                this.generateChunk( chunk );
+                this.generateChunk( chunk, dimension );
             }
 
             return chunk;
         }
 
-        chunk = new Chunk( this, x, z, Dimension.OVERWORLD );
-        this.chunkCache.putChunk( chunk, Dimension.OVERWORLD );
+        chunk = new Chunk( this, x, z, dimension );
+        this.chunkCache.putChunk( chunk, dimension );
 
         final Chunk fChunk = chunk;
         this.addLoadChunkTask( chunk, direct, success -> {
-            if ( !success && generate ) this.generateChunk( fChunk );
+            if ( !success && generate ) this.generateChunk( fChunk, dimension );
         } );
 
         return chunk;
     }
 
-    private void generateChunk( Chunk chunk ) {
+    private void generateChunk( Chunk chunk, Dimension dimension ) {
         final int x = chunk.getChunkX();
         final int z = chunk.getChunkZ();
         final Chunk[] chunks = new Chunk[9];
@@ -473,7 +473,7 @@ public class World {
             for ( int nZ = -1; nZ <= 1; nZ++ ) {
                 final Chunk nChunk;
                 if ( nX != 0 || nZ != 0 )
-                    nChunk = this.getChunk( x + nX, z + nZ, true, false, true, Dimension.OVERWORLD );
+                    nChunk = this.getChunk( x + nX, z + nZ, true, false, true, dimension );
                 else nChunk = chunk;
 
                 chunks[index++] = nChunk;
