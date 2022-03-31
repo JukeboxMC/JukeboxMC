@@ -5,6 +5,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.generator.WorldGenerator;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -41,6 +42,10 @@ public class JukeboxMC {
 
     public static boolean loadOrCreateWorld( String name ) {
         return server.loadOrCreateWorld( name );
+    }
+
+    public static void registerWorldGenerator( String name, Class<? extends WorldGenerator> clazz ) {
+        server.registerGenerator( name, clazz );
     }
 
     public static void unloadWorld( String name ) {
