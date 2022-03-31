@@ -10,10 +10,6 @@ import java.util.Random;
  */
 public class EmptyGenerator extends WorldGenerator {
 
-    public EmptyGenerator( Random random ) {
-        super( random );
-    }
-
     @Override
     public void generate( int chunkX, int chunkZ ) {
 

@@ -201,14 +201,13 @@ public class Server {
         this.serverConfig.addDefault( "address", "0.0.0.0" );
         this.serverConfig.addDefault( "port", 19132 );
         this.serverConfig.addDefault( "maxplayers", 20 );
-        this.serverConfig.addDefault( "viewdistance", 32 );
+        this.serverConfig.addDefault( "view-distance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
         this.serverConfig.addDefault( "subMotd", "A fresh JukeboxMC Server" );
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
-        this.serverConfig.addDefault( "defaultworld", "world" );
+        this.serverConfig.addDefault( "default-world", "world" );
         this.serverConfig.addDefault( "generator", "flat" );
         this.serverConfig.addDefault( "online-mode", true );
-        this.serverConfig.addDefault( "use-proxy", false );
         this.serverConfig.addDefault( "spawn-protection", true );
         this.serverConfig.addDefault( "spawn-protection-radius", 16 );
         this.serverConfig.addDefault( "forceResourcePacks", false );
@@ -335,7 +334,7 @@ public class Server {
     }
 
     public int getViewDistance() {
-        return this.serverConfig.getInt( "viewdistance" );
+        return this.serverConfig.getInt( "view-distance" );
     }
 
     public String getMotd() {
@@ -363,7 +362,7 @@ public class Server {
     }
 
     public String getDefaultWorldName() {
-        return this.serverConfig.getString( "defaultworld" );
+        return this.serverConfig.getString( "default-world" );
     }
 
     public String getGeneratorName() {
@@ -372,10 +371,6 @@ public class Server {
 
     public boolean isOnlineMode() {
         return this.serverConfig.getBoolean( "online-mode" );
-    }
-
-    public boolean isUsingProxy() {
-        return this.serverConfig.getBoolean( "use-proxy" );
     }
 
     public boolean hasSpawnProtection() {
@@ -607,11 +602,11 @@ public class Server {
 
     public static WorldGenerator createWorldGenerator() {
         try {
-            return worldGenerator.get( GENERATOR_NAME ).getConstructor( Random.class ).newInstance( new Random() );
+            return worldGenerator.get( GENERATOR_NAME ).getConstructor().newInstance();
         } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
             e.printStackTrace();
         }
-        return new EmptyGenerator( new Random() );
+        return new EmptyGenerator();
     }
 
 }

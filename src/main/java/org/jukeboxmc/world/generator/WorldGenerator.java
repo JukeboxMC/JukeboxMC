@@ -16,7 +16,6 @@ import java.util.Random;
 public abstract class WorldGenerator {
 
     private World world;
-    protected final Random random;
     protected final Chunk[] chunks = new Chunk[9];
 
     protected int centerX = Integer.MAX_VALUE;

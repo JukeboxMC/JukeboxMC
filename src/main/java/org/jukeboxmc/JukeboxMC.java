@@ -1,6 +1,7 @@
 package org.jukeboxmc;
 
 import org.jukeboxmc.console.ConsoleSender;
+import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
@@ -22,6 +23,10 @@ public class JukeboxMC {
 
     public static void setServer( Server server ) {
         JukeboxMC.server = server;
+    }
+
+    public static Logger getLogger() {
+        return server.getLogger();
     }
 
     public static Scheduler getScheduler() {

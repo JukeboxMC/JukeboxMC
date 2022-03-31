@@ -19,8 +19,7 @@ public class FlatGenerator extends WorldGenerator {
     private final BlockDirt blockDirt;
     private final BlockBedrock blockBedrock;
 
-    public FlatGenerator( Random random ) {
-        super( random );
+    public FlatGenerator() {
         this.blockGrass = new BlockGrass();
         this.blockDirt = new BlockDirt();
         this.blockBedrock = new BlockBedrock();

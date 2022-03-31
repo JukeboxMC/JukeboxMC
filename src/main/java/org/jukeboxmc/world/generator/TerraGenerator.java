@@ -29,8 +29,7 @@ public class TerraGenerator extends WorldGenerator implements GeneratorWrapper {
 
     private final WorldProperties worldProperties;
 
-    public TerraGenerator( Random random ) {
-        super( random );
+    public TerraGenerator() {
         String packName = "default";
 
         try {

@@ -2,6 +2,7 @@ package org.jukeboxmc.localization;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.localization.loader.PropertiesResourceLoader;
 import org.jukeboxmc.localization.loader.YamlResourceLoader;
 
@@ -105,7 +106,7 @@ public class LocaleManager {
             try {
                 load( new Locale( locale[0], locale[1] ), "file://" + file.getAbsolutePath() );
             } catch ( ResourceLoadFailedException e ) {
-                System.out.println( "Could not load i18n file " + file.getAbsolutePath() );
+                JukeboxMC.getLogger().warn( "Could not load i18n file " + file.getAbsolutePath() );
             }
         }
     }
@@ -190,7 +191,7 @@ public class LocaleManager {
         }
 
         if ( translationString == null ) {
-            System.out.println( "The key (" + translationKey + ") is not present in the Locale " + defaultLocale );
+            JukeboxMC.getLogger().warn( "The key (" + translationKey + ") is not present in the Locale " + defaultLocale );
             return "N/A (" + translationKey + ")";
         }
 

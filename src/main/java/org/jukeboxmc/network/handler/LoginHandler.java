@@ -29,7 +29,7 @@ public class LoginHandler implements PacketHandler<LoginPacket> {
         player.setMinecraftVersion( packet.getGameVersion() );
         player.setLocale( packet.getLanguageCode() != null ? Locale.forLanguageTag( packet.getLanguageCode().replace( "_", "-" ) ) : Locale.US );
 
-        if ( !server.isOnlineMode() && !server.isUsingProxy() ) {
+        if ( !packet.isXboxAuthenticated() && server.isOnlineMode() ) {
             player.disconnect( "You must be loged in with your xbox account." );
             return;
         }

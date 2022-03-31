@@ -4,15 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.crypto.ECDSAVerifier;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.GUIScale;
 import org.jukeboxmc.player.skin.*;
 import org.jukeboxmc.utils.BinaryStream;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 /**
@@ -23,6 +34,10 @@ import java.util.*;
 @EqualsAndHashCode ( callSuper = true )
 public class LoginPacket extends Packet {
 
+    private static final String MOJANG_PUBLIC_KEY_BASE64 =
+            "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE8ELkixyLcwlZryUQcu1TvPOmI2B7vX83ndnWRUaXm74wFfa5f/lwQNTfrLVHa2PmenpGI6JhIMUJaWZrjmMj90NoKNFSNBuKdm8rYiXsfaz3K36x/1U26HpG0ZxK/V1V";
+    private static final ECPublicKey MOJANG_PUBLIC_KEY;
+
     private int protocol;
 
     private String username;
@@ -32,25 +47,41 @@ public class LoginPacket extends Packet {
     private String languageCode;
     private String gameVersion;
     private Skin skin;
+    private boolean xboxAuthenticated;
+
+    static {
+        try {
+            MOJANG_PUBLIC_KEY = generateKey( MOJANG_PUBLIC_KEY_BASE64 );
+        } catch ( InvalidKeySpecException | NoSuchAlgorithmException e ) {
+            throw new AssertionError( e );
+        }
+    }
 
     @Override
     public int getPacketId() {
         return Protocol.LOGIN_PACKET;
     }
 
+
     @Override
     public void read( BinaryStream stream ) {
-        super.read(stream);
+        super.read( stream );
         this.protocol = stream.readInt();
 
         stream.setBuffer( stream.readBytes( new BinaryStream( stream.getBuffer() ).readUnsignedVarInt() ) );
-        String chainToken = this.readString(stream);
+        String chainToken = this.readString( stream );
 
         Map<?, ?> chainMap = new Gson().fromJson( chainToken, Map.class );
         List<String> chains = new ArrayList<>();
         for ( Object o : ( (List<?>) chainMap.get( "chain" ) ) ) {
             chains.add( o.toString() );
         }
+        try {
+            this.xboxAuthenticated = this.verify( (List<String>) chainMap.get( "chain" ) );
+        } catch ( Exception e ) {
+            this.xboxAuthenticated = false;
+        }
+
         for ( String data : chains ) {
             String chainJson = this.readToken( data );
             JsonObject chainData = new Gson().fromJson( chainJson, JsonObject.class );
@@ -71,7 +102,7 @@ public class LoginPacket extends Packet {
             }
         }
 
-        String skinToken = this.readToken( this.readString(stream) );
+        String skinToken = this.readToken( this.readString( stream ) );
         JsonObject skinMap = new Gson().fromJson( skinToken, JsonObject.class );
 
         //ChainData
@@ -162,6 +193,40 @@ public class LoginPacket extends Packet {
                 this.skin.getPersonaPieceTints().add( this.getPersonaPieceTint( jsonElement.getAsJsonObject() ) );
             }
         }
+    }
+
+    private boolean verify( List<String> chains ) throws Exception {
+        ECPublicKey lastKey = null;
+        boolean mojangKeyVerified = false;
+        Iterator<String> iterator = chains.iterator();
+        while ( iterator.hasNext() ) {
+            JWSObject jws = JWSObject.parse( iterator.next() );
+
+            if(!mojangKeyVerified) {
+                mojangKeyVerified = verify( MOJANG_PUBLIC_KEY, jws );
+            }
+
+            if(lastKey != null && !verify( lastKey, jws )) {
+                return false;
+            }
+
+            Map<String, Object> payload = jws.getPayload().toJSONObject();
+            Object base64key = payload.get( "identityPublicKey" );
+            if ( !( base64key instanceof String ) ) {
+                return false;
+            }
+
+            lastKey = generateKey( (String) base64key );
+        }
+        return mojangKeyVerified;
+    }
+
+    private static ECPublicKey generateKey( String base64 ) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return (ECPublicKey) KeyFactory.getInstance( "EC" ).generatePublic( new X509EncodedKeySpec( Base64.getDecoder().decode( base64 ) ) );
+    }
+
+    private boolean verify( ECPublicKey key, JWSObject object ) throws JOSEException {
+        return object.verify( new ECDSAVerifier( key ) );
     }
 
     private Image getImage( JsonObject skinMap, String name ) {
