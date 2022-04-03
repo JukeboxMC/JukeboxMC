@@ -304,7 +304,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
             } finally {
                 this.requestedChunks = false;
             }
-        });
+        } );
     }
 
     public void requestChunk( int chunkX, int chunkZ ) {
@@ -318,7 +318,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.getWorld().addChunkLoader( chunkX, chunkZ, this );
         chunk.addEntity( this );
 
-        if(chunk.isPopulated()) {
+        if ( chunk.isPopulated() ) {
             this.sendChunk( chunk );
         }
     }
@@ -337,8 +337,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 long chunkHash = chunk.toChunkHash();
                 this.loadedChunks.add( chunk.toChunkHash() );
                 this.loadingChunks.remove( chunkHash );
-            });
-        });
+            } );
+        } );
     }
 
     public void sendNetworkChunkPublisher() {
@@ -548,7 +548,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
         this.gameMode = gameMode;
 
-        if(this.gameMode.equals( GameMode.SPECTATOR )) {
+        if ( this.gameMode.equals( GameMode.SPECTATOR ) ) {
             this.despawn();
         } else {
             this.spawn();
@@ -726,7 +726,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     public void addPermissions( Collection<String> permissions ) {
         if ( !this.permissions.containsKey( this.uuid ) ) {
-            this.permissions.put( this.uuid, new HashSet<>(permissions) );
+            this.permissions.put( this.uuid, new HashSet<>( permissions ) );
         } else {
             this.permissions.get( this.uuid ).addAll( permissions );
         }
@@ -1231,8 +1231,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void sendServerSettings( Player player ) {
-        if (this.serverSettingsForm != -1) {
-            Form form = this.forms.get(this.serverSettingsForm);
+        if ( this.serverSettingsForm != -1 ) {
+            Form<?> form = this.forms.get( this.serverSettingsForm );
 
             ServerSettingsResponsePacket response = new ServerSettingsResponsePacket();
             response.setFormId( this.serverSettingsForm );
@@ -1241,62 +1241,62 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         }
     }
 
-    public <R> FormListener<R> showForm( Player player, Form<R> form ) {
+    public <R> FormListener<R> showForm( Form<R> form ) {
         int formId = this.formId++;
-        this.forms.put(formId, form);
-        FormListener formListener = new FormListener<R>();
-        this.formListeners.put(formId, formListener);
+        this.forms.put( formId, form );
+        FormListener<R> formListener = new FormListener<R>();
+        this.formListeners.put( formId, formListener );
 
         String json = form.toJSON().toJSONString();
         ModalRequestPacket packetModalRequest = new ModalRequestPacket();
         packetModalRequest.setFormId( formId );
         packetModalRequest.setJson( json );
-        player.sendPacket( packetModalRequest );
+        this.sendPacket( packetModalRequest );
         return formListener;
     }
 
-    public <R> FormListener<R> setSettingsForm( Player player, Form<R> form) {
-        if (this.serverSettingsForm != -1) {
+    public <R> FormListener<R> setSettingsForm( Form<R> form ) {
+        if ( this.serverSettingsForm != -1 ) {
             this.removeSettingsForm();
         }
 
         int formId = this.formId++;
-        this.forms.put(formId, form);
+        this.forms.put( formId, form );
 
         FormListener<R> formListener = new FormListener<R>();
-        this.formListeners.put(formId, formListener);
+        this.formListeners.put( formId, formListener );
         this.serverSettingsForm = formId;
         return formListener;
     }
 
     public void removeSettingsForm() {
-        if (this.serverSettingsForm != -1) {
-            this.forms.remove(this.serverSettingsForm);
-            this.formListeners.remove(this.serverSettingsForm);
+        if ( this.serverSettingsForm != -1 ) {
+            this.forms.remove( this.serverSettingsForm );
+            this.formListeners.remove( this.serverSettingsForm );
             this.serverSettingsForm = -1;
         }
     }
 
-    public void parseGUIResponse(int formId, String json) {
+    public void parseGUIResponse( int formId, String json ) {
         // Get the listener and the form
-        Form form = this.forms.get(formId);
-        if (form != null) {
+        Form form = this.forms.get( formId );
+        if ( form != null ) {
             // Get listener
-            FormListener formListener = this.formListeners.get(formId);
+            FormListener formListener = this.formListeners.get( formId );
 
-            if (this.serverSettingsForm != formId) {
-                this.forms.remove(formId);
-                this.formListeners.remove(formId);
+            if ( this.serverSettingsForm != formId ) {
+                this.forms.remove( formId );
+                this.formListeners.remove( formId );
             }
 
-            if (json.equals("null")) {
-                formListener.getCloseConsumer().accept(null);
+            if ( json.equals( "null" ) ) {
+                formListener.getCloseConsumer().accept( null );
             } else {
-                Object resp = form.parseResponse(json);
-                if (resp == null) {
-                    formListener.getCloseConsumer().accept(null);
+                Object resp = form.parseResponse( json );
+                if ( resp == null ) {
+                    formListener.getCloseConsumer().accept( null );
                 } else {
-                    formListener.getResponseConsumer().accept(resp);
+                    formListener.getResponseConsumer().accept( resp );
                 }
             }
         }
@@ -1313,9 +1313,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     @Override
     public void chunkLoadCallback( Chunk chunk, boolean success ) {
-       if ( success ) {
-           this.sendChunk( chunk );
-       }
+        if ( success ) {
+            this.sendChunk( chunk );
+        }
     }
 
     @Override
