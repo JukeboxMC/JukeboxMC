@@ -79,8 +79,8 @@ public interface Protocol {
     byte REMOVE_OBJECTIVE_PACKET = 0x6a;
     byte SET_OBJECTIVE_PACKET = 0x6b;
     byte SET_SCORE_PACKET = 0x6c;
+    byte MODAL_REQUEST_PACKET = 0x64;
     byte MODAL_RESPONSE_PACKET = 0x65;
     byte SERVER_SETTINGS_RESPONSE_PACKET = 0x67;
-    byte MODAL_REQUEST_PACKET = 0x64;
 
 }

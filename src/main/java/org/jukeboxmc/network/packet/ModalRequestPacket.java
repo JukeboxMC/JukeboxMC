@@ -17,7 +17,7 @@ public class ModalRequestPacket extends Packet {
 
     @Override
     public int getPacketId() {
-        return Protocol.MODAL_RESPONSE_PACKET;
+        return Protocol.MODAL_REQUEST_PACKET;
     }
 
     @Override
