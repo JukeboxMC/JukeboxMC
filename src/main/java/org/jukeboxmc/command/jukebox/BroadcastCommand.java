@@ -16,6 +16,7 @@ import org.jukeboxmc.command.annotation.Permission;
 @Description("Broadcasts a message to all players.")
 @Permission("jukebox.command.broadcast")
 public class BroadcastCommand extends Command {
+
     @Override
     public void execute( CommandSender sender, String command, String[] args ) {
         if ( args.length == 0 ) {
