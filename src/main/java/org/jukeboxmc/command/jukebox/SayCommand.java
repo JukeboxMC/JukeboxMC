@@ -19,6 +19,11 @@ public class SayCommand extends Command {
 
     @Override
     public void execute( CommandSender sender, String command, String[] args ) {
+        if ( args.length == 0 ) {
+            sender.sendMessage( "§cUsage: /jukebox broadcast <message>" );
+            return;
+        }
+
        String senderString;
        if ( sender instanceof Player ) {
            senderString = ((Player) sender).getName();
