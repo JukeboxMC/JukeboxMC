@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.iq80.leveldb</groupId>
             <artifactId>leveldb</artifactId>
-            <version>0.12</version>
+            <version>0.11.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
