@@ -18,7 +18,7 @@ import java.util.Collection;
 @Name ( "plugins" )
 @Alias ( "pl" )
 @Description ( "Show all enabled plugins." )
-@Permission ( "jukebox.command.plugins" )
+@Permission ( "jukeboxmc.command.plugins" )
 public class PluginsCommand extends Command {
     @Override
     public void execute( CommandSender commandSender, String command, String[] args ) {

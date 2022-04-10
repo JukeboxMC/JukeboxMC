@@ -12,7 +12,7 @@ import org.jukeboxmc.command.annotation.Permission;
  */
 @Name("stop")
 @Description("Stop the server")
-@Permission("org.jukeboxmc.command.stop")
+@Permission("jukeboxmc.command.stop")
 public class StopCommand extends Command {
 
     @Override

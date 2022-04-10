@@ -20,8 +20,7 @@ public class GameRulesCommand extends Command {
 
     @Override
     public void execute( CommandSender commandSender, String command, String[] args ) {
-        if ( commandSender instanceof Player ) {
-            Player player = (Player) commandSender;
+        if ( commandSender instanceof Player player) {
             World world = player.getWorld();
 
             if ( args.length == 1 ) {

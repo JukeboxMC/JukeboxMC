@@ -17,13 +17,12 @@ import org.jukeboxmc.player.Player;
 @Name ( "gamemode" )
 @Alias ( "gm" )
 @Description ( "Change your gamemode" )
-@Permission ( "org.jukeboxmc.command.gamemode" )
+@Permission ( "jukeboxmc.command.gamemode" )
 public class GameModeCommand extends Command {
 
     @Override
     public void execute( CommandSender commandSender, String command, String[] args ) {
-        if ( commandSender instanceof Player ) {
-            Player player = (Player) commandSender;
+        if ( commandSender instanceof Player player) {
 
             if ( args.length == 1 ) {
                 String gamemodeName = args[0];

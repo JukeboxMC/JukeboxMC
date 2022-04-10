@@ -14,7 +14,7 @@ import org.jukeboxmc.player.Player;
 
 @Name("say")
 @Description("Send a message to all online players.")
-@Permission("jukebox.command.say")
+@Permission("jukeboxmc.command.say")
 public class SayCommand extends Command {
 
     @Override
@@ -25,8 +25,8 @@ public class SayCommand extends Command {
         }
 
        String senderString;
-       if ( sender instanceof Player ) {
-           senderString = ((Player) sender).getName();
+       if ( sender instanceof Player player ) {
+           senderString = player.getName();
        } else if ( sender instanceof ConsoleSender ) {
            senderString = "Server";
        } else {

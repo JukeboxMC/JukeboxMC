@@ -14,7 +14,7 @@ import org.jukeboxmc.command.annotation.Permission;
 @Name("broadcast")
 @Alias("bc")
 @Description("Broadcasts a message to all players.")
-@Permission("jukebox.command.broadcast")
+@Permission("jukeboxmc.command.broadcast")
 public class BroadcastCommand extends Command {
 
     @Override
