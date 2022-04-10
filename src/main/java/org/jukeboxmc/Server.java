@@ -253,6 +253,8 @@ public class Server {
 
     }
 
+    // =========== Server ===========
+
     public boolean isMainThread() {
         return this.mainThread == Thread.currentThread();
     }
