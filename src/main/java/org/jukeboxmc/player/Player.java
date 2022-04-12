@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.*;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
@@ -332,6 +333,15 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.server.getScheduler().execute( () -> {
             this.sendNetworkChunkPublisher();
             this.playerConnection.sendPacket( chunk.createLevelChunkPacket(), true );
+
+            if ( !chunk.getBlockEntities().isEmpty() ) {
+                for ( BlockEntity blockEntity : chunk.getBlockEntities() ) {
+                    BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
+                    blockEntityDataPacket.setBlockPosition( blockEntity.getBlock().getLocation() );
+                    blockEntityDataPacket.setNbt( blockEntity.toCompound().build() );
+                    this.playerConnection.sendPacket( blockEntityDataPacket );
+                }
+            }
 
             this.server.getScheduler().execute( () -> {
                 long chunkHash = chunk.toChunkHash();

@@ -403,17 +403,12 @@ public class Chunk {
         if ( !blockEntities.isEmpty() ) {
             try ( NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( buffer.getBuffer() ) ) ) {
                 for ( BlockEntity blockEntity : blockEntities ) {
-                    try {
-                        NbtMap build = blockEntity.toCompound().build();
-                        writer.writeTag( build );
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
-                    }
+                    NbtMap tag = blockEntity.toCompound().build();
+                    writer.writeTag( blockEntity.toCompound().build() );
                 }
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-
         }
 
         return buffer;
