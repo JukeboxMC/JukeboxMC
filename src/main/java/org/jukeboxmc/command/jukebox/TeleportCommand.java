@@ -17,7 +17,7 @@ import org.jukeboxmc.player.Player;
 @Name ( "teleport" )
 @Alias ( "tp" )
 @Description ( "Teleport to another location or player." )
-@Permission ( "org.jukeboxmc.command.teleport" )
+@Permission ( "jukeboxmc.command.teleport" )
 public class TeleportCommand extends Command {
 
     @Override
