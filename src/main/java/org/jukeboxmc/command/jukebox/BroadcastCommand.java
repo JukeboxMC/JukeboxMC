@@ -20,7 +20,7 @@ public class BroadcastCommand extends Command {
     @Override
     public void execute( CommandSender sender, String command, String[] args ) {
         if ( args.length == 0 ) {
-            sender.sendMessage( "§cUsage: /jukebox broadcast <message>" );
+            sender.sendMessage( "§cUsage: /broadcast <message>" );
             return;
         }
 
