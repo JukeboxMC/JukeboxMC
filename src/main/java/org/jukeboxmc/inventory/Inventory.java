@@ -123,6 +123,10 @@ public abstract class Inventory {
     }
 
     public boolean addItem( Item item ) {
+        return this.addItem( item, true );
+    }
+
+    public boolean addItem( Item item, boolean sendContents ) {
         if ( this.canAddItem( item ) ) {
             Item clone = item.clone();
 
@@ -138,7 +142,7 @@ public abstract class Inventory {
                         clone.setAmount( clone.getAmount() - amountToDecrease );
                     }
 
-                    this.setItem( i, contents[i] );
+                    this.setItem( i, contents[i], sendContents );
 
                     if ( clone.getAmount() == 0 ) {
                         return true;
@@ -148,7 +152,7 @@ public abstract class Inventory {
 
             for ( int i = 0; i < contents.length; i++ ) {
                 if ( contents[i] instanceof ItemAir ) {
-                    this.setItem( i, clone );
+                    this.setItem( i, clone, sendContents );
                     return true;
                 }
             }

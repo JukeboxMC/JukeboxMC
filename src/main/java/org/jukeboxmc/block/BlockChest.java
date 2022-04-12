@@ -3,8 +3,10 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityChest;
 import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.inventory.ChestInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemChest;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -38,6 +40,22 @@ public class BlockChest extends BlockWaterlogable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onBlockBreak( Vector breakPosition ) {
+        BlockEntityChest blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            ChestInventory chestInventory = blockEntity.getChestInventory();
+            for ( Item content : chestInventory.getContents() ) {
+                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
+                }
+            }
+            chestInventory.clear();
+            chestInventory.getViewer().clear();
+        }
+        return super.onBlockBreak( breakPosition );
     }
 
     @Override

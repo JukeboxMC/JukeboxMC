@@ -47,7 +47,7 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
             Item item = this.toItem( nbtMap );
             byte slot = nbtMap.getByte( "Slot", (byte) 127 );
             if ( slot == 127 ) {
-                this.chestInventory.addItem( item );
+                this.chestInventory.addItem( item, false );
             } else {
                 this.chestInventory.setItem( slot, item, false );
             }
@@ -78,5 +78,9 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
         builder.putInt( "pairz", this.pairZ );
         builder.putBoolean( "Findable", this.findable );
         return builder;
+    }
+
+    public ChestInventory getChestInventory() {
+        return this.chestInventory;
     }
 }

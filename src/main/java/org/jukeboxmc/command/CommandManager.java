@@ -2,6 +2,7 @@ package org.jukeboxmc.command;
 
 import org.jukeboxmc.command.jukebox.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +35,8 @@ public class CommandManager {
 
         for( Class<? extends Command> commandClass : commands ) {
             try {
-                this.registerCommand( commandClass.newInstance() );
-            } catch ( InstantiationException | IllegalAccessException e ) {
+                this.registerCommand( commandClass.getConstructor().newInstance() );
+            } catch ( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
                 e.printStackTrace();
             }
         }
