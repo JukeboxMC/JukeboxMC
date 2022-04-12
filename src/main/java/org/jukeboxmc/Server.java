@@ -154,8 +154,6 @@ public class Server {
         this.rakNetListener = new RakNetListener( this.serverId );
         this.rakNetListener.bind();
 
-        Runtime.getRuntime().addShutdownHook( new Thread( this::shutdown ) );
-
         long tpsTimeMillisStarted = System.currentTimeMillis();
         long tpsTickStarted = this.currentTick;
         long deltaTime = 50;
