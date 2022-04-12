@@ -61,7 +61,6 @@ public class BlockEntitySign extends BlockEntityContainer {
 
         this.lines.clear();
         this.lines.addAll( blockSignChangeEvent.getLines() );
-
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getLocation());
         blockEntityDataPacket.setNbt( this.toCompound().build() );

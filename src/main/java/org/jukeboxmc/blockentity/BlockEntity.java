@@ -50,7 +50,6 @@ public abstract class BlockEntity {
     public void spawn() {
         World world = this.block.getWorld();
         Vector location = this.block.getLocation();
-
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( location );
         blockEntityDataPacket.setNbt( this.toCompound().build() );
@@ -61,7 +60,7 @@ public abstract class BlockEntity {
     public void fromItem( Item item, NbtMapBuilder builder ) {
         builder.putString( "Name", item.getIdentifier() );
         builder.putShort( "Damage", (short) item.getMeta() );
-        builder.putByte( "Count", (byte) item.getMeta() );
+        builder.putByte( "Count", (byte) item.getAmount() );
 
         if ( item.getNBT() != null ) {
             NbtMap nbt = item.getNBT();
@@ -69,7 +68,7 @@ public abstract class BlockEntity {
         }
     }
 
-    public Item getItemStack( NbtMap compound ) {
+    public Item toItem( NbtMap compound ) {
         if ( compound == null ) {
             return new ItemAir();
         }
@@ -78,7 +77,7 @@ public abstract class BlockEntity {
         byte amount = compound.getByte( "Count", (byte) 0 );
         String name = compound.getString( "Name", null );
 
-        NbtMap tag = compound.getCompound( "tag" );
+        NbtMap tag = compound.getCompound( "tag", NbtMap.EMPTY );
 
         if ( name != null ) {
             Item item = new Item( name );

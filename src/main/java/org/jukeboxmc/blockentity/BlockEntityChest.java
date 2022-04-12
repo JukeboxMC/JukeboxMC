@@ -5,12 +5,16 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.ChestInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.NbtMap;
 import org.jukeboxmc.nbt.NbtMapBuilder;
 import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -19,6 +23,9 @@ import java.util.ArrayList;
 public class BlockEntityChest extends BlockEntityContainer implements InventoryHolder {
 
     private final ChestInventory chestInventory;
+    private int pairX;
+    private int pairZ;
+    private boolean findable;
 
     public BlockEntityChest( Block block ) {
         super( block );
@@ -32,12 +39,44 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
     }
 
     @Override
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
+
+        List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
+        for ( NbtMap nbtMap : items ) {
+            Item item = this.toItem( nbtMap );
+            byte slot = nbtMap.getByte( "Slot", (byte) 127 );
+            if ( slot == 127 ) {
+                this.chestInventory.addItem( item );
+            } else {
+                this.chestInventory.setItem( slot, item, false );
+            }
+        }
+
+        this.pairX = compound.getInt( "pairx", 0 );
+        this.pairZ = compound.getInt( "pairz", 0 );
+        this.findable = compound.getBoolean( "Findable", false );
+    }
+
+    @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
-        builder.putList( "Items", NbtType.COMPOUND, new ArrayList<>() );
-        builder.putInt( "pairX", this.getBlock().getLocation().getBlockX() );
-        builder.putInt( "pairZ", this.getBlock().getLocation().getBlockY() );
-        builder.putBoolean( "Findable", true );
+
+        List<NbtMap> itemsCompoundList = new ArrayList<>();
+        for ( int slot = 0; slot < this.chestInventory.getSize(); slot++ ) {
+            NbtMapBuilder itemCompound = NbtMap.builder();
+            Item item = this.chestInventory.getItem( slot );
+
+            itemCompound.putByte( "Slot", (byte) slot );
+            this.fromItem( item, itemCompound );
+
+            itemsCompoundList.add( itemCompound.build() );
+        }
+
+        builder.putList( "Items", NbtType.COMPOUND, itemsCompoundList );
+        builder.putInt( "pairx", this.pairX );
+        builder.putInt( "pairz", this.pairZ );
+        builder.putBoolean( "Findable", this.findable );
         return builder;
     }
 }

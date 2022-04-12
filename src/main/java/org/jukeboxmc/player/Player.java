@@ -346,7 +346,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         publisherUpdatePacket.setX( this.location.getBlockX() );
         publisherUpdatePacket.setY( this.location.getBlockY() );
         publisherUpdatePacket.setZ( this.location.getBlockZ() );
-        publisherUpdatePacket.setRadius( this.getViewDistance() << 4 );
+        publisherUpdatePacket.setRadius( 5 + this.getViewDistance() << 4 );
         this.playerConnection.sendPacket( publisherUpdatePacket );
     }
 
