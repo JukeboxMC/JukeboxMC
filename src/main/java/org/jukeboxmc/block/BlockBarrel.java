@@ -4,8 +4,10 @@ import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityBarrel;
 import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.inventory.BarrelInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemBarrel;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -50,6 +52,22 @@ public class BlockBarrel extends Block {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onBlockBreak( Vector breakPosition ) {
+        BlockEntityBarrel blockEntity = this.getBlockEntity();
+        if ( blockEntity != null ) {
+            BarrelInventory inventory = blockEntity.getBarrelInventory();
+            for ( Item content : inventory.getContents() ) {
+                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
+                }
+            }
+            inventory.clear();
+            inventory.getViewer().clear();
+        }
+        return super.onBlockBreak( breakPosition );
     }
 
     @Override

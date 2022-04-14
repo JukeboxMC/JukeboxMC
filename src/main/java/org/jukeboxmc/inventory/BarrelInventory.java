@@ -35,9 +35,7 @@ public class BarrelInventory extends ContainerInventory {
     public void onOpen( Player player ) {
         if ( this.viewer.size() == 1 ) {
             Block block = this.getInventoryHolder().getBlock();
-            if ( block instanceof BlockBarrel ) {
-                BlockBarrel blockBarrel = (BlockBarrel) block;
-
+            if ( block instanceof BlockBarrel blockBarrel ) {
                 if ( !blockBarrel.isOpen() ) {
                     blockBarrel.setOpen( true );
                     player.getWorld().playSound( block.getLocation(), LevelSound.BARREL_OPEN );
@@ -50,9 +48,7 @@ public class BarrelInventory extends ContainerInventory {
     public void onClose( Player player ) {
         if ( this.viewer.size() == 1 ) {
             Block block = this.getInventoryHolder().getBlock();
-            if ( block instanceof BlockBarrel ) {
-                BlockBarrel blockBarrel = (BlockBarrel) block;
-
+            if ( block instanceof BlockBarrel blockBarrel ) {
                 if ( blockBarrel.isOpen() ) {
                     blockBarrel.setOpen( false );
                     player.getWorld().playSound( blockBarrel.getLocation(), LevelSound.BARREL_CLOSE );
