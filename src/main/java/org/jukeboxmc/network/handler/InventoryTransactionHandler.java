@@ -18,6 +18,7 @@ import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -159,68 +160,6 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             default -> player.setAction( false );
         }
     }
-
-
-    private Inventory getInventory( Player player, InventoryTransactionPacket.Transaction transaction ) {
-        switch ( WindowId.getWindowIdById( transaction.getWindowId() ) ) {
-            case PLAYER:
-                return player.getInventory();
-            case CURSOR_DEPRECATED:
-                /*
-                Inventory inventory;
-                if ( transaction.getSlot() > 0 ) {
-                    if ( transaction.getSlot() == 50 ) {
-                        transaction.setSlot( 0 );
-                        inventory = player.getCursorInventory();
-                    } else {
-                        if ( transaction.getSlot() >= 28 && transaction.getSlot() <= 31 ) {
-                            inventory = player.getCraftingTableInventory();
-                            inventory.setSlotSize( 4 );
-                            transaction.setSlot( transaction.getSlot() - 28 );
-                        } else if ( transaction.getSlot() >= 32 && transaction.getSlot() <= 40 ) {
-                            inventory = player.getCraftingTableInventory();
-                            inventory.setSlotSize( 9 );
-                            transaction.setSlot( transaction.getSlot() - 32 );
-                        } else {
-                            inventory = player.getCursorInventory();
-                        }
-                    }
-                } else {
-                    inventory = player.getCursorInventory();
-                }
-                 */
-                return player.getCursorInventory();
-            case ARMOR_DEPRECATED:
-                return player.getArmorInventory();
-            default:
-                return player.getCurrentInventory();
-        }
-    }
-
-
-/*
-    private Inventory getInventory( Player player, InventoryTransactionPacket.Transaction transaction ) {
-        switch ( WindowId.getWindowIdById( transaction.getWindowId() ) ) {
-            case PLAYER:
-                return player.getInventory();
-            case CURSOR_DEPRECATED:
-                int slot = transaction.getSlot();
-                if ( slot >= 28 && slot <= 31 ) {
-                    //PlayerCrafting
-                    return player.getCursorInventory();
-                } else if ( slot >= 32 && slot <= 40 ) {
-                    //CraftingTable
-                    return player.getCraftingTableInventory();
-                } else {
-                    return player.getCursorInventory();
-                }
-            case ARMOR_DEPRECATED:
-                return player.getArmorInventory();
-            default:
-                return player.getCurrentInventory();
-        }
-    }
- */
 
     public boolean canInteract() {
         return !( System.currentTimeMillis() - this.spamCheckTime < 100 );

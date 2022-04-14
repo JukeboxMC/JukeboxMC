@@ -645,8 +645,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     public void openInventory( Inventory inventory, Vector position, byte windowId ) {
-        if ( inventory instanceof ContainerInventory ) {
-            ContainerInventory containerInventory = (ContainerInventory) inventory;
+        if ( inventory instanceof ContainerInventory containerInventory ) {
 
             InventoryOpenEvent inventoryOpenEvent = new InventoryOpenEvent( containerInventory, this );
             Server.getInstance().getPluginManager().callEvent( inventoryOpenEvent );

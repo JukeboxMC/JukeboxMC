@@ -16,6 +16,10 @@ public class ChestInventory extends ContainerInventory {
         super( holder, -1,27 );
     }
 
+    public ChestInventory( InventoryHolder holder, int holderId, int slots ) {
+        super( holder, holderId, slots );
+    }
+
     @Override
     public BlockEntityChest getInventoryHolder() {
         return (BlockEntityChest) this.holder;

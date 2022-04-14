@@ -90,6 +90,13 @@ public abstract class BlockEntity {
         return new ItemAir();
     }
 
+    public void update( Player player ) {
+        BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation() );
+        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        player.sendPacket( blockEntityDataPacket );
+    }
+
     public Block getBlock() {
         return this.block;
     }
