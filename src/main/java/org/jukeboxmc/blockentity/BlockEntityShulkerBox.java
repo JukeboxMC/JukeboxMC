@@ -12,6 +12,7 @@ import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -36,20 +37,40 @@ public class BlockEntityShulkerBox extends BlockEntityContainer implements Inven
     }
 
     @Override
+    public void fromCompound( NbtMap compound ) {
+        super.fromCompound( compound );
+
+        List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
+        for ( NbtMap nbtMap : items ) {
+            Item item = this.toItem( nbtMap );
+            byte slot = nbtMap.getByte( "Slot", (byte) 127 );
+            if ( slot == 127 ) {
+                this.shulkerBoxInventory.addItem( item, false );
+            } else {
+                this.shulkerBoxInventory.setItem( slot, item, false );
+            }
+        }
+        this.facing = compound.getByte( "facing" );
+        this.undyed = compound.getBoolean( "isUndyed" );
+    }
+
+    @Override
     public NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
-        builder.putList( "Items", NbtType.COMPOUND, new ArrayList<>() );
+        List<NbtMap> itemsCompoundList = new ArrayList<>();
+        for ( int slot = 0; slot < this.shulkerBoxInventory.getSize(); slot++ ) {
+            NbtMapBuilder itemCompound = NbtMap.builder();
+            Item item = this.shulkerBoxInventory.getItem( slot );
+
+            itemCompound.putByte( "Slot", (byte) slot );
+            this.fromItem( item, itemCompound );
+
+            itemsCompoundList.add( itemCompound.build() );
+        }
+        builder.putList( "Items", NbtType.COMPOUND, itemsCompoundList );
         builder.putByte( "facing", this.facing );
         builder.putBoolean( "isUndyed", this.undyed );
         return builder;
-    }
-
-
-    @Override
-    public void fromCompound( NbtMap compound ) {
-        super.fromCompound( compound );
-        this.facing = compound.getByte( "facing" );
-        this.undyed = compound.getBoolean( "isUndyed" );
     }
 
     public byte getFacing() {

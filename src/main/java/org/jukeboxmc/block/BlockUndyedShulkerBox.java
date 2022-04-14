@@ -3,18 +3,28 @@ package org.jukeboxmc.block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntityShulkerBox;
 import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.inventory.ShulkerBoxInventory;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemShulkerBox;
 import org.jukeboxmc.item.ItemUndyedShulkerBox;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.nbt.NbtMap;
+import org.jukeboxmc.nbt.NbtMapBuilder;
+import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockUndyedShulkerBox extends Block {
+public class BlockUndyedShulkerBox extends BlockWaterlogable {
 
     public BlockUndyedShulkerBox() {
         super( "minecraft:undyed_shulker_box" );
@@ -24,7 +34,20 @@ public class BlockUndyedShulkerBox extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         if ( value ) {
-            BlockEntityType.SHULKER_BOX.<BlockEntityShulkerBox>createBlockEntity( this ).setUndyed( true ).spawn();
+            BlockEntityShulkerBox blockEntityShulkerBox = (BlockEntityShulkerBox) BlockEntityType.SHULKER_BOX.<BlockEntityShulkerBox>createBlockEntity( this ).setUndyed( true ).spawn();
+            if ( itemIndHand.getNBT() != null && itemIndHand.getNBT().containsKey( "Items" ) ) {
+                NbtMap nbt = itemIndHand.getNBT();
+                List<NbtMap> items = nbt.getList( "Items", NbtType.COMPOUND );
+                for ( NbtMap nbtMap : items ) {
+                    Item item = blockEntityShulkerBox.toItem( nbtMap );
+                    byte slot = nbtMap.getByte( "Slot", (byte) 127 );
+                    if ( slot == 127 ) {
+                        blockEntityShulkerBox.getShulkerBoxInventory().addItem( item, false );
+                    } else {
+                        blockEntityShulkerBox.getShulkerBoxInventory().setItem( slot, item, false );
+                    }
+                }
+            }
         }
         return value;
     }
@@ -51,7 +74,34 @@ public class BlockUndyedShulkerBox extends Block {
 
     @Override
     public ItemUndyedShulkerBox toItem() {
-        return new ItemUndyedShulkerBox();
+        ItemUndyedShulkerBox itemShulkerBox = new ItemUndyedShulkerBox();
+        BlockEntityShulkerBox blockEntity = this.getBlockEntity();
+        if ( blockEntity == null ) {
+            return itemShulkerBox;
+        }
+        ShulkerBoxInventory shulkerBoxInventory = blockEntity.getShulkerBoxInventory();
+        NbtMapBuilder builder = NbtMap.builder();
+        List<NbtMap> itemsCompoundList = new ArrayList<>();
+        for ( int slot = 0; slot < shulkerBoxInventory.getSize(); slot++ ) {
+            Item item = shulkerBoxInventory.getItem( slot );
+
+            if ( item != null && !(item instanceof ItemAir ) ) {
+                NbtMapBuilder itemCompound = NbtMap.builder();
+                itemCompound.putByte( "Slot", (byte) slot );
+                blockEntity.fromItem( item, itemCompound );
+
+                itemsCompoundList.add( itemCompound.build() );
+            }
+        }
+        builder.putList( "Items", NbtType.COMPOUND, itemsCompoundList );
+        itemShulkerBox.setNBT( builder.build() );
+
+        return itemShulkerBox;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.singletonList( this.toItem() );
     }
 
     @Override
@@ -71,6 +121,6 @@ public class BlockUndyedShulkerBox extends Block {
 
     @Override
     public boolean canBreakWithHand() {
-        return false;
+        return true;
     }
 }

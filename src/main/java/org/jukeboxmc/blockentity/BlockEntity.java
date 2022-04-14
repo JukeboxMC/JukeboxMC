@@ -47,7 +47,7 @@ public abstract class BlockEntity {
         return compound;
     }
 
-    public void spawn() {
+    public BlockEntity spawn() {
         World world = this.block.getWorld();
         Vector location = this.block.getLocation();
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
@@ -55,6 +55,7 @@ public abstract class BlockEntity {
         blockEntityDataPacket.setNbt( this.toCompound().build() );
         world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
         world.setBlockEntity( location, this, location.getDimension() );
+        return this;
     }
 
     public void fromItem( Item item, NbtMapBuilder builder ) {

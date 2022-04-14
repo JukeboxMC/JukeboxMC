@@ -295,22 +295,15 @@ public abstract class Block implements Cloneable {
             return 1.0;
         }
         if ( itemToolType.equals( ItemToolType.NONE ) ) return 1.0;
-        switch ( itemTierType ) {
-            case WOODEN:
-                return 2.0;
-            case STONE:
-                return 4.0;
-            case IRON:
-                return 6.0;
-            case DIAMOND:
-                return 8.0;
-            case NETHERITE:
-                return 9.0;
-            case GOLD:
-                return 12.0;
-            default:
-                return 1.0;
-        }
+        return switch ( itemTierType ) {
+            case WOODEN -> 2.0;
+            case STONE -> 4.0;
+            case IRON -> 6.0;
+            case DIAMOND -> 8.0;
+            case NETHERITE -> 9.0;
+            case GOLD -> 12.0;
+            default -> 1.0;
+        };
     }
 
     private double speedBonusByEfficiencyLore0( int efficiencyLoreLevel ) {
