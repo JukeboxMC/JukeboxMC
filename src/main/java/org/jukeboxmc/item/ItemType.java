@@ -12,7 +12,6 @@ import java.util.Map;
  * @author LucGamesYT
  * @version 1.0
  */
-@AllArgsConstructor
 public enum ItemType {
 
     AIR( BlockType.AIR.toItem() ),
@@ -1447,6 +1446,10 @@ public enum ItemType {
     }
 
     private final Item item;
+
+    ItemType( Item item ) {
+        this.item = item;
+    }
 
     @SneakyThrows
     public <B extends Item> B getItem() {

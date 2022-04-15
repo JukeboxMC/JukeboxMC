@@ -10,15 +10,7 @@ import org.jukeboxmc.utils.BinaryStream;
  * @author LucGamesYT
  * @version 1.0
  */
-public class PlayerConnection {
-
-    private final Server server;
-    private final Channel rakNetSession;
-
-    public PlayerConnection( Server server, Channel rakNetSession ) {
-        this.server = server;
-        this.rakNetSession = rakNetSession;
-    }
+public record PlayerConnection(Server server, Channel rakNetSession) {
 
     public Server getServer() {
         return this.server;
@@ -30,7 +22,7 @@ public class PlayerConnection {
 
     public void sendPacket( Packet packet, boolean direct ) {
         BinaryStream stream = new BinaryStream( PooledByteBufAllocator.DEFAULT.buffer() );
-        packet.write(stream);
+        packet.write( stream );
         if ( direct ) {
             this.rakNetSession.writeAndFlush( stream.getBuffer() );
         } else {

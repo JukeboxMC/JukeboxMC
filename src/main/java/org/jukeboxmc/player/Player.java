@@ -91,6 +91,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private long lastBreakTime = 0;
     private Vector lasBreakPosition;
 
+    private boolean loggedIn = false;
+
     private Location respawnLocation = null;
     private Location spawnLocation = null;
 
@@ -99,7 +101,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private int viewDistance = 8;
     private long[] chunksInRadius = new long[8 * 8 * 4];
 
-    private final LongPriorityQueue chunkSendQueue;
     private final LongPriorityQueue chunkLoadQueue;
 
     private final LongSet loadingChunks = new LongOpenHashSet();
@@ -114,8 +115,8 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private int formId;
     private int serverSettingsForm = -1;
-    private final Int2ObjectMap<Form> forms = new Int2ObjectOpenHashMap<>();
-    private final Int2ObjectMap<FormListener> formListeners = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<Form<?>> forms = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<FormListener<?>> formListeners = new Int2ObjectOpenHashMap<>();
 
     public Player( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
@@ -134,14 +135,13 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         this.adventureSettings = new AdventureSettings( this );
 
         ChunkComparator chunkComparator = new ChunkComparator( this );
-        this.chunkSendQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
         this.chunkLoadQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
 
         this.lasBreakPosition = new Vector( 0, 0, 0 );
     }
 
     public void updateChunks( long currentTick ) {
-        if ( this.closed || !this.spawned ) {
+        if ( this.closed || !this.loggedIn ) {
             return;
         }
 
@@ -158,6 +158,10 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 load++;
             }
             this.chunkLoadQueue.clear();
+        }
+
+        if ( !this.spawned && this.loadedChunks.size() >= 50 ) {
+            this.joinServer();
         }
     }
 
@@ -315,13 +319,14 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         if ( this.loadedChunks.contains( chunkHash ) ) {
             return;
         }
-
-        this.getWorld().addChunkLoader( chunkX, chunkZ, this );
         chunk.addEntity( this );
 
         if ( chunk.isPopulated() ) {
             this.sendChunk( chunk );
+            return;
         }
+
+        this.getWorld().addChunkLoader( chunkX, chunkZ, this );
     }
 
     public void resetChunks() {
@@ -356,7 +361,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         publisherUpdatePacket.setX( this.location.getBlockX() );
         publisherUpdatePacket.setY( this.location.getBlockY() );
         publisherUpdatePacket.setZ( this.location.getBlockZ() );
-        publisherUpdatePacket.setRadius( 5 + this.getViewDistance() << 4 );
+        publisherUpdatePacket.setRadius( 5 + this.viewDistance << 4 );
         this.playerConnection.sendPacket( publisherUpdatePacket );
     }
 
@@ -378,6 +383,12 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     }
 
     // ========== Other ==========
+
+    public void setLoggedIn() {
+        if ( !this.loggedIn ) {
+            this.loggedIn = true;
+        }
+    }
 
     public void createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
         this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
@@ -423,8 +434,6 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         ChunkRadiusUpdatedPacket chunkRadiusUpdatedPacket = new ChunkRadiusUpdatedPacket();
         chunkRadiusUpdatedPacket.setChunkRadius( viewDistance );
         this.playerConnection.sendPacket( chunkRadiusUpdatedPacket );
-
-        this.joinServer();
 
         this.needNewChunks();
     }
@@ -940,7 +949,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     private void joinServer() {
         if ( !this.spawned ) {
-
+            this.spawned = true;
             if ( this.server.isOperatorInFile( this.name ) ) {
                 this.adventureSettings.setOperator( true );
             }
@@ -1021,7 +1030,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
                 this.getArmorInventory().sendArmorContent( onlinePlayer );
             }
             this.highestPosition = this.location.getY();
-            this.spawned = true;
+
         }
     }
 

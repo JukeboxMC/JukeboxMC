@@ -44,6 +44,7 @@ public class ResourcePackResponseHandler implements PacketHandler<ResourcePackRe
             case COMPLETED:
                 Location worldSpawn = player.getWorld().getSpawnLocation( player.getDimension() );
                 worldSpawn.add( 0, player.getEyeHeight() , 0 );
+                player.setLoggedIn();
                 StartGamePacket startGamePacket = new StartGamePacket();
                 startGamePacket.setEntityId( player.getEntityId() );
                 startGamePacket.setEntityRuntimeId( player.getEntityId() );
