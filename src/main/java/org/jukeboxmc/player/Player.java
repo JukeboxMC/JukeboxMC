@@ -1322,10 +1322,9 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
 
     @Override
     public boolean equals( Object obj ) {
-        if ( !( obj instanceof Player ) ) {
+        if ( !( obj instanceof Player other ) ) {
             return false;
         }
-        Player other = (Player) obj;
         return Objects.equals( this.uuid, other.uuid ) && this.entityId == other.entityId;
     }
 

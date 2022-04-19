@@ -473,7 +473,7 @@ public class World {
             for ( int nZ = -1; nZ <= 1; nZ++ ) {
                 final Chunk nChunk;
                 if ( nX != 0 || nZ != 0 )
-                    nChunk = this.getChunk( x + nX, z + nZ, true, false, true, dimension );
+                    nChunk = this.getChunk( x + nX, z + nZ, true, false, false, dimension );
                 else nChunk = chunk;
 
                 chunks[index++] = nChunk;
