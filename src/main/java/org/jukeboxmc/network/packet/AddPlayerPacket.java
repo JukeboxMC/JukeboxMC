@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.jukeboxmc.entity.metadata.Metadata;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.utils.BinaryStream;
 
@@ -35,6 +36,7 @@ public class AddPlayerPacket extends Packet {
     private float yaw;
 
     private Item item;
+    private GameMode gameMode;
     private Metadata metadata;
 
     private DeviceInfo deviceInfo;
@@ -66,6 +68,7 @@ public class AddPlayerPacket extends Packet {
         stream.writeLFloat( this.yaw );
 
         stream.writeItem( this.item );
+        stream.writeInt( this.gameMode.ordinal() );
         stream.writeEntityMetadata( this.metadata.getMetadata() );
 
         for ( int i = 0; i < 5; i++ ) {

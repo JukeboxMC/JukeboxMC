@@ -11,7 +11,8 @@ public enum GameMode {
     SURVIVAL( "Survival" ),
     CREATIVE( "Creative" ),
     ADVENTURE( "Adventure" ),
-    SPECTATOR( "Spectator" );
+    SPECTATOR( "Spectator" ),
+    SPECTATOR_VANILLA( "Spectator (Vanilla)" );
 
     @Getter
     private final String identifier;

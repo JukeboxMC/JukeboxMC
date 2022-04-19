@@ -11,7 +11,7 @@ import org.jukeboxmc.item.type.ItemToolType;
 public class BlockConcretePowder extends Block {
 
     public BlockConcretePowder() {
-        super( "minecraft:concretepowder" );
+        super( "minecraft:concrete_powder" );
     }
 
     @Override
