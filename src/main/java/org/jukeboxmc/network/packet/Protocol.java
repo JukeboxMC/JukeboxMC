@@ -82,8 +82,5 @@ public interface Protocol {
     byte MODAL_REQUEST_PACKET = 0x64;
     byte MODAL_RESPONSE_PACKET = 0x65;
     byte SERVER_SETTINGS_RESPONSE_PACKET = 0x67;
-    byte TICKING_AREAS_LOAD_STATUS_PACKET = (byte) 0xb3;
-    byte DIMENSION_DATA_PACKET = (byte) 0xb4;
-    byte CHANGE_MOB_PROPERTY_PACKET = (byte) 0xb6;
 
 }
