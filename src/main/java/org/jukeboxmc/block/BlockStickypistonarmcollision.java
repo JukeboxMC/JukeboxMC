@@ -10,7 +10,7 @@ import org.jukeboxmc.item.ItemStickypistonarmcollision;
 public class BlockStickypistonarmcollision extends Block {
 
     public BlockStickypistonarmcollision() {
-        super( "minecraft:stickypistonarmcollision" );
+        super( "minecraft:sticky_piston_arm_collision" );
     }
 
     @Override

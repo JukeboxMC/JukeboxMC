@@ -10,7 +10,7 @@ import org.jukeboxmc.item.ItemPistonarmcollision;
 public class BlockPistonarmcollision extends BlockWaterlogable {
 
     public BlockPistonarmcollision() {
-        super( "minecraft:pistonarmcollision" );
+        super( "minecraft:piston_arm_collision" );
     }
 
     @Override

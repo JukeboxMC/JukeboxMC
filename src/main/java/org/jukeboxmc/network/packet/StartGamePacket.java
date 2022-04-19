@@ -55,7 +55,7 @@ public class StartGamePacket extends Packet {
         stream.writeLFloat( this.pitch );
         stream.writeLFloat( this.yaw );
 
-        stream.writeSignedVarInt( 0 ); //Seed
+        stream.writeLLong( -1L ); //Seed
 
         stream.writeLShort( 0x00 ); //Default biome
         stream.writeString( "plains" ); //Biome

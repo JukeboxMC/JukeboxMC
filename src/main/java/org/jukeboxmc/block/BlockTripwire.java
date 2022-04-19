@@ -9,7 +9,7 @@ import org.jukeboxmc.item.ItemTripwire;
 public class BlockTripwire extends BlockWaterlogable {
 
     public BlockTripwire() {
-        super( "minecraft:tripwire" );
+        super( "minecraft:tripwire_hook" );
     }
 
     @Override

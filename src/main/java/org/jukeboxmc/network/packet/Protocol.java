@@ -6,8 +6,8 @@ package org.jukeboxmc.network.packet;
  */
 public interface Protocol {
 
-    int CURRENT_PROTOCOL = 486;
-    String MINECRAFT_VERSION = "1.18.10";
+    int CURRENT_PROTOCOL = 503;
+    String MINECRAFT_VERSION = "1.18.30";
 
     int BATCH_PACKET = 0xfe;
     byte LOGIN_PACKET = 0x01;
@@ -82,5 +82,8 @@ public interface Protocol {
     byte MODAL_REQUEST_PACKET = 0x64;
     byte MODAL_RESPONSE_PACKET = 0x65;
     byte SERVER_SETTINGS_RESPONSE_PACKET = 0x67;
+    byte TICKING_AREAS_LOAD_STATUS_PACKET = (byte) 0xb3;
+    byte DIMENSION_DATA_PACKET = (byte) 0xb4;
+    byte CHANGE_MOB_PROPERTY_PACKET = (byte) 0xb6;
 
 }

@@ -16,6 +16,7 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.network.packet.AddPlayerPacket;
 import org.jukeboxmc.network.packet.Packet;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -90,6 +91,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
         addPlayerPacket.setPitch( this.getPitch() );
         addPlayerPacket.setHeadYaw( this.getYaw() );
         addPlayerPacket.setYaw( this.getYaw() );
+        addPlayerPacket.setGameMode( GameMode.SURVIVAL );
         addPlayerPacket.setItem( ItemType.AIR.getItem() );
         addPlayerPacket.setMetadata( this.getMetadata() );
         addPlayerPacket.setDeviceInfo( this.deviceInfo );
