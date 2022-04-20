@@ -111,7 +111,7 @@ public class TerraWorldHandle implements WorldHandle {
         }
         var identifier = (String) mappedData.get( "bedrock_identifier" );
         if ( identifier.equals( "minecraft:concretePowder" ) )//specific case
-            identifier = "minecraft:concretepowder";
+            identifier = "minecraft:concrete_powder";
 
         Block block = BlockType.getBlock( identifier );
         if ( hasStates ) {
