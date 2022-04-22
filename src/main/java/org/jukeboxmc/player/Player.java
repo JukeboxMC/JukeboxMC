@@ -99,7 +99,7 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
     private long actionStart = -1;
 
     private int viewDistance = 8;
-    private long[] chunksInRadius = new long[8 * 8 * 4];
+    private long[] chunksInRadius = new long[32 * 32 * 4];
 
     private final LongPriorityQueue chunkLoadQueue;
 
@@ -254,72 +254,68 @@ public class Player extends EntityHuman implements InventoryHolder, CommandSende
         int currentXChunk = Utils.blockToChunk( this.location.getBlockX() );
         int currentZChunk = Utils.blockToChunk( this.location.getBlockZ() );
         int viewDistance = this.getViewDistance();
-        this.server.getScheduler().executeAsync( () -> {
-            try {
-                int index = 0;
-                for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
-                    for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
-                        float distance = (float) FastMath.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
-                        int chunkDistance = FastMath.round( distance );
 
-                        if ( chunkDistance <= viewDistance ) {
-                            long hash = Utils.toLong( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
+        try {
+            int index = 0;
+            for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
+                for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
+                    float distance = (float) FastMath.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
+                    int chunkDistance = FastMath.round( distance );
 
-                            if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
-                                this.chunksInRadius[index++] = hash;
-                            }
+                    if ( chunkDistance <= viewDistance ) {
+                        long hash = Utils.toLong( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
+
+                        if ( !this.loadedChunks.contains( hash ) && !this.loadingChunks.contains( hash ) ) {
+                            this.chunksInRadius[index++] = hash;
                         }
                     }
                 }
-                final int chunkCount = index;
-                this.server.getScheduler().execute( () -> {
-                    if ( chunkCount > 0 ) {
-                        for ( int i = 0; i < chunkCount; i++ ) {
-                            this.chunkLoadQueue.enqueue( this.chunksInRadius[i] );
-                        }
-                    }
-
-                    LongIterator iterator = this.loadedChunks.iterator();
-                    while ( iterator.hasNext() ) {
-                        long hash = iterator.nextLong();
-                        int x = Utils.fromHashX( hash );
-                        int z = Utils.fromHashZ( hash );
-
-                        if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
-                            this.getWorld().removeChunkLoader( x, z, this );
-                            //this.sendNetworkChunkPublisher();
-                            iterator.remove();
-                        }
-                    }
-
-                    LongIterator loadingIterator = this.loadingChunks.iterator();
-                    while ( loadingIterator.hasNext() ) {
-                        long hash = loadingIterator.nextLong();
-                        int x = Utils.fromHashX( hash );
-                        int z = Utils.fromHashZ( hash );
-
-                        if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
-                            //this.sendNetworkChunkPublisher();
-                            loadingIterator.remove();
-                        }
-                    }
-                } );
-            } catch ( Exception e ) {
-                e.printStackTrace();
-            } finally {
-                this.requestedChunks = false;
             }
-        } );
+            final int chunkCount = index;
+            if ( chunkCount > 0 ) {
+                for ( int i = 0; i < chunkCount; i++ ) {
+                    this.chunkLoadQueue.enqueue( this.chunksInRadius[i] );
+                }
+            }
+
+            LongIterator iterator = this.loadedChunks.iterator();
+            while ( iterator.hasNext() ) {
+                long hash = iterator.nextLong();
+                int x = Utils.fromHashX( hash );
+                int z = Utils.fromHashZ( hash );
+
+                if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
+                    this.getWorld().removeChunkLoader( x, z, this );
+                    //this.sendNetworkChunkPublisher();
+                    iterator.remove();
+                }
+            }
+
+            LongIterator loadingIterator = this.loadingChunks.iterator();
+            while ( loadingIterator.hasNext() ) {
+                long hash = loadingIterator.nextLong();
+                int x = Utils.fromHashX( hash );
+                int z = Utils.fromHashZ( hash );
+
+                if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
+                    //this.sendNetworkChunkPublisher();
+                    loadingIterator.remove();
+                }
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        } finally {
+            this.requestedChunks = false;
+        }
     }
 
     public void requestChunk( int chunkX, int chunkZ ) {
-        Chunk chunk = this.getWorld().getChunk( chunkX, chunkZ, true, true, this.dimension );
+        Chunk chunk = this.getWorld().getChunk( chunkX, chunkZ, true, true, true, this.dimension );
 
         long chunkHash = Utils.toLong( chunkX, chunkZ );
         if ( this.loadedChunks.contains( chunkHash ) ) {
             return;
         }
-        chunk.addEntity( this );
 
         if ( chunk.isPopulated() ) {
             this.sendChunk( chunk );

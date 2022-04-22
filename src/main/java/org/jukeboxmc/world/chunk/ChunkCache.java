@@ -22,31 +22,18 @@ public class ChunkCache {
 
     private final DB db;
     private final Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks;
-    private final Object2ObjectMap<Dimension, Long2ObjectMap<CompletableFuture<Chunk>>> chunkFutures;
 
     public ChunkCache( DB db ) {
         this.db = db;
         this.cachedChunks = new Object2ObjectOpenHashMap<>( 8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
-        this.chunkFutures = new Object2ObjectOpenHashMap<>( 8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
 
         for ( Dimension dimension : Dimension.values() ) {
             this.cachedChunks.put( dimension, new Long2ObjectOpenHashMap<>() );
-            this.chunkFutures.put( dimension, new Long2ObjectOpenHashMap<>() );
         }
     }
 
     public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
         long chunkHash = Utils.toLong( chunkX, chunkZ );
-
-        CompletableFuture<Chunk> chunkFuture = this.chunkFutures.get( dimension ).get( chunkHash );
-        if ( chunkFuture != null ) {
-            try {
-                return chunkFuture.get();
-            } catch ( InterruptedException | ExecutionException e ) {
-                return null;
-            }
-        }
-
         return this.cachedChunks.get( dimension ).get( chunkHash );
     }
 
@@ -67,10 +54,6 @@ public class ChunkCache {
         return this.cachedChunks.get( dimension ).containsKey( Utils.toLong( chunkX, chunkZ ) );
     }
 
-    public synchronized boolean isChunkLoading( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.chunkFutures.get( dimension ).containsKey( Utils.toLong( chunkX, chunkZ ) );
-    }
-
     public synchronized void clearChunks() {
         this.cachedChunks.clear();
     }
@@ -81,10 +64,6 @@ public class ChunkCache {
 
     public Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> getCachedChunks() {
         return this.cachedChunks;
-    }
-
-    public Object2ObjectMap<Dimension, Long2ObjectMap<CompletableFuture<Chunk>>> getChunkFutures() {
-        return this.chunkFutures;
     }
 
     public void saveAll() {
