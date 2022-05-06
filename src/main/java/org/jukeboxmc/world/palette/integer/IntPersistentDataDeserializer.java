@@ -1,6 +1,6 @@
 package org.jukeboxmc.world.palette.integer;
 
-import org.jukeboxmc.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMap;
 
 public interface IntPersistentDataDeserializer {
 

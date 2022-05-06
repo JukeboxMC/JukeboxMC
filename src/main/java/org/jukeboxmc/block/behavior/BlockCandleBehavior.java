@@ -1,5 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -7,7 +8,6 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemCandleBehavior;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 import java.util.Collections;
@@ -26,13 +26,12 @@ public abstract class BlockCandleBehavior extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block clickedBlock = world.getBlock( blockPosition );
-        if ( clickedBlock instanceof BlockCandleBehavior ) {
-            BlockCandleBehavior blockCandle = (BlockCandleBehavior) clickedBlock;
+        if ( clickedBlock instanceof BlockCandleBehavior blockCandle ) {
             if ( blockCandle.getIdentifier().equals( itemIndHand.getIdentifier() ) ) {
                 int candles = blockCandle.getCandles();
                 if ( candles < 3 ) {
                     blockCandle.setCandles( candles + 1 );
-                    world.setBlock( blockPosition, blockCandle );
+                    world.setBlock( blockPosition, blockCandle, 0 );
                     return true;
                 } else {
                     return false;
@@ -41,7 +40,7 @@ public abstract class BlockCandleBehavior extends Block {
                 return false;
             }
         }
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0 );
         return true;
     }
 
@@ -52,11 +51,11 @@ public abstract class BlockCandleBehavior extends Block {
         }
         if ( this.isLit() && !itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( false );
-            this.world.playSound( blockPosition, LevelSound.FIZZ );
+            this.world.playSound( blockPosition, SoundEvent.FIZZ );
             return true;
         } else if ( !this.isLit() && itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( true );
-            this.world.playSound( blockPosition, LevelSound.IGNITE );
+            this.world.playSound( blockPosition, SoundEvent.IGNITE );
             return true;
         }
         return false;

@@ -1,9 +1,9 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.type.BlockColor;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
 
 /**
  * @author LucGamesYT

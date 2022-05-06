@@ -1,10 +1,11 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
 import org.jukeboxmc.blockentity.BlockEntityShulkerBox;
 import org.jukeboxmc.math.Location;
-import org.jukeboxmc.network.packet.BlockEventPacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -27,8 +28,8 @@ public class ShulkerBoxInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.CONTAINER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.CONTAINER;
     }
 
     @Override
@@ -37,10 +38,10 @@ public class ShulkerBoxInventory extends ContainerInventory {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( location );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 2 );
-            player.getWorld().playSound( location, LevelSound.SHULKERBOX_OPEN );
+            blockEventPacket.setBlockPosition( location.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 2 );
+            player.getWorld().playSound( location, SoundEvent.SHULKERBOX_OPEN );
             player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
         }
     }
@@ -51,10 +52,10 @@ public class ShulkerBoxInventory extends ContainerInventory {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( location );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 0 );
-            player.getWorld().playSound( location, LevelSound.SHULKERBOX_CLOSED );
+            blockEventPacket.setBlockPosition( location.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 0 );
+            player.getWorld().playSound( location, SoundEvent.SHULKERBOX_CLOSED );
             player.getWorld().sendChunkPacket( location.getBlockX() >> 4, location.getBlockZ() >> 4, blockEventPacket );
         }
     }

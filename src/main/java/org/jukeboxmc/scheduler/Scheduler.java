@@ -6,14 +6,17 @@ import org.jukeboxmc.Server;
 
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author WaterdogPE
  * @version 1.0
  */
-public class Scheduler implements Executor {
+public class Scheduler {
 
     private static Scheduler instance;
     private final Server server;
@@ -86,6 +89,10 @@ public class Scheduler implements Executor {
         return this.execute( task, true );
     }
 
+    public TaskHandler execute( Runnable task ) {
+        return this.addTask( task, 0, 0, false );
+    }
+
     public TaskHandler execute( Runnable task, boolean async ) {
         return this.addTask( task, 0, 0, async );
     }
@@ -152,10 +159,5 @@ public class Scheduler implements Executor {
 
     public long getCurrentTick() {
         return this.server.getCurrentTick();
-    }
-
-    @Override
-    public void execute( Runnable command ) {
-        Server.getInstance().addToMainThread( command );
     }
 }

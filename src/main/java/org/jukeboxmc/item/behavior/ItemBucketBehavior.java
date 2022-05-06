@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.event.player.PlayerBucketEmptyEvent;
@@ -8,7 +9,6 @@ import org.jukeboxmc.item.*;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -39,14 +39,14 @@ public class ItemBucketBehavior extends Item {
                 player.getInventory().sendContents( player );
                 return false;
             }
-            player.getWorld().setBlock( block.getLocation(), new BlockAir() );
+            player.getWorld().setBlock( block.getLocation(), new BlockAir(), 0 );
 
             if ( block instanceof BlockPowderSnow ) {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_POWDER_SNOW );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_FILL_POWDER_SNOW );
             } else if ( block instanceof BlockLava ) {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_LAVA );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_FILL_LAVA );
             } else {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_FILL_WATER );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_FILL_WATER );
             }
 
             if ( player.getGameMode() != GameMode.CREATIVE ) {
@@ -97,11 +97,11 @@ public class ItemBucketBehavior extends Item {
             }
 
             if ( placedBlock instanceof BlockPowderSnow ) {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_POWDER_SNOW );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_EMPTY_POWDER_SNOW );
             } else if ( placedBlock instanceof BlockLava ) {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_LAVA );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_EMPTY_LAVA );
             } else {
-                player.getWorld().playSound( player.getLocation(), LevelSound.BUCKET_EMPTY_WATER );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_EMPTY_WATER );
             }
 
             player.getWorld().setBlock( placeLocation, placedBlock, placedBlock.getLayer() );

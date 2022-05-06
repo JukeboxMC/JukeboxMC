@@ -27,7 +27,7 @@ public abstract class BlockBanner extends BlockWaterlogable {
         Block block = world.getBlock( placePosition );
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) FastMath.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
-            world.setBlock( placePosition, this );
+            world.setBlock( placePosition, this, 0 );
         } else {
             BlockWallBanner blockWallBanner = new BlockWallBanner();
             blockWallBanner.setBlockFace( blockFace );

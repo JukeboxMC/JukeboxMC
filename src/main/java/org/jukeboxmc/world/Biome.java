@@ -1,6 +1,6 @@
 package org.jukeboxmc.world;
 
-import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.util.Utils;
 
 /**
  * @author LucGamesYT

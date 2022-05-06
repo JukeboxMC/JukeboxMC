@@ -1,12 +1,12 @@
 package org.jukeboxmc.item;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
 import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 import java.time.Duration;
 
@@ -39,7 +39,7 @@ public class ItemFishingRod extends Item implements Durability, Burnable {
                 entityFishingHook.spawn();
                 this.updateItem( player, 1 );
                 player.setEntityFishingHook( entityFishingHook );
-                player.getWorld().playSound( player.getLocation(), LevelSound.THROW, -1, "minecraft:player", false, false );
+                player.getWorld().playSound( player.getLocation(), SoundEvent.THROW, -1, "minecraft:player", false, false );
                 return true;
             }
             return false;

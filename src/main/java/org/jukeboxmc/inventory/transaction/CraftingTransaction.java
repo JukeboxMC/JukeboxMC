@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory.transaction;
 
+import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerCraftItemEvent;
 import org.jukeboxmc.inventory.InventoryType;
 import org.jukeboxmc.inventory.transaction.action.SlotChangeAction;
@@ -63,6 +64,7 @@ public class CraftingTransaction extends InventoryTransaction {
 
     protected boolean callExecuteEvent() {
         PlayerCraftItemEvent playerCraftItemEvent = new PlayerCraftItemEvent( this.source, this.inputs, this.primaryOutput );
+        Server.getInstance().getPluginManager().callEvent( playerCraftItemEvent );
         return !playerCraftItemEvent.isCancelled();
     }
 
@@ -76,8 +78,7 @@ public class CraftingTransaction extends InventoryTransaction {
 
     public boolean checkForCraftingPart( List<InventoryAction> actions ) {
         for ( InventoryAction action : actions ) {
-            if ( action instanceof SlotChangeAction ) {
-                SlotChangeAction slotChangeAction = (SlotChangeAction) action;
+            if ( action instanceof SlotChangeAction slotChangeAction ) {
                 if ( slotChangeAction.getInventory().getInventoryType() == InventoryType.CURSOR && slotChangeAction.getSlot() == 50 &&
                         !slotChangeAction.getSourceItem().equals( slotChangeAction.getTargetItem() ) ) {
                     return true;

@@ -1,8 +1,8 @@
 package org.jukeboxmc.event.network;
 
+import com.nukkitx.protocol.bedrock.BedrockPacket;
 import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.event.Event;
-import org.jukeboxmc.network.packet.Packet;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -12,9 +12,9 @@ import org.jukeboxmc.player.Player;
 public class PacketSendEvent extends Event implements Cancellable {
 
     private final Player player;
-    private Packet packet;
+    private BedrockPacket packet;
 
-    public PacketSendEvent( Player player, Packet packet ) {
+    public PacketSendEvent( Player player, BedrockPacket packet ) {
         this.player = player;
         this.packet = packet;
     }
@@ -23,11 +23,11 @@ public class PacketSendEvent extends Event implements Cancellable {
         return this.player;
     }
 
-    public Packet getPacket() {
+    public BedrockPacket getPacket() {
         return this.packet;
     }
 
-    public void setPacket( Packet packet ) {
+    public void setPacket( BedrockPacket packet ) {
         this.packet = packet;
     }
 }

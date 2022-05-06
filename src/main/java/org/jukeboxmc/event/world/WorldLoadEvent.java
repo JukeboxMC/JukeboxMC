@@ -10,7 +10,6 @@ import org.jukeboxmc.world.World;
 public class WorldLoadEvent extends WorldEvent implements Cancellable {
 
     private World world;
-    private boolean prepareWorld;
     private final LoadType loadType;
 
     /**
@@ -18,11 +17,10 @@ public class WorldLoadEvent extends WorldEvent implements Cancellable {
      *
      * @param world which should be loaded
      */
-    public WorldLoadEvent( World world, boolean prepareWorld, LoadType loadType ) {
+    public WorldLoadEvent( World world, LoadType loadType ) {
         super( world );
 
         this.world = world;
-        this.prepareWorld = prepareWorld;
         this.loadType = loadType;
     }
 
@@ -38,14 +36,6 @@ public class WorldLoadEvent extends WorldEvent implements Cancellable {
      */
     public void setWorld( World world ) {
         this.world = world;
-    }
-
-    public boolean isPrepareWorld() {
-        return this.prepareWorld;
-    }
-
-    public void setPrepareWorld( boolean prepareWorld ) {
-        this.prepareWorld = prepareWorld;
     }
 
     public LoadType getLoadType() {

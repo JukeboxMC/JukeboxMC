@@ -1,11 +1,12 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
 import org.jukeboxmc.blockentity.BlockEntityChest;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Location;
-import org.jukeboxmc.network.packet.BlockEventPacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -39,8 +40,8 @@ public class  DoubleChestInventory extends ChestInventory implements InventoryHo
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.CONTAINER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.CONTAINER;
     }
 
     @Override
@@ -87,18 +88,18 @@ public class  DoubleChestInventory extends ChestInventory implements InventoryHo
             Location leftLocation = this.left.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( leftLocation );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 2 );
+            blockEventPacket.setBlockPosition( leftLocation.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 2 );
             player.getWorld().sendChunkPacket( leftLocation.getBlockX() >> 4, leftLocation.getBlockZ() >> 4, blockEventPacket );
 
             Location rightLocation = this.right.getInventoryHolder().getBlock().getLocation();
             BlockEventPacket blockEventPacket2 = new BlockEventPacket();
-            blockEventPacket2.setPosition( rightLocation );
-            blockEventPacket2.setData1( 1 );
-            blockEventPacket2.setData2( 2 );
+            blockEventPacket2.setBlockPosition( rightLocation.toVector3i() );
+            blockEventPacket2.setEventType( 1 );
+            blockEventPacket2.setEventData( 2 );
 
-            player.getWorld().playSound( rightLocation, LevelSound.CHEST_OPEN );
+            player.getWorld().playSound( rightLocation, SoundEvent.CHEST_OPEN );
             player.getWorld().sendChunkPacket( rightLocation.getBlockX() >> 4, rightLocation.getBlockZ() >> 4, blockEventPacket2 );
         }
     }
@@ -109,18 +110,18 @@ public class  DoubleChestInventory extends ChestInventory implements InventoryHo
             Location leftLocation = this.left.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( leftLocation );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 0 );
+            blockEventPacket.setBlockPosition( leftLocation.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 0 );
             player.getWorld().sendChunkPacket( leftLocation.getBlockX() >> 4, leftLocation.getBlockZ() >> 4, blockEventPacket );
 
             Location rightLocation = this.right.getInventoryHolder().getBlock().getLocation();
             BlockEventPacket blockEventPacket2 = new BlockEventPacket();
-            blockEventPacket2.setPosition( rightLocation );
-            blockEventPacket2.setData1( 1 );
-            blockEventPacket2.setData2( 0 );
+            blockEventPacket2.setBlockPosition( rightLocation.toVector3i() );
+            blockEventPacket2.setEventType( 1 );
+            blockEventPacket2.setEventData( 0 );
 
-            player.getWorld().playSound( rightLocation, LevelSound.CHEST_CLOSED );
+            player.getWorld().playSound( rightLocation, SoundEvent.CHEST_CLOSED );
             player.getWorld().sendChunkPacket( rightLocation.getBlockX() >> 4, rightLocation.getBlockZ() >> 4, blockEventPacket2 );
         }
     }

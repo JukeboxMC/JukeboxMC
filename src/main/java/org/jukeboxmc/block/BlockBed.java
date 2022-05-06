@@ -37,8 +37,8 @@ public class BlockBed extends BlockWaterlogable {
             blockBed.setDirection( this.getDirection() );
             blockBed.setHeadPiece( true );
 
-            world.setBlock( blockNext.getLocation(), blockBed );
-            world.setBlock( placePosition, this );
+            world.setBlock( blockNext.getLocation(), blockBed, 0 );
+            world.setBlock( placePosition, this, 0 );
 
             if ( block instanceof BlockWater ) {
                 world.setBlock( blockNext.getLocation(), block, 1 );
@@ -60,14 +60,13 @@ public class BlockBed extends BlockWaterlogable {
             direction = direction.opposite();
         }
         Block otherBlock = this.getSide( direction );
-        if ( otherBlock instanceof BlockBed ) {
-            BlockBed blockBed = (BlockBed) otherBlock;
+        if ( otherBlock instanceof BlockBed blockBed ) {
             if ( blockBed.isHeadPiece() != this.isHeadPiece() ) {
-                this.world.setBlock( otherBlock.getLocation(), block );
+                this.world.setBlock( otherBlock.getLocation(), block, 0 );
                 this.world.setBlock( otherBlock.getLocation(), new BlockAir(), 1 );
             }
         }
-        this.world.setBlock( breakPosition, block );
+        this.world.setBlock( breakPosition, block, 0 );
         this.world.setBlock( breakPosition, new BlockAir(), 1 );
         return true;
     }

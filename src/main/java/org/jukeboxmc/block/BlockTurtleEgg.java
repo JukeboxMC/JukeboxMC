@@ -1,11 +1,11 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemTurtleEgg;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 /**
@@ -26,21 +26,20 @@ public class BlockTurtleEgg extends BlockWaterlogable {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block clickedBlock = world.getBlock( blockPosition );
-        if ( clickedBlock instanceof BlockTurtleEgg ) {
-            BlockTurtleEgg blockTurtleEgg = (BlockTurtleEgg) clickedBlock;
+        if ( clickedBlock instanceof BlockTurtleEgg blockTurtleEgg ) {
             if ( blockTurtleEgg.getIdentifier().equals( itemIndHand.getIdentifier() ) ) {
                 TurtleEggCount turtleEggCount = blockTurtleEgg.getTurtleEggCount();
                 if ( turtleEggCount.equals( TurtleEggCount.ONE_EGG ) ) {
                     this.setTurtleEggCount( TurtleEggCount.TWO_EGG );
-                    world.setBlock( blockPosition, this );
+                    world.setBlock( blockPosition, this, 0 );
                     return true;
                 } else if ( turtleEggCount.equals( TurtleEggCount.TWO_EGG ) ) {
                     this.setTurtleEggCount( TurtleEggCount.THREE_EGG );
-                    world.setBlock( blockPosition, this );
+                    world.setBlock( blockPosition, this , 0);
                     return true;
                 } else if ( turtleEggCount.equals( TurtleEggCount.THREE_EGG ) ) {
                     this.setTurtleEggCount( TurtleEggCount.FOUR_EGG );
-                    world.setBlock( blockPosition, this );
+                    world.setBlock( blockPosition, this, 0 );
                     return true;
                 } else {
                     return false;
@@ -55,7 +54,7 @@ public class BlockTurtleEgg extends BlockWaterlogable {
 
     @Override
     public void playBlockBreakSound() {
-        this.world.playSound( this.location, LevelSound.BLOCK_TURTLE_EGG_CRACK );
+        this.world.playSound( this.location, SoundEvent.BLOCK_TURTLE_EGG_CRACK );
     }
 
     @Override

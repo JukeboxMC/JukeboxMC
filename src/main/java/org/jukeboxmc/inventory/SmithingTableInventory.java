@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -23,7 +24,7 @@ public class SmithingTableInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.SMITHING_TABLE;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.SMITHING_TABLE;
     }
 }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntityEnchantmentTable;
 
 /**
@@ -23,7 +24,7 @@ public class EnchantmentTableInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.ENCHANTMENT;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.ENCHANTMENT;
     }
 }

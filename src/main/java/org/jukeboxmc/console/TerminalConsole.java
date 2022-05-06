@@ -5,6 +5,9 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jukeboxmc.Server;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -12,24 +15,26 @@ import org.jukeboxmc.Server;
 public class TerminalConsole extends SimpleTerminalConsole {
 
     private final Server server;
-    private final ConsoleThread consoleThread;
+    private final ExecutorService executor;
 
     public TerminalConsole( Server server ) {
         this.server = server;
-        this.consoleThread = new ConsoleThread( this );
+        this.executor = Executors.newSingleThreadExecutor();
     }
 
     @Override
     protected void runCommand( String command ) {
         if ( this.isRunning() ) {
-            this.server.addToMainThread( () -> {
+            this.server.getScheduler().execute( () -> {
                 this.server.dispatchCommand( this.server.getConsoleSender(), command );
             } );
         }
     }
 
     @Override
-    protected void shutdown() {}
+    protected void shutdown() {
+        this.executor.shutdownNow();
+    }
 
     @Override
     protected boolean isRunning() {
@@ -46,11 +51,16 @@ public class TerminalConsole extends SimpleTerminalConsole {
         return super.buildReader( builder );
     }
 
+    @Override
+    public void start() {
+        super.start();
+    }
+
     public void startConsole() {
-        this.consoleThread.start();
+        this.executor.execute( this::start );
     }
 
     public void stopConsole() {
-        this.consoleThread.interrupt();
+        this.executor.shutdownNow();
     }
 }

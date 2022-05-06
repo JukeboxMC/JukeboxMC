@@ -34,7 +34,8 @@ public class SlotChangeAction extends InventoryAction {
 
     public boolean isValid( Player player ) {
         Item check = inventory.getItem( this.inventorySlot );
-        return check.equalsExact( this.sourceItem );
+        boolean equalsExact = check.equalsExact( this.sourceItem );
+        return equalsExact;
     }
 
     public boolean execute( Player player ) {

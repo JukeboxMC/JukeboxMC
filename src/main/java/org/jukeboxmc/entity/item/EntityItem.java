@@ -1,14 +1,13 @@
 package org.jukeboxmc.entity.item;
 
+import com.nukkitx.protocol.bedrock.packet.AddItemEntityPacket;
+import com.nukkitx.protocol.bedrock.packet.TakeItemEntityPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.event.player.PlayerPickupItemEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.AddItemEntityPacket;
-import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.TakeEntityItemPacket;
 import org.jukeboxmc.player.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +27,7 @@ public class EntityItem extends Entity {
     public void update( long currentTick ) {
         super.update( currentTick );
 
-        if ( this.closed ) {
+        if ( this.isClosed() ) {
             return;
         }
         if ( !this.isImmobile() ) {
@@ -90,30 +89,30 @@ public class EntityItem extends Entity {
     }
 
     @Override
-    public Packet createSpawnPacket() {
+    public AddItemEntityPacket createSpawnPacket() {
         AddItemEntityPacket addItemEntityPacket = new AddItemEntityPacket();
-        addItemEntityPacket.setEntityId( this.entityId );
         addItemEntityPacket.setRuntimeEntityId( this.entityId );
-        addItemEntityPacket.setItem( this.item );
-        addItemEntityPacket.setVector( this.location );
-        addItemEntityPacket.setVelocity( this.velocity );
-        addItemEntityPacket.setMetadata( this.metadata );
+        addItemEntityPacket.setUniqueEntityId( this.entityId );
+        addItemEntityPacket.setItemInHand( this.item.toNetwork() );
+        addItemEntityPacket.setPosition( this.location.toVector3f() );
+        addItemEntityPacket.setMotion( this.velocity.toVector3f() );
+        addItemEntityPacket.getMetadata().putAll( this.metadata.getEntityDataMap() );
         return addItemEntityPacket;
     }
 
     @Override
     public void onCollideWithPlayer( Player player ) {
-        if ( Server.getInstance().getCurrentTick() > this.pickupDelay && !this.closed && !player.isDead() ) {
+        if ( Server.getInstance().getCurrentTick() > this.pickupDelay && !this.isClosed() && !player.isDead() ) {
             PlayerPickupItemEvent playerPickupItemEvent = new PlayerPickupItemEvent( player, this.item );
             Server.getInstance().getPluginManager().callEvent( playerPickupItemEvent );
             if ( playerPickupItemEvent.isCancelled() || !player.getInventory().canAddItem( this.item )) {
                 return;
             }
 
-            TakeEntityItemPacket takeEntityItemPacket = new TakeEntityItemPacket();
-            takeEntityItemPacket.setEntityId( player.getEntityId() );
-            takeEntityItemPacket.setEntityItemId( this.entityId );
-            Server.getInstance().broadcastPacket( takeEntityItemPacket );
+            TakeItemEntityPacket takeItemEntityPacket = new TakeItemEntityPacket();
+            takeItemEntityPacket.setRuntimeEntityId( player.getEntityId() );
+            takeItemEntityPacket.setItemRuntimeEntityId( this.entityId );
+            Server.getInstance().broadcastPacket( takeItemEntityPacket );
 
             this.close();
             player.getInventory().addItem( this.item );
@@ -149,4 +148,5 @@ public class EntityItem extends Entity {
     public void setPlayerHasThrown( Player playerHasThrown ) {
         this.playerHasThrown = playerHasThrown;
     }
+
 }

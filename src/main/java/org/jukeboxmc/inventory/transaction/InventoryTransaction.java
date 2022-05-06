@@ -64,15 +64,13 @@ public class InventoryTransaction {
     }
 
     public void addAction( InventoryAction action ) {
-        if ( action instanceof SlotChangeAction ) {
-            SlotChangeAction slotChangeAction = (SlotChangeAction) action;
+        if ( action instanceof SlotChangeAction slotChangeAction ) {
 
             ListIterator<InventoryAction> iterator = this.actions.listIterator();
 
             while ( iterator.hasNext() ) {
                 InventoryAction existingAction = iterator.next();
-                if ( existingAction instanceof SlotChangeAction ) {
-                    SlotChangeAction existingSlotChangeAction = (SlotChangeAction) existingAction;
+                if ( existingAction instanceof SlotChangeAction existingSlotChangeAction ) {
                     if ( !existingSlotChangeAction.getInventory().equals( slotChangeAction.getInventory() ) )
                         continue;
                     Item existingSource = existingSlotChangeAction.getSourceItem();
@@ -138,9 +136,7 @@ public class InventoryTransaction {
 
     protected void sendInventories() {
         for ( InventoryAction action : this.actions ) {
-            if ( action instanceof SlotChangeAction ) {
-                SlotChangeAction sca = (SlotChangeAction) action;
-
+            if ( action instanceof SlotChangeAction sca ) {
                 sca.getInventory().sendContents( sca.getSlot(), this.source );
             }
         }
@@ -159,10 +155,9 @@ public class InventoryTransaction {
         Player player = null;
 
         for ( InventoryAction action : this.actions ) {
-            if ( !( action instanceof SlotChangeAction ) ) {
+            if ( !( action instanceof SlotChangeAction slotChange ) ) {
                 continue;
             }
-            SlotChangeAction slotChange = (SlotChangeAction) action;
 
             if ( slotChange.getInventory().getInventoryHolder() instanceof Player ) {
                 player = (Player) slotChange.getInventory().getInventoryHolder();

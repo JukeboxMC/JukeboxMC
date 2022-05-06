@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.attribute;
 
+import com.nukkitx.protocol.bedrock.data.AttributeData;
 import lombok.ToString;
 
 /**
@@ -63,6 +64,10 @@ public class Attribute implements Cloneable {
     public void reset() {
         this.currentValue = this.defaultValue;
         this.dirty = true;
+    }
+
+    public AttributeData toNetwork() {
+        return new AttributeData( this.key, this.minValue, this.maxValue, this.currentValue, this.defaultValue );
     }
 
     @Override

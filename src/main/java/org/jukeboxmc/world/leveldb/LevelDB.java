@@ -1,18 +1,15 @@
 package org.jukeboxmc.world.leveldb;
 
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import lombok.experimental.UtilityClass;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityType;
-import org.jukeboxmc.nbt.NBTInputStream;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtUtils;
-import org.jukeboxmc.utils.BinaryStream;
-import org.jukeboxmc.utils.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.SubChunk;
@@ -25,32 +22,33 @@ import java.util.Objects;
  * @author LucGamesYT
  * @version 1.0
  */
-@UtilityClass
 public class LevelDB {
 
-    public void loadSection( SubChunk chunk, byte[] chunkData ) {
-        BinaryStream buffer = new BinaryStream( Utils.allocate( chunkData ) );
+    public static void loadSection( SubChunk chunk, byte[] chunkData ) {
+        ByteBuf buffer = Unpooled.wrappedBuffer( chunkData );
         try {
             byte subChunkVersion = buffer.readByte();
+            chunk.setSubChunkVersion( subChunkVersion );
             int storages = 1;
             switch ( subChunkVersion ) {
                 case 9:
                 case 8:
                     storages = buffer.readByte();
+                    chunk.setLayer( storages );
                     if ( subChunkVersion == 9 ) {
-                        buffer.readByte(); // same as sub chunk height
+                        byte subY = buffer.readByte();
                     }
                 case 1:
                     for ( int layer = 0; layer < storages; layer++ ) {
                         try {
-                            buffer.getBuffer().markReaderIndex();
+                            buffer.markReaderIndex();
                             chunk.blocks[layer].readFromStoragePersistent( buffer, compound -> {
                                 String identifier = compound.getString( "name" );
                                 NbtMap states = compound.getCompound( "states" );
                                 return BlockPalette.getRuntimeId( identifier, Objects.requireNonNullElse( states, NbtMap.EMPTY ) );
                             } );
                         } catch ( IllegalArgumentException e ) {
-                            buffer.getBuffer().resetReaderIndex();
+                            buffer.resetReaderIndex();
                             chunk.blocks[layer].readFromStorageRuntime( buffer, runtimeId -> runtimeId, null );
                         }
                     }
@@ -61,12 +59,12 @@ public class LevelDB {
         }
     }
 
-    public void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
-        ByteBuf data = Utils.allocate( blockEntityData );
+    public static void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
+        ByteBuf byteBuf = Unpooled.wrappedBuffer( blockEntityData );
 
         try {
-            NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( data ) );
-            while ( data.readableBytes() > 0 ) {
+            NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( byteBuf ) );
+            while ( byteBuf.readableBytes() > 0 ) {
                 try {
                     NbtMap nbtMap = (NbtMap) reader.readTag();
 
@@ -75,6 +73,7 @@ public class LevelDB {
                     int z = nbtMap.getInt( "z", 0 );
 
                     Block block = chunk.getBlock( x, y, z, 0 );
+
                     if ( block != null && block.hasBlockEntity() ) {
                         BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
                         if ( blockEntity != null ) {
@@ -82,21 +81,22 @@ public class LevelDB {
                             chunk.setBlockEntity( x, y, z, blockEntity );
                         }
                     }
+
                 } catch ( IOException e ) {
                     break;
                 }
             }
         } finally {
-            data.release();
+            byteBuf.release();
         }
     }
 
-    public void loadHeightAndBiomes( Chunk chunk, byte[] heightAndBiomes ) {
-        BinaryStream buffer = new BinaryStream( Unpooled.wrappedBuffer( heightAndBiomes ) );
+    public static void loadHeightAndBiomes( Chunk chunk, byte[] heightAndBiomes ) {
+        ByteBuf buffer = Unpooled.wrappedBuffer( heightAndBiomes );
         try {
             short[] height = chunk.getHeight();
             for ( int i = 0; i < height.length; i++ ) {
-                height[i] = buffer.readLShort();
+                height[i] = buffer.readShortLE();
             }
 
             if(buffer.readableBytes() <= 0) return;

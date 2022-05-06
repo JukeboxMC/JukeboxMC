@@ -13,14 +13,14 @@ public class DeviceInfo {
     private final String deviceId;
     private final long clientId;
     private final Device device;
-    private final GUIScale guiScale;
+    private final UIProfile UIProfile;
 
-    public DeviceInfo( String deviceName, String deviceId, long clientId, Device device, GUIScale guiScale ) {
+    public DeviceInfo( String deviceName, String deviceId, long clientId, Device device, UIProfile UIProfile ) {
         this.deviceName = deviceName;
         this.deviceId = deviceId;
         this.clientId = clientId;
         this.device = device;
-        this.guiScale = guiScale;
+        this.UIProfile = UIProfile;
     }
 
     public String getDeviceName() {
@@ -39,7 +39,7 @@ public class DeviceInfo {
         return this.device;
     }
 
-    public GUIScale getGuiScale() {
-        return this.guiScale;
+    public UIProfile getUIProfile() {
+        return this.UIProfile;
     }
 }

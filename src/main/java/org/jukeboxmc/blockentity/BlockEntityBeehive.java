@@ -1,7 +1,7 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.nbt.NbtMapBuilder;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.nbt.NbtMapBuilder;
 
 /**
  * @author LucGamesYT

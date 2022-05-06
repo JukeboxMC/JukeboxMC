@@ -1,6 +1,7 @@
 package org.jukeboxmc.entity;
 
-import org.apache.commons.math3.util.FastMath;
+import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
+import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -8,7 +9,6 @@ import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.EntityEventPacket;
 import org.jukeboxmc.player.Player;
 
 import java.util.Collection;
@@ -29,7 +29,6 @@ public abstract class EntityLiving extends Entity {
 
     protected EntityDamageEvent.DamageSource lastDamageSource;
     protected Entity lastDamageEntity;
-
 
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
 
@@ -125,13 +124,12 @@ public abstract class EntityLiving extends Entity {
 
         if ( health > 0 ) {
             EntityEventPacket entityEventPacket = new EntityEventPacket();
-            entityEventPacket.setEntityId( this.entityId );
-            entityEventPacket.setEntityEventType( EntityEventType.HURT );
+            entityEventPacket.setRuntimeEntityId( this.entityId );
+            entityEventPacket.setType( EntityEventType.HURT );
             Server.getInstance().broadcastPacket( entityEventPacket );
         }
 
-        if ( event instanceof EntityDamageByEntityEvent ) {
-            EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
+        if ( event instanceof EntityDamageByEntityEvent damageByEntityEvent ) {
             Entity damager = damageByEntityEvent.getDamager();
             if ( damager instanceof Player ) {
                 //return ( (Player) damager ).getGameMode().equals( GameMode.SPECTATOR );
@@ -169,12 +167,12 @@ public abstract class EntityLiving extends Entity {
         return true;
     }
 
-    @Override
-    public void fall() {
-        float damage = (float) FastMath.floor( this.fallDistance - 3f );
-        if ( damage > 0 ) {
-            this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
-        }
+    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+        return event.getDamage();
+    }
+
+    public Entity getLastDamageEntity() {
+        return this.lastDamageEntity;
     }
 
     public void setBurning( long value, TimeUnit timeUnit ) {
@@ -186,34 +184,6 @@ public abstract class EntityLiving extends Entity {
             this.fireTicks = 0;
             this.setBurning( false );
         }
-    }
-
-    protected void kill() {
-        this.deadTimer = 20;
-
-        EntityEventPacket entityEventPacket = new EntityEventPacket();
-        entityEventPacket.setEntityId( this.entityId );
-        entityEventPacket.setEntityEventType( EntityEventType.DEATH );
-        Server.getInstance().broadcastPacket( entityEventPacket );
-
-        this.fireTicks = 0;
-        this.setBurning( false );
-    }
-
-    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
-        return event.getDamage();
-    }
-
-    public Entity getLastDamageEntity() {
-        return this.lastDamageEntity;
-    }
-
-    public float getLastDamage() {
-        return this.lastDamage;
-    }
-
-    public EntityDamageEvent.DamageSource getLastDamageSource() {
-        return this.lastDamageSource;
     }
 
     public void addAttribute( AttributeType attributeType ) {
@@ -250,6 +220,10 @@ public abstract class EntityLiving extends Entity {
         }
         Attribute attribute = this.getAttribute( AttributeType.HEALTH );
         attribute.setCurrentValue( value );
+    }
+
+    public void setHeal( float value ) {
+        this.setHealth( Math.min( 20, Math.max( 0, value ) ) );
     }
 
     public void setHeal( float value, EntityHealEvent.Cause cause ) {
@@ -300,4 +274,18 @@ public abstract class EntityLiving extends Entity {
     public void setKnockbackResistence( float value ) {
         this.setAttributes( AttributeType.KNOCKBACK_RESISTENCE, value );
     }
+
+    protected void kill() {
+        this.deadTimer = 20;
+
+        EntityEventPacket entityEventPacket = new EntityEventPacket();
+        entityEventPacket.setRuntimeEntityId( this.entityId );
+        entityEventPacket.setType( EntityEventType.DEATH );
+        Server.getInstance().broadcastPacket( entityEventPacket );
+
+        this.fireTicks = 0;
+        this.setBurning( false );
+    }
+
+
 }

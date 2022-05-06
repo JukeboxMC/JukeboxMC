@@ -8,6 +8,9 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -43,6 +46,11 @@ public class BlockDirt extends Block {
     @Override
     public ItemToolType getToolType() {
         return ItemToolType.SHOVEL;
+    }
+
+    @Override
+    public List<Item> getDrops( Item itemInHand ) {
+        return Collections.singletonList( BlockType.DIRT.toItem() );
     }
 
     public BlockDirt setDirtType( DirtType dirtType ) {

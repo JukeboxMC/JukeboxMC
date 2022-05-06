@@ -1,16 +1,17 @@
 package org.jukeboxmc.world.palette.integer;
 
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtUtils;
+import com.nukkitx.network.VarInts;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.jukeboxmc.nbt.NBTInputStream;
-import org.jukeboxmc.nbt.NBTOutputStream;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtUtils;
-import org.jukeboxmc.utils.BinaryStream;
 import org.jukeboxmc.world.palette.bitarray.BitArray;
 import org.jukeboxmc.world.palette.bitarray.BitArrayVersion;
 
@@ -64,121 +65,117 @@ public class IntPalette {
         this.bitArray.set( index, indexFor );
     }
 
-    public void writeToNetwork( BinaryStream buffer, IntRuntimeDataSerializer serializer ) {
-        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), true ) );
+    public void writeToNetwork( ByteBuf byteBuf, IntRuntimeDataSerializer serializer ) {
+        byteBuf.writeByte(getPaletteHeader(this.bitArray.getVersion(), true));
 
-        for ( int word : this.bitArray.getWords() ) {
-            buffer.writeLInt( word );
-        }
+        for(int word : this.bitArray.getWords()) byteBuf.writeIntLE(word);
 
-        this.bitArray.writeSizeToNetwork( buffer, this.palette.size() );
-        for ( int value : this.palette ) {
-            buffer.writeSignedVarInt( serializer.serialize( value ) );
+        this.bitArray.writeSizeToNetwork(byteBuf, this.palette.size());
+        for(int value : this.palette) {
+            VarInts.writeInt(byteBuf, serializer.serialize(value));
         }
     }
 
-    public void writeToStoragePersistent( BinaryStream buffer, IntPersistentDataSerializer serializer ) {
-        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), false ) );
+    public void readFromNetwork( ByteBuf byteBuf, IntRuntimeDataDeserializer deserializer ) {
+        byte header = byteBuf.readByte();
 
-        for ( int word : this.bitArray.getWords() ) {
-            buffer.writeLInt( word );
-        }
-
-        buffer.writeLInt( this.palette.size() );
-
-        try ( final ByteBufOutputStream bufOutputStream = new ByteBufOutputStream( buffer.getBuffer() );
-              final NBTOutputStream outputStream = NbtUtils.createWriterLE( bufOutputStream ) ) {
-            for ( int value : this.palette ) {
-                outputStream.writeTag( serializer.serialize( value ) );
-            }
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
-        }
-    }
-
-    public void writeToStorageRuntime( BinaryStream buffer, IntRuntimeDataSerializer serializer, IntPalette last ) {
-        if ( last != null && last.palette.equals( this.palette ) ) {
-            buffer.writeByte( IntPalette.getCopyLastFlagHeader() );
-            return;
-        }
-
-        if ( this.isEmpty() ) {
-            buffer.writeByte( IntPalette.getPaletteHeader( BitArrayVersion.V0, true ) );
-            buffer.writeLInt( serializer.serialize( this.palette.getInt( 0 ) ) );
-            return;
-        }
-
-        buffer.writeByte( IntPalette.getPaletteHeader( this.bitArray.getVersion(), true ) );
-
-        for ( int word : this.bitArray.getWords() ) {
-            buffer.writeLInt( word );
-        }
-
-        buffer.writeLInt( this.palette.size() );
-        for ( int value : this.palette ) {
-            buffer.writeLInt( serializer.serialize( value ) );
-        }
-    }
-
-    public void readFromStoragePersistent( BinaryStream buffer, IntPersistentDataDeserializer deserializer ) {
-        final short header = buffer.readUnsignedByte();
-
-        final BitArrayVersion version = IntPalette.getVersionFromHeader( header );
-        final int wordCount = version.getWordsForSize( SIZE );
+        final BitArrayVersion version = IntPalette.getVersionFromHeader(header);
+        final int wordCount = version.getWordsForSize(SIZE);
         final int[] words = new int[wordCount];
-        for ( int i = 0; i < wordCount; i++ ) {
-            words[i] = buffer.readLInt();
-        }
+        for(int i = 0; i < wordCount; i++) words[i] = byteBuf.readIntLE();
 
-        this.bitArray = version.createArray( SIZE, words );
+        this.bitArray = version.createArray(SIZE, words);
         this.palette.clear();
 
-        final int paletteSize = buffer.readLInt();
-        try ( final ByteBufInputStream bufInputStream = new ByteBufInputStream( buffer.getBuffer() );
-              final NBTInputStream inputStream = NbtUtils.createReaderLE( bufInputStream ) ) {
-            for ( int i = 0; i < paletteSize; i++ ) {
-                this.palette.add( deserializer.deserialize( (NbtMap) inputStream.readTag() ) );
-            }
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        int size = this.bitArray.readSizeFromNetwork( byteBuf );
+        for ( int i = 0; i < size; i++ ) {
+            this.palette.add( deserializer.deserialize( VarInts.readInt( byteBuf ) ) );
         }
     }
 
-    public void readFromStorageRuntime( BinaryStream buffer, IntRuntimeDataDeserializer deserializer, IntPalette last ) {
-        final short header = buffer.readUnsignedByte();
+    public void readFromStoragePersistent( ByteBuf byteBuf, IntPersistentDataDeserializer deserializer ) {
+        final short header = byteBuf.readUnsignedByte();
 
-        if ( IntPalette.hasCopyLastFlag( header ) ) {
-            if ( last == null ) {
-                throw new IllegalArgumentException( "Palette has copy last flag but no last entry!" );
-            }
+        final BitArrayVersion version = IntPalette.getVersionFromHeader(header);
+        final int wordCount = version.getWordsForSize(SIZE);
+        final int[] words = new int[wordCount];
+        for(int i = 0; i < wordCount; i++) words[i] = byteBuf.readIntLE();
 
-            last.copyTo( this );
+        this.bitArray = version.createArray(SIZE, words);
+        this.palette.clear();
+
+        final int paletteSize = byteBuf.readIntLE();
+        try(final ByteBufInputStream bufInputStream = new ByteBufInputStream(byteBuf);
+            final NBTInputStream inputStream = NbtUtils.createReaderLE(bufInputStream)) {
+            for(int i = 0; i < paletteSize; i++)
+                this.palette.add(deserializer.deserialize((NbtMap) inputStream.readTag()));
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void writeToStoragePersistent( ByteBuf byteBuf, IntPersistentDataSerializer serializer ) {
+        byteBuf.writeByte(IntPalette.getPaletteHeader(this.bitArray.getVersion(), false));
+
+        for(int word : this.bitArray.getWords()) byteBuf.writeIntLE(word);
+
+        byteBuf.writeIntLE(this.palette.size());
+
+        try(final ByteBufOutputStream bufOutputStream = new ByteBufOutputStream(byteBuf);
+            final NBTOutputStream outputStream = NbtUtils.createWriterLE(bufOutputStream)) {
+            for(int value : this.palette) outputStream.writeTag(serializer.serialize(value));
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void writeToStorageRuntime( ByteBuf byteBuf, IntRuntimeDataSerializer serializer, IntPalette last ) {
+        if(last != null && last.palette.equals(this.palette)) {
+            byteBuf.writeByte(IntPalette.getCopyLastFlagHeader());
             return;
         }
 
-        final BitArrayVersion version = IntPalette.getVersionFromHeader( header );
-        if ( version == BitArrayVersion.V0 ) {
-            this.bitArray = version.createArray( SIZE, null );
+        if(this.isEmpty()) {
+            byteBuf.writeByte(IntPalette.getPaletteHeader(BitArrayVersion.V0, true));
+            byteBuf.writeIntLE(serializer.serialize(this.palette.get(0)));
+            return;
+        }
+
+        byteBuf.writeByte(IntPalette.getPaletteHeader(this.bitArray.getVersion(), true));
+
+        for(int word : this.bitArray.getWords()) byteBuf.writeIntLE(word);
+
+        byteBuf.writeIntLE(this.palette.size());
+        for(int value : this.palette) byteBuf.writeIntLE(serializer.serialize(value));
+    }
+
+    public void readFromStorageRuntime( ByteBuf byteBuf, IntRuntimeDataDeserializer deserializer, IntPalette last ) {
+        final short header = byteBuf.readUnsignedByte();
+
+        if(IntPalette.hasCopyLastFlag(header)) {
+            last.copyTo(this);
+            return;
+        }
+
+        final BitArrayVersion version = IntPalette.getVersionFromHeader(header);
+        if(version == BitArrayVersion.V0) {
+            this.bitArray = version.createArray(SIZE, null);
             this.palette.clear();
-            this.palette.add( deserializer.deserialize( buffer.readLInt() ) );
+            this.palette.add(deserializer.deserialize(byteBuf.readIntLE()));
 
-            this.onResize( BitArrayVersion.V2 );
+            this.onResize(BitArrayVersion.V2);
             return;
         }
 
-        final int wordCount = version.getWordsForSize( SIZE );
+        final int wordCount = version.getWordsForSize(SIZE);
         final int[] words = new int[wordCount];
-        for ( int i = 0; i < wordCount; i++ ) {
-            words[i] = buffer.readLInt();
-        }
+        for(int i = 0; i < wordCount; i++) words[i] = byteBuf.readIntLE();
 
-        this.bitArray = version.createArray( SIZE, words );
+        this.bitArray = version.createArray(SIZE, words);
         this.palette.clear();
 
-        final int paletteSize = buffer.readLInt();
-        for ( int i = 0; i < paletteSize; i++ ) {
-            this.palette.add( deserializer.deserialize( buffer.readLInt() ) );
-        }
+        final int paletteSize = byteBuf.readIntLE();
+        for(int i = 0; i < paletteSize; i++) this.palette.add(deserializer.deserialize(byteBuf.readIntLE()));
     }
 
     private void onResize( BitArrayVersion version ) {

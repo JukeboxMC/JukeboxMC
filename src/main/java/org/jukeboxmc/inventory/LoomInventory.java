@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntityLoom;
 
 /**
@@ -23,7 +24,7 @@ public class LoomInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.LOOM;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.LOOM;
     }
 }

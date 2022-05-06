@@ -1,12 +1,12 @@
 package org.jukeboxmc.blockentity;
 
 import com.google.common.base.Joiner;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.block.BlockSignChangeEvent;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.network.packet.BlockEntityDataPacket;
 import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;
@@ -62,15 +62,15 @@ public class BlockEntitySign extends BlockEntityContainer {
         this.lines.clear();
         this.lines.addAll( blockSignChangeEvent.getLines() );
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getLocation());
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i());
+        blockEntityDataPacket.setData( this.toCompound().build() );
         this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
     }
 
     public void updateBlockEntitySign() {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getLocation() );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i() );
+        blockEntityDataPacket.setData( this.toCompound().build() );
         this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
     }
 }

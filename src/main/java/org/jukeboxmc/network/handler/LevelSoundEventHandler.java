@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.LevelSoundEventPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.packet.LevelSoundEventPacket;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -12,16 +12,9 @@ public class LevelSoundEventHandler implements PacketHandler<LevelSoundEventPack
 
     @Override
     public void handle( LevelSoundEventPacket packet, Server server, Player player ) {
-        switch ( packet.getLevelSound() ) {
-            case LAND:
-            case ATTACK_NODAMAGE:
-            case FALL:
-            case HIT:
-            case ATTACK_STRONG:
-                player.getWorld().sendChunkPacket( player.getChunkX(), player.getChunkZ(), packet );
-                break;
-            default:
-                break;
+        switch ( packet.getSound() ) {
+            case LAND, ATTACK_NODAMAGE, FALL, HIT, ATTACK_STRONG ->
+                    player.getWorld().sendChunkPacket( player.getChunkX(), player.getChunkZ(), packet );
         }
     }
 }

@@ -1,6 +1,5 @@
 package org.jukeboxmc.item;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.block.*;
 import org.jukeboxmc.block.type.*;
@@ -1364,7 +1363,6 @@ public enum ItemType {
     DEEPSLATE_REDSTONE_ORE( new ItemDeepslateRedstoneOre() ),
     WAXED_COPPER( new ItemWaxedCopper() ),
     POLISHED_DEEPSLATE_WALL( new ItemPolishedDeepslateWall() ),
-    GOAT_HORN( new ItemGoatHorn() ),
     GOAT_SPAWN_EGG( new ItemGoatSpawnEgg() ),
     COBBLED_DEEPSLATE_DOUBLE_SLAB( new ItemCobbledDeepslateDoubleSlab() ),
     DEEPSLATE_IRON_ORE( new ItemDeepslateIronOre() ),
@@ -1457,6 +1455,9 @@ public enum ItemType {
     }
 
     public static Item getItemFormNetwork( int networkId, int meta ) {
+        if ( networkId == 0 || networkId == -158 ) {
+            return new ItemAir();
+        }
         for ( Item item : cachedItems.values() ) {
             if ( item.getRuntimeId() == networkId && item.getMeta() == meta ) {
                 return item.clone();
@@ -1464,7 +1465,7 @@ public enum ItemType {
                 return item.clone();
             }
         }
-        return ItemType.AIR.getItem();
+        return new ItemAir();
     }
 
     public static Item get( String identifier ) {

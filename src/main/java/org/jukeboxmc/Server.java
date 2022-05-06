@@ -1,9 +1,9 @@
 package org.jukeboxmc;
 
+import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import lombok.SneakyThrows;
-import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.command.CommandSender;
@@ -16,12 +16,8 @@ import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.logger.Logger;
-import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.PacketRegistry;
-import org.jukeboxmc.network.packet.PlayerListPacket;
-import org.jukeboxmc.network.packet.type.TablistEntry;
-import org.jukeboxmc.network.packet.type.TablistType;
-import org.jukeboxmc.network.raknet.RakNetListener;
+import org.jukeboxmc.network.Network;
+import org.jukeboxmc.network.handler.HandlerRegistry;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.DeviceInfo;
@@ -30,21 +26,19 @@ import org.jukeboxmc.plugin.PluginLoadOrder;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.resourcepack.ResourcePackManager;
 import org.jukeboxmc.scheduler.Scheduler;
-import org.jukeboxmc.utils.BedrockResourceLoader;
-import org.jukeboxmc.world.Dimension;
+import org.jukeboxmc.util.BiomeDefinitions;
+import org.jukeboxmc.util.CreativeItems;
+import org.jukeboxmc.util.EntityIdentifiers;
+import org.jukeboxmc.util.ItemPalette;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
-import org.jukeboxmc.world.generator.TerraGenerator;
-import org.jukeboxmc.world.generator.WorldGenerator;
-import org.jukeboxmc.world.generator.terra.TerraPlatform;
+import org.jukeboxmc.world.generator.Generator;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -56,64 +50,73 @@ import java.util.function.Consumer;
 public class Server {
 
     private static Server instance;
+
+    private final AtomicBoolean runningState;
+    private final int ticks = 20;
+    private final long startTime;
+    private long currentTick;
+    private long currentTps;
+    private long tickTpsStarted;
+    private long timeMillisTpsStarted;
+    private final long[] ticksAverage;
+
+    private final boolean WARN_IF_TICKS_BEHIND = false;
+    private final long TICK_NS = TimeUnit.SECONDS.toNanos( 1 ) / this.ticks;
+    private final long TICK_MS = TimeUnit.SECONDS.toMillis( 1 ) / this.ticks;
+
     private final Logger logger;
-    private Config serverConfig;
-    private Config operatorConfig;
-    private GameMode defaultGameMode;
-    private final PacketRegistry packetRegistry;
-    private final RakNetListener rakNetListener;
-    private InetSocketAddress address;
+    private final Scheduler scheduler;
+    private final Network network;
     private final ResourcePackManager resourcePackManager;
+    private World defaultWorld;
     private final PluginManager pluginManager;
     private final ConsoleSender consoleSender;
     private final TerminalConsole terminalConsole;
-    private final Scheduler scheduler;
     private final CraftingManager craftingManager;
-
-    private World defaultWorld;
 
     private final File pluginFolder;
 
+    private Config serverConfig;
+    private Config operatorConfig;
+
+    private String serverAddress;
+    private int port;
+    private int maxPlayers;
+    private int viewdistance;
     private String motd;
     private String subMotd;
-    private static String GENERATOR_NAME;
+    private GameMode gameMode;
+    private String defaultWorldName;
+    private String generatorName;
+    private boolean onlineMode;
+    private boolean forceResourcePacks;
 
-    private final Thread mainThread;
-    private final long serverId;
-    private long currentTick = 0;
-
-    private double currentTps = 20.0;
-
-    private boolean running = true;
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );
-
-    private final Object2ObjectMap<InetSocketAddress, Player> players = new Object2ObjectOpenHashMap<>();
+    private final Set<Player> players = new HashSet<>();
     private final Object2ObjectMap<String, World> worlds = new Object2ObjectOpenHashMap<>();
-    private static final Object2ObjectMap<String, Class<? extends WorldGenerator>> worldGenerator = new Object2ObjectOpenHashMap<>();
-    private final Object2ObjectMap<UUID, TablistEntry> playerListEntry = new Object2ObjectOpenHashMap<>();
-    private final BlockingQueue<Runnable> mainThreadWork = new LinkedBlockingQueue<>();
+    private final Object2ObjectMap<String, Class<? extends Generator>> worldGenerator = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<UUID, PlayerListPacket.Entry> playerListEntry = new Object2ObjectOpenHashMap<>();
 
-    @SneakyThrows
     public Server( Logger logger ) {
-        Server.setInstance( this );
+        instance = this;
         JukeboxMC.setServer( this );
+        this.startTime = System.currentTimeMillis();
+        Thread.currentThread().setName( "JukeboxMC-Main" );
 
-        Thread.currentThread().setName( "JukeboxMC Main-Thread" );
-        this.mainThread = Thread.currentThread();
+        this.runningState = new AtomicBoolean( true );
+
+        this.currentTick = 0;
+        this.currentTps = this.ticks;
+        this.tickTpsStarted = 0;
+        this.timeMillisTpsStarted = this.startTime;
+        Arrays.fill( this.ticksAverage = new long[20], this.ticks );
+
         this.logger = logger;
-
-        this.pluginFolder = new File( "./plugins" );
-        if ( !this.pluginFolder.exists() ) {
-            this.pluginFolder.mkdirs();
-        }
-
-        this.serverId = UUID.randomUUID().getMostSignificantBits();
-
-        this.packetRegistry = new PacketRegistry();
 
         this.initServerConfig();
         this.initOperatorConfig();
+        HandlerRegistry.init();
 
         this.consoleSender = new ConsoleSender( this );
         this.terminalConsole = new TerminalConsole( this );
@@ -121,101 +124,72 @@ public class Server {
 
         this.scheduler = new Scheduler( this );
 
+        this.network = new Network( this, new InetSocketAddress( this.serverAddress, this.port ) );
+
         INITIATING.set( true );
-        BedrockResourceLoader.init();
         BlockPalette.init();
+        ItemPalette.init();
+        CreativeItems.init();
+        BiomeDefinitions.init();
+        EntityIdentifiers.init();
+
         ItemType.init();
-        for ( BlockType blockType : BlockType.values() ) {
-            blockType.getBlock();
-        }
+        BlockType.init();
         INITIATING.set( false );
 
-        this.resourcePackManager = new ResourcePackManager();
+        this.resourcePackManager = new ResourcePackManager( logger );
         this.resourcePackManager.loadResourcePacks();
 
         this.craftingManager = new CraftingManager();
 
+        this.pluginFolder = new File( "./plugins" );
+        if ( !this.pluginFolder.exists() ) {
+            this.pluginFolder.mkdirs();
+        }
+
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
-        this.registerGenerator( "Empty", EmptyGenerator.class );
-        this.registerGenerator( "Flat", FlatGenerator.class );
-        this.registerGenerator( "Terra", TerraGenerator.class );
-        if ( GENERATOR_NAME.equalsIgnoreCase( "Terra" ) ) {
-            TerraPlatform.getInstance();
-        }
+        this.registerGenerator( "empty", EmptyGenerator.class );
+        this.registerGenerator( "flat", FlatGenerator.class );
 
-        String defaultWorldName = this.getDefaultWorldName();
+        String defaultWorldName = this.defaultWorldName;
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
             this.defaultWorld = this.getWorld( defaultWorldName );
         }
         this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );
 
-        this.rakNetListener = new RakNetListener( this.serverId );
-        this.rakNetListener.bind();
-
-        long tpsTimeMillisStarted = System.currentTimeMillis();
-        long tpsTickStarted = this.currentTick;
-        long deltaTime = 50;
-        while ( this.running ) {
-            this.currentTick++;
-            Thread.sleep( FastMath.max( 0, 50 - deltaTime ) );
-            final long startTime = System.currentTimeMillis();
-            while ( !this.mainThreadWork.isEmpty() ) {
-                Runnable runnable = this.mainThreadWork.poll();
-                if ( runnable != null ) {
-                    runnable.run();
-                }
-            }
-
-            this.scheduler.onTick( this.currentTick );
-
-            for ( Player player : this.players.values() ) {
-                player.updateChunks( this.currentTick );
-            }
-
-            for ( World world : this.worlds.values() ) {
-                if ( world != null ) {
-                    world.update( this.currentTick );
-                }
-            }
-
-            if ( System.currentTimeMillis() >= tpsTimeMillisStarted + TimeUnit.SECONDS.toMillis( 1 ) ) {
-                this.currentTps = this.currentTick - tpsTickStarted;
-                if ( this.currentTps > 20 ) {
-                    this.currentTps = 20;
-                }
-
-                tpsTickStarted = this.currentTick;
-                tpsTimeMillisStarted = System.currentTimeMillis();
-            }
-
-            deltaTime = System.currentTimeMillis() - startTime;
-        }
+        this.network.start();
+        this.tick();
+        this.shutdown();
     }
 
     private void initServerConfig() {
         this.serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
         this.serverConfig.addDefault( "address", "0.0.0.0" );
         this.serverConfig.addDefault( "port", 19132 );
-        this.serverConfig.addDefault( "maxplayers", 20 );
+        this.serverConfig.addDefault( "max-players", 20 );
         this.serverConfig.addDefault( "view-distance", 32 );
         this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
-        this.serverConfig.addDefault( "subMotd", "A fresh JukeboxMC Server" );
+        this.serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
         this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
         this.serverConfig.addDefault( "default-world", "world" );
-        this.serverConfig.addDefault( "generator", "flat" );
+        this.serverConfig.addDefault( "generator", "flat" ); //TODO
         this.serverConfig.addDefault( "online-mode", true );
-        this.serverConfig.addDefault( "spawn-protection", true );
-        this.serverConfig.addDefault( "spawn-protection-radius", 16 );
         this.serverConfig.addDefault( "forceResourcePacks", false );
         this.serverConfig.save();
 
+        this.serverAddress = this.serverConfig.getString( "address" );
+        this.port = this.serverConfig.getInt( "port" );
+        this.maxPlayers = this.serverConfig.getInt( "max-players" );
+        this.viewdistance = this.serverConfig.getInt( "view-distance" );
         this.motd = this.serverConfig.getString( "motd" );
-        this.subMotd = this.serverConfig.getString( "subMotd" );
-        this.defaultGameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
-        this.address = new InetSocketAddress( this.serverConfig.getString( "address" ), this.serverConfig.getInt( "port" ) );
-        GENERATOR_NAME = this.serverConfig.getString( "generator" );
+        this.subMotd = this.serverConfig.getString( "sub-motd" );
+        this.gameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
+        this.defaultWorldName = this.serverConfig.getString( "default-world" );
+        this.generatorName = this.serverConfig.getString( "generator" );
+        this.onlineMode = this.serverConfig.getBoolean( "online-mode" );
+        this.forceResourcePacks = this.serverConfig.getBoolean( "forceResourcePacks" );
     }
 
     private void initOperatorConfig() {
@@ -225,253 +199,101 @@ public class Server {
     }
 
     public void shutdown() {
-        if ( this.running ) {
-            this.running = false;
-            this.logger.info( "Shutdown server..." );
+        if ( !this.runningState.get() ) {
+            return;
+        }
+        this.logger.info( "Shutdown server..." );
+        this.runningState.set( false );
 
-            for ( Player player : this.getOnlinePlayers() ) {
-                player.disconnect( "Server shutdown" );
-            }
-
-
-            this.logger.info( "Unload all worlds..." );
-            for ( World world : this.getWorlds() ) {
-                this.unloadWorld( world.getName() );
-            }
-
-            this.logger.info( "Disabling all plugins..." );
-            this.pluginManager.disableAllPlugins();
-
-            this.terminalConsole.stopConsole();
-            this.scheduler.shutdown();
-            this.rakNetListener.close();
-            this.logger.info( "Shutdown successfully" );
-            System.exit( -1 );
+        this.logger.info( "Unload all worlds..." );
+        for ( World world : this.worlds.values() ) {
+            this.unloadWorld( world.getName() );
+            this.logger.info( "World " + world.getName() + " was unloaded." );
         }
 
+        this.logger.info( "Disable plugins..." );
+        this.pluginManager.disableAllPlugins();
+
+        this.terminalConsole.stopConsole();
+
+        this.network.getBedrockServer().close( true );
+        this.scheduler.shutdown();
+        this.logger.info( "Server shutdown successfully!" );
+        System.exit( -1 );
     }
 
-    // =========== Server ===========
+    private void tick() {
+        while ( this.runningState.get() ) {
+            try {
+                long timeMillis = System.currentTimeMillis();
+                long nanoStart = System.nanoTime();
 
-    public boolean isMainThread() {
-        return this.mainThread == Thread.currentThread();
-    }
+                this.currentTick++;
 
-    public void addToMainThread( Runnable runnable ) {
-        this.mainThreadWork.offer( runnable );
-    }
+                this.scheduler.onTick( this.currentTick );
+                this.network.update();
 
-    public boolean isRunning() {
-        return this.running;
-    }
+                for ( World world : this.worlds.values() ) {
+                    if ( world != null ) {
+                        world.update( this.currentTick );
+                    }
+                }
 
-    public double getCurrentTps() {
-        return this.currentTps;
-    }
+                long nanoDiff = System.nanoTime() - nanoStart;
+                long timeMillisDiff = timeMillis - this.timeMillisTpsStarted;
 
-    public long getCurrentTick() {
-        return this.currentTick;
-    }
+                if ( timeMillisDiff >= TimeUnit.SECONDS.toMillis( 1 ) ) {
+                    long currentTps = this.currentTick - this.tickTpsStarted;
 
-    public static Server getInstance() {
-        return instance;
-    }
+                    System.arraycopy( this.ticksAverage, 1, this.ticksAverage, 0, this.ticksAverage.length - 1 );
+                    this.ticksAverage[this.ticksAverage.length - 1] = currentTps;
 
-    public static void setInstance( Server instance ) {
-        Server.instance = instance;
-    }
+                    this.currentTps = currentTps;
+                    this.timeMillisTpsStarted = System.currentTimeMillis();
+                    this.tickTpsStarted = this.currentTick;
+                }
 
-    public Logger getLogger() {
-        return this.logger;
-    }
+                if ( nanoDiff > TICK_NS ) {
+                    if ( !WARN_IF_TICKS_BEHIND ) continue;
 
-    public long getServerId() {
-        return this.serverId;
-    }
+                    final int ticksBehind = (int) ( nanoDiff / TICK_NS );
+                    final long milliDiff = TimeUnit.NANOSECONDS.toMillis( nanoDiff );
+                    if ( ticksBehind == 1 ) {
+                        Logger.getInstance().warn( "Server is running 1 tick or " + ( milliDiff - TICK_MS ) + "ms behind!" );
+                    } else if ( ticksBehind > 1 ) {
+                        Logger.getInstance().warn( "Server is running " + ticksBehind + " ticks or " + ( milliDiff - TICK_MS ) + "ms behind!" );
+                    }
+                    continue;
+                }
 
-    public PacketRegistry getPacketRegistry() {
-        return this.packetRegistry;
-    }
-
-    public ResourcePackManager getResourcePackManager() {
-        return this.resourcePackManager;
-    }
-
-    public File getPluginFolder() {
-        return this.pluginFolder;
-    }
-
-    public PluginManager getPluginManager() {
-        return this.pluginManager;
-    }
-
-    public CraftingManager getCraftingManager() {
-        return craftingManager;
-    }
-
-    public Scheduler getScheduler() {
-        return this.scheduler;
-    }
-
-    public ConsoleSender getConsoleSender() {
-        return this.consoleSender;
-    }
-
-    public Config getServerConfig() {
-        return this.serverConfig;
-    }
-
-    public InetSocketAddress getAddress() {
-        return this.address;
-    }
-
-    public int getPort() {
-        return this.serverConfig.getInt( "port" );
-    }
-
-    public int getMaxPlayers() {
-        return this.serverConfig.getInt( "maxplayers" );
-    }
-
-    public int getViewDistance() {
-        return this.serverConfig.getInt( "view-distance" );
-    }
-
-    public String getMotd() {
-        return this.motd;
-    }
-
-    public void setMotd( String motd ) {
-        this.motd = motd;
-    }
-
-    public String getSubMotd() {
-        return this.subMotd;
-    }
-
-    public void setSubMotd( String subMotd ) {
-        this.subMotd = subMotd;
-    }
-
-    public GameMode getDefaultGameMode() {
-        return this.defaultGameMode;
-    }
-
-    public void setDefaultGameMode( GameMode defaultGameMode ) {
-        this.defaultGameMode = defaultGameMode;
-    }
-
-    public String getDefaultWorldName() {
-        return this.serverConfig.getString( "default-world" );
-    }
-
-    public String getGeneratorName() {
-        return this.serverConfig.getString( "generator" );
-    }
-
-    public boolean isOnlineMode() {
-        return this.serverConfig.getBoolean( "online-mode" );
-    }
-
-    public boolean hasSpawnProtection() {
-        return this.serverConfig.getBoolean( "spawn-protection" );
-    }
-
-    public int getSpawnProtectionRadius() {
-        return this.serverConfig.getInt( "spawn-protection-radius" );
-    }
-
-    public boolean isForceResourcePacks() {
-        return this.serverConfig.getBoolean( "forceResourcePacks" );
-    }
-
-    public boolean isOperatorInFile( String playerName ) {
-        return this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName );
-    }
-
-    public void addOperatorToFile( String playerName ) {
-        if ( this.operatorConfig.exists( "operators" ) && !this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
-            List<String> operators = this.operatorConfig.getStringList( "operators" );
-            operators.add( playerName );
-            this.operatorConfig.set( "operators", operators );
-            this.operatorConfig.save();
-        }
-    }
-
-    public void removeOperatorFromFile( String playerName ) {
-        if ( this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
-            List<String> operators = this.operatorConfig.getStringList( "operators" );
-            operators.remove( playerName );
-            this.operatorConfig.set( "operators", operators );
-            this.operatorConfig.save();
-        }
-    }
-
-    public void dispatchCommand( CommandSender commandSender, String command ) {
-        this.pluginManager.getCommandManager().handleCommandInput( commandSender, "/" + command );
-    }
-
-    public boolean isInitiating() {
-        return INITIATING.get();
-    }
-
-    // =========== Player ===========
-
-    public Collection<Player> getOnlinePlayers() {
-        return this.players.values();
-    }
-
-    public void addPlayer( Player player ) {
-        this.players.put( player.getAddress(), player );
-    }
-
-    public void removePlayer( Player player ) {
-        this.players.remove( player.getAddress() );
-    }
-
-    public Player getPlayer( InetSocketAddress socketAddress ) {
-        return this.players.get( socketAddress );
-    }
-
-    public Player getPlayer( String name ) {
-        for ( Player player : this.players.values() ) {
-            if ( player.getName().equalsIgnoreCase( name ) ) {
-                return player;
+                final long diffNs = TICK_NS - nanoDiff;
+                final long diffMs = TimeUnit.NANOSECONDS.toMillis( diffNs );
+                if ( diffMs > 0 ) {
+                    synchronized (this) {
+                        try {
+                            this.wait( diffMs, (int) ( diffNs - TimeUnit.MILLISECONDS.toNanos( diffMs ) ) );
+                        } catch ( InterruptedException e ) {
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                }
+            } catch ( Throwable throwable ) {
+                Logger.getInstance().error( "Error whilst ticking server!", throwable );
             }
         }
-        return null;
     }
 
-    public Player getPlayer( UUID uuid ) {
-        for ( Player player : this.players.values() ) {
-            if ( player.getUUID().equals( uuid ) ) {
-                return player;
-            }
-        }
-        return null;
-    }
-
-    public void broadcastMessage( String message ) {
-        for ( Player onlinePlayers : this.players.values() ) {
-            onlinePlayers.sendMessage( message );
-        }
-        this.logger.info( message );
-    }
-
-    public void broadcastPacket( Packet packet ) {
-        for ( Player player : this.players.values() ) {
+    public void broadcastPacket( BedrockPacket packet ) {
+        for ( Player player : this.players ) {
             player.sendPacket( packet );
         }
     }
 
-    public void broadcastPacket( Set<Player> players, Packet packet ) {
+    public void broadcastPacket( Collection<Player> players, BedrockPacket packet ) {
         for ( Player player : players ) {
             player.sendPacket( packet );
         }
-    }
-
-    public Map<UUID, TablistEntry> getPlayerListEntry() {
-        return this.playerListEntry;
     }
 
     public void addToTablist( Player player ) {
@@ -480,30 +302,134 @@ public class Server {
 
     public void addToTablist( UUID uuid, long entityId, String name, DeviceInfo deviceInfo, String xuid, Skin skin ) {
         PlayerListPacket playerListPacket = new PlayerListPacket();
-        playerListPacket.setType( TablistType.ADD );
-        TablistEntry playerListEntry = new TablistEntry(
-                uuid,
-                entityId,
-                name,
-                deviceInfo,
-                xuid,
-                skin
-        );
-        playerListPacket.getEntries().add( playerListEntry );
-
-        this.playerListEntry.put( uuid, playerListEntry );
+        playerListPacket.setAction( PlayerListPacket.Action.ADD );
+        PlayerListPacket.Entry entry = new PlayerListPacket.Entry( uuid );
+        entry.setEntityId( entityId );
+        entry.setName( name );
+        entry.setXuid( xuid );
+        entry.setPlatformChatId( deviceInfo.getDeviceName() );
+        entry.setBuildPlatform( deviceInfo.getDevice().getId() );
+        entry.setSkin( skin.toNetwork() );
+        playerListPacket.getEntries().add( entry );
+        this.playerListEntry.put( uuid, entry );
         this.broadcastPacket( playerListPacket );
     }
 
-    public void removeFromTablist( UUID uuid ) {
+    public void removeFromTablist( Player player ) {
         PlayerListPacket playerListPacket = new PlayerListPacket();
-        playerListPacket.setType( TablistType.REMOVE );
-        playerListPacket.getEntries().add( new TablistEntry( uuid ) );
-        this.playerListEntry.remove( uuid );
-        this.broadcastPacket( playerListPacket );
+        playerListPacket.setAction( PlayerListPacket.Action.REMOVE );
+        player.sendPacket( playerListPacket );
+        this.playerListEntry.remove( player.getUUID() );
     }
 
-    // =========== World ===========
+    public Object2ObjectMap<UUID, PlayerListPacket.Entry> getPlayerListEntry() {
+        return this.playerListEntry;
+    }
+
+    public void addPlayer( Player player ) {
+        this.players.add( player );
+    }
+
+    public void removePlayer( Player player ) {
+        this.players.removeIf( target -> target.getUUID().equals( player.getUUID() ) );
+    }
+
+    public Collection<Player> getOnlinePlayers() {
+        return this.players;
+    }
+
+    public Player getPlayer( String playerName ) {
+        for ( Player player : new ArrayList<>( this.players ) ) {
+            if ( player.getName().equalsIgnoreCase( playerName ) ) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Player getPlayer( UUID uuid ) {
+        for ( Player player : new ArrayList<>( this.players ) ) {
+            if ( player.getUUID().equals( uuid ) ) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public void registerGenerator( String name, Class<? extends Generator> clazz ) {
+        if ( !this.worldGenerator.containsKey( name ) ) {
+            this.worldGenerator.put( name.toLowerCase(), clazz );
+        }
+    }
+
+    public Generator createWorldGenerator() {
+        try {
+            return this.worldGenerator.get( this.generatorName ).getConstructor().newInstance();
+        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException |
+                  NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return new EmptyGenerator();
+    }
+
+    public boolean loadOrCreateWorld( String worldName ) {
+        if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
+            File file = new File( "./worlds", worldName );
+            boolean worldExists = file.exists();
+
+            World world = new World( worldName, this );
+            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
+            this.pluginManager.callEvent( worldLoadEvent );
+            if ( worldLoadEvent.isCancelled() ) {
+                return false;
+            }
+
+            if ( worldLoadEvent.getWorld().open() ) {
+                this.worlds.put( worldName.toLowerCase(), worldLoadEvent.getWorld() );
+                this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
+                return true;
+            } else {
+                this.logger.error( "Failed to load world: " + worldName );
+            }
+        } else {
+            this.logger.warn( "The world \"" + worldName + "\" was already loaded" );
+        }
+        return false;
+    }
+
+    public void unloadWorld( String worldName ) {
+        this.unloadWorld( worldName, player -> {
+            World world = this.getWorld( worldName );
+            if ( world != null ) {
+                if ( world == this.defaultWorld || this.defaultWorld == null ) {
+                    player.getPlayerConnection().disconnect( "World was unloaded" );
+                } else {
+                    player.teleport( this.defaultWorld.getSpawnLocation() );
+                }
+            }
+        } );
+    }
+
+    public void unloadWorld( String worldName, Consumer<Player> consumer ) {
+        World world = this.getWorld( worldName );
+        WorldUnloadEvent unloadWorldEvent = new WorldUnloadEvent( world );
+        this.pluginManager.callEvent( unloadWorldEvent );
+
+        if ( unloadWorldEvent.isCancelled() ) {
+            return;
+        }
+
+        if ( unloadWorldEvent.getWorld() != null ) {
+            for ( Player player : unloadWorldEvent.getWorld().getPlayers() ) {
+                consumer.accept( player );
+            }
+            unloadWorldEvent.getWorld().close();
+            unloadWorldEvent.getWorld().clearChunks();
+            this.logger.info( "World \"" + worldName + "\" was unloaded" );
+        } else {
+            this.logger.warn( "The world \"" + worldName + "\" was not found" );
+        }
+    }
 
     public Collection<World> getWorlds() {
         return this.worlds.values();
@@ -531,82 +457,129 @@ public class Server {
         return this.worlds.containsKey( name.toLowerCase() );
     }
 
+    public boolean isOperatorInFile( String playerName ) {
+        return this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName );
+    }
 
-    public void registerGenerator( String name, Class<? extends WorldGenerator> clazz ) {
-        if ( !worldGenerator.containsKey( name ) ) {
-           worldGenerator.put( name.toLowerCase(), clazz );
+    public void addOperatorToFile( String playerName ) {
+        if ( this.operatorConfig.exists( "operators" ) && !this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
+            List<String> operators = this.operatorConfig.getStringList( "operators" );
+            operators.add( playerName );
+            this.operatorConfig.set( "operators", operators );
+            this.operatorConfig.save();
         }
     }
 
-    public boolean loadOrCreateWorld( String worldName ) {
-        if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
-            File file = new File( "./worlds", worldName );
-            boolean worldExists = file.exists();
-
-            World world = new World( worldName, this );
-            WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, false, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
-            this.pluginManager.callEvent( worldLoadEvent );
-            if ( worldLoadEvent.isCancelled() ) {
-                return false;
-            }
-
-            if ( worldLoadEvent.getWorld().open() ) {
-                if ( worldLoadEvent.isPrepareWorld() ) {
-                    worldLoadEvent.getWorld().prepareSpawnRegion();
-                }
-                this.worlds.put( worldName.toLowerCase(), worldLoadEvent.getWorld() );
-                this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
-                return true;
-            } else {
-                this.logger.error( "Failed to load world: " + worldName );
-            }
-        } else {
-            this.logger.warn( "The world \"" + worldName + "\" was already loaded" );
-        }
-        return false;
-    }
-
-    public void unloadWorld( String worldName ) {
-        this.unloadWorld( worldName, player -> {
-            World world = this.getWorld( worldName );
-            if ( world != null ) {
-                if ( world == this.defaultWorld || this.defaultWorld == null ) {
-                    player.disconnect( "World was unloaded" );
-                } else {
-                    player.teleport( this.defaultWorld.getSpawnLocation( Dimension.OVERWORLD ) );
-                }
-            }
-        } );
-    }
-
-    public void unloadWorld( String worldName, Consumer<Player> consumer ) {
-        World world = this.getWorld( worldName );
-        WorldUnloadEvent unloadWorldEvent = new WorldUnloadEvent( world );
-        this.pluginManager.callEvent( unloadWorldEvent );
-
-        if ( unloadWorldEvent.isCancelled() ) {
-            return;
-        }
-
-        if ( unloadWorldEvent.getWorld() != null ) {
-            for ( Player player : unloadWorldEvent.getWorld().getPlayers() ) {
-                consumer.accept( player );
-            }
-            unloadWorldEvent.getWorld().close();
-            unloadWorldEvent.getWorld().clearChunks();
-            this.logger.info( "World \"" + worldName + "\" was unloaded" );
-        } else {
-            this.logger.warn( "The world \"" + worldName + "\" was not found" );
+    public void removeOperatorFromFile( String playerName ) {
+        if ( this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
+            List<String> operators = this.operatorConfig.getStringList( "operators" );
+            operators.remove( playerName );
+            this.operatorConfig.set( "operators", operators );
+            this.operatorConfig.save();
         }
     }
 
-    public static WorldGenerator createWorldGenerator() {
-        try {
-            return worldGenerator.get( GENERATOR_NAME ).getConstructor().newInstance();
-        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
-            e.printStackTrace();
+    public void broadcastMessage( String message ) {
+        for ( Player player : this.getOnlinePlayers() ) {
+            player.sendMessage( message );
         }
-        return new EmptyGenerator();
+        this.logger.info( message );
     }
 
+    public void dispatchCommand( CommandSender commandSender, String command ) {
+        this.pluginManager.getCommandManager().handleCommandInput( commandSender, "/" + command );
+    }
+
+
+    public static Server getInstance() {
+        return instance;
+    }
+
+    public Logger getLogger() {
+        return this.logger;
+    }
+
+    public Scheduler getScheduler() {
+        return this.scheduler;
+    }
+
+    public ResourcePackManager getResourcePackManager() {
+        return this.resourcePackManager;
+    }
+
+    public long getCurrentTick() {
+        return this.currentTick;
+    }
+
+    public long getCurrentTps() {
+        return this.currentTps;
+    }
+
+    public String getServerAddress() {
+        return this.serverAddress;
+    }
+
+    public int getPort() {
+        return this.port;
+    }
+
+    public int getMaxPlayers() {
+        return this.maxPlayers;
+    }
+
+    public int getViewdistance() {
+        return this.viewdistance;
+    }
+
+    public String getMotd() {
+        return this.motd;
+    }
+
+    public String getSubMotd() {
+        return this.subMotd;
+    }
+
+    public GameMode getGameMode() {
+        return this.gameMode;
+    }
+
+    public String getDefaultWorldName() {
+        return this.defaultWorldName;
+    }
+
+    public String getGeneratorName() {
+        return this.generatorName;
+    }
+
+    public boolean isOnlineMode() {
+        return this.onlineMode;
+    }
+
+    public boolean isForceResourcePacks() {
+        return this.forceResourcePacks;
+    }
+
+    public File getPluginFolder() {
+        return this.pluginFolder;
+    }
+
+    public PluginManager getPluginManager() {
+        return this.pluginManager;
+    }
+
+    public boolean isRunning() {
+        return this.runningState.get();
+    }
+
+    public ConsoleSender getConsoleSender() {
+        return this.consoleSender;
+    }
+
+    public CraftingManager getCraftingManager() {
+        return this.craftingManager;
+    }
+
+    public boolean isInitiating() {
+        return INITIATING.get();
+    }
 }

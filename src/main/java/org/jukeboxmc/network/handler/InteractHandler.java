@@ -1,8 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.InteractPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.packet.InteractPacket;
-import org.jukeboxmc.network.packet.type.InteractAction;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -13,7 +12,7 @@ public class InteractHandler implements PacketHandler<InteractPacket> {
 
     @Override
     public void handle( InteractPacket packet, Server server, Player player ) {
-        if ( packet.getAction() == InteractAction.OPEN_INVENTORY ) {
+        if ( packet.getAction().equals( InteractPacket.Action.OPEN_INVENTORY ) ) {
             player.openInventory( player.getInventory() );
         }
     }

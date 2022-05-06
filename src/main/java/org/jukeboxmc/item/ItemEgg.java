@@ -1,11 +1,11 @@
 package org.jukeboxmc.item;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.entity.projectile.EntityEgg;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -14,7 +14,7 @@ import org.jukeboxmc.world.LevelSound;
 public class ItemEgg extends Item {
 
     public ItemEgg() {
-        super ( "minecraft:egg" );
+        super( "minecraft:egg" );
     }
 
     @Override
@@ -34,9 +34,10 @@ public class ItemEgg extends Item {
                 player.getInventory().removeItem( new ItemSnow() );
             }
             entityEgg.spawn();
-            player.getWorld().playSound( player.getLocation(), LevelSound.THROW, -1, "minecraft:player", false, false );
+            player.getWorld().playSound( player.getLocation(), SoundEvent.THROW, -1, "minecraft:player", false, false );
             return true;
         }
+
         return false;
     }
 

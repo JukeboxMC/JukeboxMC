@@ -15,7 +15,6 @@ public class CraftingTransferMaterialAction extends InventoryAction {
 
     public CraftingTransferMaterialAction( Item sourceItem, Item targetItem ) {
         super( sourceItem, targetItem );
-
     }
 
     @Override

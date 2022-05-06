@@ -1,11 +1,11 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.BlockPickRequestPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.BlockPickRequestPacket;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
@@ -17,7 +17,7 @@ public class BlockPickRequestHandler implements PacketHandler<BlockPickRequestPa
 
     @Override
     public void handle( BlockPickRequestPacket packet, Server server, Player player ) {
-        Vector position = packet.getPosition();
+        Vector position = new Vector( packet.getBlockPosition() );
         position.setDimension( player.getDimension() );
         Block pickedBlock = player.getWorld().getBlock( position );
 

@@ -5,7 +5,6 @@ import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntityChest;
 import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.inventory.ChestInventory;
-import org.jukeboxmc.inventory.ContainerInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemChest;
 import org.jukeboxmc.item.ItemType;
@@ -68,7 +67,7 @@ public class BlockChest extends BlockWaterlogable {
             ChestInventory chestInventory = blockEntity.getChestInventory();
             for ( Item content : chestInventory.getContents() ) {
                 if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
-                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
+                   this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
                 }
             }
             chestInventory.clear();

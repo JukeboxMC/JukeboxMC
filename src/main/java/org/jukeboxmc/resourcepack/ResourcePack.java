@@ -5,6 +5,7 @@ import lombok.ToString;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Kaooot
@@ -37,8 +38,8 @@ public class ResourcePack {
         return this.name;
     }
 
-    public String getUuid() {
-        return this.uuid;
+    public UUID getUuid() {
+        return UUID.fromString( this.uuid );
     }
 
     public String getVersion() {

@@ -28,7 +28,7 @@ public class BlockCrimsonStem extends Block {
             this.setAxis( Axis.X );
         }
 
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0 );
         return true;
     }
 

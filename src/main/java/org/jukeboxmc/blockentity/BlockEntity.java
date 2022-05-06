@@ -1,13 +1,13 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.network.packet.BlockEntityDataPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 
@@ -51,8 +51,8 @@ public abstract class BlockEntity {
         World world = this.block.getWorld();
         Vector location = this.block.getLocation();
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( location );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        blockEntityDataPacket.setBlockPosition( location.toVector3i() );
+        blockEntityDataPacket.setData( this.toCompound().build() );
         world.sendDimensionPacket( blockEntityDataPacket, location.getDimension() );
         world.setBlockEntity( location, this, location.getDimension() );
         return this;
@@ -81,20 +81,18 @@ public abstract class BlockEntity {
         NbtMap tag = compound.getCompound( "tag", NbtMap.EMPTY );
 
         if ( name != null ) {
-            Item item = new Item( name );
-            item.setAmount( amount );
-            item.setMeta( data );
-            item.setNBT( tag );
-            return item;
+            return new Item( name )
+                    .setAmount( amount )
+                    .setMeta( data )
+                    .setNBT( tag );
         }
-
         return new ItemAir();
     }
 
     public void update( Player player ) {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-        blockEntityDataPacket.setBlockPosition( this.block.getLocation() );
-        blockEntityDataPacket.setNbt( this.toCompound().build() );
+        blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i() );
+        blockEntityDataPacket.setData( this.toCompound().build() );
         player.sendPacket( blockEntityDataPacket );
     }
 

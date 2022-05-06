@@ -1,5 +1,8 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockChest;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -9,15 +12,11 @@ import org.jukeboxmc.inventory.DoubleChestInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -100,7 +99,7 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
     public boolean isPaired() {
         if ( this.findable ) {
             Vector position = this.getBlock().getLocation();
-            Block other = this.getBlock().getWorld().getBlock( this.pairX, position.getBlockY(), this.pairZ );
+            Block other = this.getBlock().getWorld().getBlock( this.pairX, position.getBlockY(), this.pairZ, 0 );
             return other.getBlockType().equals( this.getBlock().getBlockType() );
         }
         return false;
@@ -149,7 +148,7 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
             return null;
         }
         Vector position = this.getBlock().getLocation();
-        BlockChest other = (BlockChest) this.getBlock().getWorld().getBlock(this.pairX, position.getBlockY(), this.pairZ);
+        BlockChest other = (BlockChest) this.getBlock().getWorld().getBlock(this.pairX, position.getBlockY(), this.pairZ, 0);
         return other.getBlockEntity();
     }
 

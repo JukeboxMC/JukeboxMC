@@ -1,12 +1,12 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelEvent;
 import org.jukeboxmc.world.World;
 
 /**
@@ -44,7 +44,7 @@ public abstract class BlockTrapdoor extends BlockWaterlogable {
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen()  );
-        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
+        this.world.sendLevelEvent( this.location, LevelEventType.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 

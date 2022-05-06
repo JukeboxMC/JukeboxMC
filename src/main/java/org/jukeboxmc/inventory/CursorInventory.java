@@ -1,7 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -30,8 +30,8 @@ public class CursorInventory extends Inventory {
     @Override
     public void sendContents( int slot, Player player ) {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-        inventorySlotPacket.setWindowId( WindowId.CURSOR_DEPRECATED );
-        inventorySlotPacket.setItem( this.contents[slot] );
+        inventorySlotPacket.setContainerId( WindowId.CURSOR_DEPRECATED.getId() );
+        inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
         inventorySlotPacket.setSlot( slot );
         player.sendPacket( inventorySlotPacket );
     }

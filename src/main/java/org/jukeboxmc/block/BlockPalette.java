@@ -1,5 +1,8 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtType;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -8,10 +11,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.jukeboxmc.JukeboxMC;
-import org.jukeboxmc.nbt.NBTInputStream;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtType;
+import org.jukeboxmc.Bootstrap;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class BlockPalette {
     public static Object2IntMap<String> DEFAULTS = new Object2IntOpenHashMap<>(8 * 8, Hash.VERY_FAST_LOAD_FACTOR );
 
     public static void init() {
-        InputStream resourceAsStream = JukeboxMC.class.getClassLoader().getResourceAsStream( "block_palette.nbt" );
+        InputStream resourceAsStream = Bootstrap.class.getClassLoader().getResourceAsStream( "block_palette.nbt" );
         if ( resourceAsStream != null ) {
             try ( NBTInputStream nbtReader = new NBTInputStream( new DataInputStream( new GZIPInputStream( resourceAsStream ) ) ) ) {
                 NbtMap nbtMap = (NbtMap) nbtReader.readTag();

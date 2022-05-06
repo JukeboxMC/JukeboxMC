@@ -1,9 +1,10 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.data.AdventureSetting;
+import com.nukkitx.protocol.bedrock.packet.AdventureSettingsPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.entity.adventure.AdventureSettings;
 import org.jukeboxmc.event.player.PlayerToggleFlyEvent;
-import org.jukeboxmc.network.packet.AdventureSettingsPacket;
+import org.jukeboxmc.player.AdventureSettings;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -13,16 +14,15 @@ import org.jukeboxmc.player.Player;
 public class AdventureSettingsHandler implements PacketHandler<AdventureSettingsPacket> {
 
     @Override
-    public void handle( AdventureSettingsPacket packet, Server server,  Player player ) {
-        AdventureSettings adventureSettings = new AdventureSettings( packet.getFlags(), packet.getFlags2() );
+    public void handle( AdventureSettingsPacket packet, Server server, Player player ) {
 
-        if ( player.getAdventureSettings().isFlying() != adventureSettings.isFlying() ) {
-            PlayerToggleFlyEvent playerToggleFlyEvent = new PlayerToggleFlyEvent( player, adventureSettings.isFlying() );
-            playerToggleFlyEvent.setCancelled( !player.getAdventureSettings().isCanFly() );
+        if ( player.getAdventureSettings().get( AdventureSettings.Type.ALLOW_FLIGHT ) && packet.getSettings().contains( AdventureSetting.FLYING ) ) {
+            PlayerToggleFlyEvent playerToggleFlyEvent = new PlayerToggleFlyEvent( player, packet.getSettings().contains( AdventureSetting.FLYING ) );
+            playerToggleFlyEvent.setCancelled( !player.getAdventureSettings().get( AdventureSettings.Type.ALLOW_FLIGHT) );
             server.getPluginManager().callEvent( playerToggleFlyEvent );
 
             AdventureSettings playerAdventureSettings = player.getAdventureSettings();
-            playerAdventureSettings.setFlying( playerToggleFlyEvent.isCancelled() ? player.getAdventureSettings().isFlying() : adventureSettings.isFlying() );
+            playerAdventureSettings.set( AdventureSettings.Type.FLYING, playerToggleFlyEvent.isCancelled() ? player.getAdventureSettings().get( AdventureSettings.Type.FLYING ) : packet.getSettings().contains( AdventureSetting.FLYING ) );
             playerAdventureSettings.update();
         }
     }

@@ -2,21 +2,19 @@ package org.jukeboxmc.world.generator;
 
 import org.jukeboxmc.math.Vector;
 
-import java.util.Random;
-
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class EmptyGenerator extends WorldGenerator {
+public class EmptyGenerator extends Generator {
 
     @Override
-    public void generate( int chunkX, int chunkZ ) {
+    public void generate( int x, int z ) {
 
     }
 
     @Override
-    public void populate( int chunkX, int chunkZ ) {
+    public void populate( int x, int z ) {
 
     }
 
@@ -24,5 +22,4 @@ public class EmptyGenerator extends WorldGenerator {
     public Vector getSpawnLocation() {
         return new Vector( 0, 64, 0 );
     }
-
 }

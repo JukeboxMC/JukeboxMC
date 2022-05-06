@@ -1,10 +1,11 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockBarrel;
 import org.jukeboxmc.blockentity.BlockEntityBarrel;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -27,8 +28,8 @@ public class BarrelInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.CONTAINER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.CONTAINER;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class BarrelInventory extends ContainerInventory {
             if ( block instanceof BlockBarrel blockBarrel ) {
                 if ( !blockBarrel.isOpen() ) {
                     blockBarrel.setOpen( true );
-                    player.getWorld().playSound( block.getLocation(), LevelSound.BARREL_OPEN );
+                    player.getWorld().playSound( block.getLocation(), SoundEvent.BARREL_OPEN );
                 }
             }
         }
@@ -51,7 +52,7 @@ public class BarrelInventory extends ContainerInventory {
             if ( block instanceof BlockBarrel blockBarrel ) {
                 if ( blockBarrel.isOpen() ) {
                     blockBarrel.setOpen( false );
-                    player.getWorld().playSound( blockBarrel.getLocation(), LevelSound.BARREL_CLOSE );
+                    player.getWorld().playSound( blockBarrel.getLocation(), SoundEvent.BARREL_CLOSE );
                 }
             }
         }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.world.palette.bitarray;
 
-import org.jukeboxmc.utils.BinaryStream;
+import com.nukkitx.network.VarInts;
+import io.netty.buffer.ByteBuf;
 
 public interface BitArray {
 
@@ -8,8 +9,12 @@ public interface BitArray {
 
     int get( int index );
 
-    default void writeSizeToNetwork( BinaryStream buffer, int size ) {
-        buffer.writeSignedVarInt( size );
+    default void writeSizeToNetwork( ByteBuf buffer, int size) {
+        VarInts.writeInt( buffer, size );
+    }
+
+    default int readSizeFromNetwork( ByteBuf buffer ) {
+        return VarInts.readInt( buffer );
     }
 
     int getSize();

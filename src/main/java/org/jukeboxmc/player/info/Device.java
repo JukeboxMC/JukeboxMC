@@ -32,37 +32,22 @@ public enum Device {
     }
 
     public static Device getDevice( int id ) {
-        switch ( id ) {
-            case 1:
-                return ANDROID;
-            case 2:
-                return IOS;
-            case 3:
-                return OSX;
-            case 4:
-                return AMAZON;
-            case 5:
-                return GEAR_VR;
-            case 6:
-                return HOLOLENS;
-            case 7:
-                return WINDOWS;
-            case 8:
-                return WINDOWS_32;
-            case 9:
-                return DEDICATED;
-            case 10:
-                return TVOS;
-            case 11:
-                return PLAYSTATION;
-            case 12:
-                return NINTENDO;
-            case 13:
-                return XBOX;
-            case 14:
-                return WINDOWS_PHONE;
-            default:
-                return null;
-        }
+        return switch ( id ) {
+            case 1 -> ANDROID;
+            case 2 -> IOS;
+            case 3 -> OSX;
+            case 4 -> AMAZON;
+            case 5 -> GEAR_VR;
+            case 6 -> HOLOLENS;
+            case 7 -> WINDOWS;
+            case 8 -> WINDOWS_32;
+            case 9 -> DEDICATED;
+            case 10 -> TVOS;
+            case 11 -> PLAYSTATION;
+            case 12 -> NINTENDO;
+            case 13 -> XBOX;
+            case 14 -> WINDOWS_PHONE;
+            default -> null;
+        };
     }
 }

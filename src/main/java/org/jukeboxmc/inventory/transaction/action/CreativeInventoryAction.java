@@ -4,7 +4,9 @@ import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.utils.BedrockResourceLoader;
+import org.jukeboxmc.util.CreativeItems;
+
+import java.util.Arrays;
 
 /**
  * @author CreeperFace
@@ -22,7 +24,7 @@ public class CreativeInventoryAction extends InventoryAction {
 
     public boolean isValid( Player player ) {
         if ( player.getGameMode().equals( GameMode.CREATIVE ) ) {
-            return this.actionType == TYPE_DELETE_ITEM || BedrockResourceLoader.getCreativeItems().stream().anyMatch( value -> value.get( "id" ).equals( this.sourceItem.getIdentifier() ) );
+            return this.actionType == TYPE_DELETE_ITEM || Arrays.stream( CreativeItems.getCreativeItems() ).anyMatch( itemData -> itemData.getId() == this.sourceItem.getRuntimeId() );
         }
         return false;
     }

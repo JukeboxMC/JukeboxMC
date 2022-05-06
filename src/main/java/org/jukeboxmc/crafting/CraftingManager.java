@@ -1,18 +1,15 @@
 package org.jukeboxmc.crafting;
 
+import com.nukkitx.protocol.bedrock.data.inventory.*;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.config.ConfigType;
-import org.jukeboxmc.crafting.data.ContainerMixData;
-import org.jukeboxmc.crafting.data.CraftingData;
-import org.jukeboxmc.crafting.data.CraftingDataType;
-import org.jukeboxmc.crafting.data.PotionMixData;
 import org.jukeboxmc.crafting.recipes.Recipe;
 import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.utils.BedrockResourceLoader;
+import org.jukeboxmc.util.ItemPalette;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +44,7 @@ public class CraftingManager {
             int inputId = (int) (double) recipe.get( "inputId" );
             int inputDamage = (int) (double) recipe.get( "inputDamage" );
 
-            List<Item> inputItems = new ArrayList<>();
+            List<ItemData> inputItems = new ArrayList<>();
             if ( recipe.containsKey( "inputs" ) ) {
                 List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" ); //TODO
                 for ( Map<String, Object> input : inputs ) {
@@ -61,14 +58,19 @@ public class CraftingManager {
                     boolean usingNetId = (boolean) input.get( "usingNetId" );
                     int netId = (int) (double) input.get( "netId" );
 
-                    String identifier = BedrockResourceLoader.getItemNameById().get( id );
+                    String identifier;
+                    if ( id == 0 ) {
+                        identifier = "minecraft:air";
+                    } else {
+                        identifier = ItemPalette.getIdentifier( (short) id );
+                    }
                     Item item = new Item( identifier, damage, blockRuntimeId );
                     item.setAmount( count );
-                    inputItems.add( item );
+                    inputItems.add( item.toNetwork() );
                 }
             }
 
-            List<Item> outputItems = new ArrayList<>();
+            List<ItemData> outputItems = new ArrayList<>();
             List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" ); //TODO
             if ( recipe.containsKey( "outputs" ) ) {
                 for ( Map<String, Object> output : outputs ) {
@@ -82,19 +84,19 @@ public class CraftingManager {
                     boolean usingNetId = (boolean) output.get( "usingNetId" );
                     int netId = (int) (double) output.get( "netId" );
 
-                    String identifier = BedrockResourceLoader.getItemNameById().get( id );
+                    String identifier = ItemPalette.getIdentifier( (short) id );
                     Item item = new Item( identifier, damage, blockRuntimeId );
                     item.setAmount( count );
-                    outputItems.add( item );
+                    outputItems.add( item.toNetwork() );
                 }
             }
 
             if ( craftingDataType.equals( CraftingDataType.FURNACE ) || craftingDataType.equals( CraftingDataType.FURNACE_DATA ) ) {
-                Item input = new Item( BedrockResourceLoader.getItemNameById().get( inputId ) );
+                Item input = new Item( ItemPalette.getIdentifier( (short) inputId ) );
                 if ( inputDamage != 32767 ) {
                     input.setMeta( inputDamage );
                 }
-                Item output = outputItems.get( 0 );
+                Item output = Item.fromItemData( outputItems.get( 0 ) );
                 if ( output.getMeta() == 32767 ) {
                     output.setMeta( 0 );
                 }

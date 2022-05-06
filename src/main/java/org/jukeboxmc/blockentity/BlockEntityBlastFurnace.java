@@ -1,14 +1,14 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.BlastFurnaceInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
 
 import java.util.ArrayList;

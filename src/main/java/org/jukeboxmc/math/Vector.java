@@ -1,16 +1,18 @@
 package org.jukeboxmc.math;
 
-import lombok.ToString;
+import com.nukkitx.math.vector.Vector3d;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector3l;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.world.Dimension;
 
 import java.util.Objects;
 
 /**
- * @author Kaooot, LucGamesYT
+ * @author LucGamesYT
  * @version 1.0
  */
-@ToString
 public class Vector {
 
     protected float x;
@@ -25,23 +27,35 @@ public class Vector {
         this.dimension = dimension;
     }
 
-    public Vector( int x, int y, int z, Dimension dimension  ) {
+    public Vector( int x, int y, int z, Dimension dimension ) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.dimension = dimension;
     }
 
-    public Vector( float x, float y, float z) {
+    public Vector( float x, float y, float z ) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vector( int x, int y, int z) {
+    public Vector( int x, int y, int z ) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vector( Vector3f vector3f ) {
+        this.x = vector3f.getX();
+        this.y = vector3f.getY();
+        this.z = vector3f.getZ();
+    }
+
+    public Vector( Vector3i vector3i ) {
+        this.x = vector3i.getX();
+        this.y = vector3i.getY();
+        this.z = vector3i.getZ();
     }
 
     public static Vector zero() {
@@ -72,49 +86,6 @@ public class Vector {
         return new Vector( -1, 0, 0 );
     }
 
-    public Vector add( final float x, final float y, final float z ) {
-        return new Vector( this.x + x, this.y + y, this.z + z, this.dimension );
-    }
-
-    public Vector subtract( final float x, final float y, final float z ) {
-        return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
-    }
-
-    public Vector multiply( final float x, final float y, final float z ) {
-        return new Vector( this.x * x, this.y * y, this.z * z, this.dimension );
-    }
-
-    public Vector divide( final float x, final float y, final float z ) {
-        return new Vector( this.x / x, this.y / y, this.z / z, this.dimension );
-    }
-
-    public Vector squareRoot() {
-        return new Vector( (float) FastMath.sqrt( this.x ), (float) FastMath.sqrt( this.y ), (float) FastMath.sqrt( this.z ), this.dimension );
-    }
-
-    public Vector cubicRoot() {
-        return new Vector( (float) FastMath.cbrt( this.x ), (float) FastMath.cbrt( this.y ), (float) FastMath.cbrt( this.z ), this.dimension );
-    }
-
-    public Vector normalize() {
-        final float squaredLength = this.squaredLength();
-
-        return this.divide( squaredLength, squaredLength, squaredLength );
-    }
-
-    public float distance( final Vector vector ) {
-        return (float) Math.sqrt( this.distanceSquared( vector ) );
-    }
-
-    public float distanceSquared( final Vector vector ) {
-        return (float) ( FastMath.pow( ( this.x - vector.getX() ), 2 ) + FastMath.pow( ( this.y - vector.getY() ), 2 ) +
-                FastMath.pow( ( this.z - vector.getZ() ), 2 ) );
-    }
-
-    public float squaredLength() {
-        return (float) ( FastMath.sqrt( this.x * this.x + this.y * this.y + this.z * this.z ) );
-    }
-
     public float getX() {
         return this.x;
     }
@@ -127,18 +98,6 @@ public class Vector {
         return this.z;
     }
 
-    public int getBlockX() {
-        return (int) FastMath.floor( this.x );
-    }
-
-    public int getBlockY() {
-        return (int) FastMath.floor( this.y );
-    }
-
-    public int getBlockZ() {
-        return (int) FastMath.floor( this.z );
-    }
-
     public void setX( final float x ) {
         this.x = x;
     }
@@ -149,6 +108,18 @@ public class Vector {
 
     public void setZ( final float z ) {
         this.z = z;
+    }
+
+    public int getBlockX() {
+        return (int) FastMath.floor( this.x );
+    }
+
+    public int getBlockY() {
+        return (int) FastMath.floor( this.y );
+    }
+
+    public int getBlockZ() {
+        return (int) FastMath.floor( this.z );
     }
 
     public int getChunkX() {
@@ -194,6 +165,56 @@ public class Vector {
         return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
+    public Vector add( final float x, final float y, final float z ) {
+        return new Vector( this.x + x, this.y + y, this.z + z, this.dimension );
+    }
+
+    public Vector subtract( final float x, final float y, final float z ) {
+        return new Vector( this.x - x, this.y - y, this.z - z, this.dimension );
+    }
+
+    public Vector multiply( final float x, final float y, final float z ) {
+        return new Vector( this.x * x, this.y * y, this.z * z, this.dimension );
+    }
+
+    public Vector divide( final float x, final float y, final float z ) {
+        return new Vector( this.x / x, this.y / y, this.z / z, this.dimension );
+    }
+
+    public Vector normalize() {
+        final float squaredLength = this.squaredLength();
+        return this.divide( squaredLength, squaredLength, squaredLength );
+    }
+
+    public float distance( final Vector vector ) {
+        return (float) Math.sqrt( this.distanceSquared( vector ) );
+    }
+
+    public float distanceSquared( final Vector vector ) {
+        return (float) ( FastMath.pow( ( this.x - vector.getX() ), 2 ) + FastMath.pow( ( this.y - vector.getY() ), 2 ) +
+                FastMath.pow( ( this.z - vector.getZ() ), 2 ) );
+    }
+
+    public float squaredLength() {
+        return (float) ( FastMath.sqrt( this.x * this.x + this.y * this.y + this.z * this.z ) );
+    }
+
+    public Vector3f toVector3f() {
+        return Vector3f.from( this.x, this.y, this.z );
+    }
+
+    public Vector3d toVector3D() {
+        return Vector3d.from( this.x, this.y, this.z );
+    }
+
+    public Vector3l toVector3l() {
+        return Vector3l.from( this.x, this.y, this.z );
+    }
+
+    public Vector3i toVector3i() {
+        return Vector3i.from( this.x, this.y, this.z );
+    }
+
     @Override
     public boolean equals( Object o ) {
         if ( this == o ) return true;
@@ -205,5 +226,15 @@ public class Vector {
     @Override
     public int hashCode() {
         return Objects.hash( this.x, this.y, this.z, this.dimension );
+    }
+
+    @Override
+    public String toString() {
+        return "Vector{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", dimension=" + dimension +
+                '}';
     }
 }

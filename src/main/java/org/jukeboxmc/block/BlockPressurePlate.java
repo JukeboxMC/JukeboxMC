@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
@@ -11,7 +12,6 @@ import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 /**
@@ -136,9 +136,9 @@ public abstract class BlockPressurePlate extends BlockWaterlogable {
         if ( oldSignal != redstoneStrength ) {
             this.setRedstoneSignal( redstoneStrength );
             if ( !isPowered && wasPowered ) {
-                this.world.playSound( this.location, LevelSound.POWER_OFF );
+                this.world.playSound( this.location, SoundEvent.POWER_OFF );
             } else if ( isPowered && !wasPowered ) {
-                this.world.playSound( this.location, LevelSound.POWER_ON );
+                this.world.playSound( this.location, SoundEvent.POWER_ON );
             }
         }
 

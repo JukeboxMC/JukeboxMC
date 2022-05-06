@@ -23,7 +23,7 @@ public class BlockBeehive extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0 );
         return true;
     }
 

@@ -2,7 +2,7 @@ package org.jukeboxmc.world.palette.bitarray;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.util.Utils;
 
 public enum BitArrayVersion {
 

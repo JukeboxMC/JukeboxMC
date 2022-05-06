@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntityFurnace;
 
 /**
@@ -23,7 +24,7 @@ public class FurnaceInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.FURNACE;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.FURNACE;
     }
 }

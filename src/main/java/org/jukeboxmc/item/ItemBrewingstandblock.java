@@ -9,7 +9,7 @@ import org.jukeboxmc.block.BlockBrewingStand;
 public class ItemBrewingstandblock extends Item {
 
     public ItemBrewingstandblock() {
-        super ( "minecraft:brewingstandblock" );
+        super ( "minecraft:brewing_stand" );
     }
 
     @Override

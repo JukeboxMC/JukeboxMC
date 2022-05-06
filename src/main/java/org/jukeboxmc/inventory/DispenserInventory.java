@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntityDispenser;
 
 /**
@@ -23,7 +24,7 @@ public class DispenserInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.DISPENSER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.DISPENSER;
     }
 }

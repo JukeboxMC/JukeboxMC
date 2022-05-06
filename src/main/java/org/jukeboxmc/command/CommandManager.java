@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Kaooot
+ * @author LucGamesYT
  * @version 1.0
  */
 public class CommandManager {
@@ -17,26 +17,19 @@ public class CommandManager {
 
     public CommandManager() {
         List<Class<? extends Command>> commands = Arrays.asList(
-                GameModeCommand.class,
                 PluginsCommand.class,
-                TeleportCommand.class,
-                StopCommand.class,
-                TimeCommand.class,
-                SaveCommand.class,
                 OperatorCommand.class,
                 RemoveOperatorCommand.class,
-                GameRulesCommand.class,
-                WorldTeleportCommand.class,
-                SetWorldSpawnCommand.class,
-                SpawnCommand.class,
-                StatusCommand.class,
-                SayCommand.class
+                GameModeCommand.class,
+                StopCommand.class,
+                TeleportCommand.class
         );
 
         for( Class<? extends Command> commandClass : commands ) {
             try {
                 this.registerCommand( commandClass.getConstructor().newInstance() );
-            } catch ( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
+            } catch ( InstantiationException | IllegalAccessException | NoSuchMethodException |
+                      InvocationTargetException e ) {
                 e.printStackTrace();
             }
         }
@@ -51,7 +44,7 @@ public class CommandManager {
             Command targetCommand = null;
             while ( targetCommand == null ) {
                 for ( Command command : this.commands ) {
-                    if ( command.getName().equalsIgnoreCase( commandIdentifier ) || ( command.getAliases() != null && command.getAliases().contains( commandIdentifier ) ) ) {
+                    if ( command.getCommandData().getName().equalsIgnoreCase( commandIdentifier ) || ( command.getCommandData().getAliases() != null && command.getCommandData().getAliases().contains( commandIdentifier ) ) ) {
                         targetCommand = command;
                         break;
                     }
@@ -70,15 +63,13 @@ public class CommandManager {
                 return;
             }
 
-            if ( targetCommand.getPermission() != null && !commandSender.hasPermission( targetCommand.getPermission() ) ) {
-                if ( targetCommand.isShowNoPermissionMessage() ) {
-                    if ( targetCommand.getPermissionMessage() != null && !targetCommand.getPermissionMessage().isEmpty() ) {
-                        commandSender.sendMessage( targetCommand.getPermissionMessage() );
-                    } else {
-                        commandSender.sendMessage( "§cYou don't have permission to do that" );
-                    }
-                    return;
+            if ( targetCommand.getCommandData().getPermission() != null && !commandSender.hasPermission( targetCommand.getCommandData().getPermission() ) ) {
+                if ( targetCommand.getCommandData().getPermissionMessage() != null && !targetCommand.getCommandData().getPermissionMessage().isEmpty() ) {
+                    commandSender.sendMessage( targetCommand.getCommandData().getPermissionMessage() );
+                } else {
+                    commandSender.sendMessage( "§cYou don't have permission to do that" );
                 }
+                return;
             }
 
             String[] params;
@@ -104,7 +95,7 @@ public class CommandManager {
 
     public boolean isCommandRegistered( String name ) {
         for ( Command command : this.commands ) {
-            if ( command.getName().equalsIgnoreCase( name ) ) {
+            if ( command.getCommandData().getName().equalsIgnoreCase( name ) ) {
                 return true;
             }
         }
@@ -118,8 +109,8 @@ public class CommandManager {
 
     private Command getCommandByNameOrAlias( String identifier ) {
         for( Command command : this.commands ) {
-            if ( command.getName().equalsIgnoreCase( identifier ) || ( command.getAliases() != null &&
-                    command.getAliases().contains( identifier ) ) ) {
+            if ( command.getCommandData().getName().equalsIgnoreCase( identifier ) || ( command.getCommandData().getAliases() != null &&
+                    command.getCommandData().getAliases().contains( identifier ) ) ) {
                 return command;
             }
         }

@@ -1,15 +1,13 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.utils.Pair;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.util.*;
 
 /**
  * @author LucGamesYT
@@ -25,7 +23,6 @@ public abstract class Inventory {
     protected long holderId;
 
     protected final Set<Player> viewer = new HashSet<>();
-    private Set<Consumer<Pair<Integer, Item>>> changeObservers;
 
     public Inventory( InventoryHolder holder, long holderId, int slotSize ) {
         this.holder = holder;
@@ -45,22 +42,8 @@ public abstract class Inventory {
 
     public abstract InventoryType getInventoryType();
 
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.INVENTORY;
-    }
-
-    public void addObserver(Consumer<Pair<Integer, Item>> consumer) {
-        if (this.changeObservers == null) {
-            this.changeObservers = new HashSet<>();
-        }
-
-        this.changeObservers.add(consumer);
-
-        for (int i = 0; i < this.contents.length; i++) {
-            Item item = this.contents[i];
-            consumer.accept(Pair.of(i, item));
-        }
-        this.changeObservers = null;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.INVENTORY;
     }
 
     public Set<Player> getViewer() {
@@ -84,8 +67,8 @@ public abstract class Inventory {
         if ( slot < 0 || slot >= this.slotSize ) {
             return;
         }
-        if ( item.getAmount() <= 0 || item == ItemType.AIR.getItem() ) {
-            this.contents[slot] = ItemType.AIR.getItem();
+        if ( item.getAmount() <= 0 || item.getItemType().equals( ItemType.AIR ) ) {
+            this.contents[slot] = new ItemAir();
         } else {
             this.contents[slot] = item;
         }
@@ -99,7 +82,7 @@ public abstract class Inventory {
 
     public Item getItem( int slot ) {
         Item content = this.contents[slot];
-        return content != null ? content : ItemType.AIR.getItem();
+        return content != null ? content : new ItemAir();
     }
 
     public boolean canAddItem( Item item ) {
@@ -151,7 +134,7 @@ public abstract class Inventory {
             }
 
             for ( int i = 0; i < contents.length; i++ ) {
-                if ( contents[i] instanceof ItemAir ) {
+                if ( contents[i].getItemType().equals( ItemType.AIR ) ) {
                     this.setItem( i, clone, sendContents );
                     return true;
                 }
@@ -183,7 +166,7 @@ public abstract class Inventory {
                 }
             }
 
-            if ( contents[slot] instanceof ItemAir ) {
+            if ( contents[slot].getItemType().equals( ItemType.AIR ) ) {
                 this.setItem( slot, clone );
                 return true;
             }
@@ -227,7 +210,7 @@ public abstract class Inventory {
     }
 
     public void clear( int slot ) {
-        this.setItem( slot, ItemType.AIR.getItem() );
+        this.setItem( slot, new ItemAir() );
     }
 
     public void clear() {
@@ -240,7 +223,7 @@ public abstract class Inventory {
     }
 
     public boolean contains( Item item ) {
-        return Arrays.asList( this.contents ).contains( item ); //Iknow its not the best check TODO!
+        return Arrays.asList( this.contents ).contains( item );
     }
 
     public int getSize() {
@@ -257,6 +240,14 @@ public abstract class Inventory {
 
     public Item[] getContents() {
         return this.contents;
+    }
+
+    public List<ItemData> getItemDataContents() {
+        List<ItemData> itemDataList = new ArrayList<>();
+        for ( Item content : this.contents ) {
+            itemDataList.add( content.toNetwork() );
+        }
+        return itemDataList;
     }
 
 }

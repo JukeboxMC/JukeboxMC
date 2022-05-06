@@ -1,5 +1,10 @@
 package org.jukeboxmc.scoreboard;
 
+import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.ScoreInfo;
+import com.nukkitx.protocol.bedrock.packet.RemoveObjectivePacket;
+import com.nukkitx.protocol.bedrock.packet.SetDisplayObjectivePacket;
+import com.nukkitx.protocol.bedrock.packet.SetScorePacket;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -8,10 +13,6 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.network.packet.Packet;
-import org.jukeboxmc.network.packet.RemoveObjectivePacket;
-import org.jukeboxmc.network.packet.SetObjectivePacket;
-import org.jukeboxmc.network.packet.SetScorePacket;
 import org.jukeboxmc.player.Player;
 
 import java.util.*;
@@ -68,17 +69,17 @@ public class Scoreboard {
         }
     }
 
-    private SetObjectivePacket constructDisplayPacket( DisplaySlot slot, ScoreboardDisplay display ) {
-        SetObjectivePacket packetSetObjective = new SetObjectivePacket();
-        packetSetObjective.setCriteriaName( "dummy" );
+    private SetDisplayObjectivePacket constructDisplayPacket( DisplaySlot slot, ScoreboardDisplay display ) {
+        SetDisplayObjectivePacket packetSetObjective = new SetDisplayObjectivePacket();
+        packetSetObjective.setCriteria( "dummy" );
         packetSetObjective.setDisplayName( display.getDisplayName() );
-        packetSetObjective.setObjectiveName( display.getObjectiveName() );
+        packetSetObjective.setObjectiveId( display.getObjectiveName() );
         packetSetObjective.setDisplaySlot( slot.name().toLowerCase() );
         packetSetObjective.setSortOrder( display.getSortOrder().ordinal() );
         return packetSetObjective;
     }
 
-    private void broadcast( Packet packet ) {
+    private void broadcast( BedrockPacket packet ) {
         for ( Player viewer : this.viewers ) {
             viewer.sendPacket( packet );
         }
@@ -124,28 +125,25 @@ public class Scoreboard {
 
     private SetScorePacket constructSetScore( long newId, ScoreboardLine line ) {
         SetScorePacket setScorePacket = new SetScorePacket();
-        setScorePacket.setType( (byte) 0 );
+        setScorePacket.setAction( SetScorePacket.Action.SET );
 
-        setScorePacket.setEntries( new ArrayList<>() {{
-            add( new SetScorePacket.ScoreEntry( newId, line.objective, line.score, line.type, line.line, line.entityId ) );
-        }} );
-
+        setScorePacket.getInfos().add( new ScoreInfo( newId, line.objective, line.score, line.line ) );
         return setScorePacket;
     }
 
     private SetScorePacket constructSetScore() {
         SetScorePacket setScorePacket = new SetScorePacket();
-        setScorePacket.setType( (byte) 0 );
+        setScorePacket.setAction( SetScorePacket.Action.SET );
 
-        List<SetScorePacket.ScoreEntry> entries = new ArrayList<>();
+        List<ScoreInfo> entries = new ArrayList<>();
         Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
         ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastEntrySet.fastIterator();
         while ( fastIterator.hasNext() ) {
             Long2ObjectMap.Entry<ScoreboardLine> entry = fastIterator.next();
-            entries.add( new SetScorePacket.ScoreEntry( entry.getLongKey(), entry.getValue().objective, entry.getValue().score, entry.getValue().type, entry.getValue().line, entry.getValue().entityId ) );
+            entries.add( new ScoreInfo( entry.getLongKey(), entry.getValue().objective, entry.getValue().score, entry.getValue().line ) );
         }
 
-        setScorePacket.setEntries( entries );
+        setScorePacket.getInfos().addAll( entries );
         return setScorePacket;
     }
 
@@ -178,20 +176,20 @@ public class Scoreboard {
 
     private SetScorePacket constructRemoveScores( LongList scoreIDs ) {
         SetScorePacket setScorePacket = new SetScorePacket();
-        setScorePacket.setType( (byte) 1 );
+        setScorePacket.setAction( SetScorePacket.Action.REMOVE );
 
-        List<SetScorePacket.ScoreEntry> entries = new ArrayList<>();
+        List<ScoreInfo> entries = new ArrayList<>();
         for ( long scoreID : scoreIDs ) {
-            entries.add( new SetScorePacket.ScoreEntry( scoreID, "", 0 ) );
+            entries.add( new ScoreInfo( scoreID, "", 0 ) );
         }
 
-        setScorePacket.setEntries( entries );
+        setScorePacket.getInfos().addAll( entries );
         return setScorePacket;
     }
 
     private RemoveObjectivePacket constructRemoveDisplayPacket( ScoreboardDisplay display ) {
         RemoveObjectivePacket removeObjectivePacket = new RemoveObjectivePacket();
-        removeObjectivePacket.setObjectiveName( display.getObjectiveName() );
+        removeObjectivePacket.setObjectiveId( display.getObjectiveName() );
         return removeObjectivePacket;
     }
 
@@ -213,10 +211,8 @@ public class Scoreboard {
 
     private SetScorePacket constructRemoveScores( long scoreId ) {
         SetScorePacket setScorePacket = new SetScorePacket();
-        setScorePacket.setType( (byte) 1 );
-        setScorePacket.setEntries( new ArrayList<>() {{
-            add( new SetScorePacket.ScoreEntry( scoreId, "", 0 ) );
-        }} );
+        setScorePacket.setAction( SetScorePacket.Action.REMOVE );
+        setScorePacket.getInfos().add( new ScoreInfo( scoreId, "", 0 ) );
         return setScorePacket;
     }
 

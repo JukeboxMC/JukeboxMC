@@ -25,7 +25,7 @@ public class BlockFurnace extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this , 0);
 
         BlockEntityType.FURNACE.<BlockEntityFurnace>createBlockEntity( this ).spawn();
         return true;
@@ -48,7 +48,7 @@ public class BlockFurnace extends Block {
             FurnaceInventory furnaceInventory = blockEntity.getFurnaceInventory();
             for ( Item content : furnaceInventory.getContents() ) {
                 if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
-                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
+                     this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
                 }
             }
             furnaceInventory.clear();

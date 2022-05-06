@@ -1,12 +1,13 @@
 package org.jukeboxmc.crafting.recipes;
 
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jukeboxmc.crafting.CraftingManager;
-import org.jukeboxmc.crafting.data.CraftingData;
-import org.jukeboxmc.crafting.data.CraftingDataType;
 import org.jukeboxmc.item.Item;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,21 +17,29 @@ import java.util.UUID;
  */
 public class ShapelessRecipe extends Recipe {
 
-    private final List<Item> ingredients = new ObjectArrayList<>();
-    private final List<Item> outputs = new ObjectArrayList<>();
+    private final List<ItemData> ingredients = new ObjectArrayList<>();
+    private final List<ItemData> outputs = new ObjectArrayList<>();
 
     @Override
-    public List<Item> getOutputs() {
+    public List<ItemData> getOutputs() {
         return this.outputs;
     }
 
-    public ShapelessRecipe addIngredient( Item... item ) {
-        this.ingredients.addAll( Arrays.asList( item ) );
+    public ShapelessRecipe addIngredient( Item... items ) {
+        List<ItemData> itemDataList = new ArrayList<>();
+        for ( Item item : items ) {
+            itemDataList.add( item.toNetwork() );
+        }
+        this.ingredients.addAll( itemDataList );
         return this;
     }
 
     public ShapelessRecipe addOutput( Item... items ) {
-        this.outputs.addAll( Arrays.asList( items ) );
+        List<ItemData> itemDataList = new ArrayList<>();
+        for ( Item item : items ) {
+            itemDataList.add( item.toNetwork() );
+        }
+        this.outputs.addAll( itemDataList );
         return this;
     }
 

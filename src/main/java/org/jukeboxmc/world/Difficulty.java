@@ -12,15 +12,11 @@ public enum Difficulty {
     HARD;
 
     public static Difficulty getDifficulty( int value ) {
-        switch ( value ) {
-            case 0:
-                return Difficulty.PEACEFUL;
-            case 1:
-                return Difficulty.EASY;
-            case 2:
-                return Difficulty.NORMAL;
-            default:
-                return Difficulty.HARD;
-        }
+        return switch ( value ) {
+            case 0 -> Difficulty.PEACEFUL;
+            case 1 -> Difficulty.EASY;
+            case 2 -> Difficulty.NORMAL;
+            default -> Difficulty.HARD;
+        };
     }
 }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator;
 
+import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockBedrock;
 import org.jukeboxmc.block.BlockDirt;
 import org.jukeboxmc.block.BlockGrass;
@@ -7,17 +8,15 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.Random;
-
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class FlatGenerator extends WorldGenerator {
+public class FlatGenerator extends Generator {
 
-    private final BlockGrass blockGrass;
-    private final BlockDirt blockDirt;
-    private final BlockBedrock blockBedrock;
+    private final Block blockGrass;
+    private final Block blockDirt;
+    private final Block blockBedrock;
 
     public FlatGenerator() {
         this.blockGrass = new BlockGrass();
@@ -49,6 +48,6 @@ public class FlatGenerator extends WorldGenerator {
 
     @Override
     public Vector getSpawnLocation() {
-        return new Vector( 0, 4, 0 );
+        return new Vector( 0, 5, 0 );
     }
 }

@@ -1,8 +1,8 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.RequestChunkRadiusPacket;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.packet.RequestChunkRadiusPacket;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -13,6 +13,6 @@ public class RequestChunkRadiusHandler implements PacketHandler<RequestChunkRadi
 
     @Override
     public void handle( RequestChunkRadiusPacket packet, Server server, Player player ) {
-        player.setViewDistance( FastMath.min( packet.getRadius(), player.getServer().getViewDistance() ) );
+        player.setViewDistance( FastMath.min( packet.getRadius(), server.getViewdistance() ) );
     }
 }

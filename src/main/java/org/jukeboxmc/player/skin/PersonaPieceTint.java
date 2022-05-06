@@ -12,7 +12,7 @@ import java.util.List;
 public class PersonaPieceTint {
 
     private final String pieceType;
-    private List<String> colors;
+    private final List<String> colors;
 
     public PersonaPieceTint( String pieceType, List<String> colors ) {
         this.pieceType = pieceType;

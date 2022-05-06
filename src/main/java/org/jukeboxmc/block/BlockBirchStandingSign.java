@@ -26,11 +26,11 @@ public class BlockBirchStandingSign extends BlockSign {
         Block block = world.getBlock( placePosition );
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) FastMath.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
-            world.setBlock( placePosition, this );
+            world.setBlock( placePosition, this, 0 );
         } else {
             BlockBirchWallSign blockWallSign = new BlockBirchWallSign();
             blockWallSign.setBlockFace( blockFace );
-            world.setBlock( placePosition, blockWallSign );
+            world.setBlock( placePosition, blockWallSign, 0 );
         }
         world.setBlock( placePosition, block, 1 );
         BlockEntityType.SIGN.<BlockEntitySign>createBlockEntity( this ).spawn();

@@ -13,7 +13,7 @@ import org.jukeboxmc.player.Player;
 public class ItemHoneyBottle extends ItemFoodBehavior {
 
     public ItemHoneyBottle() {
-        super ( "minecraft:honey_bottle" );
+        super( "minecraft:honey_bottle" );
     }
 
     @Override

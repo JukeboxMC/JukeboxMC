@@ -1,7 +1,7 @@
 package org.jukeboxmc.world.palette.bitarray;
 
 import lombok.Getter;
-import org.jukeboxmc.utils.Utils;
+import org.jukeboxmc.util.Utils;
 
 import java.util.Arrays;
 

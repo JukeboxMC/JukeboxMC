@@ -1,5 +1,6 @@
 package org.jukeboxmc.blockentity;
 
+import com.nukkitx.protocol.bedrock.packet.ContainerSetDataPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -7,13 +8,12 @@ import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.inventory.FurnaceInventory;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.InventoryHolder;
-import org.jukeboxmc.inventory.WindowTypeId;
+import org.jukeboxmc.inventory.WindowId;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.SetContainerDataPacket;
 import org.jukeboxmc.player.Player;
 
 import java.time.Duration;
@@ -125,7 +125,6 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
 
                         int diff = this.inventory instanceof FurnaceInventory ? 1 : 2;
                         this.burnDuration = (short) Math.ceil( ( (double) duration.toMillis() ) / (double) diff );
-                        //this.burnDuration = (short) (duration.toMillis() / 50);
                         this.burnTime = this.burnDuration;
                         return true;
                     }
@@ -153,43 +152,43 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
     }
 
     private void sendTickProgress( Player player ) {
-        SetContainerDataPacket containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_TICK_COUNT );
+        ContainerSetDataPacket containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );
         containerData.setValue( this.cookTime );
         player.sendPacket( containerData );
     }
 
     private void sendFuelInfo( Player player ) {
-        SetContainerDataPacket containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_LIT_TIME );
+        ContainerSetDataPacket containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_LIT_TIME );
         containerData.setValue( this.burnTime );
         player.sendPacket( containerData );
 
-        containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_LIT_DURATION );
+        containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_LIT_DURATION );
         containerData.setValue( this.burnDuration );
         player.sendPacket( containerData );
     }
 
     private void sendDataProperties( Player player ) {
-        SetContainerDataPacket containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_TICK_COUNT );
+        ContainerSetDataPacket containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );
         containerData.setValue( this.cookTime );
         player.sendPacket( containerData );
 
-        containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_LIT_TIME );
+        containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_LIT_TIME );
         containerData.setValue( this.burnTime );
         player.sendPacket( containerData );
 
-        containerData = new SetContainerDataPacket();
-        containerData.setWindowId( WindowTypeId.OPEN_CONTAINER.getId() );
-        containerData.setKey( CONTAINER_PROPERTY_LIT_DURATION );
+        containerData = new ContainerSetDataPacket();
+        containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
+        containerData.setProperty( CONTAINER_PROPERTY_LIT_DURATION );
         containerData.setValue( this.burnDuration );
         player.sendPacket( containerData );
     }

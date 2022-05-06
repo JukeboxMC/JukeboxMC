@@ -1,23 +1,28 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.TextPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.packet.TextPacket;
-import org.jukeboxmc.network.packet.type.TextType;
+import org.jukeboxmc.event.player.PlayerChatEvent;
 import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class TextHandler implements PacketHandler<TextPacket>{
+public class TextHandler implements PacketHandler<TextPacket> {
 
     @Override
     public void handle( TextPacket packet, Server server, Player player ) {
-        if ( packet.getType() == TextType.CHAT ) {
-            for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
-                onlinePlayer.sendMessage( "<" + player.getName() + "> " + packet.getMessage() );
+        if ( packet.getType().equals( TextPacket.Type.CHAT ) ) {
+            PlayerChatEvent playerChatEvent = new PlayerChatEvent( player, "<" + player.getName() + "> ", packet.getMessage() );
+            server.getPluginManager().callEvent( playerChatEvent );
+            if ( playerChatEvent.isCancelled() ) {
+                return;
             }
-            server.getLogger().info( "<" + player.getName() + "> " + packet.getMessage() );
+            for ( Player onlinePlayer : player.getServer().getOnlinePlayers() ) {
+                onlinePlayer.sendMessage( playerChatEvent.getFormat() + playerChatEvent.getMessage() );
+            }
+            server.getLogger().info( playerChatEvent.getFormat() + playerChatEvent.getMessage() );
         }
     }
 }

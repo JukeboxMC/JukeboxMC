@@ -1,8 +1,9 @@
 package org.jukeboxmc.entity.projectile;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
-import org.jukeboxmc.entity.metadata.MetadataFlag;
 import org.jukeboxmc.event.entity.EntityCollisionWithEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
@@ -10,9 +11,9 @@ import org.jukeboxmc.event.entity.ProjectileHitEntityEvent;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.AdventureSettings;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Dimension;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.Sound;
 
 /**
@@ -52,9 +53,8 @@ public abstract class EntityProjectile extends Entity {
                 continue;
             }
 
-            if ( collidedEntity instanceof Player ) {
-                Player otherPlayer = (Player) collidedEntity;
-                if ( otherPlayer.getAdventureSettings().isNoClip() ) {
+            if ( collidedEntity instanceof Player otherPlayer ) {
+                if ( otherPlayer.getAdventureSettings().get( AdventureSettings.Type.NO_CLIP) ) {
                     continue;
                 }
             }
@@ -89,8 +89,7 @@ public abstract class EntityProjectile extends Entity {
                     this.applyCustomKnockback( hitEntity );
                     this.applyCustomDamageEffects( hitEntity );
                     if ( this instanceof EntityArrow ) {
-                        if ( this.shooter instanceof Player) {
-                            Player player = (Player) this.shooter;
+                        if ( this.shooter instanceof Player player ) {
                             player.playSound( Sound.RANDOM_BOWHIT );
                         }
                     }
@@ -115,7 +114,7 @@ public abstract class EntityProjectile extends Entity {
             this.velocity.setY( 0 );
             this.velocity.setZ( 0 );
             if ( this instanceof EntityArrow ) {
-                this.getWorld().playSound( this.location, LevelSound.BOW_HIT );
+                this.getWorld().playSound( this.location, SoundEvent.BOW_HIT );
             }
             this.updateMovement();
             return;
@@ -153,6 +152,6 @@ public abstract class EntityProjectile extends Entity {
 
     public void setShooter( EntityLiving shooter ) {
         this.shooter = shooter;
-        this.metadata.setLong( MetadataFlag.OWNER_EID, shooter.getEntityId() );
+        this.metadata.setLong( EntityData.OWNER_EID, shooter.getEntityId() );
     }
 }

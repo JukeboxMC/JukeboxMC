@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.packet.ContainerClosePacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.packet.ContainerClosePacket;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -12,6 +12,6 @@ public class ContainerCloseHandler implements PacketHandler<ContainerClosePacket
 
     @Override
     public void handle( ContainerClosePacket packet, Server server, Player player ) {
-        player.closeInventory( packet.getWindowId(), packet.isServerInitiated() );
+        player.closeInventory( packet.getId(), packet.isUnknownBool0() );
     }
 }

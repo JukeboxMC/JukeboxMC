@@ -1,12 +1,12 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 
 /**
@@ -31,7 +31,7 @@ public abstract class BlockButton extends BlockWaterlogable {
         this.setBlockFace( blockFace );
         this.setButtonPressed( false );
 
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0 );
         world.setBlock( placePosition, placedBlock, 1 );
         return true;
     }
@@ -43,7 +43,7 @@ public abstract class BlockButton extends BlockWaterlogable {
         }
 
         this.setButtonPressed( true );
-        this.world.playSound( this.location, LevelSound.POWER_ON );
+        this.world.playSound( this.location, SoundEvent.POWER_ON );
         this.world.scheduleBlockUpdate( this.location, 20 );
         return true;
     }
@@ -52,7 +52,7 @@ public abstract class BlockButton extends BlockWaterlogable {
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason == UpdateReason.SCHEDULED ) {
             this.setButtonPressed( false );
-            this.world.playSound( this.location, LevelSound.POWER_OFF );
+            this.world.playSound( this.location, SoundEvent.POWER_OFF );
         }
         return -1;
     }

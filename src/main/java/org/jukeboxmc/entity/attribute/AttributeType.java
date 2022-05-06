@@ -10,7 +10,7 @@ public enum AttributeType {
     ABSORPTION( "minecraft:absorption", 0, Float.MAX_VALUE, 0 ),
     KNOCKBACK_RESISTENCE( "minecraft:knockback_resistance", 0, 1, 0 ),
     HEALTH( "minecraft:health", 0, 20, 20 ),
-    MOVEMENT( "minecraft:movement", 0, 1, 0.1f ),
+    MOVEMENT( "minecraft:movement", 0.1f, 1, 0.1f ),
     FOLLOW_RANGE( "minecraft:follow_range", 0, 2048, 16 ),
     ATTACK_DAMAGE( "minecraft:attack_damage", 1, Float.MAX_VALUE, 1 ),
     LUCK( "minecraft:luck", -1024, 1024, 0 ),

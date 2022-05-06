@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.math3.util.FastMath;
-import org.jukeboxmc.Server;
+import org.jukeboxmc.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +27,12 @@ import java.util.zip.ZipFile;
 public class ResourcePackManager {
 
     private final Map<String, ResourcePack> resourcePacks = new HashMap<>();
+
+    private final Logger logger;
+
+    public ResourcePackManager( Logger logger ) {
+        this.logger = logger;
+    }
 
     public void loadResourcePacks() {
         File resourcePacksPath = new File( System.getProperty( "user.dir" ) + "/resource_packs" );
@@ -80,7 +86,7 @@ public class ResourcePackManager {
                         byte[] resourcePackSha256 = MessageDigest.getInstance( "SHA-256" )
                                 .digest( java.nio.file.Files.readAllBytes( file.toPath() ) );
 
-                        Server.getInstance().getLogger().info( "Read resource pack " + resourcePackName + " §rsuccessful from " + file.getName() );
+                        this.logger.info( "Read resource pack " + resourcePackName + " §rsuccessful from " + file.getName() );
 
                         final ResourcePack resourcePack = new ResourcePack( file, resourcePackName, resourcePackUuid,
                                 resourcePackVersion, resourcePackSize, resourcePackSha256, new byte[0] );

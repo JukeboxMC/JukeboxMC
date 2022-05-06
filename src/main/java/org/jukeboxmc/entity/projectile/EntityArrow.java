@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.projectile;
 
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
@@ -8,7 +9,6 @@ import org.jukeboxmc.event.player.PlayerPickupItemEvent;
 import org.jukeboxmc.item.ItemArrow;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  */
 public class EntityArrow extends EntityProjectile {
-
     private long pickupDelay;
     private boolean canBePickedUp;
     private boolean wasInfinityArrow;
@@ -76,7 +75,7 @@ public class EntityArrow extends EntityProjectile {
             }
 
             this.close();
-            player.getWorld().sendLevelEvent( player.getLocation(), LevelEvent.SOUND_INFINITY_ARROW_PICKUP );
+            player.getWorld().sendLevelEvent( player.getLocation(), LevelEventType.SOUND_INFINITY_ARROW_PICKUP );
             if ( !this.wasInfinityArrow ) {
                 player.getInventory().addItem( arrow );
             }

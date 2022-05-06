@@ -5,8 +5,9 @@ import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
+import org.jukeboxmc.scoreboard.Scoreboard;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.generator.WorldGenerator;
+import org.jukeboxmc.world.generator.Generator;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -49,7 +50,7 @@ public class JukeboxMC {
         return server.loadOrCreateWorld( name );
     }
 
-    public static void registerWorldGenerator( String name, Class<? extends WorldGenerator> clazz ) {
+    public static void registerWorldGenerator( String name, Class<? extends Generator> clazz ) {
         server.registerGenerator( name, clazz );
     }
 
@@ -94,7 +95,7 @@ public class JukeboxMC {
     }
 
     public static InetSocketAddress getAddress() {
-        return server.getAddress();
+        return new InetSocketAddress( server.getServerAddress(), server.getPort() );
     }
 
     public static int getPort() {
@@ -108,4 +109,17 @@ public class JukeboxMC {
     public static void broadcastMessage( String message ) {
         server.broadcastMessage( message );
     }
+
+    public static Scoreboard createScoreboard() {
+        return new Scoreboard();
+    }
+
+    public static void setScoreboard( Player player, Scoreboard scoreboard ) {
+        scoreboard.showFor( player );
+    }
+
+    public static void removeScorebaord( Player player, Scoreboard scoreboard ){
+        scoreboard.hideFor( player );
+    }
+
 }

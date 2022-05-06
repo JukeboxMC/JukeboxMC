@@ -161,7 +161,7 @@ public class PluginManager {
 
     public void disableAllPlugins() {
         for ( Plugin plugin : this.pluginMap.values() ) {
-            this.logger.info( "Disabling plugin " + plugin.getName() + "..." );
+            this.logger.info( "Disabling plugin " + plugin.getName() + "" );
             try {
                 plugin.setEnabled( false );
             } catch ( RuntimeException e ) {

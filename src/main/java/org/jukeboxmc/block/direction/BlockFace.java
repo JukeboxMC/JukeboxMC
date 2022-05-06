@@ -62,4 +62,16 @@ public enum BlockFace {
         }
     }
 
+    public static BlockFace fromId( int value ) {
+        return switch ( value ) {
+            case 0 -> BlockFace.DOWN;
+            case 1 -> BlockFace.UP;
+            case 2 -> BlockFace.NORTH;
+            case 3 -> BlockFace.SOUTH;
+            case 4 -> BlockFace.WEST;
+            case 5 -> BlockFace.EAST;
+            default -> null;
+        };
+    }
+
 }

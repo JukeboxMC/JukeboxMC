@@ -1,6 +1,6 @@
 package org.jukeboxmc.inventory.transaction.action;
 
-import org.jukeboxmc.JukeboxMC;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.inventory.transaction.InventoryAction;
@@ -29,7 +29,7 @@ public class DropItemAction extends InventoryAction {
 
     public boolean execute( Player player ) {
         PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent( player, this.targetItem );
-        JukeboxMC.getPluginManager().callEvent( playerDropItemEvent );
+        Server.getInstance().getPluginManager().callEvent( playerDropItemEvent );
         if ( playerDropItemEvent.isCancelled() ) {
             player.getInventory().sendContents( player );
             return false;
@@ -43,7 +43,9 @@ public class DropItemAction extends InventoryAction {
         return true;
     }
 
-    public void onExecuteSuccess( Player source ) {}
+    public void onExecuteSuccess( Player source ) {
+    }
 
-    public void onExecuteFail( Player source ) {}
+    public void onExecuteFail( Player source ) {
+    }
 }

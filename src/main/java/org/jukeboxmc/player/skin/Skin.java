@@ -1,5 +1,6 @@
 package org.jukeboxmc.player.skin;
 
+import com.nukkitx.protocol.bedrock.data.skin.*;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Skin {
     private String geometryData;
     private String animationData;
     private String capeId;
-    private String fullSkinId = UUID.randomUUID().toString();
+    private final String fullSkinId = UUID.randomUUID().toString();
     private String skinColor = "#0";
     private String armSize = "wide";
     private String playFabId = "";
@@ -196,5 +197,41 @@ public class Skin {
 
     public void setPersonaPieceTints( List<PersonaPieceTint> personaPieceTints ) {
         this.personaPieceTints = personaPieceTints;
+    }
+
+    public SerializedSkin toNetwork() {
+        List<AnimationData> animationDataList = new ArrayList<>();
+        for ( SkinAnimation animation : this.skinAnimations ) {
+            animationDataList.add( new AnimationData( ImageData.of( animation.getImage().getWidth(), animation.getImage().getHeight(), animation.getImage().getData() ), AnimatedTextureType.values()[animation.getType()], animation.getFrames() ) );
+        }
+        List<PersonaPieceData> personaPieceDataList = new ArrayList<>();
+        for ( PersonaPiece piece : this.personaPieces ) {
+            personaPieceDataList.add( new PersonaPieceData( piece.getPieceId(), piece.getPieceType(), piece.getPackId(), piece.isDefault(), piece.getProductId() ) );
+        }
+        List<PersonaPieceTintData> personaPieceTintList = new ArrayList<>();
+        for ( PersonaPieceTint pieceTint : this.personaPieceTints ) {
+            personaPieceTintList.add( new PersonaPieceTintData( pieceTint.getPieceType(), pieceTint.getColors() ) );
+        }
+        return SerializedSkin.builder()
+                .skinId( this.skinId )
+                .playFabId( this.playFabId )
+                .geometryName( this.geometryDataEngineVersion )
+                .geometryData( this.geometryData )
+                .skinResourcePatch( this.resourcePatch )
+                .skinData( ImageData.of( this.skinData.getWidth(), this.skinData.getHeight(), this.skinData.getData() ) )
+                .animations( animationDataList )
+                .capeData( ImageData.of( this.capeData.getWidth(), this.capeData.getHeight(), this.capeData.getData() ) )
+                .geometryData( this.geometryData )
+                .animationData( this.animationData )
+                .premium( this.isPremium )
+                .persona( this.isPersona )
+                .capeOnClassic( this.isCapeOnClassic )
+                .capeId( this.capeId )
+                .fullSkinId( this.fullSkinId )
+                .armSize( this.armSize )
+                .skinColor( this.skinColor )
+                .personaPieces( personaPieceDataList )
+                .tintColors( personaPieceTintList )
+                .build();
     }
 }

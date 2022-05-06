@@ -1,6 +1,6 @@
 package org.jukeboxmc.player;
 
-import lombok.Getter;
+import com.nukkitx.protocol.bedrock.data.GameType;
 
 /**
  * @author LucGamesYT
@@ -8,16 +8,30 @@ import lombok.Getter;
  */
 public enum GameMode {
 
-    SURVIVAL( "Survival" ),
-    CREATIVE( "Creative" ),
-    ADVENTURE( "Adventure" ),
-    SPECTATOR( "Spectator" ),
-    SPECTATOR_VANILLA( "Spectator (Vanilla)" );
+    SURVIVAL( "Survival", GameType.SURVIVAL, 0 ),
+    CREATIVE( "Creative", GameType.CREATIVE, 1 ),
+    ADVENTURE( "Adventure", GameType.ADVENTURE, 2 ),
+    SPECTATOR( "Spectator", GameType.SPECTATOR, 6 );
 
-    @Getter
     private final String identifier;
+    private final GameType gameType;
+    private final int id;
 
-    GameMode( String gamemode ) {
-        this.identifier = gamemode;
+    GameMode( String identifier, GameType gameType, int id ) {
+        this.identifier = identifier;
+        this.gameType = gameType;
+        this.id = id;
+    }
+
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    public GameType toGameType() {
+        return this.gameType;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

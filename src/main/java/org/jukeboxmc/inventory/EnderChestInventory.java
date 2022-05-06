@@ -1,9 +1,10 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.BlockEventPacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 
 /**
  * @author LucGamesYT
@@ -28,18 +29,18 @@ public class EnderChestInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.CONTAINER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.CONTAINER;
     }
 
     @Override
     public void onOpen( Player player ) {
         if ( this.viewer.size() == 1 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( this.position );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 2 );
-            player.getWorld().playSound( this.position, LevelSound.ENDERCHEST_OPEN );
+            blockEventPacket.setBlockPosition( this.position.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 2 );
+            player.getWorld().playSound( this.position, SoundEvent.ENDERCHEST_OPEN );
             player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
     }
@@ -48,10 +49,10 @@ public class EnderChestInventory extends ContainerInventory {
     public void onClose( Player player ) {
         if ( this.viewer.size() == 1 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
-            blockEventPacket.setPosition( this.position );
-            blockEventPacket.setData1( 1 );
-            blockEventPacket.setData2( 0 );
-            player.getWorld().playSound( this.position, LevelSound.ENDERCHEST_CLOSED );
+            blockEventPacket.setBlockPosition( this.position.toVector3i() );
+            blockEventPacket.setEventType( 1 );
+            blockEventPacket.setEventData( 0 );
+            player.getWorld().playSound( this.position, SoundEvent.ENDERCHEST_CLOSED );
             player.getWorld().sendChunkPacket( this.position.getBlockX() >> 4, this.position.getBlockZ() >> 4, blockEventPacket );
         }
     }

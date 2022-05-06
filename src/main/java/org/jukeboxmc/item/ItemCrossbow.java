@@ -1,5 +1,7 @@
 package org.jukeboxmc.item;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.entity.projectile.EntityArrow;
 import org.jukeboxmc.event.entity.ProjectileLaunchEvent;
 import org.jukeboxmc.item.enchantment.*;
@@ -7,8 +9,6 @@ import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Sound;
@@ -125,7 +125,7 @@ public class ItemCrossbow extends Item implements Durability, Burnable {
             this.nbt = NbtMap.EMPTY;
         }
         if ( chargedItem != null ) {
-            this.nbt = this.nbt.toBuilder().putCompound( "chargedItem", chargedItem.toNetwork( true ).build() ).build();
+            this.nbt = this.nbt.toBuilder().putCompound( "chargedItem", chargedItem.toNbt(true) ).build();
         }
     }
 

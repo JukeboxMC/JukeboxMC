@@ -1,5 +1,9 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import lombok.EqualsAndHashCode;
@@ -15,11 +19,7 @@ import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.network.packet.UpdateBlockPacket;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelSound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -144,12 +144,12 @@ public abstract class Block implements Cloneable {
     }
 
     public boolean onBlockBreak( Vector breakPosition ) {
-        this.world.setBlock( breakPosition, new BlockAir() );
+        this.world.setBlock( breakPosition, new BlockAir(), 0 );
         return true;
     }
 
     public void playBlockBreakSound() {
-        this.world.playSound( this.location, LevelSound.BREAK, this.runtimeId );
+        this.world.playSound( this.location, SoundEvent.BREAK, this.runtimeId );
     }
 
     public boolean canBeReplaced( Block block ) {
@@ -229,7 +229,7 @@ public abstract class Block implements Cloneable {
     }
 
     public void setBlock( Block block ) {
-        this.world.setBlock( this.location, block );
+        this.world.setBlock( this.location, block, 0 );
     }
 
     public void setBlock( Block block, int layer ) {
@@ -377,7 +377,7 @@ public abstract class Block implements Cloneable {
         int x = this.location.getBlockX() + position.getBlockX();
         int y = this.location.getBlockY() + position.getBlockY();
         int z = this.location.getBlockZ() + position.getBlockZ();
-        return this.world.getBlock( x, y, z, this.location.getDimension(), layer );
+        return this.world.getBlock( x, y, z, layer, this.location.getDimension() );
     }
 
     public int getRuntimeId() {
@@ -422,7 +422,7 @@ public abstract class Block implements Cloneable {
     }
 
     public boolean checkValidity() {
-        return this.world != null && this.location != null && this.world.getBlockRuntimeId( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer ) == this.runtimeId;
+        return this.world != null && this.location != null && this.world.getBlockRuntimeId( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this.location.getDimension() ) == this.runtimeId;
     }
 
     public String getName() {
@@ -441,10 +441,10 @@ public abstract class Block implements Cloneable {
 
     public void sendBlockUpdate( Player player ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setBlockId( this.runtimeId );
-        updateBlockPacket.setPosition( this.location );
-        updateBlockPacket.setFlags( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setLayer( this.layer );
+        updateBlockPacket.setRuntimeId( this.runtimeId );
+        updateBlockPacket.setBlockPosition( this.location.toVector3i() );
+        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setDataLayer( this.layer );
         player.sendPacket( updateBlockPacket );
     }
 

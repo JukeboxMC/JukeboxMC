@@ -1,6 +1,6 @@
 package org.jukeboxmc.world.palette.bitarray;
 
-import org.jukeboxmc.utils.BinaryStream;
+import io.netty.buffer.ByteBuf;
 
 public final class SingletonBitArray implements BitArray {
 
@@ -17,7 +17,7 @@ public final class SingletonBitArray implements BitArray {
     }
 
     @Override
-    public void writeSizeToNetwork( BinaryStream buffer, int size ) {
+    public void writeSizeToNetwork( ByteBuf buffer, int size ) {
 
     }
 

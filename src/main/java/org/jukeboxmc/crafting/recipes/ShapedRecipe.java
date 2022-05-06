@@ -1,16 +1,16 @@
 package org.jukeboxmc.crafting.recipes;
 
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jukeboxmc.crafting.CraftingManager;
-import org.jukeboxmc.crafting.data.CraftingData;
-import org.jukeboxmc.crafting.data.CraftingDataType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,12 +20,12 @@ import java.util.UUID;
  */
 public class ShapedRecipe extends Recipe {
 
-    private final Char2ObjectMap<Item> ingredients = new Char2ObjectOpenHashMap<>();
-    private final List<Item> outputs = new ObjectArrayList<>();
+    private final Char2ObjectMap<ItemData> ingredients = new Char2ObjectOpenHashMap<>();
+    private final List<ItemData> outputs = new ObjectArrayList<>();
     private String[] pattern;
 
     @Override
-    public List<Item> getOutputs() {
+    public List<ItemData> getOutputs() {
         return this.outputs;
     }
 
@@ -53,25 +53,29 @@ public class ShapedRecipe extends Recipe {
     }
 
     public ShapedRecipe setIngredient( char symbol, Item item ) {
-        this.ingredients.put( symbol, item );
+        this.ingredients.put( symbol, item.toNetwork() );
         return this;
     }
 
     public ShapedRecipe addOutput( Item... items ) {
-        this.outputs.addAll( Arrays.asList(items) );
+        List<ItemData> itemDataList = new ArrayList<>();
+        for ( Item item : items ) {
+            itemDataList.add( item.toNetwork() );
+        }
+        this.outputs.addAll( itemDataList );
         return this;
     }
 
     @Override
     public CraftingData doRegister( CraftingManager craftingManager, String recipeId ) {
-        final List<Item> ingredients = new ArrayList<>();
+        final List<ItemData> ingredients = new ArrayList<>();
         for ( String s : this.pattern ) {
             char[] chars = s.toCharArray();
             for ( char c : chars ) {
-                Item ingredient = this.ingredients.get( c );
+                ItemData ingredient = this.ingredients.get( c );
 
                 if ( c == ' ' ) {
-                    ingredients.add( new ItemAir() );
+                    ingredients.add( new ItemAir().toNetwork() );
                     continue;
                 }
 

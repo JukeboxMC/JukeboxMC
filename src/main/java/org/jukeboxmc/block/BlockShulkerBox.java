@@ -1,5 +1,8 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.type.BlockColor;
 import org.jukeboxmc.blockentity.BlockEntityShulkerBox;
@@ -8,12 +11,8 @@ import org.jukeboxmc.inventory.ShulkerBoxInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemShulkerBox;
-import org.jukeboxmc.item.type.ItemTierType;
 import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.nbt.NbtMap;
-import org.jukeboxmc.nbt.NbtMapBuilder;
-import org.jukeboxmc.nbt.NbtType;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
 

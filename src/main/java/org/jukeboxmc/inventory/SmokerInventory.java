@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntitySmoker;
 
 /**
@@ -23,7 +24,7 @@ public class SmokerInventory extends ContainerInventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.SMOKER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.SMOKER;
     }
 }

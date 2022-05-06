@@ -1,28 +1,45 @@
 package org.jukeboxmc.command.jukebox;
 
+import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
+import org.jukeboxmc.command.CommandData;
+import org.jukeboxmc.command.CommandParameter;
 import org.jukeboxmc.command.CommandSender;
-import org.jukeboxmc.command.annotation.Alias;
 import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
+import java.util.Arrays;
+
 /**
- * @author Kaooot
+ * @author LucGamesYT
  * @version 1.0
  */
 @Name ( "gamemode" )
-@Alias ( "gm" )
 @Description ( "Change your gamemode" )
-@Permission ( "jukeboxmc.command.gamemode" )
+@Permission ( "org.jukeboxmc.command.gamemode" )
 public class GameModeCommand extends Command {
+
+    public GameModeCommand() {
+        super( CommandData.builder()
+                .addAlias( "gm" )
+                .setParameters( new CommandParameter[]{
+                                new CommandParameter( "gamemode", CommandParamType.INT, false ),
+                                new CommandParameter( "target", CommandParamType.TARGET, true )
+                        },
+                        new CommandParameter[]{
+                                new CommandParameter( "gamemode", Arrays.asList( "survival", "creative", "adventure", "spectator" ), false ),
+                                new CommandParameter( "target", CommandParamType.TARGET, true )
+                        } )
+                .build() );
+    }
 
     @Override
     public void execute( CommandSender commandSender, String command, String[] args ) {
-        if ( commandSender instanceof Player player) {
+        if ( commandSender instanceof Player player ) {
 
             if ( args.length == 1 ) {
                 String gamemodeName = args[0];
@@ -81,24 +98,12 @@ public class GameModeCommand extends Command {
     private GameMode getGameModeByName( String value ) {
         GameMode gameMode = null;
         switch ( value ) {
-            case "survival":
-            case "0":
-                gameMode = GameMode.SURVIVAL;
-                break;
-            case "creative":
-            case "1":
-                gameMode = GameMode.CREATIVE;
-                break;
-            case "adventure":
-            case "2":
-                gameMode = GameMode.ADVENTURE;
-                break;
-            case "spectator":
-            case "3":
-                gameMode = GameMode.SPECTATOR;
-                break;
-            default:
-                break;
+            case "survival", "0" -> gameMode = GameMode.SURVIVAL;
+            case "creative", "1" -> gameMode = GameMode.CREATIVE;
+            case "adventure", "2" -> gameMode = GameMode.ADVENTURE;
+            case "spectator", "3" -> gameMode = GameMode.SPECTATOR;
+            default -> {
+            }
         }
         return gameMode;
     }

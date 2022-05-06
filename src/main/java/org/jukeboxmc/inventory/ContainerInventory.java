@@ -1,10 +1,16 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
+import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
+import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.network.packet.ContainerOpenPacket;
-import org.jukeboxmc.network.packet.InventoryContentPacket;
-import org.jukeboxmc.network.packet.InventorySlotPacket;
 import org.jukeboxmc.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -17,8 +23,8 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public WindowTypeId getWindowTypeId() {
-        return WindowTypeId.CONTAINER;
+    public ContainerType getWindowTypeId() {
+        return ContainerType.CONTAINER;
     }
 
     @Override
@@ -31,30 +37,32 @@ public abstract class ContainerInventory extends Inventory {
     @Override
     public void sendContents( Player player ) {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-        inventoryContentPacket.setWindowId( WindowId.OPEN_CONTAINER );
-        inventoryContentPacket.setItems( this.getContents() );
+        inventoryContentPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
+        List<ItemData> itemDataList = new ArrayList<>();
+        for ( Item content : this.getContents() ) {
+            itemDataList.add( content.toNetwork() );
+        }
+        inventoryContentPacket.setContents( itemDataList );
         player.sendPacket( inventoryContentPacket );
     }
 
     @Override
     public void sendContents( int slot, Player player ) {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-        inventorySlotPacket.setWindowId( WindowId.OPEN_CONTAINER );
+        inventorySlotPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
         inventorySlotPacket.setSlot( slot );
-        inventorySlotPacket.setItem( this.contents[slot] );
+        inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
         player.sendPacket( inventorySlotPacket );
     }
 
     public void addViewer( Player player, Vector position, byte windowId ) {
         ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
-        containerOpenPacket.setEntityId( this.holderId );
-        containerOpenPacket.setWindowId( windowId );
-        containerOpenPacket.setWindowTypeId( this.getWindowTypeId() );
-        containerOpenPacket.setPosition( position );
+        containerOpenPacket.setUniqueEntityId( this.holderId );
+        containerOpenPacket.setId( windowId );
+        containerOpenPacket.setType( this.getWindowTypeId() );
+        containerOpenPacket.setBlockPosition( position.toVector3i() );
         player.sendPacket( containerOpenPacket );
-
         super.addViewer( player );
-
         this.onOpen( player );
     }
 

@@ -7,9 +7,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.item.Item;
 
-import static org.jukeboxmc.block.BlockType.Companion.identifierToBlock;
-import static org.jukeboxmc.block.BlockType.Companion.runtimeIdToBlock;
-
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -714,6 +711,12 @@ public enum BlockType {
         Companion.update( block.getIdentifier(), block );
     }
 
+    public static void init() {
+        for ( BlockType blockType : BlockType.values() ) {
+            blockType.getBlock();
+        }
+    }
+
     public <B extends Block> B getBlock() {
         return (B) this.block.clone();
     }
@@ -723,17 +726,17 @@ public enum BlockType {
     }
 
     public static Block getBlock( int runtimeId ) {
-        if ( !runtimeIdToBlock.containsKey( runtimeId ) ) {
+        if ( !Companion.runtimeIdToBlock.containsKey( runtimeId ) ) {
             return new BlockAir().clone();
         }
-        return runtimeIdToBlock.get( runtimeId ).clone();
+        return Companion.runtimeIdToBlock.get( runtimeId ).clone();
     }
 
     public static Block getBlock( String identifier ) {
-        if ( !identifierToBlock.containsKey( identifier ) ) {
+        if ( !Companion.identifierToBlock.containsKey( identifier ) ) {
             return new BlockAir().clone();
         }
-        return identifierToBlock.get( identifier ).clone();
+        return Companion.identifierToBlock.get( identifier ).clone();
     }
 
     public static class Companion {

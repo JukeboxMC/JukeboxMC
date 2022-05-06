@@ -1,12 +1,15 @@
 package org.jukeboxmc.command.jukebox;
 
+import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
+import org.jukeboxmc.command.CommandData;
+import org.jukeboxmc.command.CommandParameter;
 import org.jukeboxmc.command.CommandSender;
-import org.jukeboxmc.command.annotation.Alias;
 import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
@@ -15,15 +18,30 @@ import org.jukeboxmc.player.Player;
  * @version 1.0
  */
 @Name ( "teleport" )
-@Alias ( "tp" )
 @Description ( "Teleport to another location or player." )
-@Permission ( "jukeboxmc.command.teleport" )
+@Permission ( "org.jukeboxmc.command.teleport" )
 public class TeleportCommand extends Command {
+
+    public TeleportCommand() {
+        super( CommandData.builder()
+                .addAlias( "tp" )
+                .setParameters( new CommandParameter[]{
+                                new CommandParameter( "player", CommandParamType.TARGET, false )
+                        },
+                        new CommandParameter[]{
+                                new CommandParameter( "position", CommandParamType.POSITION, false )
+                        },
+                        new CommandParameter[]{
+                                new CommandParameter( "player", CommandParamType.TARGET, false ),
+                                new CommandParameter( "target", CommandParamType.TARGET, false )
+                        }
+                )
+                .build() );
+    }
 
     @Override
     public void execute( CommandSender commandSender, String command, String[] args ) {
-        if ( commandSender instanceof Player ) {
-            Player player = (Player) commandSender;
+        if ( commandSender instanceof Player player ) {
 
             if ( args.length == 1 ) {
                 String targetName = args[0];
@@ -51,7 +69,7 @@ public class TeleportCommand extends Command {
                 Player tagetPlayer = Server.getInstance().getPlayer( playerName );
                 Player toPlayer = Server.getInstance().getPlayer( targetName );
 
-                if ( tagetPlayer == null ){
+                if ( tagetPlayer == null ) {
                     player.sendMessage( "§cPlayer " + playerName + " could not be found" );
                     return;
                 }
@@ -78,7 +96,7 @@ public class TeleportCommand extends Command {
                     int y = Integer.parseInt( number2 );
                     int z = Integer.parseInt( number3 );
 
-                    player.teleport( new Vector( x, y, z ) );
+                    player.teleport( new Location( player.getWorld(), new Vector( x, y, z ) ) );
                     player.sendMessage( "You have benn teleported to " + x + ", " + y + ", " + z );
                 } catch ( NumberFormatException e ) {
                     player.sendMessage( "§cYou must specify a number" );

@@ -28,7 +28,7 @@ public enum EntityType {
 
     @SneakyThrows
     public <E extends Entity> E createEntity() {
-        return (E) this.entityClass.newInstance();
+        return (E) this.entityClass.getConstructor().newInstance();
     }
 
     public String getIdentifier() {

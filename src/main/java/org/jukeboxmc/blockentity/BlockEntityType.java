@@ -30,7 +30,6 @@ public enum BlockEntityType {
     LOOM( "Loom", BlockEntityLoom.class ),
     BARREL( "Barrel", BlockEntityBarrel.class );
 
-
     private final String blockEntityId;
     private final Class<? extends BlockEntity> blockEntityClass;
 

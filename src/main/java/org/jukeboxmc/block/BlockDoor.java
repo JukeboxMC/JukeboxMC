@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
@@ -7,7 +8,6 @@ import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.LevelEvent;
 import org.jukeboxmc.world.World;
 
 /**
@@ -44,8 +44,8 @@ public abstract class BlockDoor extends BlockWaterlogable {
         this.setUpperBlock( false );
         this.setOpen( false );
 
-        world.setBlock( placePosition.add( 0, 1, 0 ), blockAbove );
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition.add( 0, 1, 0 ), blockAbove, 0 );
+        world.setBlock( placePosition, this, 0 );
 
         if ( block.isWater() ) {
             world.setBlock( placePosition.add( 0, 1, 0 ), block, 1 );
@@ -58,13 +58,13 @@ public abstract class BlockDoor extends BlockWaterlogable {
     public boolean onBlockBreak( Vector breakPosition ) {
         Block block = this.world.getBlock( breakPosition, 1 );
         if ( this.isUpperBlock() ) {
-            this.world.setBlock( this.location.subtract( 0, 1, 0 ), block );
+            this.world.setBlock( this.location.subtract( 0, 1, 0 ), block , 0);
             this.world.setBlock( this.location.subtract( 0, 1, 0 ), new BlockAir(), 1 );
         } else {
-            this.world.setBlock( this.location.add( 0, 1, 0 ), block );
+            this.world.setBlock( this.location.add( 0, 1, 0 ), block, 0 );
             this.world.setBlock( this.location.add( 0, 1, 0 ), new BlockAir(), 1 );
         }
-        this.world.setBlock( this.location, block );
+        this.world.setBlock( this.location, block, 0 );
         this.world.setBlock( this.location, new BlockAir(), 1 );
         return true;
     }
@@ -72,7 +72,7 @@ public abstract class BlockDoor extends BlockWaterlogable {
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen() );
-        this.world.sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
+        this.world.sendLevelEvent( this.location, LevelEventType.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 

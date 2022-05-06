@@ -1,13 +1,13 @@
 package org.jukeboxmc.inventory;
 
+import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
+import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
+import com.nukkitx.protocol.bedrock.packet.MobArmorEquipmentPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.behavior.ItemArmorBehavior;
-import org.jukeboxmc.network.packet.InventoryContentPacket;
-import org.jukeboxmc.network.packet.InventorySlotPacket;
-import org.jukeboxmc.network.packet.MobArmorEquipmentPacket;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Sound;
 
@@ -40,23 +40,22 @@ public class ArmorInventory extends ContainerInventory {
     public void setItem( int slot, Item item ) {
         super.setItem( slot, item );
 
-        if ( item instanceof ItemArmorBehavior && this.holder instanceof Player) {
-            Player player = (Player) this.holder;
+        if ( this.holder instanceof Player player ) {
 
             ArmorInventory armorInventory = player.getArmorInventory();
             MobArmorEquipmentPacket mobArmorEquipmentPacket = new MobArmorEquipmentPacket();
-            mobArmorEquipmentPacket.setEntityId( this.holderId );
-            mobArmorEquipmentPacket.setHelmet( armorInventory.getHelmet() );
-            mobArmorEquipmentPacket.setChestplate( armorInventory.getChestplate() );
-            mobArmorEquipmentPacket.setLeggings( armorInventory.getLeggings() );
-            mobArmorEquipmentPacket.setBoots( armorInventory.getBoots() );
+            mobArmorEquipmentPacket.setRuntimeEntityId( this.holderId );
+            mobArmorEquipmentPacket.setHelmet( armorInventory.getHelmet().toNetwork() );
+            mobArmorEquipmentPacket.setChestplate( armorInventory.getChestplate().toNetwork() );
+            mobArmorEquipmentPacket.setLeggings( armorInventory.getLeggings().toNetwork() );
+            mobArmorEquipmentPacket.setBoots( armorInventory.getBoots().toNetwork() );
 
             for ( Player onlinePlayer : Server.getInstance().getOnlinePlayers() ) {
                 if ( onlinePlayer.equals( player ) ) {
                     InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-                    inventorySlotPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
+                    inventorySlotPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
                     inventorySlotPacket.setSlot( slot );
-                    inventorySlotPacket.setItem( this.contents[slot] );
+                    inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
                     onlinePlayer.getPlayerConnection().sendPacket( inventorySlotPacket );
                 } else {
                     onlinePlayer.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
@@ -69,8 +68,8 @@ public class ArmorInventory extends ContainerInventory {
     public void sendContents( Player player ) {
         if ( this.getInventoryHolder().equals( player ) ) {
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-            inventoryContentPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
-            inventoryContentPacket.setItems( this.contents );
+            inventoryContentPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
+            inventoryContentPacket.setContents( this.getItemDataContents() );
             player.sendPacket( inventoryContentPacket );
         } else {
             this.sendMobArmor( player );
@@ -81,9 +80,9 @@ public class ArmorInventory extends ContainerInventory {
     public void sendContents( int slot, Player player ) {
         if ( this.getInventoryHolder().equals( player ) ) {
             InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
-            inventorySlotPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
+            inventorySlotPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
             inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot] );
+            inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
             player.sendPacket( inventorySlotPacket );
         } else {
             this.sendMobArmor( player );
@@ -92,27 +91,27 @@ public class ArmorInventory extends ContainerInventory {
 
     private void sendMobArmor( Player player ) {
         MobArmorEquipmentPacket mobArmorEquipmentPacket = new MobArmorEquipmentPacket();
-        mobArmorEquipmentPacket.setEntityId( this.getInventoryHolder().getEntityId() );
-        mobArmorEquipmentPacket.setHelmet( this.contents[0] );
-        mobArmorEquipmentPacket.setChestplate( this.contents[1] );
-        mobArmorEquipmentPacket.setLeggings( this.contents[2] );
-        mobArmorEquipmentPacket.setBoots( this.contents[3] );
+        mobArmorEquipmentPacket.setRuntimeEntityId( this.getInventoryHolder().getEntityId() );
+        mobArmorEquipmentPacket.setHelmet( this.contents[0].toNetwork() );
+        mobArmorEquipmentPacket.setChestplate( this.contents[1].toNetwork() );
+        mobArmorEquipmentPacket.setLeggings( this.contents[2].toNetwork() );
+        mobArmorEquipmentPacket.setBoots( this.contents[3].toNetwork() );
         player.sendPacket( mobArmorEquipmentPacket );
     }
 
     public void sendArmorContent( Player player ) {
         MobArmorEquipmentPacket mobArmorEquipmentPacket = new MobArmorEquipmentPacket();
-        mobArmorEquipmentPacket.setEntityId( this.getInventoryHolder().getEntityId() );
-        mobArmorEquipmentPacket.setHelmet( this.contents[0] );
-        mobArmorEquipmentPacket.setChestplate( this.contents[1] );
-        mobArmorEquipmentPacket.setLeggings( this.contents[2] );
-        mobArmorEquipmentPacket.setBoots( this.contents[3] );
+        mobArmorEquipmentPacket.setRuntimeEntityId( this.getInventoryHolder().getEntityId() );
+        mobArmorEquipmentPacket.setHelmet( this.contents[0].toNetwork() );
+        mobArmorEquipmentPacket.setChestplate( this.contents[1].toNetwork() );
+        mobArmorEquipmentPacket.setLeggings( this.contents[2].toNetwork() );
+        mobArmorEquipmentPacket.setBoots( this.contents[3].toNetwork() );
 
         for ( Player onlinePlayer : Server.getInstance().getOnlinePlayers() ) {
             if ( onlinePlayer.equals( player ) ) {
                 InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-                inventoryContentPacket.setWindowId( WindowId.ARMOR_DEPRECATED );
-                inventoryContentPacket.setItems( this.contents );
+                inventoryContentPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
+                inventoryContentPacket.setContents( this.getItemDataContents() );
                 onlinePlayer.getPlayerConnection().sendPacket( inventoryContentPacket );
             } else {
                 onlinePlayer.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
@@ -170,8 +169,7 @@ public class ArmorInventory extends ContainerInventory {
             damage = 1.0F;
         }
 
-        if ( this.holder instanceof Player ) {
-            Player player = (Player) this.holder;
+        if ( this.holder instanceof Player player ) {
 
             Item helmet = this.getHelmet();
             if ( helmet != null && !( helmet instanceof ItemAir ) ) {

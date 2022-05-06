@@ -39,7 +39,7 @@ public class BlockBarrel extends Block {
             this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         }
         this.setOpen( false );
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0  );
         BlockEntityType.BARREL.<BlockEntityBarrel>createBlockEntity( this ).spawn();
         return true;
     }

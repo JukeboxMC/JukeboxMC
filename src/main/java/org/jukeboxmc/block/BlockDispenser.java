@@ -23,7 +23,7 @@ public class BlockDispenser extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
-        world.setBlock( placePosition, this );
+        world.setBlock( placePosition, this, 0 );
         BlockEntityType.DISPENSER.<BlockEntityDispenser>createBlockEntity( this ).spawn();
         return true;
     }
