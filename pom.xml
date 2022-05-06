@@ -175,7 +175,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.org.jukeboxmc.Bootstrap</mainClass>
+                            <mainClass>org.jukeboxmc.Bootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
