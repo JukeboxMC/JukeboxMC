@@ -333,7 +333,7 @@ public class World {
         return this.generatorThreadLocal.get();
     }
 
-    public boolean loadChunk( Chunk chunk, Dimension dimension ) {
+    public boolean loadChunk( Chunk chunk ) {
         try {
             byte[] version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2C ) );
             if ( version == null ) {
@@ -374,7 +374,7 @@ public class World {
 
     public void addLoadChunkTask( Chunk chunk, boolean direct, BooleanConsumer consumer ) {
         if ( direct ) {
-            boolean result = this.loadChunk( chunk, Dimension.OVERWORLD );
+            boolean result = this.loadChunk( chunk );
             consumer.accept( result );
 
             Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
@@ -387,7 +387,7 @@ public class World {
         }
 
         this.server.getScheduler().executeAsync( () -> {
-            boolean result = this.loadChunk( chunk, Dimension.OVERWORLD );
+            boolean result = this.loadChunk( chunk );
 
             this.server.getScheduler().execute( () -> {
                 consumer.accept( result );
@@ -489,7 +489,7 @@ public class World {
                 }
 
                 try {
-                    generator.generate( chunk.getChunkX(), chunk.getChunkZ() );
+                    generator.populate( chunk.getChunkX(), chunk.getChunkZ() );
                 } finally {
                     chunk.setPopulated( true );
                 }

@@ -102,7 +102,7 @@ public class PlayerConnection {
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
             int load = 0;
-            while ( !this.chunkLoadQueue.isEmpty() && load <= 100 ) {
+            while ( !this.chunkLoadQueue.isEmpty() && load <= 50 ) {
                 long chunkHash = this.chunkLoadQueue.dequeueLong();
                 if ( this.loadedChunks.contains( chunkHash ) ) {
                     continue;
@@ -113,7 +113,7 @@ public class PlayerConnection {
             this.chunkLoadQueue.clear();
         }
 
-        if ( !this.spawned.get() && this.loadedChunks.size() >= 64){
+        if ( !this.spawned.get() && this.loadedChunks.size() >= 16){
             this.doFirstSpawn();
         }
     }
