@@ -20,7 +20,7 @@ public class BlockLightningRod extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIGHTNING_ROD;
     }
 

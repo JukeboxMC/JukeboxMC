@@ -18,7 +18,7 @@ public class BlockAcaciaWallSign extends BlockWallSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_WALL_SIGN;
     }
 

@@ -19,7 +19,7 @@ public class BlockGlowFrame extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GLOW_FRAME;
     }
 

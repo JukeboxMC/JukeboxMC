@@ -20,7 +20,7 @@ public class BlockStonebrick extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STONEBRICK;
     }
 

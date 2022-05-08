@@ -20,7 +20,7 @@ public class BlockSmallDripleafBlock extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SMALL_DRIPLEAF_BLOCK;
     }
 

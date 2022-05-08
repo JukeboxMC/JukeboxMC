@@ -32,7 +32,7 @@ public class BlockChest extends BlockWaterlogable {
 
             for ( Direction direction : Direction.values() ) {
                 Block side = this.getSide( direction );
-                if ( side.getBlockType().equals( this.getBlockType() )) {
+                if ( side.getType().equals( this.getType() )) {
                     BlockEntityChest blockEntity = this.getBlockEntity();
                     BlockEntityChest sideBlockEntity = (BlockEntityChest) side.getBlockEntity();
                     if ( !blockEntity.isPaired() && !sideBlockEntity.isPaired()) {
@@ -66,7 +66,7 @@ public class BlockChest extends BlockWaterlogable {
             }
             ChestInventory chestInventory = blockEntity.getChestInventory();
             for ( Item content : chestInventory.getContents() ) {
-                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                if ( content != null && !content.getType().equals( ItemType.AIR ) ){
                    this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
                 }
             }
@@ -82,7 +82,7 @@ public class BlockChest extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CHEST;
     }
 

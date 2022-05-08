@@ -60,7 +60,7 @@ public class BlockBarrel extends Block {
         if ( blockEntity != null ) {
             BarrelInventory inventory = blockEntity.getBarrelInventory();
             for ( Item content : inventory.getContents() ) {
-                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                if ( content != null && !content.getType().equals( ItemType.AIR ) ){
                     this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
                 }
             }
@@ -76,7 +76,7 @@ public class BlockBarrel extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BARREL;
     }
 

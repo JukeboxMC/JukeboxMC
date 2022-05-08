@@ -18,7 +18,7 @@ public class BlockElement8 extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ELEMENT_8;
     }
 

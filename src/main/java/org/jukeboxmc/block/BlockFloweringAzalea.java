@@ -18,7 +18,7 @@ public class BlockFloweringAzalea extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.FLOWERING_AZALEA;
     }
 

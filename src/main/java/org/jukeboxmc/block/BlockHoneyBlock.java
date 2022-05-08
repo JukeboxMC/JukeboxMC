@@ -18,7 +18,7 @@ public class BlockHoneyBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.HONEY_BLOCK;
     }
 

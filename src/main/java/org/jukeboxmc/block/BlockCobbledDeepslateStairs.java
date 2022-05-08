@@ -18,7 +18,7 @@ public class BlockCobbledDeepslateStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COBBLED_DEEPSLATE_STAIRS;
     }
 }

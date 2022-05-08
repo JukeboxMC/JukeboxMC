@@ -18,7 +18,7 @@ public class BlockMossyCobblestoneStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MOSSY_COBBLESTONE_STAIRS;
     }
 

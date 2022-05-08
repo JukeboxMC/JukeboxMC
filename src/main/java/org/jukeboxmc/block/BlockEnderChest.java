@@ -46,7 +46,7 @@ public class BlockEnderChest extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ENDER_CHEST;
     }
 

@@ -20,7 +20,7 @@ public class BlockPointedDripstone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POINTED_DRIPSTONE;
     }
 

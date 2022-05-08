@@ -38,7 +38,7 @@ public class BlockLectern extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LECTERN;
     }
 

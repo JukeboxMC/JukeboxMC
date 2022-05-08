@@ -19,7 +19,7 @@ public class BlockCoalOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COAL_ORE;
     }
 

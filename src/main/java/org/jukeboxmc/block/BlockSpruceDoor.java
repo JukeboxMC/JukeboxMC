@@ -18,7 +18,7 @@ public class BlockSpruceDoor extends BlockDoor {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SPRUCE_DOOR;
     }
 

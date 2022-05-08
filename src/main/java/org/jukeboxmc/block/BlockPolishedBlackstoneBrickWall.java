@@ -25,7 +25,7 @@ public class BlockPolishedBlackstoneBrickWall extends BlockWall {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_BRICK_WALL;
     }
 

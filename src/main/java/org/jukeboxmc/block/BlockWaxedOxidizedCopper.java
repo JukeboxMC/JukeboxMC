@@ -20,7 +20,7 @@ public class BlockWaxedOxidizedCopper extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WAXED_OXIDIZED_COPPER;
     }
 

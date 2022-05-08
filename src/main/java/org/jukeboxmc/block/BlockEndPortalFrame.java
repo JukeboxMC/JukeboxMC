@@ -33,7 +33,7 @@ public class BlockEndPortalFrame extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.END_PORTAL_FRAME;
     }
 

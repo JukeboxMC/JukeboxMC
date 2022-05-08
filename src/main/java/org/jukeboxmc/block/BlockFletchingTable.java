@@ -19,7 +19,7 @@ public class BlockFletchingTable extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.FLETCHING_TABLE;
     }
 

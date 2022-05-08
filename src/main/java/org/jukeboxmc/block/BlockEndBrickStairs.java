@@ -18,7 +18,7 @@ public class BlockEndBrickStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.END_BRICK_STAIRS;
     }
 

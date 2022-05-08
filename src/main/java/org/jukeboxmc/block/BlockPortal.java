@@ -18,7 +18,7 @@ public class BlockPortal extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PORTAL;
     }
 

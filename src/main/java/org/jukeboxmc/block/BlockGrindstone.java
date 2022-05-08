@@ -46,7 +46,7 @@ public class BlockGrindstone extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GRINDSTONE;
     }
 

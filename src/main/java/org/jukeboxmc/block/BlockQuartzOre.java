@@ -19,7 +19,7 @@ public class BlockQuartzOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.QUARTZ_ORE;
     }
 

@@ -19,7 +19,7 @@ public class BlockCobbledDeepslate extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COBBLED_DEEPSLATE;
     }
 

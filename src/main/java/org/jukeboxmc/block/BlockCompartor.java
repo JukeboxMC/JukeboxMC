@@ -36,7 +36,7 @@ public class BlockCompartor extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.UNPOWERED_COMPARATOR;
     }
 

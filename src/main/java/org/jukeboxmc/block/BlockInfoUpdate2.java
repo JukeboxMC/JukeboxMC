@@ -18,7 +18,7 @@ public class BlockInfoUpdate2 extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.INFO_UPDATE2;
     }
 

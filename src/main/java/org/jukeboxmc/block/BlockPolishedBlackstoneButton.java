@@ -14,7 +14,7 @@ public class BlockPolishedBlackstoneButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_BUTTON;
     }
 

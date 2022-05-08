@@ -31,7 +31,7 @@ public class BlockObserver extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.OBSERVER;
     }
 

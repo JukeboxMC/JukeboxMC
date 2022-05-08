@@ -43,7 +43,7 @@ public class BlockDarkOakStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DARK_OAK_STANDING_SIGN;
     }
 

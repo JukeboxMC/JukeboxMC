@@ -58,7 +58,7 @@ public class BlockWaxedOxidizedCutCopperSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WAXED_OXIDIZED_CUT_COPPER_SLAB;
     }
 

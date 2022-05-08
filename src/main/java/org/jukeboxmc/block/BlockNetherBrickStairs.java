@@ -18,7 +18,7 @@ public class BlockNetherBrickStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.NETHER_BRICK_STAIRS;
     }
 

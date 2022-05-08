@@ -48,7 +48,7 @@ public class BlockBell extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BELL;
     }
 

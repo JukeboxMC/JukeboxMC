@@ -15,7 +15,7 @@ public class ItemShulkerBox extends Item {
     }
 
     @Override
-    public ItemType getItemType() {
+    public ItemType getType() {
         switch ( this.getColor() ) {
             case SILVER:
                 return ItemType.SILVER_SHULKER_BOX;

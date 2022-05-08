@@ -24,7 +24,7 @@ public class BlockBookshelf extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BOOKSHELF;
     }
 

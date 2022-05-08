@@ -19,7 +19,7 @@ public class BlockLightGrayCandle extends BlockCandleBehavior {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIGHT_GRAY;
     }
 }

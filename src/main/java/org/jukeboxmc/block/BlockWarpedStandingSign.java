@@ -39,7 +39,7 @@ public class BlockWarpedStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_STANDING_SIGN;
     }
 

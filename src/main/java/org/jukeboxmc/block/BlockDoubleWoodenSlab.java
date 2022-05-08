@@ -32,7 +32,7 @@ public class BlockDoubleWoodenSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WOODEN_SLAB;
     }
 

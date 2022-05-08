@@ -29,7 +29,7 @@ public class BlockDoubleCrimsonSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_SLAB;
     }
 

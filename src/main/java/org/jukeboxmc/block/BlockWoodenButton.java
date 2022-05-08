@@ -18,7 +18,7 @@ public class BlockWoodenButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WOODEN_BUTTON;
     }
 

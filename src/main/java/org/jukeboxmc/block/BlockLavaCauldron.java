@@ -30,7 +30,7 @@ public class BlockLavaCauldron extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LAVA_CAULDRON;
     }
 

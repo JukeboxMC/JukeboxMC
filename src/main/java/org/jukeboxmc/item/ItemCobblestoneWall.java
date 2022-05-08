@@ -15,7 +15,7 @@ public class ItemCobblestoneWall extends Item {
     }
 
     @Override
-    public ItemType getItemType() {
+    public ItemType getType() {
         switch ( this.getWallType() ) {
             case MOSSY_COBBLESTONE:
                 return ItemType.MOSSY_COBBLESTONE_WALL;

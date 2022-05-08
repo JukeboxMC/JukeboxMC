@@ -19,7 +19,7 @@ public class BlockSmoothStone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SMOOTH_STONE;
     }
 

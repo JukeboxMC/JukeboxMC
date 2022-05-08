@@ -18,7 +18,7 @@ public class BlockBirchWallSign extends BlockWallSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BIRCH_WALL_SIGN;
     }
 

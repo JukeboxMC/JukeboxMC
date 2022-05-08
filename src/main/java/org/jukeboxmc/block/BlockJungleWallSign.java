@@ -18,7 +18,7 @@ public class BlockJungleWallSign extends BlockWallSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.JUNGLE_WALL_SIGN;
     }
 

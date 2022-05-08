@@ -34,7 +34,7 @@ public class BlockDirt extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DIRT;
     }
 

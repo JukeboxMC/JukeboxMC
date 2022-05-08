@@ -20,7 +20,7 @@ public class BlockRedstoneOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.REDSTONE_ORE;
     }
 

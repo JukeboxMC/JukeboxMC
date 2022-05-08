@@ -130,7 +130,7 @@ public abstract class Block implements Cloneable {
     }
 
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        if ( this.getBlockType() != BlockType.AIR ) {
+        if ( this.getType() != BlockType.AIR ) {
             world.setBlock( placePosition, this, 0, player.getDimension(), true );
             return true;
         } else {
@@ -162,7 +162,7 @@ public abstract class Block implements Cloneable {
 
     public abstract Item toItem();
 
-    public abstract BlockType getBlockType();
+    public abstract BlockType getType();
 
     public boolean hasBlockEntity() {
         return false;
@@ -254,7 +254,7 @@ public abstract class Block implements Cloneable {
             return 0;
         }
 
-        BlockType blockType = this.getBlockType();
+        BlockType blockType = this.getType();
         boolean correctTool = this.correctTool0( this.getToolType(), item.getItemToolType() ) || item.getItemToolType().equals( ItemToolType.SHEARS ) && ( blockType.equals( BlockType.WEB ) || blockType.equals( BlockType.LEAVES ) || blockType.equals( BlockType.LEAVES2 ) );
         boolean canBreakWithHand = this.canBreakWithHand();
         ItemToolType itemToolType = item.getItemToolType();

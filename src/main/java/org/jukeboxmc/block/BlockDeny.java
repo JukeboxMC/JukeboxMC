@@ -18,7 +18,7 @@ public class BlockDeny extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DENY;
     }
 

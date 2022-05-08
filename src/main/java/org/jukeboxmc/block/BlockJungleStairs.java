@@ -18,7 +18,7 @@ public class BlockJungleStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.JUNGLE_STAIRS;
     }
 

@@ -46,7 +46,7 @@ public class BlockBlastFurnace extends Block {
         if ( blockEntity != null ) {
             BlastFurnaceInventory furnaceInventory = blockEntity.getBlastFurnaceInventory();
             for ( Item content : furnaceInventory.getContents() ) {
-                if ( content != null && !content.getItemType().equals( ItemType.AIR ) ){
+                if ( content != null && !content.getType().equals( ItemType.AIR ) ){
                     this.location.getWorld().dropItem( content, breakPosition, null ).spawn();
                 }
             }
@@ -62,7 +62,7 @@ public class BlockBlastFurnace extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BLAST_FURNACE;
     }
 

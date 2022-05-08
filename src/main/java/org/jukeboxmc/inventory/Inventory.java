@@ -67,7 +67,7 @@ public abstract class Inventory {
         if ( slot < 0 || slot >= this.slotSize ) {
             return;
         }
-        if ( item.getAmount() <= 0 || item.getItemType().equals( ItemType.AIR ) ) {
+        if ( item.getAmount() <= 0 || item.getType().equals( ItemType.AIR ) ) {
             this.contents[slot] = new ItemAir();
         } else {
             this.contents[slot] = item;
@@ -89,7 +89,7 @@ public abstract class Inventory {
         int amount = item.getAmount();
 
         for ( Item content : this.getContents() ) {
-            if ( content == null || content.getItemType().equals( ItemType.AIR ) ) {
+            if ( content == null || content.getType().equals( ItemType.AIR ) ) {
                 return true;
             } else if ( content.equals( item ) ) {
                 if ( content.getAmount() + item.getAmount() <= content.getMaxAmount() ) {
@@ -134,7 +134,7 @@ public abstract class Inventory {
             }
 
             for ( int i = 0; i < contents.length; i++ ) {
-                if ( contents[i].getItemType().equals( ItemType.AIR ) ) {
+                if ( contents[i].getType().equals( ItemType.AIR ) ) {
                     this.setItem( i, clone, sendContents );
                     return true;
                 }
@@ -166,7 +166,7 @@ public abstract class Inventory {
                 }
             }
 
-            if ( contents[slot].getItemType().equals( ItemType.AIR ) ) {
+            if ( contents[slot].getType().equals( ItemType.AIR ) ) {
                 this.setItem( slot, clone );
                 return true;
             }
@@ -179,8 +179,8 @@ public abstract class Inventory {
     public void removeItem( int slot, Item item ) {
         Item content = this.getItem( slot );
 
-        if ( content != null && content.getItemType() != ItemType.AIR ) {
-            if ( content.getItemType() == item.getItemType() && content.getMeta() == item.getMeta() ) {
+        if ( content != null && content.getType() != ItemType.AIR ) {
+            if ( content.getType() == item.getType() && content.getMeta() == item.getMeta() ) {
                 content.setAmount( content.getAmount() - item.getAmount() );
                 if ( content.getAmount() <= 0 ) {
                     this.setItem( slot, new ItemAir() );
@@ -195,8 +195,8 @@ public abstract class Inventory {
         for ( int i = 0; i < this.slotSize; i++ ) {
             Item content = this.getItem( i );
 
-            if ( content != null && content.getItemType() != ItemType.AIR ) {
-                if ( content.getItemType() == item.getItemType() && content.getMeta() == item.getMeta() ) {
+            if ( content != null && content.getType() != ItemType.AIR ) {
+                if ( content.getType() == item.getType() && content.getMeta() == item.getMeta() ) {
                     content.setAmount( content.getAmount() - item.getAmount() );
                     if ( content.getAmount() <= 0 ) {
                         this.setItem( i, new ItemAir() );
@@ -216,7 +216,7 @@ public abstract class Inventory {
     public void clear() {
         for ( int i = 0; i < this.slotSize; i++ ) {
             Item item = this.getItem( i );
-            if ( item != null && item.getItemType() != ItemType.AIR ) {
+            if ( item != null && item.getType() != ItemType.AIR ) {
                 this.clear( i );
             }
         }

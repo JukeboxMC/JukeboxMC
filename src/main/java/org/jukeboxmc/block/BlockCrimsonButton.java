@@ -14,7 +14,7 @@ public class BlockCrimsonButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_BUTTON;
     }
 

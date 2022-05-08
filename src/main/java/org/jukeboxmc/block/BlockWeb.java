@@ -19,7 +19,7 @@ public class BlockWeb extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WEB;
     }
 

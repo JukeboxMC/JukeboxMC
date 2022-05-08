@@ -45,7 +45,7 @@ public class BlockDropper extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DROPPER;
     }
 

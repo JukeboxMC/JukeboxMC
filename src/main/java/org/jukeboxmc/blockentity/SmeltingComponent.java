@@ -63,12 +63,12 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         if ( input != null && !( input instanceof ItemAir ) && fuelItem != null && !( fuelItem instanceof ItemAir ) && outputItem.getAmount() < 64 ) {
             this.checkForRecipe( input );
         }
-        if ( this.output != null && !this.output.getItemType().equals( ItemType.AIR ) && !input.getItemType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
+        if ( this.output != null && !this.output.getType().equals( ItemType.AIR ) && !input.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
             this.cookTime++;
 
             if ( this.cookTime >= (this.inventory instanceof FurnaceInventory ? 200 : 100) ) {
                 Item itemStack = this.inventory.getItem( 2 );
-                if ( itemStack.getItemType() != this.output.getItemType() ) {
+                if ( itemStack.getType() != this.output.getType() ) {
                     this.inventory.setItem( 2, this.output.setAmount( 1 ) );
                 } else {
                     itemStack.setAmount( itemStack.getAmount() + 1 );
@@ -140,12 +140,12 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         }
 
         Item input = this.inventory.getItem( 0 );
-        if ( input.getItemType() == ItemType.AIR || input.getAmount() == 0 ) {
+        if ( input.getType() == ItemType.AIR || input.getAmount() == 0 ) {
             return false;
         }
 
         Item itemStack = this.inventory.getItem( 2 );
-        if ( itemStack.getItemType() == this.output.getItemType() ) {
+        if ( itemStack.getType() == this.output.getType() ) {
             return itemStack.getAmount() <= itemStack.getMaxAmount();
         }
         return true;

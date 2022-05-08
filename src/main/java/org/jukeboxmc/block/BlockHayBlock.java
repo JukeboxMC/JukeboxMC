@@ -39,7 +39,7 @@ public class BlockHayBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.HAY_BLOCK;
     }
 

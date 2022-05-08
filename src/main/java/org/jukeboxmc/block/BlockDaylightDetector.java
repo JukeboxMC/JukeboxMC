@@ -19,7 +19,7 @@ public class BlockDaylightDetector extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DAYLIGHT_DETECTOR;
     }
 

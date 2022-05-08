@@ -14,7 +14,7 @@ public class BlockWarpedFenceGate extends BlockFenceGate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_FENCE_GATE;
     }
 

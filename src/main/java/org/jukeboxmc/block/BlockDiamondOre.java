@@ -20,7 +20,7 @@ public class BlockDiamondOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DIAMOND_ORE;
     }
 

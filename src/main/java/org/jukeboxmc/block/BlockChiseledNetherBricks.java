@@ -15,7 +15,7 @@ public class BlockChiseledNetherBricks extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CHISELED_NETHER_BRICKS;
     }
 

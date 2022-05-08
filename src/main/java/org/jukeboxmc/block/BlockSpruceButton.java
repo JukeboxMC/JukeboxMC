@@ -18,7 +18,7 @@ public class BlockSpruceButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SPRUCE_BUTTON;
     }
 

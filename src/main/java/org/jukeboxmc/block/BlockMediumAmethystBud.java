@@ -31,7 +31,7 @@ public class BlockMediumAmethystBud extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MEDIUM_AMETHYST_BUD;
     }
 

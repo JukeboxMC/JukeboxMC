@@ -626,7 +626,7 @@ public class World {
 
             List<EntityItem> itemDrops = new ArrayList<>();
             for ( Item droppedItem : blockBreakEvent.getDrops() ) {
-                if ( !droppedItem.getItemType().equals( ItemType.AIR ) ) {
+                if ( !droppedItem.getType().equals( ItemType.AIR ) ) {
                     itemDrops.add( player.getWorld().dropItem( droppedItem, breakPosition, null ) );
                 }
             }
@@ -779,6 +779,9 @@ public class World {
                 Chunk chunk = this.getChunk( x, z, dimension );
                 if ( chunk != null ) {
                     for ( Entity iterateEntities : chunk.getEntities() ) {
+                        if ( iterateEntities == null ) {
+                            continue;
+                        }
                         if ( !iterateEntities.equals( entity ) ) {
                             AxisAlignedBB boundingBox = iterateEntities.getBoundingBox();
                             if ( boundingBox.intersectsWith( bb ) ) {
@@ -832,7 +835,7 @@ public class World {
         placedBlock.setLocation( location );
 
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
-                clickedBlock.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
+                clickedBlock.getType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
                         PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), clickedBlock );
 
         Server.getInstance().getPluginManager().callEvent( playerInteractEvent );

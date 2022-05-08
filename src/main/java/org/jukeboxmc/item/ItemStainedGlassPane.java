@@ -15,7 +15,7 @@ public class ItemStainedGlassPane extends Item {
     }
 
     @Override
-    public ItemType getItemType() {
+    public ItemType getType() {
         switch ( this.getColor() ) {
             case SILVER:
                 return ItemType.SILVER_STAINED_GLASS_PANE;

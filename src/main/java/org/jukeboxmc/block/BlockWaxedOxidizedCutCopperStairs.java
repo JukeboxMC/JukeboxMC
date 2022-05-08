@@ -18,7 +18,7 @@ public class BlockWaxedOxidizedCutCopperStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WAXED_OXIDIZED_CUT_COPPER_STAIRS;
     }
 }

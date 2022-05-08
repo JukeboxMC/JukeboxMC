@@ -19,7 +19,7 @@ public class BlockBorderBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BORDER_BLOCK;
     }
 

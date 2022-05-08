@@ -19,7 +19,7 @@ public class BlockDeepslateCoalOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_COAL_ORE;
     }
 

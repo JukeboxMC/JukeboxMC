@@ -19,7 +19,7 @@ public class BlockCrimsonNylium extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_NYLIUM;
     }
 

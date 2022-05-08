@@ -18,7 +18,7 @@ public class BlockInvisiblebedrock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.INVISIBLE_BEDROCK;
     }
 

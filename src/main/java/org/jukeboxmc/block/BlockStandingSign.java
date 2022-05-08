@@ -43,7 +43,7 @@ public class BlockStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STANDING_SIGN;
     }
 

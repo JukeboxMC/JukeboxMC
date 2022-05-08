@@ -18,7 +18,7 @@ public class BlockDarkOakDoor extends BlockDoor {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DARK_OAK_DOOR;
     }
 

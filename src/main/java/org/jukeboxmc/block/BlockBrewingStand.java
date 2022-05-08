@@ -19,7 +19,7 @@ public class BlockBrewingStand extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BREWING_STAND;
     }
 

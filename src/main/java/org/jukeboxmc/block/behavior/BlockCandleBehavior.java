@@ -49,11 +49,11 @@ public abstract class BlockCandleBehavior extends Block {
         if ( itemInHand instanceof ItemCandleBehavior ) {
             return false;
         }
-        if ( this.isLit() && !itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
+        if ( this.isLit() && !itemInHand.getType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( false );
             this.world.playSound( blockPosition, SoundEvent.FIZZ );
             return true;
-        } else if ( !this.isLit() && itemInHand.getItemType().equals( ItemType.FLINT_AND_STEEL ) ) {
+        } else if ( !this.isLit() && itemInHand.getType().equals( ItemType.FLINT_AND_STEEL ) ) {
             this.setLit( true );
             this.world.playSound( blockPosition, SoundEvent.IGNITE );
             return true;

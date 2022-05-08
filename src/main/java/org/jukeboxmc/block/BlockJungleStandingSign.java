@@ -43,7 +43,7 @@ public class BlockJungleStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.JUNGLE_STANDING_SIGN;
     }
 

@@ -23,7 +23,7 @@ public class BlockCartographyTable extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CARTOGRAPGHY_TABLE;
     }
 

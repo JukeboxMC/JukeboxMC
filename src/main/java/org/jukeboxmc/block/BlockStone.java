@@ -20,7 +20,7 @@ public class BlockStone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STONE;
     }
 

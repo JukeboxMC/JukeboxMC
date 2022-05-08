@@ -104,7 +104,7 @@ public class BlockUndyedShulkerBox extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.UNDYED_SHULKER_BOX;
     }
 

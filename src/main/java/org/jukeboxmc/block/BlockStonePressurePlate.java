@@ -19,7 +19,7 @@ public class BlockStonePressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STONE_PRESSURE_PLATE;
     }
 

@@ -19,7 +19,7 @@ public class BlockCoral extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CORAL;
     }
 

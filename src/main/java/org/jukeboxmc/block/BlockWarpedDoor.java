@@ -14,7 +14,7 @@ public class BlockWarpedDoor extends BlockDoor {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_DOOR;
     }
 

@@ -18,7 +18,7 @@ public class BlockAcaciaFenceGate extends BlockFenceGate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_FENCE_GATE;
     }
 }

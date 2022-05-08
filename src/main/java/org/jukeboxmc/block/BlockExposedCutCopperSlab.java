@@ -58,7 +58,7 @@ public class BlockExposedCutCopperSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.EXPOSED_CUT_COPPER_SLAB;
     }
 

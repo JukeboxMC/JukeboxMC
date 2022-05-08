@@ -31,7 +31,7 @@ public class BlockSandstone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SANDSTONE;
     }
 

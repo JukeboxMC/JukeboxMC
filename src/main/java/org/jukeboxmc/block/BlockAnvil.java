@@ -38,7 +38,7 @@ public class BlockAnvil extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ANVIL;
     }
 

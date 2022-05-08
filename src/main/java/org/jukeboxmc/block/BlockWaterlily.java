@@ -21,7 +21,7 @@ public class BlockWaterlily extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
 
-        if ( block.getBlockType() == BlockType.WATER || block.getBlockType() == BlockType.FLOWING_WATER ) {
+        if ( block.getType() == BlockType.WATER || block.getType() == BlockType.FLOWING_WATER ) {
             world.setBlock( placePosition, this );
             return true;
         }
@@ -34,7 +34,7 @@ public class BlockWaterlily extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WATERLILY;
     }
 

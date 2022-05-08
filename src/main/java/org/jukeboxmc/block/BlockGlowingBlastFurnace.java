@@ -19,7 +19,7 @@ public class BlockGlowingBlastFurnace extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.FURNACE;
     }
 

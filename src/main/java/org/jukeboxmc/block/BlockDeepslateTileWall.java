@@ -28,7 +28,7 @@ public class BlockDeepslateTileWall extends BlockWall {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_TILE_WALL;
     }
 }

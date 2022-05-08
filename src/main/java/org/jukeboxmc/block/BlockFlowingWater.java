@@ -18,7 +18,7 @@ public class BlockFlowingWater extends BlockWater {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WATER;
     }
 

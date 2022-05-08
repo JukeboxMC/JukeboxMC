@@ -39,7 +39,7 @@ public class BlockPolishedBasalt extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BASALT;
     }
 

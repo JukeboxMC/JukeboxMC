@@ -23,7 +23,7 @@ public class BlockCraftingTable extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRAFTING_TABLE;
     }
 

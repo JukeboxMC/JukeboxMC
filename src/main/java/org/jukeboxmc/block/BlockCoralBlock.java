@@ -20,7 +20,7 @@ public class BlockCoralBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CORAL_BLOCK;
     }
 

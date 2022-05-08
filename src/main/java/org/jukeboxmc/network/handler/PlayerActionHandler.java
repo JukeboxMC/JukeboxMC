@@ -107,7 +107,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                 Block startBreakBlock = player.getWorld().getBlock( lasBreakPosition );
 
                 PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
-                        startBreakBlock.getBlockType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.LEFT_CLICK_AIR :
+                        startBreakBlock.getType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.LEFT_CLICK_AIR :
                                 PlayerInteractEvent.Action.LEFT_CLICK_BLOCK, player.getInventory().getItemInHand(), startBreakBlock );
 
                 Server.getInstance().getPluginManager().callEvent( playerInteractEvent );

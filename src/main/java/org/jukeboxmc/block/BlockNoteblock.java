@@ -19,7 +19,7 @@ public class BlockNoteblock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.NOTEBLOCK;
     }
 

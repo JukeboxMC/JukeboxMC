@@ -18,7 +18,7 @@ public class BlockChorusPlant extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CHORUS_PLANT;
     }
 

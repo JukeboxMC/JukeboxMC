@@ -21,7 +21,7 @@ public class BlockBigDripleaf extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BIG_DRIPLEAF;
     }
 

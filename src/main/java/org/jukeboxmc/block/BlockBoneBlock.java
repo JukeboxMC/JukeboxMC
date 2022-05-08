@@ -39,7 +39,7 @@ public class BlockBoneBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BONE_BLOCK;
     }
 

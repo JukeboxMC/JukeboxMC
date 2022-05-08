@@ -19,7 +19,7 @@ public class BlockChiseledDeepslate extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CHISELED_DEEPSLATE;
     }
 

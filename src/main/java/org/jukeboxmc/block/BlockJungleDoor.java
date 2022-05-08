@@ -18,7 +18,7 @@ public class BlockJungleDoor extends BlockDoor {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.JUNGLE_DOOR;
     }
 

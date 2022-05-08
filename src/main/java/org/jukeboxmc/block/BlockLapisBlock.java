@@ -20,7 +20,7 @@ public class BlockLapisBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LAPIS_BLOCK;
     }
 

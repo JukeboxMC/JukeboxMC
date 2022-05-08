@@ -22,7 +22,7 @@ public class BlockWater extends BlockLiquid {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WATER;
     }
 

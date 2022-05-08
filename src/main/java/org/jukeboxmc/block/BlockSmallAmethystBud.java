@@ -31,7 +31,7 @@ public class BlockSmallAmethystBud extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SMALL_AMETHYST_BUD;
     }
 

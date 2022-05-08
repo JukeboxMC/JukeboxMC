@@ -14,7 +14,7 @@ public class BlockWarpedPressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_PRESSURE_PLATE;
     }
 

@@ -20,7 +20,7 @@ public class BlockGoldBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GOLD_BLOCK;
     }
 

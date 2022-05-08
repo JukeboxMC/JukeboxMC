@@ -31,7 +31,7 @@ public class BlockAmethystCluster extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.AMETHYST_CLUSTER;
     }
 

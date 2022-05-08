@@ -18,7 +18,7 @@ public class BlockAcaciaButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_BUTTON;
     }
 }

@@ -18,7 +18,7 @@ public class BlockPolishedAndesiteStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_ANDESITE_STAIRS;
     }
 

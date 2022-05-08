@@ -58,7 +58,7 @@ public class BlockTurtleEgg extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.TURTLE_EGG;
     }
 

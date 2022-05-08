@@ -19,7 +19,7 @@ public class BlockPowderSnow extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POWDER_SNOW;
     }
 }

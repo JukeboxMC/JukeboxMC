@@ -18,7 +18,7 @@ public class BlockPolishedDioriteStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_DIORITE_STAIRS;
     }
 

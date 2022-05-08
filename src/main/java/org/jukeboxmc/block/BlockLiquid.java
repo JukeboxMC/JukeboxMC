@@ -34,7 +34,7 @@ public abstract class BlockLiquid extends Block {
         if ( updateReason == UpdateReason.NORMAL ) {
             if ( usesWaterLogging() && layer > 0 ) {
                 Block layer0 = this.world.getBlock( this.location, 0 );
-                if ( layer0.getBlockType() == BlockType.AIR ) {
+                if ( layer0.getType() == BlockType.AIR ) {
                     this.world.setBlock( this.location, new BlockAir(), 1, false );
                     this.world.setBlock( this.location, this, 0, false );
                 } else if ( layer0 instanceof BlockWaterlogable && ( ( (BlockWaterlogable) layer0 ).getWaterloggingLevel() <= 0 || ( (BlockWaterlogable) layer0 ).getWaterloggingLevel() == 1 && getLiquidDepth() > 0 ) ) {
@@ -150,9 +150,9 @@ public abstract class BlockLiquid extends Block {
     }
 
     protected int getFlowDecay( Block block ) {
-        if ( block.getBlockType() != this.getBlockType() ) {
+        if ( block.getType() != this.getType() ) {
             Block layer1 = block.getWorld().getBlock( this.location, 1 );
-            if ( layer1.getBlockType() != this.getBlockType() ) {
+            if ( layer1.getType() != this.getType() ) {
                 return -1;
             } else {
                 return ( (BlockLiquid) layer1 ).getLiquidDepth();
@@ -199,8 +199,8 @@ public abstract class BlockLiquid extends Block {
             BlockLiquidFlowEvent event = new BlockLiquidFlowEvent( block, this, newFlowDecay );
             this.world.getServer().getPluginManager().callEvent( event );
             if ( !event.isCancelled() ) {
-                if ( block.layer == 0 && block.getBlockType() != BlockType.AIR ) {
-                    this.world.breakBlock( null, block.getLocation(), block.getBlockType() == BlockType.WEB ? new ItemWoodenSword() : null );
+                if ( block.layer == 0 && block.getType() != BlockType.AIR ) {
+                    this.world.breakBlock( null, block.getLocation(), block.getType() == BlockType.WEB ? new ItemWoodenSword() : null );
                 }
                 this.world.setBlock( block.getLocation(), this.getBlock( newFlowDecay ), block.layer ); //UPDATE TRUE
                 this.world.scheduleBlockUpdate( block.getLocation(), this.getTickRate() );

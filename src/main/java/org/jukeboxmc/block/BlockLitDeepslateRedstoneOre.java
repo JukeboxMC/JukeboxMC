@@ -18,7 +18,7 @@ public class BlockLitDeepslateRedstoneOre extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIT_DEEPSLATE_REDSTONE_ORE;
     }
 }

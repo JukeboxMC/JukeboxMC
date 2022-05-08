@@ -18,7 +18,7 @@ public class BlockWoodenPressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WOODEN_PRESSURE_PLATE;
     }
 

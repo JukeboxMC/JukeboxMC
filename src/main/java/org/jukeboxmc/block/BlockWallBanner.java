@@ -20,7 +20,7 @@ public class BlockWallBanner extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WALL_BANNER;
     }
 

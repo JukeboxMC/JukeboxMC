@@ -17,7 +17,7 @@ public class ItemFence extends Item implements Burnable {
     }
 
     @Override
-    public ItemType getItemType() {
+    public ItemType getType() {
         switch ( this.getWoodType() ) {
             case SPRUCE:
                 return ItemType.SPRUCE_FENCE;

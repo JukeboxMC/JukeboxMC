@@ -19,7 +19,7 @@ public class BlockCyanCandle extends BlockCandleBehavior {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CYAN_CANDLE;
     }
 }

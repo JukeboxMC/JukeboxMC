@@ -29,7 +29,7 @@ public class BlockDeepslateBrickWall extends BlockWall {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_BRICK_WALL;
     }
 }

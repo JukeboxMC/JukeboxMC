@@ -19,7 +19,7 @@ public class BlockPumpkinStem extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PUMPKIN_STEM;
     }
 

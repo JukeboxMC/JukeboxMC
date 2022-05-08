@@ -18,7 +18,7 @@ public class BlockCake extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CAKE;
     }
 

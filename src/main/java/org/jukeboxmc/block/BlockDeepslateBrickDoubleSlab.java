@@ -31,7 +31,7 @@ public class BlockDeepslateBrickDoubleSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_BRICK_SLAB;
     }
 

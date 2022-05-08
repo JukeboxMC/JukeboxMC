@@ -19,7 +19,7 @@ public class BlockBrick extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BRICK_BLOCK;
     }
 

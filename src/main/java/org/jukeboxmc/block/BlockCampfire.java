@@ -31,7 +31,7 @@ public class BlockCampfire extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CAMPFIRE;
     }
 

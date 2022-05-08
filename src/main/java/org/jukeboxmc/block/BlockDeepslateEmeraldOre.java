@@ -20,7 +20,7 @@ public class BlockDeepslateEmeraldOre extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_EMERALD_ORE;
     }
 

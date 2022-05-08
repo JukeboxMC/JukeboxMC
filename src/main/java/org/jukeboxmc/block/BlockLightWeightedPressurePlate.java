@@ -19,7 +19,7 @@ public class BlockLightWeightedPressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIGHT_WEIGHTED_PRESSURE_PLATE;
     }
 

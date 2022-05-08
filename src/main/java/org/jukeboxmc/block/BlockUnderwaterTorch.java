@@ -19,7 +19,7 @@ public class BlockUnderwaterTorch extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.UNDERWATER_TORCH;
     }
 

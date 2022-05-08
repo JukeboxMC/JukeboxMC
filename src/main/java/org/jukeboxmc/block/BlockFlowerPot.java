@@ -18,7 +18,7 @@ public class BlockFlowerPot extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.FLOWER_POT;
     }
 

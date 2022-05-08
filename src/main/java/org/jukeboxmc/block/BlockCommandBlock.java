@@ -19,7 +19,7 @@ public class BlockCommandBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COMMAND_BLOCK;
     }
 

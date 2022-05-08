@@ -19,7 +19,7 @@ public class BlockBlueIce extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BLUE_ICE;
     }
 

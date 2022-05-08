@@ -18,7 +18,7 @@ public class BlockDeepslateBricks extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return null;
     }
 }

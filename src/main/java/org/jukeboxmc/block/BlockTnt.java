@@ -18,7 +18,7 @@ public class BlockTnt extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.TNT;
     }
 

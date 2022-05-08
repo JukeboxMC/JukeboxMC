@@ -18,7 +18,7 @@ public class BlockAcaciaStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_STAIRS;
     }
 

@@ -18,7 +18,7 @@ public class BlockGlowingRedstoneOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GLOWING_REDSTONE_ORE;
     }
 

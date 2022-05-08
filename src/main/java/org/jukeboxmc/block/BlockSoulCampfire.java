@@ -28,7 +28,7 @@ public class BlockSoulCampfire extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SOUL_CAMPFIRE;
     }
 

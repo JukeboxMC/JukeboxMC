@@ -262,6 +262,15 @@ public abstract class Entity {
         }
     }
 
+    public Vector getDirectionVector() {
+        float pitch = (float) (((this.getPitch() + 90) * Math.PI) / 180);
+        float yaw = (float) (((this.getYaw() + 90) * Math.PI) / 180);
+        float x = (float) (Math.sin(pitch) * Math.cos(yaw));
+        float z = (float) (Math.sin(pitch) * Math.sin(yaw));
+        float y = (float) Math.cos(pitch);
+        return new Vector(x, y, z).normalize();
+    }
+
     public AxisAlignedBB getBoundingBox() {
         return this.boundingBox;
     }

@@ -18,7 +18,7 @@ public class BlockBirchButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BIRCH_BUTTON;
     }
 

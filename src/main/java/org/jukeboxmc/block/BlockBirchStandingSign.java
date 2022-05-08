@@ -43,7 +43,7 @@ public class BlockBirchStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BIRCH_STANDING_SIGN;
     }
 

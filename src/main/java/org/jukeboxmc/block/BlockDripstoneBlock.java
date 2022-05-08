@@ -19,7 +19,7 @@ public class BlockDripstoneBlock extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DRIPSTONE_BLOCK;
     }
 

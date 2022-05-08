@@ -18,7 +18,7 @@ public class BlockRedNetherBrickStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.RED_NETHER_BRICK_STAIRS;
     }
 

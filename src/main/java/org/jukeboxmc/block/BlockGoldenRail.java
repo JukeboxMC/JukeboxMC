@@ -19,7 +19,7 @@ public class BlockGoldenRail extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GOLDEN_RAIL;
     }
 

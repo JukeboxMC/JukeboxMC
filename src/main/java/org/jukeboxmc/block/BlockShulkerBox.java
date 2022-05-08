@@ -95,7 +95,7 @@ public class BlockShulkerBox extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SHULKER_BOX;
     }
 

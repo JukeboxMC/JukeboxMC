@@ -18,7 +18,7 @@ public class BlockSporeBlossom extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SPORE_BLOSSOM;
     }
 

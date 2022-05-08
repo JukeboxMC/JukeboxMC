@@ -18,7 +18,7 @@ public class BlockHardGlassPane extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.HARD_GLASS_PANE;
     }
 

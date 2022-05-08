@@ -20,7 +20,7 @@ public class BlockDeepslateLapisOre extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_LAPIS_ORE;
     }
 

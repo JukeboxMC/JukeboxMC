@@ -19,7 +19,7 @@ public class BlockColoredTorchBP extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COLORED_TORCH_BP;
     }
 

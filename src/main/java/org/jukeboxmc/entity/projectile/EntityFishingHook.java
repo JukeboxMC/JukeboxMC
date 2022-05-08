@@ -26,7 +26,7 @@ public class EntityFishingHook extends EntityProjectile {
     public void update( long currentTick ) {
         super.update( currentTick );
 
-        if ( this.shooter.isDead() || ( (Player) this.shooter ).getInventory().getItemInHand().getItemType() != ItemType.FISHING_ROD ) {
+        if ( this.shooter.isDead() || ( (Player) this.shooter ).getInventory().getItemInHand().getType() != ItemType.FISHING_ROD ) {
             this.close();
             if ( this.shooter instanceof Player ) {
                 ( (Player) this.shooter ).setEntityFishingHook( null );

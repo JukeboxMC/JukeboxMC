@@ -43,7 +43,7 @@ public class BlockRedstoneTorch extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.REDSTONE_TORCH;
     }
 

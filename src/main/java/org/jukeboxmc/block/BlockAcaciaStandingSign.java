@@ -43,7 +43,7 @@ public class BlockAcaciaStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_STANDING_SIGN;
     }
 }

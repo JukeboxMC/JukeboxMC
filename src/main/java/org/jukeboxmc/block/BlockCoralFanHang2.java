@@ -19,7 +19,7 @@ public class BlockCoralFanHang2 extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CORAL_FAN_HANG2;
     }
 

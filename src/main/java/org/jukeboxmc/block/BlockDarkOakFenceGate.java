@@ -18,7 +18,7 @@ public class BlockDarkOakFenceGate extends BlockFenceGate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DARK_OAK_FENCE_GATE;
     }
 

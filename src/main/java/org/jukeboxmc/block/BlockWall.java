@@ -101,7 +101,7 @@ public abstract class BlockWall extends BlockWaterlogable {
     }
 
     public boolean canConnect( Block block ) {
-        switch ( block.getBlockType() ) {
+        switch ( block.getType() ) {
             case COBBLESTONE_WALL:
             case BLACKSTONE_WALL:
             case POLISHED_BLACKSTONE_WALL:

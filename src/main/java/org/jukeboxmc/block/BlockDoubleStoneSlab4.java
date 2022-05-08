@@ -34,7 +34,7 @@ public class BlockDoubleStoneSlab4 extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STONE_SLAB4;
     }
 

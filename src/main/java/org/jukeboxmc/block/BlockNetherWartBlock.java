@@ -19,7 +19,7 @@ public class BlockNetherWartBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.NETHER_WART_BLOCK;
     }
 

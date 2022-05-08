@@ -19,7 +19,7 @@ public class BlockIronBars extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.IRON_BARS;
     }
 

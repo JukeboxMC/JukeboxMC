@@ -20,7 +20,7 @@ public class BlockWeatheredCopper extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WEATHERED_COPPER;
     }
 

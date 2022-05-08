@@ -19,7 +19,7 @@ public class BlockHardenedClay extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.HARDENED_CLAY;
     }
 

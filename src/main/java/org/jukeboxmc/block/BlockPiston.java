@@ -43,7 +43,7 @@ public class BlockPiston extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PISTON;
     }
 

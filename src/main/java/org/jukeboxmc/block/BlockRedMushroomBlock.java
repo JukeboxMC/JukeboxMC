@@ -18,7 +18,7 @@ public class BlockRedMushroomBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.RED_MUSHROOM_BLOCK;
     }
 

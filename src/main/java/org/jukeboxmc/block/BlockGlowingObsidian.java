@@ -18,7 +18,7 @@ public class BlockGlowingObsidian extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GLOWING_OBSIDIAN;
     }
 

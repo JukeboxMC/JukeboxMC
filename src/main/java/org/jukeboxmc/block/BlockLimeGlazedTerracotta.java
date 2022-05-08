@@ -18,7 +18,7 @@ public class BlockLimeGlazedTerracotta extends BlockTerracotta {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIME_GLAZED_TERRACOTTA;
     }
 

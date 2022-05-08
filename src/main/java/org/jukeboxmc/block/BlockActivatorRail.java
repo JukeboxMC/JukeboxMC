@@ -19,7 +19,7 @@ public class BlockActivatorRail extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACTIVATOR_RAIL;
     }
 

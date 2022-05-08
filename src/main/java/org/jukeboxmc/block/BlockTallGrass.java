@@ -26,7 +26,7 @@ public class BlockTallGrass extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block blockDown = world.getBlock( blockPosition );
-        if ( blockDown.getBlockType().equals( BlockType.GRASS ) || blockDown.getBlockType().equals( BlockType.DIRT ) || blockDown.getBlockType().equals( BlockType.PODZOL ) ) {
+        if ( blockDown.getType().equals( BlockType.GRASS ) || blockDown.getType().equals( BlockType.DIRT ) || blockDown.getType().equals( BlockType.PODZOL ) ) {
             world.setBlock( placePosition, this );
             return true;
         }
@@ -38,7 +38,7 @@ public class BlockTallGrass extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.TALLGRASS;
     }
 

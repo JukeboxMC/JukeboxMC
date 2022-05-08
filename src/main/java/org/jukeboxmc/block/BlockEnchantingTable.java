@@ -45,7 +45,7 @@ public class BlockEnchantingTable extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ENCHANTING_TABLE;
     }
 

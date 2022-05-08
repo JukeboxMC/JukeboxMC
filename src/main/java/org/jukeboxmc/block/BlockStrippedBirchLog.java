@@ -39,7 +39,7 @@ public class BlockStrippedBirchLog extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.STRIPPED_BIRCH_LOG;
     }
 

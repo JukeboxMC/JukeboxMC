@@ -19,7 +19,7 @@ public class BlockEndStone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.END_STONE;
     }
 

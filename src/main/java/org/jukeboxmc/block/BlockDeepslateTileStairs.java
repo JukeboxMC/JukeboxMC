@@ -18,7 +18,7 @@ public class BlockDeepslateTileStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DEEPSLATE_TILE_STAIRS;
     }
 }

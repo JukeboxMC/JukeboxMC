@@ -18,7 +18,7 @@ public class BlockBubbleColumn extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BUBBLE_COLUMN;
     }
 

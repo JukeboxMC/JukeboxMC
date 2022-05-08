@@ -19,7 +19,7 @@ public class BlockPistonarmcollision extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PISTONARMCOLLISION;
     }
 

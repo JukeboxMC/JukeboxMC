@@ -15,7 +15,7 @@ public class BlockBlackstone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BLACKSTONE;
     }
 

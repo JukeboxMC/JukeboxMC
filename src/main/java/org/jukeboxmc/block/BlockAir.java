@@ -23,7 +23,7 @@ public class BlockAir extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.AIR;
     }
 

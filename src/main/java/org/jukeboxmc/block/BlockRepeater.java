@@ -42,7 +42,7 @@ public class BlockRepeater extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.UNPOWERED_REPEATER;
     }
 

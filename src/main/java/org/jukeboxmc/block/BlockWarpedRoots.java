@@ -18,7 +18,7 @@ public class BlockWarpedRoots extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_ROOTS;
     }
 

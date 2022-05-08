@@ -19,7 +19,7 @@ public class BlockMagma extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MAGMA;
     }
 

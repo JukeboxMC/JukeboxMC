@@ -19,7 +19,7 @@ public class BlockCrackedDeepslateBricks extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRACKED_DEEPSLATE_BRICKS;
     }
 

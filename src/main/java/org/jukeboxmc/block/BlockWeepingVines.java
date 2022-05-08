@@ -21,7 +21,7 @@ public class BlockWeepingVines extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition ).getSide( BlockFace.UP );
 
-        if ( blockFace != BlockFace.UP && block.getBlockType() != BlockType.AIR) {
+        if ( blockFace != BlockFace.UP && block.getType() != BlockType.AIR) {
             world.setBlock( placePosition, this );
             return true;
         }
@@ -34,7 +34,7 @@ public class BlockWeepingVines extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WEEPING_VINES;
     }
 

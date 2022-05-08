@@ -18,7 +18,7 @@ public class BlockKelp extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.KELP;
     }
 

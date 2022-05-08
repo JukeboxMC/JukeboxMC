@@ -18,7 +18,7 @@ public class BlockMovingblock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MOVING_BLOCK;
     }
 

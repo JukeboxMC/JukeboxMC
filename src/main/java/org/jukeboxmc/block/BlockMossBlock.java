@@ -19,7 +19,7 @@ public class BlockMossBlock extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MOSS_BLOCK;
     }
 

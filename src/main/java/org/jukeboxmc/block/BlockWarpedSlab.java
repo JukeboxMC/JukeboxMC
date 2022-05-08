@@ -59,7 +59,7 @@ public class BlockWarpedSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WARPED_SLAB;
     }
 

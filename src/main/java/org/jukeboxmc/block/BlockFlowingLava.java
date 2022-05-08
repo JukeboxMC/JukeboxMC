@@ -18,7 +18,7 @@ public class BlockFlowingLava extends BlockLava {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LAVA;
     }
 

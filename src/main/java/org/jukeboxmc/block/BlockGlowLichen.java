@@ -19,7 +19,7 @@ public class BlockGlowLichen extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GLOW_LICHEN;
     }
 

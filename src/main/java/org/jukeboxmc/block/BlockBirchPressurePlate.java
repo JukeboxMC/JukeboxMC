@@ -18,7 +18,7 @@ public class BlockBirchPressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BIRCH_PRESSURE_PLATE;
     }
 

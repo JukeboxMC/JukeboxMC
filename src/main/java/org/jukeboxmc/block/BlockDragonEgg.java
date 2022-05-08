@@ -18,7 +18,7 @@ public class BlockDragonEgg extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DRAGON_EGG;
     }
 

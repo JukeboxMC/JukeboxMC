@@ -18,7 +18,7 @@ public class BlockMossCarpet extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MOSS_CARPET;
     }
 

@@ -18,7 +18,7 @@ public class BlockTintedGlass extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.TINTED_GLASS;
     }
 }

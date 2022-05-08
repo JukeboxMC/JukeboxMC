@@ -29,7 +29,7 @@ public class BlockPolishedDeepslateWall extends BlockWall {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_DEEPSLATE_WALL;
     }
 }

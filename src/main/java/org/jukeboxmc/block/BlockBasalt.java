@@ -39,7 +39,7 @@ public class BlockBasalt extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BASALT;
     }
 

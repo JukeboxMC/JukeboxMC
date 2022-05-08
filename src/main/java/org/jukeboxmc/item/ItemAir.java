@@ -12,7 +12,7 @@ public class ItemAir extends Item {
     }
 
     @Override
-    public ItemType getItemType() {
+    public ItemType getType() {
         return ItemType.AIR;
     }
 

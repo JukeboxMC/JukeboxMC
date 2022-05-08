@@ -31,7 +31,7 @@ public class BlockSoulLantern extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SOUL_LANTERN;
     }
 

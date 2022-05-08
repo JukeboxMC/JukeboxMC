@@ -14,7 +14,7 @@ public class BlockCrimsonWallSign extends BlockWallSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_WALL_SIGN;
     }
 

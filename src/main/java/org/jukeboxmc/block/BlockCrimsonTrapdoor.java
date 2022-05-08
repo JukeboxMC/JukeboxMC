@@ -14,7 +14,7 @@ public class BlockCrimsonTrapdoor extends BlockTrapdoor {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_TRAPDOOR;
     }
 

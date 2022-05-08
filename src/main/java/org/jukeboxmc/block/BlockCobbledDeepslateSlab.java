@@ -58,7 +58,7 @@ public class BlockCobbledDeepslateSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COBBLED_DEEPSLATE_SLAB;
     }
 

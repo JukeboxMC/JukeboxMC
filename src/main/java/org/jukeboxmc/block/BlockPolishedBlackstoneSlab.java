@@ -59,7 +59,7 @@ public class BlockPolishedBlackstoneSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_SLAB;
     }
 

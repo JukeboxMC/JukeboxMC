@@ -46,7 +46,7 @@ public class BlockTrappedChest extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.TRAPPED_CHEST;
     }
 

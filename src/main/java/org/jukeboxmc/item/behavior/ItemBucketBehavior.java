@@ -27,7 +27,7 @@ public class ItemBucketBehavior extends Item {
         }
 
         if ( block instanceof BlockLiquid || block instanceof BlockPowderSnow ) {
-            if ( this.getItemType() != ItemType.BUCKET ) {
+            if ( this.getType() != ItemType.BUCKET ) {
                 return false;
             }
 
@@ -65,7 +65,7 @@ public class ItemBucketBehavior extends Item {
         } else {
             block = block.getWorld().getBlock( block.getLocation(), 0 );
             Block placedBlock;
-            switch ( this.getItemType() ) {
+            switch ( this.getType() ) {
                 case BUCKET:
                 case MILK_BUCKET:
                 case COD_BUCKET:
@@ -76,7 +76,7 @@ public class ItemBucketBehavior extends Item {
                     return false;
                 default:
                     placedBlock = this.getBlock();
-                    if ( block instanceof BlockWaterlogable && this.getItemType() == ItemType.WATER_BUCKET ) {
+                    if ( block instanceof BlockWaterlogable && this.getType() == ItemType.WATER_BUCKET ) {
                         placedBlock.setLocation( block.getLocation() );
                         placedBlock.setLayer( 1 );
                     } else if ( block instanceof BlockLiquid ) {

@@ -18,7 +18,7 @@ public class BlockCutCopperStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CUT_COPPER_STAIRS;
     }
 }

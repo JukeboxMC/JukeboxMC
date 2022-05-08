@@ -18,7 +18,7 @@ public class BlockCrimsonPlanks extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_PLANKS;
     }
 

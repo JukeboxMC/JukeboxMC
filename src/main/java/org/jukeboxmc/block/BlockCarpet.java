@@ -19,7 +19,7 @@ public class BlockCarpet extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CARPET;
     }
 

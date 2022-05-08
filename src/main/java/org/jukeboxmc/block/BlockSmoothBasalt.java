@@ -19,7 +19,7 @@ public class BlockSmoothBasalt extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SMOOTH_BASALT;
     }
 

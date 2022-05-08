@@ -18,7 +18,7 @@ public class BlockBeetroot extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BEETROOT;
     }
 

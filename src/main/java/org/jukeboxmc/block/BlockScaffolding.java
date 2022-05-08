@@ -19,7 +19,7 @@ public class BlockScaffolding extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SCAFFOLDING;
     }
 

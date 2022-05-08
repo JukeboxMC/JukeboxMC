@@ -19,7 +19,7 @@ public class BlockGrassPath extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GRASS_PATH;
     }
 

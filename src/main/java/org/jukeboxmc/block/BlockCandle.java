@@ -19,7 +19,7 @@ public class BlockCandle extends BlockCandleBehavior {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CANDLE;
     }
 }

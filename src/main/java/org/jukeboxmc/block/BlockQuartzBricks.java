@@ -15,7 +15,7 @@ public class BlockQuartzBricks extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.QUARTZ_BRICKS;
     }
 

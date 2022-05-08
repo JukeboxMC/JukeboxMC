@@ -18,7 +18,7 @@ public class BlockQuartzStairs extends BlockStairs {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.QUARTZ_STAIRS;
     }
 

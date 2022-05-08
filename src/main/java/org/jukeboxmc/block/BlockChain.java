@@ -33,7 +33,7 @@ public class BlockChain extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CHAIN;
     }
 

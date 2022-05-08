@@ -59,7 +59,7 @@ public class BlockCrimsonSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_SLAB;
     }
 

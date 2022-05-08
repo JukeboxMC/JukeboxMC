@@ -26,7 +26,7 @@ public class BlockAcaciaPressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.ACACIA_PRESSURE_PLATE;
     }
 

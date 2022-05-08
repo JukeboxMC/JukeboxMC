@@ -19,7 +19,7 @@ public class BlockBuddingAmethyst extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BUDDING_AMETHYST;
     }
 

@@ -73,7 +73,7 @@ public class BlockSnowLayer extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SNOW_LAYER;
     }
 

@@ -15,7 +15,7 @@ public class BlockGildedBlackstone extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.GLIDED_BLACKSTONE;
     }
 

@@ -18,7 +18,7 @@ public class BlockDarkOakWallSign extends BlockWallSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.DARK_OAK_WALL_SIGN;
     }
 

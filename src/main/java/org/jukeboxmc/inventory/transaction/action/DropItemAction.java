@@ -19,7 +19,7 @@ public class DropItemAction extends InventoryAction {
     }
 
     public boolean isValid( Player source ) {
-        return this.sourceItem != null && this.sourceItem.getItemType().equals( ItemType.AIR );
+        return this.sourceItem != null && this.sourceItem.getType().equals( ItemType.AIR );
     }
 
     @Override

@@ -19,7 +19,7 @@ public class BlockGlowingSmoker extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LIT_SMOKER;
     }
 

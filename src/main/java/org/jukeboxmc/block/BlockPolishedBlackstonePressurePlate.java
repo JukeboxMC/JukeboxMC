@@ -14,7 +14,7 @@ public class BlockPolishedBlackstonePressurePlate extends BlockPressurePlate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_PRESSURE_PLATE;
     }
 

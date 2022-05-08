@@ -19,7 +19,7 @@ public class BlockPoweredComparator extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POWERED_COMPARATOR;
     }
 

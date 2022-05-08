@@ -18,7 +18,7 @@ public class BlockEndGateway extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.END_GATEWAY;
     }
 

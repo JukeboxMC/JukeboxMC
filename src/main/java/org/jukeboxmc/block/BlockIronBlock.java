@@ -20,7 +20,7 @@ public class BlockIronBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.IRON_BLOCK;
     }
 

@@ -21,7 +21,7 @@ public class BlockSugarCane extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition ).getSide( BlockFace.DOWN );
 
-        if ( blockFace != BlockFace.DOWN && block.getBlockType() != BlockType.AIR ) {
+        if ( blockFace != BlockFace.DOWN && block.getType() != BlockType.AIR ) {
             world.setBlock( placePosition, this );
             return true;
         }
@@ -34,7 +34,7 @@ public class BlockSugarCane extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.SUGARCANE;
     }
 

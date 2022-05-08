@@ -18,7 +18,7 @@ public class BlockNetherSprouts extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.NETHER_SPROUTS;
     }
 

@@ -24,7 +24,7 @@ public class BlockLava extends BlockLiquid {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.LAVA;
     }
 

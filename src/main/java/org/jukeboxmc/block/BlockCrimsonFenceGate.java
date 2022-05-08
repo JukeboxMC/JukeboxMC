@@ -14,7 +14,7 @@ public class BlockCrimsonFenceGate extends BlockFenceGate {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_FENCE_GATE;
     }
 

@@ -18,7 +18,7 @@ public class BlockMelonStem extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MELON_STEM;
     }
 

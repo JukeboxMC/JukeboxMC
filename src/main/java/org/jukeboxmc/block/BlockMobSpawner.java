@@ -23,7 +23,7 @@ public class BlockMobSpawner extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.MOB_SPAWNER;
     }
 

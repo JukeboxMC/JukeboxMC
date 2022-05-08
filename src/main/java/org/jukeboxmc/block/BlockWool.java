@@ -20,7 +20,7 @@ public class BlockWool extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WOOL;
     }
 

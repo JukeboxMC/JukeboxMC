@@ -18,7 +18,7 @@ public class BlockPolishedDeepslateStairs extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_DEEPSLATE_STAIRS;
     }
 }

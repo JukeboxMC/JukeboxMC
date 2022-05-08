@@ -18,7 +18,7 @@ public class BlockPrismarineBricksStairs extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PRISMARINE_BRICKS_STAIRS;
     }
 

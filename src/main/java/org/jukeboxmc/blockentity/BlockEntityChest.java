@@ -100,7 +100,7 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
         if ( this.findable ) {
             Vector position = this.getBlock().getLocation();
             Block other = this.getBlock().getWorld().getBlock( this.pairX, position.getBlockY(), this.pairZ, 0 );
-            return other.getBlockType().equals( this.getBlock().getBlockType() );
+            return other.getType().equals( this.getBlock().getType() );
         }
         return false;
     }

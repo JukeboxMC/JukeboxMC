@@ -19,7 +19,7 @@ public class BlockBeacon extends BlockWaterlogable {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BEACON;
     }
 

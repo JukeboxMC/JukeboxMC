@@ -24,7 +24,7 @@ public class BlockInfestedDeepslate extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.INFESTED_DEEPSLATE;
     }
 

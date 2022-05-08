@@ -18,7 +18,7 @@ public class BlockBedrock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.BEDROCK;
     }
 

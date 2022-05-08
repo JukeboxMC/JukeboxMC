@@ -39,7 +39,7 @@ public class BlockCrimsonStandingSign extends BlockSign {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CRIMSON_STANDING_SIGN;
     }
 

@@ -19,7 +19,7 @@ public class BlockRepeatingCommandBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.REPEATING_COMMAND_BLOCK;
     }
 

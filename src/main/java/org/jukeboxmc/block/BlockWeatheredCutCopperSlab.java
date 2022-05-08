@@ -58,7 +58,7 @@ public class BlockWeatheredCutCopperSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WEATHERED_CUT_COPPER_SLAB;
     }
 

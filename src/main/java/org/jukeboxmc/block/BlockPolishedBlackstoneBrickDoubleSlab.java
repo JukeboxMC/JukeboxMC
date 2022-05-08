@@ -27,7 +27,7 @@ public class BlockPolishedBlackstoneBrickDoubleSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_BRICK_SLAB;
     }
 

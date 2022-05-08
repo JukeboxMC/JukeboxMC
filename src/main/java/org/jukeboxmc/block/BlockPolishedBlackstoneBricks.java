@@ -15,7 +15,7 @@ public class BlockPolishedBlackstoneBricks extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.POLISHED_BLACKSTONE_BRICKS;
     }
 

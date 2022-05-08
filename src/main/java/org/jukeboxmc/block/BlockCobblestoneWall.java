@@ -25,7 +25,7 @@ public class BlockCobblestoneWall extends BlockWall {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.COBBLESTONE_WALL;
     }
 

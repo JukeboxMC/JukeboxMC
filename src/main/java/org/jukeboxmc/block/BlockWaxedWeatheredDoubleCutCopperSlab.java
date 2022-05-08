@@ -32,7 +32,7 @@ public class BlockWaxedWeatheredDoubleCutCopperSlab extends BlockSlab {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WAXED_WEATHERED_CUT_COPPER_SLAB;
     }
 

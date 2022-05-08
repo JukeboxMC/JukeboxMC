@@ -40,7 +40,7 @@ public class BlockPurpurBlock extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.PURPUR_BLOCK;
     }
 

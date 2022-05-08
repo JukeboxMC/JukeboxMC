@@ -18,7 +18,7 @@ public class BlockCaveVinesHeadWithBerries extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.CAVE_VINES_HEAD_WITH_BERRIES;
     }
 

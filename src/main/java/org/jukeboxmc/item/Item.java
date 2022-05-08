@@ -143,7 +143,7 @@ public class Item implements Cloneable {
         return this.identifier;
     }
 
-    public ItemType getItemType() {
+    public ItemType getType() {
         for ( Map.Entry<ItemType, Item> entry : ItemType.getCachedItems().entrySet() ) {
             if ( entry.getValue().getIdentifier().equalsIgnoreCase( this.identifier ) ) {
                 return entry.getKey();

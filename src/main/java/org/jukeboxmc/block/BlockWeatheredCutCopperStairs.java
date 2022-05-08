@@ -18,7 +18,7 @@ public class BlockWeatheredCutCopperStairs extends Block{
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.WEATHERED_CUT_COPPER_STAIRS;
     }
 }

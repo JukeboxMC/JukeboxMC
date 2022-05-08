@@ -18,7 +18,7 @@ public class BlockJungleButton extends BlockButton {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.JUNGLE_BUTTON;
     }
 

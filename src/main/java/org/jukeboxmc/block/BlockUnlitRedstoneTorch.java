@@ -19,7 +19,7 @@ public class BlockUnlitRedstoneTorch extends Block {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType getType() {
         return BlockType.UNLIT_REDSTONE_TORCH;
     }
 
