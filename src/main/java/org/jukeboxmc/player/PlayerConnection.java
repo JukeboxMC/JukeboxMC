@@ -181,6 +181,9 @@ public class PlayerConnection {
                 this.player.spawn( onlinePlayer );
             }
         }
+
+        this.player.movePlayer( this.player.getLocation().add( 0 , this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
+
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this.player, "§e" + this.player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
@@ -190,10 +193,10 @@ public class PlayerConnection {
     }
 
     public void disconnect( String reason ) {
+        this.player.savePlayerData();
+
         this.player.getWorld().removeEntity( this.player );
         this.player.getChunk().removeEntity( this.player );
-
-        //this.resetChunks();
 
         //Remove inventory viewers
         this.player.getInventory().removeViewer( this.player );
@@ -222,9 +225,9 @@ public class PlayerConnection {
         startGamePacket.setUniqueEntityId( this.player.getEntityId() );
         startGamePacket.setRuntimeEntityId( this.player.getEntityId() );
         startGamePacket.setPlayerGameType( this.player.getGameMode().toGameType() );
-        startGamePacket.setPlayerPosition( this.player.getSpawnLocation().toVector3f().add( 0, 2, 0 ) );
+        startGamePacket.setPlayerPosition( this.player.getLocation().toVector3f().add( 0, 2, 0 ) );
         startGamePacket.setDefaultSpawn( this.player.getSpawnLocation().toVector3i().add( 0, 2, 0 ) );
-        startGamePacket.setRotation( Vector2f.from( this.player.getYaw(), this.player.getPitch() ) );
+        startGamePacket.setRotation( Vector2f.from( this.player.getPitch(), this.player.getYaw() ) );
         startGamePacket.setSeed( this.player.getWorld().getSeed() );
         startGamePacket.setDimensionId( this.player.getDimension().ordinal() );
         startGamePacket.setTrustingPlayers( true );
@@ -270,7 +273,7 @@ public class PlayerConnection {
         CraftingDataPacket craftingDataPacket = new CraftingDataPacket();
         craftingDataPacket.getCraftingData().addAll( craftingManager.getCraftingData() );
         craftingDataPacket.getPotionMixData().addAll( craftingDataPacket.getPotionMixData() );
-        craftingManager.getContainerMixData().addAll( craftingManager.getContainerMixData() );
+        craftingDataPacket.getContainerMixData().addAll( craftingManager.getContainerMixData() );
         craftingDataPacket.setCleanRecipes( true );
         this.sendPacket( craftingDataPacket );
     }
@@ -449,6 +452,8 @@ public class PlayerConnection {
             this.player.setUUID( loginData.getUuid() );
             this.player.setSkin( loginData.getSkin() );
             this.player.setDeviceInfo( loginData.getDeviceInfo() );
+
+            this.player.loadPlayerData();
         }
     }
 

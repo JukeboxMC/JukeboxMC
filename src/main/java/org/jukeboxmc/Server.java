@@ -75,8 +75,8 @@ public class Server {
     private final CraftingManager craftingManager;
 
     private final File pluginFolder;
+    private final File playersFolder;
 
-    private Config serverConfig;
     private Config operatorConfig;
 
     private String serverAddress;
@@ -147,6 +147,11 @@ public class Server {
             this.pluginFolder.mkdirs();
         }
 
+        this.playersFolder = new File( "./players" );
+        if ( !this.playersFolder.exists() ) {
+            this.playersFolder.mkdirs();
+        }
+
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
@@ -165,31 +170,31 @@ public class Server {
     }
 
     private void initServerConfig() {
-        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
-        this.serverConfig.addDefault( "address", "0.0.0.0" );
-        this.serverConfig.addDefault( "port", 19132 );
-        this.serverConfig.addDefault( "max-players", 20 );
-        this.serverConfig.addDefault( "view-distance", 32 );
-        this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
-        this.serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
-        this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
-        this.serverConfig.addDefault( "default-world", "world" );
-        this.serverConfig.addDefault( "generator", "flat" ); //TODO
-        this.serverConfig.addDefault( "online-mode", true );
-        this.serverConfig.addDefault( "forceResourcePacks", false );
-        this.serverConfig.save();
+        Config serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
+        serverConfig.addDefault( "address", "0.0.0.0" );
+        serverConfig.addDefault( "port", 19132 );
+        serverConfig.addDefault( "max-players", 20 );
+        serverConfig.addDefault( "view-distance", 32 );
+        serverConfig.addDefault( "motd", "§bJukeboxMC" );
+        serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
+        serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
+        serverConfig.addDefault( "default-world", "world" );
+        serverConfig.addDefault( "generator", "flat" ); //TODO
+        serverConfig.addDefault( "online-mode", true );
+        serverConfig.addDefault( "forceResourcePacks", false );
+        serverConfig.save();
 
-        this.serverAddress = this.serverConfig.getString( "address" );
-        this.port = this.serverConfig.getInt( "port" );
-        this.maxPlayers = this.serverConfig.getInt( "max-players" );
-        this.viewdistance = this.serverConfig.getInt( "view-distance" );
-        this.motd = this.serverConfig.getString( "motd" );
-        this.subMotd = this.serverConfig.getString( "sub-motd" );
-        this.gameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
-        this.defaultWorldName = this.serverConfig.getString( "default-world" );
-        this.generatorName = this.serverConfig.getString( "generator" );
-        this.onlineMode = this.serverConfig.getBoolean( "online-mode" );
-        this.forceResourcePacks = this.serverConfig.getBoolean( "forceResourcePacks" );
+        this.serverAddress = serverConfig.getString( "address" );
+        this.port = serverConfig.getInt( "port" );
+        this.maxPlayers = serverConfig.getInt( "max-players" );
+        this.viewdistance = serverConfig.getInt( "view-distance" );
+        this.motd = serverConfig.getString( "motd" );
+        this.subMotd = serverConfig.getString( "sub-motd" );
+        this.gameMode = GameMode.valueOf( serverConfig.getString( "gamemode" ) );
+        this.defaultWorldName = serverConfig.getString( "default-world" );
+        this.generatorName = serverConfig.getString( "generator" );
+        this.onlineMode = serverConfig.getBoolean( "online-mode" );
+        this.forceResourcePacks = serverConfig.getBoolean( "forceResourcePacks" );
     }
 
     private void initOperatorConfig() {
@@ -561,6 +566,10 @@ public class Server {
 
     public File getPluginFolder() {
         return this.pluginFolder;
+    }
+
+    public File getPlayersFolder() {
+        return this.playersFolder;
     }
 
     public PluginManager getPluginManager() {

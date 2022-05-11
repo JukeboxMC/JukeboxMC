@@ -2,6 +2,7 @@ package org.jukeboxmc.entity;
 
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
+import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -165,6 +166,14 @@ public abstract class EntityLiving extends Entity {
         this.attackCoolDown = 10;
         this.setHealth( health <= 0 ? 0 : health );
         return true;
+    }
+
+    @Override
+    protected void fall() {
+        float damage = (float) FastMath.floor( this.fallDistance - 3f );
+        if ( damage > 0 ) {
+            this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
+        }
     }
 
     protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {

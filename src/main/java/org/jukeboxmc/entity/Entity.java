@@ -624,6 +624,14 @@ public abstract class Entity {
         }
     }
 
+    public float getFallDistance() {
+        return this.fallDistance;
+    }
+
+    public void setFallDistance( float fallDistance ) {
+        this.fallDistance = fallDistance;
+    }
+
     protected void checkGroundState( float movX, float movY, float movZ, float dx, float dy, float dz ) {
         this.isCollidedVertically = movY != dy;
         this.isCollidedHorizontally = ( movX != dx || movZ != dz );

@@ -1,10 +1,15 @@
 package org.jukeboxmc.player;
 
 import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.nbt.*;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.command.CommandData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jukeboxmc.Server;
@@ -29,17 +34,23 @@ import org.jukeboxmc.inventory.transaction.CraftingTransaction;
 import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
 import org.jukeboxmc.item.enchantment.EnchantmentSharpness;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Difficulty;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -70,11 +81,14 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     private Location respawnLocation = null;
 
+    private File playerFile;
+
     private long lastBreakTime = 0;
     private Vector lasBreakPosition;
     private boolean breakingBlock = false;
 
     private int viewDistance = 8;
+    private int inAirTicks = 0;
 
     private final Map<UUID, Set<String>> permissions = new HashMap<>();
 
@@ -113,6 +127,26 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         if ( nearbyEntities != null ) {
             for ( Entity nearbyEntity : nearbyEntities ) {
                 nearbyEntity.onCollideWithPlayer( this );
+            }
+        }
+
+        if ( !this.onGround && !this.isOnLadder() ) {
+            ++this.inAirTicks;
+            if ( this.inAirTicks > 5 ) {
+                if ( this.location.getY() > this.highestPosition ) {
+                    this.highestPosition = this.location.getY();
+                }
+            }
+        } else {
+            if ( this.inAirTicks > 0 ) {
+                this.inAirTicks = 0;
+            }
+
+            this.fallDistance = this.highestPosition - this.location.getY();
+            if ( this.fallDistance > 0 ) {
+                this.fall();
+                this.highestPosition = this.location.getY();
+                this.fallDistance = 0;
             }
         }
 
@@ -159,6 +193,204 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
 
         this.updateAttributes();
+    }
+
+    public void loadPlayerData() {
+        this.playerFile = new File( this.server.getPlayersFolder(), this.uuid.toString() + ".dat" );
+        if ( !this.playerFile.exists() ) {
+            try {
+                this.playerFile.createNewFile();
+            } catch ( IOException e ) {
+                throw new RuntimeException( e );
+            } finally {
+                ByteBuf buffer = Unpooled.buffer();
+                try ( NBTOutputStream stream = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                    NbtMapBuilder root = NbtMap.builder();
+                    NbtMapBuilder builder = NbtMap.builder();
+                    World defaultWorld = this.server.getDefaultWorld();
+
+                    builder.putFloat( "playerX", defaultWorld.getSpawnLocation().getX() );
+                    builder.putFloat( "playerY", defaultWorld.getSpawnLocation().getY() );
+                    builder.putFloat( "playerZ", defaultWorld.getSpawnLocation().getZ() );
+                    builder.putFloat( "playerYaw", defaultWorld.getSpawnLocation().getYaw() );
+                    builder.putFloat( "playerPitch", defaultWorld.getSpawnLocation().getPitch() );
+                    builder.putInt( "dimension", this.dimension.ordinal() );
+                    List<NbtMap> playerInventoryItems = new ArrayList<>();
+                    for ( int slot = 0; slot < this.playerInventory.getContents().length; slot++ ) {
+                        NbtMapBuilder itemCompound = NbtMap.builder();
+                        Item item = this.playerInventory.getItem( slot );
+                        itemCompound.putByte( "Slot", (byte) slot );
+                        itemCompound.putString( "Name", item.getIdentifier() );
+                        itemCompound.putShort( "Damage", (short) item.getMeta() );
+                        itemCompound.putByte( "Count", (byte) item.getAmount() );
+                        if ( item.getNBT() != null ) {
+                            itemCompound.putCompound( "tag", item.getNBT() );
+                        }
+
+                        playerInventoryItems.add( itemCompound.build() );
+                    }
+                    builder.putList( "playerInventory", NbtType.COMPOUND, playerInventoryItems );
+
+                    List<NbtMap> armorInventoryItems = new ArrayList<>();
+                    for ( int slot = 0; slot < this.armorInventory.getContents().length; slot++ ) {
+                        NbtMapBuilder itemCompound = NbtMap.builder();
+                        Item item = this.playerInventory.getItem( slot );
+                        itemCompound.putByte( "Slot", (byte) slot );
+                        itemCompound.putString( "Name", item.getIdentifier() );
+                        itemCompound.putShort( "Damage", (short) item.getMeta() );
+                        itemCompound.putByte( "Count", (byte) item.getAmount() );
+                        if ( item.getNBT() != null ) {
+                            itemCompound.putCompound( "tag", item.getNBT() );
+                        }
+
+                        armorInventoryItems.add( itemCompound.build() );
+                    }
+                    builder.putList( "armorInventory", NbtType.COMPOUND, armorInventoryItems );
+
+                    builder.putInt( "gamemode", this.gameMode.ordinal() );
+                    builder.putFloat( "health", this.getHealth() );
+                    builder.putFloat( "hunger", this.getHunger() );
+                    builder.putFloat( "saturation", this.getSaturation() );
+                    builder.putFloat( "exhaustion", this.getExhaustion() );
+
+                    builder.putFloat( "level", this.getLevel() );
+                    builder.putFloat( "experience", this.getExperience() );
+                    root.putCompound( defaultWorld.getName(), builder.build() );
+                    stream.writeTag( root.build() );
+                    try ( ByteBufInputStream byteBufInputStream = new ByteBufInputStream( buffer ) ) {
+                        Utils.writeFile( this.playerFile, byteBufInputStream );
+                    }
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            try ( NBTInputStream stream = NbtUtils.createReaderLE( new FileInputStream( this.playerFile ) ) ) {
+                NbtMap nbt = (NbtMap) stream.readTag();
+                World world = this.getWorld();
+                NbtMap compound = nbt.getCompound( world.getName() );
+                float playerX = compound.getFloat( "playerX", world.getSpawnLocation().getX() );
+                float playerY = compound.getFloat( "playerY", world.getSpawnLocation().getY() );
+                float playerZ = compound.getFloat( "playerZ", world.getSpawnLocation().getZ() );
+                float playerYaw = compound.getFloat( "playerYaw" , world.getSpawnLocation().getYaw());
+                float playerPitch = compound.getFloat( "playerPitch" , world.getSpawnLocation().getPitch());
+                int dimension = compound.getInt( "dimension", Dimension.OVERWORLD.ordinal() );
+                this.location = new Location( world, playerX, playerY, playerZ, playerYaw, playerPitch, Dimension.values()[dimension] );
+
+                List<NbtMap> playerInventoryList = compound.getList( "playerInventory", NbtType.COMPOUND );
+                if ( playerInventoryList.size() > 0 ) {
+                    for ( NbtMap nbtMap : playerInventoryList ) {
+                        byte slot = nbtMap.getByte( "Slot" );
+                        String name = nbtMap.getString( "Name" );
+                        int meta = nbtMap.getShort( "Damage" );
+                        byte amount = nbtMap.getByte( "Count" );
+                        NbtMap itemNbt = nbtMap.getCompound( "tag" );
+
+                        Item item = ItemType.get( name );
+                        item.setMeta( meta );
+                        item.setAmount( amount );
+                        item.setNBT( itemNbt );
+
+                        this.playerInventory.setItem( slot, item );
+                    }
+                }
+
+                List<NbtMap> armorInventoryList = compound.getList( "armorInventory", NbtType.COMPOUND );
+                if ( armorInventoryList.size() > 0 ) {
+                    for ( NbtMap nbtMap : armorInventoryList ) {
+                        byte slot = nbtMap.getByte( "Slot" );
+                        String name = nbtMap.getString( "Name" );
+                        int meta = nbtMap.getShort( "Damage" );
+                        byte amount = nbtMap.getByte( "Count" );
+                        NbtMap itemNbt = nbtMap.getCompound( "tag" );
+
+                        Item item = ItemType.get( name );
+                        item.setMeta( meta );
+                        item.setAmount( amount );
+                        item.setNBT( itemNbt );
+
+                        this.armorInventory.setItem( slot, item );
+                    }
+                }
+
+                this.setGameMode( GameMode.values()[compound.getInt( "gamemode", this.server.getGameMode().getId() )] );
+                this.setHealth( compound.getFloat( "health", 20 ) );
+                this.setHunger( (int) compound.getFloat( "hunger", 20 ) );
+                this.setSaturation( compound.getFloat( "saturation", 20 ) );
+                this.setExhaustion( compound.getFloat( "exhaustion", 0.41f ) );
+                this.setLevel( compound.getFloat( "level", 0 ) );
+                this.setExperience( compound.getFloat( "experience", 0 ) );
+
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void savePlayerData() {
+        if ( this.playerFile != null && this.playerFile.exists() ) {
+            ByteBuf buffer = Unpooled.buffer();
+            try ( NBTOutputStream stream = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                NbtMapBuilder root = NbtMap.builder();
+                NbtMapBuilder builder = NbtMap.builder();
+                World world = this.location.getWorld();
+
+                builder.putFloat( "playerX", this.location.getX() );
+                builder.putFloat( "playerY", this.location.getY() );
+                builder.putFloat( "playerZ", this.location.getZ() );
+                builder.putFloat( "playerYaw", this.location.getYaw() );
+                builder.putFloat( "playerPitch", this.location.getPitch() );
+                builder.putInt( "dimension", this.dimension.ordinal() );
+                List<NbtMap> playerInventoryItems = new ArrayList<>();
+                for ( int slot = 0; slot < this.playerInventory.getContents().length; slot++ ) {
+                    NbtMapBuilder itemCompound = NbtMap.builder();
+                    Item item = this.playerInventory.getItem( slot );
+                    itemCompound.putByte( "Slot", (byte) slot );
+                    itemCompound.putString( "Name", item.getIdentifier() );
+                    itemCompound.putShort( "Damage", (short) item.getMeta() );
+                    itemCompound.putByte( "Count", (byte) item.getAmount() );
+                    if ( item.getNBT() != null ) {
+                        itemCompound.putCompound( "tag", item.getNBT() );
+                    }
+
+                    playerInventoryItems.add( itemCompound.build() );
+                }
+                builder.putList( "playerInventory", NbtType.COMPOUND, playerInventoryItems );
+
+                List<NbtMap> armorInventoryItems = new ArrayList<>();
+                for ( int slot = 0; slot < this.armorInventory.getContents().length; slot++ ) {
+                    NbtMapBuilder itemCompound = NbtMap.builder();
+                    Item item = this.armorInventory.getItem( slot );
+                    itemCompound.putByte( "Slot", (byte) slot );
+                    itemCompound.putString( "Name", item.getIdentifier() );
+                    itemCompound.putShort( "Damage", (short) item.getMeta() );
+                    itemCompound.putByte( "Count", (byte) item.getAmount() );
+                    if ( item.getNBT() != null ) {
+                        itemCompound.putCompound( "tag", item.getNBT() );
+                    }
+
+                    armorInventoryItems.add( itemCompound.build() );
+                }
+                builder.putList( "armorInventory", NbtType.COMPOUND, armorInventoryItems );
+
+                builder.putInt( "gamemode", this.gameMode.ordinal() );
+                builder.putFloat( "health", this.getHealth() );
+                builder.putFloat( "hunger", this.getHunger() );
+                builder.putFloat( "saturation", this.getSaturation() );
+                builder.putFloat( "exhaustion", this.getExhaustion() );
+
+                builder.putFloat( "level", this.getLevel() );
+                builder.putFloat( "experience", this.getExperience() );
+
+                root.putCompound( world.getName(), builder.build() );
+                stream.writeTag( root.build() );
+                try ( ByteBufInputStream byteBufInputStream = new ByteBufInputStream( buffer ) ) {
+                    Utils.writeFile( this.playerFile, byteBufInputStream );
+                }
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -273,6 +505,16 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     public void setGameMode( GameMode gameMode ) {
         this.gameMode = gameMode;
 
+
+        this.adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.gameMode.ordinal() == 3 );
+        this.adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.gameMode.ordinal() > 0 );
+        this.adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.gameMode.ordinal() == 3 );
+        this.adventureSettings.set( AdventureSettings.Type.FLYING, this.gameMode.ordinal() == 3 );
+        this.adventureSettings.set( AdventureSettings.Type.ATTACK_MOBS, this.gameMode.ordinal() < 2 );
+        this.adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.gameMode.ordinal() < 2 );
+        this.adventureSettings.set( AdventureSettings.Type.NO_PVM, this.gameMode.ordinal() == 3 );
+        this.adventureSettings.update();
+
         SetPlayerGameTypePacket setPlayerGameTypePacket = new SetPlayerGameTypePacket();
         setPlayerGameTypePacket.setGamemode( gameMode.getId() );
         this.playerConnection.sendPacket( setPlayerGameTypePacket );
@@ -288,6 +530,14 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         ChunkRadiusUpdatedPacket chunkRadiusUpdatedPacket = new ChunkRadiusUpdatedPacket();
         chunkRadiusUpdatedPacket.setRadius( viewDistance );
         this.playerConnection.sendPacket( chunkRadiusUpdatedPacket );
+    }
+
+    public int getInAirTicks() {
+        return this.inAirTicks;
+    }
+
+    public void setInAirTicks( int inAirTicks ) {
+        this.inAirTicks = inAirTicks;
     }
 
     public Location getRespawnLocation() {

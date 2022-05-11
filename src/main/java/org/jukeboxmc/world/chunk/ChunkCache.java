@@ -31,17 +31,15 @@ public class ChunkCache {
         return this.cachedChunks.get( dimension ).get( chunkHash );
     }
 
-    public synchronized boolean putChunk( Chunk chunk, Dimension dimension ) {
+    public synchronized void putChunk( Chunk chunk, Dimension dimension ) {
         long hash = Utils.toLong( chunk.getChunkX(), chunk.getChunkZ() );
         Long2ObjectMap<Chunk> dimensionChunks = this.cachedChunks.get( dimension );
 
         Chunk adapterChunk = dimensionChunks.get( hash );
         if ( adapterChunk == null ) {
             dimensionChunks.put( hash, chunk );
-            return true;
         }
 
-        return adapterChunk == chunk;
     }
 
     public synchronized boolean isChunkLoaded( int chunkX, int chunkZ, Dimension dimension ) {
