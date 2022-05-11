@@ -33,12 +33,12 @@ import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
 import org.jukeboxmc.item.enchantment.EnchantmentSharpness;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
-import org.jukeboxmc.math.Vector;
 
 import java.util.*;
 

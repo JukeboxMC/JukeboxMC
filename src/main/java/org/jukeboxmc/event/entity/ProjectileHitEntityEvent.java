@@ -10,7 +10,7 @@ import org.jukeboxmc.event.Cancellable;
  */
 public class ProjectileHitEntityEvent extends EntityEvent implements Cancellable {
 
-    private EntityProjectile projectile;
+    private final EntityProjectile projectile;
 
     public ProjectileHitEntityEvent( Entity entity, EntityProjectile projectile ) {
         super( entity );

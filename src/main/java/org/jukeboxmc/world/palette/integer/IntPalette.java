@@ -96,6 +96,8 @@ public class IntPalette {
     public void readFromStoragePersistent( ByteBuf byteBuf, IntPersistentDataDeserializer deserializer ) {
         final short header = byteBuf.readUnsignedByte();
 
+        if(!isPersistent(header)) throw new IllegalArgumentException("Palette is not persistent!");
+
         final BitArrayVersion version = IntPalette.getVersionFromHeader(header);
         final int wordCount = version.getWordsForSize(SIZE);
         final int[] words = new int[wordCount];
@@ -151,6 +153,8 @@ public class IntPalette {
 
     public void readFromStorageRuntime( ByteBuf byteBuf, IntRuntimeDataDeserializer deserializer, IntPalette last ) {
         final short header = byteBuf.readUnsignedByte();
+
+        if( isPersistent(header)) throw new IllegalArgumentException("Palette is persistent!");
 
         if(IntPalette.hasCopyLastFlag(header)) {
             last.copyTo(this);

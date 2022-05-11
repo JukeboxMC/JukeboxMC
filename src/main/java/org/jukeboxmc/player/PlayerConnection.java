@@ -14,6 +14,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.network.PacketReceiveEvent;
+import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.item.ItemShield;
@@ -76,7 +77,7 @@ public class PlayerConnection {
                         if ( packetReceiveEvent.isCancelled() ) {
                             return;
                         }
-                        packetHandler.handle( packet, this.server, this.player );
+                        packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
                     } else {
                         //System.out.println("Handler missing for packet: " + packet.getClass().getSimpleName());
                     }
@@ -402,7 +403,12 @@ public class PlayerConnection {
 
     public void sendPacket( BedrockPacket packet ) {
         if ( !this.isClosed() && this.session.getPacketCodec() != null) {
-            this.session.sendPacket( packet );
+            PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
+            Server.getInstance().getPluginManager().callEvent( packetSendEvent );
+            if ( packetSendEvent.isCancelled() ) {
+                return;
+            }
+            this.session.sendPacket( packetSendEvent.getPacket() );
         }
     }
 

@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  */
 public class PlayerCommandPreprocessEvent extends PlayerEvent implements Cancellable {
 
-    private String command;
+    private final String command;
 
     /**
      * Creates a new {@link PlayerEvent}

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class BlockBreakEvent extends BlockEvent implements Cancellable {
 
-    private Player player;
+    private final Player player;
     private Block block;
     private List<Item> drops;
 
