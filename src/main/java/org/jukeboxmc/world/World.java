@@ -101,7 +101,7 @@ public class World {
 
         this.gameRules = new GameRules();
 
-        this.generatorThreadLocal = ThreadLocal.withInitial( server::createWorldGenerator );
+        this.generatorThreadLocal = ThreadLocal.withInitial( () -> server.createWorldGenerator( name ) );
         this.blockUpdateList = new BlockUpdateList();
         this.chunkLoaders = new Long2ObjectOpenHashMap<>();
         this.entities = new ConcurrentHashMap<>();

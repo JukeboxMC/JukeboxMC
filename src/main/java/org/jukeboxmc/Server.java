@@ -93,10 +93,12 @@ public class Server {
 
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );
+
     private final Set<Player> players = new HashSet<>();
     private final Object2ObjectMap<String, World> worlds = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<String, Class<? extends Generator>> worldGenerator = new Object2ObjectOpenHashMap<>();
     private final Object2ObjectMap<UUID, PlayerListPacket.Entry> playerListEntry = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<String, Class<? extends Generator>> generatorByName = new Object2ObjectOpenHashMap<>();
 
     public Server( Logger logger ) {
         instance = this;
@@ -367,9 +369,9 @@ public class Server {
         }
     }
 
-    public Generator createWorldGenerator() {
+    public Generator createWorldGenerator( String worldName ) {
         try {
-            return this.worldGenerator.get( this.generatorName ).getConstructor().newInstance();
+            return this.generatorByName.get( worldName ).getConstructor().newInstance();
         } catch ( InstantiationException | IllegalAccessException | InvocationTargetException |
                   NoSuchMethodException e ) {
             e.printStackTrace();
@@ -378,6 +380,10 @@ public class Server {
     }
 
     public boolean loadOrCreateWorld( String worldName ) {
+        return this.loadOrCreateWorld( worldName, this.worldGenerator.get( this.generatorName ) );
+    }
+
+    public boolean loadOrCreateWorld( String worldName, Class<? extends Generator> clazz ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             File file = new File( "./worlds", worldName );
             boolean worldExists = file.exists();
@@ -390,6 +396,7 @@ public class Server {
             }
 
             if ( worldLoadEvent.getWorld().open() ) {
+                this.generatorByName.put( worldName.toLowerCase(), clazz );
                 this.worlds.put( worldName.toLowerCase(), worldLoadEvent.getWorld() );
                 this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;

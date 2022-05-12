@@ -50,6 +50,10 @@ public class JukeboxMC {
         return server.loadOrCreateWorld( name );
     }
 
+    public static boolean loadOrCreateWorld( String name, Class<? extends Generator> clazz ) {
+        return server.loadOrCreateWorld( name, clazz );
+    }
+
     public static void registerWorldGenerator( String name, Class<? extends Generator> clazz ) {
         server.registerGenerator( name, clazz );
     }
