@@ -13,6 +13,8 @@ import io.netty.buffer.PooledByteBufAllocator;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
@@ -985,5 +987,17 @@ public class World {
         updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setDataLayer( block.getLayer() );
         this.sendDimensionPacket( updateBlockPacket, block.getLocation().getDimension() );
+    }
+
+    public void save() {
+        Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks = new Object2ObjectOpenHashMap<>(this.chunkCache.getCachedChunks());
+        cachedChunks.replaceAll( ( k, v ) -> new Long2ObjectOpenHashMap<>( v ) );
+        for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> entry : cachedChunks.entrySet() ) {
+            for ( Chunk chunk : entry.getValue().values() ) {
+                if ( chunk != null ) {
+                    chunk.save( this.db );
+                }
+            }
+        }
     }
 }

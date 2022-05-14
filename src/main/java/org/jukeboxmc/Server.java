@@ -212,6 +212,11 @@ public class Server {
         this.logger.info( "Shutdown server..." );
         this.runningState.set( false );
 
+        this.logger.info( "Save all worlds..." );
+        for ( World world : this.worlds.values() ) {
+            world.save();
+        }
+
         this.logger.info( "Unload all worlds..." );
         for ( World world : this.worlds.values() ) {
             this.unloadWorld( world.getName() );
@@ -388,6 +393,8 @@ public class Server {
             File file = new File( "./worlds", worldName );
             boolean worldExists = file.exists();
 
+            this.generatorByName.put( worldName.toLowerCase(), clazz );
+
             World world = new World( worldName, this );
             WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
             this.pluginManager.callEvent( worldLoadEvent );
@@ -396,7 +403,6 @@ public class Server {
             }
 
             if ( worldLoadEvent.getWorld().open() ) {
-                this.generatorByName.put( worldName.toLowerCase(), clazz );
                 this.worlds.put( worldName.toLowerCase(), worldLoadEvent.getWorld() );
                 this.logger.info( "Loading the world \"" + worldName + "\" was successful" );
                 return true;
@@ -525,6 +531,14 @@ public class Server {
 
     public long getCurrentTps() {
         return this.currentTps;
+    }
+
+    public float getCurrentAverageTps() {
+        float sum = 0;
+        int count = this.ticksAverage.length;
+        for(float ticksAvg : this.ticksAverage) sum += ticksAvg;
+
+        return (Math.round(sum * 100F / count)) / 100F;
     }
 
     public String getServerAddress() {

@@ -440,6 +440,9 @@ public abstract class Block implements Cloneable {
     //========= With Packets =========
 
     public void sendBlockUpdate( Player player ) {
+        if ( this.location == null ) {
+            return;
+        }
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setRuntimeId( this.runtimeId );
         updateBlockPacket.setBlockPosition( this.location.toVector3i() );

@@ -7,8 +7,11 @@ import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
@@ -207,9 +210,9 @@ public class Chunk {
 
             int subY = this.getSubY( y );
             if ( this.subChunks[subY] == null ) {
-                return BLOCK_AIR;
+                this.biomes[subY] = new ObjectPalette<>( Biome.PLAINS );
+                this.subChunks[subY] = new SubChunk( subY );
             }
-
             Block block = this.subChunks[subY].getBlock( x, y, z, layer );
             block.setLocation( new Location( this.world, x, y, z ) );
             block.setLayer( layer );
@@ -367,5 +370,89 @@ public class Chunk {
 
     public long toChunkHash() {
         return Utils.toLong( this.chunkX, this.chunkZ );
+    }
+
+    public void save( DB db ) {
+        WriteBatch writeBatch = db.createWriteBatch();
+
+        for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+            if ( this.subChunks[subY] == null ) {
+                continue;
+            }
+            this.saveChunkSlice( subY - 4, writeBatch );
+        }
+
+        byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+        ByteBuf versionBuffer = Unpooled.buffer();
+        versionBuffer.writeByte( 39 ); //Chunk Version
+        writeBatch.put( versionKey, Utils.array( versionBuffer ) );
+        versionBuffer.release();
+
+        ByteBuf buffer = Unpooled.buffer();
+        List<BlockEntity> blockEntities = this.getBlockEntities();
+        if ( !blockEntities.isEmpty() ) {
+            try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                for ( BlockEntity blockEntity : blockEntities ) {
+                    try {
+                        NbtMap build = blockEntity.toCompound().build();
+                        networkWriter.writeTag( build );
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+            if ( buffer.readableBytes() > 0 ) {
+                byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                writeBatch.put( blockEntityKey, Utils.array( buffer ) );
+            }
+            buffer.release();
+        }
+
+        byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+        ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+
+        for ( short height : this.height ) {
+            heightAndBiomesBuffer.writeShortLE( height );
+        }
+
+        ObjectPalette<Biome> last = null;
+        for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
+            if ( biomePalette == null ) {
+                if ( last != null ) {
+                    last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                }
+                continue;
+            }
+            biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+            last = biomePalette;
+        }
+        writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
+        heightAndBiomesBuffer.release();
+
+        db.write( writeBatch );
+        try {
+            writeBatch.close();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveChunkSlice( int subY, WriteBatch writeBatch ) {
+        ByteBuf buffer = Unpooled.buffer();
+        SubChunk subChunk = this.subChunks[subY + 4];
+
+        buffer.writeByte( (byte) subChunk.getSubChunkVersion() );
+        buffer.writeByte( (byte) subChunk.getLayer() );
+        buffer.writeByte( (byte) subY );
+
+        for ( int layer = 0; layer < SubChunk.CHUNK_LAYERS; layer++ ) {
+            subChunk.blocks[layer].writeToStoragePersistent( buffer, BlockPalette::getBlockNBT );
+        }
+
+        byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
+        writeBatch.put( subChunkKey, Utils.array( buffer ) );
     }
 }

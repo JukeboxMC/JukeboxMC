@@ -175,4 +175,10 @@ public class Utils {
         content.close();
         stream.close();
     }
+
+    public static byte[] array( ByteBuf buffer ) {
+        byte[] array = new byte[buffer.readableBytes()];
+        buffer.readBytes( array );
+        return array;
+    }
 }

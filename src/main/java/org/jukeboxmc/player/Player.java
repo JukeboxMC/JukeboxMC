@@ -613,7 +613,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     public void movePlayer( Location location, MovePlayerPacket.Mode mode ) {
         MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
         movePlayerPacket.setRuntimeEntityId( this.entityId );
-        movePlayerPacket.setPosition( location.toVector3f() );
+        movePlayerPacket.setPosition( location.toVector3f().add( 0, this.getEyeHeight(), 0 ) );
         movePlayerPacket.setRotation( Vector3f.from( location.getPitch(), location.getYaw(), location.getYaw() ) );
         movePlayerPacket.setMode( mode );
         if ( mode == MovePlayerPacket.Mode.TELEPORT ) {
