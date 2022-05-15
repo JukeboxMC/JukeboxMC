@@ -15,7 +15,7 @@ public enum Biome {
     FOREST( 4, "forest", "Forest", 0.7f, 0.8f, 63, 81 ),
     TAIGA( 5, "taiga", "Taiga", 0.25f, 0.8f ),
     SWAMPLAND( 6, "swampland", "Swampland", 0.8f, 0.5f ),
-    RIVER( 7, "river", "River", 0.5f, 0.5f, 58, 62 ),
+    RIVER( 7, "river", "River", 0.5f, 0.5f, 52, 62 ),
     HELL( 8, "hell", "Hell", 2.0f, 0.0f ),
     THE_END( 9, "the_end", "The End ", 0.5f, 0.5f ),
     LEGACY_FROZEN_OCEAN( 10, "legacy_frozen_ocean", "Legacy Frozen Ocean ", 0.0f, 0.5f ),

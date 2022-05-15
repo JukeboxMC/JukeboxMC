@@ -20,36 +20,40 @@ public abstract class Generator {
     protected int centerX = Integer.MAX_VALUE;
     protected int centerZ = Integer.MAX_VALUE;
 
-    public synchronized final void init(World world, Chunk chunk, Chunk[] chunks) {
-        this.world = world;
+    public synchronized final void init( World world, Chunk chunk, Chunk[] chunks ) {
+        this.init( world );
         this.centerX = chunk.getChunkX();
         this.centerZ = chunk.getChunkZ();
-        System.arraycopy(chunks, 0, this.chunks, 0, this.chunks.length);
+        System.arraycopy( chunks, 0, this.chunks, 0, this.chunks.length );
+    }
+
+    protected synchronized void init( World world ) {
+        this.world = world;
     }
 
     public synchronized final void clear() {
         this.centerX = Integer.MAX_VALUE;
         this.centerZ = Integer.MAX_VALUE;
-        Arrays.fill(this.chunks, null);
+        Arrays.fill( this.chunks, null );
     }
 
     public World getWorld() {
         return this.world;
     }
 
-    public final Chunk getChunk(int x, int z) {
-        if(this.centerX == Integer.MAX_VALUE || this.centerZ == Integer.MAX_VALUE)
-            throw new UnsupportedOperationException("This generation has not been initialized!");
+    public final Chunk getChunk( int x, int z ) {
+        if ( this.centerX == Integer.MAX_VALUE || this.centerZ == Integer.MAX_VALUE )
+            throw new UnsupportedOperationException( "This generation has not been initialized!" );
 
         final int nX = x - this.centerX;
         final int nZ = z - this.centerZ;
 
         int index = 0;
-        switch(nZ) {
+        switch ( nZ ) {
             case 0 -> index = 1;
             case 1 -> index = 2;
         }
-        switch(nX) {
+        switch ( nX ) {
             case 0 -> index += 3;
             case 1 -> index += 6;
         }

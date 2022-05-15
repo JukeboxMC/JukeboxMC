@@ -103,7 +103,7 @@ public class PlayerConnection {
 
         if ( !this.chunkLoadQueue.isEmpty() ) {
             int load = 0;
-            while ( !this.chunkLoadQueue.isEmpty() && load <= 4 ) {
+            while ( !this.chunkLoadQueue.isEmpty() && load <= 8 ) {
                 long chunkHash = this.chunkLoadQueue.dequeueLong();
                 if ( this.loadedChunks.contains( chunkHash ) ) {
                     continue;

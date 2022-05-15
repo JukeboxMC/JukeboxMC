@@ -47,7 +47,9 @@ public class ChunkCache {
     }
 
     public synchronized void clearChunks() {
-        this.cachedChunks.clear();
+        this.cachedChunks.forEach( ( dimension, chunkLong2ObjectMap ) -> {
+            chunkLong2ObjectMap.clear();
+        } );
     }
 
     public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
