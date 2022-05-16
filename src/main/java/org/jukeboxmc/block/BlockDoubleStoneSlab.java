@@ -18,7 +18,7 @@ import java.util.List;
 public class BlockDoubleStoneSlab extends BlockSlab {
 
     public BlockDoubleStoneSlab() {
-        super( "minecraft:double_stone_slab" );
+        super( "minecraft:double_stone_block_slab" );
     }
 
     @Override

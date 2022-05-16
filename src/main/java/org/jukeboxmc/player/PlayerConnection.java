@@ -1,6 +1,7 @@
 package org.jukeboxmc.player;
 
 import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.data.AuthoritativeMovementMode;
@@ -25,6 +26,7 @@ import org.jukeboxmc.player.data.LoginData;
 import org.jukeboxmc.util.*;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -114,7 +116,7 @@ public class PlayerConnection {
             this.chunkLoadQueue.clear();
         }
 
-        if ( !this.spawned.get() && this.loadedChunks.size() >= 16){
+        if ( !this.spawned.get() && this.loadedChunks.size() >= 16 ) {
             this.doFirstSpawn();
         }
     }
@@ -131,11 +133,11 @@ public class PlayerConnection {
         }
 
         adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.player.getGameMode().ordinal() == 3 );
-        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0);
-        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3);
-        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3);
+        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0 );
+        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3 );
+        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.set( AdventureSettings.Type.ATTACK_MOBS, this.player.getGameMode().ordinal() < 2 );
-        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() <2 );
+        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() < 2 );
         adventureSettings.set( AdventureSettings.Type.NO_PVM, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.update();
 
@@ -182,7 +184,7 @@ public class PlayerConnection {
             }
         }
 
-        this.player.movePlayer( this.player.getLocation().add( 0 , this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
+        this.player.movePlayer( this.player.getLocation().add( 0, this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
 
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this.player, "§e" + this.player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
@@ -254,6 +256,9 @@ public class PlayerConnection {
         startGamePacket.setMultiplayerCorrelationId( "" );
         startGamePacket.setInventoriesServerAuthoritative( false );
         startGamePacket.setPlayerMovementSettings( SYNCED_PLAYER_MOVEMENT_SETTINGS );
+        startGamePacket.setBlockRegistryChecksum( 0L );
+        startGamePacket.setPlayerPropertyData( NbtMap.EMPTY );
+        startGamePacket.setWorldTemplateId( UUID.randomUUID() );
         this.sendPacket( startGamePacket );
 
         AvailableEntityIdentifiersPacket availableEntityIdentifiersPacket = new AvailableEntityIdentifiersPacket();
@@ -346,7 +351,7 @@ public class PlayerConnection {
 
     public void sendNetworkPublisher() {
         NetworkChunkPublisherUpdatePacket packet = new NetworkChunkPublisherUpdatePacket();
-        packet.setRadius( this.player.getViewDistance() << 4);
+        packet.setRadius( this.player.getViewDistance() << 4 );
         packet.setPosition( this.player.getLocation().toVector3i() );
         this.sendPacket( packet );
     }
@@ -405,7 +410,7 @@ public class PlayerConnection {
     }
 
     public void sendPacket( BedrockPacket packet ) {
-        if ( !this.isClosed() && this.session.getPacketCodec() != null) {
+        if ( !this.isClosed() && this.session.getPacketCodec() != null ) {
             PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
             Server.getInstance().getPluginManager().callEvent( packetSendEvent );
             if ( packetSendEvent.isCancelled() ) {

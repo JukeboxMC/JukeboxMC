@@ -16,7 +16,7 @@ import org.jukeboxmc.world.World;
 public class BlockStoneSlab extends BlockSlab {
 
     public BlockStoneSlab() {
-        super( "minecraft:stone_slab" );
+        super( "minecraft:stone_block_slab" );
     }
 
     @Override
