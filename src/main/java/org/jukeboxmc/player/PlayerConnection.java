@@ -94,7 +94,7 @@ public class PlayerConnection {
         this.chunkLoadQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
     }
 
-    public void update() {
+    public synchronized void update() {
         if ( this.isClosed() || !this.loggedIn.get() ) {
             return;
         }
@@ -114,7 +114,7 @@ public class PlayerConnection {
             this.chunkLoadQueue.clear();
         }
 
-        if ( !this.spawned.get() && this.loadedChunks.size() >= 16){
+        if ( !this.spawned.get() && this.loadedChunks.size() >= 16 ) {
             this.doFirstSpawn();
         }
     }
@@ -131,11 +131,11 @@ public class PlayerConnection {
         }
 
         adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.player.getGameMode().ordinal() == 3 );
-        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0);
-        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3);
-        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3);
+        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0 );
+        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3 );
+        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.set( AdventureSettings.Type.ATTACK_MOBS, this.player.getGameMode().ordinal() < 2 );
-        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() <2 );
+        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() < 2 );
         adventureSettings.set( AdventureSettings.Type.NO_PVM, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.update();
 
@@ -182,7 +182,7 @@ public class PlayerConnection {
             }
         }
 
-        this.player.movePlayer( this.player.getLocation().add( 0 , this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
+        this.player.movePlayer( this.player.getLocation().add( 0, this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
 
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this.player, "§e" + this.player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
@@ -208,6 +208,10 @@ public class PlayerConnection {
         this.player.close();
         this.close( "Disconect" );
         this.server.removePlayer( this.player );
+
+        for ( Long hash : this.loadedChunks ) {
+            this.player.getWorld().removeChunkLoader( Utils.fromHashX( hash ), Utils.fromHashZ( hash ), this.player.getDimension(), this.player );
+        }
 
         PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this.player, "§e" + this.player.getName() + " left the game" );
         Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
@@ -278,16 +282,16 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    public void needNewChunks() {
+    public synchronized void needNewChunks() {
         if ( this.requestedChunks ) return;
 
-        this.requestedChunks = true;
-
-        int currentXChunk = Utils.blockToChunk( this.player.getBlockX() );
-        int currentZChunk = Utils.blockToChunk( this.player.getBlockZ() );
-        int viewDistance = this.player.getViewDistance();
-
         try {
+            this.requestedChunks = true;
+
+            int currentXChunk = Utils.blockToChunk( this.player.getBlockX() );
+            int currentZChunk = Utils.blockToChunk( this.player.getBlockZ() );
+            int viewDistance = this.player.getViewDistance();
+
             int index = 0;
             for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
                 for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
@@ -317,7 +321,7 @@ public class PlayerConnection {
                 int z = Utils.fromHashZ( hash );
 
                 if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
-                    this.player.getWorld().removeChunkLoader( x, z, this.player );
+                    this.player.getWorld().removeChunkLoader( x, z, this.player.getDimension(), this.player );
                     iterator.remove();
                 }
             }
@@ -329,24 +333,17 @@ public class PlayerConnection {
     }
 
     public void requestChunk( int chunkX, int chunkZ ) {
-        Chunk chunk = this.player.getWorld().getChunk( chunkX, chunkZ, true, true, true, this.player.getDimension() );
-
-        long chunkHash = Utils.toLong( chunkX, chunkZ );
-        if ( this.loadedChunks.contains( chunkHash ) ) {
-            return;
-        }
-
-        if ( chunk.isPopulated() ) {
-            this.sendChunk( chunk );
-            return;
-        }
-
-        this.player.getWorld().addChunkLoader( chunkX, chunkZ, this.player );
+        this.player.getWorld().addChunkLoader( chunkX, chunkZ, this.player.getDimension(), this.player );
+        this.player.getWorld().getChunkFuture( chunkX, chunkZ, this.player.getDimension() ).whenComplete( ( chunk, throwable ) -> {
+            if ( chunk != null ) {
+                this.sendChunk( chunk );
+            }
+        } );
     }
 
     public void sendNetworkPublisher() {
         NetworkChunkPublisherUpdatePacket packet = new NetworkChunkPublisherUpdatePacket();
-        packet.setRadius( this.player.getViewDistance() << 4);
+        packet.setRadius( this.player.getViewDistance() << 4 );
         packet.setPosition( this.player.getLocation().toVector3i() );
         this.sendPacket( packet );
     }
@@ -355,7 +352,7 @@ public class PlayerConnection {
         return ( y >> 4 ) + ( Math.abs( -64 ) >> 4 );
     }
 
-    public void sendChunk( Chunk chunk ) {
+    public synchronized void sendChunk( Chunk chunk ) {
         try {
             this.sendNetworkPublisher();
             this.sendPacket( chunk.createLevelChunkPacket() );
@@ -405,7 +402,7 @@ public class PlayerConnection {
     }
 
     public void sendPacket( BedrockPacket packet ) {
-        if ( !this.isClosed() && this.session.getPacketCodec() != null) {
+        if ( !this.isClosed() && this.session.getPacketCodec() != null ) {
             PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
             Server.getInstance().getPluginManager().callEvent( packetSendEvent );
             if ( packetSendEvent.isCancelled() ) {

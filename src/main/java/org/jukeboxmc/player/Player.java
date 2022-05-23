@@ -272,8 +272,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 float playerX = compound.getFloat( "playerX", world.getSpawnLocation().getX() );
                 float playerY = compound.getFloat( "playerY", world.getSpawnLocation().getY() );
                 float playerZ = compound.getFloat( "playerZ", world.getSpawnLocation().getZ() );
-                float playerYaw = compound.getFloat( "playerYaw" , world.getSpawnLocation().getYaw());
-                float playerPitch = compound.getFloat( "playerPitch" , world.getSpawnLocation().getPitch());
+                float playerYaw = compound.getFloat( "playerYaw", world.getSpawnLocation().getYaw() );
+                float playerPitch = compound.getFloat( "playerPitch", world.getSpawnLocation().getPitch() );
                 int dimension = compound.getInt( "dimension", Dimension.OVERWORLD.ordinal() );
                 this.location = new Location( world, playerX, playerY, playerZ, playerYaw, playerPitch, Dimension.values()[dimension] );
 
@@ -725,18 +725,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     public void sendChunk( Chunk chunk ) {
         this.playerConnection.sendChunk( chunk );
-    }
-
-    @Override
-    public void chunkLoadCallback( Chunk chunk, boolean success ) {
-        if ( success ) {
-            this.sendChunk( chunk );
-        }
-    }
-
-    @Override
-    public void chunkGenerationCallback( Chunk chunk ) {
-        this.sendChunk( chunk );
     }
 
     public boolean isChunkLoaded( int chunkX, int chunkZ ) {
