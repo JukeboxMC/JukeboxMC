@@ -1,5 +1,7 @@
 package org.jukeboxmc.world;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jukeboxmc.util.Utils;
 
 /**
@@ -101,6 +103,8 @@ public enum Biome {
     private final int minElevation;
     private final int maxElevation;
 
+    private final static Int2ObjectMap<Biome> biomeById = new Int2ObjectOpenHashMap<>();
+
     Biome( int id, String identifier, String name, float temperature, float downfall ) {
         this( id, identifier, name, temperature, downfall, 58, 74 );
     }
@@ -143,12 +147,13 @@ public enum Biome {
         return this.maxElevation;
     }
 
-    public static Biome findById( int id ) {
-        for ( Biome value : Biome.values() ) {
-            if ( value.id == id ) {
-                return value;
-            }
+    public static void init() {
+        for ( Biome biome : Biome.values() ) {
+            biomeById.put( biome.getId(), biome );
         }
-        return null;
+    }
+
+    public static Biome findById( int id ) {
+        return biomeById.get( id );
     }
 }

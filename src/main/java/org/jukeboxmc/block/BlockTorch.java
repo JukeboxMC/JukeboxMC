@@ -40,6 +40,7 @@ public class BlockTorch extends Block {
 
     @Override
     public long onUpdate( UpdateReason updateReason ) {
+        /*
         if ( updateReason == UpdateReason.NEIGHBORS ) {
             BlockFace blockFace = this.getTorchFacing().toBlockFace();
             if ( !this.getSide( blockFace.opposite() ).isSolid() ) {
@@ -47,6 +48,7 @@ public class BlockTorch extends Block {
                 return -1;
             }
         }
+         */
         return super.onUpdate( updateReason );
     }
 

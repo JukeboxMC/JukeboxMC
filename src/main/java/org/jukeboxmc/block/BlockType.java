@@ -5,6 +5,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.type.LeafType;
+import org.jukeboxmc.block.type.LeafType2;
+import org.jukeboxmc.block.type.LogType;
+import org.jukeboxmc.block.type.LogType2;
 import org.jukeboxmc.item.Item;
 
 /**
@@ -31,8 +35,21 @@ public enum BlockType {
     GOLD_ORE( new BlockGoldOre() ),
     IRON_ORE( new BlockIronOre() ),
     COAL_ORE( new BlockCoalOre() ),
-    LOG( new BlockLog() ),
-    LEAVES( new BlockLeaves() ),
+
+    OAK_LOG( new BlockLog().setLogType( LogType.OAK ) ),
+    SPRUCE_LOG( new BlockLog().setLogType( LogType.SPRUCE ) ),
+    BIRCH_LOG( new BlockLog().setLogType( LogType.BIRCH ) ),
+    JUNGLE_LOG( new BlockLog().setLogType( LogType.JUNGLE ) ),
+    ACACIA_LOG( new BlockLog2().setLogType( LogType2.ACACIA ) ),
+    DARK_OAK_LOG( new BlockLog2().setLogType( LogType2.DARK_OAK ) ),
+
+    OAK_LEAVES( new BlockLeaves().setLeafType( LeafType.OAK ) ),
+    SPRUCE_LEAVES( new BlockLeaves().setLeafType( LeafType.SPRUCE ) ),
+    BIRCH_LEAVES( new BlockLeaves().setLeafType( LeafType.BIRCH ) ),
+    JUNGLE_LEAVES( new BlockLeaves().setLeafType( LeafType.JUNGLE ) ),
+    ACACIA_LEAVES( new BlockLeaves2().setLeafType( LeafType2.ACACIA ) ),
+    DARK_OAK_LEAVES( new BlockLeaves2().setLeafType( LeafType2.DARK_OAK ) ),
+
     SPONGE( new BlockSponge() ),
     GLASS( new BlockGlass() ),
     LAPIS_ORE( new BlockLapisOre() ),
@@ -173,8 +190,6 @@ public enum BlockType {
     WOODEN_SLAB( new BlockWoodenSlab() ),
     STAINED_HARDENED_CLAY( new BlockStainedHardenedClay() ),
     STAINED_GLASS_PANE( new BlockStainedGlassPane() ),
-    LEAVES2( new BlockLeaves2() ),
-    LOG2( new BlockLog2() ),
     ACACIA_STAIRS( new BlockAcaciaStairs() ),
     DARK_OAK_STAIRS( new BlockDarkOakStairs() ),
     SLIME( new BlockSlime() ),

@@ -17,8 +17,7 @@ public class FlatGenerator extends Generator {
     private final Block blockDirt;
     private final Block blockBedrock;
 
-    public FlatGenerator( World world, Dimension dimension ) {
-        super( world, dimension );
+    public FlatGenerator() {
 
         this.blockGrass = new BlockGrass();
         this.blockDirt = new BlockDirt();

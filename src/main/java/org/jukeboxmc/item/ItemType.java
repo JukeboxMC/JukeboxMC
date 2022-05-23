@@ -55,15 +55,19 @@ public enum ItemType {
     IRON_ORE( new ItemIronOre() ),
     COAL_ORE( new ItemCoalOre() ),
 
-    OAK_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.OAK ).toItem() ),
-    SPRUCE_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.SPRUCE ).toItem() ),
-    BIRCH_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.BIRCH ).toItem() ),
-    JUNGLE_LOG( BlockType.LOG.<BlockLog>getBlock().setLogType( LogType.JUNGLE ).toItem() ),
+    OAK_LOG( BlockType.OAK_LOG.getBlock().toItem() ),
+    SPRUCE_LOG( BlockType.SPRUCE_LOG.getBlock().toItem() ),
+    BIRCH_LOG( BlockType.BIRCH_LOG.getBlock().toItem() ),
+    JUNGLE_LOG( BlockType.JUNGLE_LOG.getBlock().toItem() ),
+    ACACIA_LOG( BlockType.ACACIA_LOG.getBlock().toItem() ),
+    DARK_OAK_LOG( BlockType.DARK_OAK_LOG.getBlock().toItem() ),
 
-    OAK_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.OAK ).toItem() ),
-    SPRUCE_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.SPRUCE ).toItem() ),
-    BIRCH_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.BIRCH ).toItem() ),
-    JUNGLE_LEAVES( BlockType.LEAVES.<BlockLeaves>getBlock().setLeafType( LeafType.JUNGLE ).toItem() ),
+    OAK_LEAVES( BlockType.OAK_LEAVES.getBlock().toItem() ),
+    SPRUCE_LEAVES( BlockType.SPRUCE_LEAVES.getBlock().toItem() ),
+    BIRCH_LEAVES( BlockType.BIRCH_LEAVES.getBlock().toItem() ),
+    JUNGLE_LEAVES( BlockType.JUNGLE_LEAVES.getBlock().toItem() ),
+    ACACIA_LEAVES( BlockType.ACACIA_LEAVES.getBlock().toItem() ),
+    DARK_OAK_LEAVES( BlockType.DARK_OAK_LEAVES.getBlock().toItem() ),
 
     DRY_SPONGE( BlockType.SPONGE.<BlockSponge>getBlock().setSpongeType( SpongeType.DRY ).toItem() ),
     WET_SPONGE( BlockType.SPONGE.<BlockSponge>getBlock().setSpongeType( SpongeType.WET ).toItem() ),
@@ -335,12 +339,6 @@ public enum ItemType {
     PURPLE_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.PURPLE ).toItem() ),
     MAGENTA_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.MAGENTA ).toItem() ),
     PINK_STAINED_HARDENED_CLAY( BlockType.STAINED_HARDENED_CLAY.<BlockStainedHardenedClay>getBlock().setColor( BlockColor.PINK ).toItem() ),
-
-    ACACIA_LEAVES( BlockType.LEAVES2.<BlockLeaves2>getBlock().setLeafType( LeafType2.ACACIA ).toItem() ),
-    DARK_OAK_LEAVES( BlockType.LEAVES2.<BlockLeaves2>getBlock().setLeafType( LeafType2.DARK_OAK ).toItem() ),
-
-    ACACIA_LOG( BlockType.LOG2.<BlockLog2>getBlock().setLogType( LogType2.ACACIA ).toItem() ),
-    DARK_OAK_LOG( BlockType.LOG2.<BlockLog2>getBlock().setLogType( LogType2.DARK_OAK ).toItem() ),
 
     ACACIA_STAIRS( new ItemAcaciaStairs() ),
     DARK_OAK_STAIRS( new ItemDarkOakStairs() ),

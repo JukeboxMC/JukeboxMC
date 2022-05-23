@@ -44,7 +44,10 @@ public class BlockLog2 extends Block {
 
     @Override
     public BlockType getType() {
-        return BlockType.LOG2;
+        return switch ( this.getLogType() ) {
+            case ACACIA -> BlockType.ACACIA_LOG;
+            case DARK_OAK -> BlockType.DARK_OAK_LOG;
+        };
     }
 
     @Override

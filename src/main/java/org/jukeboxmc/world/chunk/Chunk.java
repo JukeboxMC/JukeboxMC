@@ -53,7 +53,6 @@ public class Chunk {
     private final Lock readLock;
     private final Lock writeLock;
 
-    private final Set<ChunkLoader> loaders;
     private final Set<Entity> entities;
     private final ObjectPalette<Biome>[] biomes;
 
@@ -84,7 +83,6 @@ public class Chunk {
         this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
 
-        this.loaders = new HashSet<>();
         this.entities = new HashSet<>();
     }
 
@@ -146,18 +144,6 @@ public class Chunk {
 
     public Collection<Entity> getEntities() {
         return this.entities;
-    }
-
-    public void addLoader( ChunkLoader chunkLoader ) {
-        this.world.addChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
-    }
-
-    public void removeLoader( ChunkLoader chunkLoader ) {
-        this.world.removeChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
-    }
-
-    public Collection<ChunkLoader> getLoaders() {
-        return this.world.getChunkLoaders( this.chunkX, this.chunkZ, this.dimension );
     }
 
     public Collection<Player> getPlayers() {

@@ -29,6 +29,13 @@ public class MovePlayerHandler implements PacketHandler<MovePlayerPacket> {
         player.setLocation( toLocation );
         player.setOnGround( packet.isOnGround() );
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append( "§7ChunkX§8: §e" ).append( player.getChunkX() ).append( " §7ChunkZ§8: §e" ).append( player.getChunkZ() ).append( "\n" );
+        stringBuilder.append( "§7TPS§8: §e" ).append( server.getCurrentTps() ).append( " §7Average§8: §e" ).append( server.getCurrentAverageTps() ).append( "\n" );
+        stringBuilder.append( "§7Biome§8: §e" ).append( player.getLocation().getBiome().getName() ).append( "\n" );
+        stringBuilder.append( "§7Type§8: §e" ).append( player.getLocation().subtract( 0, 1,0 ).getBlock().getType().name() );
+        player.sendTip( stringBuilder.toString() );
+
         Location to = playerMoveEvent.getTo();
         Location fromLocation = player.getLocation();
 

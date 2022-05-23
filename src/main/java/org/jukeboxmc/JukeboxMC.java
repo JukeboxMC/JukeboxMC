@@ -6,13 +6,11 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
 import org.jukeboxmc.scoreboard.Scoreboard;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.Generator;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -52,20 +50,12 @@ public class JukeboxMC {
         return server.loadOrCreateWorld( name );
     }
 
-    public static boolean loadOrCreateWorld( String name, Map<Dimension, String> generatorMap ) {
-        return server.loadOrCreateWorld( name, generatorMap );
+    public static boolean loadOrCreateWorld( String name, Class<? extends Generator> clazz ) {
+        return server.loadOrCreateWorld( name, clazz );
     }
 
-    public static void registerDefaultGenerator( Dimension dimension, String name, Class<? extends Generator> clazz ) {
-        server.registerDefaultGenerator( dimension, name, clazz );
-    }
-
-    public static String getDefaultGenerator( Dimension dimension ) {
-        return server.getDefaultGenerator( dimension );
-    }
-
-    public static void registerWorldGenerator( String name, Class<? extends Generator> clazz, Dimension... dimensions ) {
-        server.registerGenerator( name, clazz, dimensions );
+    public static void registerWorldGenerator( String name, Class<? extends Generator> clazz ) {
+        server.registerGenerator( name, clazz );
     }
 
     public static void unloadWorld( String name ) {
@@ -132,7 +122,7 @@ public class JukeboxMC {
         scoreboard.showFor( player );
     }
 
-    public static void removeScorebaord( Player player, Scoreboard scoreboard ) {
+    public static void removeScorebaord( Player player, Scoreboard scoreboard ){
         scoreboard.hideFor( player );
     }
 

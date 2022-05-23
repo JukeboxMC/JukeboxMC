@@ -21,7 +21,12 @@ public class BlockLeaves extends BlockWaterlogable {
 
     @Override
     public BlockType getType() {
-        return BlockType.LEAVES;
+        return switch ( this.getLeafType() ) {
+            case OAK -> BlockType.OAK_LEAVES;
+            case SPRUCE -> BlockType.SPRUCE_LEAVES;
+            case BIRCH -> BlockType.BIRCH_LEAVES;
+            case JUNGLE -> BlockType.JUNGLE_LEAVES;
+        };
     }
 
     @Override
