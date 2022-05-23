@@ -111,10 +111,12 @@ public class ChunkManager {
         if ( loadingChunk != null ) {
             if ( loadingChunk.getChunk() == null ) {
                 chunk = loadingChunk.getFuture().join();
-                return;
+            } else {
+                chunk = loadingChunk.getChunk();
             }
+        }
 
-            chunk = loadingChunk.getChunk();
+        if ( chunk != null ) {
             if ( this._unloadChunk( chunk, safe, save ) ) {
                 this.chunks.remove( Utils.toLong( x, z ) );
             }

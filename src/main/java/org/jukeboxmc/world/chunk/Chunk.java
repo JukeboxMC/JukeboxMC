@@ -149,15 +149,15 @@ public class Chunk {
     }
 
     public void addLoader( ChunkLoader chunkLoader ) {
-        this.loaders.add( chunkLoader );
+        this.world.addChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
     }
 
     public void removeLoader( ChunkLoader chunkLoader ) {
-        this.loaders.remove( chunkLoader );
+        this.world.removeChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
     }
 
     public Collection<ChunkLoader> getLoaders() {
-        return this.loaders;
+        return this.world.getChunkLoaders( this.chunkX, this.chunkZ, this.dimension );
     }
 
     public Collection<Player> getPlayers() {

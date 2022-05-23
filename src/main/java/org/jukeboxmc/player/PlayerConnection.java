@@ -94,7 +94,7 @@ public class PlayerConnection {
         this.chunkLoadQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
     }
 
-    public void update() {
+    public synchronized void update() {
         if ( this.isClosed() || !this.loggedIn.get() ) {
             return;
         }
@@ -209,6 +209,10 @@ public class PlayerConnection {
         this.close( "Disconect" );
         this.server.removePlayer( this.player );
 
+        for ( Long hash : this.loadedChunks ) {
+            this.player.getWorld().removeChunkLoader( Utils.fromHashX( hash ), Utils.fromHashZ( hash ), this.player.getDimension(), this.player );
+        }
+
         PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this.player, "§e" + this.player.getName() + " left the game" );
         Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
         if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
@@ -278,16 +282,16 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    public void needNewChunks() {
+    public synchronized void needNewChunks() {
         if ( this.requestedChunks ) return;
 
-        this.requestedChunks = true;
-
-        int currentXChunk = Utils.blockToChunk( this.player.getBlockX() );
-        int currentZChunk = Utils.blockToChunk( this.player.getBlockZ() );
-        int viewDistance = this.player.getViewDistance();
-
         try {
+            this.requestedChunks = true;
+
+            int currentXChunk = Utils.blockToChunk( this.player.getBlockX() );
+            int currentZChunk = Utils.blockToChunk( this.player.getBlockZ() );
+            int viewDistance = this.player.getViewDistance();
+
             int index = 0;
             for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
                 for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
@@ -329,10 +333,10 @@ public class PlayerConnection {
     }
 
     public void requestChunk( int chunkX, int chunkZ ) {
+        this.player.getWorld().addChunkLoader( chunkX, chunkZ, this.player.getDimension(), this.player );
         this.player.getWorld().getChunkFuture( chunkX, chunkZ, this.player.getDimension() ).whenComplete( ( chunk, throwable ) -> {
             if ( chunk != null ) {
                 this.sendChunk( chunk );
-                this.player.getWorld().addChunkLoader( chunkX, chunkZ, this.player.getDimension(), this.player );
             }
         } );
     }
@@ -348,7 +352,7 @@ public class PlayerConnection {
         return ( y >> 4 ) + ( Math.abs( -64 ) >> 4 );
     }
 
-    public void sendChunk( Chunk chunk ) {
+    public synchronized void sendChunk( Chunk chunk ) {
         try {
             this.sendNetworkPublisher();
             this.sendPacket( chunk.createLevelChunkPacket() );

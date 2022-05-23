@@ -53,6 +53,7 @@ public class Server {
     private static Server instance;
 
     private final AtomicBoolean runningState;
+    private final Thread mainThread;
     private final int ticks = 20;
     private final long startTime;
     private long currentTick;
@@ -104,7 +105,8 @@ public class Server {
         instance = this;
         JukeboxMC.setServer( this );
         this.startTime = System.currentTimeMillis();
-        Thread.currentThread().setName( "JukeboxMC-Main" );
+        this.mainThread = Thread.currentThread();
+        this.mainThread.setName( "JukeboxMC-Main" );
 
         this.runningState = new AtomicBoolean( true );
 
@@ -200,6 +202,14 @@ public class Server {
         this.generatorName = serverConfig.getString( "generator" );
         this.onlineMode = serverConfig.getBoolean( "online-mode" );
         this.forceResourcePacks = serverConfig.getBoolean( "forceResourcePacks" );
+    }
+
+    public boolean isInMainThread() {
+        return Thread.currentThread() == this.mainThread;
+    }
+
+    public Thread getMainThread() {
+        return this.mainThread;
     }
 
     private void initOperatorConfig() {

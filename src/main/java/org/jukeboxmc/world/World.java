@@ -80,6 +80,7 @@ public class World {
     private final Map<Dimension, ChunkManager> chunkManagers;
 
     private final Map<Dimension, ThreadLocal<Generator>> generators;
+    private final Map<Dimension, Long2ObjectMap<Set<ChunkLoader>>> chunkLoaders;
     private final Map<Long, Entity> entities;
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
@@ -115,12 +116,21 @@ public class World {
             this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
         }
 
+        this.chunkLoaders = new EnumMap<>( Dimension.class );
+        for ( Dimension dimension : Dimension.values() ) {
+            this.chunkLoaders.put( dimension, new Long2ObjectOpenHashMap<>() );
+        }
+
         if ( !this.loadLevelFile() ) {
             this.saveLevelDatFile();
         }
     }
 
-    public void update( long currentTick ) {
+    public synchronized void update( long currentTick ) {
+        for ( ChunkManager chunkManager : this.chunkManagers.values() ) {
+            chunkManager.update();
+        }
+
         if ( this.gameRules.get( GameRule.DO_DAYLIGHT_CYCLE ) ) {
             this.worldTime++;
             while ( this.worldTime >= 24000 ) {
@@ -388,6 +398,10 @@ public class World {
         return this.chunkManagers.get( dimension ).getChunk( x, z );
     }
 
+    public synchronized Chunk getLoadedChunk( int x, int z, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunk( x, z );
+    }
+
     public synchronized CompletableFuture<Chunk> getChunkFuture( int x, int z, Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getChunkFuture( x, z );
     }
@@ -397,15 +411,15 @@ public class World {
     }
 
     public synchronized void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.getChunk( chunkX, chunkZ, dimension ).addLoader( chunkLoader );
+        this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).add( chunkLoader );
     }
 
     public synchronized void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.getChunk( chunkX, chunkZ, dimension ).removeLoader( chunkLoader );
+        this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).remove( chunkLoader );
     }
 
     public synchronized Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.getChunk( chunkX, chunkZ, dimension ).getLoaders();
+        return this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() );
     }
 
     public synchronized void clearChunks() {
@@ -461,12 +475,7 @@ public class World {
         block.setLocation( blockLocation );
         block.setLayer( layer );
 
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setBlockPosition( location.toVector3i() );
-        updateBlockPacket.setRuntimeId( block.getRuntimeId() );
-        updateBlockPacket.setDataLayer( layer );
-        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        this.sendDimensionPacket( updateBlockPacket, location.getDimension() );
+        this.sendBlockUpdate( block );
 
         if ( !block.hasBlockEntity() ) {
             chunk.removeBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
@@ -681,7 +690,7 @@ public class World {
 
         for ( int x = minX; x <= maxX; ++x ) {
             for ( int z = minZ; z <= maxZ; ++z ) {
-                Chunk chunk = this.getChunk( x, z, dimension );
+                Chunk chunk = this.getLoadedChunk( x, z, dimension );
                 if ( chunk != null ) {
                     for ( Entity iterateEntities : chunk.getEntities() ) {
                         if ( iterateEntities == null ) {
