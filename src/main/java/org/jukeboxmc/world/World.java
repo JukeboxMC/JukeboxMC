@@ -10,11 +10,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
-import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
@@ -45,8 +42,8 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
-import org.jukeboxmc.world.chunk.ChunkCache;
 import org.jukeboxmc.world.chunk.ChunkLoader;
+import org.jukeboxmc.world.chunk.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.gamerule.GameRules;
 import org.jukeboxmc.world.generator.Generator;
@@ -57,10 +54,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author LucGamesYT
@@ -83,15 +77,14 @@ public class World {
     private int worldTime;
     private long seed;
 
-    private final ChunkCache chunkCache;
+    private final Map<Dimension, ChunkManager> chunkManagers;
 
-    private final ThreadLocal<Generator> generatorThreadLocal;
-    private final Long2ObjectMap<Set<ChunkLoader>> chunkLoaders;
+    private final Map<Dimension, ThreadLocal<Generator>> generators;
     private final Map<Long, Entity> entities;
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    public World( String name, Server server ) {
+    public World( String name, Server server, Map<Dimension, String> generatorMap ) {
         this.name = name;
         this.server = server;
 
@@ -103,12 +96,24 @@ public class World {
 
         this.gameRules = new GameRules();
 
-        this.generatorThreadLocal = ThreadLocal.withInitial( () -> server.createWorldGenerator( name ) );
+        this.generators = new EnumMap<>( Dimension.class );
+        for ( Dimension dimension : Dimension.values() ) {
+            String generatorName = generatorMap.get( dimension );
+            if ( generatorName == null ) {
+                generatorName = server.getDefaultGenerator( dimension );
+            }
+
+            final String finalGeneratorName = generatorName;
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( this, finalGeneratorName, dimension ) ) );
+        }
+
         this.blockUpdateList = new BlockUpdateList();
-        this.chunkLoaders = new Long2ObjectOpenHashMap<>();
         this.entities = new ConcurrentHashMap<>();
 
-        this.chunkCache = new ChunkCache();
+        this.chunkManagers = new EnumMap<>( Dimension.class );
+        for ( Dimension dimension : Dimension.values() ) {
+            this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
+        }
 
         if ( !this.loadLevelFile() ) {
             this.saveLevelDatFile();
@@ -214,7 +219,8 @@ public class World {
         compound.putInt( "StorageVersion", 8 );
 
         if ( this.spawnLocation == null ) {
-            this.spawnLocation = this.getGenerator().getSpawnLocation() != null ? new Location( this, this.getGenerator().getSpawnLocation() ) : new Location( this, 0, 64, 0 );
+            Vector spawnLocation = this.getGenerator( Dimension.OVERWORLD ).getSpawnLocation();
+            this.spawnLocation = spawnLocation != null ? new Location( this, spawnLocation ) : new Location( this, 0, 64, 0 );
         }
 
         compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
@@ -331,8 +337,8 @@ public class World {
         }
     }
 
-    public Generator getGenerator() {
-        return this.generatorThreadLocal.get();
+    public synchronized Generator getGenerator( Dimension dimension ) {
+        return this.generators.get( dimension ).get();
     }
 
     public boolean loadChunk( Chunk chunk ) {
@@ -374,141 +380,38 @@ public class World {
         }
     }
 
-    public void addLoadChunkTask( Chunk chunk, boolean direct, BooleanConsumer consumer ) {
-        if ( direct ) {
-            boolean result = this.loadChunk( chunk );
-            consumer.accept( result );
+    public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunks();
+    }
 
-            Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
+    public synchronized Chunk getChunk( int x, int z, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getChunk( x, z );
+    }
 
-            if ( chunkLoaders != null ) {
-                for ( ChunkLoader loader : chunkLoaders ) {
-                    loader.chunkLoadCallback( chunk, result );
-                }
-            }
+    public synchronized CompletableFuture<Chunk> getChunkFuture( int x, int z, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getChunkFuture( x, z );
+    }
+
+    public synchronized CompletableFuture<Chunk> getChunkFuture( int x, int z, Dimension dimension, boolean load, boolean generate, boolean populate ) {
+        return this.chunkManagers.get( dimension ).getChunkFuture( x, z, load, generate, populate );
+    }
+
+    public synchronized void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        this.getChunk( chunkX, chunkZ, dimension ).addLoader( chunkLoader );
+    }
+
+    public synchronized void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        this.getChunk( chunkX, chunkZ, dimension ).removeLoader( chunkLoader );
+    }
+
+    public synchronized Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.getChunk( chunkX, chunkZ, dimension ).getLoaders();
+    }
+
+    public synchronized void clearChunks() {
+        for ( ChunkManager chunkManager : this.chunkManagers.values() ) {
+            chunkManager.close();
         }
-
-        this.server.getScheduler().executeAsync( () -> {
-            boolean result = this.loadChunk( chunk );
-
-            this.server.getScheduler().execute( () -> {
-                consumer.accept( result );
-
-                Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
-
-                if ( chunkLoaders != null ) {
-                    for ( ChunkLoader loader : chunkLoaders ) {
-                        loader.chunkLoadCallback( chunk, result );
-                    }
-                }
-            } );
-        } );
-    }
-
-    public Collection<Chunk> getChunks( Dimension dimension ) {
-        return this.chunkCache.getChunks( dimension );
-    }
-
-    public Chunk getChunk( int x, int z, Dimension dimension ) {
-        return this.getChunk( x, z, true, true, false, dimension );
-    }
-
-    public Chunk getChunk( int x, int z, boolean load, Dimension dimension ) {
-        return this.getChunk( x, z, load, true, false, dimension );
-    }
-
-    public Chunk getChunk( int x, int z, boolean load, boolean generate, Dimension dimension ) {
-        return this.getChunk( x, z, load, generate, false, dimension );
-    }
-
-    public Chunk getChunk( int x, int z, boolean load, boolean generate, boolean direct, Dimension dimension ) {
-        Chunk chunk = this.chunkCache.getChunk( x, z, dimension );
-        if ( chunk != null || !load ) {
-            if ( chunk != null && !chunk.isPopulated() && generate ) {
-                this.generateChunk( chunk, dimension );
-            }
-
-            return chunk;
-        }
-
-        chunk = new Chunk( this, x, z, dimension );
-        this.chunkCache.putChunk( chunk, dimension );
-
-        final Chunk fChunk = chunk;
-        this.addLoadChunkTask( chunk, direct, success -> {
-            if ( !success && generate ) this.generateChunk( fChunk, dimension );
-        } );
-
-        return chunk;
-    }
-
-    private void generateChunk( Chunk chunk, Dimension dimension ) {
-        final int x = chunk.getChunkX();
-        final int z = chunk.getChunkZ();
-        final Chunk[] chunks = new Chunk[9];
-
-        int index = 0;
-        for ( int nX = -1; nX <= 1; nX++ ) {
-            for ( int nZ = -1; nZ <= 1; nZ++ ) {
-                final Chunk nChunk;
-                if ( nX != 0 || nZ != 0 ) nChunk = this.getChunk( x + nX, z + nZ, true, false, false, dimension );
-                else nChunk = chunk;
-
-                chunks[index++] = nChunk;
-            }
-        }
-
-        this.addGenerationTask( chunk, chunks );
-    }
-
-    public void addChunkLoader( int chunkX, int chunkZ, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).add( chunkLoader );
-    }
-
-    public void removeChunkLoader( int chunkX, int chunkZ, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).remove( chunkLoader );
-    }
-
-    public void clearChunks() {
-        this.chunkCache.clearChunks();
-    }
-
-    public void addGenerationTask( Chunk chunk, Chunk[] chunks ) {
-        this.server.getScheduler().executeAsync( () -> {
-            Generator generator = this.generatorThreadLocal.get();
-
-            try {
-                generator.init( this, chunk, chunks );
-
-                for ( Chunk nChunk : chunks ) {
-                    if ( !nChunk.isGenerated() ) {
-                        try {
-                            generator.generate( nChunk.getChunkX(), nChunk.getChunkZ() );
-                        } finally {
-                            nChunk.setGenerated( true );
-                        }
-                    }
-                }
-
-                try {
-                    generator.populate( chunk.getChunkX(), chunk.getChunkZ() );
-                } finally {
-                    chunk.setPopulated( true );
-                }
-            } finally {
-                generator.clear();
-            }
-
-            this.server.getScheduler().execute( () -> {
-                final Set<ChunkLoader> chunkLoaders = this.chunkLoaders.get( chunk.toChunkHash() );
-
-                if ( chunkLoaders != null ) {
-                    for ( ChunkLoader loader : chunkLoaders ) {
-                        loader.chunkGenerationCallback( chunk );
-                    }
-                }
-            } );
-        } );
     }
 
     public int getBlockRuntimeId( int x, int y, int z, int layer, Dimension dimension ) {
@@ -613,7 +516,7 @@ public class World {
             return;
         }
 
-        if ( breakBlock.onBlockBreak(breakPosition) && breakBlock.canBreakWithHand() ) {
+        if ( breakBlock.onBlockBreak( breakPosition ) && breakBlock.canBreakWithHand() ) {
             BlockEntity blockEntity = this.getBlockEntity( breakPosition, breakPosition.getDimension() );
             if ( blockEntity != null ) {
                 this.removeBlockEntity( breakPosition, breakPosition.getDimension() );
@@ -632,7 +535,7 @@ public class World {
                     itemDrops.add( player.getWorld().dropItem( droppedItem, breakPosition, null ) );
                 }
             }
-            if ( !itemDrops.isEmpty() ){
+            if ( !itemDrops.isEmpty() ) {
                 itemDrops.forEach( Entity::spawn );
             }
         }
@@ -990,13 +893,11 @@ public class World {
     }
 
     public void save() {
-        Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks = new Object2ObjectOpenHashMap<>(this.chunkCache.getCachedChunks());
-        cachedChunks.replaceAll( ( k, v ) -> new Long2ObjectOpenHashMap<>( v ) );
-        for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> entry : cachedChunks.entrySet() ) {
-            for ( Chunk chunk : entry.getValue().values() ) {
-                if ( chunk != null ) {
-                    chunk.save( this.db );
-                }
+        for ( Dimension dimension : Dimension.values() ) {
+            Collection<Chunk> chunks = this.getChunks( dimension );
+
+            for ( Chunk chunk : chunks ) {
+                chunk.save( this.db );
             }
         }
     }

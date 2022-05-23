@@ -727,18 +727,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendChunk( chunk );
     }
 
-    @Override
-    public void chunkLoadCallback( Chunk chunk, boolean success ) {
-        if ( success ) {
-            this.sendChunk( chunk );
-        }
-    }
-
-    @Override
-    public void chunkGenerationCallback( Chunk chunk ) {
-        this.sendChunk( chunk );
-    }
-
     public boolean isChunkLoaded( int chunkX, int chunkZ ) {
         return this.playerConnection.isChunkLoaded( chunkX, chunkZ );
     }
