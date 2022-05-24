@@ -85,13 +85,13 @@ public class World {
 
     private final ChunkCache chunkCache;
 
-    private final ThreadLocal<Generator> generatorThreadLocal;
+    private final Map<Dimension, ThreadLocal<Generator>> generators;
     private final Long2ObjectMap<Set<ChunkLoader>> chunkLoaders;
     private final Map<Long, Entity> entities;
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
 
-    public World( String name, Server server ) {
+    public World( String name, Server server, Map<Dimension, String> generatorMap ) {
         this.name = name;
         this.server = server;
 
@@ -103,7 +103,18 @@ public class World {
 
         this.gameRules = new GameRules();
 
-        this.generatorThreadLocal = ThreadLocal.withInitial( () -> server.createWorldGenerator( name ) );
+
+        this.generators = new EnumMap<>( Dimension.class );
+        for ( Dimension dimension : Dimension.values() ) {
+            String generatorName = generatorMap.get( dimension );
+            if ( generatorName == null ) {
+                generatorName = server.getDefaultGenerator( dimension );
+            }
+
+            final String finalGeneratorName = generatorName;
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( this, finalGeneratorName, dimension ) ) );
+        }
+
         this.blockUpdateList = new BlockUpdateList();
         this.chunkLoaders = new Long2ObjectOpenHashMap<>();
         this.entities = new ConcurrentHashMap<>();
@@ -214,7 +225,7 @@ public class World {
         compound.putInt( "StorageVersion", 8 );
 
         if ( this.spawnLocation == null ) {
-            this.spawnLocation = this.getGenerator().getSpawnLocation() != null ? new Location( this, this.getGenerator().getSpawnLocation() ) : new Location( this, 0, 64, 0 );
+            this.spawnLocation = this.getGenerator( Dimension.OVERWORLD ).getSpawnLocation() != null ? new Location( this, this.getGenerator( Dimension.OVERWORLD ).getSpawnLocation() ) : new Location( this, 0, 64, 0 );
         }
 
         compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
@@ -331,8 +342,8 @@ public class World {
         }
     }
 
-    public Generator getGenerator() {
-        return this.generatorThreadLocal.get();
+    public synchronized Generator getGenerator( Dimension dimension ) {
+        return this.generators.get( dimension ).get();
     }
 
     public boolean loadChunk( Chunk chunk ) {
@@ -475,7 +486,7 @@ public class World {
 
     public void addGenerationTask( Chunk chunk, Chunk[] chunks ) {
         this.server.getScheduler().executeAsync( () -> {
-            Generator generator = this.generatorThreadLocal.get();
+            Generator generator = this.generators.get( chunk.getDimension() ).get();
 
             try {
                 generator.init( this, chunk, chunks );
@@ -613,7 +624,7 @@ public class World {
             return;
         }
 
-        if ( breakBlock.onBlockBreak(breakPosition) && breakBlock.canBreakWithHand() ) {
+        if ( breakBlock.onBlockBreak( breakPosition ) && breakBlock.canBreakWithHand() ) {
             BlockEntity blockEntity = this.getBlockEntity( breakPosition, breakPosition.getDimension() );
             if ( blockEntity != null ) {
                 this.removeBlockEntity( breakPosition, breakPosition.getDimension() );
@@ -632,7 +643,7 @@ public class World {
                     itemDrops.add( player.getWorld().dropItem( droppedItem, breakPosition, null ) );
                 }
             }
-            if ( !itemDrops.isEmpty() ){
+            if ( !itemDrops.isEmpty() ) {
                 itemDrops.forEach( Entity::spawn );
             }
         }
@@ -990,7 +1001,7 @@ public class World {
     }
 
     public void save() {
-        Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks = new Object2ObjectOpenHashMap<>(this.chunkCache.getCachedChunks());
+        Object2ObjectMap<Dimension, Long2ObjectMap<Chunk>> cachedChunks = new Object2ObjectOpenHashMap<>( this.chunkCache.getCachedChunks() );
         cachedChunks.replaceAll( ( k, v ) -> new Long2ObjectOpenHashMap<>( v ) );
         for ( Map.Entry<Dimension, Long2ObjectMap<Chunk>> entry : cachedChunks.entrySet() ) {
             for ( Chunk chunk : entry.getValue().values() ) {

@@ -1,7 +1,7 @@
 package org.jukeboxmc.world.generator;
 
-import lombok.RequiredArgsConstructor;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -11,14 +11,19 @@ import java.util.Arrays;
  * @author LucGamesYT
  * @version 1.0
  */
-@RequiredArgsConstructor
 public abstract class Generator {
 
-    private World world;
+    protected World world;
+    protected Dimension dimension;
     protected final Chunk[] chunks = new Chunk[9];
 
     protected int centerX = Integer.MAX_VALUE;
     protected int centerZ = Integer.MAX_VALUE;
+
+    public Generator( World world, Dimension dimension ) {
+        this.world = world;
+        this.dimension = dimension;
+    }
 
     public synchronized final void init( World world, Chunk chunk, Chunk[] chunks ) {
         this.init( world );

@@ -10,8 +10,8 @@ import org.jukeboxmc.world.World;
  */
 public class EmptyGenerator extends Generator {
 
-    public EmptyGenerator() {
-        super();
+    public EmptyGenerator( World world, Dimension dimension ) {
+        super( world, dimension );
     }
 
     @Override

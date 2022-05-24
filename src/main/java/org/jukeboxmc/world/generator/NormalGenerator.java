@@ -101,7 +101,8 @@ public class NormalGenerator extends Generator {
         }
     }
 
-    public NormalGenerator() {
+    public NormalGenerator( World world, Dimension dimension ) {
+        super( world, dimension );
         this.blockStone = new BlockStone();
         this.blockWater = new BlockWater();
 
