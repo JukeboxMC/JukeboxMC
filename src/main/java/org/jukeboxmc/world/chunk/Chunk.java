@@ -455,4 +455,17 @@ public class Chunk {
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, Utils.array( buffer ) );
     }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        Chunk chunk = (Chunk) o;
+        return chunkX == chunk.chunkX && chunkZ == chunk.chunkZ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( chunkX, chunkZ );
+    }
 }

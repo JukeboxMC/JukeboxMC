@@ -578,6 +578,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         World currentWorld = this.getWorld();
         World world = location.getWorld();
 
+        this.fallDistance = 0;
+        this.inAirTicks = 0;
+
         if ( currentWorld != world ) {
             this.despawn();
             currentWorld.getPlayers().forEach( player -> player.despawn( this ) );

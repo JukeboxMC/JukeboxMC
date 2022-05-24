@@ -108,7 +108,8 @@ public class NormalGenerator extends Generator {
 
         this.groundpopulators.add( new GroundPopulator() );
         this.populators.add( new CavePopulator() );
-        /*this.populators.add(
+
+        this.populators.add(
                 new OrePopulator( new OreType[]{
                         new OreType( new BlockCoalOre(), 20, 17, 0, 128 ),
                         new OreType( new BlockIronOre(), 20, 9, 0, 64 ),
@@ -124,7 +125,6 @@ public class NormalGenerator extends Generator {
                 } )
         );
 
-         */
     }
 
     @Override
