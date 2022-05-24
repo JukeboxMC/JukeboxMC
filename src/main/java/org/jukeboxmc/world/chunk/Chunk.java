@@ -461,11 +461,21 @@ public class Chunk {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
         Chunk chunk = (Chunk) o;
-        return chunkX == chunk.chunkX && chunkZ == chunk.chunkZ;
+        return this.chunkX == chunk.chunkX && this.chunkZ == chunk.chunkZ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( chunkX, chunkZ );
+        return Objects.hash( this.chunkX, this.chunkZ );
+    }
+
+    @Override
+    public String toString() {
+        return "Chunk{" +
+                "world=" + this.world.getName() +
+                ", chunkX=" + this.chunkX +
+                ", chunkZ=" + this.chunkZ +
+                ", dimension=" + this.dimension.name() +
+                '}';
     }
 }

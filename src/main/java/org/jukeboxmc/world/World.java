@@ -488,26 +488,28 @@ public class World {
         this.server.getScheduler().executeAsync( () -> {
             Generator generator = this.generators.get( chunk.getDimension() ).get();
 
-            try {
-                generator.init( this, chunk, chunks );
+            if(!chunk.isPopulated()) {
+                try {
+                    generator.init( this, chunk, chunks );
 
-                for ( Chunk nChunk : chunks ) {
-                    if ( !nChunk.isGenerated() ) {
-                        try {
-                            generator.generate( nChunk.getChunkX(), nChunk.getChunkZ() );
-                        } finally {
-                            nChunk.setGenerated( true );
+                    for ( Chunk nChunk : chunks ) {
+                        if ( !nChunk.isGenerated() ) {
+                            try {
+                                generator.generate( nChunk.getChunkX(), nChunk.getChunkZ() );
+                            } finally {
+                                nChunk.setGenerated( true );
+                            }
                         }
                     }
-                }
 
-                try {
-                    generator.populate( chunk.getChunkX(), chunk.getChunkZ() );
+                    try {
+                        generator.populate( chunk.getChunkX(), chunk.getChunkZ() );
+                    } finally {
+                        chunk.setPopulated( true );
+                    }
                 } finally {
-                    chunk.setPopulated( true );
+                    generator.clear();
                 }
-            } finally {
-                generator.clear();
             }
 
             this.server.getScheduler().execute( () -> {
