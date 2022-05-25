@@ -48,6 +48,6 @@ public class FlatGenerator extends Generator {
 
     @Override
     public Vector getSpawnLocation() {
-        return new Vector( 0, 5, 0 );
+        return new Vector( 0.5f, 5, 0.5f );
     }
 }
