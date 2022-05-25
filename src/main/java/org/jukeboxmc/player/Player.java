@@ -174,7 +174,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
                     if ( health < 20 ) {
                         this.setHeal( 1, EntityHealEvent.Cause.SATURATION );
-                        this.exhaust( 3 );
+                        if ( this.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            this.exhaust( 3 );
+                        }
                     }
                 } else if ( hunger <= 0 ) {
                     if ( health == -1 ) {
@@ -854,7 +856,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                     }
                 }
             }
-            this.exhaust( 0.3f );
+            if ( this.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                this.exhaust( 0.3f );
+            }
+
             return success;
         }
         return false;

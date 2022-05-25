@@ -6,6 +6,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -28,13 +29,6 @@ public class MovePlayerHandler implements PacketHandler<MovePlayerPacket> {
         player.setLastLocation( player.getLocation() );
         player.setLocation( toLocation );
         player.setOnGround( packet.isOnGround() );
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append( "§7ChunkX§8: §e" ).append( player.getChunkX() ).append( " §7ChunkZ§8: §e" ).append( player.getChunkZ() ).append( "\n" );
-        stringBuilder.append( "§7TPS§8: §e" ).append( server.getCurrentTps() ).append( " §7Average§8: §e" ).append( server.getCurrentAverageTps() ).append( "\n" );
-        stringBuilder.append( "§7Biome§8: §e" ).append( player.getLocation().getBiome().getName() ).append( "\n" );
-        stringBuilder.append( "§7Type§8: §e" ).append( player.getLocation().subtract( 0, 1,0 ).getBlock().getType().name() );
-        player.sendTip( stringBuilder.toString() );
 
         Location to = playerMoveEvent.getTo();
         Location fromLocation = player.getLocation();
@@ -67,9 +61,13 @@ public class MovePlayerHandler implements PacketHandler<MovePlayerPacket> {
                 }
                 if ( player.isOnGround() ) {
                     if ( player.isSprinting() ) {
-                        player.exhaust( ( 0.6f * distance + swimmingValue ) );
+                        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            player.exhaust( ( 0.6f * distance + swimmingValue ) );
+                        }
                     } else {
-                        player.exhaust( ( 0.1f * distance + swimmingValue ) );
+                        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            player.exhaust( ( 0.1f * distance + swimmingValue ) );
+                        }
                     }
                 }
             }
