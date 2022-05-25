@@ -937,8 +937,12 @@ public class World {
             Collection<Chunk> chunks = this.getChunks( dimension );
 
             for ( Chunk chunk : chunks ) {
-                chunk.save( this.db );
+                chunk.save( this.db, false );
             }
         }
+    }
+
+    public DB getDb() {
+        return this.db;
     }
 }

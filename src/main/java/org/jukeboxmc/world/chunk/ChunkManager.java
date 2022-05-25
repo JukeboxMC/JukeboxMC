@@ -136,11 +136,25 @@ public class ChunkManager {
     }
 
     private boolean _unloadChunk( Chunk chunk, boolean safe, boolean save ) {
-        //TODO: Implement this, this should unload and save the chunk if save is true
-        //      If safe is true, it should only unload if the chunk is not being used by any players
-        //      If safe is false, it should unload the chunk regardless of whether it is being used by any players
-        //      This method should return a boolean indicating whether the chunk was unloaded or not
-        return true;
+        /*
+        if ( safe ) {
+            if ( chunk.getPlayers().size() <= 0 ) {
+                if ( save ) {
+                    chunk.save( this.world.getDb(), false );
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if ( save ) {
+                chunk.save( this.world.getDb(), false );
+                return true;
+            }
+        }
+        return !safe && !save;
+         */
+        return false;
     }
 
     public synchronized void close() {
