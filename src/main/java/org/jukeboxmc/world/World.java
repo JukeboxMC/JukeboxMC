@@ -909,6 +909,27 @@ public class World {
         this.sendDimensionPacket( updateBlockPacket, block.getLocation().getDimension() );
     }
 
+    public void sendBlockUpdate( Player player, int runtimeId, Vector location, int layer ) {
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setRuntimeId( runtimeId );
+        updateBlockPacket.setBlockPosition( location.toVector3i() );
+        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setDataLayer( layer );
+        player.sendPacket( updateBlockPacket );
+    }
+
+    public void sendBlockUpdate( Set<Player> players, int runtimeId, Vector vector, int layer ) {
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setRuntimeId( runtimeId );
+        updateBlockPacket.setBlockPosition( vector.toVector3i() );
+        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setDataLayer( layer );
+
+        for ( Player player : players ) {
+            player.sendPacket( updateBlockPacket );
+        }
+    }
+
     public void save() {
         for ( Dimension dimension : Dimension.values() ) {
             Collection<Chunk> chunks = this.getChunks( dimension );

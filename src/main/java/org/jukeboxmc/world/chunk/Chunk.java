@@ -236,25 +236,41 @@ public class Chunk {
         }
     }
 
-    public void setBlock( int x, int y, int z, int layer, Block block ) {
+    public synchronized void setBlock( int x, int y, int z, int layer, Block block ) {
         this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return;
             }
             this.getSubChunk( y ).setBlock( x, y, z, layer, block );
+            Set<Player> players = new HashSet<>();
+            for ( ChunkLoader loader : this.getLoaders() ) {
+                if(loader instanceof Player) {
+                    players.add( (Player) loader );
+                }
+            }
+
+            this.world.sendBlockUpdate( players, block.getRuntimeId(), new Vector( (this.chunkX << 4) + x, y, (this.chunkZ << 4) + z ) , layer );
         } finally {
             this.writeLock.unlock();
         }
     }
 
-    public void setBlock( Vector vector, int layer, int runtimeId ) {
+    public synchronized void setBlock( Vector vector, int layer, int runtimeId ) {
         this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( vector.getBlockY() ) ) {
                 return;
             }
             this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
+            Set<Player> players = new HashSet<>();
+            for ( ChunkLoader loader : this.getLoaders() ) {
+                if(loader instanceof Player) {
+                    players.add( (Player) loader );
+                }
+            }
+
+            this.world.sendBlockUpdate( players, runtimeId, new Vector( (this.chunkX << 4) + (vector.getBlockX() & 15), vector.getY(), (this.chunkX << 4) + (vector.getBlockZ() & 15) ), layer );
         } finally {
             this.writeLock.unlock();
         }
