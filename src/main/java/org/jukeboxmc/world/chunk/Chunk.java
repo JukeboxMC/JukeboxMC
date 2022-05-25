@@ -46,6 +46,8 @@ public class Chunk {
     private final short[] height;
     private final SubChunk[] subChunks;
 
+    private volatile boolean changed;
+
     private boolean initiating = true;
     private boolean generated = false;
     private boolean populated = false;
@@ -53,7 +55,6 @@ public class Chunk {
     private final Lock readLock;
     private final Lock writeLock;
 
-    private final Set<ChunkLoader> loaders;
     private final Set<Entity> entities;
     private final ObjectPalette<Biome>[] biomes;
 
@@ -84,8 +85,15 @@ public class Chunk {
         this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
 
-        this.loaders = new HashSet<>();
         this.entities = new HashSet<>();
+    }
+
+    public void setChanged( boolean changed ) {
+        this.changed = changed;
+    }
+
+    public boolean isChanged() {
+        return this.changed;
     }
 
     public World getWorld() {
@@ -243,14 +251,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( y ).setBlock( x, y, z, layer, block );
-            Set<Player> players = new HashSet<>();
-            for ( ChunkLoader loader : this.getLoaders() ) {
-                if(loader instanceof Player) {
-                    players.add( (Player) loader );
-                }
-            }
-
-            this.world.sendBlockUpdate( players, block.getRuntimeId(), new Vector( (this.chunkX << 4) + x, y, (this.chunkZ << 4) + z ) , layer );
+            this.setChanged( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -263,14 +264,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
-            Set<Player> players = new HashSet<>();
-            for ( ChunkLoader loader : this.getLoaders() ) {
-                if(loader instanceof Player) {
-                    players.add( (Player) loader );
-                }
-            }
-
-            this.world.sendBlockUpdate( players, runtimeId, new Vector( (this.chunkX << 4) + (vector.getBlockX() & 15), vector.getY(), (this.chunkX << 4) + (vector.getBlockZ() & 15) ), layer );
+            this.setChanged( true );
         } finally {
             this.writeLock.unlock();
         }

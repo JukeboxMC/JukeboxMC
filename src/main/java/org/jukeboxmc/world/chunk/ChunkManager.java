@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
@@ -11,10 +12,7 @@ import org.jukeboxmc.world.generator.Generator;
 import org.jukeboxmc.world.manager.PopulationChunkManager;
 import org.jukeboxmc.world.manager.SingleChunkManager;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
@@ -32,7 +30,21 @@ public class ChunkManager {
         for ( Iterator<LoadingChunk> chunkIterator = this.chunks.values().iterator(); chunkIterator.hasNext(); ) {
             LoadingChunk loadingChunk = chunkIterator.next();
             Chunk chunk = loadingChunk.getChunk();
-            if ( chunk == null || !chunk.getLoaders().isEmpty() ) {
+            if ( chunk == null ) {
+                continue;
+            }
+
+            final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
+            if ( !chunkLoaders.isEmpty() ) {
+                if ( chunk.isChanged() ) {
+                    for ( ChunkLoader chunkLoader : chunkLoaders ) {
+                        if ( chunkLoader instanceof Player ) {
+                            ( (Player) chunkLoader ).sendChunk( chunk );
+                        }
+                    }
+
+                    chunk.setChanged( false );
+                }
                 continue;
             }
 

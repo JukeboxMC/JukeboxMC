@@ -471,7 +471,9 @@ public class World {
 
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
+        boolean changed = chunk.isChanged();
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
+        chunk.setChanged( changed );
 
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
