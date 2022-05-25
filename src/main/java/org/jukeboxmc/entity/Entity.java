@@ -263,12 +263,12 @@ public abstract class Entity {
     }
 
     public Vector getDirectionVector() {
-        float pitch = (float) (((this.getPitch() + 90) * Math.PI) / 180);
-        float yaw = (float) (((this.getYaw() + 90) * Math.PI) / 180);
-        float x = (float) (Math.sin(pitch) * Math.cos(yaw));
-        float z = (float) (Math.sin(pitch) * Math.sin(yaw));
-        float y = (float) Math.cos(pitch);
-        return new Vector(x, y, z).normalize();
+        float pitch = (float) ( ( ( this.getPitch() + 90 ) * Math.PI ) / 180 );
+        float yaw = (float) ( ( ( this.getYaw() + 90 ) * Math.PI ) / 180 );
+        float x = (float) ( Math.sin( pitch ) * Math.cos( yaw ) );
+        float z = (float) ( Math.sin( pitch ) * Math.sin( yaw ) );
+        float y = (float) Math.cos( pitch );
+        return new Vector( x, y, z ).normalize();
     }
 
     public AxisAlignedBB getBoundingBox() {
@@ -702,13 +702,23 @@ public abstract class Entity {
 
     protected boolean isOnLadder() {
         Location location = this.getLocation();
-        Block block = location.getWorld().getBlock( location );
+        Chunk loadedChunk = location.getWorld().getLoadedChunk( location.getChunkX(), location.getChunkZ(), location.getDimension() );
+        if ( loadedChunk == null ) {
+            return false;
+        }
+        Block block = loadedChunk.getBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), 0 );
         return block instanceof BlockLadder || block instanceof BlockVine;
     }
 
     public boolean isInWater() {
         Vector eyeLocation = this.getLocation().add( 0, this.getEyeHeight(), 0 );
-        Block block = this.getWorld().getBlock( eyeLocation );
+        Chunk loadedChunk = this.getWorld().getLoadedChunk( eyeLocation.getChunkX(), eyeLocation.getChunkZ(), eyeLocation.getDimension() );
+        if ( loadedChunk == null ) {
+            return false;
+        }
+
+
+        Block block = loadedChunk.getBlock( eyeLocation.getBlockX(), eyeLocation.getBlockY(), eyeLocation.getBlockZ(), 0 );
         if ( block instanceof BlockWater ) {
             float yLiquid = (float) ( ( block.getLocation().getY() + 1 + ( (BlockWater) block ).getLiquidDepth() - 0.12 ) );
             return eyeLocation.getY() < yLiquid;
