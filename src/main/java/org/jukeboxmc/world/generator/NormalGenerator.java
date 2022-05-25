@@ -103,6 +103,13 @@ public class NormalGenerator extends Generator {
 
     public NormalGenerator( World world, Dimension dimension ) {
         super( world, dimension );
+        if ( this.biomeGrid == null ) {
+            this.biomeGrid = MapLayer.initialize( world.getSeed(), Dimension.OVERWORLD, 1 );
+        }
+        if ( this.random == null ) {
+            this.random = new Random( world.getSeed() );
+        }
+
         this.blockStone = new BlockStone();
         this.blockWater = new BlockWater();
 
@@ -125,17 +132,6 @@ public class NormalGenerator extends Generator {
                 } )
         );
 
-    }
-
-    @Override
-    protected synchronized void init( World world ) {
-        super.init( world );
-        if ( this.biomeGrid == null ) {
-            this.biomeGrid = MapLayer.initialize( world.getSeed(), Dimension.OVERWORLD, 1 );
-        }
-        if ( this.random == null ) {
-            this.random = new Random( world.getSeed() );
-        }
     }
 
     @Override

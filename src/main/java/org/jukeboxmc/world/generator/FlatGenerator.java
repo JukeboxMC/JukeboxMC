@@ -43,7 +43,11 @@ public class FlatGenerator extends Generator {
 
     @Override
     public void populate( int chunkX, int chunkZ ) {
+        Chunk chunk = this.getChunk( chunkX, chunkZ );
+        Chunk chunk2 = this.getChunk( chunkX + 1, chunkZ - 1);
 
+        chunk.setBlock( 0, 10, 0, 0, this.blockGrass );
+        chunk2.setBlock( 3, 10, 3, 0, this.blockBedrock );
     }
 
     @Override
