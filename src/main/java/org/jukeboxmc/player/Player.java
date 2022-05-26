@@ -580,8 +580,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         World currentWorld = this.getWorld();
         World world = location.getWorld();
 
+        this.highestPosition = 0;
         this.fallDistance = 0;
         this.inAirTicks = 0;
+        this.playerConnection.getChunkLoadQueue().clear();
 
         if ( currentWorld != world ) {
             this.despawn();
@@ -590,7 +592,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             this.getChunk().removeEntity( this );
             currentWorld.removeEntity( this );
 
-            this.playerConnection.resetChunks();
+            this.playerConnection.getLoadedChunks().clear();
 
             this.setLocation( location );
             this.playerConnection.needNewChunks();

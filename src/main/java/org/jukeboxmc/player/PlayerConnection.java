@@ -383,6 +383,14 @@ public class PlayerConnection {
         this.chunkLoadQueue.clear();
     }
 
+    public LongSet getLoadedChunks() {
+        return this.loadedChunks;
+    }
+
+    public LongPriorityQueue getChunkLoadQueue() {
+        return this.chunkLoadQueue;
+    }
+
     public boolean isChunkLoaded( int chunkX, int chunkZ ) {
         return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
     }

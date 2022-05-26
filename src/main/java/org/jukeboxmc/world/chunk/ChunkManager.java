@@ -38,8 +38,8 @@ public class ChunkManager {
             if ( !chunkLoaders.isEmpty() ) {
                 if ( chunk.isChanged() ) {
                     for ( ChunkLoader chunkLoader : chunkLoaders ) {
-                        if ( chunkLoader instanceof Player ) {
-                            ( (Player) chunkLoader ).sendChunk( chunk );
+                        if ( chunkLoader instanceof Player player) {
+                            player.sendChunk( chunk );
                         }
                     }
 

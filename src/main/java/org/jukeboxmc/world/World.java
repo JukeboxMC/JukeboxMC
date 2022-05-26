@@ -10,11 +10,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
-import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
@@ -43,9 +38,9 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.Pair;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
-import org.jukeboxmc.world.chunk.ChunkCache;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 import org.jukeboxmc.world.chunk.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
@@ -84,7 +79,7 @@ public class World {
     private final Map<Dimension, ChunkManager> chunkManagers;
 
     private final Map<Dimension, ThreadLocal<Generator>> generators;
-    private final Map<Dimension, Long2ObjectMap<Set<ChunkLoader>>> chunkLoaders;
+    private final Map<Pair<Dimension, Long>, Set<ChunkLoader>> chunkLoaders;
     private final Map<Long, Entity> entities;
 
     private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
@@ -121,10 +116,7 @@ public class World {
             this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
         }
 
-        this.chunkLoaders = new EnumMap<>( Dimension.class );
-        for ( Dimension dimension : Dimension.values() ) {
-            this.chunkLoaders.put( dimension, new Long2ObjectOpenHashMap<>() );
-        }
+        this.chunkLoaders = new HashMap<>();
 
         if ( !this.loadLevelFile() ) {
             this.saveLevelDatFile();
@@ -414,16 +406,22 @@ public class World {
         return this.chunkManagers.get( dimension ).getChunkFuture( x, z, load, generate, populate );
     }
 
-    public synchronized void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).add( chunkLoader );
+    public void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        synchronized (this.chunkLoaders) {
+            this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> new HashSet<>() ).add( chunkLoader );
+        }
     }
 
-    public synchronized void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() ).remove( chunkLoader );
+    public void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        synchronized (this.chunkLoaders) {
+            this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> new HashSet<>() ).remove( chunkLoader );
+        }
     }
 
-    public synchronized Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.chunkLoaders.get( dimension ).computeIfAbsent( Utils.toLong( chunkX, chunkZ ), key -> new HashSet<>() );
+    public Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
+        synchronized (this.chunkLoaders) {
+            return this.chunkLoaders.get( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ) );
+        }
     }
 
     public synchronized void clearChunks() {
