@@ -70,13 +70,13 @@ public class PlayerConnection {
         this.session.setBatchHandler( ( bedrockSession, byteBuf, packets ) -> {
             for ( BedrockPacket packet : packets ) {
                 try {
+                    PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
+                    server.getPluginManager().callEvent( packetReceiveEvent );
+                    if ( packetReceiveEvent.isCancelled() ) {
+                        return;
+                    }
                     PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packet.getClass() );
                     if ( packetHandler != null ) {
-                        PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
-                        server.getPluginManager().callEvent( packetReceiveEvent );
-                        if ( packetReceiveEvent.isCancelled() ) {
-                            return;
-                        }
                         packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
                     } else {
                         //System.out.println("Handler missing for packet: " + packet.getClass().getSimpleName());
