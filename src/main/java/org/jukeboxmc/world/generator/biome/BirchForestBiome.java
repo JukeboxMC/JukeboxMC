@@ -17,7 +17,7 @@ public class BirchForestBiome extends GrassyBiome {
     @Override
     public List<Populator> getPopulators() {
         TallGrassPopulator tallGrassPopulator = new TallGrassPopulator();
-        tallGrassPopulator.setBaseAmount( 5 );
+        tallGrassPopulator.setBaseAmount( 20 );
 
         TreePopulator treePopulator = new TreePopulator( new BirchTree() );
         treePopulator.setBaseAmount( 5 );

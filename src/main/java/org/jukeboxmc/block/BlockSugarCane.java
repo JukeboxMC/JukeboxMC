@@ -19,11 +19,20 @@ public class BlockSugarCane extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        Block block = world.getBlock( placePosition ).getSide( BlockFace.DOWN );
+        Block block = world.getBlock( blockPosition );
 
-        if ( blockFace != BlockFace.DOWN && block.getType() != BlockType.AIR ) {
-            world.setBlock( placePosition, this );
+        if ( world.getBlock( placePosition.subtract( 0, 1, 0 ) ).getType().equals( BlockType.SUGARCANE ) ) {
+            world.setBlock( blockPosition.add( 0, 1, 0 ), this );
             return true;
+        } else if ( block.getType().equals( BlockType.GRASS ) || block.getType().equals( BlockType.DIRT ) || block.getType().equals( BlockType.SAND ) ) {
+            Block blockNorth = block.getSide( BlockFace.NORTH );
+            Block blockEast = block.getSide( BlockFace.EAST );
+            Block blockSouth = block.getSide( BlockFace.SOUTH );
+            Block blockWest = block.getSide( BlockFace.WEST );
+            if ( ( blockNorth instanceof BlockWater ) || ( blockEast instanceof BlockWater ) || ( blockSouth instanceof BlockWater ) || ( blockWest instanceof BlockWater ) ) {
+                world.setBlock( placePosition, this );
+                return true;
+            }
         }
         return false;
     }

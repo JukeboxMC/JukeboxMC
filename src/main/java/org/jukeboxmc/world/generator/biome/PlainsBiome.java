@@ -17,10 +17,7 @@ public class PlainsBiome extends GrassyBiome {
     @Override
     public List<Populator> getPopulators() {
         TallGrassPopulator tallGrassPopulator = new TallGrassPopulator();
-        tallGrassPopulator.setBaseAmount( 5 );
-
-        TreePopulator treePopulator = new TreePopulator( new OakTree() );
-        treePopulator.setBaseAmount( 5 );
-        return Arrays.asList( tallGrassPopulator, treePopulator );
+        tallGrassPopulator.setBaseAmount( 20 );
+        return List.of( tallGrassPopulator );
     }
 }

@@ -386,6 +386,10 @@ public class World {
         }
     }
 
+    public ChunkManager getChunkManager( Dimension dimension ) {
+        return this.chunkManagers.get( dimension );
+    }
+
     public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunks();
     }

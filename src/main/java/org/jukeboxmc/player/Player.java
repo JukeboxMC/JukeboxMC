@@ -583,7 +583,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.highestPosition = 0;
         this.fallDistance = 0;
         this.inAirTicks = 0;
-        this.playerConnection.getChunkLoadQueue().clear();
 
         if ( currentWorld != world ) {
             this.despawn();
@@ -592,7 +591,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             this.getChunk().removeEntity( this );
             currentWorld.removeEntity( this );
 
-            this.playerConnection.getLoadedChunks().clear();
+            this.playerConnection.resetChunks();
 
             this.setLocation( location );
             this.playerConnection.needNewChunks();
@@ -901,6 +900,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             entityEventPacket.setRuntimeEntityId( this.entityId );
             entityEventPacket.setType( EntityEventType.DEATH );
             this.playerConnection.sendPacket( entityEventPacket );
+
+            this.fallDistance = 0;
+            this.highestPosition = 0;
+            this.inAirTicks = 0;
 
             String deathMessage = switch ( this.lastDamageSource ) {
                 case ENTITY_ATTACK -> this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
