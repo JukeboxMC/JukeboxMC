@@ -11,8 +11,10 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.SneakyThrows;
+import net.daporkchop.ldbjni.direct.DirectDB;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
+import org.iq80.leveldb.CompressionType;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.Iq80DBFactory;
@@ -63,7 +65,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class World {
 
-    private DB db;
+    private DirectDB db;
     private final File worldFolder;
     private final File worldFile;
 
@@ -397,7 +399,7 @@ public class World {
 
     public boolean open() {
         try {
-            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 64 * 1024 ).createIfMissing( true ) );
+            this.db = net.daporkchop.ldbjni.LevelDB.PROVIDER.open(new File( this.worldFolder, "db" ), new Options().compressionType( CompressionType.ZLIB_RAW).blockSize( 64 * 1024 ).createIfMissing( true ));
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
