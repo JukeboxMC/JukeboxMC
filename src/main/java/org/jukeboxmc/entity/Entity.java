@@ -110,6 +110,10 @@ public abstract class Entity {
     public void onCollideWithPlayer( Player player ) {
     }
 
+    public void interact( Player player, Vector clickVector ) {
+
+    }
+
     public BedrockPacket createSpawnPacket() {
         AddEntityPacket addEntityPacket = new AddEntityPacket();
         addEntityPacket.setRuntimeEntityId( this.entityId );
