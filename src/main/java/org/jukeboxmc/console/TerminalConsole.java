@@ -24,6 +24,11 @@ public class TerminalConsole extends SimpleTerminalConsole {
 
     @Override
     protected void runCommand( String command ) {
+        if(command.equals( "checkexception" )) {
+            Exception exception = new Exception();
+            exception.setStackTrace( this.server.getMainThread().getStackTrace() );
+            exception.printStackTrace(System.out);
+        }
         if ( this.isRunning() ) {
             this.server.getScheduler().execute( () -> {
                 this.server.dispatchCommand( this.server.getConsoleSender(), command );

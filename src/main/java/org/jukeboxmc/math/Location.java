@@ -1,6 +1,7 @@
 package org.jukeboxmc.math;
 
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -101,6 +102,10 @@ public class Location extends Vector {
 
     public Block getBlock() {
         return this.world.getBlock( this );
+    }
+
+    public Biome getBiome() {
+        return this.world.getBiome( this.getBlockX(), this.getBlockY(), this.getBlockZ() );
     }
 
     public Block getBlock( int layer ) {

@@ -6,6 +6,7 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.chunk.Chunk;
 
@@ -60,9 +61,13 @@ public class MovePlayerHandler implements PacketHandler<MovePlayerPacket> {
                 }
                 if ( player.isOnGround() ) {
                     if ( player.isSprinting() ) {
-                        player.exhaust( ( 0.6f * distance + swimmingValue ) );
+                        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            player.exhaust( ( 0.6f * distance + swimmingValue ) );
+                        }
                     } else {
-                        player.exhaust( ( 0.1f * distance + swimmingValue ) );
+                        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            player.exhaust( ( 0.1f * distance + swimmingValue ) );
+                        }
                     }
                 }
             }

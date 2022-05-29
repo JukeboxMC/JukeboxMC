@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.WriteBatch;
+import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockPalette;
@@ -26,6 +27,7 @@ import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -45,6 +47,8 @@ public class Chunk {
     private final int fullHeight;
     private final short[] height;
     private final SubChunk[] subChunks;
+
+    private volatile boolean changed;
 
     private boolean initiating = true;
     private boolean generated = false;
@@ -84,6 +88,14 @@ public class Chunk {
         this.writeLock = lock.writeLock();
 
         this.entities = new HashSet<>();
+    }
+
+    public void setChanged( boolean changed ) {
+        this.changed = changed;
+    }
+
+    public boolean isChanged() {
+        return this.changed;
     }
 
     public World getWorld() {
@@ -144,6 +156,18 @@ public class Chunk {
 
     public Collection<Entity> getEntities() {
         return this.entities;
+    }
+
+    public void addLoader( ChunkLoader chunkLoader ) {
+        this.world.addChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
+    }
+
+    public void removeLoader( ChunkLoader chunkLoader ) {
+        this.world.removeChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
+    }
+
+    public Collection<ChunkLoader> getLoaders() {
+        return this.world.getChunkLoaders( this.chunkX, this.chunkZ, this.dimension );
     }
 
     public Collection<Player> getPlayers() {
@@ -222,25 +246,27 @@ public class Chunk {
         }
     }
 
-    public void setBlock( int x, int y, int z, int layer, Block block ) {
+    public synchronized void setBlock( int x, int y, int z, int layer, Block block ) {
         this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return;
             }
             this.getSubChunk( y ).setBlock( x, y, z, layer, block );
+            this.setChanged( true );
         } finally {
             this.writeLock.unlock();
         }
     }
 
-    public void setBlock( Vector vector, int layer, int runtimeId ) {
+    public synchronized void setBlock( Vector vector, int layer, int runtimeId ) {
         this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( vector.getBlockY() ) ) {
                 return;
             }
             this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
+            this.setChanged( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -372,72 +398,215 @@ public class Chunk {
         return Utils.toLong( this.chunkX, this.chunkZ );
     }
 
-    public void save( DB db ) {
-        WriteBatch writeBatch = db.createWriteBatch();
-
-        for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
-            if ( this.subChunks[subY] == null ) {
-                continue;
-            }
-            this.saveChunkSlice( subY - 4, writeBatch );
-        }
-
-        byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
-        ByteBuf versionBuffer = Unpooled.buffer();
-        versionBuffer.writeByte( 39 ); //Chunk Version
-        writeBatch.put( versionKey, Utils.array( versionBuffer ) );
-        versionBuffer.release();
-
-        ByteBuf buffer = Unpooled.buffer();
-        List<BlockEntity> blockEntities = this.getBlockEntities();
-        if ( !blockEntities.isEmpty() ) {
-            try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                for ( BlockEntity blockEntity : blockEntities ) {
-                    try {
-                        NbtMap build = blockEntity.toCompound().build();
-                        networkWriter.writeTag( build );
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
+    public CompletableFuture<Void> save(DB db) {
+        return CompletableFuture.supplyAsync( () -> {
+            try (WriteBatch writeBatch = db.createWriteBatch()){
+                this.readLock.lock();
+                try {
+                    for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+                        if ( this.subChunks[subY] == null ) {
+                            continue;
+                        }
+                        this.saveChunkSlice( subY - 4, writeBatch );
                     }
+
+                    byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+                    ByteBuf versionBuffer = Unpooled.buffer();
+                    versionBuffer.writeByte( 39 ); //Chunk Version
+                    writeBatch.put( versionKey, Utils.array( versionBuffer ) );
+                    versionBuffer.release();
+
+                    ByteBuf buffer = Unpooled.buffer();
+                    List<BlockEntity> blockEntities = this.getBlockEntities();
+                    if ( !blockEntities.isEmpty() ) {
+                        try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                            for ( BlockEntity blockEntity : blockEntities ) {
+                                try {
+                                    NbtMap build = blockEntity.toCompound().build();
+                                    networkWriter.writeTag( build );
+                                } catch ( IOException e ) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch ( IOException e ) {
+                            e.printStackTrace();
+                        }
+
+                        if ( buffer.readableBytes() > 0 ) {
+                            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                            writeBatch.put( blockEntityKey, Utils.array( buffer ) );
+                        }
+                        buffer.release();
+                    }
+
+                    byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+                    ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+
+                    for ( short height : this.height ) {
+                        heightAndBiomesBuffer.writeShortLE( height );
+                    }
+
+                    ObjectPalette<Biome> last = null;
+                    for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
+                        if ( biomePalette == null ) {
+                            if ( last != null ) {
+                                last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                            }
+                            continue;
+                        }
+                        biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                        last = biomePalette;
+                    }
+                    writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
+                    heightAndBiomesBuffer.release();
+                } finally {
+                    this.readLock.unlock();
                 }
+                db.write( writeBatch );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
+            return null;
+        } );
+    }
 
-            if ( buffer.readableBytes() > 0 ) {
-                byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
-                writeBatch.put( blockEntityKey, Utils.array( buffer ) );
-            }
-            buffer.release();
-        }
+    public void save0( DB db, boolean async ) {
+        if ( async ) {
+            JukeboxMC.getScheduler().executeAsync( () -> {
+                WriteBatch writeBatch = db.createWriteBatch();
 
-        byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
-        ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
-
-        for ( short height : this.height ) {
-            heightAndBiomesBuffer.writeShortLE( height );
-        }
-
-        ObjectPalette<Biome> last = null;
-        for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
-            if ( biomePalette == null ) {
-                if ( last != null ) {
-                    last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+                    if ( this.subChunks[subY] == null ) {
+                        continue;
+                    }
+                    this.saveChunkSlice( subY - 4, writeBatch );
                 }
-                continue;
-            }
-            biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-            last = biomePalette;
-        }
-        writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
-        heightAndBiomesBuffer.release();
 
-        db.write( writeBatch );
-        try {
-            writeBatch.close();
-        } catch ( IOException e ) {
-            e.printStackTrace();
+                byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+                ByteBuf versionBuffer = Unpooled.buffer();
+                versionBuffer.writeByte( 39 ); //Chunk Version
+                writeBatch.put( versionKey, Utils.array( versionBuffer ) );
+                versionBuffer.release();
+
+                ByteBuf buffer = Unpooled.buffer();
+                List<BlockEntity> blockEntities = this.getBlockEntities();
+                if ( !blockEntities.isEmpty() ) {
+                    try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                        for ( BlockEntity blockEntity : blockEntities ) {
+                            try {
+                                NbtMap build = blockEntity.toCompound().build();
+                                networkWriter.writeTag( build );
+                            } catch ( IOException e ) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
+
+                    if ( buffer.readableBytes() > 0 ) {
+                        byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                        writeBatch.put( blockEntityKey, Utils.array( buffer ) );
+                    }
+                    buffer.release();
+                }
+
+                byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+                ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+
+                for ( short height : this.height ) {
+                    heightAndBiomesBuffer.writeShortLE( height );
+                }
+
+                ObjectPalette<Biome> last = null;
+                for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
+                    if ( biomePalette == null ) {
+                        if ( last != null ) {
+                            last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                        }
+                        continue;
+                    }
+                    biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                    last = biomePalette;
+                }
+                writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
+                heightAndBiomesBuffer.release();
+
+                db.write( writeBatch );
+                try {
+                    writeBatch.close();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            } );
+        } else {
+            WriteBatch writeBatch = db.createWriteBatch();
+
+            for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+                if ( this.subChunks[subY] == null ) {
+                    continue;
+                }
+                this.saveChunkSlice( subY - 4, writeBatch );
+            }
+
+            byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+            ByteBuf versionBuffer = Unpooled.buffer();
+            versionBuffer.writeByte( 39 ); //Chunk Version
+            writeBatch.put( versionKey, Utils.array( versionBuffer ) );
+            versionBuffer.release();
+
+            ByteBuf buffer = Unpooled.buffer();
+            List<BlockEntity> blockEntities = this.getBlockEntities();
+            if ( !blockEntities.isEmpty() ) {
+                try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                    for ( BlockEntity blockEntity : blockEntities ) {
+                        try {
+                            NbtMap build = blockEntity.toCompound().build();
+                            networkWriter.writeTag( build );
+                        } catch ( IOException e ) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+
+                if ( buffer.readableBytes() > 0 ) {
+                    byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                    writeBatch.put( blockEntityKey, Utils.array( buffer ) );
+                }
+                buffer.release();
+            }
+
+            byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+            ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+
+            for ( short height : this.height ) {
+                heightAndBiomesBuffer.writeShortLE( height );
+            }
+
+            ObjectPalette<Biome> last = null;
+            for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
+                if ( biomePalette == null ) {
+                    if ( last != null ) {
+                        last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                    }
+                    continue;
+                }
+                biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                last = biomePalette;
+            }
+            writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
+            heightAndBiomesBuffer.release();
+
+            db.write( writeBatch );
+            try {
+                writeBatch.close();
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private void saveChunkSlice( int subY, WriteBatch writeBatch ) {
@@ -454,5 +623,28 @@ public class Chunk {
 
         byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, Utils.array( buffer ) );
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        Chunk chunk = (Chunk) o;
+        return this.chunkX == chunk.chunkX && this.chunkZ == chunk.chunkZ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( this.chunkX, this.chunkZ );
+    }
+
+    @Override
+    public String toString() {
+        return "Chunk{" +
+                "world=" + this.world.getName() +
+                ", chunkX=" + this.chunkX +
+                ", chunkZ=" + this.chunkZ +
+                ", dimension=" + this.dimension.name() +
+                '}';
     }
 }

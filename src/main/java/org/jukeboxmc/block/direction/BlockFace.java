@@ -14,52 +14,35 @@ public enum BlockFace {
     EAST;
 
     public BlockFace opposite() {
-        switch ( this ) {
-            case DOWN:
-                return UP;
-            case UP:
-                return DOWN;
-            case NORTH:
-                return SOUTH;
-            case WEST:
-                return EAST;
-            case EAST:
-                return WEST;
-            default:
-                return NORTH;
-        }
+        return switch ( this ) {
+            case DOWN -> UP;
+            case UP -> DOWN;
+            case NORTH -> SOUTH;
+            case WEST -> EAST;
+            case EAST -> WEST;
+            default -> NORTH;
+        };
     }
 
     public Direction toDirection() {
-        switch ( this ) {
-            case NORTH:
-                return Direction.NORTH;
-            case EAST:
-                return Direction.EAST;
-            case SOUTH:
-                return Direction.SOUTH;
-            case WEST:
-                return Direction.WEST;
-            default:
-                return null;
-        }
+        return switch ( this ) {
+            case NORTH -> Direction.NORTH;
+            case EAST -> Direction.EAST;
+            case SOUTH -> Direction.SOUTH;
+            case WEST -> Direction.WEST;
+            default -> null;
+        };
     }
 
     public TorchFacing torchFacing() {
-        switch ( this ) {
-            case UP:
-                return TorchFacing.TOP;
-            case WEST:
-                return TorchFacing.WEST;
-            case EAST:
-                return TorchFacing.EAST;
-            case NORTH:
-                return TorchFacing.NORTH;
-            case SOUTH:
-                return TorchFacing.SOUTH;
-            default:
-                return TorchFacing.UNKNOWN;
-        }
+        return switch ( this ) {
+            case UP -> TorchFacing.TOP;
+            case WEST -> TorchFacing.WEST;
+            case EAST -> TorchFacing.EAST;
+            case NORTH -> TorchFacing.NORTH;
+            case SOUTH -> TorchFacing.SOUTH;
+            default -> TorchFacing.UNKNOWN;
+        };
     }
 
     public static BlockFace fromId( int value ) {

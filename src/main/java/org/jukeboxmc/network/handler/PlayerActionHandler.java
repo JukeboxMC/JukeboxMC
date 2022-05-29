@@ -97,9 +97,14 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
             }
             case JUMP -> {
                 if ( player.isSprinting() ) {
-                    player.exhaust( 0.8f );
+                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                        player.exhaust( 0.8f );
+                    }
+
                 } else {
-                    player.exhaust( 0.2f );
+                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                        player.exhaust( 0.2f );
+                    }
                 }
             }
             case START_BREAK -> {

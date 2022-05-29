@@ -179,7 +179,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
                     if ( health < 20 ) {
                         this.setHeal( 1, EntityHealEvent.Cause.SATURATION );
-                        this.exhaust( 3 );
+                        if ( this.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                            this.exhaust( 3 );
+                        }
                     }
                 } else if ( hunger <= 0 ) {
                     if ( health == -1 ) {
@@ -583,6 +585,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         World currentWorld = this.getWorld();
         World world = location.getWorld();
 
+        this.highestPosition = 0;
+        this.fallDistance = 0;
+        this.inAirTicks = 0;
+
         if ( currentWorld != world ) {
             this.despawn();
             currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
@@ -732,18 +738,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendChunk( chunk );
     }
 
-    @Override
-    public void chunkLoadCallback( Chunk chunk, boolean success ) {
-        if ( success ) {
-            this.sendChunk( chunk );
-        }
-    }
-
-    @Override
-    public void chunkGenerationCallback( Chunk chunk ) {
-        this.sendChunk( chunk );
-    }
-
     public boolean isChunkLoaded( int chunkX, int chunkZ ) {
         return this.playerConnection.isChunkLoaded( chunkX, chunkZ );
     }
@@ -868,7 +862,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                     }
                 }
             }
-            this.exhaust( 0.3f );
+            if ( this.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                this.exhaust( 0.3f );
+            }
+
             return success;
         }
         return false;
@@ -908,6 +905,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             entityEventPacket.setRuntimeEntityId( this.entityId );
             entityEventPacket.setType( EntityEventType.DEATH );
             this.playerConnection.sendPacket( entityEventPacket );
+
+            this.fallDistance = 0;
+            this.highestPosition = 0;
+            this.inAirTicks = 0;
 
             String deathMessage = switch ( this.lastDamageSource ) {
                 case ENTITY_ATTACK -> this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
