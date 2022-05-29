@@ -61,18 +61,6 @@ public class ChunkManager {
         return chunk == null ? null : chunk.getChunk();
     }
 
-    public Set<Chunk> getLoadedChunks0() {
-        Set<Chunk> chunks = new HashSet<>();
-        for ( LoadingChunk chunk : this.chunks.values() ) {
-            if ( chunk.getChunk() == null ) {
-                continue;
-            }
-
-            chunks.add( chunk.getChunk() );
-        }
-        return Collections.unmodifiableSet( chunks );
-    }
-
     public synchronized Set<Chunk> getLoadedChunks() {
         Set<Chunk> chunks = new HashSet<>();
         for ( LoadingChunk chunk : this.chunks.values() ) {

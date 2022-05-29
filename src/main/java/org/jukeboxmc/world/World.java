@@ -459,10 +459,6 @@ public class World {
         return this.chunkManagers.get( dimension );
     }
 
-    private Collection<Chunk> getChunks0( Dimension dimension ) {
-        return this.chunkManagers.get( dimension ).getLoadedChunks0();
-    }
-
     public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunks();
     }
