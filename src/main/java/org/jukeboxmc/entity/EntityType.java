@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityNPC;
 import org.jukeboxmc.entity.projectile.EntityArrow;
 import org.jukeboxmc.entity.projectile.EntityEgg;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
@@ -21,7 +22,8 @@ public enum EntityType {
     ARROW( EntityArrow.class, "minecraft:arrow" ),
     SNOWBALL( EntitySnowball.class, "minecraft:snowball" ),
     FISHING_HOOK( EntityFishingHook.class, "minecraft:fishing_hook" ),
-    EGG( EntityEgg.class, "minecraft:egg" );
+    EGG( EntityEgg.class, "minecraft:egg" ),
+    NPC( EntityNPC.class, "minecraft:npc" );
 
     private final Class<? extends Entity> entityClass;
     private final String identifier;

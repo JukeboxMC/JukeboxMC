@@ -1,7 +1,11 @@
 package org.jukeboxmc.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jukeboxmc.world.Dimension;
 
 import java.io.File;
@@ -13,8 +17,11 @@ import java.io.InputStream;
  * @author LucGamesYT
  * @version 1.0
  */
+@Accessors ( fluent = true )
 public class Utils {
 
+    @Getter
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static int blockToChunk( int value ) {
         return value >> 4;
@@ -60,8 +67,8 @@ public class Utils {
         return ( v < min ? min : ( Math.min( v, max ) ) );
     }
 
-    public static int clamp(int value, int min, int max) {
-        return value < min ? min : Math.min(value, max);
+    public static int clamp( int value, int min, int max ) {
+        return value < min ? min : Math.min( value, max );
     }
 
     public static int divisible( int n, int d ) {
@@ -80,7 +87,7 @@ public class Utils {
     }
 
     public static int getIndex( int x, int y, int z ) {
-        return ((x & 15) << 8) + ((z & 15) << 4) + (y & 15);
+        return ( ( x & 15 ) << 8 ) + ( ( z & 15 ) << 4 ) + ( y & 15 );
     }
 
     public static int ceil( float floatNumber ) {

@@ -36,6 +36,7 @@ public class HandlerRegistry {
         packetHandlerMap.put( RespawnPacket.class, new RespawnHandler() );
         packetHandlerMap.put( TickSyncPacket.class, new TickSyncHandler() );
         packetHandlerMap.put( ModalFormResponsePacket.class, new ModalFormResponseHandler() );
+        packetHandlerMap.put( NpcRequestPacket.class, new NpcRequestPacketHandler() );
     }
 
     public static PacketHandler<? extends BedrockPacket> getPacketHandler( Class<? extends BedrockPacket> clazz ) {
