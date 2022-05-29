@@ -34,18 +34,20 @@ public class ChunkManager {
                 continue;
             }
 
-            final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
-            if ( !chunkLoaders.isEmpty() ) {
-                if ( chunk.isChanged() ) {
-                    for ( ChunkLoader chunkLoader : chunkLoaders ) {
-                        if ( chunkLoader instanceof Player player) {
-                            player.sendChunk( chunk );
+            if ( chunk.getLoaders() != null ) {
+                final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
+                if ( !chunkLoaders.isEmpty() ) {
+                    if ( chunk.isChanged() ) {
+                        for ( ChunkLoader chunkLoader : chunkLoaders ) {
+                            if ( chunkLoader instanceof Player player) {
+                                player.sendChunk( chunk );
+                            }
                         }
-                    }
 
-                    chunk.setChanged( false );
+                        chunk.setChanged( false );
+                    }
+                    continue;
                 }
-                continue;
             }
 
             if ( this._unloadChunk( chunk, true, true ) ) {
@@ -57,6 +59,18 @@ public class ChunkManager {
     public synchronized Chunk getLoadedChunk( int x, int z ) {
         LoadingChunk chunk = this.chunks.get( Utils.toLong( x, z ) );
         return chunk == null ? null : chunk.getChunk();
+    }
+
+    public Set<Chunk> getLoadedChunks0() {
+        Set<Chunk> chunks = new HashSet<>();
+        for ( LoadingChunk chunk : this.chunks.values() ) {
+            if ( chunk.getChunk() == null ) {
+                continue;
+            }
+
+            chunks.add( chunk.getChunk() );
+        }
+        return Collections.unmodifiableSet( chunks );
     }
 
     public synchronized Set<Chunk> getLoadedChunks() {

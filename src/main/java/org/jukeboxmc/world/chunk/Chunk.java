@@ -27,6 +27,7 @@ import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -397,7 +398,79 @@ public class Chunk {
         return Utils.toLong( this.chunkX, this.chunkZ );
     }
 
-    public void save( DB db, boolean async ) {
+    public CompletableFuture<Void> save(DB db) {
+        return CompletableFuture.supplyAsync( () -> {
+            try (WriteBatch writeBatch = db.createWriteBatch()){
+                this.readLock.lock();
+                try {
+                    for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
+                        if ( this.subChunks[subY] == null ) {
+                            continue;
+                        }
+                        this.saveChunkSlice( subY - 4, writeBatch );
+                    }
+
+                    byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+                    ByteBuf versionBuffer = Unpooled.buffer();
+                    versionBuffer.writeByte( 39 ); //Chunk Version
+                    writeBatch.put( versionKey, Utils.array( versionBuffer ) );
+                    versionBuffer.release();
+
+                    ByteBuf buffer = Unpooled.buffer();
+                    List<BlockEntity> blockEntities = this.getBlockEntities();
+                    if ( !blockEntities.isEmpty() ) {
+                        try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                            for ( BlockEntity blockEntity : blockEntities ) {
+                                try {
+                                    NbtMap build = blockEntity.toCompound().build();
+                                    networkWriter.writeTag( build );
+                                } catch ( IOException e ) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch ( IOException e ) {
+                            e.printStackTrace();
+                        }
+
+                        if ( buffer.readableBytes() > 0 ) {
+                            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                            writeBatch.put( blockEntityKey, Utils.array( buffer ) );
+                        }
+                        buffer.release();
+                    }
+
+                    byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+                    ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+
+                    for ( short height : this.height ) {
+                        heightAndBiomesBuffer.writeShortLE( height );
+                    }
+
+                    ObjectPalette<Biome> last = null;
+                    for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
+                        if ( biomePalette == null ) {
+                            if ( last != null ) {
+                                last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                            }
+                            continue;
+                        }
+                        biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                        last = biomePalette;
+                    }
+                    writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
+                    heightAndBiomesBuffer.release();
+                } finally {
+                    this.readLock.unlock();
+                }
+                db.write( writeBatch );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+            return null;
+        } );
+    }
+
+    public void save0( DB db, boolean async ) {
         if ( async ) {
             JukeboxMC.getScheduler().executeAsync( () -> {
                 WriteBatch writeBatch = db.createWriteBatch();

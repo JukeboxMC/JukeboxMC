@@ -39,6 +39,7 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Pair;
+import org.jukeboxmc.util.PerformanceCheck;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
@@ -54,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author LucGamesYT
@@ -74,7 +76,13 @@ public class World {
     private Location spawnLocation;
     private Difficulty difficulty;
     private int worldTime;
-    private long seed;
+    private long seed = -1;
+
+    private boolean autoSave = true;
+    private boolean showAutoSaveMessage = true;
+    private long autoSaveTicker = 0;
+    private long autoSaveTick = TimeUnit.MINUTES.toMillis( 5 ) / 50;
+    private final AtomicBoolean autoSaving = new AtomicBoolean( false );
 
     private final Map<Dimension, ChunkManager> chunkManagers;
 
@@ -95,7 +103,6 @@ public class World {
         }
 
         this.gameRules = new GameRules();
-
 
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
@@ -137,6 +144,20 @@ public class World {
             SetTimePacket setTimePacket = new SetTimePacket();
             setTimePacket.setTime( this.worldTime );
             this.sendWorldPacket( setTimePacket );
+        }
+
+        if ( this.autoSave && !this.autoSaving.get() && ++this.autoSaveTicker >= this.autoSaveTick ) {
+            this.autoSaveTicker = 0;
+            this.autoSaving.set( true );
+            try {
+                this.save(false);
+                if ( this.showAutoSaveMessage ) {
+                    Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+                }
+                this.autoSaving.set( false );
+            } catch ( Throwable e ) {
+                e.printStackTrace();
+            }
         }
 
         if ( this.entities.size() > 0 ) {
@@ -191,7 +212,7 @@ public class World {
                 this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ), nbt.getInt( "SpawnZ", 0 ) );
                 this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
                 this.worldTime = nbt.getInt( "Time", 1000 );
-                this.seed = nbt.getLong( "RandomSeed", ThreadLocalRandom.current().nextLong() );
+                this.seed = nbt.getLong( "RandomSeed", new Random().nextLong() );
                 return true;
             } catch ( IOException ignore ) {
             }
@@ -243,7 +264,7 @@ public class World {
         compound.putLong( "Time", this.worldTime );
 
         if ( this.seed == -1 ) {
-            this.seed = ThreadLocalRandom.current().nextLong();
+            this.seed = new Random().nextLong();
         }
         compound.putLong( "RandomSeed", this.seed );
 
@@ -295,8 +316,56 @@ public class World {
         return this.difficulty;
     }
 
+    public void setDifficulty( Difficulty difficulty ) {
+        this.difficulty = difficulty;
+
+        SetDifficultyPacket setDifficultyPacket = new SetDifficultyPacket();
+        setDifficultyPacket.setDifficulty( difficulty.ordinal() );
+        this.sendWorldPacket( setDifficultyPacket );
+    }
+
     public int getWorldTime() {
         return this.worldTime;
+    }
+
+    public void setWorldTime( int worldTime ) {
+        this.worldTime = worldTime;
+
+        SetTimePacket setTimePacket = new SetTimePacket();
+        setTimePacket.setTime( worldTime );
+        this.sendWorldPacket( setTimePacket );
+    }
+
+    public void setAutoSave( boolean autoSave ) {
+        this.autoSave = autoSave;
+    }
+
+    public boolean isAutoSave() {
+        return this.autoSave;
+    }
+
+    public void setShowAutoSaveMessage( boolean showAutoSaveMessage ) {
+        this.showAutoSaveMessage = showAutoSaveMessage;
+    }
+
+    public boolean isShowAutoSaveMessage() {
+        return this.showAutoSaveMessage;
+    }
+
+    public void setAutoSaveTick( long autoSaveTick ) {
+        this.autoSaveTick = autoSaveTick;
+    }
+
+    public void setAutoSaveTick( TimeUnit timeUnit, long value ) {
+        this.autoSaveTick = timeUnit.toMillis( value ) / 50;
+    }
+
+    public long getAutoSaveTick() {
+        return this.autoSaveTick;
+    }
+
+    public boolean isAutoSaving() {
+        return this.autoSaving.get();
     }
 
     public long getSeed() {
@@ -327,7 +396,7 @@ public class World {
 
     public boolean open() {
         try {
-            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().createIfMissing( true ) );
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 64 * 1024 ).createIfMissing( true ) );
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -390,6 +459,10 @@ public class World {
         return this.chunkManagers.get( dimension );
     }
 
+    private Collection<Chunk> getChunks0( Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunks0();
+    }
+
     public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunks();
     }
@@ -433,6 +506,7 @@ public class World {
             chunkManager.close();
         }
     }
+
     public int getBlockRuntimeId( int x, int y, int z, int layer, Dimension dimension ) {
         Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
         return chunk.getBlock( x, y, z, layer ).getRuntimeId();
@@ -934,14 +1008,51 @@ public class World {
         }
     }
 
-    public void save() {
-        for ( Dimension dimension : Dimension.values() ) {
-            Collection<Chunk> chunks = this.getChunks( dimension );
+    public void save( boolean sync ) {
+        CompletableFuture<Void> chunksFuture = this.saveChunks();
 
-            for ( Chunk chunk : chunks ) {
-                chunk.save( this.db, false );
+        if ( sync ) {
+            chunksFuture.join();
+        }
+    }
+
+    public synchronized CompletableFuture<Void> saveChunks() {
+        List<CompletableFuture<?>> futures = new ArrayList<>();
+
+        for ( Chunk chunk : this.getChunks( Dimension.OVERWORLD ) ) {
+            if ( chunk != null ) {
+                futures.add( saveChunk( chunk ) );
             }
         }
+
+        return CompletableFuture.allOf( futures.toArray( new CompletableFuture[0] ) );
+    }
+
+    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+        if ( !chunk.isChanged() ) {
+            return chunk.save( this.db ).exceptionally( throwable -> {
+                throwable.printStackTrace();
+                return null;
+            } );
+        }
+        return CompletableFuture.completedFuture( null );
+    }
+
+    public void save0() {
+        for ( Dimension dimension : Dimension.values() ) {
+            Collection<Chunk> chunks = this.getChunks( dimension );
+            for ( Chunk chunk : chunks ) {
+                chunk.save0( this.db, false );
+            }
+        }
+        if ( this.autoSave ) {
+            if ( this.showAutoSaveMessage ) {
+                Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+            }
+        } else {
+            Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+        }
+        this.saveLevelDatFile();
     }
 
     public DB getDb() {

@@ -234,7 +234,7 @@ public class Server {
 
         this.logger.info( "Save all worlds..." );
         for ( World world : this.worlds.values() ) {
-            world.save();
+            world.save(true);
         }
 
         this.logger.info( "Unload all worlds..." );

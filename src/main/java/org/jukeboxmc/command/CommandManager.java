@@ -23,7 +23,8 @@ public class CommandManager {
                 GameModeCommand.class,
                 StopCommand.class,
                 TeleportCommand.class,
-                SeedCommand.class
+                SeedCommand.class,
+                SaveCommand.class
         );
 
         for( Class<? extends Command> commandClass : commands ) {
