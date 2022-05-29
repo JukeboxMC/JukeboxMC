@@ -34,20 +34,18 @@ public class ChunkManager {
                 continue;
             }
 
-            if ( chunk.getLoaders() != null ) {
-                final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
-                if ( !chunkLoaders.isEmpty() ) {
-                    if ( chunk.isChanged() ) {
-                        for ( ChunkLoader chunkLoader : chunkLoaders ) {
-                            if ( chunkLoader instanceof Player player) {
-                                player.sendChunk( chunk );
-                            }
+            final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
+            if ( chunkLoaders != null && !chunkLoaders.isEmpty() ) {
+                if ( chunk.isChanged() ) {
+                    for ( ChunkLoader chunkLoader : chunkLoaders ) {
+                        if ( chunkLoader instanceof Player player ) {
+                            player.sendChunk( chunk );
                         }
-
-                        chunk.setChanged( false );
                     }
-                    continue;
+
+                    chunk.setChanged( false );
                 }
+                continue;
             }
 
             if ( this._unloadChunk( chunk, true, true ) ) {

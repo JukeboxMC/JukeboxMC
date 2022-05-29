@@ -24,8 +24,9 @@ public class SaveCommand extends Command {
     public void execute( CommandSender commandSender, String command, String[] args ) {
         commandSender.sendMessage( "Saving all worlds..." );
         for ( World world : Server.getInstance().getWorlds() ) {
-            world.save( false );
+            world.save().whenComplete( ( unused, throwable ) -> {
+                commandSender.sendMessage( "Saving success." );
+            } );
         }
-        commandSender.sendMessage( "Saving success." );
     }
 }

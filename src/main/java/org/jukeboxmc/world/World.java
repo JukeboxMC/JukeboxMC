@@ -150,11 +150,12 @@ public class World {
             this.autoSaveTicker = 0;
             this.autoSaving.set( true );
             try {
-                this.save(false);
-                if ( this.showAutoSaveMessage ) {
-                    Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
-                }
-                this.autoSaving.set( false );
+                this.save().whenComplete( ( unused, throwable ) -> {
+                    if ( this.showAutoSaveMessage ) {
+                        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
+                    }
+                    this.autoSaving.set( false );
+                } );
             } catch ( Throwable e ) {
                 e.printStackTrace();
             }
@@ -479,22 +480,16 @@ public class World {
         return this.chunkManagers.get( dimension ).getChunkFuture( x, z, load, generate, populate );
     }
 
-    public void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        synchronized (this.chunkLoaders) {
-            this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> new HashSet<>() ).add( chunkLoader );
-        }
+    public synchronized void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> Collections.synchronizedSet( new HashSet<>() ) ).add( chunkLoader );
     }
 
-    public void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        synchronized (this.chunkLoaders) {
-            this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> new HashSet<>() ).remove( chunkLoader );
-        }
+    public synchronized void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
+        this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> Collections.synchronizedSet( new HashSet<>() ) ).remove( chunkLoader );
     }
 
-    public Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
-        synchronized (this.chunkLoaders) {
-            return this.chunkLoaders.get( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ) );
-        }
+    public synchronized Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkLoaders.get( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ) );
     }
 
     public synchronized void clearChunks() {
@@ -1002,6 +997,10 @@ public class World {
         for ( Player player : players ) {
             player.sendPacket( updateBlockPacket );
         }
+    }
+
+    public CompletableFuture<Void> save() {
+        return this.saveChunks();
     }
 
     public void save( boolean sync ) {
