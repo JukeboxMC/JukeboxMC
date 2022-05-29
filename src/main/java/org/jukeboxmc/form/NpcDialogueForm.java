@@ -38,7 +38,7 @@ public class NpcDialogueForm {
     @Getter
     @Setter
     private EntityNPC npc;
-    private String actionJson;
+    private String actionJson = "";
 
     @Getter
     private final ObjectArrayList<NpcDialogueButton> dialogueButtons = new ObjectArrayList<>();

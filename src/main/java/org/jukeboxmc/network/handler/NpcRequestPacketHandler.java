@@ -23,6 +23,14 @@ public class NpcRequestPacketHandler implements PacketHandler<NpcRequestPacket> 
             return;
         }
 
+        if ( form.dialogueButtons().size() == 0 ) {
+            if ( packet.getRequestType().equals( NpcRequestType.EXECUTE_CLOSING_COMMANDS ) ) {
+                player.removeNpcDialogueForm( form );
+            }
+
+            return;
+        }
+
         NpcDialogueButton button = form.dialogueButtons().get( packet.getActionType() );
 
         if ( button == null ) {

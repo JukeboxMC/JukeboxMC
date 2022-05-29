@@ -2,11 +2,16 @@ package org.jukeboxmc.entity.passive;
 
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.packet.RemoveEntityPacket;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
+import org.jukeboxmc.form.NpcDialogueForm;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 
@@ -14,7 +19,12 @@ import org.jukeboxmc.player.Player;
  * @author Kaooot
  * @version 1.0
  */
+@Getter
+@Setter
+@Accessors ( fluent = true )
 public class EntityNPC extends EntityLiving {
+
+    private NpcDialogueForm npcDialogueForm;
 
     public EntityNPC() {
         super();
@@ -67,5 +77,17 @@ public class EntityNPC extends EntityLiving {
         }
 
         return false;
+    }
+
+    @Override
+    public void interact( Player player, Vector clickVector ) {
+        if ( this.npcDialogueForm == null ) {
+            this.npcDialogueForm = new NpcDialogueForm()
+                    .title( this.getNameTag() )
+                    .dialogue( "" )
+                    .npc( this );
+        }
+
+        this.npcDialogueForm.create( player );
     }
 }
