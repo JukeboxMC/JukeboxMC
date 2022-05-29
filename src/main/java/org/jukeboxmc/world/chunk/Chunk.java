@@ -398,9 +398,9 @@ public class Chunk {
         return Utils.toLong( this.chunkX, this.chunkZ );
     }
 
-    public CompletableFuture<Void> save(DB db) {
+    public synchronized CompletableFuture<Boolean> save( DB db ) {
         return CompletableFuture.supplyAsync( () -> {
-            try (WriteBatch writeBatch = db.createWriteBatch()){
+            try ( WriteBatch writeBatch = db.createWriteBatch() ) {
                 this.readLock.lock();
                 try {
                     for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
@@ -463,10 +463,11 @@ public class Chunk {
                     this.readLock.unlock();
                 }
                 db.write( writeBatch );
+                return true;
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-            return null;
+            return false;
         } );
     }
 

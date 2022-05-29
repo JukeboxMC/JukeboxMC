@@ -17,10 +17,7 @@ import org.jukeboxmc.world.generator.noise.PerlinOctaveGenerator;
 import org.jukeboxmc.world.generator.noise.SimplexOctaveGenerator;
 import org.jukeboxmc.world.generator.noise.bukkit.OctaveGenerator;
 import org.jukeboxmc.world.generator.object.OreType;
-import org.jukeboxmc.world.generator.populator.CavePopulator;
-import org.jukeboxmc.world.generator.populator.GroundPopulator;
-import org.jukeboxmc.world.generator.populator.OrePopulator;
-import org.jukeboxmc.world.generator.populator.Populator;
+import org.jukeboxmc.world.generator.populator.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +111,7 @@ public class NormalGenerator extends Generator {
         this.blockWater = new BlockWater();
 
         this.groundpopulators.add( new GroundPopulator() );
+        this.groundpopulators.add( new SnowlayerPopulator() );
         this.populators.add( new CavePopulator() );
 
         this.populators.add(

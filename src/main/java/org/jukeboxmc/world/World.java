@@ -11,10 +11,8 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.SneakyThrows;
-import net.daporkchop.ldbjni.direct.DirectDB;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
-import org.iq80.leveldb.CompressionType;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.Iq80DBFactory;
@@ -41,7 +39,6 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Pair;
-import org.jukeboxmc.util.PerformanceCheck;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
@@ -65,7 +62,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class World {
 
-    private DirectDB db;
+    private DB db;
     private final File worldFolder;
     private final File worldFile;
 
@@ -399,7 +396,7 @@ public class World {
 
     public boolean open() {
         try {
-            this.db = net.daporkchop.ldbjni.LevelDB.PROVIDER.open(new File( this.worldFolder, "db" ), new Options().compressionType( CompressionType.ZLIB_RAW).blockSize( 64 * 1024 ).createIfMissing( true ));
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 64 * 1024 ).createIfMissing( true ) );
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -1025,7 +1022,7 @@ public class World {
         return CompletableFuture.allOf( futures.toArray( new CompletableFuture[0] ) );
     }
 
-    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+    public CompletableFuture<Boolean> saveChunk( Chunk chunk ) {
         if ( !chunk.isChanged() ) {
             return chunk.save( this.db ).exceptionally( throwable -> {
                 throwable.printStackTrace();

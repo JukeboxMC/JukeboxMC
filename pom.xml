@@ -68,16 +68,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.daporkchop</groupId>
-            <artifactId>leveldb-mcpe-jni</artifactId>
-            <version>0.0.10-SNAPSHOT</version>
+            <groupId>org.iq80.leveldb</groupId>
+            <artifactId>leveldb</artifactId>
+            <version>0.11.1-SNAPSHOT</version>
             <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.netty</groupId>
-                    <artifactId>netty-buffer</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
