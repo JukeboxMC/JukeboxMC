@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 /**
  * @author LucGamesYT
@@ -86,6 +87,10 @@ public class Utils {
     public static int ceil( float floatNumber ) {
         int truncated = (int) floatNumber;
         return floatNumber > truncated ? truncated + 1 : truncated;
+    }
+
+    public static int randomRange( Random random, int start, int end) {
+        return start + (random.nextInt() % (end + 1 - start));
     }
 
     public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {

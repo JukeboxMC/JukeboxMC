@@ -255,7 +255,17 @@ public abstract class Block implements Cloneable {
         }
 
         BlockType blockType = this.getType();
-        boolean correctTool = this.correctTool0( this.getToolType(), item.getItemToolType() ) || item.getItemToolType().equals( ItemToolType.SHEARS ) && ( blockType.equals( BlockType.WEB ) || blockType.equals( BlockType.LEAVES ) || blockType.equals( BlockType.LEAVES2 ) );
+        boolean correctTool = this.correctTool0( this.getToolType(),
+                item.getItemToolType() ) ||
+                item.getItemToolType().equals( ItemToolType.SHEARS ) &&
+                        ( blockType.equals( BlockType.WEB ) ||
+                                blockType.equals( BlockType.OAK_LEAVES ) ||
+                                blockType.equals( BlockType.SPRUCE_LEAVES ) ||
+                                blockType.equals( BlockType.BIRCH_LEAVES ) ||
+                                blockType.equals( BlockType.JUNGLE_LEAVES ) ||
+                                blockType.equals( BlockType.ACACIA_LEAVES ) ||
+                                blockType.equals( BlockType.DARK_OAK_LEAVES )
+                                );
         boolean canBreakWithHand = this.canBreakWithHand();
         ItemToolType itemToolType = item.getItemToolType();
         ItemTierType itemTier = item.getTierType();
@@ -287,7 +297,13 @@ public abstract class Block implements Cloneable {
     private double toolBreakTimeBonus0( ItemToolType itemToolType, ItemTierType itemTierType, BlockType blockType ) {
         if ( itemToolType.equals( ItemToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
         if ( itemToolType.equals( ItemToolType.SHEARS ) ) {
-            if ( blockType.equals( BlockType.WOOL ) || blockType.equals( BlockType.LEAVES ) || blockType.equals( BlockType.LEAVES2 ) ) {
+            if ( blockType.equals( BlockType.WOOL ) ||
+                    blockType.equals( BlockType.OAK_LEAVES ) ||
+                    blockType.equals( BlockType.SPRUCE_LEAVES ) ||
+                    blockType.equals( BlockType.BIRCH_LEAVES ) ||
+                    blockType.equals( BlockType.JUNGLE_LEAVES ) ||
+                    blockType.equals( BlockType.ACACIA_LEAVES ) ||
+                    blockType.equals( BlockType.DARK_OAK_LEAVES ) ) {
                 return 5.0;
             } else if ( blockType.equals( BlockType.WEB ) ) {
                 return 15.0;

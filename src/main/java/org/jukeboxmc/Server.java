@@ -30,10 +30,14 @@ import org.jukeboxmc.util.BiomeDefinitions;
 import org.jukeboxmc.util.CreativeItems;
 import org.jukeboxmc.util.EntityIdentifiers;
 import org.jukeboxmc.util.ItemPalette;
+import org.jukeboxmc.world.Biome;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
+import org.jukeboxmc.world.generator.NormalGenerator;
+import org.jukeboxmc.world.generator.biome.BiomeGenerationRegistry;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +56,7 @@ public class Server {
     private static Server instance;
 
     private final AtomicBoolean runningState;
+    private final Thread mainThread;
     private final int ticks = 20;
     private final long startTime;
     private long currentTick;
@@ -96,15 +101,16 @@ public class Server {
 
     private final Set<Player> players = new HashSet<>();
     private final Object2ObjectMap<String, World> worlds = new Object2ObjectOpenHashMap<>();
-    private final Object2ObjectMap<String, Class<? extends Generator>> worldGenerator = new Object2ObjectOpenHashMap<>();
+    private final Map<Dimension, Object2ObjectMap<String, Class<? extends Generator>>> generators = new EnumMap<>( Dimension.class );
+    private final Map<Dimension, String> defaultGenerators = new EnumMap<>( Dimension.class );
     private final Object2ObjectMap<UUID, PlayerListPacket.Entry> playerListEntry = new Object2ObjectOpenHashMap<>();
-    private final Object2ObjectMap<String, Class<? extends Generator>> generatorByName = new Object2ObjectOpenHashMap<>();
 
     public Server( Logger logger ) {
         instance = this;
         JukeboxMC.setServer( this );
         this.startTime = System.currentTimeMillis();
-        Thread.currentThread().setName( "JukeboxMC-Main" );
+        this.mainThread = Thread.currentThread();
+        this.mainThread.setName( "JukeboxMC-Main" );
 
         this.runningState = new AtomicBoolean( true );
 
@@ -137,6 +143,8 @@ public class Server {
 
         ItemType.init();
         BlockType.init();
+        Biome.init();
+        BiomeGenerationRegistry.init();
         INITIATING.set( false );
 
         this.resourcePackManager = new ResourcePackManager( logger );
@@ -157,8 +165,12 @@ public class Server {
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
-        this.registerGenerator( "empty", EmptyGenerator.class );
-        this.registerGenerator( "flat", FlatGenerator.class );
+        this.registerDefaultGenerator( Dimension.OVERWORLD, "empty", EmptyGenerator.class );
+        this.registerDefaultGenerator( Dimension.NETHER, "empty", EmptyGenerator.class );
+        this.registerDefaultGenerator( Dimension.THE_END, "empty", EmptyGenerator.class );
+
+        this.registerGenerator( "flat", FlatGenerator.class, Dimension.OVERWORLD, Dimension.NETHER, Dimension.THE_END );
+        this.registerGenerator( "normal", NormalGenerator.class, Dimension.OVERWORLD );
 
         String defaultWorldName = this.defaultWorldName;
         if ( this.loadOrCreateWorld( defaultWorldName ) ) {
@@ -199,6 +211,14 @@ public class Server {
         this.forceResourcePacks = serverConfig.getBoolean( "forceResourcePacks" );
     }
 
+    public boolean isInMainThread() {
+        return Thread.currentThread() == this.mainThread;
+    }
+
+    public Thread getMainThread() {
+        return this.mainThread;
+    }
+
     private void initOperatorConfig() {
         this.operatorConfig = new Config( new File( System.getProperty( "user.dir" ), "operators.json" ), ConfigType.JSON );
         this.operatorConfig.addDefault( "operators", new ArrayList<String>() );
@@ -214,7 +234,7 @@ public class Server {
 
         this.logger.info( "Save all worlds..." );
         for ( World world : this.worlds.values() ) {
-            world.save();
+            world.save(true);
         }
 
         this.logger.info( "Unload all worlds..." );
@@ -368,34 +388,77 @@ public class Server {
         return null;
     }
 
-    public void registerGenerator( String name, Class<? extends Generator> clazz ) {
-        if ( !this.worldGenerator.containsKey( name ) ) {
-            this.worldGenerator.put( name.toLowerCase(), clazz );
+    public synchronized void registerDefaultGenerator( Dimension dimension, String name, Class<? extends Generator> clazz ) {
+        this.defaultGenerators.put( dimension, name );
+
+        Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.computeIfAbsent( dimension, k -> new Object2ObjectOpenHashMap<>() );
+        if ( !generators.containsKey( name ) ) {
+            generators.put( name.toLowerCase(), clazz );
         }
     }
 
-    public Generator createWorldGenerator( String worldName ) {
-        try {
-            return this.generatorByName.get( worldName ).getConstructor().newInstance();
-        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException |
-                  NoSuchMethodException e ) {
-            e.printStackTrace();
+    public synchronized void registerGenerator( String name, Class<? extends Generator> clazz, Dimension... dimensions ) {
+        for ( Dimension dimension : dimensions ) {
+            Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.computeIfAbsent( dimension, k -> new Object2ObjectOpenHashMap<>() );
+            if ( !generators.containsKey( name ) ) {
+                generators.put( name.toLowerCase(), clazz );
+            }
         }
-        return new EmptyGenerator();
+    }
+
+    public synchronized String getDefaultGenerator( Dimension dimension ) {
+        return this.defaultGenerators.get( dimension );
+    }
+
+    public synchronized Generator createGenerator( World world, String generatorName, Dimension dimension ) {
+        Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.get( dimension );
+
+        Class<? extends Generator> generator = generators.get( generatorName.toLowerCase() );
+        if ( generator != null ) {
+            try {
+                return generator.getConstructor( World.class, Dimension.class ).newInstance( world, dimension );
+            } catch ( InvocationTargetException | InstantiationException | IllegalAccessException |
+                      NoSuchMethodException e ) {
+                throw new RuntimeException( e );
+            }
+        }
+
+        String defaultGeneratorName = this.defaultGenerators.get( dimension );
+
+        if ( defaultGeneratorName == null ) {
+            throw new RuntimeException( "Could not find default generator for dimension " + dimension.name() );
+        }
+
+        generator = generators.get( defaultGeneratorName.toLowerCase() );
+        if ( generator != null ) {
+            try {
+                return generator.getConstructor( World.class, Dimension.class ).newInstance( world, dimension );
+            } catch ( InvocationTargetException | InstantiationException | IllegalAccessException |
+                      NoSuchMethodException e ) {
+                throw new RuntimeException( e );
+            }
+        } else {
+            throw new RuntimeException( "Could not find default generator for dimension " + dimension.name() );
+        }
     }
 
     public boolean loadOrCreateWorld( String worldName ) {
-        return this.loadOrCreateWorld( worldName, this.worldGenerator.get( this.generatorName ) );
+        Map<Dimension, String> generatorMap = new EnumMap<>( Dimension.class );
+        generatorMap.put( Dimension.OVERWORLD, this.generatorName );
+
+        for ( Dimension dimension : Dimension.values() ) {
+            generatorMap.putIfAbsent( dimension, this.defaultGenerators.get( dimension ) );
+        }
+
+        return this.loadOrCreateWorld( worldName, generatorMap );
     }
 
-    public boolean loadOrCreateWorld( String worldName, Class<? extends Generator> clazz ) {
+    public boolean loadOrCreateWorld( String worldName, Map<Dimension, String> generatorMap  ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             File file = new File( "./worlds", worldName );
             boolean worldExists = file.exists();
 
-            this.generatorByName.put( worldName.toLowerCase(), clazz );
-
-            World world = new World( worldName, this );
+            World world = new World( worldName, this, generatorMap );
             WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
             this.pluginManager.callEvent( worldLoadEvent );
             if ( worldLoadEvent.isCancelled() ) {

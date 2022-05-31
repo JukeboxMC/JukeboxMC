@@ -123,10 +123,13 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             }
             case ITEM_USE_ON_ENTITY -> {
                 switch ( packet.getActionType() ) {
-                    case 0:
-                        //Interact Entity
-                        break;
-                    case 1:
+                    case 0 -> {
+                        Entity interactEntity = player.getWorld().getEntity( packet.getRuntimeEntityId() );
+                        if ( interactEntity != null ) {
+                            interactEntity.interact( player, new Vector( packet.getClickPosition() ) );
+                        }
+                    }
+                    case 1 -> {
                         Entity entity = player.getWorld().getEntity( packet.getRuntimeEntityId() );
                         if ( entity != null ) {
                             if ( player.attackWithItemInHand( entity ) ) {
@@ -136,9 +139,9 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                                 }
                             }
                         }
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                    }
                 }
             }
             case ITEM_RELEASE -> {
