@@ -36,14 +36,14 @@ public class ChunkManager {
 
             final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
             if ( chunkLoaders != null && !chunkLoaders.isEmpty() ) {
-                if ( chunk.isChanged() ) {
+                if ( chunk.isDirty() ) {
                     for ( ChunkLoader chunkLoader : chunkLoaders ) {
                         if ( chunkLoader instanceof Player player ) {
                             player.sendChunk( chunk );
                         }
                     }
 
-                    chunk.setChanged( false );
+                    chunk.setDirty( false );
                 }
                 continue;
             }

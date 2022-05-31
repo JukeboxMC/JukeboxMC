@@ -396,7 +396,7 @@ public class World {
 
     public boolean open() {
         try {
-            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 64 * 1024 ).createIfMissing( true ) );
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 1024 * 1024 * 1024 ).createIfMissing( true ) );
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -537,9 +537,12 @@ public class World {
 
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        boolean changed = chunk.isChanged();
+        boolean dirty = chunk.isDirty();
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
-        chunk.setChanged( changed );
+        chunk.setDirty( dirty );
+        if ( !chunk.isChanged() ) {
+            chunk.setChanged( true );
+        }
 
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
@@ -1014,7 +1017,7 @@ public class World {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         for ( Chunk chunk : this.getChunks( Dimension.OVERWORLD ) ) {
-            if ( chunk != null ) {
+            if ( chunk != null && chunk.isChanged() ) {
                 futures.add( saveChunk( chunk ) );
             }
         }
@@ -1023,7 +1026,7 @@ public class World {
     }
 
     public CompletableFuture<Boolean> saveChunk( Chunk chunk ) {
-        if ( !chunk.isChanged() ) {
+        if ( !chunk.isDirty() ) {
             return chunk.save( this.db ).exceptionally( throwable -> {
                 throwable.printStackTrace();
                 return null;

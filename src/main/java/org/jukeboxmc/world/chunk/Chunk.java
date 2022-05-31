@@ -48,7 +48,8 @@ public class Chunk {
     private final short[] height;
     private final SubChunk[] subChunks;
 
-    private volatile boolean changed;
+    private volatile boolean dirty;
+    private volatile boolean changed = false;
 
     private boolean initiating = true;
     private boolean generated = false;
@@ -89,12 +90,20 @@ public class Chunk {
         this.entities = new HashSet<>();
     }
 
-    public void setChanged( boolean changed ) {
-        this.changed = changed;
+    public void setDirty( boolean dirty ) {
+        this.dirty = dirty;
+    }
+
+    public boolean isDirty() {
+        return this.dirty;
     }
 
     public boolean isChanged() {
         return this.changed;
+    }
+
+    public void setChanged( boolean changed ) {
+        this.changed = changed;
     }
 
     public World getWorld() {
@@ -252,7 +261,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( y ).setBlock( x, y, z, layer, block );
-            this.setChanged( true );
+            this.setDirty( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -265,7 +274,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
-            this.setChanged( true );
+            this.setDirty( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -462,6 +471,7 @@ public class Chunk {
                     this.readLock.unlock();
                 }
                 db.write( writeBatch );
+                writeBatch.close();
                 return true;
             } catch ( IOException e ) {
                 e.printStackTrace();
