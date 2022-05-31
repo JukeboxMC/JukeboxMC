@@ -418,33 +418,33 @@ public class World {
 
     public boolean loadChunk( Chunk chunk ) {
         try {
-            byte[] version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2C ) );
+            byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
             if ( version == null ) {
-                version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x76 ) );
+                version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x76 ) );
             }
 
             if ( version == null ) {
                 return false;
             }
 
-            byte[] finalized = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x36 ) );
+            byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
             chunk.setGenerated( true );
 
             for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
-                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ) );
+                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ) );
 
                 if ( chunkData != null ) {
                     LevelDB.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                 }
             }
 
-            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x31 ) );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 ) );
             if ( blockEntities != null ) {
                 LevelDB.loadBlockEntities( chunk, blockEntities );
             }
 
-            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2b ) );
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2b ) );
             if ( heightAndBiomes != null ) {
                 LevelDB.loadHeightAndBiomes( chunk, heightAndBiomes );
             }

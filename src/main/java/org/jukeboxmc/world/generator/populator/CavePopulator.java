@@ -39,8 +39,8 @@ public class CavePopulator implements Populator {
 
         int size = this.checkAreaSize;
 
-        int chunkX = chunk.getChunkX();
-        int chunkZ = chunk.getChunkZ();
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
 
         for ( int x = chunkX - size; x <= chunkX + size; x++ ) {
             for ( int z = chunkZ - size; z <= chunkZ + size; z++ ) {
@@ -57,8 +57,8 @@ public class CavePopulator implements Populator {
     }
 
     protected void generateCaveNode( long seed, Chunk chunk, double x, double y, double z, float radius, float angelOffset, float angel, int angle, int maxAngle, double scale ) {
-        int chunkX = chunk.getChunkX();
-        int chunkZ = chunk.getChunkZ();
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
 
         double realX = chunkX * 16 + 8;
         double realZ = chunkZ * 16 + 8;

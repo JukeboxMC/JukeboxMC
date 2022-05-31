@@ -38,7 +38,7 @@ public class MovePlayerHandler implements PacketHandler<MovePlayerPacket> {
         } else {
             Chunk fromChunk = player.getLastLocation().getChunk();
             Chunk toChunk = player.getChunk();
-            if ( toChunk.getChunkX() != fromChunk.getChunkX() || toChunk.getChunkZ() != fromChunk.getChunkZ() ) {
+            if ( toChunk.getX() != fromChunk.getX() || toChunk.getZ() != fromChunk.getZ() ) {
                 fromChunk.removeEntity( player );
                 toChunk.addEntity( player );
 

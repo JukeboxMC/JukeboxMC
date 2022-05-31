@@ -31,7 +31,7 @@ public class TreePopulator implements Populator {
             int y = this.highestWorkableBlock( chunk, x, z );
 
             if ( y != -1 ) {
-                this.tree.grow( chunk, chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z, random );
+                this.tree.grow( chunk, chunk.getX() * 16 + x, y, chunk.getZ() * 16 + z, random );
             }
         }
 
