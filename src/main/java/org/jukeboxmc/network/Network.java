@@ -1,8 +1,7 @@
 package org.jukeboxmc.network;
 
 import com.nukkitx.protocol.bedrock.*;
-import com.nukkitx.protocol.bedrock.beta.BedrockBeta;
-import com.nukkitx.protocol.bedrock.v503.Bedrock_v503;
+import com.nukkitx.protocol.bedrock.v527.Bedrock_v527;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.PlayerConnection;
 
@@ -18,7 +17,7 @@ import java.util.function.Predicate;
  */
 public class Network implements BedrockServerEventHandler {
 
-    public static final BedrockPacketCodec CODEC = BedrockBeta.BETA_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v527.V527_CODEC;
 
     private final Server server;
     private final InetSocketAddress inetSocketAddress;
@@ -43,9 +42,9 @@ public class Network implements BedrockServerEventHandler {
     public void start() {
         try {
             this.bedrockServer.bind().join();
-            this.server.getLogger().info("Server started successfully at " + this.inetSocketAddress.getHostString() + ":" + this.inetSocketAddress.getPort() + "!");
-        } catch(Exception e) {
-            this.server.getLogger().error("Could not start server! Is there already running something on this port?", e);
+            this.server.getLogger().info( "Server started successfully at " + this.inetSocketAddress.getHostString() + ":" + this.inetSocketAddress.getPort() + "!" );
+        } catch ( Exception e ) {
+            this.server.getLogger().error( "Could not start server! Is there already running something on this port?", e );
         }
     }
 
@@ -89,8 +88,8 @@ public class Network implements BedrockServerEventHandler {
     }
 
     public synchronized void update() {
-        this.connections.removeIf(this.removePredicate);
-        this.connections.forEach(this.updater);
+        this.connections.removeIf( this.removePredicate );
+        this.connections.forEach( this.updater );
     }
 
     public BedrockServer getBedrockServer() {
