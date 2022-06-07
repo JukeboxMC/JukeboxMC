@@ -39,7 +39,6 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Pair;
-import org.jukeboxmc.util.PerformanceCheck;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
@@ -397,7 +396,7 @@ public class World {
 
     public boolean open() {
         try {
-            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 64 * 1024 ).createIfMissing( true ) );
+            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 1024 * 1024 * 1024 ).createIfMissing( true ) );
             return true;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -419,33 +418,33 @@ public class World {
 
     public boolean loadChunk( Chunk chunk ) {
         try {
-            byte[] version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2C ) );
+            byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
             if ( version == null ) {
-                version = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x76 ) );
+                version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x76 ) );
             }
 
             if ( version == null ) {
                 return false;
             }
 
-            byte[] finalized = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x36 ) );
+            byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
             chunk.setPopulated( finalized == null || finalized[0] == 2 );
             chunk.setGenerated( true );
 
             for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
-                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ) );
+                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ) );
 
                 if ( chunkData != null ) {
                     LevelDB.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
                 }
             }
 
-            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x31 ) );
+            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 ) );
             if ( blockEntities != null ) {
                 LevelDB.loadBlockEntities( chunk, blockEntities );
             }
 
-            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getChunkX(), chunk.getChunkZ(), chunk.getDimension(), (byte) 0x2b ) );
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2b ) );
             if ( heightAndBiomes != null ) {
                 LevelDB.loadHeightAndBiomes( chunk, heightAndBiomes );
             }
@@ -538,9 +537,12 @@ public class World {
 
     public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        boolean changed = chunk.isChanged();
+        boolean dirty = chunk.isDirty();
         chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
-        chunk.setChanged( changed );
+        chunk.setDirty( dirty );
+        if ( !chunk.isChanged() ) {
+            chunk.setChanged( true );
+        }
 
         Location blockLocation = new Location( this, location );
         blockLocation.setDimension( dimension );
@@ -1015,7 +1017,7 @@ public class World {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         for ( Chunk chunk : this.getChunks( Dimension.OVERWORLD ) ) {
-            if ( chunk != null ) {
+            if ( chunk != null && chunk.isChanged() ) {
                 futures.add( saveChunk( chunk ) );
             }
         }
@@ -1023,8 +1025,8 @@ public class World {
         return CompletableFuture.allOf( futures.toArray( new CompletableFuture[0] ) );
     }
 
-    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
-        if ( !chunk.isChanged() ) {
+    public CompletableFuture<Boolean> saveChunk( Chunk chunk ) {
+        if ( !chunk.isDirty() ) {
             return chunk.save( this.db ).exceptionally( throwable -> {
                 throwable.printStackTrace();
                 return null;

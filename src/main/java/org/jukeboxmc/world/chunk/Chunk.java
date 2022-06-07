@@ -41,14 +41,15 @@ public class Chunk {
     private static final Block BLOCK_AIR = new BlockAir();
 
     private final World world;
-    private final int chunkX;
-    private final int chunkZ;
+    private final int x;
+    private final int z;
     private final Dimension dimension;
     private final int fullHeight;
     private final short[] height;
     private final SubChunk[] subChunks;
 
-    private volatile boolean changed;
+    private volatile boolean dirty;
+    private volatile boolean changed = false;
 
     private boolean initiating = true;
     private boolean generated = false;
@@ -60,10 +61,10 @@ public class Chunk {
     private final Set<Entity> entities;
     private final ObjectPalette<Biome>[] biomes;
 
-    public Chunk( World world, int chunkX, int chunkZ, Dimension dimension ) {
+    public Chunk( World world, int x, int z, Dimension dimension ) {
         this.world = world;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
+        this.x = x;
+        this.z = z;
         this.dimension = dimension;
 
         this.fullHeight = Math.abs( this.getMinY() ) + Math.abs( this.getMaxY() ) + 1;
@@ -82,7 +83,6 @@ public class Chunk {
             this.biomes[subY] = new ObjectPalette<>( Biome.PLAINS );
         }
          */
-
         ReadWriteLock lock = new ReentrantReadWriteLock();
         this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
@@ -90,24 +90,32 @@ public class Chunk {
         this.entities = new HashSet<>();
     }
 
-    public void setChanged( boolean changed ) {
-        this.changed = changed;
+    public void setDirty( boolean dirty ) {
+        this.dirty = dirty;
+    }
+
+    public boolean isDirty() {
+        return this.dirty;
     }
 
     public boolean isChanged() {
         return this.changed;
     }
 
+    public void setChanged( boolean changed ) {
+        this.changed = changed;
+    }
+
     public World getWorld() {
         return this.world;
     }
 
-    public int getChunkX() {
-        return this.chunkX;
+    public int getX() {
+        return this.x;
     }
 
-    public int getChunkZ() {
-        return this.chunkZ;
+    public int getZ() {
+        return this.z;
     }
 
     public Dimension getDimension() {
@@ -159,15 +167,15 @@ public class Chunk {
     }
 
     public void addLoader( ChunkLoader chunkLoader ) {
-        this.world.addChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
+        this.world.addChunkLoader( this.x, this.z, this.dimension, chunkLoader );
     }
 
     public void removeLoader( ChunkLoader chunkLoader ) {
-        this.world.removeChunkLoader( this.chunkX, this.chunkZ, this.dimension, chunkLoader );
+        this.world.removeChunkLoader( this.x, this.z, this.dimension, chunkLoader );
     }
 
     public Collection<ChunkLoader> getLoaders() {
-        return this.world.getChunkLoaders( this.chunkX, this.chunkZ, this.dimension );
+        return this.world.getChunkLoaders( this.x, this.z, this.dimension );
     }
 
     public Collection<Player> getPlayers() {
@@ -253,7 +261,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( y ).setBlock( x, y, z, layer, block );
-            this.setChanged( true );
+            this.setDirty( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -266,7 +274,7 @@ public class Chunk {
                 return;
             }
             this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
-            this.setChanged( true );
+            this.setDirty( true );
         } finally {
             this.writeLock.unlock();
         }
@@ -381,8 +389,8 @@ public class Chunk {
 
         try {
             LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
-            levelChunkPacket.setChunkX( this.chunkX );
-            levelChunkPacket.setChunkZ( this.chunkZ );
+            levelChunkPacket.setChunkX( this.x );
+            levelChunkPacket.setChunkZ( this.z );
             levelChunkPacket.setCachingEnabled( false );
             levelChunkPacket.setRequestSubChunks( false );
             levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
@@ -395,12 +403,12 @@ public class Chunk {
     }
 
     public long toChunkHash() {
-        return Utils.toLong( this.chunkX, this.chunkZ );
+        return Utils.toLong( this.x, this.z );
     }
 
-    public CompletableFuture<Void> save(DB db) {
+    public synchronized CompletableFuture<Boolean> save( DB db ) {
         return CompletableFuture.supplyAsync( () -> {
-            try (WriteBatch writeBatch = db.createWriteBatch()){
+            try ( WriteBatch writeBatch = db.createWriteBatch() ) {
                 this.readLock.lock();
                 try {
                     for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
@@ -410,7 +418,7 @@ public class Chunk {
                         this.saveChunkSlice( subY - 4, writeBatch );
                     }
 
-                    byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+                    byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
                     ByteBuf versionBuffer = Unpooled.buffer();
                     versionBuffer.writeByte( 39 ); //Chunk Version
                     writeBatch.put( versionKey, Utils.array( versionBuffer ) );
@@ -433,13 +441,13 @@ public class Chunk {
                         }
 
                         if ( buffer.readableBytes() > 0 ) {
-                            byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                            byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
                             writeBatch.put( blockEntityKey, Utils.array( buffer ) );
                         }
                         buffer.release();
                     }
 
-                    byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+                    byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
                     ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
 
                     for ( short height : this.height ) {
@@ -463,10 +471,12 @@ public class Chunk {
                     this.readLock.unlock();
                 }
                 db.write( writeBatch );
+                writeBatch.close();
+                return true;
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
-            return null;
+            return false;
         } );
     }
 
@@ -482,7 +492,7 @@ public class Chunk {
                     this.saveChunkSlice( subY - 4, writeBatch );
                 }
 
-                byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+                byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
                 ByteBuf versionBuffer = Unpooled.buffer();
                 versionBuffer.writeByte( 39 ); //Chunk Version
                 writeBatch.put( versionKey, Utils.array( versionBuffer ) );
@@ -505,13 +515,13 @@ public class Chunk {
                     }
 
                     if ( buffer.readableBytes() > 0 ) {
-                        byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                        byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
                         writeBatch.put( blockEntityKey, Utils.array( buffer ) );
                     }
                     buffer.release();
                 }
 
-                byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+                byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
                 ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
 
                 for ( short height : this.height ) {
@@ -549,7 +559,7 @@ public class Chunk {
                 this.saveChunkSlice( subY - 4, writeBatch );
             }
 
-            byte[] versionKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2c );
+            byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
             ByteBuf versionBuffer = Unpooled.buffer();
             versionBuffer.writeByte( 39 ); //Chunk Version
             writeBatch.put( versionKey, Utils.array( versionBuffer ) );
@@ -572,13 +582,13 @@ public class Chunk {
                 }
 
                 if ( buffer.readableBytes() > 0 ) {
-                    byte[] blockEntityKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x31 );
+                    byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
                     writeBatch.put( blockEntityKey, Utils.array( buffer ) );
                 }
                 buffer.release();
             }
 
-            byte[] heightAndBiomesKey = Utils.getKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2b );
+            byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
             ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
 
             for ( short height : this.height ) {
@@ -621,7 +631,7 @@ public class Chunk {
             subChunk.blocks[layer].writeToStoragePersistent( buffer, BlockPalette::getBlockNBT );
         }
 
-        byte[] subChunkKey = Utils.getSubChunkKey( this.chunkX, this.chunkZ, this.dimension, (byte) 0x2f, (byte) subY );
+        byte[] subChunkKey = Utils.getSubChunkKey( this.x, this.z, this.dimension, (byte) 0x2f, (byte) subY );
         writeBatch.put( subChunkKey, Utils.array( buffer ) );
     }
 
@@ -630,20 +640,20 @@ public class Chunk {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
         Chunk chunk = (Chunk) o;
-        return this.chunkX == chunk.chunkX && this.chunkZ == chunk.chunkZ;
+        return this.x == chunk.x && this.z == chunk.z;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( this.chunkX, this.chunkZ );
+        return Objects.hash( this.x, this.z );
     }
 
     @Override
     public String toString() {
         return "Chunk{" +
                 "world=" + this.world.getName() +
-                ", chunkX=" + this.chunkX +
-                ", chunkZ=" + this.chunkZ +
+                ", chunkX=" + this.x +
+                ", chunkZ=" + this.z +
                 ", dimension=" + this.dimension.name() +
                 '}';
     }

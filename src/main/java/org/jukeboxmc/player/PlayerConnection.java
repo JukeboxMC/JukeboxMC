@@ -470,4 +470,8 @@ public class PlayerConnection {
     public Player getPlayer() {
         return this.player;
     }
+
+    public long getPing() {
+        return this.session.getLatency();
+    }
 }

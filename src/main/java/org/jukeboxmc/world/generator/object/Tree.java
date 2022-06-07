@@ -27,7 +27,7 @@ public abstract class Tree {
             }
             for ( int xx = -radiusToCheck; xx < ( radiusToCheck + 1 ); ++xx ) {
                 for ( int zz = -radiusToCheck; zz < ( radiusToCheck + 1 ); ++zz ) {
-                    boolean success = (x + xx >> 4) == chunk.getChunkX() && (z + zz >> 4) == chunk.getChunkZ();
+                    boolean success = (x + xx >> 4) == chunk.getX() && (z + zz >> 4) == chunk.getZ();
                     if ( !success ) {
                         return false;
                     }
@@ -54,7 +54,7 @@ public abstract class Tree {
                         continue;
                     }
                     Block block = chunk.getBlock( xx, yy, zz, 0 );
-                    if ( !block.isSolid() && chunk.getChunkX() == xx >> 4 && chunk.getChunkZ() == zz >> 4 ) {
+                    if ( !block.isSolid() && chunk.getX() == xx >> 4 && chunk.getZ() == zz >> 4 ) {
                         chunk.setBlock( xx, yy, zz, 0, this.leafBlock.getBlock() );
                     }
                 }

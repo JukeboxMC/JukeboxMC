@@ -36,19 +36,18 @@ public class ChunkManager {
 
             final Collection<ChunkLoader> chunkLoaders = chunk.getLoaders();
             if ( chunkLoaders != null && !chunkLoaders.isEmpty() ) {
-                if ( chunk.isChanged() ) {
+                if ( chunk.isDirty() ) {
                     for ( ChunkLoader chunkLoader : chunkLoaders ) {
                         if ( chunkLoader instanceof Player player ) {
                             player.sendChunk( chunk );
                         }
                     }
 
-                    chunk.setChanged( false );
+                    chunk.setDirty( false );
                 }
                 continue;
             }
-
-            if ( this._unloadChunk( chunk, true, true ) ) {
+            if ( chunk.getLoaders() != null && this.unloadChunk0( chunk, true, true ) ) {
                 chunkIterator.remove();
             }
         }
@@ -129,31 +128,28 @@ public class ChunkManager {
         }
 
         if ( chunk != null ) {
-            if ( this._unloadChunk( chunk, safe, save ) ) {
+            if ( this.unloadChunk0( chunk, safe, save ) ) {
                 this.chunks.remove( Utils.toLong( x, z ) );
             }
         }
     }
 
-    private boolean _unloadChunk( Chunk chunk, boolean safe, boolean save ) {
-        /*
+    private synchronized boolean unloadChunk0( Chunk chunk, boolean safe, boolean save ) {
         if ( safe ) {
             if ( chunk.getPlayers().size() <= 0 ) {
                 if ( save ) {
-                    chunk.save( this.world.getDb(), false );
+                    this.world.saveChunk( chunk );
+                    return true;
                 }
-                return true;
             } else {
                 return false;
             }
         } else {
             if ( save ) {
-                chunk.save( this.world.getDb(), false );
+                this.world.saveChunk( chunk );
                 return true;
             }
         }
-        return !safe && !save;
-         */
         return false;
     }
 
@@ -245,7 +241,6 @@ public class ChunkManager {
             if ( ( this.chunk == null || !this.chunk.isPopulated() ) && !this.isPopulating() ) {
                 this.populating = true;
 
-                //noinspection unchecked
                 CompletableFuture<Chunk>[] chunksToLoad = new CompletableFuture[9];
                 for ( int x = -1; x <= 1; x++ ) {
                     for ( int z = -1; z <= 1; z++ ) {

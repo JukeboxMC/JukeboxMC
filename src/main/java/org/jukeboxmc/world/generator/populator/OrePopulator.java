@@ -24,9 +24,9 @@ public class OrePopulator implements Populator {
 
     @Override
     public void populate( Random random, World world, Chunk chunk ) {
-        int sx = chunk.getChunkX() << 4;
+        int sx = chunk.getX() << 4;
         int ex = sx + 15;
-        int sz = chunk.getChunkZ() << 4;
+        int sz = chunk.getZ() << 4;
         int ez = sz + 15;
         for (OreType type : this.oreTypes) {
             for (int i = 0; i < type.clusterCount; i++) {

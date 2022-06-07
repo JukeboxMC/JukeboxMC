@@ -746,6 +746,27 @@ public enum BlockType {
     MUDDY_MANGROVE_ROOTS( new BlockMuddyMangroveRoots() ),
     PACKED_MUD( new BlockPackedMud() ),
     REINFORCED_DEEPSLATE( new BlockReinforcedDeepslate() );
+    GRAY_CANDLE_CAKE( new BlockGrayCandleCake() ),
+    MUD_BRICK_DOUBLE_SLAB( new BlockMudBrickDoubleSlab() ),
+    LIGHT_BLUE_CANDLE_CAKE( new BlockLightBlueCandleCake() ),
+    CYAN_CANDLE_CAKE( new BlockCyanCandleCake() ),
+    GREEN_CANDLE_CAKE( new BlockGreenCandleCake() ),
+    BROWN_CANDLE_CAKE( new BlockBrownCandleCake() ),
+    PINK_CANDLE_CAKE( new BlockPinkCandleCake() ),
+    CLIENT_REQUEST_PLACEHOLDER_BLOCK( new BlockClientRequestPlaceholderBlock() ),
+    BLACK_CANDLE_CAKE( new BlockBlackCandleCake() ),
+    UNKNOWN( new BlockUnknown() ),
+    MANGROVE_PROPAGULE_HANGING( new BlockMangrovePropaguleHanging() ),
+    YELLOW_CANDLE_CAKE( new BlockYellowCandleCake() ),
+    LIGHT_GRAY_CANDLE_CAKE( new BlockLightGrayCandleCake() ),
+    BLUE_CANDLE_CAKE( new BlockBlueCandleCake() ),
+    MAGENTA_CANDLE_CAKE( new BlockMagentaCandleCake() ),
+    PURPLE_CANDLE_CAKE( new BlockPurpleCandleCake() ),
+    WHITE_CANDLE_CAKE( new BlockWhiteCandleCake() ),
+    CANDLE_CAKE( new BlockCandleCake() ),
+    RED_CANDLE_CAKE( new BlockRedCandleCake() ),
+    LIME_CANDLE_CAKE( new BlockLimeCandleCake() ),
+    ORANGE_CANDLE_CAKE( new BlockOrangeCandleCake() );
 
     private final Block block;
 

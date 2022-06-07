@@ -32,7 +32,7 @@ public class ChunkCache {
     }
 
     public synchronized void putChunk( Chunk chunk, Dimension dimension ) {
-        long hash = Utils.toLong( chunk.getChunkX(), chunk.getChunkZ() );
+        long hash = Utils.toLong( chunk.getX(), chunk.getZ() );
         Long2ObjectMap<Chunk> dimensionChunks = this.cachedChunks.get( dimension );
 
         Chunk adapterChunk = dimensionChunks.get( hash );
