@@ -550,6 +550,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.respawnLocation = respawnLocation;
     }
 
+    public long getPing() {
+        return this.playerConnection.getPing();
+    }
+
     public void sendEntityData() {
         SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
         setEntityDataPacket.setRuntimeEntityId( this.entityId );
