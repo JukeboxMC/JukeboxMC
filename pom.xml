@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
-            <artifactId>bedrock-beta</artifactId>
+            <artifactId>bedrock-v527</artifactId>
             <version>2.9.8-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
