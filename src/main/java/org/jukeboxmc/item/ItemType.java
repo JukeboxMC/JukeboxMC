@@ -1453,7 +1453,6 @@ public enum ItemType {
     MAGENTA_CANDLE_CAKE(new ItemMagentaCandleCake()),
     MANGROVE_LEAVES(new ItemMangroveLeaves()),
     MANGROVE_PROPAGULE(new ItemMangrovePropagule()),
-    MANGROVE_PROPAGULE_HANGING(new ItemMangrovePropaguleHanging()),
     MUD(new ItemMud()),
     MUD_BRICK_DOUBLE_SLAB(new ItemMudBrickDoubleSlab()),
     MUD_BRICK_SLAB(new ItemMudBrickSlab()),

@@ -745,7 +745,7 @@ public enum BlockType {
     MUD_BRICK_WALL( new BlockMudBrickWall() ),
     MUDDY_MANGROVE_ROOTS( new BlockMuddyMangroveRoots() ),
     PACKED_MUD( new BlockPackedMud() ),
-    REINFORCED_DEEPSLATE( new BlockReinforcedDeepslate() );
+    REINFORCED_DEEPSLATE( new BlockReinforcedDeepslate() ),
     GRAY_CANDLE_CAKE( new BlockGrayCandleCake() ),
     MUD_BRICK_DOUBLE_SLAB( new BlockMudBrickDoubleSlab() ),
     LIGHT_BLUE_CANDLE_CAKE( new BlockLightBlueCandleCake() ),
@@ -756,7 +756,6 @@ public enum BlockType {
     CLIENT_REQUEST_PLACEHOLDER_BLOCK( new BlockClientRequestPlaceholderBlock() ),
     BLACK_CANDLE_CAKE( new BlockBlackCandleCake() ),
     UNKNOWN( new BlockUnknown() ),
-    MANGROVE_PROPAGULE_HANGING( new BlockMangrovePropaguleHanging() ),
     YELLOW_CANDLE_CAKE( new BlockYellowCandleCake() ),
     LIGHT_GRAY_CANDLE_CAKE( new BlockLightGrayCandleCake() ),
     BLUE_CANDLE_CAKE( new BlockBlueCandleCake() ),
