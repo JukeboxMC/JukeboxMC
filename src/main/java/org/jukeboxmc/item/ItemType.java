@@ -1475,7 +1475,10 @@ public enum ItemType {
     VERDANT_FROGLIGHT(new ItemVerdantFroglight()),
     WARDEN_SPAWN_EGG(new ItemWardenSpawnEgg()),
     WHITE_CANDLE_CAKE(new ItemWhiteCandleCake()),
-    YELLOW_CANDLE_CAKE(new ItemYellowCandleCake());
+    YELLOW_CANDLE_CAKE(new ItemYellowCandleCake()),
+    RECOVERY_COMPASS(new ItemRecoveryCompass()),
+    ECHO_SHARD(new ItemEchoShard()),
+    GOAT_HORN(new ItemGoatHorn());
 
 
     private static final Map<ItemType, Item> cachedItems = new HashMap<>();
