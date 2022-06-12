@@ -2,18 +2,18 @@
 Why did I start JukeboxMC ?
 Well, I wanted to learn more about the Minecraft Bedrock Edition protocol. Also, I always wanted to have my own server software that I can design the way I want :P
 
-## Links
+## Connect with us:
 __Discord__: https://discord.gg/Jatt7tfRBF
 
 __Twitter__: https://twitter.com/LucGamesHD
 
-## How to build a jar file
+## How to build a jar file:
 1. git clone https://github.com/LucGamesYT/JukeboxMC.git
 2. cd /JukeboxMC
 3. mvn clean install
 4. Done! 
 
-Please note that you must have Maven installed on your computer as well as git
+*Please note that you must have Maven installed on your computer as well as git
 
 Maven: 
  - Download: https://maven.apache.org/download.cgi
@@ -21,7 +21,7 @@ Maven:
 
 Git: https://git-scm.com/downloads
 
-## How to create a plugin
+## How to create a plugin:
 
 _Notice: Please use **Java 17**!_
 
@@ -59,5 +59,5 @@ dependencies {
 }
 ```
 
-## IMPORTANT
+## IMPORTANT TO KNOW
 This server software is not yet ready! Feel free to improve code and contribute!
