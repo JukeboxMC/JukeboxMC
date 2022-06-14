@@ -1112,5 +1112,13 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendPacket( packet );
     }
 
+    public void sendToast( String title, String content ) {
+        ToastRequestPacket packet = new ToastRequestPacket();
+        packet.setTitle( title );
+        packet.setContent( content );
+
+        this.sendPacket( packet );
+    }
+
 
 }
