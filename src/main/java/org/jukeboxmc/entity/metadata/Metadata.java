@@ -82,6 +82,20 @@ public class Metadata {
         return this;
     }
 
+    public Integer getInt( EntityData entityData ) {
+        return this.entityDataMap.getInt( entityData );
+    }
+
+    public Metadata setInt( EntityData entityData, int value ) {
+        Integer oldValue = this.getInt( entityData );
+
+        if ( oldValue != value ) {
+            this.entityDataMap.putInt( entityData, value );
+        }
+
+        return this;
+    }
+
     public boolean getFlag( EntityFlag entityFlag ) {
         return this.entityDataMap.getOrCreateFlags().getFlag( entityFlag );
     }

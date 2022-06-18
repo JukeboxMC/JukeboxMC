@@ -12,10 +12,12 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.entity.passive.EntityHuman;
@@ -29,6 +31,7 @@ import org.jukeboxmc.event.player.PlayerDeathEvent;
 import org.jukeboxmc.event.player.PlayerRespawnEvent;
 import org.jukeboxmc.form.Form;
 import org.jukeboxmc.form.FormListener;
+import org.jukeboxmc.form.NpcDialogueForm;
 import org.jukeboxmc.inventory.*;
 import org.jukeboxmc.inventory.transaction.CraftingTransaction;
 import org.jukeboxmc.inventory.transaction.InventoryAction;
@@ -96,6 +99,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private int serverSettingsForm = -1;
     private final Int2ObjectMap<Form<?>> forms = new Int2ObjectOpenHashMap<>();
     private final Int2ObjectMap<FormListener<?>> formListeners = new Int2ObjectOpenHashMap<>();
+
+    private final ObjectArrayList<NpcDialogueForm> npcDialogueForms = new ObjectArrayList<>();
 
     public Player( PlayerConnection playerConnection ) {
         this.playerConnection = playerConnection;
@@ -821,7 +826,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public boolean attackWithItemInHand( Entity target ) {
-        if ( target instanceof Player player ) {
+        if ( target instanceof EntityLiving living ) {
 
             boolean success = false;
 
@@ -845,10 +850,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 if ( crit && damage > 0.0f ) {
                     damage *= 1.5;
                 }
-                if ( success = player.damage( new EntityDamageByEntityEvent( player, this, damage, damageSource ) ) ) {
+                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, damageSource ) ) ) {
                     if ( knockbackLevel > 0 ) {
                         Vector targetVelocity = target.getVelocity();
-                        player.setVelocity( targetVelocity.add(
+                        living.setVelocity( targetVelocity.add(
                                 (float) ( -Math.sin( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ),
                                 0.1f,
                                 (float) ( Math.cos( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ) ) );
@@ -1112,5 +1117,15 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendPacket( packet );
     }
 
+    public void addNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
+        this.npcDialogueForms.add( npcDialogueForm );
+    }
 
+    public void removeNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
+        this.npcDialogueForms.remove( npcDialogueForm );
+    }
+
+    public Set<NpcDialogueForm> getOpenNpcDialogueForms() {
+        return new HashSet<>( this.npcDialogueForms );
+    }
 }
