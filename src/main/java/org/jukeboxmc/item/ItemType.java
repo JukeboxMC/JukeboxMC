@@ -1264,7 +1264,7 @@ public enum ItemType {
     RAVAGER_SPAWN_EGG( new ItemRavagerSpawnEgg() ),
     TROPICAL_FISH_BUCKET( new ItemTropicalFishBucket() ),
     FLOWER_BANNER_PATTERN( new ItemFlowerBannerPattern() ),
-    NPC_SPAWN_EGG( new ItemNPCSpawnEgg() ),
+    NPC_SPAWN_EGG( new ItemNpcSpawnEgg() ),
     BONE_MEAL( new ItemBoneMeal() ),
     BIRCH_BOAT( new ItemBirchBoat() ),
     UNKNOWN( new ItemUnknown() ),
