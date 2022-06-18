@@ -1,4 +1,4 @@
-package org.jukeboxmc.entity.passive;
+package org.jukeboxmc.entity.hostile;
 
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
@@ -7,11 +7,11 @@ import org.jukeboxmc.entity.EntityType;
  * @author Kaooot
  * @version 1.0
  */
-public class EntityNPC extends EntityLiving {
+public class EntitySkeleton extends EntityLiving {
 
     @Override
     public String getName() {
-        return "NPC";
+        return "Skeleton";
     }
 
     @Override
@@ -21,11 +21,11 @@ public class EntityNPC extends EntityLiving {
 
     @Override
     public float getHeight() {
-        return 1.95f;
+        return 1.9f;
     }
 
     @Override
     public EntityType getEntityType() {
-        return EntityType.NPC;
+        return EntityType.SKELETON;
     }
 }

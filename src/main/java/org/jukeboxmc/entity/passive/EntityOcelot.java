@@ -7,11 +7,11 @@ import org.jukeboxmc.entity.EntityType;
  * @author Kaooot
  * @version 1.0
  */
-public class EntityNPC extends EntityLiving {
+public class EntityOcelot extends EntityLiving {
 
     @Override
     public String getName() {
-        return "NPC";
+        return "Ocelot";
     }
 
     @Override
@@ -21,11 +21,11 @@ public class EntityNPC extends EntityLiving {
 
     @Override
     public float getHeight() {
-        return 1.95f;
+        return 0.7f;
     }
 
     @Override
     public EntityType getEntityType() {
-        return EntityType.NPC;
+        return EntityType.OCELOT;
     }
 }
