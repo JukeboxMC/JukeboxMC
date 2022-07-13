@@ -12,6 +12,7 @@ import java.util.List;
 public class PlayerDeathEvent extends PlayerEvent {
 
     private String deathMessage;
+    private String deathScreenMessage;
     private boolean dropInventory;
     private List<Item> drops;
 
@@ -33,6 +34,14 @@ public class PlayerDeathEvent extends PlayerEvent {
 
     public void setDeathMessage( String deathMessage ) {
         this.deathMessage = deathMessage;
+    }
+
+    public String getDeathScreenMessage() {
+        return this.deathScreenMessage;
+    }
+
+    public void setDeathScreenMessage( String deathScreenMessage ) {
+        this.deathScreenMessage = deathScreenMessage;
     }
 
     public boolean isDropInventory() {

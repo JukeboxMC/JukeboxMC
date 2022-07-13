@@ -956,6 +956,13 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             respawnPositionPacket.setState( RespawnPacket.State.SERVER_SEARCHING );
             respawnPositionPacket.setPosition( this.respawnLocation.toVector3f() );
             this.playerConnection.sendPacket( respawnPositionPacket );
+
+            if ( playerDeathEvent.getDeathScreenMessage() != null && !playerDeathEvent.getDeathScreenMessage().isEmpty() ) {
+                DeathInfoPacket deathInfoPacket = new DeathInfoPacket();
+                deathInfoPacket.getMessageList().add( this.getName() );
+                deathInfoPacket.setCauseAttackName( playerDeathEvent.getDeathScreenMessage() ); //#1e7dfc
+                this.playerConnection.sendPacket( deathInfoPacket );
+            }
         }
     }
 
