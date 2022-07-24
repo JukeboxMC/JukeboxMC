@@ -262,7 +262,7 @@ public class PlayerConnection {
         startGamePacket.setPlayerMovementSettings( SYNCED_PLAYER_MOVEMENT_SETTINGS );
         startGamePacket.setBlockRegistryChecksum( 0L );
         startGamePacket.setPlayerPropertyData( NbtMap.EMPTY );
-        startGamePacket.setWorldTemplateId( UUID.randomUUID() );
+        startGamePacket.setWorldTemplateId( new UUID( 0, 0 ) );
         this.sendPacket( startGamePacket );
 
         AvailableEntityIdentifiersPacket availableEntityIdentifiersPacket = new AvailableEntityIdentifiersPacket();
