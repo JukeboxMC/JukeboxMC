@@ -4,10 +4,7 @@ import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
-import com.nukkitx.protocol.bedrock.data.AuthoritativeMovementMode;
-import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
-import com.nukkitx.protocol.bedrock.data.PlayerPermission;
-import com.nukkitx.protocol.bedrock.data.SyncedPlayerMovementSettings;
+import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.*;
 import it.unimi.dsi.fastutil.longs.*;
 import org.apache.commons.math3.util.FastMath;
@@ -263,6 +260,9 @@ public class PlayerConnection {
         startGamePacket.setBlockRegistryChecksum( 0L );
         startGamePacket.setPlayerPropertyData( NbtMap.EMPTY );
         startGamePacket.setWorldTemplateId( new UUID( 0, 0 ) );
+        startGamePacket.setChatRestrictionLevel( ChatRestrictionLevel.NONE );
+        startGamePacket.setDisablingPlayerInteractions( false );
+        startGamePacket.setClientSideGenerationEnabled( false );
         this.sendPacket( startGamePacket );
 
         AvailableEntityIdentifiersPacket availableEntityIdentifiersPacket = new AvailableEntityIdentifiersPacket();
