@@ -1439,7 +1439,6 @@ public enum ItemType {
     CLIENT_REQUEST_PLACEHOLDER_BLOCK(new ItemClientRequestPlaceholderBlock()),
     CYAN_CANDLE_CAKE(new ItemCyanCandleCake()),
     DARK_OAK_CHEST_BOAT(new ItemDarkOakChestBoat()),
-    FIREFLY_SPAWN_EGG(new ItemFireflySpawnEgg()),
     FROG_SPAWN(new ItemFrogSpawn()),
     FROG_SPAWN_EGG(new ItemFrogSpawnEgg()),
     GLOBE_BANNER_PATTERN(new ItemGlobeBannerPattern()),

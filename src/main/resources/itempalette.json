@@ -9,7 +9,7 @@
   },
   {
     "name" : "minecraft:acacia_chest_boat",
-    "id" : 643
+    "id" : 642
   },
   {
     "name" : "minecraft:acacia_door",
@@ -217,7 +217,7 @@
   },
   {
     "name" : "minecraft:birch_chest_boat",
-    "id" : 640
+    "id" : 639
   },
   {
     "name" : "minecraft:birch_door",
@@ -541,7 +541,7 @@
   },
   {
     "name" : "minecraft:chest_boat",
-    "id" : 646
+    "id" : 645
   },
   {
     "name" : "minecraft:chest_minecart",
@@ -921,7 +921,7 @@
   },
   {
     "name" : "minecraft:dark_oak_chest_boat",
-    "id" : 644
+    "id" : 643
   },
   {
     "name" : "minecraft:dark_oak_door",
@@ -1121,7 +1121,7 @@
   },
   {
     "name" : "minecraft:disc_fragment_5",
-    "id" : 638
+    "id" : 637
   },
   {
     "name" : "minecraft:dispenser",
@@ -1197,7 +1197,7 @@
   },
   {
     "name" : "minecraft:echo_shard",
-    "id" : 648
+    "id" : 647
   },
   {
     "name" : "minecraft:egg",
@@ -1832,10 +1832,6 @@
     "id" : 509
   },
   {
-    "name" : "minecraft:firefly_spawn_egg",
-    "id" : 633
-  },
-  {
     "name" : "minecraft:firework_rocket",
     "id" : 519
   },
@@ -2409,7 +2405,7 @@
   },
   {
     "name" : "minecraft:jungle_chest_boat",
-    "id" : 641
+    "id" : 640
   },
   {
     "name" : "minecraft:jungle_door",
@@ -2669,7 +2665,7 @@
   },
   {
     "name" : "minecraft:mangrove_boat",
-    "id" : 636
+    "id" : 635
   },
   {
     "name" : "minecraft:mangrove_button",
@@ -2677,11 +2673,11 @@
   },
   {
     "name" : "minecraft:mangrove_chest_boat",
-    "id" : 645
+    "id" : 644
   },
   {
     "name" : "minecraft:mangrove_door",
-    "id" : 634
+    "id" : 633
   },
   {
     "name" : "minecraft:mangrove_double_slab",
@@ -2721,7 +2717,7 @@
   },
   {
     "name" : "minecraft:mangrove_sign",
-    "id" : 635
+    "id" : 634
   },
   {
     "name" : "minecraft:mangrove_slab",
@@ -2865,7 +2861,7 @@
   },
   {
     "name" : "minecraft:music_disc_5",
-    "id" : 637
+    "id" : 636
   },
   {
     "name" : "minecraft:music_disc_blocks",
@@ -3041,7 +3037,7 @@
   },
   {
     "name" : "minecraft:oak_chest_boat",
-    "id" : 639
+    "id" : 638
   },
   {
     "name" : "minecraft:oak_sign",
@@ -3477,7 +3473,7 @@
   },
   {
     "name" : "minecraft:recovery_compass",
-    "id" : 647
+    "id" : 646
   },
   {
     "name" : "minecraft:red_candle",
@@ -3817,7 +3813,7 @@
   },
   {
     "name" : "minecraft:spruce_chest_boat",
-    "id" : 642
+    "id" : 641
   },
   {
     "name" : "minecraft:spruce_door",
@@ -4082,6 +4078,10 @@
   {
     "name" : "minecraft:totem_of_undying",
     "id" : 568
+  },
+  {
+    "name" : "minecraft:trader_llama_spawn_egg",
+    "id" : 648
   },
   {
     "name" : "minecraft:trapdoor",
