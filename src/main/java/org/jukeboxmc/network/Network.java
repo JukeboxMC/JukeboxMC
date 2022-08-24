@@ -17,7 +17,15 @@ import java.util.function.Predicate;
  */
 public class Network implements BedrockServerEventHandler {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v544.V544_CODEC;
+    // public static final BedrockPacketCodec CODEC = Bedrock_v544.V544_CODEC;
+
+    /*
+     * Implementation 1.19.21 (protocol changes only) revert to original when ProtocolLib adds next version.
+     */
+    public static final BedrockPacketCodec CODEC = Bedrock_v544.V544_CODEC.toBuilder()
+            .protocolVersion( 545 )
+            .minecraftVersion( "1.19.21" )
+            .build();
 
     private final Server server;
     private final InetSocketAddress inetSocketAddress;
