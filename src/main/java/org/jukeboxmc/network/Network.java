@@ -1,7 +1,7 @@
 package org.jukeboxmc.network;
 
 import com.nukkitx.protocol.bedrock.*;
-import com.nukkitx.protocol.bedrock.v544.Bedrock_v544;
+import com.nukkitx.protocol.bedrock.v545.Bedrock_v545;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.PlayerConnection;
 
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
  */
 public class Network implements BedrockServerEventHandler {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v544.V544_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v545.V545_CODEC;
 
     private final Server server;
     private final InetSocketAddress inetSocketAddress;
