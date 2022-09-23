@@ -1,6 +1,7 @@
 package org.jukeboxmc.crafting;
 
 import com.nukkitx.protocol.bedrock.data.inventory.*;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import org.jukeboxmc.Server;
@@ -44,7 +45,7 @@ public class CraftingManager {
             int inputId = (int) (double) recipe.get( "inputId" );
             int inputDamage = (int) (double) recipe.get( "inputDamage" );
 
-            List<ItemData> inputItems = new ArrayList<>();
+            List<ItemDescriptorWithCount> inputItems = new ArrayList<>();
             if ( recipe.containsKey( "inputs" ) ) {
                 List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" ); //TODO
                 for ( Map<String, Object> input : inputs ) {
@@ -66,7 +67,7 @@ public class CraftingManager {
                     }
                     Item item = new Item( identifier, damage, blockRuntimeId );
                     item.setAmount( count );
-                    inputItems.add( item.toNetwork() );
+                    inputItems.add( item.toItemDescriptorWithCount() );
                 }
             }
 

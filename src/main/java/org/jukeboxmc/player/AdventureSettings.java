@@ -1,15 +1,15 @@
 package org.jukeboxmc.player;
 
-import com.nukkitx.protocol.bedrock.data.AdventureSetting;
+import com.nukkitx.protocol.bedrock.data.Ability;
+import com.nukkitx.protocol.bedrock.data.AbilityLayer;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.data.command.CommandPermission;
-import com.nukkitx.protocol.bedrock.packet.AdventureSettingsPacket;
+import com.nukkitx.protocol.bedrock.packet.UpdateAbilitiesPacket;
+import com.nukkitx.protocol.bedrock.packet.UpdateAdventureSettingsPacket;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.jukeboxmc.util.NonStream;
 
+import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -36,38 +36,80 @@ public class AdventureSettings {
     }
 
     public void update() {
-        AdventureSettingsPacket adventureSettingsPacket = new AdventureSettingsPacket();
-        adventureSettingsPacket.setUniqueEntityId( this.player.getEntityId() );
-        adventureSettingsPacket.setCommandPermission( CommandPermission.OPERATOR );
-        adventureSettingsPacket.setPlayerPermission( PlayerPermission.OPERATOR );
-        adventureSettingsPacket.getSettings().addAll( NonStream.filterAndMap( Type.values(), this::get, Type::getFlag, HashSet::new ) );
-        this.player.sendPacket( adventureSettingsPacket );
+        UpdateAbilitiesPacket updateAbilitiesPacket = new UpdateAbilitiesPacket();
+        updateAbilitiesPacket.setUniqueEntityId( this.player.getEntityId() );
+        updateAbilitiesPacket.setCommandPermission( CommandPermission.OPERATOR );
+        updateAbilitiesPacket.setPlayerPermission( PlayerPermission.OPERATOR );
+
+        AbilityLayer abilityLayer = new AbilityLayer();
+        abilityLayer.setLayerType( AbilityLayer.Type.BASE );
+        abilityLayer.getAbilitiesSet().addAll( Arrays.asList( Ability.values() ) );
+
+        for ( Type type : Type.values() ) {
+            if ( type.getAbility() != null && this.get( type ) ) {
+                abilityLayer.getAbilityValues().add( type.getAbility() );
+            }
+        }
+
+        abilityLayer.getAbilityValues().add( Ability.WALK_SPEED );
+        abilityLayer.getAbilityValues().add( Ability.FLY_SPEED );
+
+        if ( this.player.getGameMode().equals( GameMode.CREATIVE ) ) {
+            abilityLayer.getAbilityValues().add( Ability.INSTABUILD );
+        }
+
+        if ( this.player.isOp() ) {
+            abilityLayer.getAbilityValues().add( Ability.OPERATOR_COMMANDS );
+        }
+
+        abilityLayer.setWalkSpeed( 0.05f );
+        abilityLayer.setFlySpeed( 0.1f );
+
+        updateAbilitiesPacket.getAbilityLayers().add( abilityLayer );
+
+        UpdateAdventureSettingsPacket updateAdventureSettingsPacket = new UpdateAdventureSettingsPacket();
+        updateAdventureSettingsPacket.setAutoJump( this.get( Type.AUTO_JUMP ) );
+        updateAdventureSettingsPacket.setImmutableWorld( this.get( Type.WORLD_IMMUTABLE ) );
+        updateAdventureSettingsPacket.setNoMvP( this.get( Type.NO_MVP ) );
+        updateAdventureSettingsPacket.setNoPvM( this.get( Type.NO_PVM ) );
+        updateAdventureSettingsPacket.setShowNameTags( this.get( Type.SHOW_NAME_TAGS ) );
+
+        this.player.sendPacket( updateAbilitiesPacket );
+        this.player.sendPacket( updateAdventureSettingsPacket );
     }
 
-
     @Getter
-    @RequiredArgsConstructor
     public enum Type {
-        WORLD_IMMUTABLE( AdventureSetting.WORLD_IMMUTABLE, false ),
-        NO_PVM( AdventureSetting.NO_PVM, false ),
-        NO_MVP( AdventureSetting.NO_MVP, false ),
-        SHOW_NAME_TAGS( AdventureSetting.SHOW_NAME_TAGS, true ),
-        AUTO_JUMP( AdventureSetting.AUTO_JUMP, true ),
-        ALLOW_FLIGHT( AdventureSetting.MAY_FLY, false ),
-        NO_CLIP( AdventureSetting.NO_CLIP, false ),
-        WORLD_BUILDER( AdventureSetting.WORLD_BUILDER, true ),
-        FLYING( AdventureSetting.FLYING, false ),
-        MUTED( AdventureSetting.MUTED, false ),
-        MINE( AdventureSetting.MINE, true ),
-        DOORS_AND_SWITCHED( AdventureSetting.DOORS_AND_SWITCHES, true ),
-        OPEN_CONTAINERS( AdventureSetting.OPEN_CONTAINERS, true ),
-        ATTACK_PLAYERS( AdventureSetting.ATTACK_PLAYERS, true ),
-        ATTACK_MOBS( AdventureSetting.ATTACK_MOBS, true ),
-        OPERATOR( AdventureSetting.OPERATOR, false ),
-        TELEPORT( AdventureSetting.TELEPORT, false ),
-        BUILD( AdventureSetting.BUILD, true );
+        WORLD_IMMUTABLE( false ),
+        NO_PVM( false ),
+        NO_MVP( Ability.INVULNERABLE, false ),
+        SHOW_NAME_TAGS( true ),
+        AUTO_JUMP( true ),
+        ALLOW_FLIGHT( Ability.MAY_FLY, false ),
+        NO_CLIP( Ability.NO_CLIP, false ),
+        WORLD_BUILDER( Ability.WORLD_BUILDER, true ),
+        FLYING( Ability.FLYING, false ),
+        MUTED( Ability.MUTED, false ),
+        MINE( Ability.MINE, true ),
+        DOORS_AND_SWITCHED( Ability.DOORS_AND_SWITCHES, true ),
+        OPEN_CONTAINERS( Ability.OPEN_CONTAINERS, true ),
+        ATTACK_PLAYERS( Ability.ATTACK_PLAYERS, true ),
+        ATTACK_MOBS( Ability.ATTACK_MOBS, true ),
+        OPERATOR( Ability.OPERATOR_COMMANDS, false ),
+        TELEPORT( Ability.TELEPORT, false ),
+        BUILD( Ability.BUILD, true );
 
-        private final AdventureSetting flag;
+        private final Ability ability;
         private final Boolean defaultValue;
+
+        Type( Ability ability, Boolean defaultValue ) {
+            this.ability = ability;
+            this.defaultValue = defaultValue;
+        }
+
+        Type( Boolean defaultValue ) {
+            this.defaultValue = defaultValue;
+            this.ability = null;
+        }
     }
 }

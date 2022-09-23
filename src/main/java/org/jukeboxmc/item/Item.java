@@ -4,6 +4,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
@@ -326,6 +327,10 @@ public class Item implements Cloneable {
                 canPlace( this.canPlaceOn.toArray( new String[0] ) ).
                 canBreak( this.canDestroy.toArray( new String[0] ) ).
                 build();
+    }
+
+    public ItemDescriptorWithCount toItemDescriptorWithCount() {
+        return ItemDescriptorWithCount.fromItem( this.toNetwork() );
     }
 
     public ItemData toNetwork( int networkId ) {

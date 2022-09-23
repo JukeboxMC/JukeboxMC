@@ -1,6 +1,7 @@
 package org.jukeboxmc;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -95,6 +96,7 @@ public class Server {
     private String generatorName;
     private boolean onlineMode;
     private boolean forceResourcePacks;
+    private PacketCompressionAlgorithm compressionAlgorithm;
 
 
     private static final AtomicBoolean INITIATING = new AtomicBoolean( true );
@@ -196,6 +198,7 @@ public class Server {
         serverConfig.addDefault( "generator", "flat" ); //TODO
         serverConfig.addDefault( "online-mode", true );
         serverConfig.addDefault( "forceResourcePacks", false );
+        serverConfig.addDefault( "compression", "snappy" );
         serverConfig.save();
 
         this.serverAddress = serverConfig.getString( "address" );
@@ -209,6 +212,18 @@ public class Server {
         this.generatorName = serverConfig.getString( "generator" );
         this.onlineMode = serverConfig.getBoolean( "online-mode" );
         this.forceResourcePacks = serverConfig.getBoolean( "forceResourcePacks" );
+
+        String compression = serverConfig.getString( "compression" );
+
+        // snappy is used as default since v554 (1.19.30)
+        this.compressionAlgorithm = PacketCompressionAlgorithm.SNAPPY;
+
+        for ( PacketCompressionAlgorithm algorithm : PacketCompressionAlgorithm.values() ) {
+            if ( algorithm.name().equalsIgnoreCase( compression ) ) {
+                this.compressionAlgorithm = algorithm;
+                break;
+            }
+        }
     }
 
     public boolean isInMainThread() {
@@ -234,7 +249,7 @@ public class Server {
 
         this.logger.info( "Save all worlds..." );
         for ( World world : this.worlds.values() ) {
-            world.save(true);
+            world.save( true );
         }
 
         this.logger.info( "Unload all worlds..." );
@@ -453,7 +468,7 @@ public class Server {
         return this.loadOrCreateWorld( worldName, generatorMap );
     }
 
-    public boolean loadOrCreateWorld( String worldName, Map<Dimension, String> generatorMap  ) {
+    public boolean loadOrCreateWorld( String worldName, Map<Dimension, String> generatorMap ) {
         if ( !this.worlds.containsKey( worldName.toLowerCase() ) ) {
             File file = new File( "./worlds", worldName );
             boolean worldExists = file.exists();
@@ -599,9 +614,9 @@ public class Server {
     public float getCurrentAverageTps() {
         float sum = 0;
         int count = this.ticksAverage.length;
-        for(float ticksAvg : this.ticksAverage) sum += ticksAvg;
+        for ( float ticksAvg : this.ticksAverage ) sum += ticksAvg;
 
-        return (Math.round(sum * 100F / count)) / 100F;
+        return ( Math.round( sum * 100F / count ) ) / 100F;
     }
 
     public String getServerAddress() {
@@ -646,6 +661,10 @@ public class Server {
 
     public boolean isForceResourcePacks() {
         return this.forceResourcePacks;
+    }
+
+    public PacketCompressionAlgorithm getCompressionAlgorithm() {
+        return this.compressionAlgorithm;
     }
 
     public File getPluginFolder() {

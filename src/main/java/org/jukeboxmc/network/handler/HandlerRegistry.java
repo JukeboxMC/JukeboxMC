@@ -30,13 +30,14 @@ public class HandlerRegistry {
         packetHandlerMap.put( AnimatePacket.class, new AnimateHandler() );
         packetHandlerMap.put( InventoryTransactionPacket.class, new InventoryTransactionHandler() );
         packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
-        packetHandlerMap.put( AdventureSettingsPacket.class, new AdventureSettingsHandler() );
+        packetHandlerMap.put( RequestAbilityPacket.class, new RequestAbilityHandler() );
         packetHandlerMap.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
         packetHandlerMap.put( EntityEventPacket.class, new EntityEventHandler() );
         packetHandlerMap.put( RespawnPacket.class, new RespawnHandler() );
         packetHandlerMap.put( TickSyncPacket.class, new TickSyncHandler() );
         packetHandlerMap.put( ModalFormResponsePacket.class, new ModalFormResponseHandler() );
         packetHandlerMap.put( NpcRequestPacket.class, new NpcRequestPacketHandler() );
+        packetHandlerMap.put( RequestNetworkSettingsPacket.class, new RequestNetworkSettingsHandler() );
     }
 
     public static PacketHandler<? extends BedrockPacket> getPacketHandler( Class<? extends BedrockPacket> clazz ) {

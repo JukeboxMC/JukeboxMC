@@ -3,6 +3,7 @@ package org.jukeboxmc.crafting.recipes;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
@@ -17,7 +18,7 @@ import java.util.UUID;
  */
 public class ShapelessRecipe extends Recipe {
 
-    private final List<ItemData> ingredients = new ObjectArrayList<>();
+    private final List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
     private final List<ItemData> outputs = new ObjectArrayList<>();
 
     @Override
@@ -26,9 +27,9 @@ public class ShapelessRecipe extends Recipe {
     }
 
     public ShapelessRecipe addIngredient( Item... items ) {
-        List<ItemData> itemDataList = new ArrayList<>();
+        List<ItemDescriptorWithCount> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
-            itemDataList.add( item.toNetwork() );
+            itemDataList.add( item.toItemDescriptorWithCount() );
         }
         this.ingredients.addAll( itemDataList );
         return this;
