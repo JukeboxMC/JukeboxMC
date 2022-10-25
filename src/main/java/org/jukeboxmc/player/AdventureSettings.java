@@ -62,8 +62,8 @@ public class AdventureSettings {
             abilityLayer.getAbilityValues().add( Ability.OPERATOR_COMMANDS );
         }
 
-        abilityLayer.setWalkSpeed( 0.05f );
-        abilityLayer.setFlySpeed( 0.1f );
+        abilityLayer.setWalkSpeed( 0.1f );
+        abilityLayer.setFlySpeed( 0.05f );
 
         updateAbilitiesPacket.getAbilityLayers().add( abilityLayer );
 
