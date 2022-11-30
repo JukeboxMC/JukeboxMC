@@ -48,7 +48,7 @@ public class BlockCoralBlock extends Block {
     }
 
     public BlockCoralBlock setDead( boolean value ) {
-       return this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "dead_bit", value ? 1 : 0 );
     }
 
     public boolean isDead() {

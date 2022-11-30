@@ -34,7 +34,7 @@ public class BlockCoral extends BlockWaterlogable {
     }
 
     public BlockCoral setCoralColor( CoralColor coralColor ) {
-       return this.setState( "coral_color", coralColor.name().toLowerCase() );
+        return this.setState( "coral_color", coralColor.name().toLowerCase() );
     }
 
     public CoralColor getCoralColor() {
@@ -42,7 +42,7 @@ public class BlockCoral extends BlockWaterlogable {
     }
 
     public BlockCoral setDead( boolean value ) {
-       return this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "dead_bit", value ? 1 : 0 );
     }
 
     public boolean isDead() {

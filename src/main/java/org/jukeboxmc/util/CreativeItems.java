@@ -6,6 +6,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.Bootstrap;
+import org.jukeboxmc.block.BlockPalette;
 import org.jukeboxmc.item.Item;
 
 import java.io.ByteArrayInputStream;
@@ -32,11 +33,17 @@ public class CreativeItems {
             for ( Map<String, Object> itemEntry : itemEntries.get( "items" ) ) {
                 Item item;
                 String identifier = (String) itemEntry.get( "id" );
-                if ( itemEntry.containsKey( "blockRuntimeId" ) ) {
-                    item = get( identifier, (int) (double) itemEntry.get( "blockRuntimeId" ) );
+
+                if ( itemEntry.containsKey( "block_state_b64" ) ) {
+                    String nbtTag = (String) itemEntry.get( "block_state_b64" );
+
+                    try ( NBTInputStream nbtReader = NbtUtils.createReaderLE( new ByteArrayInputStream( Base64.getDecoder().decode( nbtTag.getBytes() ) ) ) ) {
+                        item = get( identifier, BlockPalette.getRuntimeId( (NbtMap) nbtReader.readTag() ) );
+                    }
                 } else {
                     item = get( identifier );
                 }
+
                 if ( itemEntry.containsKey( "damage" ) ) {
                     item.setMeta( (short) (double) itemEntry.get( "damage" ) );
                 }
@@ -52,16 +59,16 @@ public class CreativeItems {
         }
     }
 
-    public static Item get(String identifier) {
-        return Optional.ofNullable(ItemPalette.IDENTIFIER_TO_RUNTIME.get(identifier)).
-                map(runtimeId -> new Item(identifier)).
-                orElseThrow(() -> new NullPointerException("No item for " + identifier + " was found"));
+    public static Item get( String identifier ) {
+        return Optional.ofNullable( ItemPalette.IDENTIFIER_TO_RUNTIME.get( identifier ) ).
+                map( runtimeId -> new Item( identifier ) ).
+                orElseThrow( () -> new NullPointerException( "No item for " + identifier + " was found" ) );
     }
 
-    public static Item get(String identifier, int blockRuntimeId) {
-        return Optional.ofNullable(ItemPalette.IDENTIFIER_TO_RUNTIME.get(identifier)).
-                map(runtimeId -> new Item(identifier, 0, blockRuntimeId)).
-                orElseThrow(() -> new NullPointerException("No item for " + blockRuntimeId + " was found"));
+    public static Item get( String identifier, int blockRuntimeId ) {
+        return Optional.ofNullable( ItemPalette.IDENTIFIER_TO_RUNTIME.get( identifier ) ).
+                map( runtimeId -> new Item( identifier, 0, blockRuntimeId ) ).
+                orElseThrow( () -> new NullPointerException( "No item for " + blockRuntimeId + " was found" ) );
     }
 
     public static ItemData[] getCreativeItems() {

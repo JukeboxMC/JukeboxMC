@@ -67,7 +67,7 @@ public class BlockWood extends Block {
     }
 
     public BlockWood setStripped( boolean value ) {
-       return this.setState( "stripped_bit", value ? (byte) 1 : (byte) 0 );
+       return this.setState( "stripped_bit", value ? 1 : 0 );
     }
 
     public boolean isStripped() {
