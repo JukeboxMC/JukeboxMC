@@ -30,8 +30,6 @@ public class RequestNetworkSettingsHandler implements PacketHandler<RequestNetwo
 
         PacketCompressionAlgorithm compressionAlgorithm = server.getCompressionAlgorithm();
 
-        player.getPlayerConnection().getSession().setPacketCodec( Network.CODEC );
-
         NetworkSettingsPacket networkSettingsPacket = new NetworkSettingsPacket();
         networkSettingsPacket.setCompressionThreshold( 0 );
         networkSettingsPacket.setCompressionAlgorithm( compressionAlgorithm );
