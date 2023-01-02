@@ -16,8 +16,4 @@ public class EnchantmentPower extends Enchantment {
         return 10;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

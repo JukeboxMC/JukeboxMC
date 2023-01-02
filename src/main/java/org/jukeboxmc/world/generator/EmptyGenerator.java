@@ -1,8 +1,8 @@
 package org.jukeboxmc.world.generator;
 
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.world.Dimension;
-import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 
 /**
  * @author LucGamesYT
@@ -10,17 +10,18 @@ import org.jukeboxmc.world.World;
  */
 public class EmptyGenerator extends Generator {
 
-    public EmptyGenerator( World world, Dimension dimension ) {
-        super( world, dimension );
-    }
-
     @Override
-    public void generate( int x, int z ) {
+    public void generate( Chunk chunk, int chunkX, int chunkZ ) {
 
     }
 
     @Override
-    public void populate( int x, int z ) {
+    public void populate( PopulationChunkManager manager, int chunkX, int chunkZr ) {
+
+    }
+
+    @Override
+    public void finish( PopulationChunkManager manager, int chunkX, int chunkZ ) {
 
     }
 

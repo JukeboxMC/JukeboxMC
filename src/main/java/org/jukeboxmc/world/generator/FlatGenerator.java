@@ -1,11 +1,11 @@
 package org.jukeboxmc.world.generator;
 
-import org.jukeboxmc.block.*;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
-import org.jukeboxmc.world.Dimension;
-import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 
 /**
  * @author LucGamesYT
@@ -17,16 +17,14 @@ public class FlatGenerator extends Generator {
     private final Block blockDirt;
     private final Block blockBedrock;
 
-    public FlatGenerator( World world, Dimension dimension ) {
-        super( world, dimension );
-        this.blockGrass = new BlockGrass();
-        this.blockDirt = new BlockDirt();
-        this.blockBedrock = new BlockBedrock();
+    public FlatGenerator() {
+        this.blockGrass = Block.create( BlockType.GRASS );
+        this.blockDirt = Block.create( BlockType.DIRT );
+        this.blockBedrock = Block.create( BlockType.BEDROCK );
     }
 
     @Override
-    public void generate( int chunkX, int chunkZ ) {
-        Chunk chunk = this.getChunk( chunkX, chunkZ );
+    public void generate( Chunk chunk, int chunkX, int chunkZ ) {
         for ( int blockX = 0; blockX < 16; blockX++ ) {
             for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                 for ( int blockY = 0; blockY < 16; blockY++ ) {
@@ -42,7 +40,12 @@ public class FlatGenerator extends Generator {
     }
 
     @Override
-    public void populate( int chunkX, int chunkZ ) {
+    public void populate( PopulationChunkManager manager, int chunkX, int chunkZ ) {
+
+    }
+
+    @Override
+    public void finish( PopulationChunkManager manager, int chunkX, int chunkZ ) {
 
     }
 

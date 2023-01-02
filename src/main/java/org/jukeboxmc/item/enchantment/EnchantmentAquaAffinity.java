@@ -15,9 +15,4 @@ public class EnchantmentAquaAffinity extends Enchantment {
     public int getMaxLevel() {
         return 1;
     }
-
-    @Override
-    public int getWeight() {
-        return 2;
-    }
 }

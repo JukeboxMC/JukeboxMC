@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.packet.LevelEventPacket;
 import com.nukkitx.protocol.bedrock.packet.PlayerActionPacket;
 import org.jukeboxmc.Server;
@@ -8,9 +9,11 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.event.player.*;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Particle;
 
 /**
@@ -23,6 +26,11 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
     public void handle( PlayerActionPacket packet, Server server, Player player ) {
         final Vector lasBreakPosition = new Vector( packet.getBlockPosition() );
         switch ( packet.getAction() ) {
+            case DIMENSION_CHANGE_SUCCESS -> {
+                PlayerActionPacket playerActionPacket = new PlayerActionPacket();
+                playerActionPacket.setAction( PlayerActionType.DIMENSION_CHANGE_SUCCESS );
+                player.getPlayerConnection().sendPacket( playerActionPacket );
+            }
             case START_SNEAK -> {
                 PlayerToggleSneakEvent playerToggleSneakEvent = new PlayerToggleSneakEvent( player, true );
                 server.getPluginManager().callEvent( playerToggleSneakEvent );
@@ -95,18 +103,6 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                     player.setGliding( false );
                 }
             }
-            case JUMP -> {
-                if ( player.isSprinting() ) {
-                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-                        player.exhaust( 0.8f );
-                    }
-
-                } else {
-                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-                        player.exhaust( 0.2f );
-                    }
-                }
-            }
             case START_BREAK -> {
                 long currentBreakTime = System.currentTimeMillis();
                 Block startBreakBlock = player.getWorld().getBlock( lasBreakPosition );
@@ -146,13 +142,26 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
             }
             case CONTINUE_BREAK -> {
                 if ( player.isBreakingBlock() ) {
-                    Item itemInHand = player.getInventory().getItemInHand();
                     Block continueBlockBreak = player.getWorld().getBlock( lasBreakPosition );
                     player.getWorld().spawnParticle( null, Particle.CRACK_BLOCK, lasBreakPosition, continueBlockBreak.getRuntimeId() | packet.getFace() << 24 );
                 }
             }
             case RESPAWN -> {
                 player.respawn();
+            }
+            case JUMP -> {
+                PlayerJumpEvent playerJumpEvent = new PlayerJumpEvent( player );
+                Server.getInstance().getPluginManager().callEvent( playerJumpEvent );
+                if ( player.isSprinting() ) {
+                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                        player.exhaust( 0.8f );
+                    }
+
+                } else {
+                    if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+                        player.exhaust( 0.2f );
+                    }
+                }
             }
         }
     }

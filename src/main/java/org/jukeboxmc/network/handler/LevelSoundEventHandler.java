@@ -8,7 +8,7 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class LevelSoundEventHandler implements PacketHandler<LevelSoundEventPacket> {
+public class LevelSoundEventHandler implements PacketHandler<LevelSoundEventPacket>{
 
     @Override
     public void handle( LevelSoundEventPacket packet, Server server, Player player ) {

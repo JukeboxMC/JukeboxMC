@@ -13,11 +13,7 @@ public class EnchantmentMending extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 1;
     }
 
-    @Override
-    public int getWeight() {
-        return 2;
-    }
 }

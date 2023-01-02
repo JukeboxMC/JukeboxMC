@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.chunk;
 
+import com.google.common.collect.ImmutableSet;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
@@ -7,30 +8,28 @@ import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
-import org.iq80.leveldb.DB;
+import lombok.Synchronized;
 import org.iq80.leveldb.WriteBatch;
-import org.jukeboxmc.JukeboxMC;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.palette.Palette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
-import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.NonStream;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.palette.object.ObjectPalette;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -38,76 +37,58 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class Chunk {
 
-    private static final Block BLOCK_AIR = new BlockAir();
+    private static final Block BLOCK_AIR = Block.create( BlockType.AIR );
+    public static final int CHUNK_LAYERS = 2;
+    public static final int CHUNK_VERSION = 41;
 
     private final World world;
+    private final Dimension dimension;
     private final int x;
     private final int z;
-    private final Dimension dimension;
+    private final int minY;
+    private final int maxY;
     private final int fullHeight;
-    private final short[] height;
-    private final SubChunk[] subChunks;
-
-    private volatile boolean dirty;
-    private volatile boolean changed = false;
-
-    private boolean initiating = true;
-    private boolean generated = false;
-    private boolean populated = false;
-
-    private final Lock readLock;
-    private final Lock writeLock;
-
     private final Set<Entity> entities;
-    private final ObjectPalette<Biome>[] biomes;
+    private final SubChunk[] subChunks;
+    private final short[] height;
 
-    public Chunk( World world, int x, int z, Dimension dimension ) {
+    private boolean dirty;
+    private ChunkState chunkState;
+    private final Lock writeLock;
+    private final Lock readLock;
+
+    private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
+
+    public Chunk( World world, Dimension dimension, int x, int z ) {
         this.world = world;
+        this.dimension = dimension;
         this.x = x;
         this.z = z;
-        this.dimension = dimension;
-
-        this.fullHeight = Math.abs( this.getMinY() ) + Math.abs( this.getMaxY() ) + 1;
-        this.subChunks = new SubChunk[fullHeight >> 4];
-        /*
-        for ( int y = this.getMinY(); y < this.getMaxY(); y++ ) {
-            int subY = this.getSubY( y );
-            this.subChunks[subY] = new SubChunk( subY );
-        }
-         */
+        this.minY = switch ( dimension ) {
+            case OVERWORLD -> -64;
+            case NETHER, THE_END -> 0;
+        };
+        this.maxY = switch ( dimension ) {
+            case OVERWORLD -> 319;
+            case NETHER -> 127;
+            case THE_END -> 255;
+        };
+        this.fullHeight = Math.abs( this.minY ) + this.maxY + 1;
+        this.entities = new LinkedHashSet<>();
+        this.subChunks = new SubChunk[this.fullHeight >> 4];
         this.height = new short[16 * 16];
-        this.biomes = new ObjectPalette[fullHeight >> 4];
-        /*
-        for ( int y = this.getMinY(); y < this.getMaxY(); y++ ) {
-            int subY = this.getSubY( y );
-            this.biomes[subY] = new ObjectPalette<>( Biome.PLAINS );
-        }
-         */
+        this.chunkState = ChunkState.NEW;
         ReadWriteLock lock = new ReentrantReadWriteLock();
         this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
-
-        this.entities = new HashSet<>();
-    }
-
-    public void setDirty( boolean dirty ) {
-        this.dirty = dirty;
-    }
-
-    public boolean isDirty() {
-        return this.dirty;
-    }
-
-    public boolean isChanged() {
-        return this.changed;
-    }
-
-    public void setChanged( boolean changed ) {
-        this.changed = changed;
     }
 
     public World getWorld() {
         return this.world;
+    }
+
+    public Dimension getDimension() {
+        return this.dimension;
     }
 
     public int getX() {
@@ -118,40 +99,79 @@ public class Chunk {
         return this.z;
     }
 
-    public Dimension getDimension() {
-        return this.dimension;
+    public int getMinY() {
+        return this.minY;
+    }
+
+    public int getMaxY() {
+        return this.maxY;
     }
 
     public int getFullHeight() {
         return this.fullHeight;
     }
 
-    public short[] getHeight() {
-        return this.height;
+    public boolean isDirty() {
+        return this.dirty;
     }
 
-    public boolean isInitiating() {
-        return this.initiating;
+    public void setDirty( boolean dirty ) {
+        this.dirty = dirty;
     }
 
-    public void setInitiating( boolean initiating ) {
-        this.initiating = initiating;
+    public ChunkState getChunkState() {
+        return this.chunkState;
+    }
+
+    public void setChunkState( ChunkState chunkState ) {
+        this.chunkState = chunkState;
     }
 
     public boolean isGenerated() {
-        return this.generated;
-    }
-
-    public void setGenerated( boolean generated ) {
-        this.generated = generated;
+        return this.chunkState.ordinal() >= 1;
     }
 
     public boolean isPopulated() {
-        return this.populated;
+        return this.chunkState.ordinal() >= 2;
     }
 
-    public void setPopulated( boolean populated ) {
-        this.populated = populated;
+    public boolean isFinished() {
+        return this.chunkState.ordinal() >= 3;
+    }
+
+    public Lock getReadLock() {
+        return this.readLock;
+    }
+
+    public Lock getWriteLock() {
+        return this.writeLock;
+    }
+
+    @Synchronized ( "loaders" )
+    public void addLoader( ChunkLoader chunkLoader ) {
+        this.loaders.add( chunkLoader );
+    }
+
+    @Synchronized ( "loaders" )
+    public void removeLoader( ChunkLoader chunkLoader ) {
+        this.loaders.remove( chunkLoader );
+    }
+
+    @Synchronized ( "loaders" )
+    public Set<ChunkLoader> getLoaders() {
+        return ImmutableSet.copyOf( this.loaders );
+    }
+
+    public Set<Entity> getEntities() {
+        return this.entities;
+    }
+
+    public SubChunk[] getSubChunks() {
+        return this.subChunks;
+    }
+
+    public Collection<Player> getPlayers() {
+        return this.entities.stream().filter( entity -> entity instanceof Player ).map( entity -> (Player) entity ).collect( Collectors.toSet() );
     }
 
     public void addEntity( Entity entity ) {
@@ -159,78 +179,21 @@ public class Chunk {
     }
 
     public void removeEntity( Entity entity ) {
-        this.entities.remove( entity );
+        this.entities.removeIf( target -> target.getEntityId() == entity.getEntityId() );
     }
 
-    public Collection<Entity> getEntities() {
-        return this.entities;
+    public short[] getHeight() {
+        return this.height;
     }
 
-    public void addLoader( ChunkLoader chunkLoader ) {
-        this.world.addChunkLoader( this.x, this.z, this.dimension, chunkLoader );
-    }
-
-    public void removeLoader( ChunkLoader chunkLoader ) {
-        this.world.removeChunkLoader( this.x, this.z, this.dimension, chunkLoader );
-    }
-
-    public Collection<ChunkLoader> getLoaders() {
-        return this.world.getChunkLoaders( this.x, this.z, this.dimension );
-    }
-
-    public Collection<Player> getPlayers() {
-        Set<Player> players = new HashSet<>();
-        for ( Entity entity : this.entities.stream().toList() ) {
-            if ( entity instanceof Player player ) {
-                players.add( player );
-            }
-        }
-        return players;
-    }
-
-    public int getMinY() {
-        return this.dimension == Dimension.OVERWORLD ? -64 : 0;
-    }
-
-    public int getMaxY() {
-        return switch ( this.dimension ) {
-            case OVERWORLD -> 319;
-            case NETHER -> 127;
-            case THE_END -> 255;
-        };
-    }
-
-    private boolean isHeightOutOfBounds( int y ) {
-        return y < this.getMinY() || y > this.getMaxY();
-    }
-
-    public int getAvailableSubChunks() {
-        return NonStream.sum( this.subChunks, o -> o == null ? 0 : 1 );
-    }
-
-    public SubChunk getSubChunk( int y ) {
+    public void setBlock( int x, int y, int z, int layer, Block block ) {
         this.writeLock.lock();
         try {
-            if ( this.isHeightOutOfBounds( y ) ) {
-                return null;
-            }
-
-            int subY = this.getSubY( y );
-            for ( int y0 = 0; y0 <= subY; y0++ ) {
-                if ( this.subChunks[y0] == null ) {
-                    this.biomes[y0] = new ObjectPalette<>( Biome.PLAINS );
-                    this.subChunks[y0] = new SubChunk( y0 );
-                }
-            }
-
-            return this.subChunks[subY];
+            if ( this.isHeightOutOfBounds( y ) ) return;
+            this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
         } finally {
             this.writeLock.unlock();
         }
-    }
-
-    public int getSubY( int y ) {
-        return ( y >> 4 ) + ( Math.abs( this.getMinY() ) >> 4 );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
@@ -240,13 +203,12 @@ public class Chunk {
                 return BLOCK_AIR;
             }
 
-            int subY = this.getSubY( y );
+            final int subY = this.getSubY( y );
             if ( this.subChunks[subY] == null ) {
-                this.biomes[subY] = new ObjectPalette<>( Biome.PLAINS );
                 this.subChunks[subY] = new SubChunk( subY );
             }
             Block block = this.subChunks[subY].getBlock( x, y, z, layer );
-            block.setLocation( new Location( this.world, x, y, z ) );
+            block.setLocation( new Location( this.world, x, y, z, this.dimension ) );
             block.setLayer( layer );
             return block;
         } finally {
@@ -254,98 +216,43 @@ public class Chunk {
         }
     }
 
-    public synchronized void setBlock( int x, int y, int z, int layer, Block block ) {
+    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
         this.writeLock.lock();
         try {
-            if ( this.isHeightOutOfBounds( y ) ) {
-                return;
-            }
-            this.getSubChunk( y ).setBlock( x, y, z, layer, block );
-            this.setDirty( true );
+            if ( this.isHeightOutOfBounds( y ) ) return;
+            this.getOrCreateSubChunk( this.getSubY( y ) ).setBlockEntity( x, y, z, blockEntity );
         } finally {
             this.writeLock.unlock();
         }
     }
 
-    public synchronized void setBlock( Vector vector, int layer, int runtimeId ) {
+    public void removeBlockEntity( int x, int y, int z ) {
         this.writeLock.lock();
         try {
-            if ( this.isHeightOutOfBounds( vector.getBlockY() ) ) {
-                return;
-            }
-            this.getSubChunk( vector.getBlockY() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, runtimeId );
-            this.setDirty( true );
+            if ( this.isHeightOutOfBounds( y ) ) return;
+            this.getOrCreateSubChunk( this.getSubY( y ) ).removeBlockEntity( x, y, z );
         } finally {
             this.writeLock.unlock();
         }
     }
 
-    public void setBlock( Vector vector, int layer, Block block ) {
-        this.setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
-    }
-
-    public Biome getBiome( int x, int y, int z ) {
+    public BlockEntity getBlockEntity( int x, int y, int z ) {
         this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return null;
             }
-            return this.getBiomePalette( y ).get( Utils.getIndex( x, y, z ) );
+            final int subY = this.getSubY( y );
+            if ( this.subChunks[subY] == null ) {
+                this.subChunks[subY] = new SubChunk( subY );
+            }
+            return this.subChunks[subY].getBlockEntity( x, y, z );
         } finally {
             this.readLock.unlock();
         }
     }
 
-    public void setBiome( int x, int y, int z, Biome biome ) {
-        this.writeLock.lock();
-        try {
-            if ( this.isHeightOutOfBounds( y ) ) {
-                return;
-            }
-            this.getBiomePalette( y ).set( Utils.getIndex( x, y, z ), biome );
-        } finally {
-            this.writeLock.unlock();
-        }
-    }
-
-    public ObjectPalette<Biome> getBiomePalette( int y ) {
-        if ( this.isHeightOutOfBounds( y ) ) {
-            return null;
-        }
-
-        int subY = this.getSubY( y );
-        for ( int y0 = 0; y0 <= subY; y0++ ) {
-            if ( this.biomes[y0] == null ) {
-                this.biomes[y0] = new ObjectPalette<>( Biome.PLAINS );
-                this.subChunks[y0] = new SubChunk( y0 );
-            }
-        }
-
-        return this.biomes[subY];
-    }
-
-    public BlockEntity getBlockEntity( int x, int y, int z ) {
-        if ( y < -64 || y > 319 ) {
-            return null;
-        }
-        return this.getSubChunk( y ).getBlockEntity( x, y, z );
-    }
-
-    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
-        if ( y < -64 || y > 319 ) {
-            return;
-        }
-        this.getSubChunk( y ).setBlockEntity( x, y, z, blockEntity );
-    }
-
-    public void removeBlockEntity( int x, int y, int z ) {
-        if ( y < -64 || y > 319 ) {
-            return;
-        }
-        this.getSubChunk( y ).removeBlockEntity( x, y, z );
-    }
-
-    public List<BlockEntity> getBlockEntities() {
+    public Collection<BlockEntity> getBlockEntities() {
         List<BlockEntity> blockEntities = new ArrayList<>();
         for ( SubChunk subChunk : this.subChunks ) {
             if ( subChunk != null && subChunk.getBlockEntities() != null ) {
@@ -355,25 +262,75 @@ public class Chunk {
         return blockEntities;
     }
 
-    private void writeTo( ByteBuf buffer ) {
+    public void setBiome( int x, int y, int z, Biome biome ) {
+        this.writeLock.lock();
+        try {
+            if ( this.isHeightOutOfBounds( y ) ) return;
+            this.getOrCreateSubChunk( this.getSubY( y ) ).setBiome( x, y, z, biome );
+        } finally {
+            this.writeLock.unlock();
+        }
+    }
+
+    public Biome getBiome( int x, int y, int z ) {
+        this.readLock.lock();
+        try {
+            if ( this.isHeightOutOfBounds( y ) ) return null;
+            return this.getOrCreateSubChunk( this.getSubY( y ) ).getBiome( x, y, z );
+        } finally {
+            this.readLock.unlock();
+        }
+    }
+
+    private boolean isHeightOutOfBounds( int y ) {
+        return y < this.minY || y > this.maxY;
+    }
+
+    public SubChunk getOrCreateSubChunk( int subY ) {
+        this.readLock.lock();
+        try {
+            for ( int y = 0; y <= subY; y++ ) {
+                if ( this.subChunks[y] == null ) {
+                    this.subChunks[y] = new SubChunk( y + ( Math.abs( this.minY ) >> 4 ) );
+                }
+            }
+            return this.subChunks[subY];
+        } finally {
+            this.readLock.unlock();
+        }
+    }
+
+    public int getSubY( int y ) {
+        return ( y >> 4 ) + ( Math.abs( this.minY ) >> 4 );
+    }
+
+    public int getAvailableSubChunks() {
+        return NonStream.sum( this.subChunks, o -> o == null ? 0 : 1 );
+    }
+
+    private void writeTo( ByteBuf byteBuf ) {
+        Palette<Biome> lastBiomes = new Palette<>( Biome.PLAINS );
+
         for ( SubChunk subChunk : this.subChunks ) {
-            if ( subChunk != null ) {
-                subChunk.writeToNetwork( buffer );
-            }
+            if ( subChunk == null ) break;
+            subChunk.writeToNetwork( byteBuf );
         }
 
-        for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
-            if ( biomePalette == null ) {
-                break;
+        for ( SubChunk subChunk : this.subChunks ) {
+            if ( subChunk == null ) {
+                lastBiomes.writeToNetwork( byteBuf, Biome::getId, lastBiomes );
+                continue;
             }
-            biomePalette.writeToNetwork( buffer, Biome::getId );
+
+            subChunk.getBiomes().writeToNetwork( byteBuf, Biome::getId );
+            lastBiomes = subChunk.getBiomes();
         }
 
-        buffer.writeByte( 0 ); // education edition - border blocks
+        byteBuf.writeByte( 0 ); // edu - border blocks
 
-        List<BlockEntity> blockEntities = this.getBlockEntities();
+        Collection<BlockEntity> blockEntities = this.getBlockEntities();
         if ( !blockEntities.isEmpty() ) {
-            try ( NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( buffer ) ) ) {
+            try ( NBTOutputStream writer = NbtUtils.createNetworkWriter( new ByteBufOutputStream( byteBuf ) ) ) {
                 for ( BlockEntity blockEntity : blockEntities ) {
                     NbtMap tag = blockEntity.toCompound().build();
                     writer.writeTag( tag );
@@ -384,251 +341,33 @@ public class Chunk {
         }
     }
 
-    public synchronized LevelChunkPacket createLevelChunkPacket() {
+    public LevelChunkPacket createLevelChunkPacket() {
         ByteBuf byteBuf = Unpooled.buffer();
+        final LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
+        levelChunkPacket.setChunkX( this.x );
+        levelChunkPacket.setChunkZ( this.z );
+        levelChunkPacket.setCachingEnabled( false );
+        levelChunkPacket.setRequestSubChunks( false );
+        levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
+        this.writeTo( byteBuf );
 
-        try {
-            LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
-            levelChunkPacket.setChunkX( this.x );
-            levelChunkPacket.setChunkZ( this.z );
-            levelChunkPacket.setCachingEnabled( false );
-            levelChunkPacket.setRequestSubChunks( false );
-            levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
-            this.writeTo( byteBuf );
-            levelChunkPacket.setData( byteBuf.array() );
-            return levelChunkPacket;
-        } finally {
-            byteBuf.release();
-        }
+        byte[] data = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes( data );
+
+        levelChunkPacket.setData( data );
+        return levelChunkPacket;
     }
 
-    public long toChunkHash() {
-        return Utils.toLong( this.x, this.z );
-    }
-
-    public synchronized CompletableFuture<Boolean> save( DB db ) {
-        return CompletableFuture.supplyAsync( () -> {
-            try ( WriteBatch writeBatch = db.createWriteBatch() ) {
-                this.readLock.lock();
-                try {
-                    for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
-                        if ( this.subChunks[subY] == null ) {
-                            continue;
-                        }
-                        this.saveChunkSlice( subY - 4, writeBatch );
-                    }
-
-                    byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
-                    ByteBuf versionBuffer = Unpooled.buffer();
-                    versionBuffer.writeByte( 39 ); //Chunk Version
-                    writeBatch.put( versionKey, Utils.array( versionBuffer ) );
-                    versionBuffer.release();
-
-                    ByteBuf buffer = Unpooled.buffer();
-                    List<BlockEntity> blockEntities = this.getBlockEntities();
-                    if ( !blockEntities.isEmpty() ) {
-                        try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                            for ( BlockEntity blockEntity : blockEntities ) {
-                                try {
-                                    NbtMap build = blockEntity.toCompound().build();
-                                    networkWriter.writeTag( build );
-                                } catch ( IOException e ) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } catch ( IOException e ) {
-                            e.printStackTrace();
-                        }
-
-                        if ( buffer.readableBytes() > 0 ) {
-                            byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
-                            writeBatch.put( blockEntityKey, Utils.array( buffer ) );
-                        }
-                        buffer.release();
-                    }
-
-                    byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
-                    ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
-
-                    for ( short height : this.height ) {
-                        heightAndBiomesBuffer.writeShortLE( height );
-                    }
-
-                    ObjectPalette<Biome> last = null;
-                    for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
-                        if ( biomePalette == null ) {
-                            if ( last != null ) {
-                                last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                            }
-                            continue;
-                        }
-                        biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                        last = biomePalette;
-                    }
-                    writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
-                    heightAndBiomesBuffer.release();
-                } finally {
-                    this.readLock.unlock();
-                }
-                db.write( writeBatch );
-                writeBatch.close();
-                return true;
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            }
-            return false;
-        } );
-    }
-
-    public void save0( DB db, boolean async ) {
-        if ( async ) {
-            JukeboxMC.getScheduler().executeAsync( () -> {
-                WriteBatch writeBatch = db.createWriteBatch();
-
-                for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
-                    if ( this.subChunks[subY] == null ) {
-                        continue;
-                    }
-                    this.saveChunkSlice( subY - 4, writeBatch );
-                }
-
-                byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
-                ByteBuf versionBuffer = Unpooled.buffer();
-                versionBuffer.writeByte( 39 ); //Chunk Version
-                writeBatch.put( versionKey, Utils.array( versionBuffer ) );
-                versionBuffer.release();
-
-                ByteBuf buffer = Unpooled.buffer();
-                List<BlockEntity> blockEntities = this.getBlockEntities();
-                if ( !blockEntities.isEmpty() ) {
-                    try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                        for ( BlockEntity blockEntity : blockEntities ) {
-                            try {
-                                NbtMap build = blockEntity.toCompound().build();
-                                networkWriter.writeTag( build );
-                            } catch ( IOException e ) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
-                    }
-
-                    if ( buffer.readableBytes() > 0 ) {
-                        byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
-                        writeBatch.put( blockEntityKey, Utils.array( buffer ) );
-                    }
-                    buffer.release();
-                }
-
-                byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
-                ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
-
-                for ( short height : this.height ) {
-                    heightAndBiomesBuffer.writeShortLE( height );
-                }
-
-                ObjectPalette<Biome> last = null;
-                for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
-                    if ( biomePalette == null ) {
-                        if ( last != null ) {
-                            last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                        }
-                        continue;
-                    }
-                    biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                    last = biomePalette;
-                }
-                writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
-                heightAndBiomesBuffer.release();
-
-                db.write( writeBatch );
-                try {
-                    writeBatch.close();
-                } catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-            } );
-        } else {
-            WriteBatch writeBatch = db.createWriteBatch();
-
-            for ( int subY = 0; subY < this.subChunks.length; subY++ ) {
-                if ( this.subChunks[subY] == null ) {
-                    continue;
-                }
-                this.saveChunkSlice( subY - 4, writeBatch );
-            }
-
-            byte[] versionKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2c );
-            ByteBuf versionBuffer = Unpooled.buffer();
-            versionBuffer.writeByte( 39 ); //Chunk Version
-            writeBatch.put( versionKey, Utils.array( versionBuffer ) );
-            versionBuffer.release();
-
-            ByteBuf buffer = Unpooled.buffer();
-            List<BlockEntity> blockEntities = this.getBlockEntities();
-            if ( !blockEntities.isEmpty() ) {
-                try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                    for ( BlockEntity blockEntity : blockEntities ) {
-                        try {
-                            NbtMap build = blockEntity.toCompound().build();
-                            networkWriter.writeTag( build );
-                        } catch ( IOException e ) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-
-                if ( buffer.readableBytes() > 0 ) {
-                    byte[] blockEntityKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x31 );
-                    writeBatch.put( blockEntityKey, Utils.array( buffer ) );
-                }
-                buffer.release();
-            }
-
-            byte[] heightAndBiomesKey = Utils.getKey( this.x, this.z, this.dimension, (byte) 0x2b );
-            ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
-
-            for ( short height : this.height ) {
-                heightAndBiomesBuffer.writeShortLE( height );
-            }
-
-            ObjectPalette<Biome> last = null;
-            for ( ObjectPalette<Biome> biomePalette : this.biomes ) {
-                if ( biomePalette == null ) {
-                    if ( last != null ) {
-                        last.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                    }
-                    continue;
-                }
-                biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
-                last = biomePalette;
-            }
-            writeBatch.put( heightAndBiomesKey, Utils.array( heightAndBiomesBuffer ) );
-            heightAndBiomesBuffer.release();
-
-            db.write( writeBatch );
-            try {
-                writeBatch.close();
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    private void saveChunkSlice( int subY, WriteBatch writeBatch ) {
+    public void saveChunkSlice( int subY, WriteBatch writeBatch ) {
         ByteBuf buffer = Unpooled.buffer();
-        SubChunk subChunk = this.subChunks[subY + 4];
+        SubChunk subChunk = this.subChunks[this.dimension.equals( Dimension.OVERWORLD ) ? subY + 4 : subY];
 
         buffer.writeByte( (byte) subChunk.getSubChunkVersion() );
         buffer.writeByte( (byte) subChunk.getLayer() );
         buffer.writeByte( (byte) subY );
 
-        for ( int layer = 0; layer < SubChunk.CHUNK_LAYERS; layer++ ) {
-            subChunk.blocks[layer].writeToStoragePersistent( buffer, BlockPalette::getBlockNBT );
+        for ( int layer = 0; layer < CHUNK_LAYERS; layer++ ) {
+            subChunk.getBlocks()[layer].writeToStoragePersistent( buffer, value -> BlockPalette.getBlockNbt( value.getRuntimeId() ) );
         }
 
         byte[] subChunkKey = Utils.getSubChunkKey( this.x, this.z, this.dimension, (byte) 0x2f, (byte) subY );
@@ -636,25 +375,7 @@ public class Chunk {
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-        Chunk chunk = (Chunk) o;
-        return this.x == chunk.x && this.z == chunk.z;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( this.x, this.z );
-    }
-
-    @Override
     public String toString() {
-        return "Chunk{" +
-                "world=" + this.world.getName() +
-                ", chunkX=" + this.x +
-                ", chunkZ=" + this.z +
-                ", dimension=" + this.dimension.name() +
-                '}';
+        return "X: " + this.x + "; Z: " + this.z;
     }
 }

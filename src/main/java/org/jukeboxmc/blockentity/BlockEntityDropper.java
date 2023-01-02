@@ -12,12 +12,12 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityDropper extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityDropper extends BlockEntity implements InventoryHolder {
 
     private final DropperInventory dropperInventory;
 
-    public BlockEntityDropper( Block block ) {
-        super( block );
+    public BlockEntityDropper( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.dropperInventory = new DropperInventory( this );
     }
 
@@ -25,5 +25,9 @@ public class BlockEntityDropper extends BlockEntityContainer implements Inventor
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.dropperInventory, blockPosition );
         return true;
+    }
+
+    public DropperInventory getDropperInventory() {
+        return this.dropperInventory;
     }
 }

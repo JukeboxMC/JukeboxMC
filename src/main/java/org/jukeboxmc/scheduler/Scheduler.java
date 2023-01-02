@@ -24,6 +24,9 @@ public class Scheduler {
     @Getter
     private final ExecutorService threadedExecutor;
 
+    @Getter
+    private final ExecutorService chunkExecutor;
+
     private final Map<Integer, TaskHandler> taskHandlerMap = new ConcurrentHashMap<>();
     private final Map<Long, LinkedList<TaskHandler>> assignedTasks = new ConcurrentHashMap<>();
     private final LinkedList<TaskHandler> pendingTasks = new LinkedList<>();
@@ -40,6 +43,7 @@ public class Scheduler {
         ThreadFactoryBuilder builder = new ThreadFactoryBuilder();
         builder.setNameFormat( "JukeboxMC Scheduler Executor" );
         this.threadedExecutor = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors(), builder.build() );
+        this.chunkExecutor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat( "JukeboxMC Chunk Executor" ).build());
     }
 
     public void onTick( long currentTick ) {
@@ -160,4 +164,5 @@ public class Scheduler {
     public long getCurrentTick() {
         return this.server.getCurrentTick();
     }
+
 }

@@ -8,16 +8,12 @@ public class EnchantmentUnbreaking extends Enchantment {
 
     @Override
     public short getId() {
-        return 0;
+        return 17;
     }
 
     @Override
     public int getMaxLevel() {
-        return 4;
+        return 3;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

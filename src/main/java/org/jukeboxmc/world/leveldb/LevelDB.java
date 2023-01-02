@@ -1,22 +1,36 @@
 package org.jukeboxmc.world.leveldb;
 
 import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
+import org.iq80.leveldb.CompressionType;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.Options;
+import org.iq80.leveldb.WriteBatch;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockPalette;
+import org.jukeboxmc.block.palette.Palette;
 import org.jukeboxmc.blockentity.BlockEntity;
-import org.jukeboxmc.blockentity.BlockEntityType;
+import org.jukeboxmc.blockentity.BlockEntityRegistry;
+import org.jukeboxmc.util.BlockPalette;
+import org.jukeboxmc.util.Identifier;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Biome;
+import org.jukeboxmc.world.Dimension;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.ChunkState;
 import org.jukeboxmc.world.chunk.SubChunk;
-import org.jukeboxmc.world.palette.object.ObjectPalette;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author LucGamesYT
@@ -24,7 +38,65 @@ import java.util.Objects;
  */
 public class LevelDB {
 
-    public static void loadSection( SubChunk chunk, byte[] chunkData ) {
+    private final World world;
+    private final DB db;
+
+    public LevelDB( World world ) {
+        this.world = world;
+        try {
+            Options options = new Options()
+                    .createIfMissing( true )
+                    .compressionType( CompressionType.ZLIB_RAW )
+                    .blockSize( 64 * 1024 );
+            this.db = net.daporkchop.ldbjni.LevelDB.PROVIDER.open( new File( world.getWorldFolder(), "db" ), options );
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public CompletableFuture<Chunk> readChunk( Chunk chunk ) {
+        return CompletableFuture.supplyAsync( () -> {
+            byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
+            if ( version == null ) {
+                version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x76 ) );
+            }
+
+            if ( version == null ) {
+                return null;
+            }
+
+            byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
+            if ( finalized == null ) {
+                chunk.setChunkState( ChunkState.FINISHED );
+            } else {
+                chunk.setChunkState( ChunkState.values()[Unpooled.wrappedBuffer( finalized ).readIntLE() + 1] );
+            }
+
+            for ( int subChunkIndex = chunk.getMinY() >> 4; subChunkIndex < chunk.getMaxY() >> 4; subChunkIndex++ ) {
+                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2f, (byte) subChunkIndex ) );
+                final int arrayIndex = subChunkIndex + ( Math.abs( chunk.getMinY() ) >> 4 );
+
+                if ( chunkData != null ) {
+                    this.loadSection( chunk.getOrCreateSubChunk( arrayIndex ), chunkData );
+                }
+            }
+
+            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2b ) );
+            if ( heightAndBiomes != null ) {
+                this.loadHeightAndBiomes( chunk, heightAndBiomes );
+            }
+
+            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 ) );
+            if ( blockEntities != null ) {
+                this.loadBlockEntities( chunk, blockEntities );
+            }
+
+            return chunk;
+        }, Server.getInstance().getScheduler().getChunkExecutor() );
+    }
+
+    private void loadSection( SubChunk chunk, byte[] chunkData ) {
         ByteBuf buffer = Unpooled.wrappedBuffer( chunkData );
         try {
             byte subChunkVersion = buffer.readByte();
@@ -42,14 +114,14 @@ public class LevelDB {
                     for ( int layer = 0; layer < storages; layer++ ) {
                         try {
                             buffer.markReaderIndex();
-                            chunk.blocks[layer].readFromStoragePersistent( buffer, compound -> {
+                            chunk.getBlocks()[layer].readFromStoragePersistent( buffer, compound -> {
                                 String identifier = compound.getString( "name" );
                                 NbtMap states = compound.getCompound( "states" );
-                                return BlockPalette.getRuntimeId( identifier, Objects.requireNonNullElse( states, NbtMap.EMPTY ) );
+                                return BlockPalette.getBlock( Identifier.fromString( identifier ), states );
                             } );
                         } catch ( IllegalArgumentException e ) {
                             buffer.resetReaderIndex();
-                            chunk.blocks[layer].readFromStorageRuntime( buffer, runtimeId -> runtimeId, null );
+                            chunk.getBlocks()[layer].readFromStorageRuntime( buffer, runtimeId -> BlockPalette.getBlockByNBT( BlockPalette.getBlockNbt( runtimeId ) ), null );
                         }
                     }
                     break;
@@ -59,7 +131,29 @@ public class LevelDB {
         }
     }
 
-    public static void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
+    private void loadHeightAndBiomes( Chunk chunk, byte[] heightAndBiomes ) {
+        ByteBuf buffer = Unpooled.wrappedBuffer( heightAndBiomes );
+        try {
+            short[] height = chunk.getHeight();
+            for ( int i = 0; i < height.length; i++ ) {
+                height[i] = buffer.readShortLE();
+            }
+
+            if ( buffer.readableBytes() <= 0 ) return;
+
+            Palette<Biome> last = null;
+            Palette<Biome> biomePalette;
+            for ( int y = chunk.getMinY() >> 4; y < ( chunk.getMaxY() + 1 ) >> 4; y++ ) {
+                biomePalette = chunk.getOrCreateSubChunk( chunk.getSubY( y << 4 ) ).getBiomes();
+                biomePalette.readFromStorageRuntime( buffer, Biome::findById, last );
+                last = biomePalette;
+            }
+        } finally {
+            buffer.release();
+        }
+    }
+
+    private void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
         ByteBuf byteBuf = Unpooled.wrappedBuffer( blockEntityData );
 
         try {
@@ -74,11 +168,12 @@ public class LevelDB {
 
                     Block block = chunk.getBlock( x, y, z, 0 );
 
-                    if ( block != null && block.hasBlockEntity() ) {
-                        BlockEntity blockEntity = BlockEntityType.getBlockEntityById( nbtMap.getString( "id" ), block );
+                    if ( block != null ) {
+                        BlockEntity blockEntity = BlockEntity.create( BlockEntityRegistry.getBlockEntityTypeById( nbtMap.getString( "id" ) ), block );
                         if ( blockEntity != null ) {
                             blockEntity.fromCompound( nbtMap );
                             chunk.setBlockEntity( x, y, z, blockEntity );
+                            blockEntity.setSpawned( true );
                         }
                     }
 
@@ -91,30 +186,80 @@ public class LevelDB {
         }
     }
 
-    public static void loadHeightAndBiomes( Chunk chunk, byte[] heightAndBiomes ) {
-        ByteBuf buffer = Unpooled.wrappedBuffer( heightAndBiomes );
-        try {
-            short[] height = chunk.getHeight();
-            for ( int i = 0; i < height.length; i++ ) {
-                height[i] = buffer.readShortLE();
+    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+        return CompletableFuture.supplyAsync( () -> {
+            if ( !chunk.isGenerated() ) {
+                return null;
             }
+            try ( WriteBatch writeBatch = this.db.createWriteBatch() ) {
+                //Write subChunks
+                for ( int subY = 0; subY < chunk.getSubChunks().length; subY++ ) {
+                    if ( chunk.getSubChunks()[subY] == null ) {
+                        continue;
+                    }
+                    int value = chunk.getDimension().equals( Dimension.OVERWORLD ) ? subY - 4 : subY;
+                    chunk.saveChunkSlice( value, writeBatch );
+                }
 
-            if(buffer.readableBytes() <= 0) return;
+                //Write chunkVersion
+                byte[] chunkVersion = Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2c );
+                ByteBuf versionBuffer = Unpooled.buffer();
+                versionBuffer.writeByte( Chunk.CHUNK_VERSION );
+                writeBatch.put( chunkVersion, Utils.array( versionBuffer ) );
 
-            int minSectionY = chunk.getMinY() >> 4;
-            int fullHeight = Math.abs( chunk.getMinY() ) + Math.abs( chunk.getMaxY() ) + 1;
-            ObjectPalette<Biome> last = null;
-            ObjectPalette<Biome> biomePalette;
-            for ( int y = 0; y < fullHeight >> 4; y++ ) {
-                biomePalette = chunk.getBiomePalette( ( y + minSectionY ) << 4 );
+                //Write blockEntities
+                byte[] blockEntitiesKey = Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 );
+                ByteBuf buffer = Unpooled.buffer();
+                Collection<BlockEntity> blockEntities = chunk.getBlockEntities();
+                if ( !blockEntities.isEmpty() ) {
+                    try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+                        for ( BlockEntity blockEntity : blockEntities ) {
+                            try {
+                                NbtMap build = blockEntity.toCompound().build();
+                                networkWriter.writeTag( build );
+                            } catch ( IOException e ) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
 
-                biomePalette.readFromStorageRuntime( buffer, Biome::findById, last );
+                    if ( buffer.readableBytes() > 0 ) {
+                        writeBatch.put( blockEntitiesKey, Utils.array( buffer ) );
+                    }
+                    buffer.release();
+                }
 
-                last = biomePalette;
+                //Write biomeAndHeight
+                byte[] biomeAndHeight = Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2b );
+                ByteBuf heightAndBiomesBuffer = Unpooled.buffer();
+                for ( short height : chunk.getHeight() ) {
+                    heightAndBiomesBuffer.writeShortLE( height );
+                }
+
+                Palette<Biome> last = null;
+                Palette<Biome> biomePalette;
+                for ( int y = chunk.getMinY() >> 4; y < ( chunk.getMaxY() + 1 ) >> 4; y++ ) {
+                    biomePalette = chunk.getOrCreateSubChunk( chunk.getSubY( y << 4 ) ).getBiomes();
+                    biomePalette.writeToStorageRuntime( heightAndBiomesBuffer, Biome::getId, last );
+                    last = biomePalette;
+                }
+                writeBatch.put( biomeAndHeight, Utils.array( heightAndBiomesBuffer ) );
+
+                this.db.write( writeBatch );
+                return null;
+            } catch ( IOException e ) {
+                throw new RuntimeException( e );
             }
-        } finally {
-            buffer.release();
-        }
+        }, Server.getInstance().getScheduler().getChunkExecutor() );
     }
 
+    public void close() {
+        try {
+            this.db.close();
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+    }
 }

@@ -22,8 +22,8 @@ public class BlockEntityBlastFurnace extends SmeltingComponent implements Invent
 
     private final BlastFurnaceInventory blastFurnaceInventory;
 
-    public BlockEntityBlastFurnace( Block block ) {
-        super( block );
+    public BlockEntityBlastFurnace( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.blastFurnaceInventory = new BlastFurnaceInventory( this );
         this.initInventory( this.blastFurnaceInventory );
     }

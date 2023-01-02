@@ -19,7 +19,7 @@ public class SmithingTableInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.SMITHING_TABLE;
     }
 

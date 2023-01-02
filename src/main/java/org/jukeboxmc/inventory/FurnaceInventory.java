@@ -19,7 +19,7 @@ public class FurnaceInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.FURNACE;
     }
 

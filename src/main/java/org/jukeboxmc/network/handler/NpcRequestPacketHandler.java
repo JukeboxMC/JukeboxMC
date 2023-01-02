@@ -8,7 +8,7 @@ import org.jukeboxmc.form.element.NpcDialogueButton;
 import org.jukeboxmc.player.Player;
 
 /**
- * @author Kaooot
+ * @author LucGamesYT
  * @version 1.0
  */
 public class NpcRequestPacketHandler implements PacketHandler<NpcRequestPacket> {
@@ -23,8 +23,9 @@ public class NpcRequestPacketHandler implements PacketHandler<NpcRequestPacket> 
             return;
         }
 
+        NpcRequestType requestType = packet.getRequestType();
         if ( form.dialogueButtons().size() == 0 ) {
-            if ( packet.getRequestType().equals( NpcRequestType.EXECUTE_CLOSING_COMMANDS ) ) {
+            if ( requestType.equals( NpcRequestType.EXECUTE_CLOSING_COMMANDS ) ) {
                 player.removeNpcDialogueForm( form );
             }
 
@@ -37,9 +38,10 @@ public class NpcRequestPacketHandler implements PacketHandler<NpcRequestPacket> 
             return;
         }
 
-        if ( ( button.mode().equals( NpcDialogueButton.ButtonMode.ON_ENTER ) && packet.getRequestType().equals( NpcRequestType.EXECUTE_OPENING_COMMANDS ) ) ||
-                ( button.mode().equals( NpcDialogueButton.ButtonMode.BUTTON_MODE ) && packet.getRequestType().equals( NpcRequestType.EXECUTE_COMMAND_ACTION ) ) ||
-                ( button.mode().equals( NpcDialogueButton.ButtonMode.ON_EXIT ) && packet.getRequestType().equals( NpcRequestType.EXECUTE_CLOSING_COMMANDS ) ) ) {
+        NpcDialogueButton.ButtonMode mode = button.mode();
+        if ( ( mode.equals( NpcDialogueButton.ButtonMode.ON_ENTER ) && requestType.equals( NpcRequestType.EXECUTE_OPENING_COMMANDS ) ) ||
+                ( mode.equals( NpcDialogueButton.ButtonMode.BUTTON_MODE ) && requestType.equals( NpcRequestType.EXECUTE_COMMAND_ACTION ) ) ||
+                ( mode.equals( NpcDialogueButton.ButtonMode.ON_EXIT ) && requestType.equals( NpcRequestType.EXECUTE_CLOSING_COMMANDS ) ) ) {
             button.click().run();
 
             form.close( player );

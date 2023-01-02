@@ -18,12 +18,12 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntitySign extends BlockEntityContainer {
+public class BlockEntitySign extends BlockEntity {
 
     private final List<String> lines;
 
-    public BlockEntitySign( Block block ) {
-        super( block );
+    public BlockEntitySign( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.lines = new ArrayList<>( 4 );
     }
 
@@ -64,13 +64,14 @@ public class BlockEntitySign extends BlockEntityContainer {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i());
         blockEntityDataPacket.setData( this.toCompound().build() );
-        this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
+        Server.getInstance().broadcastPacket( blockEntityDataPacket );
     }
+
 
     public void updateBlockEntitySign() {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i() );
         blockEntityDataPacket.setData( this.toCompound().build() );
-        this.block.getWorld().sendDimensionPacket( blockEntityDataPacket, this.block.getLocation().getDimension() );
+        Server.getInstance().broadcastPacket( blockEntityDataPacket );
     }
 }

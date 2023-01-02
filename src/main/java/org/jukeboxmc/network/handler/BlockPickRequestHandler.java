@@ -4,7 +4,7 @@ import com.nukkitx.protocol.bedrock.packet.BlockPickRequestPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
@@ -23,7 +23,7 @@ public class BlockPickRequestHandler implements PacketHandler<BlockPickRequestPa
 
         if ( player.getGameMode() == GameMode.CREATIVE ) {
             Item item = pickedBlock.toItem();
-            if ( item instanceof ItemAir ) {
+            if ( item.getType().equals( ItemType.AIR ) ) {
                 Server.getInstance().getLogger().warn( "User try to pick air" );
                 return;
             }

@@ -17,7 +17,7 @@ public class ResourcePackClientResponseHandler implements PacketHandler<Resource
     public void handle( ResourcePackClientResponsePacket packet, Server server, Player player ) {
         switch ( packet.getStatus() ) {
             case REFUSED -> {
-                player.getPlayerConnection().close( "You have been disconnected." );
+                player.getPlayerConnection().disconnect( "You have been disconnected." );
             }
             case SEND_PACKS -> {
                 for ( String packIds : packet.getPackIds()) {
@@ -45,11 +45,7 @@ public class ResourcePackClientResponseHandler implements PacketHandler<Resource
                 resourcePackStackPacket.setForcedToAccept( server.isForceResourcePacks() );
                 player.getPlayerConnection().sendPacket( resourcePackStackPacket );
             }
-            case COMPLETED -> {
-                player.getPlayerConnection().initializePlayer();
-            }
-            default -> {
-            }
+            case COMPLETED -> player.getPlayerConnection().initializePlayer();
         }
     }
 }

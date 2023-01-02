@@ -18,8 +18,12 @@ import java.util.Map;
  */
 public class AdventureSettings {
 
-    private final Map<Type, Boolean> values = new EnumMap<>( Type.class );
     private final Player player;
+
+    private float walkSpeed = 0.1f;
+    private float flySpeed = 0.05f;
+
+    private final Map<Type, Boolean> values = new EnumMap<>( Type.class );
 
     public AdventureSettings( Player player ) {
         this.player = player;
@@ -35,11 +39,27 @@ public class AdventureSettings {
         return value == null ? type.getDefaultValue() : value;
     }
 
+    public float getFlySpeed() {
+        return this.flySpeed;
+    }
+
+    public void setFlySpeed( float value ) {
+        this.flySpeed = value;
+    }
+
+    public float getWalkSpeed() {
+        return this.walkSpeed;
+    }
+
+    public void setWalkSpeed( float value ) {
+        this.walkSpeed = value;
+    }
+
     public void update() {
         UpdateAbilitiesPacket updateAbilitiesPacket = new UpdateAbilitiesPacket();
         updateAbilitiesPacket.setUniqueEntityId( this.player.getEntityId() );
-        updateAbilitiesPacket.setCommandPermission( CommandPermission.OPERATOR );
-        updateAbilitiesPacket.setPlayerPermission( PlayerPermission.OPERATOR );
+        updateAbilitiesPacket.setCommandPermission( this.player.isOp() ? CommandPermission.OPERATOR : CommandPermission.NORMAL );
+        updateAbilitiesPacket.setPlayerPermission( this.player.isOp() && !this.player.getGameMode().equals( GameMode.SPECTATOR ) ? PlayerPermission.OPERATOR : PlayerPermission.MEMBER );
 
         AbilityLayer abilityLayer = new AbilityLayer();
         abilityLayer.setLayerType( AbilityLayer.Type.BASE );
@@ -62,8 +82,8 @@ public class AdventureSettings {
             abilityLayer.getAbilityValues().add( Ability.OPERATOR_COMMANDS );
         }
 
-        abilityLayer.setWalkSpeed( 0.1f );
-        abilityLayer.setFlySpeed( 0.05f );
+        abilityLayer.setWalkSpeed( this.walkSpeed );
+        abilityLayer.setFlySpeed( this.flySpeed );
 
         updateAbilitiesPacket.getAbilityLayers().add( abilityLayer );
 
@@ -74,8 +94,8 @@ public class AdventureSettings {
         updateAdventureSettingsPacket.setNoPvM( this.get( Type.NO_PVM ) );
         updateAdventureSettingsPacket.setShowNameTags( this.get( Type.SHOW_NAME_TAGS ) );
 
-        this.player.sendPacket( updateAbilitiesPacket );
-        this.player.sendPacket( updateAdventureSettingsPacket );
+        this.player.getPlayerConnection().sendPacket( updateAbilitiesPacket );
+        this.player.getPlayerConnection().sendPacket( updateAdventureSettingsPacket );
     }
 
     @Getter

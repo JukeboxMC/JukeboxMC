@@ -8,18 +8,20 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class CursorInventory extends Inventory {
+public class CursorInventory extends Inventory{
 
-    public CursorInventory( InventoryHolder holder, long holderId ) {
-        super( holder, holderId, 51 );
+    public CursorInventory( InventoryHolder holder ) {
+        super( holder, 1 );
     }
 
-    public void setItem( Item item ) {
-        this.setItem( 0, item );
+    @Override
+    public Player getInventoryHolder() {
+        return (Player) this.holder;
     }
 
-    public Item getItem() {
-        return this.getItem( 0 );
+    @Override
+    public InventoryType getType() {
+        return InventoryType.CURSOR;
     }
 
     @Override
@@ -31,18 +33,17 @@ public class CursorInventory extends Inventory {
     public void sendContents( int slot, Player player ) {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setContainerId( WindowId.CURSOR_DEPRECATED.getId() );
-        inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
+        inventorySlotPacket.setItem( this.content[slot].toItemData() );
         inventorySlotPacket.setSlot( slot );
-        player.sendPacket( inventorySlotPacket );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 
-    @Override
-    public Player getInventoryHolder() {
-        return (Player) this.holder;
+
+    public void setItem( Item item ) {
+        this.setItem( 0, item );
     }
 
-    @Override
-    public InventoryType getInventoryType() {
-        return InventoryType.CURSOR;
+    public Item getItem() {
+        return this.getItem( 0 );
     }
 }

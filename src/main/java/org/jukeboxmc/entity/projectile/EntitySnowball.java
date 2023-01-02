@@ -1,31 +1,35 @@
 package org.jukeboxmc.entity.projectile;
 
+import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.world.Particle;
 
-public class EntitySnowball extends EntityProjectile {
+import java.util.concurrent.TimeUnit;
 
-    private boolean closeDelay = false;
+/**
+ * @author LucGamesYT
+ * @version 1.0
+ */
+public class EntitySnowball extends EntityProjectile {
 
     @Override
     public void update( long currentTick ) {
-        if ( this.closed ) {
+        if ( this.isClosed() ) {
             return;
         }
-
-        if ( this.closeDelay ) {
-            this.close();
-            this.closeDelay = false;
-        }
-
-        if ( this.age > 1200 || this.isCollided ) {
-            this.updateMovement();
-            this.spawnSnowballParticle( this.location );
-            this.closeDelay = true;
-        }
-
         super.update( currentTick );
+
+        if ( this.age > TimeUnit.MINUTES.toMillis( 5 ) || this.isCollided ) {
+            this.close();
+            this.spawnSnowballParticle( this.location );
+        }
+    }
+
+    @Override
+    public void onCollidedWithEntity( Entity entity ) {
+        this.close();
     }
 
     @Override
@@ -44,16 +48,6 @@ public class EntitySnowball extends EntityProjectile {
     }
 
     @Override
-    public EntityType getEntityType() {
-        return EntityType.SNOWBALL;
-    }
-
-    @Override
-    public float getDamage() {
-        return 0;
-    }
-
-    @Override
     public float getDrag() {
         return 0.01f;
     }
@@ -61,6 +55,16 @@ public class EntitySnowball extends EntityProjectile {
     @Override
     public float getGravity() {
         return 0.03f;
+    }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.SNOWBALL;
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return Identifier.fromString( "minecraft:snowball" );
     }
 
     private void spawnSnowballParticle( Location location ) {

@@ -19,7 +19,7 @@ public class CartographyTableInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.CARTOGRAPHY_TABLE;
     }
 

@@ -10,7 +10,7 @@ import org.jukeboxmc.world.chunk.Chunk;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Location extends Vector {
+public class Location extends Vector implements Cloneable {
 
     private World world;
     private float yaw;
@@ -50,6 +50,10 @@ public class Location extends Vector {
 
     public Location( World world, Vector vector, float yaw, float pitch ) {
         this( world, vector.getX(), vector.getY(), vector.getZ(), yaw, pitch, Dimension.OVERWORLD );
+    }
+
+    public Location( World world, Vector vector, Dimension dimension ) {
+        this( world, vector.getX(), vector.getY(), vector.getZ(), 0, 0, dimension );
     }
 
     public Location( World world, Vector vector ) {
@@ -105,7 +109,7 @@ public class Location extends Vector {
     }
 
     public Biome getBiome() {
-        return this.world.getBiome( this.getBlockX(), this.getBlockY(), this.getBlockZ() );
+        return this.world.getBiome( this, this.dimension );
     }
 
     public Block getBlock( int layer ) {
@@ -125,6 +129,11 @@ public class Location extends Vector {
         return new Vector( (float) x, (float) y, (float) z ).normalize();
     }
 
+    @Override
+    public Location clone() {
+        Vector clone = super.clone();
+        return new Location( this.world, clone );
+    }
 
     @Override
     public String toString() {

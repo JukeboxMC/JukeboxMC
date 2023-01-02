@@ -16,8 +16,4 @@ public class EnchantmentSmite extends Enchantment {
         return 5;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

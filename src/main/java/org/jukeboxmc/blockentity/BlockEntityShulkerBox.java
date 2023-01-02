@@ -18,15 +18,15 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityShulkerBox extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityShulkerBox extends BlockEntity implements InventoryHolder {
 
     private byte facing = 1;
     private boolean undyed = false;
 
     private final ShulkerBoxInventory shulkerBoxInventory;
 
-    public BlockEntityShulkerBox( Block block ) {
-        super( block );
+    public BlockEntityShulkerBox( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.shulkerBoxInventory = new ShulkerBoxInventory( this );
     }
 
@@ -94,4 +94,5 @@ public class BlockEntityShulkerBox extends BlockEntityContainer implements Inven
     public ShulkerBoxInventory getShulkerBoxInventory() {
         return this.shulkerBoxInventory;
     }
+
 }

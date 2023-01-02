@@ -1,5 +1,7 @@
 package org.jukeboxmc.item.enchantment;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -12,8 +14,6 @@ public abstract class Enchantment {
 
     public abstract int getMaxLevel();
 
-    public abstract int getWeight();
-
     public short getLevel() {
         return this.level;
     }
@@ -23,13 +23,11 @@ public abstract class Enchantment {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "Enchantment{" +
-                "id=" + this.getId() + ", " +
-                "level=" + this.getLevel() + ", " +
-                "maxlevel=" + this.getMaxLevel() + ", " +
-                "weight=" + this.getWeight() +
-                '}';
+    public static <T extends Enchantment> T create( EnchantmentType enchantmentType ) {
+        try {
+            return (T) EnchantmentRegistry.getEnchantmentClass( enchantmentType ).getConstructor().newInstance();
+        } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
+            throw new RuntimeException( e );
+        }
     }
 }

@@ -5,7 +5,6 @@ import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.plugin.PluginManager;
 import org.jukeboxmc.scheduler.Scheduler;
-import org.jukeboxmc.scoreboard.Scoreboard;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.Generator;
@@ -48,12 +47,12 @@ public class JukeboxMC {
         return server.getWorld( name );
     }
 
-    public static boolean loadOrCreateWorld( String name ) {
-        return server.loadOrCreateWorld( name );
+    public static World loadWorld( String name ) {
+        return server.loadWorld( name );
     }
 
-    public static boolean loadOrCreateWorld( String name, Map<Dimension, String> generatorMap ) {
-        return server.loadOrCreateWorld( name, generatorMap );
+    public static World loadWorld( String name, Map<Dimension, String> generatorMap ) {
+        return server.loadWorld( name, generatorMap );
     }
 
     public static void registerDefaultGenerator( Dimension dimension, String name, Class<? extends Generator> clazz ) {
@@ -122,18 +121,6 @@ public class JukeboxMC {
 
     public static void broadcastMessage( String message ) {
         server.broadcastMessage( message );
-    }
-
-    public static Scoreboard createScoreboard() {
-        return new Scoreboard();
-    }
-
-    public static void setScoreboard( Player player, Scoreboard scoreboard ) {
-        scoreboard.showFor( player );
-    }
-
-    public static void removeScorebaord( Player player, Scoreboard scoreboard ) {
-        scoreboard.hideFor( player );
     }
 
 }

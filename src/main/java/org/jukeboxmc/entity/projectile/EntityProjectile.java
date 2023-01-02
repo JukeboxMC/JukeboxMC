@@ -4,23 +4,23 @@ import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
-import org.jukeboxmc.event.entity.EntityCollisionWithEntityEvent;
+import org.jukeboxmc.entity.EntityMoveable;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.ProjectileHitEntityEvent;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.AdventureSettings;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
+
+import java.util.Collection;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public abstract class EntityProjectile extends Entity {
+public abstract class EntityProjectile extends EntityMoveable {
 
     protected EntityLiving shooter;
     protected Entity hitEntity;
@@ -28,107 +28,94 @@ public abstract class EntityProjectile extends Entity {
 
     @Override
     public void update( long currentTick ) {
+        if ( this.isClosed() ) return;
         super.update( currentTick );
 
-        if ( this.closed ) {
-            return;
-        }
+        if ( !this.isDead ) {
 
-        if ( !this.isCollided ) {
-            this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
-        }
-
-        Location location = this.location;
-        Vector moveVector = new Vector( this.location.getX() + this.velocity.getX(), this.location.getY() + this.velocity.getY(), this.location.getZ() + this.velocity.getZ() );
-
-        double savedDistance = 0.0D;
-        Entity hitEntity = null;
-
-        for ( Entity collidedEntity : this.getWorld().getNearbyEntities( this.boundingBox.addCoordinates( this.velocity.getX(), this.velocity.getY(), this.velocity.getZ() ).expand( 1, 1, 1 ), Dimension.OVERWORLD, this ) ) {
-            if ( !collidedEntity.hasCollision() ) {
-                continue;
-            }
-
-            if ( collidedEntity.equals( this.shooter ) ) {
-                continue;
-            }
-
-            if ( collidedEntity instanceof Player otherPlayer ) {
-                if ( otherPlayer.getAdventureSettings().get( AdventureSettings.Type.NO_CLIP) ) {
-                    continue;
+            if ( this.hitEntity != null ) {
+                this.location = this.hitEntity.getLocation().add( 0, this.hitEntity.getEyeHeight() + this.getHeight(), 0 );
+            } else {
+                Location location = this.location;
+                if ( !this.isCollided ) {
+                    this.velocity.setY( this.velocity.getY() - this.getGravity() );
                 }
-            }
 
-            AxisAlignedBB entityBB = collidedEntity.getBoundingBox().grow( 0.3f, 0.4f, 0.3f );
-            Vector onLineVector = entityBB.calculateIntercept( location, moveVector );
-            if ( onLineVector == null ) {
-                continue;
-            }
-
-            EntityCollisionWithEntityEvent event = new EntityCollisionWithEntityEvent( collidedEntity, this );
-            this.getWorld().getServer().getPluginManager().callEvent( event );
-
-            if ( !event.isCancelled() ) {
-                double currentDistance = location.distanceSquared( onLineVector );
-                if ( currentDistance < savedDistance || savedDistance == 0.0 ) {
-                    hitEntity = collidedEntity;
-                    savedDistance = currentDistance;
+                Vector moveVector = new Vector( location.getX() + this.velocity.getX(), location.getY() + this.velocity.getY(), location.getZ() + this.velocity.getZ() );
+                Collection<Entity> nearbyEntities = location.getWorld().getNearbyEntities( this.boundingBox.addCoordinates( this.velocity.getX(), this.velocity.getY(), this.velocity.getZ() ).expand( 1, 1, 1 ), location.getDimension(), this );
+                float nearDistance = Integer.MAX_VALUE;
+                Entity hitEntity = null;
+                for ( Entity entity : nearbyEntities ) {
+                    if ( ( entity == this.shooter && this.age < 5 ) ) {
+                        continue;
+                    }
+                    AxisAlignedBB axisAlignedBB = entity.getBoundingBox().grow( 0.3f, 0.3f, 0.3f );
+                    Vector onLineVector = axisAlignedBB.calculateIntercept( location, moveVector ); //ONLY
+                    if ( onLineVector == null ) {
+                        continue;
+                    }
+                    float distance = location.distanceSquared( onLineVector );
+                    if ( distance < nearDistance) {
+                        nearDistance = distance;
+                        hitEntity = entity;
+                    }
                 }
-            }
-        }
 
-        if ( hitEntity != null ) {
-            ProjectileHitEntityEvent projectileHitEntityEvent = new ProjectileHitEntityEvent( hitEntity, this );
-            this.getWorld().getServer().getPluginManager().callEvent( projectileHitEntityEvent );
+                if ( hitEntity != null ) {
+                    ProjectileHitEntityEvent projectileHitEntityEvent = new ProjectileHitEntityEvent( hitEntity, this );
+                    this.getWorld().getServer().getPluginManager().callEvent( projectileHitEntityEvent );
 
-            if ( !projectileHitEntityEvent.isCancelled() ) {
-                float damage = this.getDamage();
+                    if ( !projectileHitEntityEvent.isCancelled() ) {
+                        float damage = this.getDamage();
 
-                EntityDamageByEntityEvent event = new EntityDamageByEntityEvent( hitEntity, this.shooter, damage, EntityDamageEvent.DamageSource.PROJECTILE );
-                if ( hitEntity.damage( event ) ) {
-                    this.applyCustomKnockback( hitEntity );
-                    this.applyCustomDamageEffects( hitEntity );
-                    if ( this instanceof EntityArrow ) {
-                        if ( this.shooter instanceof Player player ) {
-                            player.playSound( Sound.RANDOM_BOWHIT );
+                        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent( hitEntity, this.shooter, damage, EntityDamageEvent.DamageSource.PROJECTILE );
+                        if ( hitEntity.damage( event ) ) {
+                            this.applyCustomKnockback( hitEntity );
+                            this.applyCustomDamageEffects( hitEntity );
+                            if ( this instanceof EntityArrow ) {
+                                if ( this.shooter instanceof Player player ) {
+                                    player.playSound( Sound.RANDOM_BOWHIT );
+                                }
+                            }
+                            this.updateMetadata(this.metadata.setLong( EntityData.TARGET_EID, hitEntity.getEntityId() ));
                         }
+                        this.onCollidedWithEntity( hitEntity );
+                        this.hitEntity = hitEntity;
+                        this.updateMovement();
+                        return;
                     }
                 }
-                this.hitEntity = hitEntity;
+
+                this.move( this.velocity );
+
+                if ( this.isCollided && !this.hadCollision ) {
+                    this.hadCollision = true;
+
+                    this.velocity.setX( 0 );
+                    this.velocity.setY( 0 );
+                    this.velocity.setZ( 0 );
+                    if ( this instanceof EntityArrow ) {
+                        this.getWorld().playSound( this.location, SoundEvent.BOW_HIT );
+                    }
+                    this.updateMovement();
+                    return;
+                } else if ( !this.isCollided && this.hadCollision ) {
+                    this.hadCollision = false;
+                }
+                if ( !this.hadCollision || Math.abs( this.velocity.getX() ) > 0.00001 || Math.abs( this.velocity.getY() ) > 0.00001 || Math.abs( this.velocity.getZ() ) > 0.00001 ) {
+                    double f = Math.sqrt( ( this.velocity.getX() * this.velocity.getX() ) + ( this.velocity.getZ() * this.velocity.getZ() ) );
+                    this.setYaw( (float) ( Math.atan2( this.velocity.getX(), this.velocity.getZ() ) * 180 / Math.PI ) );
+                    this.setPitch( (float) ( Math.atan2( this.velocity.getY(), f ) * 180 / Math.PI ) );
+                }
+
                 this.updateMovement();
-                this.close();
-                if ( this instanceof EntityFishingHook ) {
-                    if ( this.shooter instanceof Player ) {
-                        ( (Player) this.shooter ).setEntityFishingHook( null );
-                    }
-                }
-                return;
             }
         }
+    }
 
-        this.move( this.velocity );
-
-        if ( this.isCollided && !this.hadCollision ) {
-            this.hadCollision = true;
-            this.velocity.setX( 0 );
-            this.velocity.setY( 0 );
-            this.velocity.setZ( 0 );
-            if ( this instanceof EntityArrow ) {
-                this.getWorld().playSound( this.location, SoundEvent.BOW_HIT );
-            }
-            this.updateMovement();
-            return;
-        } else if ( !this.isCollided && this.hadCollision ) {
-            this.hadCollision = false;
-        }
-
-        if ( !this.hadCollision || Math.abs( this.velocity.getX() ) > 0.00001 || Math.abs( this.velocity.getY() ) > 0.00001 || Math.abs( this.velocity.getZ() ) > 0.00001 ) {
-            double f = Math.sqrt( ( this.velocity.getX() * this.velocity.getX() ) + ( this.velocity.getZ() * this.velocity.getZ() ) );
-            this.setYaw( (float) ( Math.atan2( this.velocity.getX(), this.velocity.getZ() ) * 180 / Math.PI ) );
-            this.setPitch( (float) ( Math.atan2( this.velocity.getY(), f ) * 180 / Math.PI ) );
-        }
-
-        this.updateMovement();
+    @Override
+    public boolean damage( EntityDamageEvent event ) {
+        return event.getDamageSource().equals( EntityDamageEvent.DamageSource.VOID ) && super.damage( event );
     }
 
     @Override
@@ -136,13 +123,19 @@ public abstract class EntityProjectile extends Entity {
         return ( entity instanceof EntityLiving ) && !this.onGround;
     }
 
-    public abstract float getDamage();
+    public float getDamage() {
+        return 0;
+    }
 
     protected void applyCustomDamageEffects( Entity hitEntity ) {
 
     }
 
     protected void applyCustomKnockback( Entity hitEntity ) {
+
+    }
+
+    public void onCollidedWithEntity( Entity entity ) {
 
     }
 

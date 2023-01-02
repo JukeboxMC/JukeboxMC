@@ -1,13 +1,16 @@
 package org.jukeboxmc.entity.projectile;
 
+import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockLiquid;
-import org.jukeboxmc.block.BlockWater;
+import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.behavior.BlockLiquid;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.Identifier;
 
 /**
  * @author LucGamesYT
@@ -18,18 +21,13 @@ public class EntityFishingHook extends EntityProjectile {
     private boolean isReset;
 
     @Override
-    public String getName() {
-        return "Fishing Hook";
-    }
-
-    @Override
     public void update( long currentTick ) {
         super.update( currentTick );
 
         if ( this.shooter.isDead() || ( (Player) this.shooter ).getInventory().getItemInHand().getType() != ItemType.FISHING_ROD ) {
             this.close();
-            if ( this.shooter instanceof Player ) {
-                ( (Player) this.shooter ).setEntityFishingHook( null );
+            if ( this.shooter instanceof Player player) {
+                player.setEntityFishingHook( null );
             }
         }
 
@@ -46,6 +44,17 @@ public class EntityFishingHook extends EntityProjectile {
     }
 
     @Override
+    public BedrockPacket createSpawnPacket() {
+        this.metadata.setLong( EntityData.OWNER_EID, this.shooter != null ? this.shooter.getEntityId() : -1 );
+        return super.createSpawnPacket();
+    }
+
+    @Override
+    public String getName() {
+        return "Fishing Hook";
+    }
+
+    @Override
     public float getWidth() {
         return 0.2f;
     }
@@ -53,16 +62,6 @@ public class EntityFishingHook extends EntityProjectile {
     @Override
     public float getHeight() {
         return 0.2f;
-    }
-
-    @Override
-    public EntityType getEntityType() {
-        return EntityType.FISHING_HOOK;
-    }
-
-    @Override
-    public float getDamage() {
-        return 0;
     }
 
     @Override
@@ -75,10 +74,20 @@ public class EntityFishingHook extends EntityProjectile {
         return 0.1f;
     }
 
+    @Override
+    public EntityType getType() {
+        return EntityType.FISHING_HOOK;
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return Identifier.fromString( "minecraft:fishing_hook" );
+    }
+
     public boolean isInsideLiquid() {
         Location eyeLocation = this.getLocation().add( 0, this.getEyeHeight(), 0 );
         Block block = eyeLocation.getBlock();
-        if ( block instanceof BlockWater ) {
+        if ( block.getType().equals( BlockType.WATER ) || block.getType().equals( BlockType.FLOWING_WATER ) ) {
             float yLiquid = (float) ( block.getLocation().getY() + 1 + ( ( (BlockLiquid) block ).getLiquidDepth() - 0.12 ) );
             return eyeLocation.getY() < yLiquid;
         }

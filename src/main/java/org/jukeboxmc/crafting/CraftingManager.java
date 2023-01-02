@@ -1,7 +1,9 @@
 package org.jukeboxmc.crafting;
 
 import com.nukkitx.protocol.bedrock.data.inventory.*;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import org.jukeboxmc.Server;
@@ -47,32 +49,47 @@ public class CraftingManager {
 
             List<ItemDescriptorWithCount> inputItems = new ArrayList<>();
             if ( recipe.containsKey( "inputs" ) ) {
-                List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" ); //TODO
+                List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" );
                 for ( Map<String, Object> input : inputs ) {
-                    int id = (int) (double) input.get( "id" );
-                    int damage = (int) (double) input.get( "damage" );
-                    int count = (int) (double) input.get( "count" );
-                    List<Object> canPlace = (List<Object>) input.get( "canPlace" );
-                    List<Object> canBreak = (List<Object>) input.get( "canBreak" );
-                    int blockingTicks = (int) (double) input.get( "blockingTicks" );
-                    int blockRuntimeId = (int) (double) input.get( "blockRuntimeId" );
-                    boolean usingNetId = (boolean) input.get( "usingNetId" );
-                    int netId = (int) (double) input.get( "netId" );
+                    if ( input.containsKey( "descriptor" ) ) {
+                        List<Map<String, Object>> list = (List<Map<String, Object>>) input.get( "descriptor" );
+                        for ( Map<String, Object> map : list ) {
+                            String type = (String) map.get( "descriptorType" );
 
-                    String identifier;
-                    if ( id == 0 ) {
-                        identifier = "minecraft:air";
-                    } else {
-                        identifier = ItemPalette.getIdentifier( (short) id );
+                            if ( type.equalsIgnoreCase( "DEFAULT" ) ) {
+                                int id = (int) (double) map.get( "id" );
+                                int damage = (int) (double) map.get( "damage" );
+                                int count = (int) (double) map.get( "count" );
+                                List<Object> canPlace = (List<Object>) map.get( "canPlace" );
+                                List<Object> canBreak = (List<Object>) map.get( "canBreak" );
+                                int blockingTicks = (int) (double) map.get( "blockingTicks" );
+                                int blockRuntimeId = (int) (double) map.get( "blockRuntimeId" );
+                                boolean usingNetId = (boolean) map.get( "usingNetId" );
+                                int netId = (int) (double) map.get( "netId" );
+
+                                inputItems.add( ItemDescriptorWithCount.fromItem( ItemData.builder()
+                                        .id( id )
+                                        .damage( damage )
+                                        .count( count )
+                                        .blockingTicks( blockingTicks )
+                                        .blockRuntimeId( blockRuntimeId )
+                                        .usingNetId( usingNetId )
+                                        .netId( netId )
+                                        .build() ) );
+                            } else if ( type.equalsIgnoreCase( "INVALID" ) ) {
+                                inputItems.add( new ItemDescriptorWithCount( InvalidDescriptor.INSTANCE, 1 ) );
+                            } else if ( type.equalsIgnoreCase( "ITEMTAG" ) ) {
+                                String itemTag = (String) map.get( "itemTag" );
+                                inputItems.add( new ItemDescriptorWithCount( new ItemTagDescriptor( itemTag ), 1 ) );
+                            }
+                        }
+
                     }
-                    Item item = new Item( identifier, damage, blockRuntimeId );
-                    item.setAmount( count );
-                    inputItems.add( item.toItemDescriptorWithCount() );
                 }
             }
 
             List<ItemData> outputItems = new ArrayList<>();
-            List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" ); //TODO
+            List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" );
             if ( recipe.containsKey( "outputs" ) ) {
                 for ( Map<String, Object> output : outputs ) {
                     int id = (int) (double) output.get( "id" );
@@ -85,19 +102,24 @@ public class CraftingManager {
                     boolean usingNetId = (boolean) output.get( "usingNetId" );
                     int netId = (int) (double) output.get( "netId" );
 
-                    String identifier = ItemPalette.getIdentifier( (short) id );
-                    Item item = new Item( identifier, damage, blockRuntimeId );
-                    item.setAmount( count );
-                    outputItems.add( item.toNetwork() );
+                    outputItems.add( ItemData.builder()
+                            .id( id )
+                            .damage( damage )
+                            .count( count )
+                            .blockingTicks( blockingTicks )
+                            .blockRuntimeId( blockRuntimeId )
+                            .usingNetId( usingNetId )
+                            .netId( netId )
+                            .build() );
                 }
             }
 
             if ( craftingDataType.equals( CraftingDataType.FURNACE ) || craftingDataType.equals( CraftingDataType.FURNACE_DATA ) ) {
-                Item input = new Item( ItemPalette.getIdentifier( (short) inputId ) );
+                Item input = new Item( ItemPalette.getIdentifier( (short) inputId ), false );
                 if ( inputDamage != 32767 ) {
                     input.setMeta( inputDamage );
                 }
-                Item output = Item.fromItemData( outputItems.get( 0 ) );
+                Item output = new Item( outputItems.get( 0 ), false );
                 if ( output.getMeta() == 32767 ) {
                     output.setMeta( 0 );
                 }
@@ -110,6 +132,7 @@ public class CraftingManager {
             int networkId = (int) (double) recipe.get( "networkId" );
             this.craftingData.add( new CraftingData( craftingDataType, recipeId, width, height, inputId, inputDamage, inputItems, outputItems, uuid, craftingTag, priority, networkId ) );
         }
+
         List<Map<String, Object>> containerMixes = (List<Map<String, Object>>) config.getMap().get( "containerMixes" );
         for ( Map<String, Object> recipe : containerMixes ) {
             int inputId = (int) (double) recipe.get( "inputId" );
@@ -143,7 +166,25 @@ public class CraftingManager {
         }
     }
 
+    public int getHighestNetworkId() {
+        Optional<CraftingData> optional = craftingData.stream().max( Comparator.comparing( CraftingData::getNetworkId ) );
+        return optional.map( CraftingData::getNetworkId ).orElse( -1 );
+    }
+
+    public List<Item> getResultItem( int recipeNetworkId ) {
+        Optional<CraftingData> optional = this.craftingData.stream().filter( craftingData -> craftingData.getNetworkId() == recipeNetworkId ).findFirst();
+        if ( optional.isPresent() ) {
+            CraftingData craftingData = optional.get();
+            List<Item> items = new LinkedList<>();
+            for ( ItemData output : craftingData.getOutputs() ) {
+                items.add( new Item( output, false ) );
+            }
+            return items;
+        }
+        return null;
+    }
+
     public SmeltingRecipe getSmeltingRecipe( Item input ) {
-        return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().equals( input ) ).findFirst().orElse( null );
+        return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().getType().equals( input.getType() ) ).findFirst().orElse( null );
     }
 }

@@ -21,14 +21,14 @@ public class Skin {
 
     private String skinId;
     private String resourcePatch;
+    private String geometryName = "";
     private String geometryData;
     private String animationData;
     private String capeId;
-    private final String fullSkinId = UUID.randomUUID().toString();
+    private String fullSkinId = UUID.randomUUID().toString();
     private String skinColor = "#0";
     private String armSize = "wide";
     private String playFabId = "";
-    private String geometryDataEngineVersion = "";
 
     private Image skinData;
     private Image capeData;
@@ -59,6 +59,14 @@ public class Skin {
         this.resourcePatch = resourcePatch;
     }
 
+    public String getGeometryName() {
+        return this.geometryName;
+    }
+
+    public void setGeometryName( String geometryName ) {
+        this.geometryName = geometryName;
+    }
+
     public String getGeometryData() {
         return this.geometryData == null ? "" : this.geometryData;
     }
@@ -81,10 +89,6 @@ public class Skin {
 
     public void setCapeId( String capeId ) {
         this.capeId = capeId;
-    }
-
-    public String getFullSkinId() {
-        return this.fullSkinId;
     }
 
     public String getSkinColor() {
@@ -111,12 +115,12 @@ public class Skin {
         this.playFabId = playFabId;
     }
 
-    public String getGeometryDataEngineVersion() {
-        return this.geometryDataEngineVersion;
+    public String getFullSkinId() {
+        return this.fullSkinId;
     }
 
-    public void setGeometryDataEngineVersion( String geometryDataEngineVersion ) {
-        this.geometryDataEngineVersion = geometryDataEngineVersion;
+    public void setFullSkinId( String fullSkinId ) {
+        this.fullSkinId = fullSkinId;
     }
 
     public Image getSkinData() {
@@ -199,6 +203,42 @@ public class Skin {
         this.personaPieceTints = personaPieceTints;
     }
 
+    public static Skin fromNetwork( SerializedSkin serializedSkin ) {
+        Skin skin = new Skin();
+        skin.setSkinId( serializedSkin.getSkinId() );
+        skin.setPlayFabId( serializedSkin.getPlayFabId() );
+        skin.setGeometryName( serializedSkin.getGeometryName() );
+        skin.setResourcePatch( serializedSkin.getSkinResourcePatch() );
+        skin.setSkinData( new Image( serializedSkin.getSkinData().getWidth(), serializedSkin.getSkinData().getHeight(), serializedSkin.getSkinData().getImage() ) );
+        List<SkinAnimation> skinAnimations = new ArrayList<>();
+        for ( AnimationData animation : serializedSkin.getAnimations() ) {
+            Image image = new Image( animation.getImage().getWidth(), animation.getImage().getHeight(), animation.getImage().getImage() );
+            skinAnimations.add( new SkinAnimation( image, animation.getTextureType().ordinal(), animation.getFrames(), animation.getExpressionType().ordinal() ));
+        }
+        skin.setSkinAnimations( skinAnimations );
+        skin.setCapeData( new Image( serializedSkin.getCapeData().getWidth(), serializedSkin.getCapeData().getHeight(), serializedSkin.getCapeData().getImage() ) );
+        skin.setGeometryData( serializedSkin.getGeometryData() );
+        skin.setAnimationData( serializedSkin.getAnimationData() );
+        skin.setPremium( serializedSkin.isPremium() );
+        skin.setPersona( serializedSkin.isPersona() );
+        skin.setCapeOnClassic( serializedSkin.isCapeOnClassic() );
+        skin.setCapeId( serializedSkin.getCapeId() );
+        skin.setFullSkinId( serializedSkin.getFullSkinId() );
+        skin.setArmSize( serializedSkin.getArmSize() );
+        skin.setSkinColor( serializedSkin.getSkinColor() );
+        List<PersonaPiece> personaPieces = new ArrayList<>();
+        for ( PersonaPieceData personaPiece : serializedSkin.getPersonaPieces() ) {
+            personaPieces.add( new PersonaPiece( personaPiece.getId(), personaPiece.getType(), personaPiece.getPackId(), personaPiece.getProductId(), personaPiece.isDefault() ) );
+        }
+        skin.setPersonaPieces( personaPieces );
+        List<PersonaPieceTint> pieceTints = new ArrayList<>();
+        for ( PersonaPieceTintData tintColor : serializedSkin.getTintColors() ) {
+            pieceTints.add( new PersonaPieceTint( tintColor.getType(), tintColor.getColors() ) );
+        }
+        skin.setPersonaPieceTints( pieceTints );
+        return skin;
+    }
+
     public SerializedSkin toNetwork() {
         List<AnimationData> animationDataList = new ArrayList<>();
         for ( SkinAnimation animation : this.skinAnimations ) {
@@ -215,8 +255,7 @@ public class Skin {
         return SerializedSkin.builder()
                 .skinId( this.skinId )
                 .playFabId( this.playFabId )
-                .geometryName( this.geometryDataEngineVersion )
-                .geometryData( this.geometryData )
+                .geometryName( this.geometryName )
                 .skinResourcePatch( this.resourcePatch )
                 .skinData( ImageData.of( this.skinData.getWidth(), this.skinData.getHeight(), this.skinData.getData() ) )
                 .animations( animationDataList )

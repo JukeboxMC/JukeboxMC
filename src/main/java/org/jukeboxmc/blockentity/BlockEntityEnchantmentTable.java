@@ -12,12 +12,12 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityEnchantmentTable extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityEnchantmentTable extends BlockEntity implements InventoryHolder {
 
     private final EnchantmentTableInventory enchantmentTableInventory;
 
-    public BlockEntityEnchantmentTable( Block block ) {
-        super( block );
+    public BlockEntityEnchantmentTable( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.enchantmentTableInventory = new EnchantmentTableInventory( this );
     }
 

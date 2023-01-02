@@ -17,7 +17,7 @@ public class RequestNetworkSettingsHandler implements PacketHandler<RequestNetwo
     @Override
     public void handle( RequestNetworkSettingsPacket packet, Server server, Player player ) {
         if ( player.getPlayerConnection().isLoggedIn() ) {
-            player.getPlayerConnection().close( "Player is already logged in." );
+            player.getPlayerConnection().disconnect( "Player is already logged in." );
             return;
         }
         int protocolVersion = packet.getProtocolVersion();
@@ -28,7 +28,7 @@ public class RequestNetworkSettingsHandler implements PacketHandler<RequestNetwo
             return;
         }
 
-        PacketCompressionAlgorithm compressionAlgorithm = Server.getInstance().getCompressionAlgorithm();
+        PacketCompressionAlgorithm compressionAlgorithm = server.getCompressionAlgorithm();
 
         player.getPlayerConnection().getSession().setPacketCodec( Network.CODEC );
 

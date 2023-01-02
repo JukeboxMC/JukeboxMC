@@ -16,8 +16,4 @@ public class EnchantmentProjectileProtection extends Enchantment {
         return 4;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

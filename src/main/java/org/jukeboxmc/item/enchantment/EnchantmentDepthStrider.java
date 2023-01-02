@@ -16,8 +16,4 @@ public class EnchantmentDepthStrider extends Enchantment {
         return 3;
     }
 
-    @Override
-    public int getWeight() {
-        return 2;
-    }
 }

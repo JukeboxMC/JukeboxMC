@@ -9,7 +9,7 @@ import org.jukeboxmc.event.Event;
  */
 public abstract class BlockEvent extends Event {
 
-    private Block block;
+    private final Block block;
 
     /**
      * Creates a new {@link BlockEvent}

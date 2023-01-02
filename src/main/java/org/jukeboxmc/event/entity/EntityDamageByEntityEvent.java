@@ -19,3 +19,4 @@ public class EntityDamageByEntityEvent extends EntityDamageEvent {
         return this.damager;
     }
 }
+

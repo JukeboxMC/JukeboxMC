@@ -16,8 +16,4 @@ public class EnchantmentFireAspect extends Enchantment {
         return 2;
     }
 
-    @Override
-    public int getWeight() {
-        return 2;
-    }
 }

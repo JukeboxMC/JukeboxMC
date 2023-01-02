@@ -18,12 +18,12 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityBarrel extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityBarrel extends BlockEntity implements InventoryHolder {
 
     private final BarrelInventory barrelInventory;
 
-    public BlockEntityBarrel( Block block ) {
-        super( block );
+    public BlockEntityBarrel( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.barrelInventory = new BarrelInventory( this );
     }
 

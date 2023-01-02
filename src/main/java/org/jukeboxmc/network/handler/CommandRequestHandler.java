@@ -9,7 +9,7 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class CommandRequestHandler implements PacketHandler<CommandRequestPacket> {
+public class CommandRequestHandler implements PacketHandler<CommandRequestPacket>{
 
     @Override
     public void handle( CommandRequestPacket packet, Server server, Player player ) {
@@ -21,6 +21,6 @@ public class CommandRequestHandler implements PacketHandler<CommandRequestPacket
         if ( playerCommandPreprocessEvent.isCancelled() ) {
             return;
         }
-        server.getPluginManager().getCommandManager().handleCommandInput( player, packet.getCommand() );
+        server.getPluginManager().getCommandManager().handleCommandInput( player, packet.getCommand().toLowerCase() );
     }
 }

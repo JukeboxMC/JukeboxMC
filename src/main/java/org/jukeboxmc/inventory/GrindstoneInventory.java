@@ -19,7 +19,7 @@ public class GrindstoneInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.GRINDSTONE;
     }
 

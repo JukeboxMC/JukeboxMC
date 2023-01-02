@@ -7,9 +7,9 @@ import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWith
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +54,14 @@ public class ShapedRecipe extends Recipe {
     }
 
     public ShapedRecipe setIngredient( char symbol, Item item ) {
-        this.ingredients.put( symbol, item.toItemDescriptorWithCount() );
+        this.ingredients.put( symbol, ItemDescriptorWithCount.fromItem( item.toItemData() ));
         return this;
     }
 
     public ShapedRecipe addOutput( Item... items ) {
         List<ItemData> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
-            itemDataList.add( item.toNetwork() );
+            itemDataList.add( item.toItemData() );
         }
         this.outputs.addAll( itemDataList );
         return this;
@@ -76,7 +76,7 @@ public class ShapedRecipe extends Recipe {
                 ItemDescriptorWithCount ingredient = this.ingredients.get( c );
 
                 if ( c == ' ' ) {
-                    ingredients.add( new ItemAir().toItemDescriptorWithCount() );
+                    ingredients.add( ItemDescriptorWithCount.EMPTY );
                     continue;
                 }
 
@@ -100,7 +100,7 @@ public class ShapedRecipe extends Recipe {
                 UUID.randomUUID(),
                 "crafting_table",
                 1,
-                0xDEADBEEF
+                craftingManager.getHighestNetworkId() + 1
         );
     }
 

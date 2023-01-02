@@ -1,5 +1,6 @@
 package org.jukeboxmc.console;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecrell.terminalconsole.SimpleTerminalConsole;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -19,7 +20,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
 
     public TerminalConsole( Server server ) {
         this.server = server;
-        this.executor = Executors.newSingleThreadExecutor();
+        this.executor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat( "JukeboxMC Terminal Console" ).build());
     }
 
     @Override
@@ -28,6 +29,8 @@ public class TerminalConsole extends SimpleTerminalConsole {
             Exception exception = new Exception();
             exception.setStackTrace( this.server.getMainThread().getStackTrace() );
             exception.printStackTrace(System.out);
+        } else if ( command.equalsIgnoreCase( "test" ) ) {
+            server.getOnlinePlayers().forEach( player -> player.sendMessage( "Hallo das ist ein Test!" ) );
         }
         if ( this.isRunning() ) {
             this.server.getScheduler().execute( () -> {
@@ -43,7 +46,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
 
     @Override
     protected boolean isRunning() {
-        return this.server.isRunning();
+        return this.server.getRunningState().get();
     }
 
     @Override

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.entity.passive.EntityNPC;
+import org.jukeboxmc.entity.passiv.EntityNPC;
 import org.jukeboxmc.form.element.NpcDialogueButton;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Utils;
@@ -87,7 +87,7 @@ public class NpcDialogueForm {
         npcDialoguePacket.setSceneName( this.sceneName );
         npcDialoguePacket.setActionJson( this.actionJson );
 
-        player.sendPacket( npcDialoguePacket );
+        player.getPlayerConnection().sendPacket( npcDialoguePacket );
 
         player.addNpcDialogueForm( this );
     }
@@ -101,7 +101,7 @@ public class NpcDialogueForm {
         npcDialoguePacket.setSceneName( this.sceneName );
         npcDialoguePacket.setActionJson( this.actionJson );
 
-        player.sendPacket( npcDialoguePacket );
+        player.getPlayerConnection().sendPacket( npcDialoguePacket );
 
         player.removeNpcDialogueForm( this );
     }

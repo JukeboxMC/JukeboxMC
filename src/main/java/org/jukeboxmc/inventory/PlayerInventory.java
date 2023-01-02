@@ -4,10 +4,12 @@ import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
 import com.nukkitx.protocol.bedrock.packet.MobEquipmentPacket;
-import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
+
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -17,19 +19,12 @@ public class PlayerInventory extends ContainerInventory {
 
     private int itemInHandSlot;
 
-    public PlayerInventory( InventoryHolder holder, long holderId ) {
-        super( holder, holderId, 36 );
+    public PlayerInventory( InventoryHolder holder ) {
+        super( holder, 36 );
     }
 
     @Override
-    public void removeViewer( Player player ) {
-        if ( player != this.holder ) {
-            super.removeViewer( player );
-        }
-    }
-
-    @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.PLAYER;
     }
 
@@ -40,17 +35,22 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
+    public Player getInventoryHolder() {
+        return (Player) this.holder;
+    }
+
+    @Override
     public void sendContents( Player player ) {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
         if ( player.getCurrentInventory() == this ) {
             inventoryContentPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
             inventoryContentPacket.setContents( this.getItemDataContents() );
-            player.sendPacket( inventoryContentPacket );
+            player.getPlayerConnection().sendPacket( inventoryContentPacket );
             return;
         }
         inventoryContentPacket.setContainerId( WindowId.PLAYER.getId() );
         inventoryContentPacket.setContents( this.getItemDataContents() );
-        player.sendPacket( inventoryContentPacket );
+        player.getPlayerConnection().sendPacket( inventoryContentPacket );
     }
 
     @Override
@@ -58,21 +58,23 @@ public class PlayerInventory extends ContainerInventory {
         if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
             InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setSlot( slot );
-            inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
+            inventorySlotPacket.setItem( this.content[slot].toItemData() );
             inventorySlotPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
-            player.sendPacket( inventorySlotPacket );
+            player.getPlayerConnection().sendPacket( inventorySlotPacket );
         }
 
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setSlot( slot );
-        inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
+        inventorySlotPacket.setItem( this.content[slot].toItemData() );
         inventorySlotPacket.setContainerId( WindowId.PLAYER.getId() );
-        player.sendPacket( inventorySlotPacket );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 
     @Override
-    public Player getInventoryHolder() {
-        return (Player) this.holder;
+    public void removeViewer( Player player ) {
+        if ( player != this.holder ) {
+            super.removeViewer( player );
+        }
     }
 
     @Override
@@ -88,12 +90,8 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     public Item getItemInHand() {
-        Item content = this.contents[this.itemInHandSlot];
-        if ( content != null ) {
-            return content;
-        } else {
-            return new ItemAir();
-        }
+        Item content = this.content[this.itemInHandSlot];
+        return Objects.requireNonNullElseGet( content, () -> Item.create( ItemType.AIR ) );
     }
 
     public int getItemInHandSlot() {
@@ -122,7 +120,7 @@ public class PlayerInventory extends ContainerInventory {
     public MobEquipmentPacket createMobEquipmentPacket( EntityHuman entityHuman ) {
         MobEquipmentPacket mobEquipmentPacket = new MobEquipmentPacket();
         mobEquipmentPacket.setRuntimeEntityId( entityHuman.getEntityId() );
-        mobEquipmentPacket.setItem( this.getItemInHand().toNetwork() );
+        mobEquipmentPacket.setItem( this.getItemInHand().toItemData() );
         mobEquipmentPacket.setContainerId( WindowId.PLAYER.getId() );
         mobEquipmentPacket.setHotbarSlot( this.itemInHandSlot );
         mobEquipmentPacket.setInventorySlot( this.itemInHandSlot );
@@ -131,7 +129,7 @@ public class PlayerInventory extends ContainerInventory {
 
     public void sendItemInHand() {
         if ( this.holder instanceof Player player ) {
-            player.sendPacket( this.createMobEquipmentPacket( player ) );
+            player.getPlayerConnection().sendPacket( this.createMobEquipmentPacket( player ) );
             this.sendContents( this.itemInHandSlot, player );
         }
     }

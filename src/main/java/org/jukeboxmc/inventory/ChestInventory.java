@@ -14,11 +14,11 @@ import org.jukeboxmc.player.Player;
 public class ChestInventory extends ContainerInventory {
 
     public ChestInventory( InventoryHolder holder ) {
-        super( holder, -1,27 );
+        super( holder, -1, 27 );
     }
 
-    public ChestInventory( InventoryHolder holder, int holderId, int slots ) {
-        super( holder, holderId, slots );
+    public ChestInventory( InventoryHolder holder, int size ) {
+        super( holder, -1, size );
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ChestInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.CHEST;
     }
 
@@ -38,6 +38,7 @@ public class ChestInventory extends ContainerInventory {
 
     @Override
     public void onOpen( Player player ) {
+        super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
@@ -52,7 +53,7 @@ public class ChestInventory extends ContainerInventory {
 
     @Override
     public void onClose( Player player ) {
-        if ( this.viewer.size() == 1 ) {
+        if ( this.viewer.size() == 0 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();

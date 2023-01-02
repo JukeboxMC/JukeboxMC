@@ -19,7 +19,7 @@ public class SmokerInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.SMOKER;
     }
 

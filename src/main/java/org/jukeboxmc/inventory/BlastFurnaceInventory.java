@@ -7,9 +7,9 @@ import org.jukeboxmc.blockentity.BlockEntityBlastFurnace;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlastFurnaceInventory extends ContainerInventory{
+public class BlastFurnaceInventory extends ContainerInventory {
 
-    public BlastFurnaceInventory( InventoryHolder holder) {
+    public BlastFurnaceInventory( InventoryHolder holder ) {
         super( holder, -1, 3 );
     }
 
@@ -19,7 +19,7 @@ public class BlastFurnaceInventory extends ContainerInventory{
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.BLAST_FURNACE;
     }
 

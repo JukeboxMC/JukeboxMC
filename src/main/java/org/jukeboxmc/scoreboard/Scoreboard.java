@@ -81,7 +81,7 @@ public class Scoreboard {
 
     private void broadcast( BedrockPacket packet ) {
         for ( Player viewer : this.viewers ) {
-            viewer.sendPacket( packet );
+            viewer.getPlayerConnection().sendPacket( packet );
         }
     }
 
@@ -150,9 +150,9 @@ public class Scoreboard {
     public void showFor( Player player ) {
         if( this.viewers.add( player ) ) {
             for ( Map.Entry<DisplaySlot, ScoreboardDisplay> entry : this.displays.entrySet() ) {
-                player.sendPacket( this.constructDisplayPacket( entry.getKey(), entry.getValue() ) );
+                player.getPlayerConnection().sendPacket( this.constructDisplayPacket( entry.getKey(), entry.getValue() ) );
             }
-            player.sendPacket( this.constructSetScore() );
+            player.getPlayerConnection().sendPacket( this.constructSetScore() );
         }
     }
 
@@ -166,10 +166,10 @@ public class Scoreboard {
                 validScoreIDs.add( fastIterator.next().getLongKey() );
             }
 
-            player.sendPacket( this.constructRemoveScores( validScoreIDs ) );
+            player.getPlayerConnection().sendPacket( this.constructRemoveScores( validScoreIDs ) );
 
             for ( Map.Entry<DisplaySlot, ScoreboardDisplay> entry : this.displays.entrySet() ) {
-                player.sendPacket( this.constructRemoveDisplayPacket( entry.getValue() ) );
+                player.getPlayerConnection().sendPacket( this.constructRemoveDisplayPacket( entry.getValue() ) );
             }
         }
     }

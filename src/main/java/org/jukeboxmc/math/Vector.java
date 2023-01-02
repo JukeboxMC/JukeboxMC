@@ -4,6 +4,7 @@ import com.nukkitx.math.vector.Vector3d;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.math.vector.Vector3l;
+import lombok.SneakyThrows;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.world.Dimension;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author LucGamesYT
  * @version 1.0
  */
-public class Vector {
+public class Vector implements Cloneable {
 
     protected float x;
     protected float y;
@@ -226,6 +227,16 @@ public class Vector {
     @Override
     public int hashCode() {
         return Objects.hash( this.x, this.y, this.z, this.dimension );
+    }
+
+    @SneakyThrows
+    @Override
+    public Vector clone(){
+        Vector clone = (Vector) super.clone();
+        clone.x = this.x;
+        clone.y = this.y;
+        clone.z = this.z;
+        return clone;
     }
 
     @Override

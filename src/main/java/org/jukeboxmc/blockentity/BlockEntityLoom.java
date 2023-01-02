@@ -12,14 +12,15 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityLoom extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityLoom extends BlockEntity implements InventoryHolder {
 
     private final LoomInventory loomInventory;
 
-    public BlockEntityLoom( Block block ) {
-        super( block );
+    public BlockEntityLoom( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.loomInventory = new LoomInventory( this );
     }
+
 
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {

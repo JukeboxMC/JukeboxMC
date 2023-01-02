@@ -11,6 +11,8 @@ import org.jukeboxmc.player.Player;
  */
 public class InventoryClickEvent extends InventoryEvent implements Cancellable {
 
+    private final Inventory destinationInventory;
+
     private final Player player;
 
     private final Item sourceItem;
@@ -27,12 +29,17 @@ public class InventoryClickEvent extends InventoryEvent implements Cancellable {
      * @param targetItem which is the new item
      * @param slot       the slot where the item was placed at
      */
-    public InventoryClickEvent( Inventory inventory, Player player, Item sourceItem, Item targetItem, int slot ) {
+    public InventoryClickEvent( Inventory inventory, Inventory destinationInventory, Player player, Item sourceItem, Item targetItem, int slot ) {
         super( inventory );
+        this.destinationInventory = destinationInventory;
         this.player = player;
         this.sourceItem = sourceItem;
         this.targetItem = targetItem;
         this.slot = slot;
+    }
+
+    public Inventory getDestinationInventory() {
+        return this.destinationInventory;
     }
 
     /**

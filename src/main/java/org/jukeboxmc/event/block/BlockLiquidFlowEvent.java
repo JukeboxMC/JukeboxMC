@@ -1,7 +1,7 @@
 package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockLiquid;
+import org.jukeboxmc.block.behavior.BlockLiquid;
 import org.jukeboxmc.event.Cancellable;
 
 /**

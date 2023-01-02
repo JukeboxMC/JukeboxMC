@@ -10,7 +10,7 @@ import org.jukeboxmc.player.Player;
  */
 public class PlayerDropItemEvent extends PlayerEvent implements Cancellable {
 
-    private Item item;
+    private final Item item;
 
     /**
      * Creates a new {@link PlayerEvent}
@@ -27,7 +27,5 @@ public class PlayerDropItemEvent extends PlayerEvent implements Cancellable {
         return this.item;
     }
 
-    public void setItem( Item item ) {
-        this.item = item;
-    }
 }
+

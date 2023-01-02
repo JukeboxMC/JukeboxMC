@@ -16,8 +16,4 @@ public class EnchantmentFlame extends Enchantment {
         return 1;
     }
 
-    @Override
-    public int getWeight() {
-        return 2;
-    }
 }

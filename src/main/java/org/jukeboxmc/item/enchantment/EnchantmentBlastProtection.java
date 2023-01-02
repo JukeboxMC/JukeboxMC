@@ -16,8 +16,4 @@ public class EnchantmentBlastProtection extends Enchantment {
         return 4;
     }
 
-    @Override
-    public int getWeight() {
-        return 0;
-    }
 }

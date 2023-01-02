@@ -15,41 +15,78 @@ import java.util.*;
  */
 public class ItemPalette {
 
-    public static final Map<String, Integer> IDENTIFIER_TO_RUNTIME = new LinkedHashMap<>();
-    public static final Map<Integer, String> RUNTIME_TO_IDENTIFIER = new LinkedHashMap<>();
+    private static final Gson GSON = new Gson();
+    public static final Map<Identifier, Short> IDENTIFIER_TO_RUNTIME = new LinkedHashMap<>();
+    public static final Map<Short, Identifier> RUNTIME_TO_IDENTIFIER = new LinkedHashMap<>();
+
+    public static final Map<Identifier, Identifier> MAPPING_IDENTIEFER = new LinkedHashMap<>();
 
     public static void init() {
-        Gson GSON = new Gson();
-
-        try ( InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "itempalette.json" ) ) ) {
-            List<Map<String, Object>> parseItem = GSON.fromJson( new InputStreamReader( inputStream ), List.class );
-            for ( Map<String, Object> map : parseItem ) {
-                IDENTIFIER_TO_RUNTIME.put( (String) map.get( "name" ), (int) (double) map.get( "id" ) );
-                RUNTIME_TO_IDENTIFIER.put( (int) (double) map.get( "id" ), (String) map.get( "name" ) );
+        try ( InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "runtime_item_states.json" ) ) ) {
+            List<Map<String, Object>> parseItem = GSON.<List<Map<String, Object>>>fromJson( new InputStreamReader( inputStream ), List.class );
+            for ( Map<String, Object> entry : parseItem ) {
+                Identifier name = Identifier.fromString( (String) entry.get( "name" ) );
+                short runtimeId = (short) (double) entry.get( "id" );
+                IDENTIFIER_TO_RUNTIME.put( name, runtimeId );
+                RUNTIME_TO_IDENTIFIER.put( runtimeId, name );
             }
+
+            mappingIdentifier( Identifier.fromString("minecraft:acacia_door"), Identifier.fromString("minecraft:item.acacia_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:bed"), Identifier.fromString("minecraft:item.bed"));
+            mappingIdentifier( Identifier.fromString("minecraft:beetroot"), Identifier.fromString("minecraft:item.beetroot"));
+            mappingIdentifier( Identifier.fromString("minecraft:birch_door"), Identifier.fromString("minecraft:item.birch_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:brewing_stand"), Identifier.fromString("minecraft:item.brewing_stand"));
+            mappingIdentifier( Identifier.fromString("minecraft:cake"), Identifier.fromString("minecraft:item.cake"));
+            mappingIdentifier( Identifier.fromString("minecraft:camera"), Identifier.fromString("minecraft:item.camera"));
+            mappingIdentifier( Identifier.fromString("minecraft:campfire"), Identifier.fromString("minecraft:item.campfire"));
+            mappingIdentifier( Identifier.fromString("minecraft:cauldron"), Identifier.fromString("minecraft:item.cauldron"));
+            mappingIdentifier( Identifier.fromString("minecraft:chain"), Identifier.fromString("minecraft:item.chain"));
+            mappingIdentifier( Identifier.fromString("minecraft:crimson_door"), Identifier.fromString("minecraft:item.crimson_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:dark_oak_door"), Identifier.fromString("minecraft:item.dark_oak_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:flower_pot"), Identifier.fromString("minecraft:item.flower_pot"));
+            mappingIdentifier( Identifier.fromString("minecraft:frame"), Identifier.fromString("minecraft:item.frame"));
+            mappingIdentifier( Identifier.fromString("minecraft:glow_frame"), Identifier.fromString("minecraft:item.glow_frame"));
+            mappingIdentifier( Identifier.fromString("minecraft:hopper"), Identifier.fromString("minecraft:item.hopper"));
+            mappingIdentifier( Identifier.fromString("minecraft:iron_door"), Identifier.fromString("minecraft:item.iron_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:jungle_door"), Identifier.fromString("minecraft:item.jungle_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:kelp"), Identifier.fromString("minecraft:item.kelp"));
+            mappingIdentifier( Identifier.fromString("minecraft:mangrove_door"), Identifier.fromString("minecraft:item.mangrove_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:nether_sprouts"), Identifier.fromString("minecraft:item.nether_sprouts"));
+            mappingIdentifier( Identifier.fromString("minecraft:nether_wart"), Identifier.fromString("minecraft:item.nether_wart"));
+            mappingIdentifier( Identifier.fromString("minecraft:reeds"), Identifier.fromString("minecraft:item.reeds"));
+            mappingIdentifier( Identifier.fromString("minecraft:skull"), Identifier.fromString("minecraft:item.skull"));
+            mappingIdentifier( Identifier.fromString("minecraft:soul_campfire"), Identifier.fromString("minecraft:item.soul_campfire"));
+            mappingIdentifier( Identifier.fromString("minecraft:spruce_door"), Identifier.fromString("minecraft:item.spruce_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:warped_door"), Identifier.fromString("minecraft:item.warped_door"));
+            mappingIdentifier( Identifier.fromString("minecraft:wheat"), Identifier.fromString("minecraft:item.wheat"));
+            mappingIdentifier( Identifier.fromString("minecraft:wooden_door"), Identifier.fromString("minecraft:item.wooden_door"));
         } catch ( IOException e ) {
             e.printStackTrace();
         }
-
     }
 
-    public static List<StartGamePacket.ItemEntry> getItemEntries() {
-        List<StartGamePacket.ItemEntry> entries = new ArrayList<>();
-        IDENTIFIER_TO_RUNTIME.forEach( ( identifier, id ) -> {
-            entries.add( toEntry( identifier, id ) );
-        } );
-        return entries;
+    private static void mappingIdentifier( Identifier blockIdentifier, Identifier itemIdentifier ) {
+        MAPPING_IDENTIEFER.put( blockIdentifier, itemIdentifier );
     }
 
-    public static int getRuntimeId( String identifier ) {
+    public static Identifier getItemIdentifier( Identifier blockIdentifier ) {
+        return MAPPING_IDENTIEFER.getOrDefault( blockIdentifier, blockIdentifier );
+    }
+
+    public static int getRuntimeId( Identifier identifier ) {
         return IDENTIFIER_TO_RUNTIME.get( identifier );
     }
 
-    public static String getIdentifier( int runtimeId ) {
-        return RUNTIME_TO_IDENTIFIER.get( runtimeId );
+    public static Identifier getIdentifier( short runtimeId ) {
+        return RUNTIME_TO_IDENTIFIER.getOrDefault( runtimeId, Identifier.fromString( "minecraft:air" ) );
     }
 
-    private static StartGamePacket.ItemEntry toEntry( String fullName, int id ) {
-        return new StartGamePacket.ItemEntry( fullName, (short) id, false );
+    public static List<StartGamePacket.ItemEntry> getEntries() {
+        return NonStream.map( IDENTIFIER_TO_RUNTIME.entrySet(), ItemPalette::toEntry, ArrayList::new, Collections::unmodifiableList );
     }
+
+    private static StartGamePacket.ItemEntry toEntry( Map.Entry<Identifier, Short> entry ) {
+        return new StartGamePacket.ItemEntry( entry.getKey().getFullName(), entry.getValue(), false );
+    }
+
 }

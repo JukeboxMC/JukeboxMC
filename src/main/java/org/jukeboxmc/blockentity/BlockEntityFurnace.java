@@ -22,8 +22,8 @@ public class BlockEntityFurnace extends SmeltingComponent implements InventoryHo
 
     private final FurnaceInventory furnaceInventory;
 
-    public BlockEntityFurnace( Block block ) {
-        super( block );
+    public BlockEntityFurnace( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.furnaceInventory = new FurnaceInventory( this );
         this.initInventory( this.furnaceInventory );
     }
@@ -70,4 +70,5 @@ public class BlockEntityFurnace extends SmeltingComponent implements InventoryHo
     public FurnaceInventory getFurnaceInventory() {
         return this.furnaceInventory;
     }
+
 }

@@ -19,7 +19,7 @@ public class EnchantmentTableInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.ENCHANTMENT_TABLE;
     }
 

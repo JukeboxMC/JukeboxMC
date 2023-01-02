@@ -4,7 +4,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.type.BlockColor;
+import org.jukeboxmc.block.data.BlockColor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,8 +22,8 @@ public class BlockEntityBanner extends BlockEntity {
 
     private final Map<String, Integer> patterns = new LinkedHashMap<>();
 
-    public BlockEntityBanner( Block block ) {
-        super( block );
+    public BlockEntityBanner( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
     }
 
     @Override

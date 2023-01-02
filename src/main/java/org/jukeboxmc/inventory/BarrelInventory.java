@@ -3,7 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockBarrel;
+import org.jukeboxmc.block.behavior.BlockBarrel;
 import org.jukeboxmc.blockentity.BlockEntityBarrel;
 import org.jukeboxmc.player.Player;
 
@@ -23,7 +23,7 @@ public class BarrelInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.BARREL;
     }
 
@@ -34,6 +34,7 @@ public class BarrelInventory extends ContainerInventory {
 
     @Override
     public void onOpen( Player player ) {
+        super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             Block block = this.getInventoryHolder().getBlock();
             if ( block instanceof BlockBarrel blockBarrel ) {
@@ -47,7 +48,7 @@ public class BarrelInventory extends ContainerInventory {
 
     @Override
     public void onClose( Player player ) {
-        if ( this.viewer.size() == 1 ) {
+        if ( this.viewer.size() == 0 ) {
             Block block = this.getInventoryHolder().getBlock();
             if ( block instanceof BlockBarrel blockBarrel ) {
                 if ( blockBarrel.isOpen() ) {

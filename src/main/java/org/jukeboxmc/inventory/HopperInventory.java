@@ -1,6 +1,7 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.jukeboxmc.blockentity.BlockEntityHopper;
 
 /**
  * @author LucGamesYT
@@ -13,12 +14,12 @@ public class HopperInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryHolder getInventoryHolder() {
-        return null;
+    public BlockEntityHopper getInventoryHolder() {
+        return (BlockEntityHopper) this.holder;
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.HOPPER;
     }
 

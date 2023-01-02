@@ -1,60 +1,38 @@
 package org.jukeboxmc.world;
 
-import com.nukkitx.nbt.*;
+import com.google.common.collect.ImmutableSet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.*;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.buffer.PooledByteBufAllocator;
-import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.util.FastMath;
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.Options;
-import org.iq80.leveldb.impl.Iq80DBFactory;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
-import org.jukeboxmc.block.BlockSlab;
-import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.BlockUpdateList;
+import org.jukeboxmc.block.BlockUpdateNormal;
+import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
-import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.item.EntityItem;
-import org.jukeboxmc.event.block.BlockBreakEvent;
-import org.jukeboxmc.event.block.BlockPlaceEvent;
-import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
-import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.type.Durability;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.util.Pair;
-import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
-import org.jukeboxmc.world.chunk.ChunkLoader;
-import org.jukeboxmc.world.chunk.ChunkManager;
+import org.jukeboxmc.world.chunk.manager.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.gamerule.GameRules;
+import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
 import org.jukeboxmc.world.leveldb.LevelDB;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -62,46 +40,44 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class World {
 
-    private DB db;
-    private final File worldFolder;
-    private final File worldFile;
-
     private final String name;
     private final Server server;
-
     private final GameRules gameRules;
     private final BlockUpdateList blockUpdateList;
 
-    private Location spawnLocation;
-    private Difficulty difficulty;
-    private int worldTime;
-    private long seed = -1;
-
-    private boolean autoSave = true;
-    private boolean showAutoSaveMessage = true;
-    private long autoSaveTicker = 0;
-    private long autoSaveTick = TimeUnit.MINUTES.toMillis( 5 ) / 50;
-    private final AtomicBoolean autoSaving = new AtomicBoolean( false );
+    private final File worldFolder;
+    private final File worldFile;
+    private final LevelDB levelDB;
 
     private final Map<Dimension, ChunkManager> chunkManagers;
-
     private final Map<Dimension, ThreadLocal<Generator>> generators;
-    private final Map<Pair<Dimension, Long>, Set<ChunkLoader>> chunkLoaders;
-    private final Map<Long, Entity> entities;
 
-    private final Queue<BlockUpdateNormal> blockUpdateNormals = new ConcurrentLinkedQueue<>();
+    private Difficulty difficulty;
+    private Location spawnLocation;
+
+    private int worldTime;
+    private long nextTimeSendTick;
+
+    private final Map<Long, Entity> entities;
+    private final Queue<BlockUpdateNormal> blockUpdateNormals;
 
     public World( String name, Server server, Map<Dimension, String> generatorMap ) {
         this.name = name;
         this.server = server;
+        this.gameRules = new GameRules();
+        this.blockUpdateList = new BlockUpdateList();
 
         this.worldFolder = new File( "./worlds/" + name );
         this.worldFile = new File( this.worldFolder, "level.dat" );
         if ( !this.worldFolder.exists() ) {
             this.worldFolder.mkdirs();
         }
+        this.levelDB = new LevelDB( this );
 
-        this.gameRules = new GameRules();
+        this.chunkManagers = new EnumMap<>( Dimension.class );
+        for ( Dimension dimension : Dimension.values() ) {
+            this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
+        }
 
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
@@ -111,68 +87,45 @@ public class World {
             }
 
             final String finalGeneratorName = generatorName;
-            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( this, finalGeneratorName, dimension ) ) );
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( finalGeneratorName, dimension ) ) );
         }
 
-        this.blockUpdateList = new BlockUpdateList();
+        Generator generator = this.getGenerator( Dimension.OVERWORLD );
+        this.difficulty = server.getDifficulty();
+        this.spawnLocation = new Location( this, generator.getSpawnLocation() );
+
         this.entities = new ConcurrentHashMap<>();
-
-        this.chunkManagers = new EnumMap<>( Dimension.class );
-        for ( Dimension dimension : Dimension.values() ) {
-            this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
-        }
-
-        this.chunkLoaders = new HashMap<>();
-
-        if ( !this.loadLevelFile() ) {
-            this.saveLevelDatFile();
-        }
+        this.blockUpdateNormals = new ConcurrentLinkedQueue<>();
     }
 
-    public synchronized void update( long currentTick ) {
-        for ( ChunkManager chunkManager : this.chunkManagers.values() ) {
-            chunkManager.update();
+    public void update( long currentTick ) {
+        if ( currentTick % 100 == 0 ) {
+            for ( ChunkManager chunkManager : this.chunkManagers.values() ) {
+                chunkManager.tick();
+            }
         }
 
         if ( this.gameRules.get( GameRule.DO_DAYLIGHT_CYCLE ) ) {
-            this.worldTime++;
-            while ( this.worldTime >= 24000 ) {
-                this.worldTime -= 24000;
-            }
-
-            SetTimePacket setTimePacket = new SetTimePacket();
-            setTimePacket.setTime( this.worldTime );
-            this.sendWorldPacket( setTimePacket );
+            this.worldTime += 1;
+        }
+        if ( currentTick >= this.nextTimeSendTick ) {
+            this.setWorldTime( this.worldTime );
+            this.nextTimeSendTick = currentTick + 12 * 20; //Client send the time every 12 seconds
         }
 
-        if ( this.autoSave && !this.autoSaving.get() && ++this.autoSaveTicker >= this.autoSaveTick ) {
-            this.autoSaveTicker = 0;
-            this.autoSaving.set( true );
-            try {
-                this.save().whenComplete( ( unused, throwable ) -> {
-                    if ( this.showAutoSaveMessage ) {
-                        Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
-                    }
-                    this.autoSaving.set( false );
-                } );
-            } catch ( Throwable e ) {
-                e.printStackTrace();
-            }
-        }
-
-        if ( this.entities.size() > 0 ) {
+        if ( !this.entities.isEmpty() ) {
             for ( Entity entity : this.entities.values() ) {
-                if ( entity != null ) {
-                    entity.update( currentTick );
-                }
+                entity.update( currentTick );
             }
         }
 
-        Collection<BlockEntity> blockEntities = this.getBlockEntities( Dimension.OVERWORLD );
-        if ( blockEntities.size() > 0 ) {
-            for ( BlockEntity blockEntity : blockEntities ) {
-                if ( blockEntity != null ) {
-                    blockEntity.update( currentTick );
+        for ( Dimension dimension : Dimension.values() ) {
+            Collection<BlockEntity> blockEntities = this.getBlockEntities( dimension );
+            if ( blockEntities.size() > 0 ) {
+                for ( BlockEntity blockEntity : blockEntities ) {
+                    if ( blockEntity != null ) {
+                        blockEntity.update( currentTick );
+                    }
                 }
             }
         }
@@ -199,93 +152,6 @@ public class World {
         }
     }
 
-    public boolean loadLevelFile() {
-        try ( FileInputStream stream = new FileInputStream( this.worldFile ) ) {
-            stream.skip( 8 );
-            byte[] data = new byte[stream.available()];
-            stream.read( data );
-
-            ByteBuf allocate = Utils.allocate( data );
-            try ( NBTInputStream networkReader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) ) ) {
-                NbtMap nbt = (NbtMap) networkReader.readTag();
-
-                this.spawnLocation = new Location( this, nbt.getInt( "SpawnX", 0 ), nbt.getInt( "SpawnY", 64 ), nbt.getInt( "SpawnZ", 0 ) );
-                this.difficulty = Difficulty.getDifficulty( nbt.getInt( "Difficulty", 2 ) );
-                this.worldTime = nbt.getInt( "Time", 1000 );
-                this.seed = nbt.getLong( "RandomSeed", new Random().nextLong() );
-                return true;
-            } catch ( IOException ignore ) {
-            }
-        } catch ( IOException ignore ) {
-        }
-        return false;
-    }
-
-    @SneakyThrows
-    private void saveLevelDatFile() {
-        File worldFolder = new File( "./worlds/" + this.name );
-        File levelDat = new File( worldFolder, "level.dat" );
-
-        NbtMapBuilder compound;
-        if ( levelDat.exists() ) {
-            FileUtils.copyFile( levelDat, new File( worldFolder, "level.dat_old" ) );
-
-            try ( FileInputStream stream = new FileInputStream( levelDat ) ) {
-                stream.skip( 8 );
-                byte[] data = new byte[stream.available()];
-                stream.read( data );
-                ByteBuf allocate = Utils.allocate( data );
-                try ( NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( allocate ) ) ) {
-                    compound = ( (NbtMap) reader.readTag() ).toBuilder();
-                }
-            }
-            levelDat.delete();
-        } else {
-            compound = NbtMap.builder();
-        }
-
-        compound.putInt( "StorageVersion", 8 );
-
-        if ( this.spawnLocation == null ) {
-            this.spawnLocation = this.getGenerator( Dimension.OVERWORLD ).getSpawnLocation() != null ? new Location( this, this.getGenerator( Dimension.OVERWORLD ).getSpawnLocation() ) : new Location( this, 0, 64, 0 );
-        }
-
-        compound.putInt( "SpawnX", this.spawnLocation.getBlockX() );
-        compound.putInt( "SpawnY", this.spawnLocation.getBlockY() );
-        compound.putInt( "SpawnZ", this.spawnLocation.getBlockZ() );
-
-        if ( this.difficulty == null ) {
-            this.difficulty = Difficulty.NORMAL;
-        }
-
-        compound.putInt( "Difficulty", this.difficulty.ordinal() );
-
-        compound.putString( "LevelName", this.name );
-        compound.putLong( "Time", this.worldTime );
-
-        if ( this.seed == -1 ) {
-            this.seed = new Random().nextLong();
-        }
-        compound.putLong( "RandomSeed", this.seed );
-
-
-        for ( GameRuleData<?> gameRule : this.gameRules.getGameRules() ) {
-            compound.put( gameRule.getName(), gameRule.getValue() );
-        }
-
-        try ( FileOutputStream stream = new FileOutputStream( levelDat ) ) {
-            stream.write( new byte[8] );
-
-            ByteBuf data = PooledByteBufAllocator.DEFAULT.heapBuffer();
-            try ( NBTOutputStream writer = NbtUtils.createWriterLE( new ByteBufOutputStream( data ) ) ) {
-                writer.writeTag( compound.build() );
-                stream.write( data.array(), data.arrayOffset(), data.readableBytes() );
-            } finally {
-                data.release();
-            }
-        }
-    }
-
     public String getName() {
         return this.name;
     }
@@ -294,22 +160,18 @@ public class World {
         return this.server;
     }
 
+    public File getWorldFolder() {
+        return this.worldFolder;
+    }
+
     public GameRules getGameRules() {
         return this.gameRules;
     }
 
-    public Location getSpawnLocation() {
-        return this.spawnLocation.add( 0.5f, 0, 0.5f );
-    }
+    private final FlatGenerator generator = new FlatGenerator();
 
-    public void setSpawnLocation( Location spawnLocation ) {
-        this.spawnLocation = spawnLocation;
-
-        SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
-        setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.WORLD_SPAWN );
-        setSpawnPositionPacket.setBlockPosition( spawnLocation.toVector3i() );
-        setSpawnPositionPacket.setDimensionId( Dimension.OVERWORLD.ordinal() );
-        this.server.broadcastPacket( setSpawnPositionPacket );
+    public synchronized Generator getGenerator( Dimension dimension ) {
+        return generator;
     }
 
     public Difficulty getDifficulty() {
@@ -324,6 +186,20 @@ public class World {
         this.sendWorldPacket( setDifficultyPacket );
     }
 
+    public Location getSpawnLocation() {
+        return this.spawnLocation;
+    }
+
+    public void setSpawnLocation( Location spawnLocation ) {
+        this.spawnLocation = spawnLocation;
+
+        SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
+        setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.WORLD_SPAWN );
+        setSpawnPositionPacket.setBlockPosition( spawnLocation.toVector3i() );
+        setSpawnPositionPacket.setDimensionId( spawnLocation.getDimension().ordinal() );
+        this.server.broadcastPacket( setSpawnPositionPacket );
+    }
+
     public int getWorldTime() {
         return this.worldTime;
     }
@@ -333,43 +209,7 @@ public class World {
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.setTime( worldTime );
-        this.sendWorldPacket( setTimePacket );
-    }
-
-    public void setAutoSave( boolean autoSave ) {
-        this.autoSave = autoSave;
-    }
-
-    public boolean isAutoSave() {
-        return this.autoSave;
-    }
-
-    public void setShowAutoSaveMessage( boolean showAutoSaveMessage ) {
-        this.showAutoSaveMessage = showAutoSaveMessage;
-    }
-
-    public boolean isShowAutoSaveMessage() {
-        return this.showAutoSaveMessage;
-    }
-
-    public void setAutoSaveTick( long autoSaveTick ) {
-        this.autoSaveTick = autoSaveTick;
-    }
-
-    public void setAutoSaveTick( TimeUnit timeUnit, long value ) {
-        this.autoSaveTick = timeUnit.toMillis( value ) / 50;
-    }
-
-    public long getAutoSaveTick() {
-        return this.autoSaveTick;
-    }
-
-    public boolean isAutoSaving() {
-        return this.autoSaving.get();
-    }
-
-    public long getSeed() {
-        return this.seed;
+        Server.getInstance().broadcastPacket( setTimePacket );
     }
 
     public void addEntity( Entity entity ) {
@@ -380,190 +220,67 @@ public class World {
         this.entities.remove( entity.getEntityId() );
     }
 
-    public Collection<Entity> getEntities() {
+    public Collection<Entity> getEntitys() {
         return this.entities.values();
     }
 
     public Collection<Player> getPlayers() {
-        Set<Player> players = new HashSet<>();
-        for ( Entity entity : this.entities.values() ) {
-            if ( entity instanceof Player player ) {
-                players.add( player );
-            }
-        }
-        return players;
+        return this.entities.values().stream().filter( entity -> entity instanceof Player ).map( entity -> (Player) entity ).collect( Collectors.toSet() );
     }
 
-    public boolean open() {
-        try {
-            this.db = Iq80DBFactory.factory.open( new File( this.worldFolder, "db" ), new Options().blockSize( 1024 * 1024 * 1024 ).createIfMissing( true ) );
-            return true;
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
-        return false;
+    public Block getBlock( Vector vector, int layer, Dimension dimension ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        return chunk.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer );
     }
 
-    public void close() {
-        try {
-            this.db.close();
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
-        }
+    public Block getBlock( Vector vector, int layer ) {
+        return this.getBlock( vector, layer, Dimension.OVERWORLD );
     }
 
-    public synchronized Generator getGenerator( Dimension dimension ) {
-        return this.generators.get( dimension ).get();
+    public Block getBlock( Vector vector ) {
+        return this.getBlock( vector, 0, vector.getDimension());
     }
 
-    public boolean loadChunk( Chunk chunk ) {
-        try {
-            byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
-            if ( version == null ) {
-                version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x76 ) );
-            }
-
-            if ( version == null ) {
-                return false;
-            }
-
-            byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
-            chunk.setPopulated( finalized == null || finalized[0] == 2 );
-            chunk.setGenerated( true );
-
-            for ( int sectionY = chunk.getMinY() >> 4; sectionY < chunk.getMaxY() >> 4; sectionY++ ) {
-                byte[] chunkData = this.db.get( Utils.getSubChunkKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2f, (byte) sectionY ) );
-
-                if ( chunkData != null ) {
-                    LevelDB.loadSection( chunk.getSubChunk( sectionY << 4 ), chunkData );
-                }
-            }
-
-            byte[] blockEntities = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 ) );
-            if ( blockEntities != null ) {
-                LevelDB.loadBlockEntities( chunk, blockEntities );
-            }
-
-            byte[] heightAndBiomes = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2b ) );
-            if ( heightAndBiomes != null ) {
-                LevelDB.loadHeightAndBiomes( chunk, heightAndBiomes );
-            }
-            return true;
-        } catch ( Throwable e ) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public ChunkManager getChunkManager( Dimension dimension ) {
-        return this.chunkManagers.get( dimension );
-    }
-
-    public synchronized Collection<Chunk> getChunks( Dimension dimension ) {
-        return this.chunkManagers.get( dimension ).getLoadedChunks();
-    }
-
-    public synchronized Chunk getChunk( int x, int z, Dimension dimension ) {
-        return this.chunkManagers.get( dimension ).getChunk( x, z );
-    }
-
-    public synchronized Chunk getLoadedChunk( int x, int z, Dimension dimension ) {
-        return this.chunkManagers.get( dimension ).getLoadedChunk( x, z );
-    }
-
-    public synchronized CompletableFuture<Chunk> getChunkFuture( int x, int z, Dimension dimension ) {
-        return this.chunkManagers.get( dimension ).getChunkFuture( x, z );
-    }
-
-    public synchronized CompletableFuture<Chunk> getChunkFuture( int x, int z, Dimension dimension, boolean load, boolean generate, boolean populate ) {
-        return this.chunkManagers.get( dimension ).getChunkFuture( x, z, load, generate, populate );
-    }
-
-    public synchronized void addChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> Collections.synchronizedSet( new HashSet<>() ) ).add( chunkLoader );
-    }
-
-    public synchronized void removeChunkLoader( int chunkX, int chunkZ, Dimension dimension, ChunkLoader chunkLoader ) {
-        this.chunkLoaders.computeIfAbsent( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ), k -> Collections.synchronizedSet( new HashSet<>() ) ).remove( chunkLoader );
-    }
-
-    public synchronized Collection<ChunkLoader> getChunkLoaders( int chunkX, int chunkZ, Dimension dimension ) {
-        return this.chunkLoaders.get( new Pair<>( dimension, Utils.toLong( chunkX, chunkZ ) ) );
-    }
-
-    public synchronized void clearChunks() {
-        for ( ChunkManager chunkManager : this.chunkManagers.values() ) {
-            chunkManager.close();
-        }
-    }
-
-    public int getBlockRuntimeId( int x, int y, int z, int layer, Dimension dimension ) {
-        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
-        return chunk.getBlock( x, y, z, layer ).getRuntimeId();
+    public Block getBlock( Vector vector, Dimension dimension ) {
+        return this.getBlock( vector, 0, dimension );
     }
 
     public Block getBlock( int x, int y, int z, int layer, Dimension dimension ) {
-        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
-        return chunk.getBlock( x, y, z, layer );
+        return this.getBlock( new Vector( x, y, z ), layer, dimension );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
         return this.getBlock( x, y, z, layer, Dimension.OVERWORLD );
     }
 
-    public Block getBlock( Vector vector ) {
-        return this.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), 0, vector.getDimension() );
+    public Block getBlock( int x, int y, int z ) {
+        return this.getBlock( x, y, z, 0 );
     }
 
-    public Block getBlock( Vector vector, int layer ) {
-        return this.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, vector.getDimension() );
-    }
+    public void setBlock( Vector vector, Block block, int layer, Dimension dimension, boolean updateBlock ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        chunk.setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
+        chunk.setDirty( true );
 
-    public void setBlock( Vector location, Block block ) {
-        this.setBlock( location, block, 0, location.getDimension(), true );
-    }
-
-    public void setBlock( int x, int y, int z, Block block, int layer ) {
-        this.setBlock( new Vector( x, y, z ), block, layer );
-    }
-
-    public void setBlock( Vector vector, Block block, int layer ) {
-        this.setBlock( vector, block, layer, Dimension.OVERWORLD, true );
-    }
-
-    public void setBlock( Vector location, Block block, int layer, boolean updateBlock ) {
-        this.setBlock( location, block, layer, location.getDimension(), updateBlock );
-    }
-
-    public void setBlock( Vector location, Block block, int layer, Dimension dimension, boolean updateBlock ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        boolean dirty = chunk.isDirty();
-        chunk.setBlock( location.getBlockX(), location.getBlockY(), location.getBlockZ(), layer, block );
-        chunk.setDirty( dirty );
-        if ( !chunk.isChanged() ) {
-            chunk.setChanged( true );
-        }
-
-        Location blockLocation = new Location( this, location );
-        blockLocation.setDimension( dimension );
-        block.setLocation( blockLocation );
+        Location location = new Location( this, vector, dimension );
+        block.setLocation( location );
         block.setLayer( layer );
 
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setBlockPosition( location.toVector3i() );
+        updateBlockPacket.setBlockPosition( vector.toVector3i() );
         updateBlockPacket.setRuntimeId( block.getRuntimeId() );
         updateBlockPacket.setDataLayer( layer );
         updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        this.sendDimensionPacket( updateBlockPacket, location.getDimension() );
+        this.sendChunkPacket( vector.getChunkX(), vector.getChunkZ(), updateBlockPacket );
 
-        if ( !block.hasBlockEntity() ) {
-            chunk.removeBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
+        if ( block.getBlockEntity() != null ) {
+            this.removeBlockEntity( vector, dimension );
         }
 
         if ( updateBlock ) {
             block.onUpdate( UpdateReason.NORMAL );
-            this.getBlock( location, layer == 0 ? 1 : 0 ).onUpdate( UpdateReason.NORMAL );
-            this.updateBlockAround( location );
+            this.getBlock( vector, layer == 0 ? 1 : 0 ).onUpdate( UpdateReason.NORMAL );
+            this.updateBlockAround( vector );
 
             long next;
             for ( BlockFace blockFace : BlockFace.values() ) {
@@ -575,122 +292,142 @@ public class World {
         }
     }
 
-    public void scheduleBlockUpdate( Location location, long delay ) {
-        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
+    public void setBlock( Vector vector, Block block, int layer, Dimension dimension ) {
+        this.setBlock( vector, block, layer, dimension, true );
     }
 
-    public void updateBlockAround( Vector location ) {
-        Block block = this.getBlock( location );
-        for ( BlockFace blockFace : BlockFace.values() ) {
-            Block blockLayer0 = block.getSide( blockFace, 0 );
-            Block blockLayer1 = block.getSide( blockFace, 1 );
-            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer0, blockFace ) );
-            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer1, blockFace ) );
-        }
+    public void setBlock( Vector vector, Block block, int layer ) {
+        this.setBlock( vector, block, layer, vector.getDimension() );
     }
 
-    public void breakBlock( Player player, Vector breakPosition, Item item ) {
-        Block breakBlock = this.getBlock( breakPosition );
-
-        if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
-            breakBlock.sendBlockUpdate( player );
-            return;
-        }
-        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, breakBlock, breakBlock.getDrops( item ) );
-        Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
-
-        if ( blockBreakEvent.isCancelled() ) {
-            breakBlock.sendBlockUpdate( player );
-            return;
-        }
-
-        if ( breakBlock.onBlockBreak( breakPosition ) && breakBlock.canBreakWithHand() ) {
-            BlockEntity blockEntity = this.getBlockEntity( breakPosition, breakPosition.getDimension() );
-            if ( blockEntity != null ) {
-                this.removeBlockEntity( breakPosition, breakPosition.getDimension() );
-            }
-        }
-
-        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-            if ( item instanceof Durability ) {
-                item.updateItem( player, 1 );
-            }
-            player.exhaust( 0.025f );
-
-            List<EntityItem> itemDrops = new ArrayList<>();
-            for ( Item droppedItem : blockBreakEvent.getDrops() ) {
-                if ( !droppedItem.getType().equals( ItemType.AIR ) ) {
-                    itemDrops.add( player.getWorld().dropItem( droppedItem, breakPosition, null ) );
-                }
-            }
-            if ( !itemDrops.isEmpty() ) {
-                itemDrops.forEach( Entity::spawn );
-            }
-        }
-
-        Block block = blockBreakEvent.getBlock();
-        breakBlock.playBlockBreakSound();
-        this.sendLevelEvent( breakPosition, LevelEventType.PARTICLE_DESTROY_BLOCK, block.getRuntimeId() );
+    public void setBlock( Vector vector, Block block ) {
+        this.setBlock( vector, block, 0, vector.getDimension());
     }
 
-    public Biome getBiome( int x, int y, int z ) {
-        return this.getBiome( x, y, z, Dimension.OVERWORLD );
+    public void setBlock( int x, int y, int z, int layer, Block block, Dimension dimension ) {
+        this.setBlock( new Vector( x, y, z ), block, layer, dimension );
     }
 
-    public Biome getBiome( int x, int y, int z, Dimension dimension ) {
-        return this.getChunk( x >> 4, z >> 4, dimension ).getBiome( x, y, z );
+    public void setBlock( int x, int y, int z, int layer, Block block ) {
+        this.setBlock( x, y, z, layer, block, Dimension.OVERWORLD );
     }
 
-    public BlockEntity getBlockEntity( Vector location, Dimension dimension ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        return chunk.getBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
+    public void setBlock( int x, int y, int z, Block block ) {
+        this.setBlock( x, y, z, 0, block );
     }
 
-    public void setBlockEntity( Vector location, BlockEntity blockEntity, Dimension dimension ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        chunk.setBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ(), blockEntity );
+    public BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        return chunk.getBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public void removeBlockEntity( Vector location, Dimension dimension ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        chunk.removeBlockEntity( location.getBlockX(), location.getBlockY(), location.getBlockZ() );
+    public BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
+        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        return chunk.getBlockEntity( x, y, z );
     }
 
-    public Collection<BlockEntity> getBlockEntities( Vector location, Dimension dimension ) {
-        Chunk chunk = this.getChunk( location.getBlockX() >> 4, location.getBlockZ() >> 4, dimension );
-        return chunk.getBlockEntities();
+    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity, Dimension dimension ) {
+        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        chunk.setBlockEntity( x, y, z, blockEntity );
+    }
+
+    public void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        chunk.setBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), blockEntity );
+    }
+
+    public void removeBlockEntity( Vector vector, Dimension dimension ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        chunk.removeBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
+    }
+
+    public void removeBlockEntity( int x, int y, int z, Dimension dimension ) {
+        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        chunk.removeBlockEntity( x, y, z );
     }
 
     public Collection<BlockEntity> getBlockEntities( Dimension dimension ) {
-        Set<BlockEntity> blockEntities = new HashSet<>();
-        for ( Chunk chunk : this.getChunks( dimension ) ) {
-            blockEntities.addAll( chunk.getBlockEntities() );
+        Set<BlockEntity> blockEntities = new LinkedHashSet<>();
+        for ( Chunk loadedChunk : this.chunkManagers.get( dimension ).getLoadedChunks() ) {
+            blockEntities.addAll( loadedChunk.getBlockEntities() );
         }
         return blockEntities;
     }
 
-    public void sendLevelEvent( Vector position, LevelEventType levelEventType ) {
-        this.sendLevelEvent( null, position, levelEventType, 0 );
+    public Biome getBiome( Vector vector, Dimension dimension ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        return chunk.getBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType ) {
-        this.sendLevelEvent( player, position, levelEventType, 0 );
+    public void setBiome( Vector vector, Dimension dimension, Biome biome ) {
+        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        chunk.setBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), biome );
     }
 
-    public void sendLevelEvent( Vector position, LevelEventType levelEventType, int data ) {
-        this.sendLevelEvent( null, position, levelEventType, data );
+    public void setBiome( int x, int y, int z, Dimension dimension, Biome biome ) {
+        this.setBiome( new Vector( x, y, z ), dimension, biome );
     }
 
-    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType, int data ) {
-        LevelEventPacket levelEventPacket = new LevelEventPacket();
-        levelEventPacket.setPosition( position.toVector3f() );
-        levelEventPacket.setType( levelEventType );
-        levelEventPacket.setData( data );
+    public void setBiome( Vector vector, Biome biome ) {
+        this.setBiome( vector, Dimension.OVERWORLD, biome );
+    }
 
-        if ( player != null ) {
-            player.sendPacket( levelEventPacket );
-        } else {
-            this.sendChunkPacket( position.getBlockX() >> 4, position.getBlockZ() >> 4, levelEventPacket );
+    public void setBiome( int x, int y, int z, Biome biome ) {
+        this.setBiome( new Vector( x, y, z ), biome );
+    }
+
+    public synchronized boolean isChunkLoaded( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).isChunkLoaded( chunkX, chunkZ );
+    }
+
+    public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getChunk( chunkX, chunkZ );
+    }
+
+    public synchronized Chunk getLoadedChunk( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunk( chunkX, chunkZ );
+    }
+
+    public synchronized Chunk getLoadedChunk( Vector vector, Dimension dimension ) {
+        return this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+    }
+
+    public synchronized Chunk getLoadedChunk( long hash, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunk( hash );
+    }
+
+    public CompletableFuture<Chunk> getChunkFuture( int chunkX, int chunkZ, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getChunkFuture( chunkX, chunkZ );
+    }
+
+    public Set<Chunk> getChunks( Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunks();
+    }
+
+    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+        return this.levelDB.saveChunk( chunk );
+    }
+
+    public CompletableFuture<Void> saveChunks( Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).saveChunks();
+    }
+
+    public CompletableFuture<Chunk> readChunk( Chunk chunk ) {
+        return this.levelDB.readChunk( chunk );
+    }
+
+    public Set<Player> getChunkPlayers( int chunkX, int chunkZ, Dimension dimension ) {
+        Chunk chunk = this.getLoadedChunk( chunkX, chunkZ, dimension );
+        return chunk == null ? ImmutableSet.of() : new HashSet<>( chunk.getPlayers() );
+    }
+
+    public void sendChunkPacket( int chunkX, int chunkZ, BedrockPacket packet ) {
+        for ( Entity entity : this.entities.values() ) {
+            if ( entity instanceof Player player ) {
+                if ( player.isChunkLoaded( chunkX, chunkZ ) ) {
+                    player.getPlayerConnection().sendPacket( packet );
+                }
+            }
         }
     }
 
@@ -730,7 +467,7 @@ public class World {
         if ( player == null ) {
             this.sendChunkPacket( position.getChunkX(), position.getChunkZ(), levelSoundEventPacket );
         } else {
-            player.sendPacket( levelSoundEventPacket );
+            player.getPlayerConnection().sendPacket( levelSoundEventPacket );
         }
     }
 
@@ -753,45 +490,35 @@ public class World {
         levelEventPacket.setPosition( position.toVector3f() );
 
         if ( player != null ) {
-            player.sendPacket( levelEventPacket );
+            player.getPlayerConnection().sendPacket( levelEventPacket );
         } else {
             this.sendChunkPacket( position.getChunkX(), position.getChunkZ(), levelEventPacket );
         }
     }
 
-    public Collection<Entity> getNearbyEntities( AxisAlignedBB bb, Dimension dimension, Entity entity ) {
-        Set<Entity> targetEntity = new HashSet<>();
+    public void sendLevelEvent( Vector position, LevelEventType levelEventType ) {
+        this.sendLevelEvent( null, position, levelEventType, 0 );
+    }
 
-        int minX = (int) FastMath.floor( ( bb.getMinX() - 2 ) / 16 );
-        int maxX = (int) FastMath.ceil( ( bb.getMaxX() + 2 ) / 16 );
-        int minZ = (int) FastMath.floor( ( bb.getMinZ() - 2 ) / 16 );
-        int maxZ = (int) FastMath.ceil( ( bb.getMaxZ() + 2 ) / 16 );
+    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType ) {
+        this.sendLevelEvent( player, position, levelEventType, 0 );
+    }
 
-        for ( int x = minX; x <= maxX; ++x ) {
-            for ( int z = minZ; z <= maxZ; ++z ) {
-                Chunk chunk = this.getLoadedChunk( x, z, dimension );
-                if ( chunk != null ) {
-                    for ( Entity iterateEntities : chunk.getEntities() ) {
-                        if ( iterateEntities == null ) {
-                            continue;
-                        }
-                        if ( !iterateEntities.equals( entity ) ) {
-                            AxisAlignedBB boundingBox = iterateEntities.getBoundingBox();
-                            if ( boundingBox.intersectsWith( bb ) ) {
-                                if ( entity != null ) {
-                                    if ( entity.canCollideWith( iterateEntities ) ) {
-                                        targetEntity.add( iterateEntities );
-                                    }
-                                } else {
-                                    targetEntity.add( iterateEntities );
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    public void sendLevelEvent( Vector position, LevelEventType levelEventType, int data ) {
+        this.sendLevelEvent( null, position, levelEventType, data );
+    }
+
+    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType, int data ) {
+        LevelEventPacket levelEventPacket = new LevelEventPacket();
+        levelEventPacket.setPosition( position.toVector3f() );
+        levelEventPacket.setType( levelEventType );
+        levelEventPacket.setData( data );
+
+        if ( player != null ) {
+            player.getPlayerConnection().sendPacket( levelEventPacket );
+        } else {
+            this.sendChunkPacket( position.getChunkX(), position.getChunkZ(), levelEventPacket );
         }
-        return targetEntity;
     }
 
     private Vector getRelative( Vector blockPosition, Vector position ) {
@@ -812,98 +539,52 @@ public class World {
         };
     }
 
-    public boolean useItemOn( Player player, Vector blockPosition, Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
-        Block clickedBlock = this.getBlock( blockPosition );
-
-        if ( clickedBlock instanceof BlockAir ) {
-            return false;
-        }
-
-        Item itemInHand = player.getInventory().getItemInHand();
-        Block replacedBlock = this.getBlock( placePosition );
-        Block placedBlock = itemInHand.getBlock();
-
-        Location location = new Location( this, placePosition );
-        location.setDimension( player.getDimension() );
-        placedBlock.setLocation( location );
-
-        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player,
-                clickedBlock.getType().equals( BlockType.AIR ) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR :
-                        PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, player.getInventory().getItemInHand(), clickedBlock );
-
-        Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
-
-        boolean interact = false;
-        if ( !player.isSneaking() ) {
-            if ( !playerInteractEvent.isCancelled() ) {
-                interact = clickedBlock.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
-            }
-        }
-
-        boolean itemInteract = itemInHand.interact( player, blockFace, clickedPosition, clickedBlock );
-
-
-        if ( !interact && itemInHand.useOnBlock( player, clickedBlock, location ) ) {
-            return true;
-        }
-
-        if ( itemInHand instanceof ItemAir ) {
-            return interact;
-        }
-
-        if ( ( !interact && !itemInteract ) || player.isSneaking() ) {
-            if ( clickedBlock.canBeReplaced( placedBlock ) ) {
-                placePosition = blockPosition;
-            } else if ( !( replacedBlock.canBeReplaced( placedBlock ) || ( player.getInventory().getItemInHand().getBlock() instanceof BlockSlab && replacedBlock instanceof BlockSlab ) ) ) {
-                return false;
-            }
-
-            if ( placedBlock.isSolid() ) {
-                Collection<Entity> nearbyEntities = this.getNearbyEntities( placedBlock.getBoundingBox(), location.getDimension(), null );
-                if ( !nearbyEntities.isEmpty() ) {
-                    return false;
-                }
-                AxisAlignedBB boundingBox = player.getBoundingBox();
-                if ( placedBlock.getBoundingBox().intersectsWith( boundingBox ) ) {
-                    return false;
-                }
-            }
-
-            if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
-                return false;
-            }
-
-            BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent( player, placedBlock, replacedBlock, clickedBlock );
-            Server.getInstance().getPluginManager().callEvent( blockPlaceEvent );
-
-            if ( blockPlaceEvent.isCancelled() ) {
-                return false;
-            }
-            boolean success = blockPlaceEvent.getPlacedBlock().placeBlock( player, this, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-            if ( success ) {
-                if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
-                    Item resultItem = itemInHand.setAmount( itemInHand.getAmount() - 1 );
-                    if ( itemInHand.getAmount() != 0 ) {
-                        player.getInventory().setItemInHand( resultItem );
-                    } else {
-                        player.getInventory().setItemInHand( new ItemAir() );
-                    }
-                    player.getInventory().sendContents( player.getInventory().getItemInHandSlot(), player );
-                }
-                this.playSound( placePosition, SoundEvent.PLACE, placedBlock.getRuntimeId() );
-            }
-            return success;
-        }
-        return true;
+    public void close() {
+        this.levelDB.close();
     }
 
-    public List<AxisAlignedBB> getCollisionCubes( Entity entity, AxisAlignedBB bb, boolean includeEntities ) {
-        int minX = (int) FastMath.floor( bb.getMinX() );
-        int minY = (int) FastMath.floor( bb.getMinY() );
-        int minZ = (int) FastMath.floor( bb.getMinZ() );
-        int maxX = (int) FastMath.ceil( bb.getMaxX() );
-        int maxY = (int) FastMath.ceil( bb.getMaxY() );
-        int maxZ = (int) FastMath.ceil( bb.getMaxZ() );
+    public Collection<Entity> getNearbyEntities( AxisAlignedBB boundingBox, Dimension dimension, Entity entity ) {
+        Set<Entity> targetEntity = new HashSet<>();
+
+        int minX = (int) FastMath.floor( ( boundingBox.getMinX() - 2 ) / 16 );
+        int maxX = (int) FastMath.ceil( ( boundingBox.getMaxX() + 2 ) / 16 );
+        int minZ = (int) FastMath.floor( ( boundingBox.getMinZ() - 2 ) / 16 );
+        int maxZ = (int) FastMath.ceil( ( boundingBox.getMaxZ() + 2 ) / 16 );
+
+        for ( int x = minX; x <= maxX; ++x ) {
+            for ( int z = minZ; z <= maxZ; ++z ) {
+                Chunk chunk = this.getLoadedChunk( x, z, dimension );
+                if ( chunk != null ) {
+                    for ( Entity iterateEntities : chunk.getEntities() ) {
+                        if ( iterateEntities == null ) {
+                            continue;
+                        }
+                        if ( !iterateEntities.equals( entity ) ) {
+                            AxisAlignedBB bb = iterateEntities.getBoundingBox();
+                            if ( bb.intersectsWith( boundingBox ) ) {
+                                if ( entity != null ) {
+                                    if ( entity.canCollideWith( iterateEntities ) ) {
+                                        targetEntity.add( iterateEntities );
+                                    }
+                                } else {
+                                    targetEntity.add( iterateEntities );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return targetEntity;
+    }
+
+    public List<AxisAlignedBB> getCollisionCubes( Entity entity, AxisAlignedBB boundingBox, boolean includeEntities ) {
+        int minX = (int) FastMath.floor( boundingBox.getMinX() );
+        int minY = (int) FastMath.floor( boundingBox.getMinY() );
+        int minZ = (int) FastMath.floor( boundingBox.getMinZ() );
+        int maxX = (int) FastMath.ceil( boundingBox.getMaxX() );
+        int maxY = (int) FastMath.ceil( boundingBox.getMaxY() );
+        int maxZ = (int) FastMath.ceil( boundingBox.getMaxZ() );
 
         List<AxisAlignedBB> collides = new ArrayList<>();
 
@@ -911,7 +592,7 @@ public class World {
             for ( int x = minX; x <= maxX; ++x ) {
                 for ( int y = minY; y <= maxY; ++y ) {
                     Block block = this.getBlock( new Vector( x, y, z ), 0 );
-                    if ( !block.canPassThrough() && block.getBoundingBox().intersectsWith( bb ) ) {
+                    if ( !block.canPassThrough() && block.getBoundingBox().intersectsWith( boundingBox ) ) {
                         collides.add( block.getBoundingBox() );
                     }
                 }
@@ -919,7 +600,7 @@ public class World {
         }
 
         if ( includeEntities ) {
-            for ( Entity nearbyEntity : this.getNearbyEntities( bb.grow( 0.25f, 0.25f, 0.25f ), entity.getDimension(), entity ) ) {
+            for ( Entity nearbyEntity : this.getNearbyEntities( boundingBox.grow( 0.25f, 0.25f, 0.25f ), entity.getDimension(), entity ) ) {
                 if ( !nearbyEntity.canPassThrough() ) {
                     collides.add( nearbyEntity.getBoundingBox().clone() );
                 }
@@ -929,13 +610,29 @@ public class World {
         return collides;
     }
 
+    public void scheduleBlockUpdate( Location location, long delay ) {
+        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
+    }
+
+    public void updateBlockAround( Vector location ) {
+        Block block = this.getBlock( location );
+        for ( BlockFace blockFace : BlockFace.values() ) {
+            Block blockLayer0 = block.getSide( blockFace, 0 );
+            Block blockLayer1 = block.getSide( blockFace, 1 );
+            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer0, blockFace ) );
+            this.blockUpdateNormals.add( new BlockUpdateNormal( blockLayer1, blockFace ) );
+        }
+    }
+
     public EntityItem dropItem( Item item, Vector location, Vector velocity ) {
         if ( velocity == null ) {
-            velocity = new Vector( ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f,
-                    0.2f, ThreadLocalRandom.current().nextFloat() * 0.2f - 0.1f );
+            velocity = new Vector(
+                    (float) ( ThreadLocalRandom.current().nextDouble() * 0.2f - 0.1f ),
+                    0.2f,
+                    (float) ( ThreadLocalRandom.current().nextDouble() * 0.2f - 0.1f ) );
         }
 
-        EntityItem entityItem = new EntityItem();
+        EntityItem entityItem = Entity.create( EntityType.ITEM );
         entityItem.setItem( item );
         entityItem.setVelocity( velocity, false );
         entityItem.setLocation( new Location( this, location ) );
@@ -943,116 +640,21 @@ public class World {
         return entityItem;
     }
 
-    public Entity getEntity( long entityId ) {
-        return this.entities.get( entityId );
-    }
-
     public void sendWorldPacket( BedrockPacket packet ) {
         for ( Player player : this.getPlayers() ) {
-            player.sendPacket( packet );
+            player.getPlayerConnection().sendPacket( packet );
         }
     }
 
     public void sendDimensionPacket( BedrockPacket packet, Dimension dimension ) {
         for ( Player player : this.getPlayers() ) {
             if ( player.getDimension().equals( dimension ) ) {
-                player.sendPacket( packet );
+                player.getPlayerConnection().sendPacket( packet );
             }
         }
     }
 
-    public void sendChunkPacket( int chunkX, int chunkZ, BedrockPacket packet ) {
-        for ( Player player : this.getPlayers() ) {
-            if ( player != null ) {
-                if ( player.isChunkLoaded( chunkX, chunkZ ) ) {
-                    player.sendPacket( packet );
-                }
-            }
-        }
-    }
-
-    public void sendBlockUpdate( Block block ) {
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( block.getRuntimeId() );
-        updateBlockPacket.setBlockPosition( block.getLocation().toVector3i() );
-        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setDataLayer( block.getLayer() );
-        this.sendDimensionPacket( updateBlockPacket, block.getLocation().getDimension() );
-    }
-
-    public void sendBlockUpdate( Player player, int runtimeId, Vector location, int layer ) {
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( runtimeId );
-        updateBlockPacket.setBlockPosition( location.toVector3i() );
-        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setDataLayer( layer );
-        player.sendPacket( updateBlockPacket );
-    }
-
-    public void sendBlockUpdate( Set<Player> players, int runtimeId, Vector vector, int layer ) {
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( runtimeId );
-        updateBlockPacket.setBlockPosition( vector.toVector3i() );
-        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setDataLayer( layer );
-
-        for ( Player player : players ) {
-            player.sendPacket( updateBlockPacket );
-        }
-    }
-
-    public CompletableFuture<Void> save() {
-        return this.saveChunks();
-    }
-
-    public void save( boolean sync ) {
-        CompletableFuture<Void> chunksFuture = this.saveChunks();
-
-        if ( sync ) {
-            chunksFuture.join();
-        }
-    }
-
-    public synchronized CompletableFuture<Void> saveChunks() {
-        List<CompletableFuture<?>> futures = new ArrayList<>();
-
-        for ( Chunk chunk : this.getChunks( Dimension.OVERWORLD ) ) {
-            if ( chunk != null && chunk.isChanged() ) {
-                futures.add( saveChunk( chunk ) );
-            }
-        }
-
-        return CompletableFuture.allOf( futures.toArray( new CompletableFuture[0] ) );
-    }
-
-    public CompletableFuture<Boolean> saveChunk( Chunk chunk ) {
-        if ( !chunk.isDirty() ) {
-            return chunk.save( this.db ).exceptionally( throwable -> {
-                throwable.printStackTrace();
-                return null;
-            } );
-        }
-        return CompletableFuture.completedFuture( null );
-    }
-
-    public void save0() {
-        for ( Dimension dimension : Dimension.values() ) {
-            Collection<Chunk> chunks = this.getChunks( dimension );
-            for ( Chunk chunk : chunks ) {
-                chunk.save0( this.db, false );
-            }
-        }
-        if ( this.autoSave ) {
-            if ( this.showAutoSaveMessage ) {
-                Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
-            }
-        } else {
-            Server.getInstance().getLogger().info( "The world \"" + this.name + "\" was saved successfully" );
-        }
-        this.saveLevelDatFile();
-    }
-
-    public DB getDb() {
-        return this.db;
+    public Entity getEntity( long entityId ) {
+        return this.entities.get( entityId );
     }
 }

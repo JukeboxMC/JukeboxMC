@@ -29,7 +29,7 @@ public class ShapelessRecipe extends Recipe {
     public ShapelessRecipe addIngredient( Item... items ) {
         List<ItemDescriptorWithCount> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
-            itemDataList.add( item.toItemDescriptorWithCount() );
+            itemDataList.add( ItemDescriptorWithCount.fromItem( item.toItemData() ) );
         }
         this.ingredients.addAll( itemDataList );
         return this;
@@ -38,7 +38,7 @@ public class ShapelessRecipe extends Recipe {
     public ShapelessRecipe addOutput( Item... items ) {
         List<ItemData> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
-            itemDataList.add( item.toNetwork() );
+            itemDataList.add( item.toItemData() );
         }
         this.outputs.addAll( itemDataList );
         return this;
@@ -58,7 +58,7 @@ public class ShapelessRecipe extends Recipe {
                 UUID.randomUUID(),
                 "crafting_table",
                 1,
-                0xDEADBEEF
+                craftingManager.getHighestNetworkId() + 1
         );
     }
 

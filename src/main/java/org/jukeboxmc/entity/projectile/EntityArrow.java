@@ -6,9 +6,11 @@ import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.event.player.PlayerPickupItemEvent;
-import org.jukeboxmc.item.ItemArrow;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.Identifier;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +18,8 @@ import java.util.concurrent.TimeUnit;
  * @author LucGamesYT
  * @version 1.0
  */
-public class EntityArrow extends EntityProjectile {
+public class EntityArrow extends EntityProjectile{
+
     private long pickupDelay;
     private boolean canBePickedUp;
     private boolean wasInfinityArrow;
@@ -55,14 +58,19 @@ public class EntityArrow extends EntityProjectile {
     }
 
     @Override
-    public EntityType getEntityType() {
+    public EntityType getType() {
         return EntityType.ARROW;
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return Identifier.fromString( "minecraft:arrow" );
     }
 
     @Override
     public void onCollideWithPlayer( Player player ) {
         if ( Server.getInstance().getCurrentTick() > this.pickupDelay && this.canBePickedUp && !this.closed && !player.isDead() ) {
-            ItemArrow arrow = new ItemArrow();
+            Item arrow = Item.create( ItemType.ARROW );
 
             if ( !player.getInventory().canAddItem( arrow ) ) {
                 return;
@@ -83,7 +91,6 @@ public class EntityArrow extends EntityProjectile {
         }
     }
 
-
     @Override
     protected void applyCustomKnockback( Entity hitEntity ) {
         if ( this.punchModifier > 0 ) {
@@ -103,7 +110,7 @@ public class EntityArrow extends EntityProjectile {
     @Override
     protected void applyCustomDamageEffects( Entity hitEntity ) {
         if ( this.flameModifier > 0 && hitEntity instanceof EntityLiving ) {
-            ( (EntityLiving) hitEntity ).setBurning( 5, TimeUnit.SECONDS );
+            hitEntity.setBurning( 5, TimeUnit.SECONDS );
         }
     }
 

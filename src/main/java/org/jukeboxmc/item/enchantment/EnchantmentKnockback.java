@@ -16,8 +16,4 @@ public class EnchantmentKnockback extends Enchantment {
         return 2;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

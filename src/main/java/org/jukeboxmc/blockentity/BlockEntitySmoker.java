@@ -12,12 +12,12 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntitySmoker extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntitySmoker extends BlockEntity implements InventoryHolder {
 
     private final SmokerInventory smokerInventory;
 
-    public BlockEntitySmoker( Block block ) {
-        super( block );
+    public BlockEntitySmoker( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.smokerInventory = new SmokerInventory( this );
     }
 

@@ -6,7 +6,17 @@ package org.jukeboxmc.world;
  */
 public enum Dimension {
 
-    OVERWORLD,
-    NETHER,
-    THE_END;
+    OVERWORLD( "Overworld" ),
+    NETHER( "Nether" ),
+    THE_END( "The End" );
+
+    private final String name;
+
+    Dimension( String name ) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }

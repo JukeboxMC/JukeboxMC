@@ -6,8 +6,6 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.Bootstrap;
-import org.jukeboxmc.block.BlockPalette;
-import org.jukeboxmc.item.Item;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,57 +19,55 @@ import java.util.*;
  */
 public class CreativeItems {
 
-    private static final List<ItemData> CREATIVE_ITEMS = new ArrayList<>();
+    private static final List<ItemData> CREATIVE_ITEMS = new LinkedList<>();
+    private static final Map<Integer, Identifier> IDENTIFIER_BY_NETWORK_ID = new LinkedHashMap<>();
 
     public static void init() {
         Gson GSON = new Gson();
-        try ( InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "creative_items.json" ) ) ) {
-            InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
-            Map<String, List<Map<String, Object>>> itemEntries = GSON.fromJson( inputStreamReader, Map.class );
-
+        try ( final InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "creative_items.json" ) ) ) {
+            final InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
+            Map<String, List<Map<String, Object>>> itemEntries = GSON.<Map<String, List<Map<String, Object>>>>fromJson( inputStreamReader, Map.class );
             int netIdCounter = 0;
             for ( Map<String, Object> itemEntry : itemEntries.get( "items" ) ) {
-                Item item;
-                String identifier = (String) itemEntry.get( "id" );
-
-                if ( itemEntry.containsKey( "block_state_b64" ) ) {
-                    String nbtTag = (String) itemEntry.get( "block_state_b64" );
-
-                    try ( NBTInputStream nbtReader = NbtUtils.createReaderLE( new ByteArrayInputStream( Base64.getDecoder().decode( nbtTag.getBytes() ) ) ) ) {
-                        item = get( identifier, BlockPalette.getRuntimeId( (NbtMap) nbtReader.readTag() ) );
-                    }
+                final ItemData.Builder item;
+                final Identifier identifier = Identifier.fromString( (String) itemEntry.get( "id" ) );
+                if ( itemEntry.containsKey( "blockRuntimeId" ) ) {
+                    item = toItemData( identifier, (int) (double) itemEntry.get( "blockRuntimeId" ) );
                 } else {
-                    item = get( identifier );
+                    item = toItemData( identifier, 0 );
                 }
-
                 if ( itemEntry.containsKey( "damage" ) ) {
-                    item.setMeta( (short) (double) itemEntry.get( "damage" ) );
+                    item.damage( (short) (double) itemEntry.get( "damage" ) );
                 }
-                String nbtTag = (String) itemEntry.get( "nbt_b64" );
-                if ( nbtTag != null )
-                    try ( NBTInputStream nbtReader = NbtUtils.createReaderLE( new ByteArrayInputStream( Base64.getDecoder().decode( nbtTag.getBytes() ) ) ) ) {
-                        item.setNBT( (NbtMap) nbtReader.readTag() );
+                final String nbtTag = (String) itemEntry.get( "nbt_b64" );
+                if ( nbtTag != null ) {
+                    try ( final NBTInputStream nbtReader = NbtUtils.createReaderLE( new ByteArrayInputStream( Base64.getDecoder().decode( nbtTag.getBytes() ) ) ) ) {
+                        item.tag( (NbtMap) nbtReader.readTag() );
                     }
-                CREATIVE_ITEMS.add( item.toNetwork( netIdCounter++ ) );
+                }
+                netIdCounter++;
+                IDENTIFIER_BY_NETWORK_ID.put( netIdCounter, identifier );
+                CREATIVE_ITEMS.add( item.netId( netIdCounter ).build() );
             }
         } catch ( IOException e ) {
-            e.printStackTrace();
+            throw new RuntimeException( e );
         }
     }
 
-    public static Item get( String identifier ) {
-        return Optional.ofNullable( ItemPalette.IDENTIFIER_TO_RUNTIME.get( identifier ) ).
-                map( runtimeId -> new Item( identifier ) ).
-                orElseThrow( () -> new NullPointerException( "No item for " + identifier + " was found" ) );
+    public static List<ItemData> getCreativeItems() {
+        return CREATIVE_ITEMS;
     }
 
-    public static Item get( String identifier, int blockRuntimeId ) {
-        return Optional.ofNullable( ItemPalette.IDENTIFIER_TO_RUNTIME.get( identifier ) ).
-                map( runtimeId -> new Item( identifier, 0, blockRuntimeId ) ).
-                orElseThrow( () -> new NullPointerException( "No item for " + blockRuntimeId + " was found" ) );
+    public static Identifier getIdentifier( int networkId ) {
+        return IDENTIFIER_BY_NETWORK_ID.get( networkId );
     }
 
-    public static ItemData[] getCreativeItems() {
-        return CREATIVE_ITEMS.toArray( new ItemData[0] );
+    private static ItemData.Builder toItemData( Identifier identifier, int blockRuntimeId ) {
+        return ItemData.builder()
+                .id( ItemPalette.getRuntimeId( identifier ) )
+                .blockRuntimeId( blockRuntimeId )
+                .count( 1 )
+                .canPlace( new String[]{} )
+                .canBreak( new String[]{} );
     }
 }

@@ -24,7 +24,7 @@ public class EnderChestInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.ENDER_CHEST;
     }
 
@@ -35,6 +35,7 @@ public class EnderChestInventory extends ContainerInventory {
 
     @Override
     public void onOpen( Player player ) {
+        super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
             blockEventPacket.setBlockPosition( this.position.toVector3i() );
@@ -47,7 +48,7 @@ public class EnderChestInventory extends ContainerInventory {
 
     @Override
     public void onClose( Player player ) {
-        if ( this.viewer.size() == 1 ) {
+        if ( this.viewer.size() == 0 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
             blockEventPacket.setBlockPosition( this.position.toVector3i() );
             blockEventPacket.setEventType( 1 );

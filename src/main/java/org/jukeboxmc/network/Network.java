@@ -2,6 +2,7 @@ package org.jukeboxmc.network;
 
 import com.nukkitx.protocol.bedrock.*;
 import com.nukkitx.protocol.bedrock.v560.Bedrock_v560;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.PlayerConnection;
 
@@ -25,6 +26,7 @@ public class Network implements BedrockServerEventHandler {
     private final BedrockServer bedrockServer;
 
     private final Set<PlayerConnection> connections = new HashSet<>();
+
     private final Predicate<PlayerConnection> removePredicate;
     private final Consumer<PlayerConnection> updater;
 
@@ -37,9 +39,7 @@ public class Network implements BedrockServerEventHandler {
 
         this.removePredicate = PlayerConnection::isClosed;
         this.updater = PlayerConnection::update;
-    }
 
-    public void start() {
         try {
             this.bedrockServer.bind().join();
             this.server.getLogger().info( "Server started successfully at " + this.inetSocketAddress.getHostString() + ":" + this.inetSocketAddress.getPort() + "!" );
@@ -49,17 +49,7 @@ public class Network implements BedrockServerEventHandler {
     }
 
     @Override
-    public boolean onConnectionRequest( InetSocketAddress address ) {
-        return true;
-    }
-
-    @Override
-    public boolean onConnectionRequest( InetSocketAddress address, InetSocketAddress realAddress ) {
-        return true;
-    }
-
-    @Override
-    public BedrockPong onQuery( InetSocketAddress inetSocketAddress ) {
+    public BedrockPong onQuery( @NotNull InetSocketAddress inetSocketAddress ) {
         this.bedrockPong.setEdition( "MCPE" );
         this.bedrockPong.setGameType( this.server.getGameMode().getIdentifier() );
         this.bedrockPong.setMotd( this.server.getMotd() );
@@ -74,11 +64,16 @@ public class Network implements BedrockServerEventHandler {
     }
 
     @Override
-    public void onSessionCreation( BedrockServerSession bedrockServerSession ) {
+    public boolean onConnectionRequest( @NotNull InetSocketAddress address ) {
+        return this.server.getFinishedState().get() && this.server.getRunningState().get();
+    }
+
+    @Override
+    public void onSessionCreation( @NotNull BedrockServerSession bedrockServerSession ) {
         try {
             this.server.addPlayer( this.addPlayer( new PlayerConnection( this.server, bedrockServerSession ) ).getPlayer() );
-        } catch ( Throwable throwable ) {
-            throwable.printStackTrace();
+        } catch ( Throwable e ) {
+            e.printStackTrace();
         }
     }
 

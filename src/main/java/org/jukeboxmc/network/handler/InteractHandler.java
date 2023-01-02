@@ -9,7 +9,6 @@ import org.jukeboxmc.player.Player;
  * @version 1.0
  */
 public class InteractHandler implements PacketHandler<InteractPacket> {
-
     @Override
     public void handle( InteractPacket packet, Server server, Player player ) {
         if ( packet.getAction().equals( InteractPacket.Action.OPEN_INVENTORY ) ) {

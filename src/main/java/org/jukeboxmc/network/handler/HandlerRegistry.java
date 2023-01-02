@@ -15,29 +15,32 @@ public class HandlerRegistry {
     private static final Map<Class<? extends BedrockPacket>, PacketHandler<? extends BedrockPacket>> packetHandlerMap = new HashMap<>();
 
     public static void init() {
+        packetHandlerMap.put( PacketViolationWarningPacket.class, new PacketViolationWarningHandler() );
+        packetHandlerMap.put( RequestNetworkSettingsPacket.class, new RequestNetworkSettingsHandler() );
         packetHandlerMap.put( LoginPacket.class, new LoginHandler() );
         packetHandlerMap.put( ResourcePackClientResponsePacket.class, new ResourcePackClientResponseHandler() );
-        packetHandlerMap.put( PacketViolationWarningPacket.class, new PacketViolationWarningHandler() );
         packetHandlerMap.put( RequestChunkRadiusPacket.class, new RequestChunkRadiusHandler() );
+        packetHandlerMap.put( MovePlayerPacket.class, new PlayerMoveHandler() );
+        packetHandlerMap.put( TextPacket.class, new TextHandler() );
+        packetHandlerMap.put( InventoryTransactionPacket.class, new InventoryTransactionHandler() );
         packetHandlerMap.put( ContainerClosePacket.class, new ContainerCloseHandler() );
         packetHandlerMap.put( InteractPacket.class, new InteractHandler() );
-        packetHandlerMap.put( TextPacket.class, new TextHandler() );
-        packetHandlerMap.put( CommandRequestPacket.class, new CommandRequestHandler() );
-        packetHandlerMap.put( MovePlayerPacket.class, new MovePlayerHandler() );
-        packetHandlerMap.put( PlayerActionPacket.class, new PlayerActionHandler() );
-        packetHandlerMap.put( MobArmorEquipmentPacket.class, new MobArmorEquipmentHandler() );
+        packetHandlerMap.put( ItemStackRequestPacket.class, new ItemStackRequestHandler() );
         packetHandlerMap.put( MobEquipmentPacket.class, new MobEquipmentHandler() );
         packetHandlerMap.put( AnimatePacket.class, new AnimateHandler() );
-        packetHandlerMap.put( InventoryTransactionPacket.class, new InventoryTransactionHandler() );
-        packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
+        packetHandlerMap.put( PlayerActionPacket.class, new PlayerActionHandler() );
         packetHandlerMap.put( RequestAbilityPacket.class, new RequestAbilityHandler() );
+        packetHandlerMap.put( LevelSoundEventPacket.class, new LevelSoundEventHandler() );
         packetHandlerMap.put( BlockPickRequestPacket.class, new BlockPickRequestHandler() );
-        packetHandlerMap.put( EntityEventPacket.class, new EntityEventHandler() );
+        packetHandlerMap.put( BlockEntityDataPacket.class, new BlockEntityDataHandler() );
+        packetHandlerMap.put( CraftingEventPacket.class, new CraftingEventHandler() );
+        packetHandlerMap.put( CommandRequestPacket.class, new CommandRequestHandler() );
+        packetHandlerMap.put( AnvilDamagePacket.class, new AnvilDamageHandler() );
         packetHandlerMap.put( RespawnPacket.class, new RespawnHandler() );
-        packetHandlerMap.put( TickSyncPacket.class, new TickSyncHandler() );
+        packetHandlerMap.put( EntityEventPacket.class, new EntityEventHandler() );
+        packetHandlerMap.put( PlayerSkinPacket.class, new PlayerSkinHandler() );
         packetHandlerMap.put( ModalFormResponsePacket.class, new ModalFormResponseHandler() );
         packetHandlerMap.put( NpcRequestPacket.class, new NpcRequestPacketHandler() );
-        packetHandlerMap.put( RequestNetworkSettingsPacket.class, new RequestNetworkSettingsHandler() );
     }
 
     public static PacketHandler<? extends BedrockPacket> getPacketHandler( Class<? extends BedrockPacket> clazz ) {

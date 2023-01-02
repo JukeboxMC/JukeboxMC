@@ -19,7 +19,7 @@ public class StoneCutterInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.STONE_CUTTER;
     }
 

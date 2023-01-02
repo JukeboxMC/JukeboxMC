@@ -1,20 +1,15 @@
 package org.jukeboxmc.blockentity;
 
-import com.nukkitx.nbt.NbtMapBuilder;
 import org.jukeboxmc.block.Block;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityBeehive extends BlockEntityContainer {
+public class BlockEntityBeehive extends BlockEntity {
 
-    public BlockEntityBeehive( Block block ) {
-        super( block );
+    public BlockEntityBeehive( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
     }
 
-    @Override
-    public NbtMapBuilder toCompound() {
-        return super.toCompound();
-    }
 }

@@ -11,6 +11,8 @@ public enum InventoryType {
     CURSOR,
     FURNACE,
     WORKBENCH,
+    SMALL_CRAFTING_GRID,
+    BIG_CRAFTING_GRID,
     CARTOGRAPHY_TABLE,
     SMITHING_TABLE,
     BLAST_FURNACE,
@@ -27,6 +29,7 @@ public enum InventoryType {
     LOOM,
     BARREL,
     STONE_CUTTER,
-    GRINDSTONE
-
+    GRINDSTONE,
+    BREWING_STAND,
+    CREATIVE
 }

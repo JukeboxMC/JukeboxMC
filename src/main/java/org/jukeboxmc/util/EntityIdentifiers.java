@@ -16,7 +16,7 @@ public class EntityIdentifiers {
     private static NbtMap IDENTIFIERS;
 
     public static void init() {
-        InputStream inputStream = Bootstrap.class.getClassLoader().getResourceAsStream( "entity_identifiers.dat" );
+        final InputStream inputStream = Bootstrap.class.getClassLoader().getResourceAsStream( "entity_identifiers.dat" );
         if ( inputStream == null ) {
             throw new AssertionError( "Could not find entity_identifiers.dat" );
         }

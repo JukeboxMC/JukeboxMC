@@ -12,12 +12,12 @@ import org.jukeboxmc.player.Player;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityDispenser extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityDispenser extends BlockEntity implements InventoryHolder {
 
     private final DispenserInventory dispenserInventory;
 
-    public BlockEntityDispenser( Block block ) {
-        super( block );
+    public BlockEntityDispenser( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.dispenserInventory = new DispenserInventory( this );
     }
 

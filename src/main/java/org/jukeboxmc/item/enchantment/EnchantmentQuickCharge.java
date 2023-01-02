@@ -16,8 +16,4 @@ public class EnchantmentQuickCharge extends Enchantment {
         return 3;
     }
 
-    @Override
-    public int getWeight() {
-        return 5;
-    }
 }

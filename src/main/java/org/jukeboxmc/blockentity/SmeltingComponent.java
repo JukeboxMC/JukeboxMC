@@ -7,22 +7,20 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.inventory.FurnaceInventory;
 import org.jukeboxmc.inventory.Inventory;
-import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.inventory.WindowId;
+import org.jukeboxmc.item.Burnable;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.type.Burnable;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
 import java.time.Duration;
 
 /**
- * @author LucGamesYT, GoMint
+ * @author LucGamesYT
  * @version 1.0
  */
-public class SmeltingComponent extends BlockEntityContainer implements InventoryHolder {
+public class SmeltingComponent extends BlockEntity {
 
     private static final int CONTAINER_PROPERTY_TICK_COUNT = 0;
     private static final int CONTAINER_PROPERTY_LIT_TIME = 1;
@@ -36,13 +34,9 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
 
     private Inventory inventory;
 
-    public SmeltingComponent( Block block ) {
-        super( block );
+    public SmeltingComponent( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
     }
-
-    // 0 - inputItem
-    // 1 - fuelItem
-    // 2 - outputItem
 
     public void initInventory( Inventory inventory ) {
         this.inventory = inventory;
@@ -60,7 +54,7 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         Item fuelItem = this.inventory.getItem( 1 );
         Item outputItem = this.inventory.getItem( 2 );
 
-        if ( input != null && !( input instanceof ItemAir ) && fuelItem != null && !( fuelItem instanceof ItemAir ) && outputItem.getAmount() < 64 ) {
+        if ( input != null && !( input.getType().equals( ItemType.AIR ) ) && fuelItem != null && !fuelItem.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 ) {
             this.checkForRecipe( input );
         }
         if ( this.output != null && !this.output.getType().equals( ItemType.AIR ) && !input.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
@@ -117,8 +111,8 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
     private boolean checkForRefuel() {
         if ( this.canProduceOutput() ) {
             Item fuelItem = this.inventory.getItem( 1 );
-            if ( fuelItem instanceof Burnable ) {
-                Duration duration = ( (Burnable) fuelItem ).getBurnTime();
+            if ( fuelItem instanceof Burnable burnableItem) {
+                Duration duration = burnableItem.getBurnTime();
                 if ( duration != null ) {
                     if ( fuelItem.getAmount() > 0 ) {
                         this.inventory.setItem( 1, fuelItem.decreaseAmount() );
@@ -146,7 +140,7 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
 
         Item itemStack = this.inventory.getItem( 2 );
         if ( itemStack.getType() == this.output.getType() ) {
-            return itemStack.getAmount() <= itemStack.getMaxAmount();
+            return itemStack.getAmount() <= itemStack.getMaxStackSize();
         }
         return true;
     }
@@ -156,7 +150,7 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );
         containerData.setValue( this.cookTime );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
     }
 
     private void sendFuelInfo( Player player ) {
@@ -164,13 +158,13 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_LIT_TIME );
         containerData.setValue( this.burnTime );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
 
         containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_LIT_DURATION );
         containerData.setValue( this.burnDuration );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
     }
 
     private void sendDataProperties( Player player ) {
@@ -178,19 +172,19 @@ public class SmeltingComponent extends BlockEntityContainer implements Inventory
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );
         containerData.setValue( this.cookTime );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
 
         containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_LIT_TIME );
         containerData.setValue( this.burnTime );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
 
         containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_LIT_DURATION );
         containerData.setValue( this.burnDuration );
-        player.sendPacket( containerData );
+        player.getPlayerConnection().sendPacket( containerData );
     }
 
     private void broadcastCookTime() {

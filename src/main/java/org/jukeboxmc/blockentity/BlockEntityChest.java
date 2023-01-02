@@ -4,7 +4,6 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockChest;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.ChestInventory;
 import org.jukeboxmc.inventory.ContainerInventory;
@@ -14,6 +13,7 @@ import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Utils;
+import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +22,30 @@ import java.util.List;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityChest extends BlockEntityContainer implements InventoryHolder {
+public class BlockEntityChest extends BlockEntity implements InventoryHolder {
 
     private final ChestInventory chestInventory;
     private DoubleChestInventory doubleChestInventory;
-    private int pairX;
-    private int pairZ;
+    private Vector pairPosition;
     private boolean findable;
+    private boolean setPaired;
 
-    public BlockEntityChest( Block block ) {
-        super( block );
+    public BlockEntityChest( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
         this.chestInventory = new ChestInventory( this );
+    }
+
+    @Override
+    public void update( long currentTick ) {
+        if ( this.isPaired() && !this.setPaired && this.isSpawned) {
+            BlockEntityChest paired = this.getPaired();
+            if ( paired == null) {
+                return;
+            }
+            if ( paired.isSpawned ) {
+                this.pair( paired );
+            }
+        }
     }
 
     @Override
@@ -56,22 +69,8 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
                 this.chestInventory.setItem( slot, item, false );
             }
         }
-
-        this.pairX = compound.getInt( "pairx", 0 );
-        this.pairZ = compound.getInt( "pairz", 0 );
+        this.pairPosition = new Vector( compound.getInt( "pairx", 0 ), this.getBlock().getLocation().getBlockY(), compound.getInt( "pairz", 0 ) );
         this.findable = compound.getBoolean( "Findable", false );
-
-
-        if ( this.isPaired() ) {
-            BlockEntityChest paired = this.getPaired();
-            if ( paired == null ) {
-                return;
-            }
-            this.pair( paired );
-        } else {
-            this.unpair();
-        }
-
     }
 
     @Override
@@ -90,30 +89,28 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
         }
 
         builder.putList( "Items", NbtType.COMPOUND, itemsCompoundList );
-        builder.putInt( "pairx", this.pairX );
-        builder.putInt( "pairz", this.pairZ );
+        if ( this.pairPosition != null ) {
+            builder.putInt( "pairx", this.pairPosition.getBlockX() );
+            builder.putInt( "pairz", this.pairPosition.getBlockZ() );
+        }
         builder.putBoolean( "Findable", this.findable );
         return builder;
     }
 
     public boolean isPaired() {
         if ( this.findable ) {
-            Vector position = this.getBlock().getLocation();
-            Block other = this.getBlock().getWorld().getBlock( this.pairX, position.getBlockY(), this.pairZ, 0 );
-            return other.getType().equals( this.getBlock().getType() );
+            return this.pairPosition != null;
         }
         return false;
     }
 
     public void pair( BlockEntityChest other ) {
-        // Get the positions of both sides of the pair
         Vector otherBP = other.getBlock().getLocation();
         long otherL = Utils.toLong( otherBP.getBlockX(), otherBP.getBlockZ() );
 
         Vector thisBP = this.getBlock().getLocation();
         long thisL = Utils.toLong( thisBP.getBlockX(), thisBP.getBlockZ() );
 
-        // Order them according to "natural" ordering in the world
         if ( otherL > thisL ) {
             this.doubleChestInventory = new DoubleChestInventory( this, other.getChestInventory(), this.chestInventory );
         } else {
@@ -121,14 +118,13 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
         }
         other.doubleChestInventory = this.doubleChestInventory;
 
-        // Set the other pair side into the tiles
         other.setPair( thisBP );
         this.setPair( otherBP );
     }
 
     public void unpair() {
         BlockEntityChest other = this.getPaired();
-        if (other != null) {
+        if ( other != null ) {
             other.doubleChestInventory = null;
             other.resetPair();
         }
@@ -139,23 +135,26 @@ public class BlockEntityChest extends BlockEntityContainer implements InventoryH
 
     private void resetPair() {
         this.findable = false;
-        this.pairX = 0;
-        this.pairZ = 0;
+        this.pairPosition = null;
     }
 
     private BlockEntityChest getPaired() {
-        if (!this.isPaired()) {
-            return null;
+        if ( this.isPaired() ) {
+            Chunk loadedChunk = this.getBlock().getWorld().getLoadedChunk( this.pairPosition.getChunkX(), this.pairPosition.getChunkZ(), this.dimension );
+            if ( loadedChunk != null ) {
+                BlockEntity blockEntity = loadedChunk.getBlockEntity( this.pairPosition.getBlockX(), this.pairPosition.getBlockY(), this.pairPosition.getBlockZ() );
+                if ( blockEntity instanceof BlockEntityChest blockEntityChest ) {
+                    return blockEntityChest;
+                }
+            }
         }
-        Vector position = this.getBlock().getLocation();
-        BlockChest other = (BlockChest) this.getBlock().getWorld().getBlock(this.pairX, position.getBlockY(), this.pairZ, 0);
-        return other.getBlockEntity();
+        return null;
     }
 
-    private void setPair(Vector otherBP) {
+    private void setPair( Vector otherBP ) {
         this.findable = true;
-        this.pairX = otherBP.getBlockX();
-        this.pairZ = otherBP.getBlockZ();
+        this.setPaired = true;
+        this.pairPosition = new Vector( otherBP.getBlockX(), this.getBlock().getLocation().getBlockY(), otherBP.getBlockZ() );
     }
 
     public ChestInventory getRealInventory() {

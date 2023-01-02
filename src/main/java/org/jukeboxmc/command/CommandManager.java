@@ -1,6 +1,6 @@
 package org.jukeboxmc.command;
 
-import org.jukeboxmc.command.jukebox.*;
+import org.jukeboxmc.command.internal.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,12 +18,11 @@ public class CommandManager {
     public CommandManager() {
         List<Class<? extends Command>> commands = Arrays.asList(
                 PluginsCommand.class,
+                GameModeCommand.class,
                 OperatorCommand.class,
                 RemoveOperatorCommand.class,
-                GameModeCommand.class,
-                StopCommand.class,
                 TeleportCommand.class,
-                SeedCommand.class,
+                StopCommand.class,
                 SaveCommand.class
         );
 

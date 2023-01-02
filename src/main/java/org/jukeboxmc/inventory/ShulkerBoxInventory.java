@@ -23,7 +23,7 @@ public class ShulkerBoxInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getInventoryType() {
+    public InventoryType getType() {
         return InventoryType.SHULKER_BOX;
     }
 
@@ -34,6 +34,7 @@ public class ShulkerBoxInventory extends ContainerInventory {
 
     @Override
     public void onOpen( Player player ) {
+        super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
@@ -48,7 +49,7 @@ public class ShulkerBoxInventory extends ContainerInventory {
 
     @Override
     public void onClose( Player player ) {
-        if ( this.viewer.size() == 1 ) {
+        if ( this.viewer.size() == 0 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 
             BlockEventPacket blockEventPacket = new BlockEventPacket();

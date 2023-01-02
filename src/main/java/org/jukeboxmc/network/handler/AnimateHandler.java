@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @author LucGamesYT
  * @version 1.0
  */
-public class AnimateHandler implements PacketHandler<AnimatePacket> {
+public class AnimateHandler implements PacketHandler<AnimatePacket>{
 
     @Override
     public void handle( AnimatePacket packet, Server server, Player player ) {

@@ -5,10 +5,6 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
-/**
- * @author KCodeYT
- * @version 1.0
- */
 public final class NonStream {
 
     private NonStream() {

@@ -1,16 +1,11 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author LucGamesYT
@@ -18,8 +13,12 @@ import java.util.List;
  */
 public abstract class ContainerInventory extends Inventory {
 
-    public ContainerInventory( InventoryHolder holder, long holderId, int slots ) {
-        super( holder, holderId, slots );
+    public ContainerInventory( InventoryHolder holder, int size ) {
+        super( holder, size );
+    }
+
+    public ContainerInventory( InventoryHolder holder, int holderId, int size ) {
+        super( holder, holderId, size );
     }
 
     @Override
@@ -28,22 +27,11 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void removeViewer( Player player ) {
-        this.onClose( player );
-
-        super.removeViewer( player );
-    }
-
-    @Override
     public void sendContents( Player player ) {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
         inventoryContentPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
-        List<ItemData> itemDataList = new ArrayList<>();
-        for ( Item content : this.getContents() ) {
-            itemDataList.add( content.toNetwork() );
-        }
-        inventoryContentPacket.setContents( itemDataList );
-        player.sendPacket( inventoryContentPacket );
+        inventoryContentPacket.setContents( this.getItemDataContents() );
+        player.getPlayerConnection().sendPacket( inventoryContentPacket );
     }
 
     @Override
@@ -51,8 +39,8 @@ public abstract class ContainerInventory extends Inventory {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
         inventorySlotPacket.setSlot( slot );
-        inventorySlotPacket.setItem( this.contents[slot].toNetwork() );
-        player.sendPacket( inventorySlotPacket );
+        inventorySlotPacket.setItem( this.getContents()[slot].toItemData() );
+        player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 
     public void addViewer( Player player, Vector position, byte windowId ) {
@@ -61,17 +49,22 @@ public abstract class ContainerInventory extends Inventory {
         containerOpenPacket.setId( windowId );
         containerOpenPacket.setType( this.getWindowTypeId() );
         containerOpenPacket.setBlockPosition( position.toVector3i() );
-        player.sendPacket( containerOpenPacket );
+        player.getPlayerConnection().sendPacket( containerOpenPacket );
         super.addViewer( player );
         this.onOpen( player );
     }
 
-    public void onOpen( Player player ) {
+    @Override
+    public void removeViewer( Player player ) {
+        super.removeViewer( player );
+        this.onClose( player );
+    }
 
+    public void onOpen( Player player ) {
+        this.sendContents( player );
     }
 
     public void onClose( Player player ) {
 
     }
-
 }

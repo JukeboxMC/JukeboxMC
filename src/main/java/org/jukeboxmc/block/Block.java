@@ -2,76 +2,70 @@ package org.jukeboxmc.block;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import lombok.EqualsAndHashCode;
-import lombok.SneakyThrows;
+import lombok.ToString;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.behavior.Waterlogable;
+import org.jukeboxmc.block.data.BlockProperties;
+import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
-import org.jukeboxmc.block.type.UpdateReason;
 import org.jukeboxmc.blockentity.BlockEntity;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.type.ItemTierType;
-import org.jukeboxmc.item.type.ItemToolType;
+import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.item.EntityItem;
+import org.jukeboxmc.event.block.BlockBreakEvent;
+import org.jukeboxmc.item.*;
+import org.jukeboxmc.item.enchantment.Enchantment;
+import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.BlockPalette;
+import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.chunk.Chunk;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.jukeboxmc.block.BlockType.Companion.update;
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-@EqualsAndHashCode(exclude = {"location", "layer", "world"})
-public abstract class Block implements Cloneable {
+@ToString ( exclude = { "blockProperties" } )
+public class Block implements Cloneable {
 
-    public static final Object2ObjectMap<String, Object2ObjectMap<NbtMap, Integer>> STATES = new Object2ObjectLinkedOpenHashMap<>();
+    public static final Object2ObjectMap<Identifier, Object2ObjectMap<NbtMap, Integer>> STATES = new Object2ObjectLinkedOpenHashMap<>();
 
     protected int runtimeId;
-    protected String identifier;
+    protected Identifier identifier;
     protected NbtMap blockStates;
-
-    protected World world;
+    protected BlockType blockType;
     protected Location location;
-    protected int layer = 0;
+    protected int layer;
+    protected BlockProperties blockProperties;
 
-    public Block( String identifier ) {
+    public Block( Identifier identifier ) {
         this( identifier, null );
     }
 
-    public Block( String identifier, NbtMap blockStates ) {
-        this.identifier = identifier.toLowerCase();
+    public Block( Identifier identifier, NbtMap blockStates ) {
+        this.identifier = identifier;
+        this.blockStates = blockStates;
+        this.blockType = BlockRegistry.getBlockType( identifier );
+        this.blockProperties = BlockRegistry.getBlockProperties( identifier );
 
         if ( !STATES.containsKey( this.identifier ) ) {
             Object2ObjectMap<NbtMap, Integer> toRuntimeId = new Object2ObjectLinkedOpenHashMap<>();
-            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifier ) ) ) {
+            for ( NbtMap blockMap : BlockPalette.searchBlocks( blockMap -> blockMap.getString( "name" ).toLowerCase().equals( this.identifier.getFullName() ) ) ) {
                 toRuntimeId.put( blockMap.getCompound( "states" ), BlockPalette.getRuntimeId( blockMap ) );
             }
             STATES.put( this.identifier, toRuntimeId );
-            for ( NbtMap state : toRuntimeId.keySet() ) {
-                try {
-                    int runtimeId = toRuntimeId.get( state );
-                    Block block = this.getClass().newInstance();
-                    block.runtimeId = runtimeId;
-                    block.identifier = identifier;
-                    block.blockStates = state;
-                    BlockPalette.RUNTIME_TO_BLOCK.put( runtimeId, block );
-                } catch ( InstantiationException | IllegalAccessException e ) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         if ( blockStates == null ) {
@@ -81,6 +75,100 @@ public abstract class Block implements Cloneable {
 
         this.blockStates = blockStates;
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
+    }
+
+    public static <T extends Block> T create( BlockType blockType ) {
+        if ( BlockRegistry.blockClassExists( blockType ) ) {
+            try {
+                Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class );
+                return (T) constructor.newInstance( BlockRegistry.getIdentifier( blockType ) );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Block( BlockRegistry.getIdentifier( blockType ) );
+    }
+
+    public static <T extends Block> T create( BlockType blockType, NbtMap blockStates ) {
+        if ( BlockRegistry.blockClassExists( blockType ) ) {
+            try {
+                Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class, NbtMap.class );
+                return (T) constructor.newInstance( BlockRegistry.getIdentifier( blockType ), blockStates );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Block( BlockRegistry.getIdentifier( blockType ), blockStates );
+    }
+
+    public static <T extends Block> T create( Identifier identifier ) {
+        BlockType blockType = BlockRegistry.getBlockType( identifier );
+        if ( BlockRegistry.blockClassExists( blockType ) ) {
+            try {
+                Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class );
+                return (T) constructor.newInstance( identifier );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Block( identifier, null );
+    }
+
+    public static <T extends Block> T create( Identifier identifier, NbtMap blockStates ) {
+        BlockType blockType = BlockRegistry.getBlockType( identifier );
+        if ( BlockRegistry.blockClassExists( blockType ) ) {
+            try {
+                Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class, NbtMap.class );
+                return (T) constructor.newInstance( identifier, blockStates );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Block( identifier, blockStates );
+    }
+
+    public int getRuntimeId() {
+        return this.runtimeId;
+    }
+
+    public Identifier getIdentifier() {
+        return this.identifier;
+    }
+
+    public NbtMap getBlockStates() {
+        return this.blockStates;
+    }
+
+    public void setBlockStates( NbtMap blockStates ) {
+        this.blockStates = blockStates;
+    }
+
+    public BlockType getType() {
+        return this.blockType;
+    }
+
+    public World getWorld() {
+        return this.location.getWorld();
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation( Location location ) {
+        this.location = location;
+    }
+
+    public int getLayer() {
+        return this.layer;
+    }
+
+    public void setLayer( int layer ) {
+        this.layer = layer;
+    }
+
+    public boolean checkValidity() {
+        return this.location != null && this.location.getWorld() != null && this.location.getWorld().getBlock( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this.location.getDimension() ).getRuntimeId() == this.runtimeId;
     }
 
     public <B extends Block> B setState( String state, Object value ) {
@@ -101,14 +189,11 @@ public abstract class Block implements Cloneable {
                 this.blockStates = blockMap;
             }
         }
-
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
-        if ( Server.getInstance().isInitiating() ) {
-            update( this.runtimeId, this );
-        }
+
         if ( valid ) {
-            this.getWorld().sendBlockUpdate( this );
-            this.getChunk().setBlock( this.location, this.layer, this.runtimeId );
+            this.sendUpdate();
+            this.location.getChunk().setBlock( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this );
         }
         return (B) this;
     }
@@ -125,115 +210,51 @@ public abstract class Block implements Cloneable {
         return this.blockStates.getByte( value );
     }
 
+    public boolean getBooleanState( String value ) {
+        return this.blockStates.getByte( value ) == 1;
+    }
+
     public int getIntState( String value ) {
         return this.blockStates.getInt( value );
     }
 
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
-        if ( this.getType() != BlockType.AIR ) {
-            world.setBlock( placePosition, this, 0, player.getDimension(), true );
-            return true;
-        } else {
-            Server.getInstance().getLogger().debug( "Try to place block -> " + this.getName() );
-        }
-        return false;
+    public Block getSide( Direction direction ) {
+        return this.getSide( direction, 0 );
     }
 
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
-        return false;
+    public Block getSide( BlockFace blockFace ) {
+        return this.getSide( blockFace, 0 );
     }
 
-    public boolean onBlockBreak( Vector breakPosition ) {
-        this.world.setBlock( breakPosition, new BlockAir(), 0 );
-        return true;
+    public Block getSide( Direction direction, int layer ) {
+        return switch ( direction ) {
+            case SOUTH -> this.getRelative( Vector.south(), layer );
+            case NORTH -> this.getRelative( Vector.north(), layer );
+            case EAST -> this.getRelative( Vector.east(), layer );
+            case WEST -> this.getRelative( Vector.west(), layer );
+        };
     }
 
-    public void playBlockBreakSound() {
-        this.world.playSound( this.location, SoundEvent.BREAK, this.runtimeId );
+    public Block getSide( BlockFace blockFace, int layer ) {
+        return switch ( blockFace ) {
+            case DOWN -> this.getRelative( Vector.down(), layer );
+            case UP -> this.getRelative( Vector.up(), layer );
+            case SOUTH -> this.getRelative( Vector.south(), layer );
+            case NORTH -> this.getRelative( Vector.north(), layer );
+            case EAST -> this.getRelative( Vector.east(), layer );
+            case WEST -> this.getRelative( Vector.west(), layer );
+        };
     }
 
-    public boolean canBeReplaced( Block block ) {
-        return false;
+    public Block getRelative( Vector position, int layer ) {
+        int x = this.location.getBlockX() + position.getBlockX();
+        int y = this.location.getBlockY() + position.getBlockY();
+        int z = this.location.getBlockZ() + position.getBlockZ();
+        return this.location.getWorld().getBlock( x, y, z, layer, this.location.getDimension() );
     }
 
-    public boolean canPassThrough() {
-        return false;
-    }
-
-    public abstract Item toItem();
-
-    public abstract BlockType getType();
-
-    public boolean hasBlockEntity() {
-        return false;
-    }
-
-    public BlockEntity getBlockEntity() {
-        return null;
-    }
-
-    public boolean isSolid() {
-        return true;
-    }
-
-    public boolean isTransparent() {
-        return false;
-    }
-
-    public double getHardness() {
-        return 0;
-    }
-
-    public boolean canBreakWithHand() {
-        return true;
-    }
-
-    public ItemToolType getToolType() {
-        return ItemToolType.NONE;
-    }
-
-    public ItemTierType getTierType() {
-        return ItemTierType.WOODEN;
-    }
-
-    public List<Item> getDrops( Item itemInHand ) {
-        return this.getDrops( itemInHand, 1 );
-    }
-
-    public List<Item> getDrops( Item itemInHand, int amount ) {
-        if ( itemInHand == null ) {
-            return Collections.singletonList( this.toItem().setAmount( amount ) );
-        }
-        if ( itemInHand.getTierType().ordinal() >= this.getTierType().ordinal() ) {
-            return Collections.singletonList( this.toItem().setAmount( amount ) );
-        }
-        return Collections.emptyList();
-    }
-
-    public long onUpdate( UpdateReason updateReason ) {
-        return -1;
-    }
-
-    public void enterBlock( Player player ) {
-    }
-
-    public void leaveBlock( Player player ) {
-    }
-
-    public int getTickRate() {
-        return 10;
-    }
-
-    public boolean canBeFlowedInto() {
-        return false;
-    }
-
-    public void setBlock( Block block ) {
-        this.world.setBlock( this.location, block, 0 );
-    }
-
-    public void setBlock( Block block, int layer ) {
-        this.world.setBlock( this.location, block, layer );
+    public Item toItem() {
+        return Item.create( this.identifier );
     }
 
     public AxisAlignedBB getBoundingBox() {
@@ -247,7 +268,81 @@ public abstract class Block implements Cloneable {
         );
     }
 
-    //========= Block Break =========
+    public void breakBlock( Player player, Item item ) {
+        if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
+            this.sendUpdate( player );
+            return;
+        }
+
+        List<Item> itemDropList;
+        if ( item.getEnchantment( EnchantmentType.SILK_TOUCH ) != null ) {
+            itemDropList = Collections.singletonList( this.toItem() );
+        } else {
+            itemDropList = this.getDrops( item );
+        }
+
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent( player, this, itemDropList );
+        Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
+
+        if ( blockBreakEvent.isCancelled() ) {
+            this.sendUpdate( player );
+            return;
+        }
+
+        Location breakLocation = this.location;
+        this.onBlockBreak( breakLocation );
+
+        if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
+            if ( item instanceof Durability ) {
+                item.updateItem( player, 1 );
+            }
+
+            player.exhaust( 0.025f );
+
+            List<EntityItem> itemDrops = new ArrayList<>();
+            for ( Item droppedItem : blockBreakEvent.getDrops() ) {
+                if ( !droppedItem.getType().equals( ItemType.AIR ) ) {
+                    itemDrops.add( player.getWorld().dropItem( droppedItem, breakLocation.clone(), null ) );
+                }
+            }
+            if ( !itemDrops.isEmpty() ) {
+                itemDrops.forEach( Entity::spawn );
+            }
+        }
+
+        this.playBreakSound();
+        breakLocation.getWorld().sendLevelEvent( breakLocation, LevelEventType.PARTICLE_DESTROY_BLOCK, this.runtimeId );
+    }
+
+    private void playBreakSound() {
+        this.location.getWorld().playSound( this.location, SoundEvent.BREAK, this.runtimeId );
+    }
+
+    public void onBlockBreak( Vector breakPosition ) {
+        this.location.getWorld().setBlock( breakPosition, Block.create( BlockType.AIR ), 0, breakPosition.getDimension() );
+    }
+
+    public void sendUpdate() {
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setRuntimeId( this.runtimeId );
+        updateBlockPacket.setBlockPosition( this.location.toVector3i() );
+        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setDataLayer( this.layer );
+        this.location.getWorld().sendChunkPacket( this.location.getChunkX(), this.location.getChunkZ(), updateBlockPacket );
+    }
+
+    public void sendUpdate( Player player ) {
+        if ( this.location == null ) {
+            return;
+        }
+        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
+        updateBlockPacket.setRuntimeId( this.runtimeId );
+        updateBlockPacket.setBlockPosition( this.location.toVector3i() );
+        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
+        updateBlockPacket.setDataLayer( this.layer );
+        player.getPlayerConnection().sendPacket( updateBlockPacket );
+    }
+
     public double getBreakTime( Item item, Player player ) {
         double hardness = this.getHardness();
         if ( hardness == 0 ) {
@@ -256,27 +351,24 @@ public abstract class Block implements Cloneable {
 
         BlockType blockType = this.getType();
         boolean correctTool = this.correctTool0( this.getToolType(),
-                item.getItemToolType() ) ||
-                item.getItemToolType().equals( ItemToolType.SHEARS ) &&
+                item.getToolType() ) ||
+                item.getToolType().equals( ToolType.SHEARS ) &&
                         ( blockType.equals( BlockType.WEB ) ||
-                                blockType.equals( BlockType.OAK_LEAVES ) ||
-                                blockType.equals( BlockType.SPRUCE_LEAVES ) ||
-                                blockType.equals( BlockType.BIRCH_LEAVES ) ||
-                                blockType.equals( BlockType.JUNGLE_LEAVES ) ||
-                                blockType.equals( BlockType.ACACIA_LEAVES ) ||
-                                blockType.equals( BlockType.DARK_OAK_LEAVES )
-                                );
+                                blockType.equals( BlockType.LEAVES ) ||
+                                blockType.equals( BlockType.LEAVES2 ) );
         boolean canBreakWithHand = this.canBreakWithHand();
-        ItemToolType itemToolType = item.getItemToolType();
-        ItemTierType itemTier = item.getTierType();
-        int efficiencyLoreLevel = 0;
+        ToolType itemToolType = item.getToolType();
+        TierType itemTier = item.getTierType();
+        int efficiencyLoreLevel = Optional.ofNullable( item.getEnchantment( EnchantmentType.EFFICIENCY ) ).map( Enchantment::getLevel ).orElse( (short) 0 );
         int hasteEffectLevel = 0;
         boolean insideOfWaterWithoutAquaAffinity = false;
         boolean outOfWaterButNotOnGround = !player.isOnGround();
         return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
     }
 
-    private double breakTime0( Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand, BlockType blockType, ItemToolType itemToolType, ItemTierType itemTierType, int efficiencyLoreLevel, int hasteEffectLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
+    private double breakTime0( Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand,
+                               BlockType blockType, ToolType itemToolType, TierType itemTierType, int efficiencyLoreLevel,
+                               int hasteEffectLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
         double baseTime;
         if ( canHarvest( item ) || canHarvestWithHand ) {
             baseTime = 1.5 * blockHardness;
@@ -294,23 +386,19 @@ public abstract class Block implements Cloneable {
         return 1.0 / speed;
     }
 
-    private double toolBreakTimeBonus0( ItemToolType itemToolType, ItemTierType itemTierType, BlockType blockType ) {
-        if ( itemToolType.equals( ItemToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
-        if ( itemToolType.equals( ItemToolType.SHEARS ) ) {
+    private double toolBreakTimeBonus0( ToolType itemToolType, TierType itemTierType, BlockType blockType ) {
+        if ( itemToolType.equals( ToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
+        if ( itemToolType.equals( ToolType.SHEARS ) ) {
             if ( blockType.equals( BlockType.WOOL ) ||
-                    blockType.equals( BlockType.OAK_LEAVES ) ||
-                    blockType.equals( BlockType.SPRUCE_LEAVES ) ||
-                    blockType.equals( BlockType.BIRCH_LEAVES ) ||
-                    blockType.equals( BlockType.JUNGLE_LEAVES ) ||
-                    blockType.equals( BlockType.ACACIA_LEAVES ) ||
-                    blockType.equals( BlockType.DARK_OAK_LEAVES ) ) {
+                    blockType.equals( BlockType.LEAVES ) ||
+                    blockType.equals( BlockType.LEAVES2 ) ) {
                 return 5.0;
             } else if ( blockType.equals( BlockType.WEB ) ) {
                 return 15.0;
             }
             return 1.0;
         }
-        if ( itemToolType.equals( ItemToolType.NONE ) ) return 1.0;
+        if ( itemToolType.equals( ToolType.NONE ) ) return 1.0;
         return switch ( itemTierType ) {
             case WOODEN -> 2.0;
             case STONE -> 4.0;
@@ -332,162 +420,119 @@ public abstract class Block implements Cloneable {
     }
 
     public boolean canHarvest( Item item ) {
-        return this.getTierType().equals( ItemTierType.NONE ) || this.getToolType().equals( ItemToolType.NONE ) || this.correctTool0( this.getToolType(), item.getItemToolType() ) && item.getTierType().ordinal() >= this.getTierType().ordinal();
+        return this.getTierType().equals( TierType.NONE ) || this.getToolType().equals( ToolType.NONE ) || this.correctTool0( this.getToolType(), item.getToolType() ) && item.getTierType().ordinal() >= this.getTierType().ordinal();
     }
 
-    private boolean correctTool0( ItemToolType blockItemToolType, ItemToolType itemToolType ) {
-        return ( blockItemToolType.equals( ItemToolType.SWORD ) && itemToolType.equals( ItemToolType.SWORD ) ) ||
-                ( blockItemToolType.equals( ItemToolType.SHOVEL ) && itemToolType.equals( ItemToolType.SHOVEL ) ) ||
-                ( blockItemToolType.equals( ItemToolType.PICKAXE ) && itemToolType.equals( ItemToolType.PICKAXE ) ) ||
-                ( blockItemToolType.equals( ItemToolType.AXE ) && itemToolType.equals( ItemToolType.AXE ) ) ||
-                ( blockItemToolType.equals( ItemToolType.HOE ) && itemToolType.equals( ItemToolType.HOE ) ) ||
-                ( blockItemToolType.equals( ItemToolType.SHEARS ) && itemToolType.equals( ItemToolType.SHEARS ) ) ||
-                blockItemToolType == ItemToolType.NONE;
+    private boolean correctTool0( ToolType blockItemToolType, ToolType itemToolType ) {
+        return ( blockItemToolType.equals( ToolType.SWORD ) && itemToolType.equals( ToolType.SWORD ) ) ||
+                ( blockItemToolType.equals( ToolType.SHOVEL ) && itemToolType.equals( ToolType.SHOVEL ) ) ||
+                ( blockItemToolType.equals( ToolType.PICKAXE ) && itemToolType.equals( ToolType.PICKAXE ) ) ||
+                ( blockItemToolType.equals( ToolType.AXE ) && itemToolType.equals( ToolType.AXE ) ) ||
+                ( blockItemToolType.equals( ToolType.HOE ) && itemToolType.equals( ToolType.HOE ) ) ||
+                ( blockItemToolType.equals( ToolType.SHEARS ) && itemToolType.equals( ToolType.SHEARS ) ) ||
+                blockItemToolType == ToolType.NONE;
     }
 
-    //========= Other =========
-
-    public Block getSide( Direction direction, int layer ) {
-        switch ( direction ) {
-            case SOUTH:
-                return this.getRelative( Vector.south(), layer );
-            case NORTH:
-                return this.getRelative( Vector.north(), layer );
-            case EAST:
-                return this.getRelative( Vector.east(), layer );
-            case WEST:
-                return this.getRelative( Vector.west(), layer );
-            default:
-                return null;
-        }
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+        world.setBlock( placePosition, this, 0, player.getDimension(), true );
+        return true;
     }
 
-    public Block getSide( Direction direction ) {
-        return this.getSide( direction, 0 );
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        return false;
     }
 
-    public Block getSide( BlockFace blockFace, int layer ) {
-        switch ( blockFace ) {
-            case DOWN:
-                return this.getRelative( Vector.down(), layer );
-            case UP:
-                return this.getRelative( Vector.up(), layer );
-            case SOUTH:
-                return this.getRelative( Vector.south(), layer );
-            case NORTH:
-                return this.getRelative( Vector.north(), layer );
-            case EAST:
-                return this.getRelative( Vector.east(), layer );
-            case WEST:
-                return this.getRelative( Vector.west(), layer );
-            default:
-                return null;
-        }
+    public BlockEntity getBlockEntity() {
+        return null;
     }
 
-    public Block getSide( BlockFace blockFace ) {
-        return this.getSide( blockFace, 0 );
+    public boolean canBreakWithHand() {
+        return this.blockProperties.isCanBreakWithHand();
     }
 
-    public Block getRelative( Vector position, int layer ) {
-        int x = this.location.getBlockX() + position.getBlockX();
-        int y = this.location.getBlockY() + position.getBlockY();
-        int z = this.location.getBlockZ() + position.getBlockZ();
-        return this.world.getBlock( x, y, z, layer, this.location.getDimension() );
+    public boolean isSolid() {
+        return this.blockProperties.isSolid();
     }
 
-    public int getRuntimeId() {
-        return this.runtimeId;
+    public boolean isTransparent() {
+        return this.blockProperties.isTransparent();
     }
 
-    public String getIdentifier() {
-        return this.identifier;
+    public double getHardness() {
+        return this.blockProperties.getHardness();
     }
 
-    public NbtMap getBlockStates() {
-        return this.blockStates;
+    public boolean canPassThrough() {
+        return this.blockProperties.isCanPassThrough();
     }
 
-    public World getWorld() {
-        return this.world;
+    public ToolType getToolType() {
+        return this.blockProperties.getToolType();
     }
 
-    public void setWorld( World world ) {
-        this.world = world;
+    public TierType getTierType() {
+        return this.blockProperties.getTierType();
     }
 
-    public Location getLocation() {
-        return this.location;
+    public boolean canBeReplaced( Block block ) {
+        return false;
     }
 
-    public void setLocation( Location location ) {
-        this.world = location.getWorld();
-        this.location = location;
+    public long onUpdate( UpdateReason updateReason ) {
+        return -1;
     }
 
-    public int getLayer() {
-        return this.layer;
+    public void enterBlock( Player player ) {
     }
 
-    public void setLayer( int layer ) {
-        this.layer = layer;
+    public void leaveBlock( Player player ) {
     }
 
-    public Chunk getChunk() {
-        return this.world.getChunk( this.location.getBlockX() >> 4, this.location.getBlockZ() >> 4, this.location.getDimension() );
-    }
-
-    public boolean checkValidity() {
-        return this.world != null && this.location != null && this.world.getBlockRuntimeId( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this.location.getDimension() ) == this.runtimeId;
-    }
-
-    public String getName() {
-        return this.getClass().getSimpleName();
-    }
-
-    public boolean isWater() {
-        return this instanceof BlockWater;
+    public boolean canBeFlowedInto() {
+        return false;
     }
 
     public final boolean canWaterloggingFlowInto() {
-        return this.canBeFlowedInto() || ( this instanceof BlockWaterlogable && ( (BlockWaterlogable) this ).getWaterloggingLevel() > 1 );
+        return this.canBeFlowedInto() || ( this instanceof Waterlogable && ( (Waterlogable) this ).getWaterLoggingLevel() > 1 );
     }
 
-    //========= With Packets =========
-
-    public void sendBlockUpdate( Player player ) {
-        if ( this.location == null ) {
-            return;
+    public List<Item> getDrops( Item item ) {
+        if ( this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) {
+            return Collections.singletonList( this.toItem() );
         }
-        UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( this.runtimeId );
-        updateBlockPacket.setBlockPosition( this.location.toVector3i() );
-        updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
-        updateBlockPacket.setDataLayer( this.layer );
-        player.sendPacket( updateBlockPacket );
+        return Collections.emptyList();
+    }
+
+    public boolean isCorrectToolType( Item item ) {
+        return item.getToolType().ordinal() >= this.getToolType().ordinal();
+    }
+
+    public boolean isCorrectTierType( Item item ) {
+        return item.getTierType().ordinal() >= this.getTierType().ordinal();
+    }
+
+    public boolean isWater() {
+        return this.getType().equals( BlockType.WATER ) || this.getType().equals( BlockType.FLOWING_WATER );
+    }
+
+    public boolean isLava() {
+        return this.getType().equals( BlockType.LAVA ) || this.getType().equals( BlockType.FLOWING_LAVA );
     }
 
     @Override
-    public String toString() {
-        return "Block{" +
-                "runtimeId=" + this.runtimeId +
-                ", identifier='" + this.identifier + '\'' +
-                ", blockStates=" + this.blockStates.toString() +
-                ", world=" + this.world +
-                ", position=" + this.location +
-                ", layer=" + this.layer +
-                '}';
-    }
-
-    @Override
-    @SneakyThrows
     public Block clone() {
-        Block block = (Block) super.clone();
-        block.identifier = this.identifier;
-        block.runtimeId = this.runtimeId;
-        block.layer = this.layer;
-        block.blockStates = this.blockStates;
-        return block;
+        try {
+            Block block = (Block) super.clone();
+            block.runtimeId = this.runtimeId;
+            block.identifier = this.identifier;
+            block.blockStates = this.blockStates;
+            block.blockType = this.blockType;
+            block.location = this.location;
+            block.layer = this.layer;
+            block.blockProperties = this.blockProperties;
+            return block;
+        } catch ( CloneNotSupportedException e ) {
+            throw new AssertionError();
+        }
     }
-
 }

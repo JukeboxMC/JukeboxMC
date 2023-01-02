@@ -8,14 +8,13 @@ import org.jukeboxmc.block.Block;
  * @author LucGamesYT
  * @version 1.0
  */
-
 public class BlockEntitySkull extends BlockEntity {
 
     private byte skullMeta;
     private byte rotation;
 
-    public BlockEntitySkull( Block block ) {
-        super( block );
+    public BlockEntitySkull( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
     }
 
     @Override

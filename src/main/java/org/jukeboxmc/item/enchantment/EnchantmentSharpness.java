@@ -16,8 +16,4 @@ public class EnchantmentSharpness extends Enchantment {
         return 5;
     }
 
-    @Override
-    public int getWeight() {
-        return 10;
-    }
 }

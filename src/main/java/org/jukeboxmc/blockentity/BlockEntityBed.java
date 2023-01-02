@@ -3,18 +3,18 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.type.BlockColor;
+import org.jukeboxmc.block.data.BlockColor;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEntityBed extends BlockEntityContainer {
+public class BlockEntityBed extends BlockEntity {
 
     private byte color = 14;
 
-    public BlockEntityBed( Block block ) {
-        super( block );
+    public BlockEntityBed( Block block, BlockEntityType blockEntityType ) {
+        super( block, blockEntityType );
     }
 
     @Override

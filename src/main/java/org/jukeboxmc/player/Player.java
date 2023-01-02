@@ -1,15 +1,9 @@
 package org.jukeboxmc.player;
 
 import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.nbt.*;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.command.CommandData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.*;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -18,42 +12,39 @@ import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
+import org.jukeboxmc.entity.EntityMoveable;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
-import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
+import org.jukeboxmc.event.player.PlayerChangeSkinEvent;
 import org.jukeboxmc.event.player.PlayerDeathEvent;
+import org.jukeboxmc.event.player.PlayerExperienceChangeEvent;
 import org.jukeboxmc.event.player.PlayerRespawnEvent;
 import org.jukeboxmc.form.Form;
 import org.jukeboxmc.form.FormListener;
 import org.jukeboxmc.form.NpcDialogueForm;
 import org.jukeboxmc.inventory.*;
-import org.jukeboxmc.inventory.transaction.CraftingTransaction;
-import org.jukeboxmc.inventory.transaction.InventoryAction;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemAir;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.item.behavior.ItemArmor;
+import org.jukeboxmc.item.enchantment.Enchantment;
 import org.jukeboxmc.item.enchantment.EnchantmentKnockback;
 import org.jukeboxmc.item.enchantment.EnchantmentSharpness;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.util.Utils;
+import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
-import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -62,17 +53,17 @@ import java.util.*;
  */
 public class Player extends EntityHuman implements ChunkLoader, CommandSender, InventoryHolder {
 
-    private final PlayerConnection playerConnection;
-
-    private Location spawnLocation;
-    private GameMode gameMode;
     private final Server server;
+    private final PlayerConnection playerConnection;
     private final AdventureSettings adventureSettings;
-    private CraftingTransaction craftingTransaction;
+    private String name;
+    private GameMode gameMode;
 
     private ContainerInventory currentInventory;
-    private final CraftingTableInventory craftingTableInventory;
+    private CraftingGridInventory craftingGridInventory;
+    private final CreativeItemCacheInventory creativeItemCacheInventory;
     private final CursorInventory cursorInventory;
+    private final CraftingTableInventory craftingTableInventory;
     private final CartographyTableInventory cartographyTableInventory;
     private final SmithingTableInventory smithingTableInventory;
     private final AnvilInventory anvilInventory;
@@ -80,20 +71,19 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private final StoneCutterInventory stoneCutterInventory;
     private final GrindstoneInventory grindstoneInventory;
 
-    private EntityFishingHook entityFishingHook;
-
-    private Location respawnLocation = null;
-
-    private File playerFile;
+    private int inAirTicks = 0;
+    private float highestPosition = 0;
 
     private long lastBreakTime = 0;
     private Vector lasBreakPosition;
     private boolean breakingBlock = false;
 
-    private int viewDistance = 8;
-    private int inAirTicks = 0;
+    private Location spawnLocation;
+    private Location respawnLocation = null;
 
     private final Map<UUID, Set<String>> permissions = new HashMap<>();
+
+    private EntityFishingHook entityFishingHook;
 
     private int formId;
     private int serverSettingsForm = -1;
@@ -102,14 +92,15 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     private final ObjectArrayList<NpcDialogueForm> npcDialogueForms = new ObjectArrayList<>();
 
-    public Player( PlayerConnection playerConnection ) {
+    public Player( Server server, PlayerConnection playerConnection ) {
+        this.server = server;
         this.playerConnection = playerConnection;
-        this.spawnLocation = this.location.getWorld().getSpawnLocation();
         this.gameMode = playerConnection.getServer().getGameMode();
-        this.server = playerConnection.getServer();
         this.adventureSettings = new AdventureSettings( this );
 
-        this.cursorInventory = new CursorInventory( this, this.entityId );
+        this.creativeItemCacheInventory = new CreativeItemCacheInventory( this );
+        this.craftingGridInventory = new SmallCraftingGridInventory( this );
+        this.cursorInventory = new CursorInventory( this );
         this.craftingTableInventory = new CraftingTableInventory( this );
         this.cartographyTableInventory = new CartographyTableInventory( this );
         this.smithingTableInventory = new SmithingTableInventory( this );
@@ -117,8 +108,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.enderChestInventory = new EnderChestInventory( this );
         this.stoneCutterInventory = new StoneCutterInventory( this );
         this.grindstoneInventory = new GrindstoneInventory( this );
-
         this.lasBreakPosition = new Vector( 0, 0, 0 );
+
+        this.spawnLocation = this.location.getWorld().getSpawnLocation();
     }
 
     @Override
@@ -128,10 +120,12 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
         super.update( currentTick );
 
-        Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.dimension, null );
+        Collection<Entity> nearbyEntities = this.getWorld().getNearbyEntities( this.getBoundingBox().grow( 1, 0.5f, 1 ), this.location.getDimension(), null );
         if ( nearbyEntities != null ) {
             for ( Entity nearbyEntity : nearbyEntities ) {
-                nearbyEntity.onCollideWithPlayer( this );
+                if ( nearbyEntity instanceof EntityMoveable entityMoveable ) {
+                    entityMoveable.onCollideWithPlayer( this );
+                }
             }
         }
 
@@ -188,7 +182,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                         health = this.getHealth();
                     }
 
-                    if ( ( health > 10 && difficulty.equals( Difficulty.NORMAL ) ) || ( difficulty.equals( Difficulty.HARD ) && health > 1 ) ) {
+                    if ( ( difficulty.equals( Difficulty.NORMAL ) && health > 2 ) || ( difficulty.equals( Difficulty.HARD ) && health > 1 ) ) {
                         this.damage( new EntityDamageEvent( this, 1, EntityDamageEvent.DamageSource.STARVE ) );
                     }
                 }
@@ -202,202 +196,20 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.updateAttributes();
     }
 
-    public void loadPlayerData() {
-        this.playerFile = new File( this.server.getPlayersFolder(), this.uuid.toString() + ".dat" );
-        if ( !this.playerFile.exists() ) {
-            try {
-                this.playerFile.createNewFile();
-            } catch ( IOException e ) {
-                throw new RuntimeException( e );
-            } finally {
-                ByteBuf buffer = Unpooled.buffer();
-                try ( NBTOutputStream stream = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                    NbtMapBuilder root = NbtMap.builder();
-                    NbtMapBuilder builder = NbtMap.builder();
-                    World defaultWorld = this.server.getDefaultWorld();
-
-                    builder.putFloat( "playerX", defaultWorld.getSpawnLocation().getX() );
-                    builder.putFloat( "playerY", defaultWorld.getSpawnLocation().getY() );
-                    builder.putFloat( "playerZ", defaultWorld.getSpawnLocation().getZ() );
-                    builder.putFloat( "playerYaw", defaultWorld.getSpawnLocation().getYaw() );
-                    builder.putFloat( "playerPitch", defaultWorld.getSpawnLocation().getPitch() );
-                    builder.putInt( "dimension", this.dimension.ordinal() );
-                    List<NbtMap> playerInventoryItems = new ArrayList<>();
-                    for ( int slot = 0; slot < this.playerInventory.getContents().length; slot++ ) {
-                        NbtMapBuilder itemCompound = NbtMap.builder();
-                        Item item = this.playerInventory.getItem( slot );
-                        itemCompound.putByte( "Slot", (byte) slot );
-                        itemCompound.putString( "Name", item.getIdentifier() );
-                        itemCompound.putShort( "Damage", (short) item.getMeta() );
-                        itemCompound.putByte( "Count", (byte) item.getAmount() );
-                        if ( item.getNBT() != null ) {
-                            itemCompound.putCompound( "tag", item.getNBT() );
-                        }
-
-                        playerInventoryItems.add( itemCompound.build() );
-                    }
-                    builder.putList( "playerInventory", NbtType.COMPOUND, playerInventoryItems );
-
-                    List<NbtMap> armorInventoryItems = new ArrayList<>();
-                    for ( int slot = 0; slot < this.armorInventory.getContents().length; slot++ ) {
-                        NbtMapBuilder itemCompound = NbtMap.builder();
-                        Item item = this.playerInventory.getItem( slot );
-                        itemCompound.putByte( "Slot", (byte) slot );
-                        itemCompound.putString( "Name", item.getIdentifier() );
-                        itemCompound.putShort( "Damage", (short) item.getMeta() );
-                        itemCompound.putByte( "Count", (byte) item.getAmount() );
-                        if ( item.getNBT() != null ) {
-                            itemCompound.putCompound( "tag", item.getNBT() );
-                        }
-
-                        armorInventoryItems.add( itemCompound.build() );
-                    }
-                    builder.putList( "armorInventory", NbtType.COMPOUND, armorInventoryItems );
-
-                    builder.putInt( "gamemode", this.gameMode.ordinal() );
-                    builder.putFloat( "health", this.getHealth() );
-                    builder.putFloat( "hunger", this.getHunger() );
-                    builder.putFloat( "saturation", this.getSaturation() );
-                    builder.putFloat( "exhaustion", this.getExhaustion() );
-
-                    builder.putFloat( "level", this.getLevel() );
-                    builder.putFloat( "experience", this.getExperience() );
-                    root.putCompound( defaultWorld.getName(), builder.build() );
-                    stream.writeTag( root.build() );
-                    try ( ByteBufInputStream byteBufInputStream = new ByteBufInputStream( buffer ) ) {
-                        Utils.writeFile( this.playerFile, byteBufInputStream );
-                    }
-                } catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            try ( NBTInputStream stream = NbtUtils.createReaderLE( new FileInputStream( this.playerFile ) ) ) {
-                NbtMap nbt = (NbtMap) stream.readTag();
-                World world = this.getWorld();
-                NbtMap compound = nbt.getCompound( world.getName() );
-                float playerX = compound.getFloat( "playerX", world.getSpawnLocation().getX() );
-                float playerY = compound.getFloat( "playerY", world.getSpawnLocation().getY() );
-                float playerZ = compound.getFloat( "playerZ", world.getSpawnLocation().getZ() );
-                float playerYaw = compound.getFloat( "playerYaw", world.getSpawnLocation().getYaw() );
-                float playerPitch = compound.getFloat( "playerPitch", world.getSpawnLocation().getPitch() );
-                int dimension = compound.getInt( "dimension", Dimension.OVERWORLD.ordinal() );
-                this.location = new Location( world, playerX, playerY, playerZ, playerYaw, playerPitch, Dimension.values()[dimension] );
-
-                List<NbtMap> playerInventoryList = compound.getList( "playerInventory", NbtType.COMPOUND );
-                if ( playerInventoryList.size() > 0 ) {
-                    for ( NbtMap nbtMap : playerInventoryList ) {
-                        byte slot = nbtMap.getByte( "Slot" );
-                        String name = nbtMap.getString( "Name" );
-                        int meta = nbtMap.getShort( "Damage" );
-                        byte amount = nbtMap.getByte( "Count" );
-                        NbtMap itemNbt = nbtMap.getCompound( "tag" );
-
-                        Item item = ItemType.get( name );
-                        item.setMeta( meta );
-                        item.setAmount( amount );
-                        item.setNBT( itemNbt );
-
-                        this.playerInventory.setItem( slot, item );
-                    }
-                }
-
-                List<NbtMap> armorInventoryList = compound.getList( "armorInventory", NbtType.COMPOUND );
-                if ( armorInventoryList.size() > 0 ) {
-                    for ( NbtMap nbtMap : armorInventoryList ) {
-                        byte slot = nbtMap.getByte( "Slot" );
-                        String name = nbtMap.getString( "Name" );
-                        int meta = nbtMap.getShort( "Damage" );
-                        byte amount = nbtMap.getByte( "Count" );
-                        NbtMap itemNbt = nbtMap.getCompound( "tag" );
-
-                        Item item = ItemType.get( name );
-                        item.setMeta( meta );
-                        item.setAmount( amount );
-                        item.setNBT( itemNbt );
-
-                        this.armorInventory.setItem( slot, item );
-                    }
-                }
-
-                this.setGameMode( GameMode.values()[compound.getInt( "gamemode", this.server.getGameMode().getId() )] );
-                this.setHealth( compound.getFloat( "health", 20 ) );
-                this.setHunger( (int) compound.getFloat( "hunger", 20 ) );
-                this.setSaturation( compound.getFloat( "saturation", 20 ) );
-                this.setExhaustion( compound.getFloat( "exhaustion", 0.41f ) );
-                this.setLevel( compound.getFloat( "level", 0 ) );
-                this.setExperience( compound.getFloat( "experience", 0 ) );
-
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            }
-        }
+    public PlayerConnection getPlayerConnection() {
+        return this.playerConnection;
     }
 
-    public void savePlayerData() {
-        if ( this.playerFile != null && this.playerFile.exists() ) {
-            ByteBuf buffer = Unpooled.buffer();
-            try ( NBTOutputStream stream = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
-                NbtMapBuilder root = NbtMap.builder();
-                NbtMapBuilder builder = NbtMap.builder();
-                World world = this.location.getWorld();
+    public AdventureSettings getAdventureSettings() {
+        return this.adventureSettings;
+    }
 
-                builder.putFloat( "playerX", this.location.getX() );
-                builder.putFloat( "playerY", this.location.getY() );
-                builder.putFloat( "playerZ", this.location.getZ() );
-                builder.putFloat( "playerYaw", this.location.getYaw() );
-                builder.putFloat( "playerPitch", this.location.getPitch() );
-                builder.putInt( "dimension", this.dimension.ordinal() );
-                List<NbtMap> playerInventoryItems = new ArrayList<>();
-                for ( int slot = 0; slot < this.playerInventory.getContents().length; slot++ ) {
-                    NbtMapBuilder itemCompound = NbtMap.builder();
-                    Item item = this.playerInventory.getItem( slot );
-                    itemCompound.putByte( "Slot", (byte) slot );
-                    itemCompound.putString( "Name", item.getIdentifier() );
-                    itemCompound.putShort( "Damage", (short) item.getMeta() );
-                    itemCompound.putByte( "Count", (byte) item.getAmount() );
-                    if ( item.getNBT() != null ) {
-                        itemCompound.putCompound( "tag", item.getNBT() );
-                    }
+    public boolean isSpawned() {
+        return this.playerConnection.isSpawned();
+    }
 
-                    playerInventoryItems.add( itemCompound.build() );
-                }
-                builder.putList( "playerInventory", NbtType.COMPOUND, playerInventoryItems );
-
-                List<NbtMap> armorInventoryItems = new ArrayList<>();
-                for ( int slot = 0; slot < this.armorInventory.getContents().length; slot++ ) {
-                    NbtMapBuilder itemCompound = NbtMap.builder();
-                    Item item = this.armorInventory.getItem( slot );
-                    itemCompound.putByte( "Slot", (byte) slot );
-                    itemCompound.putString( "Name", item.getIdentifier() );
-                    itemCompound.putShort( "Damage", (short) item.getMeta() );
-                    itemCompound.putByte( "Count", (byte) item.getAmount() );
-                    if ( item.getNBT() != null ) {
-                        itemCompound.putCompound( "tag", item.getNBT() );
-                    }
-
-                    armorInventoryItems.add( itemCompound.build() );
-                }
-                builder.putList( "armorInventory", NbtType.COMPOUND, armorInventoryItems );
-
-                builder.putInt( "gamemode", this.gameMode.ordinal() );
-                builder.putFloat( "health", this.getHealth() );
-                builder.putFloat( "hunger", this.getHunger() );
-                builder.putFloat( "saturation", this.getSaturation() );
-                builder.putFloat( "exhaustion", this.getExhaustion() );
-
-                builder.putFloat( "level", this.getLevel() );
-                builder.putFloat( "experience", this.getExperience() );
-
-                root.putCompound( world.getName(), builder.build() );
-                stream.writeTag( root.build() );
-                try ( ByteBufInputStream byteBufInputStream = new ByteBufInputStream( buffer ) ) {
-                    Utils.writeFile( this.playerFile, byteBufInputStream );
-                }
-            } catch ( IOException e ) {
-                e.printStackTrace();
-            }
-        }
+    public boolean isLoggedIn() {
+        return this.playerConnection.isLoggedIn();
     }
 
     @Override
@@ -405,104 +217,19 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return this.server;
     }
 
-    public boolean isSpawned() {
-        return this.playerConnection.isSpawned();
+    @Override
+    public String getName() {
+        return this.name;
     }
 
-    public boolean isClosed() {
-        return this.playerConnection.isClosed();
-    }
-
-    public boolean isBreakingBlock() {
-        return this.breakingBlock;
-    }
-
-    public void setBreakingBlock( boolean breakingBlock ) {
-        this.breakingBlock = breakingBlock;
-    }
-
-    public long getLastBreakTime() {
-        return this.lastBreakTime;
-    }
-
-    public void setLastBreakTime( long lastBreakTime ) {
-        this.lastBreakTime = lastBreakTime;
-    }
-
-    public Vector getLasBreakPosition() {
-        return this.lasBreakPosition;
-    }
-
-    public void setLasBreakPosition( Vector lasBreakPosition ) {
-        this.lasBreakPosition = lasBreakPosition;
+    public void setName( String name ) {
+        if ( !this.playerConnection.isLoggedIn() ) {
+            this.name = name;
+        }
     }
 
     public String getXuid() {
         return this.playerConnection.getLoginData().getXuid();
-    }
-
-    public AdventureSettings getAdventureSettings() {
-        return this.adventureSettings;
-    }
-
-    public ContainerInventory getCurrentInventory() {
-        return this.currentInventory;
-    }
-
-    public CraftingTableInventory getCraftingTableInventory() {
-        return this.craftingTableInventory;
-    }
-
-    public CursorInventory getCursorInventory() {
-        return this.cursorInventory;
-    }
-
-    public CartographyTableInventory getCartographyTableInventory() {
-        return this.cartographyTableInventory;
-    }
-
-    public SmithingTableInventory getSmithingTableInventory() {
-        return this.smithingTableInventory;
-    }
-
-    public AnvilInventory getAnvilInventory() {
-        return this.anvilInventory;
-    }
-
-    public EnderChestInventory getEnderChestInventory() {
-        return this.enderChestInventory;
-    }
-
-    public StoneCutterInventory getStoneCutterInventory() {
-        return this.stoneCutterInventory;
-    }
-
-    public GrindstoneInventory getGrindstoneInventory() {
-        return this.grindstoneInventory;
-    }
-
-    public Inventory getInventory( WindowId windowIdById, int slot ) {
-        return switch ( windowIdById ) {
-            case PLAYER -> this.getInventory();
-            case CURSOR_DEPRECATED -> this.getCursorInventory();
-            case ARMOR_DEPRECATED -> this.getArmorInventory();
-            default -> this.getCurrentInventory();
-        };
-    }
-
-    public Location getSpawnLocation() {
-        return this.spawnLocation;
-    }
-
-    public void setSpawnLocation( Location spawnLocation ) {
-        this.spawnLocation = spawnLocation;
-
-        SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
-        setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.PLAYER_SPAWN );
-        setSpawnPositionPacket.setDimensionId( this.dimension.ordinal() );
-        setSpawnPositionPacket.setSpawnPosition( spawnLocation.toVector3i() );
-        setSpawnPositionPacket.setBlockPosition( this.location.getWorld().getSpawnLocation().toVector3i() );
-        this.playerConnection.sendPacket( setSpawnPositionPacket );
     }
 
     public GameMode getGameMode() {
@@ -511,7 +238,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     public void setGameMode( GameMode gameMode ) {
         this.gameMode = gameMode;
-
 
         this.adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.gameMode.ordinal() == 3 );
         this.adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.gameMode.ordinal() > 0 );
@@ -527,135 +253,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendPacket( setPlayerGameTypePacket );
     }
 
-    public int getViewDistance() {
-        return this.viewDistance;
-    }
-
-    public void setViewDistance( int viewDistance ) {
-        this.viewDistance = viewDistance;
-
-        ChunkRadiusUpdatedPacket chunkRadiusUpdatedPacket = new ChunkRadiusUpdatedPacket();
-        chunkRadiusUpdatedPacket.setRadius( viewDistance );
-        this.playerConnection.sendPacket( chunkRadiusUpdatedPacket );
-    }
-
-    public int getInAirTicks() {
-        return this.inAirTicks;
-    }
-
-    public void setInAirTicks( int inAirTicks ) {
-        this.inAirTicks = inAirTicks;
-    }
-
-    public Location getRespawnLocation() {
-        return respawnLocation;
-    }
-
-    public void setRespawnLocation( Location respawnLocation ) {
-        this.respawnLocation = respawnLocation;
-    }
-
-    public long getPing() {
-        return this.playerConnection.getPing();
-    }
-
-    public void sendEntityData() {
-        SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
-        setEntityDataPacket.setRuntimeEntityId( this.entityId );
-        setEntityDataPacket.getMetadata().putAll( this.metadata.getEntityDataMap() );
-        setEntityDataPacket.setTick( this.server.getCurrentTick() );
-        this.sendPacket( setEntityDataPacket );
-    }
-
-    public void updateAttributes() {
-        UpdateAttributesPacket updateAttributesPacket = null;
-        for ( Attribute attribute : this.getAttributes() ) {
-            if ( attribute.isDirty() ) {
-                if ( updateAttributesPacket == null ) {
-                    updateAttributesPacket = new UpdateAttributesPacket();
-                    updateAttributesPacket.setRuntimeEntityId( this.entityId );
-                }
-                updateAttributesPacket.getAttributes().add( attribute.toNetwork() );
-            }
-        }
-
-        if ( updateAttributesPacket != null ) {
-            updateAttributesPacket.setTick( this.server.getCurrentTick() );
-            this.playerConnection.sendPacket( updateAttributesPacket );
-        }
-    }
-
-    public void teleport( Location location, MovePlayerPacket.Mode mode ) {
-        World currentWorld = this.getWorld();
-        World world = location.getWorld();
-
-        this.highestPosition = 0;
-        this.fallDistance = 0;
-        this.inAirTicks = 0;
-        this.playerConnection.getChunkLoadQueue().clear();
-
-        if ( currentWorld != world ) {
-            this.despawn();
-            currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
-
-            this.getChunk().removeEntity( this );
-            currentWorld.removeEntity( this );
-
-            this.playerConnection.resetChunks();
-
-            this.setLocation( location );
-            this.playerConnection.needNewChunks();
-
-            world.addEntity( this );
-            this.getChunk().addEntity( this );
-            this.spawn();
-            world.getPlayers().forEach( player -> player.spawn( this ) );
-            this.movePlayer( location, mode );
-            return;
-        }
-
-        this.setLocation( location );
-        this.movePlayer( location, mode );
-    }
-
-    public void teleport( Location location ) {
-        this.teleport( location, MovePlayerPacket.Mode.TELEPORT );
-    }
-
-    public void teleport( Player player ) {
-        this.teleport( player.getLocation() );
-    }
-
-    public void movePlayer( Location location, MovePlayerPacket.Mode mode ) {
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
-        movePlayerPacket.setRuntimeEntityId( this.entityId );
-        movePlayerPacket.setPosition( location.toVector3f().add( 0, this.getEyeHeight(), 0 ) );
-        movePlayerPacket.setRotation( Vector3f.from( location.getPitch(), location.getYaw(), location.getYaw() ) );
-        movePlayerPacket.setMode( mode );
-        if ( mode == MovePlayerPacket.Mode.TELEPORT ) {
-            movePlayerPacket.setTeleportationCause( MovePlayerPacket.TeleportationCause.BEHAVIOR );
-        }
-        movePlayerPacket.setOnGround( this.onGround );
-        movePlayerPacket.setRidingRuntimeEntityId( 0 );
-        movePlayerPacket.setTick( this.server.getCurrentTick() );
-        this.sendPacket( movePlayerPacket );
-    }
-
-    public void movePlayer( Player player, MovePlayerPacket.Mode mode ) {
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
-        movePlayerPacket.setRuntimeEntityId( player.getEntityId() );
-        movePlayerPacket.setPosition( player.getLocation().toVector3f().add( 0, player.getEyeHeight(), 0 ) );
-        movePlayerPacket.setRotation( Vector3f.from( player.getLocation().getPitch(), player.getLocation().getYaw(), player.getLocation().getYaw() ) );
-        movePlayerPacket.setMode( mode );
-        if ( mode == MovePlayerPacket.Mode.TELEPORT ) {
-            movePlayerPacket.setTeleportationCause( MovePlayerPacket.TeleportationCause.BEHAVIOR );
-        }
-        movePlayerPacket.setOnGround( player.isOnGround() );
-        movePlayerPacket.setRidingRuntimeEntityId( 0 );
-        movePlayerPacket.setTick( this.server.getCurrentTick() );
-        this.sendPacket( movePlayerPacket );
-    }
-
     @Override
     public void sendMessage( String text ) {
         TextPacket textPacket = new TextPacket();
@@ -664,7 +261,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         textPacket.setNeedsTranslation( false );
         textPacket.setXuid( this.getXuid() );
         textPacket.setPlatformChatId( this.deviceInfo.getDeviceId() );
-        this.sendPacket( textPacket );
+        this.playerConnection.sendPacket( textPacket );
     }
 
     public void sendTip( String text ) {
@@ -672,9 +269,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         textPacket.setType( TextPacket.Type.TIP );
         textPacket.setMessage( text );
         textPacket.setNeedsTranslation( false );
-        textPacket.setXuid( this.getXuid() );
+        textPacket.setXuid( this.playerConnection.getLoginData().getXuid() );
         textPacket.setPlatformChatId( this.deviceInfo.getDeviceId() );
-        this.sendPacket( textPacket );
+        this.playerConnection.sendPacket( textPacket );
     }
 
     public void sendPopup( String text ) {
@@ -682,9 +279,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         textPacket.setType( TextPacket.Type.POPUP );
         textPacket.setMessage( text );
         textPacket.setNeedsTranslation( false );
-        textPacket.setXuid( this.getXuid() );
+        textPacket.setXuid( this.playerConnection.getLoginData().getXuid() );
         textPacket.setPlatformChatId( this.deviceInfo.getDeviceId() );
-        this.sendPacket( textPacket );
+        this.playerConnection.sendPacket( textPacket );
     }
 
     @Override
@@ -712,15 +309,15 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     public void removePermission( String permission ) {
         if ( this.permissions.containsKey( this.uuid ) ) {
             this.permissions.get( this.uuid ).remove( permission );
-            this.sendCommandData();
         }
+        this.sendCommandData();
     }
 
     public void removePermissions( Collection<String> permissions ) {
         if ( this.permissions.containsKey( this.uuid ) ) {
             this.permissions.get( this.uuid ).removeAll( permissions );
-            this.sendCommandData();
         }
+        this.sendCommandData();
     }
 
     public boolean isOp() {
@@ -728,7 +325,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public void setOp( boolean value ) {
-        this.sendCommandData();
         this.adventureSettings.set( AdventureSettings.Type.OPERATOR, value );
         this.adventureSettings.update();
         if ( value ) {
@@ -739,25 +335,64 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.sendCommandData();
     }
 
-    public void sendChunk( Chunk chunk ) {
-        this.playerConnection.sendChunk( chunk );
+    public int getChunkRadius() {
+        return this.playerConnection.getPlayerChunkManager().getChunkRadius();
+    }
+
+    public void setChunkRadius( int chunkRadius ) {
+        this.playerConnection.getPlayerChunkManager().setChunkRadius( chunkRadius );
     }
 
     public boolean isChunkLoaded( int chunkX, int chunkZ ) {
-        return this.playerConnection.isChunkLoaded( chunkX, chunkZ );
+        return this.playerConnection.getPlayerChunkManager().isChunkInView( chunkX, chunkZ );
     }
 
-    public void sendCommandData() {
-        AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
-        Set<CommandData> commandList = new HashSet<>();
-        for ( Command command : this.server.getPluginManager().getCommandManager().getCommands() ) {
-            if ( !this.hasPermission( command.getCommandData().getPermission() ) ) {
-                continue;
-            }
-            commandList.add( command.getCommandData().toNetwork() );
-        }
-        availableCommandsPacket.getCommands().addAll( commandList );
-        this.sendPacket( availableCommandsPacket );
+    public CraftingGridInventory getCraftingGridInventory() {
+        return this.craftingGridInventory;
+    }
+
+    public void setCraftingGridInventory( CraftingGridInventory craftingGridInventory ) {
+        this.craftingGridInventory = craftingGridInventory;
+    }
+
+    public CreativeItemCacheInventory getCreativeItemCacheInventory() {
+        return creativeItemCacheInventory;
+    }
+
+    public ContainerInventory getCurrentInventory() {
+        return this.currentInventory;
+    }
+
+    public CursorInventory getCursorInventory() {
+        return this.cursorInventory;
+    }
+
+    public CraftingTableInventory getCraftingTableInventory() {
+        return this.craftingTableInventory;
+    }
+
+    public CartographyTableInventory getCartographyTableInventory() {
+        return this.cartographyTableInventory;
+    }
+
+    public SmithingTableInventory getSmithingTableInventory() {
+        return this.smithingTableInventory;
+    }
+
+    public AnvilInventory getAnvilInventory() {
+        return this.anvilInventory;
+    }
+
+    public EnderChestInventory getEnderChestInventory() {
+        return this.enderChestInventory;
+    }
+
+    public StoneCutterInventory getStoneCutterInventory() {
+        return this.stoneCutterInventory;
+    }
+
+    public GrindstoneInventory getGrindstoneInventory() {
+        return this.grindstoneInventory;
     }
 
     public void openInventory( ContainerInventory inventory, Vector position, byte windowId ) {
@@ -804,6 +439,102 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
+    public void teleport( Player player ) {
+        this.teleport( player.getLocation() );
+    }
+
+    public void teleport( Location location ) {
+        Dimension fromDimension = this.location.getDimension();
+
+        //TODO DESPAWN PLAYER AND SPAWN TO NEW DIMENSION
+        if ( !fromDimension.equals( location.getDimension() ) ) {
+            this.playerConnection.getPlayerChunkManager().clear();
+
+            SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
+            setSpawnPositionPacket.setDimensionId( location.getDimension().ordinal() );
+            setSpawnPositionPacket.setSpawnPosition( location.toVector3i().div( 8, 8,8 ) );
+            setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.PLAYER_SPAWN );
+            this.playerConnection.sendPacket( setSpawnPositionPacket );
+
+            ChangeDimensionPacket changeDimensionPacket = new ChangeDimensionPacket();
+            changeDimensionPacket.setPosition( this.location.toVector3f() );
+            changeDimensionPacket.setDimension( location.getDimension().ordinal() );
+            changeDimensionPacket.setRespawn( false );
+            this.playerConnection.sendPacket( changeDimensionPacket );
+        }
+
+        this.location = location;
+        this.move( location, MovePlayerPacket.Mode.TELEPORT );
+    }
+
+    private void move( Location location, MovePlayerPacket.Mode mode ) {
+        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        movePlayerPacket.setRuntimeEntityId( this.entityId );
+        movePlayerPacket.setPosition( location.toVector3f().add( 0, this.getEyeHeight(), 0 ) );
+        movePlayerPacket.setRotation( Vector3f.from( location.getPitch(), location.getYaw(), location.getYaw() ) );
+        movePlayerPacket.setMode( mode );
+        if ( mode == MovePlayerPacket.Mode.TELEPORT ) {
+            movePlayerPacket.setTeleportationCause( MovePlayerPacket.TeleportationCause.BEHAVIOR );
+        }
+        movePlayerPacket.setOnGround( this.onGround );
+        movePlayerPacket.setRidingRuntimeEntityId( 0 );
+        movePlayerPacket.setTick( this.server.getCurrentTick() );
+        this.playerConnection.sendPacket( movePlayerPacket );
+    }
+
+    public void kick( String reason, boolean hideScreen ) {
+        this.close();
+        this.playerConnection.disconnect( reason, hideScreen );
+    }
+
+    public void kick( String reason ) {
+        this.kick( reason, false );
+    }
+
+    public void sendToast( String title, String content ) {
+        ToastRequestPacket toastRequestPacket = new ToastRequestPacket();
+        toastRequestPacket.setTitle( title );
+        toastRequestPacket.setContent( content );
+        this.playerConnection.sendPacket( toastRequestPacket );
+    }
+
+    public void sendCommandData() {
+        AvailableCommandsPacket availableCommandsPacket = new AvailableCommandsPacket();
+        Set<CommandData> commandList = new HashSet<>();
+        for ( Command command : this.server.getPluginManager().getCommandManager().getCommands() ) {
+            if ( !this.hasPermission( command.getCommandData().getPermission() ) ) {
+                continue;
+            }
+            commandList.add( command.getCommandData().toNetwork() );
+        }
+        availableCommandsPacket.getCommands().addAll( commandList );
+        this.getPlayerConnection().sendPacket( availableCommandsPacket );
+    }
+
+    public boolean isBreakingBlock() {
+        return this.breakingBlock;
+    }
+
+    public void setBreakingBlock( boolean breakingBlock ) {
+        this.breakingBlock = breakingBlock;
+    }
+
+    public long getLastBreakTime() {
+        return this.lastBreakTime;
+    }
+
+    public void setLastBreakTime( long lastBreakTime ) {
+        this.lastBreakTime = lastBreakTime;
+    }
+
+    public Vector getLasBreakPosition() {
+        return this.lasBreakPosition;
+    }
+
+    public void setLasBreakPosition( Vector lasBreakPosition ) {
+        this.lasBreakPosition = lasBreakPosition;
+    }
+
     public void playSound( Sound sound ) {
         this.playSound( this.location, sound, 1, 1 );
     }
@@ -825,56 +556,201 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.playerConnection.sendPacket( playSoundPacket );
     }
 
-    public boolean attackWithItemInHand( Entity target ) {
-        if ( target instanceof EntityLiving living ) {
-
-            boolean success = false;
-
-            EntityDamageEvent.DamageSource damageSource = EntityDamageEvent.DamageSource.ENTITY_ATTACK;
-            float damage = this.getAttackDamage();
-
-            EnchantmentSharpness sharpness = (EnchantmentSharpness) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.SHARPNESS );
-            if ( sharpness != null ) {
-                damage += sharpness.getLevel() * 1.25f;
-            }
-
-            int knockbackLevel = 0;
-
-            EnchantmentKnockback knockback = (EnchantmentKnockback) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.KNOCKBACK );
-            if ( knockback != null ) {
-                knockbackLevel += knockback.getLevel();
-            }
-
-            if ( damage > 0 ) {
-                boolean crit = this.fallDistance > 0 && !this.onGround && !this.isOnLadder() && !this.isInWater();
-                if ( crit && damage > 0.0f ) {
-                    damage *= 1.5;
+    public void updateAttributes() {
+        UpdateAttributesPacket updateAttributesPacket = null;
+        for ( Attribute attribute : this.getAttributes() ) {
+            if ( attribute.isDirty() ) {
+                if ( updateAttributesPacket == null ) {
+                    updateAttributesPacket = new UpdateAttributesPacket();
+                    updateAttributesPacket.setRuntimeEntityId( this.entityId );
                 }
-                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, damageSource ) ) ) {
-                    if ( knockbackLevel > 0 ) {
-                        Vector targetVelocity = target.getVelocity();
-                        living.setVelocity( targetVelocity.add(
-                                (float) ( -Math.sin( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ),
-                                0.1f,
-                                (float) ( Math.cos( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ) ) );
-
-                        Vector ownVelocity = this.getVelocity();
-                        ownVelocity.setX( ownVelocity.getX() * 0.6F );
-                        ownVelocity.setZ( ownVelocity.getZ() * 0.6F );
-                        this.setVelocity( ownVelocity );
-
-                        this.setSprinting( false );
-                    }
-                }
+                updateAttributesPacket.getAttributes().add( attribute.toNetwork() );
             }
-            if ( this.getGameMode().equals( GameMode.SURVIVAL ) ) {
-                this.exhaust( 0.3f );
-            }
-
-            return success;
         }
-        return false;
+
+        if ( updateAttributesPacket != null ) {
+            updateAttributesPacket.setTick( this.server.getCurrentTick() );
+            this.playerConnection.sendPacket( updateAttributesPacket );
+        }
     }
+
+    public Location getRespawnLocation() {
+        return respawnLocation;
+    }
+
+    public void setRespawnLocation( Location respawnLocation ) {
+        this.respawnLocation = respawnLocation;
+    }
+
+    public Location getSpawnLocation() {
+        return this.spawnLocation;
+    }
+
+    public void setSpawnLocation( Location spawnLocation ) {
+        this.spawnLocation = spawnLocation;
+
+        SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
+        setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.PLAYER_SPAWN );
+        setSpawnPositionPacket.setDimensionId( this.spawnLocation.getDimension().ordinal() );
+        setSpawnPositionPacket.setSpawnPosition( spawnLocation.toVector3i() );
+        setSpawnPositionPacket.setBlockPosition( this.location.getWorld().getSpawnLocation().toVector3i() );
+        this.playerConnection.sendPacket( setSpawnPositionPacket );
+    }
+
+    public int getInAirTicks() {
+        return this.inAirTicks;
+    }
+
+    public void setInAirTicks( int inAirTicks ) {
+        this.inAirTicks = inAirTicks;
+    }
+
+    public float getHighestPosition() {
+        return this.highestPosition;
+    }
+
+    public void setHighestPosition( float highestPosition ) {
+        this.highestPosition = highestPosition;
+    }
+
+    public float getFlySpeed() {
+        return this.adventureSettings.getFlySpeed();
+    }
+
+    public void setFlySpeed( float value ) {
+        this.adventureSettings.setFlySpeed( value );
+        this.adventureSettings.update();
+    }
+
+    public float getWalkSpeed() {
+        return this.adventureSettings.getWalkSpeed();
+    }
+
+    public void setWalkSpeed( float value ) {
+        this.adventureSettings.setWalkSpeed( value );
+        this.adventureSettings.update();
+    }
+
+    @Override
+    public void setSkin( Skin skin ) {
+        super.setSkin( skin );
+
+        PlayerChangeSkinEvent playerChangeSkinEvent = new PlayerChangeSkinEvent( this, skin );
+        if ( playerChangeSkinEvent.isCancelled() ) return;
+        Server.getInstance().addToTabList( this.uuid, this.entityId, this.name, this.deviceInfo, this.getXuid(), this.skin );
+    }
+
+    public void sendServerSettings( Player player ) {
+        if ( this.serverSettingsForm != -1 ) {
+            Form<?> form = this.forms.get( this.serverSettingsForm );
+
+            ServerSettingsResponsePacket response = new ServerSettingsResponsePacket();
+            response.setFormId( this.serverSettingsForm );
+            response.setFormData( form.toJSON().toJSONString() );
+            player.getPlayerConnection().sendPacket( response );
+        }
+    }
+
+    public <R> FormListener<R> showForm( Form<R> form ) {
+        int formId = this.formId++;
+        this.forms.put( formId, form );
+        FormListener<R> formListener = new FormListener<R>();
+        this.formListeners.put( formId, formListener );
+
+        String json = form.toJSON().toJSONString();
+        ModalFormRequestPacket packetModalRequest = new ModalFormRequestPacket();
+        packetModalRequest.setFormId( formId );
+        packetModalRequest.setFormData( json );
+        this.getPlayerConnection().sendPacket( packetModalRequest );
+        return formListener;
+    }
+
+    public <R> FormListener<R> setSettingsForm( Form<R> form ) {
+        if ( this.serverSettingsForm != -1 ) {
+            this.removeSettingsForm();
+        }
+
+        int formId = this.formId++;
+        this.forms.put( formId, form );
+
+        FormListener<R> formListener = new FormListener<R>();
+        this.formListeners.put( formId, formListener );
+        this.serverSettingsForm = formId;
+        return formListener;
+    }
+
+    public void removeSettingsForm() {
+        if ( this.serverSettingsForm != -1 ) {
+            this.forms.remove( this.serverSettingsForm );
+            this.formListeners.remove( this.serverSettingsForm );
+            this.serverSettingsForm = -1;
+        }
+    }
+
+    public void parseGUIResponse( int formId, String json ) {
+        // Get the listener and the form
+        Form<?> form = this.forms.get( formId );
+        if ( form != null ) {
+            // Get listener
+            FormListener formListener = this.formListeners.get( formId );
+
+            if ( this.serverSettingsForm != formId ) {
+                this.forms.remove( formId );
+                this.formListeners.remove( formId );
+            }
+
+            if ( json.equals( "null" ) ) {
+                formListener.getCloseConsumer().accept( null );
+            } else {
+                Object resp = form.parseResponse( json );
+                if ( resp == null ) {
+                    formListener.getCloseConsumer().accept( null );
+                } else {
+                    formListener.getResponseConsumer().accept( resp );
+                }
+            }
+        }
+    }
+
+    public void addNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
+        this.npcDialogueForms.add( npcDialogueForm );
+    }
+
+    public void removeNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
+        this.npcDialogueForms.remove( npcDialogueForm );
+    }
+
+    public Set<NpcDialogueForm> getOpenNpcDialogueForms() {
+        return new HashSet<>( this.npcDialogueForms );
+    }
+
+    public EntityFishingHook getEntityFishingHook() {
+        return this.entityFishingHook;
+    }
+
+    public void setEntityFishingHook( EntityFishingHook entityFishingHook ) {
+        this.entityFishingHook = entityFishingHook;
+    }
+
+    @Override
+    public void setExperience( float value ) {
+        PlayerExperienceChangeEvent playerExperienceChangeEvent = new PlayerExperienceChangeEvent( this, (int) this.getExperience(), (int) this.getLevel(), (int) value, 0 );
+        if ( playerExperienceChangeEvent.isCancelled() ) {
+            return;
+        }
+        super.setExperience( playerExperienceChangeEvent.getNewExperience() );
+    }
+
+    @Override
+    public void setLevel( float value ) {
+        PlayerExperienceChangeEvent playerExperienceChangeEvent = new PlayerExperienceChangeEvent( this, (int) this.getExperience(), (int) this.getLevel(), 0, (int) value );
+        if ( playerExperienceChangeEvent.isCancelled() ) {
+            return;
+        }
+        super.setExperience( playerExperienceChangeEvent.getNewLevel() );
+    }
+
+    // =========== Damage ===========
 
     @Override
     public boolean damage( EntityDamageEvent event ) {
@@ -885,25 +761,104 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+    public float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ||
                 event.getDamageSource().equals( EntityDamageEvent.DamageSource.VOID ) ||
                 event.getDamageSource().equals( EntityDamageEvent.DamageSource.DROWNING ) ) {
             return event.getDamage();
         }
-
         float damage = event.getDamage();
-        float maxReductionDiff = 25.0f - this.armorInventory.getTotalArmorValue() * 0.04f;
-        float amplifiedDamage = damage * maxReductionDiff;
+        float totalArmorValue = this.armorInventory.getTotalArmorValue();
+
         if ( damageArmor ) {
             this.armorInventory.damageEvenly( damage );
         }
-
-        return amplifiedDamage / 25.0F;
+        return -damage * totalArmorValue * 0.04f;
     }
 
     @Override
-    protected void kill() {
+    public float applyFeatherFallingReduction( EntityDamageEvent event, float damage ) {
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ) {
+            Item boots = this.armorInventory.getBoots();
+            if ( boots != null && !boots.getType().equals( ItemType.AIR ) ) {
+                Enchantment enchantment = boots.getEnchantment( EnchantmentType.FEATHER_FALLING );
+                if ( enchantment != null ) {
+                    int featherFallingReduction = 12 * enchantment.getLevel();
+                    return -( damage * ( featherFallingReduction / 100f ) );
+                }
+            }
+        }
+        return event.getDamage();
+    }
+
+    @Override
+    public float applyProtectionReduction( EntityDamageEvent event, float damage ) {
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.ENTITY_ATTACK ) ) {
+            float protectionReduction = this.getProtectionReduction();
+            return -( damage * ( protectionReduction / 100f ) );
+        }
+        return event.getDamage();
+    }
+
+    @Override
+    public float applyProjectileProtectionReduction( EntityDamageEvent event, float damage ) {
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.PROJECTILE ) ) {
+            float protectionReduction = this.getProjectileProtectionReduction();
+            return -( damage * ( protectionReduction / 100f ) );
+        }
+        return event.getDamage();
+    }
+
+    @Override
+    public float applyFireProtectionReduction( EntityDamageEvent event, float damage ) {
+        if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.ON_FIRE ) ) {
+            float protectionReduction = this.getFireProtectionReduction();
+            return -( damage * ( protectionReduction / 100f ) );
+        }
+        return event.getDamage();
+    }
+
+    private float getProtectionReduction() {
+        float protectionReduction = 0;
+        for ( Item content : this.armorInventory.getContents() ) {
+            if ( content instanceof ItemArmor ) {
+                Enchantment enchantment = content.getEnchantment( EnchantmentType.PROTECTION );
+                if ( enchantment != null ) {
+                    protectionReduction += 4 * enchantment.getLevel();
+                }
+            }
+        }
+        return protectionReduction;
+    }
+
+    private float getProjectileProtectionReduction() {
+        float protectionReduction = 0;
+        for ( Item content : this.armorInventory.getContents() ) {
+            if ( content instanceof ItemArmor ) {
+                Enchantment enchantment = content.getEnchantment( EnchantmentType.PROJECTILE_PROTECTION );
+                if ( enchantment != null ) {
+                    protectionReduction += enchantment.getLevel() * 8;
+                }
+            }
+        }
+        return protectionReduction;
+    }
+
+    private float getFireProtectionReduction() {
+        float protectionReduction = 0;
+        for ( Item content : this.armorInventory.getContents() ) {
+            if ( content instanceof ItemArmor ) {
+                Enchantment enchantment = content.getEnchantment( EnchantmentType.FIRE_PROTECTION );
+                if ( enchantment != null ) {
+                    protectionReduction += 15 * enchantment.getLevel();
+                }
+            }
+        }
+        return protectionReduction;
+    }
+
+    @Override
+    public void kill() {
         if ( !this.isDead ) {
             super.kill();
             EntityEventPacket entityEventPacket = new EntityEventPacket();
@@ -966,6 +921,56 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
+    public boolean attackWithItemInHand( Entity target ) {
+        if ( target instanceof EntityLiving living ) {
+
+            boolean success = false;
+
+            EntityDamageEvent.DamageSource damageSource = EntityDamageEvent.DamageSource.ENTITY_ATTACK;
+            float damage = this.getAttackDamage();
+
+            EnchantmentSharpness sharpness = (EnchantmentSharpness) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.SHARPNESS );
+            if ( sharpness != null ) {
+                damage += sharpness.getLevel() * 1.25f;
+            }
+
+            int knockbackLevel = 0;
+
+            EnchantmentKnockback knockback = (EnchantmentKnockback) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.KNOCKBACK );
+            if ( knockback != null ) {
+                knockbackLevel += knockback.getLevel();
+            }
+
+            if ( damage > 0 ) {
+                boolean crit = this.fallDistance > 0 && !this.onGround && !this.isOnLadder() && !this.isInWater();
+                if ( crit && damage > 0.0f ) {
+                    damage *= 1.5;
+                }
+                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, damageSource ) ) ) {
+                    if ( knockbackLevel > 0 ) {
+                        Vector targetVelocity = target.getVelocity();
+                        living.setVelocity( targetVelocity.add(
+                                (float) ( -Math.sin( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ),
+                                0.1f,
+                                (float) ( Math.cos( this.getYaw() * (float) Math.PI / 180.0F ) * (float) knockbackLevel * 0.3 ) ) );
+
+                        Vector ownVelocity = this.getVelocity();
+                        ownVelocity.setX( ownVelocity.getX() * 0.6F );
+                        ownVelocity.setZ( ownVelocity.getZ() * 0.6F );
+                        this.setVelocity( ownVelocity );
+
+                        this.setSprinting( false );
+                    }
+                }
+            }
+            if ( this.gameMode.equals( GameMode.SURVIVAL ) ) {
+                this.exhaust( 0.3f );
+            }
+            return success;
+        }
+        return false;
+    }
+
     public void respawn() {
         if ( this.isDead ) {
             PlayerRespawnEvent playerRespawnEvent = new PlayerRespawnEvent( this, this.respawnLocation );
@@ -996,7 +1001,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             EntityEventPacket entityEventPacket = new EntityEventPacket();
             entityEventPacket.setRuntimeEntityId( this.entityId );
             entityEventPacket.setType( EntityEventType.RESPAWN );
-            this.getWorld().sendDimensionPacket( entityEventPacket, this.dimension );
+            Server.getInstance().broadcastPacket( entityEventPacket );
 
             this.playerInventory.getItemInHand().addToHand( this );
 
@@ -1007,140 +1012,34 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     public List<Item> getDrops() {
         List<Item> drops = new ArrayList<>();
         for ( Item content : this.playerInventory.getContents() ) {
-            if ( content != null && !( content instanceof ItemAir ) ) {
-                drops.add( content );
+            if ( content != null && !( content.getType().equals( ItemType.AIR ) ) ) {
+                if ( content.getEnchantment( EnchantmentType.CURSE_OF_VANISHING ) == null ) {
+                    drops.add( content );
+                }
             }
         }
         for ( Item content : this.cursorInventory.getContents() ) {
-            if ( content != null && !( content instanceof ItemAir ) ) {
-                drops.add( content );
+            if ( content != null && !( content.getType().equals( ItemType.AIR ) ) ) {
+                if ( content.getEnchantment( EnchantmentType.CURSE_OF_VANISHING ) == null ) {
+                    drops.add( content );
+                }
             }
         }
         for ( Item content : this.armorInventory.getContents() ) {
-            if ( content != null && !( content instanceof ItemAir ) ) {
-                drops.add( content );
+            if ( content != null && !( content.getType().equals( ItemType.AIR ) ) ) {
+                if ( content.getEnchantment( EnchantmentType.CURSE_OF_VANISHING ) == null ) {
+                    drops.add( content );
+                }
             }
         }
         return drops;
     }
 
-    public EntityFishingHook getEntityFishingHook() {
-        return this.entityFishingHook;
-    }
-
-    public void setEntityFishingHook( EntityFishingHook entityFishingHook ) {
-        this.entityFishingHook = entityFishingHook;
-    }
-
-    public void createCraftingTransaction( List<InventoryAction> inventoryTransactions ) {
-        this.craftingTransaction = new CraftingTransaction( this, inventoryTransactions );
-    }
-
-    public CraftingTransaction getCraftingTransaction() {
-        return this.craftingTransaction;
-    }
-
-    public void resetCraftingTransaction() {
-        this.craftingTransaction = null;
-    }
-
-    public void sendServerSettings( Player player ) {
-        if ( this.serverSettingsForm != -1 ) {
-            Form<?> form = this.forms.get( this.serverSettingsForm );
-
-            ServerSettingsResponsePacket response = new ServerSettingsResponsePacket();
-            response.setFormId( this.serverSettingsForm );
-            response.setFormData( form.toJSON().toJSONString() );
-            player.sendPacket( response );
+    @Override
+    public boolean equals( Object obj ) {
+        if ( obj instanceof Player player ) {
+            return player.getEntityId() == this.entityId && player.getUUID().equals( this.uuid );
         }
-    }
-
-    public <R> FormListener<R> showForm( Form<R> form ) {
-        int formId = this.formId++;
-        this.forms.put( formId, form );
-        FormListener<R> formListener = new FormListener<R>();
-        this.formListeners.put( formId, formListener );
-
-        String json = form.toJSON().toJSONString();
-        ModalFormRequestPacket packetModalRequest = new ModalFormRequestPacket();
-        packetModalRequest.setFormId( formId );
-        packetModalRequest.setFormData( json );
-        this.sendPacket( packetModalRequest );
-        return formListener;
-    }
-
-    public <R> FormListener<R> setSettingsForm( Form<R> form ) {
-        if ( this.serverSettingsForm != -1 ) {
-            this.removeSettingsForm();
-        }
-
-        int formId = this.formId++;
-        this.forms.put( formId, form );
-
-        FormListener<R> formListener = new FormListener<R>();
-        this.formListeners.put( formId, formListener );
-        this.serverSettingsForm = formId;
-        return formListener;
-    }
-
-    public void removeSettingsForm() {
-        if ( this.serverSettingsForm != -1 ) {
-            this.forms.remove( this.serverSettingsForm );
-            this.formListeners.remove( this.serverSettingsForm );
-            this.serverSettingsForm = -1;
-        }
-    }
-
-    public void parseGUIResponse( int formId, String json ) {
-        // Get the listener and the form
-        Form<?> form = this.forms.get( formId );
-        if ( form != null ) {
-            // Get listener
-            FormListener formListener = this.formListeners.get( formId );
-
-            if ( this.serverSettingsForm != formId ) {
-                this.forms.remove( formId );
-                this.formListeners.remove( formId );
-            }
-
-            if ( json.equals( "null" ) ) {
-                formListener.getCloseConsumer().accept( null );
-            } else {
-                Object resp = form.parseResponse( json );
-                if ( resp == null ) {
-                    formListener.getCloseConsumer().accept( null );
-                } else {
-                    formListener.getResponseConsumer().accept( resp );
-                }
-            }
-        }
-    }
-
-    public PlayerConnection getPlayerConnection() {
-        return this.playerConnection;
-    }
-
-    public void sendPacket( BedrockPacket packet ) {
-        this.playerConnection.sendPacket( packet );
-    }
-
-    public void sendToast( String title, String content ) {
-        ToastRequestPacket packet = new ToastRequestPacket();
-        packet.setTitle( title );
-        packet.setContent( content );
-
-        this.sendPacket( packet );
-    }
-
-    public void addNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
-        this.npcDialogueForms.add( npcDialogueForm );
-    }
-
-    public void removeNpcDialogueForm( NpcDialogueForm npcDialogueForm ) {
-        this.npcDialogueForms.remove( npcDialogueForm );
-    }
-
-    public Set<NpcDialogueForm> getOpenNpcDialogueForms() {
-        return new HashSet<>( this.npcDialogueForms );
+        return false;
     }
 }

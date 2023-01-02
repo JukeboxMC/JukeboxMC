@@ -4,34 +4,39 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import lombok.ToString;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.BlockAir;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.enchantment.Enchantment;
+import org.jukeboxmc.item.enchantment.EnchantmentRegistry;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
-import org.jukeboxmc.item.type.Durability;
-import org.jukeboxmc.item.type.ItemTierType;
-import org.jukeboxmc.item.type.ItemToolType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.BlockPalette;
+import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.ItemPalette;
 import org.jukeboxmc.world.Sound;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
+@ToString
 public class Item implements Cloneable {
 
-    protected String identifier;
+    public static int stackNetworkCount = 0;
+
+    protected ItemType itemType;
+    protected Identifier identifier;
     protected int runtimeId;
     protected int blockRuntimeId;
+    protected int stackNetworkId;
 
     protected int amount;
     protected int meta;
@@ -40,140 +45,182 @@ public class Item implements Cloneable {
     protected List<String> lore;
     protected NbtMap nbt;
 
+    protected List<String> canPlace;
+    protected List<String> canBreak;
     protected Map<EnchantmentType, Enchantment> enchantments;
-    protected List<String> canPlaceOn;
-    protected List<String> canDestroy;
 
-    public Item( String identifier ) {
-        this( identifier, 0, 0, NbtMap.EMPTY );
+    protected boolean emptyEnchanted;
+
+    private ItemProperties itemProperties;
+
+    public Item( Identifier identifier ) {
+        this( identifier, true );
     }
 
-    public Item( String identifier, int meta, int blockRuntimeId, NbtMap nbt ) {
-        this.identifier = identifier;
+    public Item( Identifier identifier, boolean withNetworkId ) {
+        this.itemType = ItemRegistry.getItemType( identifier );
+        ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( itemType );
+        this.identifier = itemRegistryData.getIdentifier();
         this.runtimeId = ItemPalette.getRuntimeId( this.identifier );
-        this.blockRuntimeId = blockRuntimeId;
-        this.meta = meta;
-        this.durability = 0;
+        this.blockRuntimeId = 0;
+        if ( withNetworkId ) {
+            this.stackNetworkId = stackNetworkCount++;
+        }
         this.amount = 1;
-        this.lore = Collections.emptyList();
-        this.nbt = nbt;
-        this.enchantments = new HashMap<>();
-        this.canPlaceOn = new ArrayList<>();
-        this.canDestroy = new ArrayList<>();
-    }
-
-    public Item( String identifier, int meta, int blockRuntimeId ) {
-        this( identifier, meta, blockRuntimeId, NbtMap.EMPTY );
-    }
-
-    public Item( String identifier, int blockRuntimeId ) {
-        this( identifier, 0, blockRuntimeId, NbtMap.EMPTY );
-    }
-
-    public Item( ItemType itemType, int amount, int meta, NbtMap nbt ) {
-        Item item = itemType.getItem();
-        this.blockRuntimeId = item.getBlockRuntimeId();
-        this.meta = meta;
+        this.meta = 0;
         this.durability = 0;
-        this.amount = amount;
-        this.nbt = nbt;
-        this.lore = Collections.emptyList();
-        this.canPlaceOn = new ArrayList<>();
-        this.canDestroy = new ArrayList<>();
-    }
-
-    public Item( ItemType itemType, int amount, int meta ) {
-        this( itemType, amount, meta, NbtMap.EMPTY );
-    }
-
-    public Item( ItemType itemType, int amount ) {
-        this( itemType, amount, 0, NbtMap.EMPTY );
+        this.displayname = "";
+        this.lore = new LinkedList<>();
+        this.nbt = null;
+        this.canPlace = new LinkedList<>();
+        this.canBreak = new LinkedList<>();
+        this.enchantments = new HashMap<>();
+        this.itemProperties = ItemRegistry.getItemProperties( identifier );
     }
 
     public Item( ItemType itemType ) {
-        this( itemType, 1, 0, NbtMap.EMPTY );
+        this( itemType, true );
     }
 
-    public static Item fromItemData( ItemData itemData ) {
-        if ( itemData.getId() == 0 ) {
-            return new ItemAir();
+    public Item( ItemType itemType, boolean withNetworkId ) {
+        this.itemType = itemType;
+        ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( itemType );
+        this.identifier = itemRegistryData.getIdentifier();
+        this.runtimeId = ItemPalette.getRuntimeId( this.identifier );
+        if ( withNetworkId ) {
+            this.stackNetworkId = stackNetworkCount++;
         }
-        Item item = ItemType.getItemFormNetwork( itemData.getId(), itemData.getDamage() );
+
+        try {
+            this.blockRuntimeId = Block.create( BlockType.valueOf( itemType.name() ) ).getRuntimeId();
+        } catch ( Exception ignored ) {
+            this.blockRuntimeId = 0;
+        }
+
+        this.amount = 1;
+        this.meta = 0;
+        this.durability = 0;
+        this.displayname = "";
+        this.lore = new LinkedList<>();
+        this.nbt = null;
+        this.canPlace = new LinkedList<>();
+        this.canBreak = new LinkedList<>();
+        this.enchantments = new HashMap<>();
+        this.itemProperties = ItemRegistry.getItemProperties( this.identifier );
+    }
+
+    public Item( ItemData itemData ) {
+        this( itemData, true );
+    }
+
+    public Item( ItemData itemData, boolean withNetworkId ) {
+        this.itemType = ItemRegistry.getItemType( ItemPalette.getIdentifier( (short) itemData.getId() ) );
+        ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( this.itemType );
+        this.identifier = itemRegistryData.getIdentifier();
+        this.runtimeId = ItemPalette.getRuntimeId( this.identifier );
+        this.blockRuntimeId = itemData.getBlockRuntimeId();
+        if ( withNetworkId ) {
+            this.stackNetworkId = stackNetworkCount++;
+        }
+        this.amount = itemData.getCount();
+        this.meta = itemData.getDamage();
+        this.durability = 0;
+        this.displayname = "";
+        this.lore = new LinkedList<>();
+        this.nbt = itemData.getTag();
+        this.canPlace = new LinkedList<>();
+        this.canBreak = new LinkedList<>();
+        this.enchantments = new HashMap<>();
+        this.itemProperties = ItemRegistry.getItemProperties( identifier );
+
+        if ( this.nbt != null ) {
+            this.fromNbt( this.nbt );
+        }
+    }
+
+    public static <T extends Item> T create( ItemData itemData ) {
+        if ( itemData.getId() == 0 ) {
+            return Item.create( ItemType.AIR );
+        }
+        T item = create( ItemPalette.getIdentifier( (short) itemData.getId() ) );
+        item.setBlockRuntimeId( itemData.getBlockRuntimeId() );
         item.setMeta( itemData.getDamage() );
         item.setAmount( itemData.getCount() );
-        item.setNBT( itemData.getTag() == null ? NbtMap.EMPTY : itemData.getTag() );
-        item.setBlockRuntimeId( itemData.getBlockRuntimeId() );
-        item.setDurability( item.getNBT().getInt( "Damage", 0 ) );
-        if ( item.getNBT().containsKey( "display" ) ) {
-            NbtMap compound = item.getNBT().getCompound( "display" );
-            if ( compound.containsKey( "Name" ) ) {
-                item.setDisplayname( compound.getString( "Name" ) );
-            }
-            if ( compound.containsKey( "Lore" ) ) {
-                item.setLore( compound.getList( "Lore", NbtType.STRING ) );
-            }
+        item.setNbt( itemData.getTag() );
+        if ( item.getNbt() != null ) {
+            item.fromNbt( item.getNbt() );
         }
         return item;
     }
 
-    public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
-        return false;
+    public static <T extends Item> T create( Identifier identifier ) {
+        ItemType itemType = ItemRegistry.getItemType( identifier );
+        if ( ItemRegistry.itemClassExists( itemType ) ) {
+            try {
+                Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
+                constructor.setAccessible( true );
+                return (T) constructor.newInstance( itemType );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Item( itemType );
     }
 
-    public boolean useInAir( Player player, Vector clickVector ) {
-        return false;
+    public static <T extends Item> T create( ItemType itemType ) {
+        if ( ItemRegistry.itemClassExists( itemType ) ) {
+            try {
+                Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
+                constructor.setAccessible( true );
+                return (T) constructor.newInstance( itemType );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Item( itemType );
     }
 
-    public boolean onUse( Player player ) {
-        return false;
+    public static <T extends Item> T create( ItemType itemType, int amount ) {
+        if ( ItemRegistry.itemClassExists( itemType ) ) {
+            try {
+                Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
+                constructor.setAccessible( true );
+                return (T) constructor.newInstance( itemType ).setAmount( amount );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Item( itemType, true ).setAmount( amount );
     }
 
-    public boolean interact( Player player, BlockFace blockFace, Vector clickedVector, Block clickedBlock ) {
-        return false;
-    }
-
-    public void addToHand( Player player ) {
-
-    }
-
-    public void removeFromHand( Player player ) {
-
-    }
-
-    public String getIdentifier() {
-        return this.identifier;
+    public static <T extends Item> T create( ItemType itemType, int amount, int meta ) {
+        if ( ItemRegistry.itemClassExists( itemType ) ) {
+            try {
+                Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
+                constructor.setAccessible( true );
+                return (T) constructor.newInstance( itemType ).setAmount( amount ).setMeta( meta );
+            } catch ( Exception e ) {
+                throw new RuntimeException( e );
+            }
+        }
+        return (T) new Item( itemType, true ).setAmount( amount ).setMeta( meta );
     }
 
     public ItemType getType() {
-        for ( Map.Entry<ItemType, Item> entry : ItemType.getCachedItems().entrySet() ) {
-            if ( entry.getValue().getIdentifier().equalsIgnoreCase( this.identifier ) ) {
-                return entry.getKey();
-            }
-        }
-        return ItemType.AIR;
+        return this.itemType;
     }
 
-    public ItemToolType getItemToolType() {
-        return ItemToolType.NONE;
-    }
-
-    public ItemTierType getTierType() {
-        return ItemTierType.NONE;
-    }
-
-    public int getMaxAmount() {
-        return 64;
-    }
-
-    public Block getBlock() {
-        if ( this.blockRuntimeId != 0 ) {
-            return BlockType.getBlock( this.blockRuntimeId );
-        }
-        return new BlockAir();
+    public Identifier getIdentifier() {
+        return this.identifier;
     }
 
     public int getRuntimeId() {
         return this.runtimeId;
+    }
+
+    public Item setRuntimeId( int runtimeId ) {
+        this.runtimeId = runtimeId;
+        return this;
     }
 
     public int getBlockRuntimeId() {
@@ -185,22 +232,13 @@ public class Item implements Cloneable {
         return this;
     }
 
-    public Item setDisplayname( String displayname ) {
-        this.displayname = displayname;
+    public int getStackNetworkId() {
+        return this.stackNetworkId;
+    }
+
+    public Item setStackNetworkId( int stackNetworkId ) {
+        this.stackNetworkId = stackNetworkId;
         return this;
-    }
-
-    public Item setLore( List<String> lore ) {
-        this.lore = lore;
-        return this;
-    }
-
-    public String getDisplayname() {
-        return this.displayname;
-    }
-
-    public List<String> getLore() {
-        return this.lore;
     }
 
     public int getAmount() {
@@ -208,11 +246,11 @@ public class Item implements Cloneable {
     }
 
     public Item setAmount( int amount ) {
-        if ( amount > this.getMaxAmount() ) {
-            this.amount = this.getMaxAmount();
+        if ( amount > this.getMaxStackSize() ) {
+            this.amount = this.getMaxStackSize();
             return this;
         }
-        this.amount = amount;
+        this.amount = Math.max( amount, 0 );
         return this;
     }
 
@@ -234,13 +272,65 @@ public class Item implements Cloneable {
         return this;
     }
 
+    public String getDisplayname() {
+        return this.displayname;
+    }
+
+    public Item setDisplayname( String displayname ) {
+        this.displayname = displayname;
+        return this;
+    }
+
+    public List<String> getLore() {
+        return this.lore;
+    }
+
+    public Item setLore( List<String> lore ) {
+        this.lore = lore;
+        return this;
+    }
+
+    public NbtMap getNbt() {
+        return this.nbt;
+    }
+
+    public Item setNbt( NbtMap nbt ) {
+        this.nbt = nbt;
+        if ( this.nbt != null ) {
+            this.fromNbt( this.nbt );
+        }
+        return this;
+    }
+
+    public List<String> getCanPlace() {
+        return this.canPlace;
+    }
+
+    public Item setCanPlace( List<String> canPlace ) {
+        this.canPlace = canPlace;
+        return this;
+    }
+
+    public List<String> getCanBreak() {
+        return this.canBreak;
+    }
+
+    public Item setCanBreak( List<String> canBreak ) {
+        this.canBreak = canBreak;
+        return this;
+    }
+
+    public int getMaxStackSize() {
+        return this.itemProperties.getMaxStackSize();
+    }
+
     public Item decreaseAmount() {
         return this.setAmount( this.getAmount() - 1 );
     }
 
     public Item addEnchantment( EnchantmentType enchantmentType, int level ) {
-        Enchantment enchantment = enchantmentType.getEnchantment();
-        this.enchantments.put( enchantmentType, enchantment.setLevel( (short) ( level > enchantment.getMaxLevel() ? 1 : level ) ) );
+        Enchantment enchantment = Enchantment.create( enchantmentType );
+        this.enchantments.put( enchantmentType, enchantment.setLevel( (short) ( Math.min( level, enchantment.getMaxLevel() ) ) ) );
         return this;
     }
 
@@ -252,145 +342,30 @@ public class Item implements Cloneable {
         return this.enchantments.values();
     }
 
-    public NbtMap getNBT() {
-        return this.nbt;
-    }
-
-    public Item setNBT( NbtMap nbt ) {
-        this.nbt = nbt;
+    public Item setEmptyEnchanted( boolean emptyEnchanted ) {
+        this.emptyEnchanted = emptyEnchanted;
         return this;
     }
 
-    public String getName() {
-        return this.getClass().getSimpleName();
+    public boolean isEmptyEnchanted() {
+        return emptyEnchanted;
     }
 
-    @Override
-    public boolean equals( Object obj ) {
-        if ( obj instanceof Item item ) {
-            return item.getRuntimeId() == this.getRuntimeId() && item.meta == this.meta && ( item.blockRuntimeId == this.blockRuntimeId || item.blockRuntimeId == 0 || this.blockRuntimeId == 0 );
-        } else {
-            return false;
+    public Block toBlock() {
+        if ( this.blockRuntimeId == 0 ) {
+            return Block.create( BlockType.AIR ).clone();
         }
-    }
-
-    public boolean equalsExact( Item item ) {
-        return this.equals( item ) && this.amount == item.amount;
-    }
-
-    @Override
-    public Item clone() {
-        try {
-            Item clone = (Item) super.clone();
-            clone.identifier = this.identifier;
-            clone.amount = this.amount;
-            clone.meta = this.meta;
-            clone.durability = this.durability;
-            clone.nbt = this.nbt;
-            clone.displayname = this.displayname;
-            clone.lore = this.lore;
-            clone.canPlaceOn = this.canPlaceOn;
-            clone.canDestroy = this.canDestroy;
-            clone.blockRuntimeId = this.blockRuntimeId;
-            clone.enchantments = this.enchantments;
-            return clone;
-        } catch ( CloneNotSupportedException e ) {
-            e.printStackTrace();
-        }
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "identifier='" + identifier + '\'' +
-                ", runtimeId=" + runtimeId +
-                ", blockRuntimeId=" + blockRuntimeId +
-                ", amount=" + amount +
-                ", meta=" + meta +
-                ", durability=" + durability +
-                ", displayname='" + displayname + '\'' +
-                ", lore=" + lore +
-                ", nbt=" + nbt +
-                ", enchantments=" + enchantments +
-                '}';
-    }
-
-    public ItemData toNetwork() {
-        return ItemData.builder().
-                netId( this.runtimeId ).
-                id( ItemPalette.getRuntimeId( this.identifier ) ).
-                blockRuntimeId( this.blockRuntimeId ).
-                damage( this.meta ).
-                count( this.amount ).
-                tag( this.toNbt() ).
-                canPlace( this.canPlaceOn.toArray( new String[0] ) ).
-                canBreak( this.canDestroy.toArray( new String[0] ) ).
-                build();
-    }
-
-    public ItemDescriptorWithCount toItemDescriptorWithCount() {
-        return ItemDescriptorWithCount.fromItem( this.toNetwork() );
-    }
-
-    public ItemData toNetwork( int networkId ) {
-        return ItemData.builder().
-                netId( networkId ).
-                id( ItemPalette.getRuntimeId( this.identifier ) ).
-                blockRuntimeId( this.blockRuntimeId ).
-                damage( this.meta ).
-                count( this.amount ).
-                tag( this.toCreativeNbt() ).
-                canPlace( this.canPlaceOn.toArray( new String[0] ) ).
-                canBreak( this.canDestroy.toArray( new String[0] ) ).
-                build();
+        return BlockPalette.getBlockByNBT( BlockPalette.getBlockNbt( this.blockRuntimeId ) ).clone();
     }
 
     public NbtMap toNbt() {
-        return this.toNbt(false);
-    }
-
-    public NbtMap toCreativeNbt() {
-        NbtMapBuilder nbtBuilder = this.nbt == null ? NbtMap.builder() : this.nbt.toBuilder();
-        NbtMapBuilder displayBuilder = NbtMap.builder();
-        if ( this.displayname != null ) {
-            displayBuilder.putString( "Name", this.displayname );
-        }
-        if ( !this.lore.isEmpty() ) {
-            displayBuilder.putList( "Lore", NbtType.STRING, this.lore );
-        }
-        if ( !displayBuilder.isEmpty() ) {
-            nbtBuilder.putCompound( "display", displayBuilder.build() );
-        }
-
-        if ( !this.enchantments.isEmpty() ) {
-            List<NbtMap> enchantmentNBT = new ArrayList<>();
-            for ( Enchantment enchantment : this.enchantments.values() ) {
-                enchantmentNBT.add( NbtMap.builder()
-                        .putShort( "id", enchantment.getId() )
-                        .putShort( "lvl", enchantment.getLevel() )
-                        .build()
-                );
-            }
-            nbtBuilder.putList( "ench", NbtType.COMPOUND, enchantmentNBT );
-        }
-
-        return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
-    }
-
-    public NbtMap toNbt( boolean withIdentifier ) {
         NbtMapBuilder nbtBuilder = this.nbt == null ? NbtMap.builder() : this.nbt.toBuilder();
 
-        if ( withIdentifier ) {
-            nbtBuilder.put( "Name", this.identifier );
-        }
-        nbtBuilder.putByte( "Count", (byte) this.amount );
         nbtBuilder.putInt( "Damage", this.durability );
-        nbtBuilder.putByte( "WasPickedUp", (byte) 0 );
 
         NbtMapBuilder displayBuilder = NbtMap.builder();
-        if ( this.displayname != null ) {
-            displayBuilder.putString( "Name", this.displayname );
+        if ( !this.displayname.isEmpty() ) {
+            displayBuilder.put( "Name", this.displayname );
         }
         if ( !this.lore.isEmpty() ) {
             displayBuilder.putList( "Lore", NbtType.STRING, this.lore );
@@ -398,7 +373,6 @@ public class Item implements Cloneable {
         if ( !displayBuilder.isEmpty() ) {
             nbtBuilder.putCompound( "display", displayBuilder.build() );
         }
-
         if ( !this.enchantments.isEmpty() ) {
             List<NbtMap> enchantmentNBT = new ArrayList<>();
             for ( Enchantment enchantment : this.enchantments.values() ) {
@@ -409,9 +383,42 @@ public class Item implements Cloneable {
                 );
             }
             nbtBuilder.putList( "ench", NbtType.COMPOUND, enchantmentNBT );
+        } else {
+            if ( this.emptyEnchanted ) {
+                nbtBuilder.putList( "ench", NbtType.COMPOUND, Collections.emptyList() );
+            }
         }
-
         return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
+    }
+
+    public void fromNbt( NbtMap nbtMap ) {
+        nbtMap.listenForByte( "Count", this::setAmount );
+        nbtMap.listenForInt( "Damage", this::setDurability );
+        nbtMap.listenForCompound( "display", displayTag -> {
+            displayTag.listenForString( "Name", this::setDisplayname );
+            displayTag.listenForList( "Lore", NbtType.STRING, this.lore::addAll );
+        } );
+        nbtMap.listenForList( "ench", NbtType.COMPOUND, compound -> {
+            for ( NbtMap map : compound ) {
+                short id = map.getShort( "id" );
+                short level = map.getShort( "lvl" );
+                this.addEnchantment( EnchantmentRegistry.getEnchantmentType( id ), level );
+            }
+        } );
+    }
+
+    public ItemData toItemData() {
+        return ItemData.builder()
+                .netId( this.stackNetworkId )
+                .usingNetId( this.stackNetworkId > 0 )
+                .id( this.runtimeId )
+                .blockRuntimeId( this.blockRuntimeId )
+                .damage( this.meta )
+                .count( this.amount )
+                .tag( this.toNbt() )
+                .canPlace( this.canPlace.toArray( new String[0] ) )
+                .canBreak( this.canBreak.toArray( new String[0] ) )
+                .build();
     }
 
     public void updateItem( Player player, int amount ) {
@@ -421,7 +428,7 @@ public class Item implements Cloneable {
     public void updateItem( Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
             if ( this.calculateDurability( amount ) ) {
-                player.getInventory().setItemInHand( new ItemAir() );
+                player.getInventory().setItemInHand( Item.create( ItemType.AIR ) );
                 if ( playSound ) {
                     player.playSound( Sound.RANDOM_BREAK, 1, 1 );
                 }
@@ -433,7 +440,17 @@ public class Item implements Cloneable {
 
     public boolean calculateDurability( int durability ) {
         if ( this instanceof Durability ) {
-            this.durability += durability;
+            Enchantment enchantment = this.getEnchantment( EnchantmentType.UNBREAKING );
+            if ( enchantment != null ) {
+                int chance = new Random().nextInt( 100 );
+                int percent = (100 / (enchantment.getLevel() + 1));
+                if ( !(enchantment.getLevel() > 0 && percent <= chance) ) {
+                    this.durability += durability;
+                }
+            } else {
+                this.durability += durability;
+            }
+
             return this.durabilityAndCheckAmount( this.durability );
         }
         return false;
@@ -454,4 +471,70 @@ public class Item implements Cloneable {
         return false;
     }
 
+    public boolean interact( Player player, BlockFace blockFace, Vector clickedPosition, Block clickedBlock ) {
+        return false;
+    }
+
+    public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
+        return false;
+    }
+
+    public boolean useInAir( Player player, Vector clickVector ) {
+        return false;
+    }
+
+    public boolean onUse( Player player ) {
+        return false;
+    }
+
+    public void addToHand( Player player ) {
+    }
+
+    public void removeFromHand( Player player ) {
+    }
+
+    public ToolType getToolType() {
+        return ToolType.NONE;
+    }
+
+    public TierType getTierType() {
+        return TierType.NONE;
+    }
+
+    @Override
+    public Item clone() {
+        try {
+            Item clone = (Item) super.clone();
+            clone.itemType = this.itemType;
+            clone.identifier = this.identifier;
+            clone.runtimeId = this.runtimeId;
+            clone.blockRuntimeId = this.blockRuntimeId;
+            clone.stackNetworkId = this.stackNetworkId;
+            clone.amount = this.amount;
+            clone.meta = this.meta;
+            clone.durability = this.durability;
+            clone.displayname = this.displayname;
+            clone.lore = this.lore;
+            clone.nbt = this.nbt;
+            clone.canPlace = this.canPlace;
+            clone.canBreak = this.canBreak;
+            clone.enchantments = this.enchantments;
+            clone.itemProperties = this.itemProperties;
+            return clone;
+        } catch ( CloneNotSupportedException e ) {
+            throw new AssertionError();
+        }
+    }
+
+    public boolean equalsExact( Item item ) {
+        return this.equals( item ) && this.amount == item.amount;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( obj instanceof Item item ) {
+            return item.getRuntimeId() == this.runtimeId && item.meta == this.meta && ( item.blockRuntimeId == this.blockRuntimeId || item.blockRuntimeId == 0 || this.blockRuntimeId == 0 );
+        }
+        return false;
+    }
 }

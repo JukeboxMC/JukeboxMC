@@ -3,12 +3,15 @@ package org.jukeboxmc.entity.item;
 import com.nukkitx.protocol.bedrock.packet.AddItemEntityPacket;
 import com.nukkitx.protocol.bedrock.packet.TakeItemEntityPacket;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.Entity;
+import org.jukeboxmc.entity.EntityMoveable;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.event.player.PlayerPickupItemEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.Identifier;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @author LucGamesYT
  * @version 1.0
  */
-public class EntityItem extends Entity {
+public class EntityItem extends EntityMoveable {
 
     private Item item;
     private long pickupDelay;
@@ -26,28 +29,31 @@ public class EntityItem extends Entity {
     @Override
     public void update( long currentTick ) {
         super.update( currentTick );
-
         if ( this.isClosed() ) {
             return;
         }
         if ( !this.isImmobile() ) {
-            if ( !this.isOnGround() ) {
-                this.velocity = this.velocity.subtract( 0, this.getGravity(), 0 );
+            BlockType blockTypeLayer0 = this.location.getWorld().getBlock( this.location.getBlockX(), (int) this.boundingBox.getMaxY(), this.location.getBlockZ(), 0, this.location.getDimension() ).getType();
+            if ( blockTypeLayer0.equals( BlockType.FLOWING_WATER ) || blockTypeLayer0.equals( BlockType.WATER ) ) {
+                this.velocity.setY( this.velocity.getY() - this.getGravity() * -0.015f );
+            } else {
+                this.velocity.setY( this.velocity.getY() - this.getGravity() );
             }
 
             this.checkObstruction( this.location.getX(), this.location.getY(), this.location.getZ() );
             this.move( this.velocity );
 
-            float friction = 1 - this.getDrag();
-
+            double friction = 1 - this.getDrag();
             if ( this.onGround && ( Math.abs( this.velocity.getX() ) > 0.00001 || Math.abs( this.velocity.getZ() ) > 0.00001 ) ) {
                 friction *= 0.6f;
             }
 
-            this.velocity = this.velocity.multiply( friction, 1 - this.getDrag(), friction );
+            this.velocity.setX( (float) ( this.velocity.getX() * friction ) );
+            this.velocity.setY( this.velocity.getY() * ( 1 - this.getDrag() ) );
+            this.velocity.setZ( (float) ( this.velocity.getZ() * friction ) );
 
             if ( this.onGround ) {
-                this.velocity = this.velocity.multiply( 0, -0.5f, 0 );
+                this.velocity.setY( this.velocity.getY() * -0.5f );
             }
 
             this.updateMovement();
@@ -58,7 +64,7 @@ public class EntityItem extends Entity {
             this.isReset = true;
         }
 
-        if ( this.age >= TimeUnit.MINUTES.toMillis( 5 ) / 50 ) {
+        if ( ( this.age >= TimeUnit.MINUTES.toMillis( 5 ) / 50 ) || this.location.getY() <= -64 ) {
             this.close();
         }
     }
@@ -84,8 +90,13 @@ public class EntityItem extends Entity {
     }
 
     @Override
-    public EntityType getEntityType() {
+    public EntityType getType() {
         return EntityType.ITEM;
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return Identifier.fromString( "minecraft:item" );
     }
 
     @Override
@@ -93,7 +104,7 @@ public class EntityItem extends Entity {
         AddItemEntityPacket addItemEntityPacket = new AddItemEntityPacket();
         addItemEntityPacket.setRuntimeEntityId( this.entityId );
         addItemEntityPacket.setUniqueEntityId( this.entityId );
-        addItemEntityPacket.setItemInHand( this.item.toNetwork() );
+        addItemEntityPacket.setItemInHand( this.item.toItemData() );
         addItemEntityPacket.setPosition( this.location.toVector3f() );
         addItemEntityPacket.setMotion( this.velocity.toVector3f() );
         addItemEntityPacket.getMetadata().putAll( this.metadata.getEntityDataMap() );
@@ -105,7 +116,7 @@ public class EntityItem extends Entity {
         if ( Server.getInstance().getCurrentTick() > this.pickupDelay && !this.isClosed() && !player.isDead() ) {
             PlayerPickupItemEvent playerPickupItemEvent = new PlayerPickupItemEvent( player, this.item );
             Server.getInstance().getPluginManager().callEvent( playerPickupItemEvent );
-            if ( playerPickupItemEvent.isCancelled() || !player.getInventory().canAddItem( this.item )) {
+            if ( playerPickupItemEvent.isCancelled() || !player.getInventory().canAddItem( playerPickupItemEvent.getItem() ) ) {
                 return;
             }
 
@@ -115,7 +126,7 @@ public class EntityItem extends Entity {
             Server.getInstance().broadcastPacket( takeItemEntityPacket );
 
             this.close();
-            player.getInventory().addItem( this.item );
+            player.getInventory().addItem( playerPickupItemEvent.getItem() );
             player.getInventory().sendContents( player );
         }
     }
@@ -148,5 +159,4 @@ public class EntityItem extends Entity {
     public void setPlayerHasThrown( Player playerHasThrown ) {
         this.playerHasThrown = playerHasThrown;
     }
-
 }

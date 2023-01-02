@@ -21,3 +21,4 @@ public class EntityEventHandler implements PacketHandler<EntityEventPacket>{
         }
     }
 }
+

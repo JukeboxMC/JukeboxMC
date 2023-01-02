@@ -2,12 +2,12 @@ package org.jukeboxmc.player;
 
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.data.*;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.packet.*;
-import it.unimi.dsi.fastutil.longs.*;
-import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
@@ -15,13 +15,17 @@ import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
-import org.jukeboxmc.item.ItemShield;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.network.Network;
 import org.jukeboxmc.network.handler.HandlerRegistry;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.player.data.LoginData;
-import org.jukeboxmc.util.*;
-import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.player.manager.PlayerChunkManager;
+import org.jukeboxmc.util.BiomeDefinitions;
+import org.jukeboxmc.util.CreativeItems;
+import org.jukeboxmc.util.EntityIdentifiers;
+import org.jukeboxmc.util.ItemPalette;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,24 +37,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PlayerConnection {
 
     private static final SyncedPlayerMovementSettings SYNCED_PLAYER_MOVEMENT_SETTINGS = new SyncedPlayerMovementSettings();
-    private static final int SHIELD_RUNTIMEID = new ItemShield().getRuntimeId();
-
-    private final Server server;
-    private final BedrockServerSession session;
-
-    private final AtomicBoolean loggedIn;
-    private final AtomicBoolean spawned;
-
-    private final Player player;
-
-    private LoginData loginData;
-    private String disconnectMessage;
-
-    private volatile boolean requestedChunks = false;
-    private final long[] chunksInRadius = new long[32 * 32 * 4];
-    private final LongPriorityQueue chunkLoadQueue;
-
-    private final LongSet loadedChunks = new LongOpenHashSet();
 
     static {
         SYNCED_PLAYER_MOVEMENT_SETTINGS.setMovementMode( AuthoritativeMovementMode.CLIENT );
@@ -58,64 +44,91 @@ public class PlayerConnection {
         SYNCED_PLAYER_MOVEMENT_SETTINGS.setServerAuthoritativeBlockBreaking( false );
     }
 
+    private final Server server;
+    private final BedrockServerSession session;
+
+    private final AtomicBoolean loggedIn;
+    private final AtomicBoolean spawned;
+
+    private LoginData loginData;
+    private final Player player;
+
+    private String disconnectMessage;
+
+    private final PlayerChunkManager playerChunkManager;
+
     public PlayerConnection( Server server, BedrockServerSession session ) {
         this.server = server;
         this.session = session;
-        this.session.getHardcodedBlockingId().set( SHIELD_RUNTIMEID );
-        this.session.addDisconnectHandler( disconnectReason -> server.getScheduler().execute( () -> this.disconnect( disconnectReason.name() ) ) );
-
-        this.player = new Player( this );
-
-        this.session.setBatchHandler( ( bedrockSession, byteBuf, packets ) -> {
+        this.session.getHardcodedBlockingId().set( Item.create( ItemType.SHIELD ).getRuntimeId() );
+        this.session.addDisconnectHandler( disconnectReason -> this.server.getScheduler().execute( () -> this.onDisconnect( disconnectReason ) ) );
+        this.loggedIn = new AtomicBoolean( false );
+        this.spawned = new AtomicBoolean( false );
+        this.player = new Player( server, this );
+        this.playerChunkManager = new PlayerChunkManager( this.player );
+        session.setPacketCodec( Network.CODEC );
+        session.setBatchHandler( ( bedrockSession, byteBuf, packets ) -> {
             for ( BedrockPacket packet : packets ) {
+                //System.out.println(packet);
                 try {
-                    PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
-                    server.getPluginManager().callEvent( packetReceiveEvent );
-                    if ( packetReceiveEvent.isCancelled() ) {
-                        return;
-                    }
-                    PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packet.getClass() );
-                    if ( packetHandler != null ) {
-                        packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
-                    } else {
-                        //System.out.println("Handler missing for packet: " + packet.getClass().getSimpleName());
-                    }
+                    server.getScheduler().execute( () -> {
+                        PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
+                        server.getPluginManager().callEvent( packetReceiveEvent );
+                        if ( packetReceiveEvent.isCancelled() ) {
+                            return;
+                        }
+                        PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packetReceiveEvent.getPacket().getClass() );
+                        if ( packetHandler != null ) {
+                            packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
+                        } else {
+                            System.out.println( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                        }
+                    } );
                 } catch ( Throwable throwable ) {
                     throwable.printStackTrace();
                 }
             }
         } );
-
-        this.loggedIn = new AtomicBoolean( false );
-        this.spawned = new AtomicBoolean( false );
-
-        ChunkComparator chunkComparator = new ChunkComparator( this.player );
-        this.chunkLoadQueue = new LongArrayPriorityQueue( 4096, chunkComparator );
     }
 
-    public synchronized void update() {
+    public void update() {
         if ( this.isClosed() || !this.loggedIn.get() ) {
             return;
         }
 
-        this.needNewChunks();
-
-        if ( !this.chunkLoadQueue.isEmpty() ) {
-            int load = 0;
-            while ( !this.chunkLoadQueue.isEmpty() && load <= 4 ) {
-                long chunkHash = this.chunkLoadQueue.dequeueLong();
-                if ( this.loadedChunks.contains( chunkHash ) ) {
-                    continue;
-                }
-                this.requestChunk( Utils.fromHashX( chunkHash ), Utils.fromHashZ( chunkHash ) );
-                load++;
-            }
-            this.chunkLoadQueue.clear();
+        if ( this.spawned.get() ) {
+            this.playerChunkManager.queueNewChunks();
         }
 
-        if ( !this.spawned.get() && this.loadedChunks.size() >= 46){
+        this.playerChunkManager.sendQueued();
+
+        if ( this.playerChunkManager.getChunksSent() >= 46 && !this.spawned.get() ) {
             this.doFirstSpawn();
         }
+    }
+
+    private void onDisconnect( DisconnectReason disconnectReason ) {
+        this.server.removePlayer( this.player );
+
+        this.player.getWorld().removeEntity( this.player );
+        this.player.getChunk().removeEntity( this.player );
+
+        this.player.getInventory().removeViewer( this.player );
+        this.player.getArmorInventory().removeViewer( this.player );
+        this.player.getCursorInventory().removeViewer( this.player );
+
+        this.server.removeFromTabList( this.player );
+
+        this.playerChunkManager.clear();
+
+        this.player.close();
+
+        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this.player, "§e" + this.player.getName() + " left the game" );
+        Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
+        if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
+            this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
+        }
+        this.server.getLogger().info( this.player.getName() + " logged out reason: " + ( this.disconnectMessage == null ? this.parseDisconnectMessage( disconnectReason ) : this.disconnectMessage ) );
     }
 
     private void doFirstSpawn() {
@@ -123,18 +136,22 @@ public class PlayerConnection {
 
         this.player.getWorld().addEntity( this.player );
 
-        AdventureSettings adventureSettings = this.player.getAdventureSettings();
+        SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
+        setEntityDataPacket.setRuntimeEntityId( this.player.getEntityId() );
+        setEntityDataPacket.getMetadata().putAll( this.player.getMetadata().getEntityDataMap() );
+        setEntityDataPacket.setTick( this.server.getCurrentTick() );
+        this.sendPacket( setEntityDataPacket );
 
+        AdventureSettings adventureSettings = this.player.getAdventureSettings();
         if ( this.server.isOperatorInFile( this.player.getName() ) ) {
             adventureSettings.set( AdventureSettings.Type.OPERATOR, true );
         }
-
         adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.player.getGameMode().ordinal() == 3 );
-        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0);
-        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3);
-        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3);
+        adventureSettings.set( AdventureSettings.Type.ALLOW_FLIGHT, this.player.getGameMode().ordinal() > 0 );
+        adventureSettings.set( AdventureSettings.Type.NO_CLIP, this.player.getGameMode().ordinal() == 3 );
+        adventureSettings.set( AdventureSettings.Type.FLYING, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.set( AdventureSettings.Type.ATTACK_MOBS, this.player.getGameMode().ordinal() < 2 );
-        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() <2 );
+        adventureSettings.set( AdventureSettings.Type.ATTACK_PLAYERS, this.player.getGameMode().ordinal() < 2 );
         adventureSettings.set( AdventureSettings.Type.NO_PVM, this.player.getGameMode().ordinal() == 3 );
         adventureSettings.update();
 
@@ -148,9 +165,7 @@ public class PlayerConnection {
         updateAttributesPacket.setTick( this.server.getCurrentTick() );
         this.sendPacket( updateAttributesPacket );
 
-        this.player.sendEntityData();
-
-        this.server.addToTablist( this.player );
+        this.server.addToTabList( this.player );
         if ( this.server.getOnlinePlayers().size() > 1 ) {
             PlayerListPacket playerListPacket = new PlayerListPacket();
             playerListPacket.setAction( PlayerListPacket.Action.ADD );
@@ -159,16 +174,17 @@ public class PlayerConnection {
                     playerListPacket.getEntries().add( entry );
                 }
             } );
-            this.player.sendPacket( playerListPacket );
+            this.player.getPlayerConnection().sendPacket( playerListPacket );
         }
 
         this.player.getInventory().addViewer( this.player );
+        this.player.getInventory().sendContents( this.player );
+
         this.player.getCursorInventory().addViewer( this.player );
+        this.player.getCursorInventory().sendContents( this.player );
+
         this.player.getArmorInventory().addViewer( this.player );
-        this.player.getCraftingTableInventory().addViewer( this.player );
-        this.player.getCartographyTableInventory().addViewer( this.player );
-        this.player.getSmithingTableInventory().addViewer( this.player );
-        this.player.getAnvilInventory().addViewer( this.player );
+        this.player.getArmorInventory().sendContents( this.player );
 
         PlayStatusPacket playStatusPacket = new PlayStatusPacket();
         playStatusPacket.setStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
@@ -181,43 +197,20 @@ public class PlayerConnection {
             }
         }
 
-        this.player.movePlayer( this.player.getLocation().add( 0 , this.player.getEyeHeight(), 0 ), MovePlayerPacket.Mode.TELEPORT );
+        SetTimePacket setTimePacket = new SetTimePacket();
+        setTimePacket.setTime( this.player.getWorld().getWorldTime() );
+        this.sendPacket( setTimePacket );
 
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this.player, "§e" + this.player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
             Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
         }
-        this.server.getLogger().info( this.player.getName() + " logged in [World=" + this.player.getWorld().getName() + ", X=" + this.player.getBlockX() + ", Y=" + this.player.getBlockY() + ", Z=" + this.player.getBlockZ() + ", Dimension=" + this.player.getDimension().name() + "]" );
-    }
 
-    public void disconnect( String reason ) {
-        this.player.savePlayerData();
-
-        this.player.getWorld().removeEntity( this.player );
-        this.player.getChunk().removeEntity( this.player );
-
-        //Remove inventory viewers
-        this.player.getInventory().removeViewer( this.player );
-        this.player.getArmorInventory().removeViewer( this.player );
-        this.player.getCursorInventory().removeViewer( this.player );
-
-        this.server.removeFromTablist( this.player );
-
-        this.player.close();
-        this.close( "Disconect" );
-        this.server.removePlayer( this.player );
-
-        for ( Long hash : this.loadedChunks ) {
-            this.player.getWorld().removeChunkLoader( Utils.fromHashX( hash ), Utils.fromHashZ( hash ), this.player.getDimension(), this.player );
-        }
-
-        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent( this.player, "§e" + this.player.getName() + " left the game" );
-        Server.getInstance().getPluginManager().callEvent( playerQuitEvent );
-        if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
-            this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
-        }
-        this.server.getLogger().info( this.player.getName() + " logged out reason: " + ( this.disconnectMessage == null ? reason : this.disconnectMessage ) );
+        this.server.getLogger().info(
+                this.player.getName() + " logged in [World=" + this.player.getWorld().getName() + ", X=" +
+                        this.player.getBlockX() + ", Y=" + this.player.getBlockY() + ", Z=" + this.player.getBlockZ() +
+                        ", Dimension=" + this.player.getLocation().getDimension().name() + "]" );
     }
 
     public void initializePlayer() {
@@ -228,11 +221,11 @@ public class PlayerConnection {
         startGamePacket.setUniqueEntityId( this.player.getEntityId() );
         startGamePacket.setRuntimeEntityId( this.player.getEntityId() );
         startGamePacket.setPlayerGameType( this.player.getGameMode().toGameType() );
-        startGamePacket.setPlayerPosition( this.player.getLocation().toVector3f().add( 0, 2, 0 ) );
-        startGamePacket.setDefaultSpawn( this.player.getSpawnLocation().toVector3i().add( 0, 2, 0 ) );
+        startGamePacket.setPlayerPosition( this.player.getLocation().toVector3f().add( 0, 2, 0 ) ); //TODO
+        startGamePacket.setDefaultSpawn( this.player.getLocation().toVector3i().add( 0, 2, 0 ) ); //TODO
         startGamePacket.setRotation( Vector2f.from( this.player.getPitch(), this.player.getYaw() ) );
-        startGamePacket.setSeed( this.player.getWorld().getSeed() );
-        startGamePacket.setDimensionId( this.player.getDimension().ordinal() );
+        startGamePacket.setSeed( 0L ); //TODO
+        startGamePacket.setDimensionId( this.player.getLocation().getDimension().ordinal() );
         startGamePacket.setTrustingPlayers( true );
         startGamePacket.setLevelGameType( this.server.getGameMode().toGameType() );
         startGamePacket.setDifficulty( this.player.getWorld().getDifficulty().ordinal() );
@@ -247,7 +240,7 @@ public class PlayerConnection {
         startGamePacket.setLevelId( "" );
         startGamePacket.setLevelName( this.player.getWorld().getName() );
         startGamePacket.setGeneratorId( 1 );
-        startGamePacket.setItemEntries( ItemPalette.getItemEntries() );
+        startGamePacket.setItemEntries( ItemPalette.getEntries() );
         startGamePacket.setXblBroadcastMode( GamePublishSetting.PUBLIC );
         startGamePacket.setPlatformBroadcastMode( GamePublishSetting.PUBLIC );
         startGamePacket.setDefaultPlayerPermission( PlayerPermission.MEMBER );
@@ -255,7 +248,7 @@ public class PlayerConnection {
         startGamePacket.setVanillaVersion( Network.CODEC.getMinecraftVersion() );
         startGamePacket.setPremiumWorldTemplateId( "" );
         startGamePacket.setMultiplayerCorrelationId( "" );
-        startGamePacket.setInventoriesServerAuthoritative( false );
+        startGamePacket.setInventoriesServerAuthoritative( true );
         startGamePacket.setPlayerMovementSettings( SYNCED_PLAYER_MOVEMENT_SETTINGS );
         startGamePacket.setBlockRegistryChecksum( 0L );
         startGamePacket.setPlayerPropertyData( NbtMap.EMPTY );
@@ -274,11 +267,10 @@ public class PlayerConnection {
         this.sendPacket( biomeDefinitionListPacket );
 
         CreativeContentPacket creativeContentPacket = new CreativeContentPacket();
-        creativeContentPacket.setContents( CreativeItems.getCreativeItems() );
+        creativeContentPacket.setContents( CreativeItems.getCreativeItems().toArray( new ItemData[0] ) );
         this.sendPacket( creativeContentPacket );
 
         CraftingManager craftingManager = this.server.getCraftingManager();
-
         CraftingDataPacket craftingDataPacket = new CraftingDataPacket();
         craftingDataPacket.getCraftingData().addAll( craftingManager.getCraftingData() );
         craftingDataPacket.getPotionMixData().addAll( craftingDataPacket.getPotionMixData() );
@@ -287,125 +279,30 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    public synchronized void needNewChunks() {
-        if ( this.requestedChunks ) return;
-
-        this.requestedChunks = true;
-
-        int currentXChunk = Utils.blockToChunk( this.player.getBlockX() );
-        int currentZChunk = Utils.blockToChunk( this.player.getBlockZ() );
-        int viewDistance = this.player.getViewDistance();
-
-        try {
-            int index = 0;
-            for ( int sendXChunk = -viewDistance; sendXChunk <= viewDistance; sendXChunk++ ) {
-                for ( int sendZChunk = -viewDistance; sendZChunk <= viewDistance; sendZChunk++ ) {
-                    float distance = (float) FastMath.sqrt( sendZChunk * sendZChunk + sendXChunk * sendXChunk );
-                    int chunkDistance = FastMath.round( distance );
-
-                    if ( chunkDistance <= viewDistance ) {
-                        long hash = Utils.toLong( currentXChunk + sendXChunk, currentZChunk + sendZChunk );
-
-                        if ( !this.loadedChunks.contains( hash ) ) {
-                            this.chunksInRadius[index++] = hash;
-                        }
-                    }
-                }
+    private String parseDisconnectMessage( DisconnectReason disconnectReason) {
+        switch ( disconnectReason ) {
+            case ALREADY_CONNECTED -> {
+                return "Already connected";
             }
-            final int chunkCount = index;
-            if ( chunkCount > 0 ) {
-                for ( int i = 0; i < chunkCount; i++ ) {
-                    this.chunkLoadQueue.enqueue( this.chunksInRadius[i] );
-                }
+            case SHUTTING_DOWN -> {
+                return "Shutdown";
             }
-
-            LongIterator iterator = this.loadedChunks.iterator();
-            while ( iterator.hasNext() ) {
-                long hash = iterator.nextLong();
-                int x = Utils.fromHashX( hash );
-                int z = Utils.fromHashZ( hash );
-
-                if ( FastMath.abs( x - currentXChunk ) > viewDistance || FastMath.abs( z - currentZChunk ) > viewDistance ) {
-                    this.player.getWorld().removeChunkLoader( x, z, this.player.getDimension(), this.player );
-                    iterator.remove();
-                }
-            }
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        } finally {
-            this.requestedChunks = false;
-        }
-    }
-
-    public void requestChunk( int chunkX, int chunkZ ) {
-        this.player.getWorld().addChunkLoader( chunkX, chunkZ, this.player.getDimension(), this.player );
-        this.player.getWorld().getChunkFuture( chunkX, chunkZ, this.player.getDimension() ).whenComplete( ( chunk, throwable ) -> {
-            if ( chunk != null ) {
-                this.sendChunk( chunk );
-            }
-        } );
-    }
-
-    public void sendNetworkPublisher() {
-        NetworkChunkPublisherUpdatePacket packet = new NetworkChunkPublisherUpdatePacket();
-        packet.setRadius( this.player.getViewDistance() << 4);
-        packet.setPosition( this.player.getLocation().toVector3i() );
-        this.sendPacket( packet );
-    }
-
-    public int getSubY( int y ) {
-        return ( y >> 4 ) + ( Math.abs( -64 ) >> 4 );
-    }
-
-    public synchronized void sendChunk( Chunk chunk ) {
-        try {
-            this.sendNetworkPublisher();
-            this.sendPacket( chunk.createLevelChunkPacket() );
-          /*
-            if ( !chunk.getBlockEntities().isEmpty() ) {
-                for ( BlockEntity blockEntity : chunk.getBlockEntities() ) {
-                    BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
-                    blockEntityDataPacket.setBlockPosition( blockEntity.getBlock().getLocation().toVector3i() );
-                    blockEntityDataPacket.setData( blockEntity.toCompound().build() );
-                    this.sendPacket( blockEntityDataPacket );
-                }
-            }
-           */
-            long chunkHash = chunk.toChunkHash();
-            this.loadedChunks.add( chunkHash );
-        } catch ( Throwable e ) {
-            try {
-                e.printStackTrace();
-                Thread.sleep( 1000 * 4 );
-            } catch ( InterruptedException ex ) {
-                throw new RuntimeException( ex );
+            default -> {
+                return "Disconnect";
             }
         }
     }
 
-    public void resetChunks() {
-        this.loadedChunks.clear();
-        this.chunkLoadQueue.clear();
+    public void disconnect() {
+        this.session.disconnect();
     }
 
-    public LongSet getLoadedChunks() {
-        return this.loadedChunks;
+    public void disconnect( String message ) {
+        this.session.disconnect( this.disconnectMessage = message );
     }
 
-    public LongPriorityQueue getChunkLoadQueue() {
-        return this.chunkLoadQueue;
-    }
-
-    public boolean isChunkLoaded( int chunkX, int chunkZ ) {
-        return this.loadedChunks.contains( Utils.toLong( chunkX, chunkZ ) );
-    }
-
-    public void close( String disconnectMessage ) {
-        this.close( disconnectMessage, false );
-    }
-
-    public void close( String disconnectMessage, boolean hideScreen ) {
-        this.session.disconnect( this.disconnectMessage = disconnectMessage, hideScreen );
+    public void disconnect( String message, boolean hideReason ) {
+        this.session.disconnect( this.disconnectMessage = message, hideReason );
     }
 
     public void sendPlayStatus( PlayStatusPacket.Status status ) {
@@ -415,7 +312,7 @@ public class PlayerConnection {
     }
 
     public void sendPacket( BedrockPacket packet ) {
-        if ( !this.isClosed() && this.session.getPacketCodec() != null) {
+        if ( !this.isClosed() && this.session.getPacketCodec() != null ) {
             PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
             Server.getInstance().getPluginManager().callEvent( packetSendEvent );
             if ( packetSendEvent.isCancelled() ) {
@@ -427,20 +324,13 @@ public class PlayerConnection {
 
     public void sendPacketImmediately( BedrockPacket packet ) {
         if ( !this.isClosed() ) {
+            //System.out.println( "S -> C: " + packet.getClass().getSimpleName() );
             this.session.sendPacketImmediately( packet );
         }
     }
 
     public boolean isClosed() {
         return this.session.isClosed();
-    }
-
-    public boolean isLoggedIn() {
-        return this.loggedIn.get();
-    }
-
-    public boolean isSpawned() {
-        return this.loggedIn.get();
     }
 
     public Server getServer() {
@@ -451,6 +341,18 @@ public class PlayerConnection {
         return this.session;
     }
 
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public boolean isLoggedIn() {
+        return this.loggedIn.get();
+    }
+
+    public boolean isSpawned() {
+        return this.spawned.get();
+    }
+
     public LoginData getLoginData() {
         return this.loginData;
     }
@@ -458,20 +360,15 @@ public class PlayerConnection {
     public void setLoginData( LoginData loginData ) {
         if ( this.loginData == null ) {
             this.loginData = loginData;
+            this.player.setName( loginData.getDisplayName() );
             this.player.setNameTag( loginData.getDisplayName() );
             this.player.setUUID( loginData.getUuid() );
             this.player.setSkin( loginData.getSkin() );
             this.player.setDeviceInfo( loginData.getDeviceInfo() );
-
-            this.player.loadPlayerData();
         }
     }
 
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public long getPing() {
-        return this.session.getLatency();
+    public PlayerChunkManager getPlayerChunkManager() {
+        return this.playerChunkManager;
     }
 }

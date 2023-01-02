@@ -15,9 +15,4 @@ public class EnchantmentBaneOfArthropods extends Enchantment {
     public int getMaxLevel() {
         return 5;
     }
-
-    @Override
-    public int getWeight() {
-        return 0;
-    }
 }

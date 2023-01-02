@@ -16,7 +16,7 @@ public class BiomeDefinitions {
     private static NbtMap BIOME_DEFINITIONS = null;
 
     public static void init() {
-        try (InputStream inputStream = Bootstrap.class.getClassLoader().getResourceAsStream("biome_definitions.dat")){
+        try ( InputStream inputStream = Bootstrap.class.getClassLoader().getResourceAsStream("biome_definitions.dat")){
             if(inputStream == null) {
                 throw new AssertionError("Could not find biome_definitions.dat");
             }

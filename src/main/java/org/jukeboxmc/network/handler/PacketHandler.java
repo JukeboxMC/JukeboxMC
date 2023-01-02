@@ -12,3 +12,4 @@ public interface PacketHandler<T extends BedrockPacket> {
 
     void handle( T packet, Server server, Player player );
 }
+

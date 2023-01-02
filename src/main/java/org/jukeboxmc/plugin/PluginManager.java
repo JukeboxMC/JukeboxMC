@@ -40,8 +40,8 @@ public class PluginManager {
         this.server = server;
         this.logger = server.getLogger();
         this.pluginLoader = new PluginLoader( this.logger, this );
-        this.loadPluginsIn( this.server.getPluginFolder().toPath() );
         this.commandManager = new CommandManager();
+        this.loadPluginsIn( this.server.getPluginFolder().toPath() );
     }
 
     public void loadPluginsIn( Path folderPath ) {

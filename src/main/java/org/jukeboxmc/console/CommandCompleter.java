@@ -13,13 +13,7 @@ import java.util.function.Consumer;
  * @author LucGamesYT
  * @version 1.0
  */
-public class CommandCompleter implements Completer {
-
-    private final Server server;
-
-    public CommandCompleter( Server server ) {
-        this.server = server;
-    }
+public record CommandCompleter(Server server) implements Completer {
 
     @Override
     public void complete( LineReader lineReader, ParsedLine parsedLine, List<Candidate> candidates ) {
@@ -27,6 +21,6 @@ public class CommandCompleter implements Completer {
     }
 
     private void addOptions( Consumer<String> commandConsumer ) {
-       //TODO
+        //TODO
     }
 }

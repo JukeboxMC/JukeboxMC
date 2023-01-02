@@ -10,12 +10,10 @@ import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.math.Vector;
-import org.jukeboxmc.player.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author LucGamesYT
@@ -24,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 public abstract class EntityLiving extends Entity {
 
     protected int deadTimer = 0;
-    protected int fireTicks = 0;
     protected float lastDamage = 0;
     protected byte attackCoolDown = 0;
 
@@ -73,16 +70,6 @@ public abstract class EntityLiving extends Entity {
         if ( this.isOnLadder() ) {
             this.fallDistance = 0;
         }
-
-        if ( this.fireTicks > 0 ) {
-            if ( this.fireTicks % 20 == 0 ) {
-                this.damage( new EntityDamageEvent( this, 1, EntityDamageEvent.DamageSource.ON_FIRE ) );
-            }
-            this.fireTicks--;
-            if ( this.fireTicks == 0 ) {
-                this.setBurning( false );
-            }
-        }
     }
 
     @Override
@@ -92,6 +79,10 @@ public abstract class EntityLiving extends Entity {
         }
 
         float damage = this.applyArmorReduction( event, false );
+        damage = this.applyFeatherFallingReduction( event, damage );
+        damage = this.applyProtectionReduction( event, damage );
+        damage = this.applyProjectileProtectionReduction( event, damage );
+        damage = this.applyFireProtectionReduction( event, damage );
 
         float absorption = this.getAbsorption();
         if ( absorption > 0 ) {
@@ -108,11 +99,14 @@ public abstract class EntityLiving extends Entity {
         }
 
         float damageToBeDealt;
-
         if ( damage != event.getFinalDamage() ) {
             damageToBeDealt = event.getFinalDamage();
         } else {
             damageToBeDealt = this.applyArmorReduction( event, true );
+            damageToBeDealt = this.applyFeatherFallingReduction( event, damageToBeDealt );
+            damageToBeDealt = this.applyProtectionReduction( event, damageToBeDealt );
+            damageToBeDealt = this.applyProjectileProtectionReduction( event, damageToBeDealt );
+            damageToBeDealt = this.applyFireProtectionReduction( event, damageToBeDealt );
             absorption = this.getAbsorption();
             if ( absorption > 0 ) {
                 float oldDamage = damageToBeDealt;
@@ -121,7 +115,8 @@ public abstract class EntityLiving extends Entity {
             }
         }
 
-        float health = ( this.getHealth() - damageToBeDealt );
+        float value = event.getDamage() + damageToBeDealt;
+        float health = this.getHealth() - value;
 
         if ( health > 0 ) {
             EntityEventPacket entityEventPacket = new EntityEventPacket();
@@ -132,9 +127,6 @@ public abstract class EntityLiving extends Entity {
 
         if ( event instanceof EntityDamageByEntityEvent damageByEntityEvent ) {
             Entity damager = damageByEntityEvent.getDamager();
-            if ( damager instanceof Player ) {
-                //return ( (Player) damager ).getGameMode().equals( GameMode.SPECTATOR );
-            }
             float diffX = this.getX() - damager.getX();
             float diffZ = this.getZ() - damager.getZ();
 
@@ -168,31 +160,52 @@ public abstract class EntityLiving extends Entity {
         return true;
     }
 
+    public float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+        return event.getDamage();
+    }
+
+    public float applyFeatherFallingReduction( EntityDamageEvent event, float damage ) {
+        return 0;
+    }
+
+    public float applyProtectionReduction( EntityDamageEvent event, float damage ) {
+        return 0;
+    }
+
+    public float applyProjectileProtectionReduction( EntityDamageEvent event, float damage ) {
+        return 0;
+    }
+
+    public float applyFireProtectionReduction( EntityDamageEvent event, float damage ) {
+        return 0;
+    }
+
     @Override
-    protected void fall() {
+    public void fall() {
         float damage = (float) FastMath.floor( this.fallDistance - 3f );
         if ( damage > 0 ) {
             this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
         }
     }
 
-    protected float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
-        return event.getDamage();
+    public void kill() {
+        this.deadTimer = 20;
+
+        EntityEventPacket entityEventPacket = new EntityEventPacket();
+        entityEventPacket.setRuntimeEntityId( this.entityId );
+        entityEventPacket.setType( EntityEventType.DEATH );
+        Server.getInstance().broadcastPacket( entityEventPacket );
+
+        this.fireTicks = 0;
+        this.setBurning( false );
+    }
+
+    public EntityDamageEvent.DamageSource getLastDamageSource() {
+        return this.lastDamageSource;
     }
 
     public Entity getLastDamageEntity() {
         return this.lastDamageEntity;
-    }
-
-    public void setBurning( long value, TimeUnit timeUnit ) {
-        int newFireTicks = (int) ( timeUnit.toMillis( value ) / 50 );
-        if ( newFireTicks > this.fireTicks ) {
-            this.fireTicks = newFireTicks;
-            this.setBurning( true );
-        } else if ( newFireTicks == 0 ) {
-            this.fireTicks = 0;
-            this.setBurning( false );
-        }
     }
 
     public void addAttribute( AttributeType attributeType ) {
@@ -225,6 +238,7 @@ public abstract class EntityLiving extends Entity {
 
     public void setHealth( float value ) {
         if ( value < 1 ) {
+            value = 0;
             this.kill();
         }
         Attribute attribute = this.getAttribute( AttributeType.HEALTH );
@@ -283,18 +297,5 @@ public abstract class EntityLiving extends Entity {
     public void setKnockbackResistence( float value ) {
         this.setAttributes( AttributeType.KNOCKBACK_RESISTENCE, value );
     }
-
-    protected void kill() {
-        this.deadTimer = 20;
-
-        EntityEventPacket entityEventPacket = new EntityEventPacket();
-        entityEventPacket.setRuntimeEntityId( this.entityId );
-        entityEventPacket.setType( EntityEventType.DEATH );
-        Server.getInstance().broadcastPacket( entityEventPacket );
-
-        this.fireTicks = 0;
-        this.setBurning( false );
-    }
-
 
 }
