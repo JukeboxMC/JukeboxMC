@@ -39,7 +39,7 @@ public class Chunk {
 
     private static final Block BLOCK_AIR = Block.create( BlockType.AIR );
     public static final int CHUNK_LAYERS = 2;
-    public static final int CHUNK_VERSION = 41;
+    public static final int CHUNK_VERSION = 40;
 
     private final World world;
     private final Dimension dimension;
