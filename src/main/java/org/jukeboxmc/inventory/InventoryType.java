@@ -31,5 +31,8 @@ public enum InventoryType {
     STONE_CUTTER,
     GRINDSTONE,
     BREWING_STAND,
-    CREATIVE
+    CREATIVE,
+
+    FAKE_CHEST,
+    FAKE_DOUBLE_CHEST
 }

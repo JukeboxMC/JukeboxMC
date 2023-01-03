@@ -7,7 +7,6 @@ import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWith
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
 

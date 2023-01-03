@@ -15,7 +15,6 @@ import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.block.BlockPlaceEvent;
 import org.jukeboxmc.event.player.PlayerDropItemEvent;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
-import org.jukeboxmc.inventory.PlayerInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemAir;
@@ -26,8 +25,6 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;
-
-import java.util.Collection;
 
 /**
  * @author LucGamesYT

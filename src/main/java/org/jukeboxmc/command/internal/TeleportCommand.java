@@ -103,7 +103,6 @@ public class TeleportCommand extends Command {
                     int y = Integer.parseInt( number2 );
                     int z = Integer.parseInt( number3 );
 
-                    System.out.println( dimension );
                     player.teleport( new Location( player.getWorld(), new Vector( x, y, z ), dimension == null ? player.getDimension() : Dimension.valueOf( dimension.toUpperCase() ) ) );
                     player.sendMessage( "You have benn teleported to " + x + ", " + y + ", " + z );
                 } catch ( NumberFormatException e ) {

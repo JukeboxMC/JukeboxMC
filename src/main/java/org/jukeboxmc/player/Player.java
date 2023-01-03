@@ -59,6 +59,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private String name;
     private GameMode gameMode;
 
+    private int closingWindowId = Integer.MIN_VALUE;
+
     private ContainerInventory currentInventory;
     private CraftingGridInventory craftingGridInventory;
     private final CreativeItemCacheInventory creativeItemCacheInventory;
@@ -359,8 +361,20 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return creativeItemCacheInventory;
     }
 
+    public int getClosingWindowId() {
+        return this.closingWindowId;
+    }
+
+    public void setClosingWindowId( int closingWindowId ) {
+        this.closingWindowId = closingWindowId;
+    }
+
     public ContainerInventory getCurrentInventory() {
         return this.currentInventory;
+    }
+
+    public void setCurrentInventory( ContainerInventory currentInventory ) {
+        this.currentInventory = currentInventory;
     }
 
     public CursorInventory getCursorInventory() {
@@ -403,7 +417,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
 
         if ( this.currentInventory != null ) {
-            this.closeInventory( this.currentInventory );
+           this.closeInventory( this.currentInventory );
         }
         inventory.addViewer( this, position, windowId );
 
@@ -420,22 +434,44 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     public void closeInventory( ContainerInventory inventory ) {
         if ( this.currentInventory == inventory ) {
-            this.closeInventory( WindowId.OPEN_CONTAINER.getId(), true );
+            this.closeInventory( (byte) WindowId.OPEN_CONTAINER.getId() );
         }
     }
 
-    public void closeInventory( int windowId, boolean isServerSide ) {
+    public void closeInventory( byte windowId ) {
         if ( this.currentInventory != null ) {
-            this.currentInventory.removeViewer( this );
 
             ContainerClosePacket containerClosePacket = new ContainerClosePacket();
-            containerClosePacket.setId( (byte) windowId );
-            containerClosePacket.setUnknownBool0( isServerSide );
+            containerClosePacket.setId( windowId );
+            containerClosePacket.setUnknownBool0( this.closingWindowId != windowId );
             this.playerConnection.sendPacket( containerClosePacket );
+
+            this.currentInventory.removeViewer( this );
 
             Server.getInstance().getPluginManager().callEvent( new InventoryCloseEvent( this.currentInventory, this ) );
 
             this.currentInventory = null;
+        }
+    }
+
+    public void closeInventory( byte windowId, boolean isServerSide ) {
+        if ( this.currentInventory != null ) {
+
+            ContainerClosePacket containerClosePacket = new ContainerClosePacket();
+            containerClosePacket.setId( windowId );
+            containerClosePacket.setUnknownBool0( isServerSide );
+            this.playerConnection.sendPacket( containerClosePacket );
+
+            this.currentInventory.removeViewer( this );
+
+            Server.getInstance().getPluginManager().callEvent( new InventoryCloseEvent( this.currentInventory, this ) );
+
+            this.currentInventory = null;
+        } else {
+            ContainerClosePacket containerClosePacket = new ContainerClosePacket();
+            containerClosePacket.setId( windowId );
+            containerClosePacket.setUnknownBool0( isServerSide );
+            this.playerConnection.sendPacket( containerClosePacket );
         }
     }
 

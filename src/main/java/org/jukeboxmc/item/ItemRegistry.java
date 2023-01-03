@@ -2,7 +2,6 @@ package org.jukeboxmc.item;
 
 import com.google.gson.Gson;
 import org.jukeboxmc.Bootstrap;
-import org.jukeboxmc.block.behavior.BlockWater;
 import org.jukeboxmc.item.behavior.*;
 import org.jukeboxmc.util.Identifier;
 

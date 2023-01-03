@@ -8,12 +8,9 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.event.player.*;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Particle;
 
 /**
