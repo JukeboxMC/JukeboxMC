@@ -410,15 +410,15 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public void openInventory( ContainerInventory inventory, Vector position, byte windowId ) {
+        if ( this.currentInventory != null ) {
+            return;
+        }
         InventoryOpenEvent inventoryOpenEvent = new InventoryOpenEvent( inventory, this );
         Server.getInstance().getPluginManager().callEvent( inventoryOpenEvent );
         if ( inventoryOpenEvent.isCancelled() ) {
             return;
         }
 
-        if ( this.currentInventory != null ) {
-           this.closeInventory( this.currentInventory );
-        }
         inventory.addViewer( this, position, windowId );
 
         this.currentInventory = inventory;
