@@ -103,6 +103,7 @@ public class Server {
 
     public Server( Logger logger ) {
         instance = this;
+        JukeboxMC.setServer( this );
         this.logger = logger;
         this.startTime = System.currentTimeMillis();
         Thread.currentThread().setName( "JukeboxMC-Main" );
