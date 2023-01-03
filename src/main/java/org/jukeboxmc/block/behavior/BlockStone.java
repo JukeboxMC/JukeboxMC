@@ -8,7 +8,6 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemStone;
 import org.jukeboxmc.util.Identifier;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

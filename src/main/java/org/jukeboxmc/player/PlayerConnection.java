@@ -69,7 +69,6 @@ public class PlayerConnection {
         session.setPacketCodec( Network.CODEC );
         session.setBatchHandler( ( bedrockSession, byteBuf, packets ) -> {
             for ( BedrockPacket packet : packets ) {
-                //System.out.println(packet);
                 try {
                     server.getScheduler().execute( () -> {
                         PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
@@ -81,7 +80,7 @@ public class PlayerConnection {
                         if ( packetHandler != null ) {
                             packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
                         } else {
-                            System.out.println( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                            this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
                         }
                     } );
                 } catch ( Throwable throwable ) {

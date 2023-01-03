@@ -3,9 +3,7 @@ package org.jukeboxmc.block.behavior;
 import com.nukkitx.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.util.Identifier;
-import org.jukeboxmc.world.Dimension;
 
 /**
  * @author LucGamesYT

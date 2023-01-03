@@ -6,8 +6,6 @@ import org.jukeboxmc.block.data.LeafType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemLeaves;
-import org.jukeboxmc.item.enchantment.Enchantment;
-import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.util.Identifier;
 
 import java.util.Collections;

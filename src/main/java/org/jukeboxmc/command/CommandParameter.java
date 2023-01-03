@@ -1,14 +1,15 @@
 package org.jukeboxmc.command;
 
 import com.google.common.collect.ImmutableMap;
-import com.nukkitx.protocol.bedrock.data.command.*;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
+import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
+import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamOption.HAS_SEMANTIC_CONSTRAINT;
 
 /**
  * @author Cloudburst
