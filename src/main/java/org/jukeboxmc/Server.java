@@ -145,11 +145,6 @@ public class Server {
         BlockEntityRegistry.init();
         EnchantmentRegistry.init();
 
-        String json = Item.toJson( Item.create( ItemType.WOODEN_SWORD ).addEnchantment( EnchantmentType.CURSE_OF_VANISHING, 1 ).setDisplayname( "§bHallo" ).setLore( Arrays.asList( "Nr.1", "Nr.2", "Nr.3" ) ) );
-        System.out.println( json );
-
-        System.out.println(Item.fromJson( json ));
-
         this.scheduler = new Scheduler( this );
 
         this.resourcePackManager = new ResourcePackManager( logger );
