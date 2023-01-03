@@ -507,7 +507,7 @@
     "max_stack_size": 64
   },
   "minecraft:compass": {
-    "max_stack_size": 1
+    "max_stack_size": 64
   },
   "minecraft:composter": {
     "max_stack_size": 64
