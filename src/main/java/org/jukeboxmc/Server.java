@@ -1,5 +1,9 @@
 package org.jukeboxmc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
@@ -16,8 +20,11 @@ import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.EntityRegistry;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemRegistry;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.enchantment.EnchantmentRegistry;
+import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.Network;
 import org.jukeboxmc.network.handler.HandlerRegistry;
@@ -138,6 +145,11 @@ public class Server {
         BlockEntityRegistry.init();
         EnchantmentRegistry.init();
 
+        String json = Item.toJson( Item.create( ItemType.WOODEN_SWORD ).addEnchantment( EnchantmentType.CURSE_OF_VANISHING, 1 ).setDisplayname( "§bHallo" ).setLore( Arrays.asList( "Nr.1", "Nr.2", "Nr.3" ) ) );
+        System.out.println( json );
+
+        System.out.println(Item.fromJson( json ));
+
         this.scheduler = new Scheduler( this );
 
         this.resourcePackManager = new ResourcePackManager( logger );
@@ -175,12 +187,12 @@ public class Server {
         this.nextTickTime = System.currentTimeMillis();
 
         try {
-            while(this.runningState.get()) {
+            while ( this.runningState.get() ) {
                 final long startTimeMillis = System.currentTimeMillis();
 
-                if(this.nextTickTime - startTimeMillis > 25) {
-                    synchronized(this) {
-                        this.wait(Math.max(5, this.nextTickTime - startTimeMillis - 25));
+                if ( this.nextTickTime - startTimeMillis > 25 ) {
+                    synchronized (this) {
+                        this.wait( Math.max( 5, this.nextTickTime - startTimeMillis - 25 ) );
                     }
                 }
 
@@ -188,16 +200,16 @@ public class Server {
 
                 this.nextTickTime += 50;
             }
-        } catch(InterruptedException e) {
-            Logger.getInstance().error("Error whilst waiting for next tick!", e);
+        } catch ( InterruptedException e ) {
+            Logger.getInstance().error( "Error whilst waiting for next tick!", e );
         }
     }
 
     private void tick() {
-        long skipNanos = TimeUnit.SECONDS.toNanos(1) / TICKS;
+        long skipNanos = TimeUnit.SECONDS.toNanos( 1 ) / TICKS;
         float lastTickTime;
 
-        while (this.runningState.get()) {
+        while ( this.runningState.get() ) {
             this.internalDiffTime = System.nanoTime();
 
             this.currentTick++;
@@ -207,29 +219,29 @@ public class Server {
             for ( World value : this.worlds.values() ) {
                 value.update( this.currentTick );
             }
-            if (!this.runningState.get()) {
+            if ( !this.runningState.get() ) {
                 break;
             }
 
             long startSleep = System.nanoTime();
             long diff = startSleep - this.internalDiffTime;
-            if (diff <= skipNanos) {
-                long sleepNeeded = (skipNanos - diff) - this.sleepBalance;
+            if ( diff <= skipNanos ) {
+                long sleepNeeded = ( skipNanos - diff ) - this.sleepBalance;
                 this.sleepBalance = 0;
 
-                LockSupport.parkNanos(sleepNeeded);
+                LockSupport.parkNanos( sleepNeeded );
 
                 long endSleep = System.nanoTime();
                 long sleptFor = endSleep - startSleep;
                 diff = skipNanos;
 
-                if (sleptFor > sleepNeeded) {
+                if ( sleptFor > sleepNeeded ) {
                     this.sleepBalance = sleptFor - sleepNeeded;
                 }
             }
 
-            lastTickTime = (float) diff / TimeUnit.SECONDS.toNanos(1);
-            this.currentTps = (int) Math.round(  (1 / (double) lastTickTime) );
+            lastTickTime = (float) diff / TimeUnit.SECONDS.toNanos( 1 );
+            this.currentTps = (int) Math.round( ( 1 / (double) lastTickTime ) );
         }
     }
 
@@ -244,9 +256,9 @@ public class Server {
 
         this.logger.info( "Save all worlds..." );
         for ( World world : this.worlds.values() ) {
-            world.saveChunks(Dimension.OVERWORLD).join();
-            world.saveChunks(Dimension.NETHER).join();
-            world.saveChunks(Dimension.THE_END).join();
+            world.saveChunks( Dimension.OVERWORLD ).join();
+            world.saveChunks( Dimension.NETHER ).join();
+            world.saveChunks( Dimension.THE_END ).join();
             this.logger.info( "The world \"" + world.getName() + "\" was saved!" );
         }
 
@@ -257,13 +269,13 @@ public class Server {
         this.network.getBedrockServer().close( true );
 
         this.logger.info( "Stopping other threads" );
-        for (Thread thread : Thread.getAllStackTraces().keySet()) {
-            if (thread.isAlive()) {
+        for ( Thread thread : Thread.getAllStackTraces().keySet() ) {
+            if ( thread.isAlive() ) {
                 thread.interrupt();
             }
         }
 
-        ServerKiller serverKiller = new ServerKiller(this.logger);
+        ServerKiller serverKiller = new ServerKiller( this.logger );
         serverKiller.start();
     }
 

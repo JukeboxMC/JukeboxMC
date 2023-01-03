@@ -1,5 +1,8 @@
 package org.jukeboxmc.item;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
@@ -50,6 +53,7 @@ public class Item implements Cloneable {
     protected Map<EnchantmentType, Enchantment> enchantments;
 
     protected boolean emptyEnchanted;
+    protected boolean unbreakable;
 
     private ItemProperties itemProperties;
 
@@ -206,6 +210,50 @@ public class Item implements Cloneable {
         return (T) new Item( itemType, true ).setAmount( amount ).setMeta( meta );
     }
 
+    public static String toJson( Item item ) {
+        NbtMap itemNbt = NbtMap.builder()
+                .putString( "Name", item.getIdentifier().getFullName() )
+                .putInt( "Count", item.getAmount() )
+                .putInt( "Meta", item.getMeta() )
+                .putCompound( "tag", item.toNbt() )
+                .build();
+        return new Gson().toJson( itemNbt );
+    }
+
+    public static <T extends Item> T fromJson( String json ) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Object> itemMap = objectMapper.readValue( json, Map.class );
+            Identifier identifier = Identifier.fromString( (String) itemMap.get( "Name" ) );
+            int amount = (int) itemMap.get( "Count" );
+            int meta = (int) itemMap.get( "Meta" );
+            Map<String, Object> itemNbtMap = (Map<String, Object>) itemMap.get( "tag" );
+            Item item = Item.create( identifier ).setAmount( amount ).setMeta( meta );
+            if ( itemNbtMap.containsKey( "Damage" ) ) {
+                item.setDurability( (int) itemNbtMap.get( "Damage" ) );
+            }
+            if ( itemNbtMap.containsKey( "ench" ) ) {
+                for ( Map<String, Object> map : (List<Map<String, Object>>) itemNbtMap.get( "ench" ) ) {
+                    int id = (int) map.get( "id" );
+                    int level = (int) map.get( "lvl" );
+                    item.addEnchantment( EnchantmentRegistry.getEnchantmentType( (short) id ), level );
+                }
+            }
+            if ( itemNbtMap.containsKey( "display" ) ) {
+                Map<String, Object> displayMap = (Map<String, Object>) itemNbtMap.get( "display" );
+                if ( displayMap.containsKey( "Name" ) ) {
+                    item.setDisplayname( (String) displayMap.get( "Name" ) );
+                }
+                if ( displayMap.containsKey( "Lore" ) ) {
+                    item.setLore( (List<String>) displayMap.get( "Lore" ) );
+                }
+            }
+            return (T) item;
+        } catch ( JsonProcessingException e ) {
+            throw new RuntimeException( e );
+        }
+    }
+
     public ItemType getType() {
         return this.itemType;
     }
@@ -342,13 +390,22 @@ public class Item implements Cloneable {
         return this.enchantments.values();
     }
 
+    public boolean isEmptyEnchanted() {
+        return emptyEnchanted;
+    }
+
     public Item setEmptyEnchanted( boolean emptyEnchanted ) {
         this.emptyEnchanted = emptyEnchanted;
         return this;
     }
 
-    public boolean isEmptyEnchanted() {
-        return emptyEnchanted;
+    public boolean isUnbreakable() {
+        return unbreakable;
+    }
+
+    public Item setUnbreakable( boolean unbreakable ) {
+        this.unbreakable = unbreakable;
+        return this;
     }
 
     public Block toBlock() {
@@ -391,7 +448,7 @@ public class Item implements Cloneable {
         return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
     }
 
-    public void fromNbt( NbtMap nbtMap ) {
+    protected void fromNbt( NbtMap nbtMap ) {
         nbtMap.listenForByte( "Count", this::setAmount );
         nbtMap.listenForInt( "Damage", this::setDurability );
         nbtMap.listenForCompound( "display", displayTag -> {
@@ -440,11 +497,14 @@ public class Item implements Cloneable {
 
     public boolean calculateDurability( int durability ) {
         if ( this instanceof Durability ) {
+            if ( this.unbreakable ) {
+                return false;
+            }
             Enchantment enchantment = this.getEnchantment( EnchantmentType.UNBREAKING );
             if ( enchantment != null ) {
                 int chance = new Random().nextInt( 100 );
-                int percent = (100 / (enchantment.getLevel() + 1));
-                if ( !(enchantment.getLevel() > 0 && percent <= chance) ) {
+                int percent = ( 100 / ( enchantment.getLevel() + 1 ) );
+                if ( !( enchantment.getLevel() > 0 && percent <= chance ) ) {
                     this.durability += durability;
                 }
             } else {
