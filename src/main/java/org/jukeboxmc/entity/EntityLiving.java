@@ -30,7 +30,7 @@ public abstract class EntityLiving extends Entity {
     protected float lastDamage = 0;
     protected byte attackCoolDown = 0;
 
-    protected EntityDamageEvent.DamageSource lastDamageSource;
+    protected EntityDamageEvent.DamageSource lastDamageSource = EntityDamageEvent.DamageSource.COMMAND;
     protected Entity lastDamageEntity;
 
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
@@ -234,7 +234,7 @@ public abstract class EntityLiving extends Entity {
         }
     }
 
-    public void kill() {
+    protected void killInternal() {
         this.deadTimer = 20;
 
         EntityEventPacket entityEventPacket = new EntityEventPacket();
@@ -365,10 +365,14 @@ public abstract class EntityLiving extends Entity {
         return this.getAttributeValue( AttributeType.HEALTH );
     }
 
+    public float getMaxHealth() {
+        return this.getAttribute( AttributeType.HEALTH ).getMaxValue();
+    }
+
     public void setHealth( float value ) {
         if ( value < 1 ) {
             value = 0;
-            this.kill();
+            this.killInternal();
         }
         Attribute attribute = this.getAttribute( AttributeType.HEALTH );
         attribute.setCurrentValue( value );

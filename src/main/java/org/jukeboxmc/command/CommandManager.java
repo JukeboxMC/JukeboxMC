@@ -23,7 +23,10 @@ public class CommandManager {
                 RemoveOperatorCommand.class,
                 TeleportCommand.class,
                 StopCommand.class,
-                SaveCommand.class
+                SaveCommand.class,
+                KillCommand.class,
+                KickCommand.class,
+                EffectCommand.class
         );
 
         for( Class<? extends Command> commandClass : commands ) {

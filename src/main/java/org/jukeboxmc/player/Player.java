@@ -924,10 +924,14 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return protectionReduction;
     }
 
-    @Override
     public void kill() {
+        this.damage( new EntityDamageEvent( this, this.getMaxHealth(), EntityDamageEvent.DamageSource.COMMAND ) );
+    }
+
+    @Override
+    protected void killInternal() {
         if ( !this.isDead ) {
-            super.kill();
+            super.killInternal();
             EntityEventPacket entityEventPacket = new EntityEventPacket();
             entityEventPacket.setRuntimeEntityId( this.entityId );
             entityEventPacket.setType( EntityEventType.DEATH );
@@ -986,6 +990,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 this.playerConnection.sendPacket( deathInfoPacket );
             }
         }
+        this.lastDamageSource = EntityDamageEvent.DamageSource.COMMAND;
     }
 
     public boolean attackWithItemInHand( Entity target ) {
