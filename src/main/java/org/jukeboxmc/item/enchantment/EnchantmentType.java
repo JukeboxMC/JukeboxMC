@@ -6,7 +6,7 @@ package org.jukeboxmc.item.enchantment;
  */
 public enum EnchantmentType {
 
-    AQUA_AFFINITY,
+    AQUA_AFFINITY, //Implemented
     BANE_OF_ARTHROPODS,
     BLAST_PROTECTION, //Implemented
     CHANNELING,

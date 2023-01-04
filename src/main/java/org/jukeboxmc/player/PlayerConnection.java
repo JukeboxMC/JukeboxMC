@@ -80,7 +80,7 @@ public class PlayerConnection {
                         if ( packetHandler != null ) {
                             packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
                         } else {
-                            this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                            this.server.getLogger().debug( "Handler missing for packet: " + packet.getClass().getSimpleName() );
                         }
                     } );
                 } catch ( Throwable throwable ) {
@@ -189,13 +189,6 @@ public class PlayerConnection {
         playStatusPacket.setStatus( PlayStatusPacket.Status.PLAYER_SPAWN );
         this.sendPacket( playStatusPacket );
 
-        for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
-            if ( onlinePlayer != null && onlinePlayer.getDimension() == this.player.getDimension() ) {
-                onlinePlayer.spawn( this.player );
-                this.player.spawn( onlinePlayer );
-            }
-        }
-
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.setTime( this.player.getWorld().getWorldTime() );
         this.sendPacket( setTimePacket );
@@ -204,6 +197,13 @@ public class PlayerConnection {
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
             Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
+        }
+
+        for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
+            if ( onlinePlayer != null && onlinePlayer.getDimension() == this.player.getDimension() ) {
+                this.player.spawn( onlinePlayer );
+                onlinePlayer.spawn( this.player );
+            }
         }
 
         this.server.getLogger().info(
@@ -278,7 +278,7 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    private String parseDisconnectMessage( DisconnectReason disconnectReason) {
+    private String parseDisconnectMessage( DisconnectReason disconnectReason ) {
         switch ( disconnectReason ) {
             case ALREADY_CONNECTED -> {
                 return "Already connected";
@@ -323,7 +323,6 @@ public class PlayerConnection {
 
     public void sendPacketImmediately( BedrockPacket packet ) {
         if ( !this.isClosed() ) {
-            //System.out.println( "S -> C: " + packet.getClass().getSimpleName() );
             this.session.sendPacketImmediately( packet );
         }
     }

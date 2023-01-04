@@ -56,8 +56,8 @@ public class ArmorInventory extends ContainerInventory {
     }
 
     @Override
-    public void setItem( int slot, Item item ) {
-        super.setItem( slot, item );
+    public void setItem( int slot, Item item, boolean sendContent ) {
+        super.setItem( slot, item, sendContent );
 
         if ( this.holder instanceof Player player ) {
             ArmorInventory armorInventory = player.getArmorInventory();
@@ -75,6 +75,7 @@ public class ArmorInventory extends ContainerInventory {
                     inventorySlotPacket.setSlot( slot );
                     inventorySlotPacket.setItem( this.content[slot].toItemData() );
                     onlinePlayer.getPlayerConnection().sendPacket( inventorySlotPacket );
+                    onlinePlayer.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
                 } else {
                     onlinePlayer.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
                 }
@@ -90,26 +91,6 @@ public class ArmorInventory extends ContainerInventory {
         mobArmorEquipmentPacket.setLeggings( this.content[2].toItemData() );
         mobArmorEquipmentPacket.setBoots( this.content[3].toItemData() );
         player.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
-    }
-
-    public void sendArmorContent( Player player ) {
-        MobArmorEquipmentPacket mobArmorEquipmentPacket = new MobArmorEquipmentPacket();
-        mobArmorEquipmentPacket.setRuntimeEntityId( this.getInventoryHolder().getEntityId() );
-        mobArmorEquipmentPacket.setHelmet( this.content[0].toItemData() );
-        mobArmorEquipmentPacket.setChestplate( this.content[1].toItemData() );
-        mobArmorEquipmentPacket.setLeggings( this.content[2].toItemData() );
-        mobArmorEquipmentPacket.setBoots( this.content[3].toItemData() );
-
-        for ( Player onlinePlayer : Server.getInstance().getOnlinePlayers() ) {
-            if ( onlinePlayer.equals( player ) ) {
-                InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-                inventoryContentPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
-                inventoryContentPacket.setContents( this.getItemDataContents() );
-                onlinePlayer.getPlayerConnection().sendPacket( inventoryContentPacket );
-            } else {
-                onlinePlayer.getPlayerConnection().sendPacket( mobArmorEquipmentPacket );
-            }
-        }
     }
 
     public Item getHelmet() {

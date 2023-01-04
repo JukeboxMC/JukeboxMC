@@ -62,14 +62,15 @@ public abstract class Entity {
         this.entityId = Entity.entityCount++;
         this.metadata = new Metadata();
         this.metadata.setLong( EntityData.PLAYER_INDEX, 0 );
+        this.metadata.setShort( EntityData.AIR_SUPPLY, (short) 400 );
         this.metadata.setShort( EntityData.MAX_AIR_SUPPLY, (short) 400 );
         this.metadata.setFloat( EntityData.SCALE, 1 );
         this.metadata.setFloat( EntityData.BOUNDING_BOX_WIDTH, this.getWidth() );
         this.metadata.setFloat( EntityData.BOUNDING_BOX_HEIGHT, this.getHeight() );
-        this.metadata.setShort( EntityData.AIR_SUPPLY, (short) -1 );
         this.metadata.setFlag( EntityFlag.HAS_GRAVITY, true );
         this.metadata.setFlag( EntityFlag.HAS_COLLISION, true );
         this.metadata.setFlag( EntityFlag.CAN_CLIMB, true );
+        this.metadata.setFlag( EntityFlag.BREATHING, true );
 
         this.location = Server.getInstance().getDefaultWorld().getSpawnLocation();
         this.lastLocation = Server.getInstance().getDefaultWorld().getSpawnLocation();

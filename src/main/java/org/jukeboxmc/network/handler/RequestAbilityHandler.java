@@ -15,7 +15,6 @@ public class RequestAbilityHandler implements PacketHandler<RequestAbilityPacket
 
     @Override
     public void handle( RequestAbilityPacket packet, Server server, Player player ) {
-
         if ( !player.getAdventureSettings().get( AdventureSettings.Type.ALLOW_FLIGHT ) && packet.getAbility().equals( Ability.FLYING ) ) {
             player.getAdventureSettings().set( AdventureSettings.Type.FLYING, false );
             player.getAdventureSettings().update();

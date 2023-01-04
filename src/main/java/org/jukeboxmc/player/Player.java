@@ -2,7 +2,9 @@ package org.jukeboxmc.player;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.data.command.CommandData;
+import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
+import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.packet.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -40,6 +42,7 @@ import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.potion.EffectType;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
@@ -192,6 +195,34 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             this.foodTicks++;
             if ( this.foodTicks >= 80 ) {
                 this.foodTicks = 0;
+            }
+
+            if ( this.hasEffect( EffectType.HUNGER ) ) {
+                this.exhaust( 0.1f * ( this.getEffect( EffectType.HUNGER ).getAmplifier() + 1 ) );
+            }
+        }
+
+        boolean breathing = !this.isInWater() || this.hasEffect( EffectType.WATER_BREATHING );
+        if ( this.metadata.getFlag( EntityFlag.BREATHING ) != breathing && this.gameMode.equals( GameMode.SURVIVAL ) ) {
+            this.updateMetadata( this.metadata.setFlag( EntityFlag.BREATHING, breathing ) );
+        }
+
+        short air = this.metadata.getShort( EntityData.AIR_SUPPLY );
+        short maxAir = this.metadata.getShort( EntityData.MAX_AIR_SUPPLY );
+
+        if ( this.gameMode.equals( GameMode.SURVIVAL ) ) {
+            if ( !breathing ) {
+                if ( --air < 0 ) {
+                    if ( currentTick % 20 == 0 ) {
+                        this.damage( new EntityDamageEvent( this, 2f, EntityDamageEvent.DamageSource.DROWNING ) );
+                    }
+                } else {
+                    this.updateMetadata( this.metadata.setShort( EntityData.AIR_SUPPLY, air ) );
+                }
+            } else {
+                if ( air != maxAir ) {
+                    this.updateMetadata( this.metadata.setShort( EntityData.AIR_SUPPLY, maxAir ) );
+                }
             }
         }
 
@@ -488,7 +519,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
             setSpawnPositionPacket.setDimensionId( location.getDimension().ordinal() );
-            setSpawnPositionPacket.setSpawnPosition( location.toVector3i().div( 8, 8,8 ) );
+            setSpawnPositionPacket.setSpawnPosition( location.toVector3i().div( 8, 8, 8 ) );
             setSpawnPositionPacket.setSpawnType( SetSpawnPositionPacket.Type.PLAYER_SPAWN );
             this.playerConnection.sendPacket( setSpawnPositionPacket );
 
@@ -916,7 +947,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 case STARVE -> this.getNameTag() + " starved to death";
                 case ON_FIRE -> this.getNameTag() + " burned to death";
                 case DROWNING -> this.getNameTag() + " drowned";
-                case HARM_EFFECT -> this.getNameTag() + " was killed by magic";
+                case MAGIC_EFFECT -> this.getNameTag() + " was killed by magic";
                 case ENTITY_EXPLODE -> this.getNameTag() + " blew up";
                 case PROJECTILE -> this.getNameTag() + " has been shot";
                 case API -> this.getNameTag() + " was killed by setting health to 0";
@@ -959,11 +990,16 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     public boolean attackWithItemInHand( Entity target ) {
         if ( target instanceof EntityLiving living ) {
-
             boolean success = false;
-
-            EntityDamageEvent.DamageSource damageSource = EntityDamageEvent.DamageSource.ENTITY_ATTACK;
             float damage = this.getAttackDamage();
+
+            if ( this.hasEffect( EffectType.STRENGTH ) ) {
+                damage = damage * 0.3f * ( this.getEffect( EffectType.STRENGTH ).getAmplifier() + 1 );
+            }
+
+            if ( this.hasEffect( EffectType.WEAKNESS ) ) {
+                damage = -( damage * 0.2f * this.getEffect( EffectType.WEAKNESS ).getAmplifier() + 1 );
+            }
 
             EnchantmentSharpness sharpness = (EnchantmentSharpness) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.SHARPNESS );
             if ( sharpness != null ) {
@@ -971,7 +1007,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             }
 
             int knockbackLevel = 0;
-
             EnchantmentKnockback knockback = (EnchantmentKnockback) this.playerInventory.getItemInHand().getEnchantment( EnchantmentType.KNOCKBACK );
             if ( knockback != null ) {
                 knockbackLevel += knockback.getLevel();
@@ -982,7 +1017,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 if ( crit && damage > 0.0f ) {
                     damage *= 1.5;
                 }
-                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, damageSource ) ) ) {
+                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, EntityDamageEvent.DamageSource.ENTITY_ATTACK ) ) ) {
                     if ( knockbackLevel > 0 ) {
                         Vector targetVelocity = target.getVelocity();
                         living.setVelocity( targetVelocity.add(
@@ -1032,7 +1067,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             this.playerInventory.sendContents( this );
             this.cursorInventory.sendContents( this );
-            this.armorInventory.sendArmorContent( this );
+            this.armorInventory.sendContents( this );
 
             EntityEventPacket entityEventPacket = new EntityEventPacket();
             entityEventPacket.setRuntimeEntityId( this.entityId );

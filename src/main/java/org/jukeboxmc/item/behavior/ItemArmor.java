@@ -3,6 +3,8 @@ package org.jukeboxmc.item.behavior;
 import org.jukeboxmc.item.ArmorTierType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
 
 /**
@@ -19,7 +21,15 @@ public abstract class ItemArmor extends Item {
         super( identifier );
     }
 
+    @Override
+    public boolean useInAir( Player player, Vector clickVector ) {
+        this.playEquipSound( player );
+        return true;
+    }
+
     public abstract ArmorTierType getArmorTierType();
 
     public abstract int getArmorPoints();
+
+    public abstract void playEquipSound( Player player );
 }

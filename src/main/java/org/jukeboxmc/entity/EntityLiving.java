@@ -1,7 +1,9 @@
 package org.jukeboxmc.entity;
 
+import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
+import com.nukkitx.protocol.bedrock.packet.MobEffectPacket;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
@@ -10,6 +12,9 @@ import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
+import org.jukeboxmc.potion.Effect;
+import org.jukeboxmc.potion.EffectType;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +34,7 @@ public abstract class EntityLiving extends Entity {
     protected Entity lastDamageEntity;
 
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
+    protected final Map<EffectType, Effect> effects = new HashMap<>();
 
     public EntityLiving() {
         this.addAttribute( AttributeType.HEALTH );
@@ -70,6 +76,20 @@ public abstract class EntityLiving extends Entity {
         if ( this.isOnLadder() ) {
             this.fallDistance = 0;
         }
+
+        if ( !this.effects.isEmpty() ) {
+            for ( Effect effect : this.effects.values() ) {
+                effect.update( currentTick );
+                if ( effect.canExecute() ) {
+                    effect.apply( this );
+                }
+
+                effect.setDuration( effect.getDuration() - 1 );
+                if ( effect.getDuration() <= 0 ) {
+                    this.removeEffect( effect.getEffectType() );
+                }
+            }
+        }
     }
 
     @Override
@@ -78,11 +98,19 @@ public abstract class EntityLiving extends Entity {
             return false;
         }
 
+        if ( this.hasEffect( EffectType.FIRE_RESISTANCE ) &&
+                ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FIRE ) ||
+                        event.getDamageSource().equals( EntityDamageEvent.DamageSource.ON_FIRE ) ||
+                        event.getDamageSource().equals( EntityDamageEvent.DamageSource.LAVA ) ) ) {
+            return false;
+        }
+
         float damage = this.applyArmorReduction( event, false );
         damage = this.applyFeatherFallingReduction( event, damage );
         damage = this.applyProtectionReduction( event, damage );
         damage = this.applyProjectileProtectionReduction( event, damage );
         damage = this.applyFireProtectionReduction( event, damage );
+        damage = this.applyResistanceEffectReduction( event, damage );
 
         float absorption = this.getAbsorption();
         if ( absorption > 0 ) {
@@ -107,6 +135,7 @@ public abstract class EntityLiving extends Entity {
             damageToBeDealt = this.applyProtectionReduction( event, damageToBeDealt );
             damageToBeDealt = this.applyProjectileProtectionReduction( event, damageToBeDealt );
             damageToBeDealt = this.applyFireProtectionReduction( event, damageToBeDealt );
+            damageToBeDealt = this.applyResistanceEffectReduction( event, damageToBeDealt );
             absorption = this.getAbsorption();
             if ( absorption > 0 ) {
                 float oldDamage = damageToBeDealt;
@@ -180,9 +209,26 @@ public abstract class EntityLiving extends Entity {
         return 0;
     }
 
+    public float applyResistanceEffectReduction( EntityDamageEvent event, float damage ) {
+        if ( event.getEntity() instanceof EntityLiving entityLiving ) {
+            if ( entityLiving.hasEffect( EffectType.RESISTANCE ) ) {
+                int amplifier = entityLiving.getEffect( EffectType.RESISTANCE ).getAmplifier();
+                return -( damage * 0.20f * amplifier + 1 );
+            }
+        }
+        return event.getDamage();
+    }
+
     @Override
     public void fall() {
-        float damage = (float) FastMath.floor( this.fallDistance - 3f );
+        float distanceReduce = 0.0f;
+        if ( this.hasEffect( EffectType.JUMP_BOOST ) ) {
+            int jumpAmplifier = this.getEffect( EffectType.JUMP_BOOST ).getAmplifier();
+            if ( jumpAmplifier != -1 ) {
+                distanceReduce = jumpAmplifier + 1;
+            }
+        }
+        float damage = (float) FastMath.floor( this.fallDistance - 3f - distanceReduce );
         if ( damage > 0 ) {
             this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
         }
@@ -196,6 +242,8 @@ public abstract class EntityLiving extends Entity {
         entityEventPacket.setType( EntityEventType.DEATH );
         Server.getInstance().broadcastPacket( entityEventPacket );
 
+        this.removeAllEffects();
+
         this.fireTicks = 0;
         this.setBurning( false );
     }
@@ -206,6 +254,87 @@ public abstract class EntityLiving extends Entity {
 
     public Entity getLastDamageEntity() {
         return this.lastDamageEntity;
+    }
+
+    public void addEffect( Effect effect ) {
+        Effect oldEffect = this.getEffect( effect.getEffectType() );
+
+        effect.apply( this );
+        if ( this instanceof Player player ) {
+            MobEffectPacket mobEffectPacket = new MobEffectPacket();
+            mobEffectPacket.setRuntimeEntityId( this.entityId );
+            mobEffectPacket.setEffectId( effect.getId() );
+            mobEffectPacket.setAmplifier( effect.getAmplifier() );
+            mobEffectPacket.setParticles( effect.isVisible() );
+            mobEffectPacket.setDuration( effect.getDuration() );
+            if ( oldEffect != null ) {
+                mobEffectPacket.setEvent( MobEffectPacket.Event.MODIFY );
+            } else {
+                mobEffectPacket.setEvent( MobEffectPacket.Event.ADD );
+            }
+            player.getPlayerConnection().sendPacket( mobEffectPacket );
+        }
+        this.effects.put( effect.getEffectType(), effect );
+
+        this.calculateEffectColor();
+    }
+
+    public void removeEffect( EffectType effectType ) {
+        if ( this.effects.containsKey( effectType ) ) {
+            Effect effect = this.effects.get( effectType );
+            this.effects.remove( effectType );
+            effect.remove( this );
+
+            if ( this instanceof Player player ) {
+                MobEffectPacket mobEffectPacket = new MobEffectPacket();
+                mobEffectPacket.setRuntimeEntityId( this.entityId );
+                mobEffectPacket.setEvent( MobEffectPacket.Event.REMOVE );
+                mobEffectPacket.setEffectId( effect.getId() );
+                player.getPlayerConnection().sendPacket( mobEffectPacket );
+            }
+
+            this.calculateEffectColor();
+        }
+    }
+
+    public void removeAllEffects() {
+        for ( EffectType effectType : this.effects.keySet() ) {
+            this.removeEffect( effectType );
+        }
+    }
+
+    public <T extends Effect> T getEffect( EffectType effectType ) {
+        return (T) this.effects.get( effectType );
+    }
+
+    public boolean hasEffect( EffectType effectType ) {
+        return this.effects.containsKey( effectType );
+    }
+
+    private void calculateEffectColor() {
+        int[] color = new int[3];
+        int count = 0;
+        for ( Effect effect : this.effects.values() ) {
+            if ( effect.isVisible() ) {
+                int[] c = effect.getColor();
+                color[0] += c[0] * ( effect.getAmplifier() + 1 );
+                color[1] += c[1] * ( effect.getAmplifier() + 1 );
+                color[2] += c[2] * ( effect.getAmplifier() + 1 );
+                count += effect.getAmplifier() + 1;
+            }
+        }
+
+        if ( count > 0 ) {
+            int r = ( color[0] / count ) & 0xff;
+            int g = ( color[1] / count ) & 0xff;
+            int b = ( color[2] / count ) & 0xff;
+
+            this.updateMetadata( this.metadata.setInt( EntityData.EFFECT_COLOR, ( r << 16 ) + ( g << 8 ) + b ) );
+            this.updateMetadata( this.metadata.setByte( EntityData.EFFECT_AMBIENT, (byte) 0 ) );
+        } else {
+            this.updateMetadata( this.metadata.setInt( EntityData.EFFECT_COLOR, 0 ) );
+            this.updateMetadata( this.metadata.setByte( EntityData.EFFECT_AMBIENT, (byte) 0 ) );
+        }
     }
 
     public void addAttribute( AttributeType attributeType ) {

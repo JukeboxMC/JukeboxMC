@@ -7,6 +7,7 @@ import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
+import org.jukeboxmc.world.Sound;
 
 /**
  * @author LucGamesYT
@@ -27,7 +28,8 @@ public class ItemLeatherChestplate extends ItemArmor implements Durability {
         Item oldItem = player.getArmorInventory().getChestplate();
         player.getArmorInventory().setChestplate( this );
         player.getInventory().setItemInHand( oldItem );
-        return true;
+        player.playSound( Sound.ARMOR_EQUIP_LEATHER );
+        return super.useInAir( player, clickVector );
     }
 
     @Override
@@ -43,5 +45,10 @@ public class ItemLeatherChestplate extends ItemArmor implements Durability {
     @Override
     public int getMaxDurability() {
         return 80;
+    }
+
+    @Override
+    public void playEquipSound( Player player ) {
+        player.playSound( Sound.ARMOR_EQUIP_LEATHER );
     }
 }

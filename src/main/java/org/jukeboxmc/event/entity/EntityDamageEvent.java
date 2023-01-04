@@ -53,7 +53,7 @@ public class EntityDamageEvent extends EntityEvent implements Cancellable {
         ON_FIRE,
         FIRE,
         ENTITY_EXPLODE,
-        HARM_EFFECT,
+        MAGIC_EFFECT,
         STARVE,
         API,
         COMMAND,

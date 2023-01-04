@@ -26,6 +26,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.potion.*;
 import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.world.World;
@@ -360,15 +361,21 @@ public class Block implements Cloneable {
         ToolType itemToolType = item.getToolType();
         TierType itemTier = item.getTierType();
         int efficiencyLoreLevel = Optional.ofNullable( item.getEnchantment( EnchantmentType.EFFICIENCY ) ).map( Enchantment::getLevel ).orElse( (short) 0 );
-        int hasteEffectLevel = 0;
-        boolean insideOfWaterWithoutAquaAffinity = false;
-        boolean outOfWaterButNotOnGround = !player.isOnGround();
-        return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
+        int miningFatigueLevel = Optional.ofNullable( player.<MiningFatigueEffect>getEffect( EffectType.MINING_FATIGUE ) ).map( Effect::getAmplifier ).orElse( 0 );
+        int hasteEffectLevel = Optional.ofNullable( player.<HasteEffect>getEffect( EffectType.HASTE ) ).map( Effect::getAmplifier ).orElse( 0 );
+        int conduitPowerLevel = Optional.ofNullable( player.<ConduitPowerEffect>getEffect( EffectType.CONDUIT_POWER ) ).map( Effect::getAmplifier ).orElse( 0 );
+        hasteEffectLevel += conduitPowerLevel;
+
+        boolean insideOfWaterWithoutAquaAffinity = player.isInWater() && conduitPowerLevel <= 0 &&
+                Optional.ofNullable( player.getArmorInventory().getHelmet().getEnchantment( EnchantmentType.AQUA_AFFINITY ) ).map( Enchantment::getLevel ).map( l -> l >= 1 ).orElse( false );
+
+        boolean outOfWaterButNotOnGround = (!player.isInWater()) && (!player.isOnGround());
+        return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, miningFatigueLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
     }
 
     private double breakTime0( Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand,
                                BlockType blockType, ToolType itemToolType, TierType itemTierType, int efficiencyLoreLevel,
-                               int hasteEffectLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
+                               int hasteEffectLevel, int miningFatigueLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
         double baseTime;
         if ( canHarvest( item ) || canHarvestWithHand ) {
             baseTime = 1.5 * blockHardness;

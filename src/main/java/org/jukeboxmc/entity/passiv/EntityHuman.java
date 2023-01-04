@@ -15,13 +15,12 @@ import org.jukeboxmc.event.player.PlayerFoodLevelChangeEvent;
 import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
 import org.jukeboxmc.inventory.PlayerInventory;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.UIProfile;
 import org.jukeboxmc.player.skin.Skin;
+import org.jukeboxmc.potion.EffectType;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.Utils;
 
@@ -101,7 +100,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
         addPlayerPacket.setGameType( GameType.SURVIVAL );
         addPlayerPacket.getMetadata().putAll( this.metadata.getEntityDataMap() );
         addPlayerPacket.setDeviceId( this.deviceInfo.getDeviceId() );
-        addPlayerPacket.setHand( Item.create( ItemType.AIR ).toItemData() );
+        addPlayerPacket.setHand( this.playerInventory.getItemInHand().toItemData() );
         return addPlayerPacket;
     }
 
@@ -109,7 +108,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     public EntityHuman spawn( Player player ) {
         if ( this != player ) {
             super.spawn( player );
-
+            this.armorInventory.sendContents( player );
         }
         return this;
     }
@@ -189,6 +188,12 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     public void setSprinting( boolean value ) {
         if ( value != this.isSprinting() ) {
             this.updateMetadata( this.metadata.setFlag( EntityFlag.SPRINTING, value ) );
+            this.setMovement( value ? this.getMovement() * 1.3f : this.getMovement() / 1.3f );
+
+            if ( this.hasEffect( EffectType.SPEED ) ){
+                float movement = this.getMovement();
+                this.setMovement( value ? movement * 1.3f : movement );
+            }
         }
     }
 
@@ -321,6 +326,9 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     public void exhaust( float value ) {
+        if ( this.hasEffect( EffectType.SATURATION ) ) {
+            return;
+        }
         float exhaustion = this.getExhaustion() + value;
 
         while ( exhaustion >= 4 ) {

@@ -1,9 +1,5 @@
 package org.jukeboxmc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
@@ -20,11 +16,8 @@ import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.EntityRegistry;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
-import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemRegistry;
-import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.enchantment.EnchantmentRegistry;
-import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.network.Network;
 import org.jukeboxmc.network.handler.HandlerRegistry;
@@ -34,6 +27,7 @@ import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.plugin.PluginLoadOrder;
 import org.jukeboxmc.plugin.PluginManager;
+import org.jukeboxmc.potion.EffectRegistry;
 import org.jukeboxmc.resourcepack.ResourcePackManager;
 import org.jukeboxmc.scheduler.Scheduler;
 import org.jukeboxmc.util.*;
@@ -144,6 +138,7 @@ public class Server {
         Biome.init();
         BlockEntityRegistry.init();
         EnchantmentRegistry.init();
+        EffectRegistry.init();
 
         this.scheduler = new Scheduler( this );
 
