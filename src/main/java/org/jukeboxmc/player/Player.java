@@ -380,6 +380,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return this.playerConnection.getPlayerChunkManager().isChunkInView( chunkX, chunkZ );
     }
 
+    public void resendChunk( int chunkX, int chunkZ ) {
+        this.playerConnection.getPlayerChunkManager().resendChunk( chunkX, chunkZ );
+    }
+
     public CraftingGridInventory getCraftingGridInventory() {
         return this.craftingGridInventory;
     }
