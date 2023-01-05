@@ -1,12 +1,11 @@
 package org.jukeboxmc.item;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtMapBuilder;
-import com.nukkitx.nbt.NbtType;
+import com.nukkitx.nbt.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import lombok.ToString;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -21,8 +20,10 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.ItemPalette;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Sound;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
@@ -210,46 +211,42 @@ public class Item implements Cloneable {
         return (T) new Item( itemType, true ).setAmount( amount ).setMeta( meta );
     }
 
-    public static String toJson( Item item ) {
+    public static String toBase64( Item item ) {
         NbtMap itemNbt = NbtMap.builder()
                 .putString( "Name", item.getIdentifier().getFullName() )
                 .putInt( "Count", item.getAmount() )
                 .putInt( "Meta", item.getMeta() )
-                .putCompound( "tag", item.toNbt() )
+                .putBoolean( "Unbreakable", item.isUnbreakable() )
+                .putCompound( "BlockState", item.toBlock().getBlockStates() )
+                .putCompound( "tag", item.toNbt() != null ? item.toNbt() : NbtMap.EMPTY )
                 .build();
-        return new Gson().toJson( itemNbt );
+        ByteBuf buffer = Unpooled.buffer();
+        try ( NBTOutputStream networkWriter = NbtUtils.createWriterLE( new ByteBufOutputStream( buffer ) ) ) {
+            networkWriter.writeTag( itemNbt );
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+        return Base64.getMimeEncoder().encodeToString( Utils.array( buffer ) );
     }
 
-    public static <T extends Item> T fromJson( String json ) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Map<String, Object> itemMap = objectMapper.readValue( json, Map.class );
-            Identifier identifier = Identifier.fromString( (String) itemMap.get( "Name" ) );
-            int amount = (int) itemMap.get( "Count" );
-            int meta = (int) itemMap.get( "Meta" );
-            Map<String, Object> itemNbtMap = (Map<String, Object>) itemMap.get( "tag" );
-            Item item = Item.create( identifier ).setAmount( amount ).setMeta( meta );
-            if ( itemNbtMap.containsKey( "Damage" ) ) {
-                item.setDurability( (int) itemNbtMap.get( "Damage" ) );
-            }
-            if ( itemNbtMap.containsKey( "ench" ) ) {
-                for ( Map<String, Object> map : (List<Map<String, Object>>) itemNbtMap.get( "ench" ) ) {
-                    int id = (int) map.get( "id" );
-                    int level = (int) map.get( "lvl" );
-                    item.addEnchantment( EnchantmentRegistry.getEnchantmentType( (short) id ), level );
-                }
-            }
-            if ( itemNbtMap.containsKey( "display" ) ) {
-                Map<String, Object> displayMap = (Map<String, Object>) itemNbtMap.get( "display" );
-                if ( displayMap.containsKey( "Name" ) ) {
-                    item.setDisplayname( (String) displayMap.get( "Name" ) );
-                }
-                if ( displayMap.containsKey( "Lore" ) ) {
-                    item.setLore( (List<String>) displayMap.get( "Lore" ) );
-                }
+    public static <T extends Item> T fromBase64( String json ) {
+        byte[] decode = Base64.getMimeDecoder().decode( json );
+
+        try ( NBTInputStream reader = NbtUtils.createReaderLE( new ByteBufInputStream( Unpooled.wrappedBuffer( decode ) ) ) ) {
+            NbtMap compound = (NbtMap) reader.readTag();
+            Identifier identifier = Identifier.fromString( compound.getString( "Name" ) );
+            int amount = compound.getInt( "Count" );
+            int meta = compound.getInt( "Meta" );
+            boolean unbreakable = compound.getBoolean( "Unbreakable" );
+            NbtMap blockStates = compound.getCompound( "BlockState" );
+            NbtMap itemTag = compound.getCompound( "tag" );
+            Integer blockRuntimeId1 = BlockPalette.getBlockRuntimeId( blockStates );
+            Item item = Item.create( identifier ).setAmount( amount ).setMeta( meta ).setUnbreakable( unbreakable ).setBlockRuntimeId( blockRuntimeId1 );
+            if ( !itemTag.isEmpty() ) {
+                item.setNbt( itemTag );
             }
             return (T) item;
-        } catch ( JsonProcessingException e ) {
+        } catch ( IOException e ) {
             throw new RuntimeException( e );
         }
     }
@@ -418,7 +415,9 @@ public class Item implements Cloneable {
     public NbtMap toNbt() {
         NbtMapBuilder nbtBuilder = this.nbt == null ? NbtMap.builder() : this.nbt.toBuilder();
 
-        nbtBuilder.putInt( "Damage", this.durability );
+        if ( this.durability > 0 ) {
+            nbtBuilder.putInt( "Damage", this.durability );
+        }
 
         NbtMapBuilder displayBuilder = NbtMap.builder();
         if ( !this.displayname.isEmpty() ) {

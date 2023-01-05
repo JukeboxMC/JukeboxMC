@@ -70,7 +70,7 @@ public class Block implements Cloneable {
         }
 
         if ( blockStates == null ) {
-            List<NbtMap> states = new ArrayList<>( STATES.get( this.identifier ).keySet() );
+            List<NbtMap> states = new LinkedList<>( STATES.get( this.identifier ).keySet() );
             blockStates = states.isEmpty() ? NbtMap.EMPTY : states.get( 0 );
         }
 

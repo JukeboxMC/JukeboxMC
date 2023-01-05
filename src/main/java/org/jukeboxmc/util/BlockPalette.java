@@ -30,6 +30,7 @@ import java.util.zip.GZIPInputStream;
 public class BlockPalette {
 
     public static final Int2ObjectMap<NbtMap> STATE_FROM_RUNTIME = new Int2ObjectLinkedOpenHashMap<>();
+    public static final Int2ObjectMap<NbtMap> BLOCK_STATE_FROM_RUNTIME = new Int2ObjectLinkedOpenHashMap<>();
     public static final Object2ObjectMap<BlockData, Block> BLOCK_CACHE = new Object2ObjectOpenHashMap<>();
     public static final Object2ObjectMap<Identifier, Integer> IDENTIFIER_TO_RUNTIME = new Object2ObjectOpenHashMap<>();
     public static final List<NbtMap> BLOCK_NBT = new LinkedList<>();
@@ -43,6 +44,7 @@ public class BlockPalette {
                 BLOCK_NBT.addAll( nbtMap.getList( "blocks", NbtType.COMPOUND ) );
                 for ( NbtMap blockMap : nbtMap.getList( "blocks", NbtType.COMPOUND ) ) {
                     int runtimeId = RUNTIME_COUNTER.getAndIncrement();
+                    BLOCK_STATE_FROM_RUNTIME.put( runtimeId, blockMap.getCompound( "states" ) );
                     STATE_FROM_RUNTIME.put( runtimeId, blockMap );
                     IDENTIFIER_TO_RUNTIME.putIfAbsent( Identifier.fromString( blockMap.getString( "name" ) ), runtimeId );
                 }
@@ -89,6 +91,15 @@ public class BlockPalette {
             }
         }
         throw new NullPointerException( "Block was not found" );
+    }
+
+    public static Integer getBlockRuntimeId( NbtMap blockMap ) {
+        for ( int runtimeId : BLOCK_STATE_FROM_RUNTIME.keySet() ) {
+            if ( BLOCK_STATE_FROM_RUNTIME.get( runtimeId ).equals( blockMap ) ) {
+                return runtimeId;
+            }
+        }
+        throw new NullPointerException( "Block was not found: " + blockMap );
     }
 
     public static List<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
