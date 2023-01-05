@@ -1,6 +1,7 @@
 package org.jukeboxmc.command.internal;
 
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
@@ -56,6 +57,10 @@ public class EffectCommand extends Command {
                 target.removeAllEffects();
                 commandSender.sendMessage( "Took all effects from " + target.getName() );
             } else {
+                if ( !EnumUtils.isValidEnum( EffectType.class, type.toUpperCase() ) ) {
+                    commandSender.sendMessage( "Effect not found." );
+                    return;
+                }
                 EffectType effectType = EffectType.valueOf( type.toUpperCase() );
                 if ( !NumberUtils.isCreatable( args[2] ) ) {
                     commandSender.sendMessage( "The seconds must be a number." );
