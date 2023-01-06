@@ -32,7 +32,7 @@ public class EffectCommand extends Command {
 
     public EffectCommand() {
         super( CommandData.builder()
-                .addParameters( new CommandParameter[]{
+                .setParameters( new CommandParameter[]{
                                 new CommandParameter( "target", CommandParamType.TARGET, false ),
                                 new CommandParameter( "effect", Stream.of( EffectType.values() ).map( effectType -> effectType.name().toLowerCase() ).collect( Collectors.toList() ), false ),
                                 new CommandParameter( "seconds", CommandParamType.INT, true ),
@@ -62,19 +62,28 @@ public class EffectCommand extends Command {
                     return;
                 }
                 EffectType effectType = EffectType.valueOf( type.toUpperCase() );
-                if ( !NumberUtils.isCreatable( args[2] ) ) {
-                    commandSender.sendMessage( "The seconds must be a number." );
-                    return;
+
+                if ( args.length == 3 ) {
+                    if ( !NumberUtils.isCreatable( args[2] ) ) {
+                        commandSender.sendMessage( "The seconds must be a number." );
+                        return;
+                    }
                 }
-                int seconds = args.length == 3 ? Integer.parseInt( args[2] ) : 30;
-                if ( !NumberUtils.isCreatable( args[3] ) ){
-                    commandSender.sendMessage( "The amplifier must be a number." );
-                    return;
+                int seconds = args.length >= 3 ? Integer.parseInt( args[2] ) : 30;
+
+                if ( args.length == 4 ) {
+                    if ( !NumberUtils.isCreatable( args[3] ) ) {
+                        commandSender.sendMessage( "The amplifier must be a number." );
+                        return;
+                    }
                 }
-                int amplifier = args.length == 4 ? Integer.parseInt( args[3] ) : 0;
-                if ( !args[4].equalsIgnoreCase( "true" ) || !args[4].equalsIgnoreCase( "false" ) ){
-                    commandSender.sendMessage( "The visible must be a boolean." );
-                    return;
+                int amplifier = args.length >= 4 ? Integer.parseInt( args[3] ) : 0;
+
+                if ( args.length >= 5 ) {
+                    if ( !args[4].equalsIgnoreCase( "true" ) && !args[4].equalsIgnoreCase( "false" ) ) {
+                        commandSender.sendMessage( "The visible must be a boolean." );
+                        return;
+                    }
                 }
                 boolean visible = args.length != 5 || Boolean.parseBoolean( args[4] );
                 target.addEffect( Effect.create( effectType ).setDuration( seconds, TimeUnit.SECONDS ).setAmplifier( amplifier ).setVisible( visible ) );

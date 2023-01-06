@@ -22,7 +22,7 @@ public class KickCommand extends Command {
 
     public KickCommand() {
         super( CommandData.builder()
-                .addParameters( new CommandParameter[]{
+                .setParameters( new CommandParameter[]{
                         new CommandParameter( "target", CommandParamType.TARGET, false ),
                         new CommandParameter( "reason", CommandParamType.TEXT, true )
                 } )

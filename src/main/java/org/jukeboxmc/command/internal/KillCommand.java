@@ -32,7 +32,7 @@ public class KillCommand extends Command {
 
     public KillCommand() {
         super( CommandData.builder()
-                .addParameters( new CommandParameter[]{
+                .setParameters( new CommandParameter[]{
                         new CommandParameter( "target", CommandParamType.TARGET, false )
                 } )
                 .build() );
