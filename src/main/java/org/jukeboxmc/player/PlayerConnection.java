@@ -11,6 +11,7 @@ import com.nukkitx.protocol.bedrock.packet.*;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
+import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
@@ -22,12 +23,17 @@ import org.jukeboxmc.network.handler.HandlerRegistry;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.player.data.LoginData;
 import org.jukeboxmc.player.manager.PlayerChunkManager;
+import org.jukeboxmc.scheduler.Task;
+import org.jukeboxmc.scheduler.TaskHandler;
 import org.jukeboxmc.util.BiomeDefinitions;
 import org.jukeboxmc.util.CreativeItems;
 import org.jukeboxmc.util.EntityIdentifiers;
 import org.jukeboxmc.util.ItemPalette;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -80,7 +86,7 @@ public class PlayerConnection {
                         if ( packetHandler != null ) {
                             packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
                         } else {
-                            this.server.getLogger().debug( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                            this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
                         }
                     } );
                 } catch ( Throwable throwable ) {

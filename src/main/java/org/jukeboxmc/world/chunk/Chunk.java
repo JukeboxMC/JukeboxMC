@@ -191,6 +191,7 @@ public class Chunk {
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
+            this.dirty = true;
         } finally {
             this.writeLock.unlock();
         }
@@ -221,6 +222,7 @@ public class Chunk {
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBlockEntity( x, y, z, blockEntity );
+            this.dirty = true;
         } finally {
             this.writeLock.unlock();
         }
@@ -267,6 +269,7 @@ public class Chunk {
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBiome( x, y, z, biome );
+            this.dirty = true;
         } finally {
             this.writeLock.unlock();
         }

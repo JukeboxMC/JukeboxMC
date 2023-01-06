@@ -449,6 +449,9 @@ public class Server {
     }
 
     public World getWorld( String name ) {
+        if ( name == null || name.isEmpty() ) {
+            return null;
+        }
         name = name.toLowerCase();
         if ( this.worlds.containsKey( name ) ) {
             return this.worlds.get( name );
@@ -471,9 +474,16 @@ public class Server {
     }
 
     public World loadWorld( String name, Map<Dimension, String> generatorMap ) {
+        if ( name == null || name.isEmpty() ) {
+            return null;
+        }
         File file = new File( "./worlds", name );
         boolean worldExists = file.exists();
         name = name.toLowerCase();
+
+        if ( this.worlds.containsKey( name ) ) {
+            return this.worlds.get( name );
+        }
 
         World world = new World( name, this, generatorMap );
         WorldLoadEvent worldLoadEvent = new WorldLoadEvent( world, worldExists ? WorldLoadEvent.LoadType.LOAD : WorldLoadEvent.LoadType.CREATE );
@@ -485,7 +495,7 @@ public class Server {
             this.worlds.put( name, world );
             return world;
         }
-        return this.worlds.get( name );
+        return null;
     }
 
     public void unloadWorld( String worldName ) {

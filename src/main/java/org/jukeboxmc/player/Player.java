@@ -41,6 +41,7 @@ import org.jukeboxmc.item.enchantment.EnchantmentSharpness;
 import org.jukeboxmc.item.enchantment.EnchantmentType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.data.LoginData;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.potion.EffectType;
 import org.jukeboxmc.world.Difficulty;
@@ -49,6 +50,7 @@ import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author LucGamesYT
@@ -733,6 +735,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         packetModalRequest.setFormId( formId );
         packetModalRequest.setFormData( json );
         this.getPlayerConnection().sendPacket( packetModalRequest );
+
+        //Dirty fix to show image on buttonlist
+        Server.getInstance().getScheduler().scheduleDelayed( () -> this.setAttributes( AttributeType.PLAYER_LEVEL, this.getLevel() ), 5 );
         return formListener;
     }
 
@@ -770,7 +775,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 this.formListeners.remove( formId );
             }
 
-            if ( json.equals( "null" ) ) {
+            if ( json == null || json.equals( "null" ) ) {
                 formListener.getCloseConsumer().accept( null );
             } else {
                 Object resp = form.parseResponse( json );
@@ -819,6 +824,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             return;
         }
         super.setExperience( playerExperienceChangeEvent.getNewLevel() );
+    }
+
+    public LoginData getLoginData() {
+        return this.playerConnection.getLoginData();
     }
 
     // =========== Damage ===========
