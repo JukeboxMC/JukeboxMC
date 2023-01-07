@@ -316,37 +316,37 @@ public class World {
         this.setBlock( x, y, z, 0, block );
     }
 
-    public BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
+    public synchronized BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
         Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         return chunk.getBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
+    public synchronized BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
         Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
         return chunk.getBlockEntity( x, y, z );
     }
 
-    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity, Dimension dimension ) {
+    public synchronized void setBlockEntity( int x, int y, int z, BlockEntity blockEntity, Dimension dimension ) {
         Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
         chunk.setBlockEntity( x, y, z, blockEntity );
     }
 
-    public void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
+    public synchronized void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
         Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.setBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), blockEntity );
     }
 
-    public void removeBlockEntity( Vector vector, Dimension dimension ) {
+    public synchronized void removeBlockEntity( Vector vector, Dimension dimension ) {
         Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.removeBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public void removeBlockEntity( int x, int y, int z, Dimension dimension ) {
+    public synchronized void removeBlockEntity( int x, int y, int z, Dimension dimension ) {
         Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
         chunk.removeBlockEntity( x, y, z );
     }
 
-    public Collection<BlockEntity> getBlockEntities( Dimension dimension ) {
+    public synchronized Collection<BlockEntity> getBlockEntities( Dimension dimension ) {
         Set<BlockEntity> blockEntities = new LinkedHashSet<>();
         for ( Chunk loadedChunk : this.chunkManagers.get( dimension ).getLoadedChunks() ) {
             blockEntities.addAll( loadedChunk.getBlockEntities() );
@@ -354,17 +354,17 @@ public class World {
         return blockEntities;
     }
 
-    public Biome getBiome( Vector vector, Dimension dimension ) {
+    public synchronized Biome getBiome( Vector vector, Dimension dimension ) {
         Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         return chunk.getBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public void setBiome( Vector vector, Dimension dimension, Biome biome ) {
+    public synchronized void setBiome( Vector vector, Dimension dimension, Biome biome ) {
         Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.setBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), biome );
     }
 
-    public void setBiome( int x, int y, int z, Dimension dimension, Biome biome ) {
+    public synchronized void setBiome( int x, int y, int z, Dimension dimension, Biome biome ) {
         this.setBiome( new Vector( x, y, z ), dimension, biome );
     }
 

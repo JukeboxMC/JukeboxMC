@@ -240,8 +240,14 @@ public class Item implements Cloneable {
             boolean unbreakable = compound.getBoolean( "Unbreakable" );
             NbtMap blockStates = compound.getCompound( "BlockState" );
             NbtMap itemTag = compound.getCompound( "tag" );
-            Integer blockRuntimeId1 = BlockPalette.getBlockRuntimeId( blockStates );
-            Item item = Item.create( identifier ).setAmount( amount ).setMeta( meta ).setUnbreakable( unbreakable ).setBlockRuntimeId( blockRuntimeId1 );
+
+            int blockRuntimeId = 0;
+            for ( NbtMap blockNbt : BlockPalette.searchBlocks( nbtMap -> nbtMap.getString( "name" ).equalsIgnoreCase( identifier.getFullName() ) ) ) {
+                if ( blockNbt.getCompound( "states" ).equals( blockStates ) ) {
+                    blockRuntimeId = BlockPalette.getRuntimeId( blockNbt );
+                }
+            }
+            Item item = Item.create( identifier ).setAmount( amount ).setMeta( meta ).setUnbreakable( unbreakable ).setBlockRuntimeId( blockRuntimeId );
             if ( !itemTag.isEmpty() ) {
                 item.setNbt( itemTag );
             }

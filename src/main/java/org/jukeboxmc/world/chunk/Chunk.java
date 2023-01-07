@@ -26,6 +26,8 @@ import org.jukeboxmc.world.World;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -74,7 +76,7 @@ public class Chunk {
             case THE_END -> 255;
         };
         this.fullHeight = Math.abs( this.minY ) + this.maxY + 1;
-        this.entities = new LinkedHashSet<>();
+        this.entities = new CopyOnWriteArraySet<>();
         this.subChunks = new SubChunk[this.fullHeight >> 4];
         this.height = new short[16 * 16];
         this.chunkState = ChunkState.NEW;
@@ -255,7 +257,7 @@ public class Chunk {
     }
 
     public Collection<BlockEntity> getBlockEntities() {
-        List<BlockEntity> blockEntities = new ArrayList<>();
+        List<BlockEntity> blockEntities = new CopyOnWriteArrayList<>();
         for ( SubChunk subChunk : this.subChunks ) {
             if ( subChunk != null && subChunk.getBlockEntities() != null ) {
                 blockEntities.addAll( subChunk.getBlockEntities() );
