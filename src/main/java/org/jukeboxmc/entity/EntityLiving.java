@@ -144,8 +144,7 @@ public abstract class EntityLiving extends Entity {
             }
         }
 
-        float value = event.getDamage() + damageToBeDealt;
-        float health = this.getHealth() - value;
+        float health = this.getHealth() - damageToBeDealt;
 
         if ( health > 0 ) {
             EntityEventPacket entityEventPacket = new EntityEventPacket();
