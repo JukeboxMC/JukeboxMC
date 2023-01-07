@@ -116,7 +116,9 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     @Override
     public EntityHuman spawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
-            this.spawn( player );
+            if ( this.getDimension().equals( player.getDimension() ) ) {
+                this.spawn( player );
+            }
         }
         return this;
     }
@@ -132,7 +134,9 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     @Override
     public EntityHuman despawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
-            this.despawn( player );
+            if ( this.getDimension().equals( player.getDimension() ) ) {
+                this.despawn( player );
+            }
         }
         return this;
     }
