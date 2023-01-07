@@ -113,6 +113,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                         Item sourceItem = new Item( action.getFromItem(), false );
                         Item targetItem = new Item( action.getToItem(), false );
                         if ( check.equalsExact( sourceItem ) ) {
+                            check.removeFromHand( player );
                             player.getInventory().setItem( action.getSlot(), targetItem, false );
                         } else {
                             player.getInventory().sendContents( action.getSlot(), player );
