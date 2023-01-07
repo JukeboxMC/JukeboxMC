@@ -10,7 +10,6 @@ import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.World;

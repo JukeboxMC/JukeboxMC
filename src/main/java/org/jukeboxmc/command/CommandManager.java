@@ -26,7 +26,8 @@ public class CommandManager {
                 SaveCommand.class,
                 KillCommand.class,
                 KickCommand.class,
-                EffectCommand.class
+                EffectCommand.class,
+                EnchantCommand.class
         );
 
         for( Class<? extends Command> commandClass : commands ) {

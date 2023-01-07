@@ -53,6 +53,11 @@ public class EffectCommand extends Command {
             Player target = Server.getInstance().getPlayer( args[0] );
             String type = args[1].toLowerCase();
 
+            if ( target == null ) {
+                commandSender.sendMessage( "§cThe player " + args[0] + " could not be found" );
+                return;
+            }
+
             if ( type.equalsIgnoreCase( "clear" ) ) {
                 target.removeAllEffects();
                 commandSender.sendMessage( "Took all effects from " + target.getName() );

@@ -2,7 +2,6 @@ package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.packet.ContainerClosePacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.player.Player;
 
 /**
