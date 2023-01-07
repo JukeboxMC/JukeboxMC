@@ -24,6 +24,8 @@ public enum BlockEntityType {
     DISPENSER,
     LOOM,
     BARREL,
-    BREWING_STAND
+    BREWING_STAND,
+    BELL,
+    MOB_SPAWNER
 
 }

@@ -17,6 +17,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.palette.Palette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityRegistry;
+import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.Utils;
@@ -169,14 +170,16 @@ public class LevelDB {
                     Block block = chunk.getBlock( x, y, z, 0 );
 
                     if ( block != null ) {
-                        BlockEntity blockEntity = BlockEntity.create( BlockEntityRegistry.getBlockEntityTypeById( nbtMap.getString( "id" ) ), block );
-                        if ( blockEntity != null ) {
-                            blockEntity.fromCompound( nbtMap );
-                            chunk.setBlockEntity( x, y, z, blockEntity );
-                            blockEntity.setSpawned( true );
+                        BlockEntityType blockEntityType = BlockEntityRegistry.getBlockEntityTypeById( nbtMap.getString( "id" ) );
+                        if ( blockEntityType != null ) {
+                            BlockEntity blockEntity = BlockEntity.create( blockEntityType, block );
+                            if ( blockEntity != null ) {
+                                blockEntity.fromCompound( nbtMap );
+                                chunk.setBlockEntity( x, y, z, blockEntity );
+                                blockEntity.setSpawned( true );
+                            }
                         }
                     }
-
                 } catch ( IOException e ) {
                     break;
                 }

@@ -32,6 +32,8 @@ public class BlockEntityRegistry {
         register( BlockEntityType.LOOM, BlockEntityLoom.class, "Loom" );
         register( BlockEntityType.BARREL, BlockEntityBarrel.class, "Barrel" );
         register( BlockEntityType.BREWING_STAND, BlockEntityBrewingStand.class, "BrewingStand" );
+        register( BlockEntityType.MOB_SPAWNER, BlockEntityMobSpawner.class, "Bell" );
+        register( BlockEntityType.BELL, BlockEntityBell.class, "MobSpawner" );
     }
 
     private static void register( BlockEntityType blockEntityType, Class<? extends BlockEntity> blockEntityClass, String blockEntityId ) {

@@ -44,6 +44,7 @@ import org.jukeboxmc.potion.EffectType;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 
 import java.util.*;
@@ -513,6 +514,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public void teleport( Location location ) {
+        World currentWorld = this.getWorld();
+        World world = location.getWorld();
         Dimension fromDimension = this.location.getDimension();
 
         //TODO DESPAWN PLAYER AND SPAWN TO NEW DIMENSION
@@ -530,8 +533,25 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             changeDimensionPacket.setDimension( location.getDimension().ordinal() );
             changeDimensionPacket.setRespawn( false );
             this.playerConnection.sendPacket( changeDimensionPacket );
-        }
+        } else if ( !currentWorld.getName().equals( world.getName() ) ) {
+            this.despawn();
 
+            currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
+
+            this.getChunk().removeEntity( this );
+            currentWorld.removeEntity( this );
+
+            this.playerConnection.getPlayerChunkManager().clear();
+
+            this.setLocation( location );
+            this.playerConnection.getPlayerChunkManager().queueNewChunks();
+
+            world.addEntity( this );
+            this.getChunk().addEntity( this );
+            this.spawn();
+
+            world.getPlayers().forEach( player -> player.spawn( this ) );
+        }
         this.location = location;
         this.move( location, MovePlayerPacket.Mode.TELEPORT );
     }

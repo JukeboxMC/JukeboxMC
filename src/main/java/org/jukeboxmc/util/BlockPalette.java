@@ -79,9 +79,15 @@ public class BlockPalette {
         if ( BLOCK_CACHE.containsKey( blockData ) ) {
             return BLOCK_CACHE.get( blockData ).clone();
         }
-        Block block = Block.create( identifier, blockStates );
-        BLOCK_CACHE.put( blockData, block );
-        return block;
+        try {
+            Block block = Block.create( identifier, blockStates );
+            BLOCK_CACHE.put( blockData, block );
+            return block;
+        } catch ( Exception e ) {
+            Block block = Block.create( identifier );
+            BLOCK_CACHE.put( blockData, block );
+            return block;
+        }
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
