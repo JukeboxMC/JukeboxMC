@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.packet.LoginPacket;
 import com.nukkitx.protocol.bedrock.packet.PlayStatusPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.player.PlayerLoginEvent;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.data.LoginData;
 
@@ -18,9 +19,21 @@ public class LoginHandler implements PacketHandler<LoginPacket>{
         player.getPlayerConnection().setLoginData( new LoginData( packet ) );
 
         if ( !player.getPlayerConnection().getLoginData().isXboxAuthenticated() && server.isOnlineMode() ) {
-            player.getPlayerConnection().disconnect( "You must be logged in with your xbox account." );
+            player.kick( "You must be logged in with your xbox account." );
             return;
         }
+
+        PlayerLoginEvent playerLoginEvent = new PlayerLoginEvent( player );
+        if ( Server.getInstance().getOnlinePlayers().size() >= Server.getInstance().getMaxPlayers() && !playerLoginEvent.canJoinFullServer()) {
+            playerLoginEvent.setCancelled( true );
+            playerLoginEvent.setKickReason( "Server is full." );
+        }
+
+        if ( playerLoginEvent.isCancelled() ) {
+            player.kick( playerLoginEvent.getKickReason() );
+        }
+        Server.getInstance().getPluginManager().callEvent( playerLoginEvent );
+
         player.getPlayerConnection().sendPlayStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
 
         ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
