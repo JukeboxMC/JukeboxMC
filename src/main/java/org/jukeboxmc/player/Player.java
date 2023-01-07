@@ -24,10 +24,7 @@ import org.jukeboxmc.event.entity.EntityDamageEvent;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 import org.jukeboxmc.event.inventory.InventoryCloseEvent;
 import org.jukeboxmc.event.inventory.InventoryOpenEvent;
-import org.jukeboxmc.event.player.PlayerChangeSkinEvent;
-import org.jukeboxmc.event.player.PlayerDeathEvent;
-import org.jukeboxmc.event.player.PlayerExperienceChangeEvent;
-import org.jukeboxmc.event.player.PlayerRespawnEvent;
+import org.jukeboxmc.event.player.*;
 import org.jukeboxmc.form.Form;
 import org.jukeboxmc.form.FormListener;
 import org.jukeboxmc.form.NpcDialogueForm;
@@ -555,8 +552,13 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public void kick( String reason, boolean hideScreen ) {
+        PlayerKickEvent playerKickEvent = new PlayerKickEvent( this, reason );
+        Server.getInstance().getPluginManager().callEvent( playerKickEvent );
+        if ( playerKickEvent.isCancelled() ) {
+            return;
+        }
         this.close();
-        this.playerConnection.disconnect( reason, hideScreen );
+        this.playerConnection.disconnect( playerKickEvent.getReason(), hideScreen );
     }
 
     public void kick( String reason ) {
