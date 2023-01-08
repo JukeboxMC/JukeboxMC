@@ -29,9 +29,9 @@ public class SaveCommand extends Command {
         for ( World world : Server.getInstance().getWorlds() ) {
             for ( Dimension dimension : Dimension.values() ) {
                 world.saveChunks( dimension ).whenComplete( ( unused, throwable ) -> {
-                    commandSender.sendMessage( "Saving " + dimension.getName() + " success." );
                 } );
             }
+            commandSender.sendMessage( "Saving " + world.getName() + " success." );
         }
     }
 }
