@@ -230,8 +230,20 @@ public abstract class Inventory {
         }
     }
 
-    public boolean contains( Item item ) {
-        return Arrays.asList( this.content ).contains( item );
+       public boolean contains( Item item ) {
+        for ( Item content : this.content ) {
+            if ( content.getIdentifier().equals( item.getIdentifier() ) &&
+                     content.getRuntimeId() == item.getRuntimeId() &&
+                    ( content.getBlockRuntimeId() == item.getBlockRuntimeId() || content.getBlockRuntimeId() == 0 || item.getBlockRuntimeId() == 0 ) &&
+                    content.getMeta() == item.getMeta() &&
+                    content.getDisplayname().equals( item.getDisplayname() ) &&
+                    content.getEntchantments().containsAll( item.getEntchantments() ) &&
+                    content.getAmount() == item.getAmount()
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getSize() {

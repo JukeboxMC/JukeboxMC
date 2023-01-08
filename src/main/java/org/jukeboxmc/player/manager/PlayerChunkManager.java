@@ -156,7 +156,7 @@ public class PlayerChunkManager {
                                 } else if ( !this.sendQueue.replace( key, null, packet ) ) {
                                     // The chunk was already loaded!?
                                     if ( this.sendQueue.containsKey( key ) ) {
-                                        Server.getInstance().getLogger().warn( "Chunk (" + cx + "," + cz + ") already loaded for "
+                                        Server.getInstance().getLogger().debug( "Chunk (" + cx + "," + cz + ") already loaded for "
                                                 + this.player.getName() + ", values " + this.sendQueue.get( key ) );
 
                                     }
