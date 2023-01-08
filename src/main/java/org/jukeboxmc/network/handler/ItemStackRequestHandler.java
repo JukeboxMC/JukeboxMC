@@ -537,6 +537,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         return switch ( containerSlotType ) {
             case CREATIVE_OUTPUT -> player.getCreativeItemCacheInventory().getItem( 0 );
             case CURSOR -> player.getCursorInventory().getItem( slot );
+            case OFFHAND -> player.getOffHandInventory().getItem( slot );
             case INVENTORY, HOTBAR, HOTBAR_AND_INVENTORY -> player.getInventory().getItem( slot );
             case ARMOR -> player.getArmorInventory().getItem( slot );
             case CONTAINER, BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
@@ -563,6 +564,9 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         switch ( containerSlotType ) {
             case CURSOR -> {
                 player.getCursorInventory().setItem( slot, item, sendContent );
+            }
+            case OFFHAND -> {
+                player.getOffHandInventory().setItem( slot, item, sendContent );
             }
             case INVENTORY, HOTBAR, HOTBAR_AND_INVENTORY -> {
                 player.getInventory().setItem( slot, item, sendContent );

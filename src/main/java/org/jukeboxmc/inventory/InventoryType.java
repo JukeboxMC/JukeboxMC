@@ -32,6 +32,7 @@ public enum InventoryType {
     GRINDSTONE,
     BREWING_STAND,
     CREATIVE,
+    OFFHAND,
 
     FAKE_CHEST,
     FAKE_DOUBLE_CHEST

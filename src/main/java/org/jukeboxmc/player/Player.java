@@ -74,6 +74,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private final EnderChestInventory enderChestInventory;
     private final StoneCutterInventory stoneCutterInventory;
     private final GrindstoneInventory grindstoneInventory;
+    private final OffHandInventory offHandInventory;
 
     private int inAirTicks = 0;
     private float highestPosition = 0;
@@ -112,6 +113,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.enderChestInventory = new EnderChestInventory( this );
         this.stoneCutterInventory = new StoneCutterInventory( this );
         this.grindstoneInventory = new GrindstoneInventory( this );
+        this.offHandInventory = new OffHandInventory( this );
+
         this.lasBreakPosition = new Vector( 0, 0, 0 );
 
         this.spawnLocation = this.location.getWorld().getSpawnLocation();
@@ -441,6 +444,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     public GrindstoneInventory getGrindstoneInventory() {
         return this.grindstoneInventory;
+    }
+
+    public OffHandInventory getOffHandInventory() {
+        return this.offHandInventory;
     }
 
     public void openInventory( ContainerInventory inventory, Vector position, byte windowId ) {
