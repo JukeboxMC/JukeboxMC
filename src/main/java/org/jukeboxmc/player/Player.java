@@ -757,7 +757,13 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
+    //TODO FORM
+    private boolean hasOpenForm;
+
     public <R> FormListener<R> showForm( Form<R> form ) {
+        if ( this.hasOpenForm ) {
+            return new FormListener<>();
+        }
         int formId = this.formId++;
         this.forms.put( formId, form );
         FormListener<R> formListener = new FormListener<R>();
@@ -768,6 +774,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         packetModalRequest.setFormId( formId );
         packetModalRequest.setFormData( json );
         this.getPlayerConnection().sendPacket( packetModalRequest );
+        this.hasOpenForm = true;
 
         //Dirty fix to show image on buttonlist
         Server.getInstance().getScheduler().scheduleDelayed( () -> this.setAttributes( AttributeType.PLAYER_LEVEL, this.getLevel() ), 5 );
@@ -808,6 +815,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 this.formListeners.remove( formId );
             }
 
+            this.hasOpenForm = false;
             if ( json == null || json.equals( "null" ) ) {
                 formListener.getCloseConsumer().accept( null );
             } else {
