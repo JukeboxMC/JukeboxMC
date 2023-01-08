@@ -2802,7 +2802,7 @@
     "max_stack_size": 16
   },
   "minecraft:spyglass": {
-    "max_stack_size": 64
+    "max_stack_size": 1
   },
   "minecraft:squid_spawn_egg": {
     "max_stack_size": 64

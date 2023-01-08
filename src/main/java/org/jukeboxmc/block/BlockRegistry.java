@@ -608,7 +608,7 @@ public class BlockRegistry {
         register( BlockType.SCULK_SHRIEKER, Identifier.fromString( "minecraft:sculk_shrieker" ) );
         register( BlockType.SCULK_VEIN, Identifier.fromString( "minecraft:sculk_vein" ) );
         register( BlockType.SEAGRASS, Identifier.fromString( "minecraft:seagrass" ), BlockSeagrass.class );
-        register( BlockType.SEA_LANTERN, Identifier.fromString( "minecraft:sea_lantern" ), BlockLantern.class );
+        register( BlockType.SEA_LANTERN, Identifier.fromString( "minecraft:sea_lantern" ));
         register( BlockType.SEA_PICKLE, Identifier.fromString( "minecraft:sea_pickle" ), BlockSeaPickle.class );
         register( BlockType.SHROOMLIGHT, Identifier.fromString( "minecraft:shroomlight" ) );
         register( BlockType.SHULKER_BOX, Identifier.fromString( "minecraft:shulker_box" ), BlockShulkerBox.class );
