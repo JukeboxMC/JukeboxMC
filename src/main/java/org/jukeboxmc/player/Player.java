@@ -637,24 +637,29 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     public void playSound( Sound sound ) {
-        this.playSound( this.location, sound, 1, 1 );
+        this.playSound( this.location, sound, 1, 1, false );
     }
 
     public void playSound( Sound sound, float volume, float pitch ) {
-        this.playSound( this.location, sound, volume, pitch );
+        this.playSound( this.location, sound, volume, pitch, false );
     }
 
     public void playSound( Vector position, Sound sound ) {
-        this.playSound( position, sound, 1, 1 );
+        this.playSound( position, sound, 1, 1, false );
     }
 
-    public void playSound( Vector position, Sound sound, float volume, float pitch ) {
+    public void playSound( Vector position, Sound sound, float volume, float pitch, boolean sendInChunk ) {
         PlaySoundPacket playSoundPacket = new PlaySoundPacket();
         playSoundPacket.setPosition( position.toVector3f() );
         playSoundPacket.setSound( sound.getSound() );
         playSoundPacket.setVolume( volume );
         playSoundPacket.setPitch( pitch );
-        this.playerConnection.sendPacket( playSoundPacket );
+        if ( sendInChunk ) {
+            this.getWorld().sendChunkPacket( position.getChunkX(), position.getChunkZ(), playSoundPacket );
+        } else {
+            this.playerConnection.sendPacket( playSoundPacket );
+        }
+
     }
 
     public void updateAttributes() {

@@ -293,15 +293,18 @@ public class PlayerConnection {
     }
 
     public void disconnect() {
+        this.onDisconnect( DisconnectReason.DISCONNECTED );
         this.session.disconnect();
     }
 
     public void disconnect( String message ) {
         this.session.disconnect( this.disconnectMessage = message );
+        this.onDisconnect( null );
     }
 
     public void disconnect( String message, boolean hideReason ) {
         this.session.disconnect( this.disconnectMessage = message, hideReason );
+        this.onDisconnect( null );
     }
 
     public void sendPlayStatus( PlayStatusPacket.Status status ) {

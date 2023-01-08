@@ -12,68 +12,48 @@ public enum Direction {
     WEST;
 
     public Direction opposite() {
-        switch ( this ) {
-            case NORTH:
-                return SOUTH;
-            case WEST:
-                return EAST;
-            case EAST:
-                return WEST;
-            default:
-                return NORTH;
-        }
+        return switch ( this ) {
+            case NORTH -> SOUTH;
+            case WEST -> EAST;
+            case EAST -> WEST;
+            default -> NORTH;
+        };
     }
 
     public Direction getRightDirection() {
-        switch ( this ) {
-            case NORTH:
-                return EAST;
-            case EAST:
-                return SOUTH;
-            case SOUTH:
-                return WEST;
-            default:
-                return NORTH;
-        }
+        return switch ( this ) {
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            default -> NORTH;
+        };
     }
 
     public Direction getLeftDirection() {
-        switch ( this ) {
-            case NORTH:
-                return WEST;
-            case EAST:
-                return NORTH;
-            case SOUTH:
-                return EAST;
-            default:
-                return SOUTH;
-        }
+        return switch ( this ) {
+            case NORTH -> WEST;
+            case EAST -> NORTH;
+            case SOUTH -> EAST;
+            default -> SOUTH;
+        };
     }
 
     public BlockFace toBlockFace() {
-        switch ( this ) {
-            case SOUTH:
-                return BlockFace.SOUTH;
-            case WEST:
-                return BlockFace.WEST;
-            case NORTH:
-                return BlockFace.NORTH;
-            default:
-                return BlockFace.EAST;
-        }
+        return switch ( this ) {
+            case SOUTH -> BlockFace.SOUTH;
+            case WEST -> BlockFace.WEST;
+            case NORTH -> BlockFace.NORTH;
+            default -> BlockFace.EAST;
+        };
     }
 
     public CrossDirection toCrossDirection() {
-        switch ( this ) {
-            case SOUTH:
-                return CrossDirection.SOUTH;
-            case WEST:
-                return CrossDirection.WEST;
-            case NORTH:
-                return CrossDirection.NORTH;
-            default:
-                return CrossDirection.EAST;
-        }
+        return switch ( this ) {
+            case SOUTH -> CrossDirection.SOUTH;
+            case WEST -> CrossDirection.WEST;
+            case NORTH -> CrossDirection.NORTH;
+            default -> CrossDirection.EAST;
+        };
     }
 
     public static Direction fromAngle( float value ) {

@@ -1,9 +1,16 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LeverDirection;
+import org.jukeboxmc.block.direction.BlockFace;
+import org.jukeboxmc.item.Item;
+import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
+import org.jukeboxmc.world.Sound;
+import org.jukeboxmc.world.World;
 
 /**
  * @author LucGamesYT
@@ -17,6 +24,28 @@ public class BlockLever extends Block {
 
     public BlockLever( Identifier identifier, NbtMap blockStates ) {
         super( identifier, blockStates );
+    }
+
+    @Override
+    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+        Block block = world.getBlock( blockPosition );
+
+        if ( block.isTransparent() ) {
+            return false;
+        }
+
+        this.setLeverDirection( LeverDirection.forDirection( blockFace, player.getDirection().opposite() ) );
+
+        world.setBlock( placePosition, this, 0 );
+        return true;
+    }
+
+    @Override
+    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+        boolean open = this.isOpen();
+        this.setOpen( !open );
+        player.playSound( this.location, Sound.RANDOM_CLICK, 0.8f, open ? 0.5f : 0.58f, true );
+        return true;
     }
 
     public void setOpen( boolean value ) {

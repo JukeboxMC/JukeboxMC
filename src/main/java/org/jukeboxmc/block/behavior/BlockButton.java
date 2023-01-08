@@ -28,7 +28,6 @@ public class BlockButton extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
-        Block placedBlock = world.getBlock( placePosition );
 
         if ( block.isTransparent() ) {
             return false;
@@ -38,7 +37,6 @@ public class BlockButton extends Block {
         this.setButtonPressed( false );
 
         world.setBlock( placePosition, this, 0 );
-        world.setBlock( placePosition, placedBlock, 1 );
         return true;
     }
 
