@@ -76,6 +76,6 @@ public abstract class Effect {
 
     public int[] getColor() {
         Color color = this.getEffectColor();
-        return new int[]{color.getRed(), color.getGreen(), color.getGreen()};
+        return new int[]{color.getRed(), color.getGreen(), color.getBlue()};
     }
 }
