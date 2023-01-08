@@ -541,14 +541,14 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             changeDimensionPacket.setRespawn( false );
             this.playerConnection.sendPacket( changeDimensionPacket );
         } else if ( !currentWorld.getName().equals( world.getName() ) ) {
+            this.playerConnection.getPlayerChunkManager().clear();
+
             this.despawn();
 
             currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
 
             this.getChunk().removeEntity( this );
             currentWorld.removeEntity( this );
-
-            this.playerConnection.getPlayerChunkManager().clear();
 
             this.setLocation( location );
             this.playerConnection.getPlayerChunkManager().queueNewChunks();
