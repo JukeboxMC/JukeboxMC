@@ -85,6 +85,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     breakPosition.setDimension( player.getDimension() );
 
                     Block block = player.getWorld().getBlock( breakPosition );
+                    if ( block.getType().equals( BlockType.AIR ) ) return;
                     block.breakBlock( player, itemInHand );
                 }
             }

@@ -193,12 +193,6 @@ public class PlayerConnection {
         setTimePacket.setTime( this.player.getWorld().getWorldTime() );
         this.sendPacket( setTimePacket );
 
-        PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( this.player, "§e" + this.player.getName() + " has joined the game" );
-        Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
-        if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {
-            Server.getInstance().broadcastMessage( playerJoinEvent.getJoinMessage() );
-        }
-
         for ( Player onlinePlayer : this.server.getOnlinePlayers() ) {
             if ( onlinePlayer != null && onlinePlayer.getDimension() == this.player.getDimension() ) {
                 this.player.spawn( onlinePlayer );

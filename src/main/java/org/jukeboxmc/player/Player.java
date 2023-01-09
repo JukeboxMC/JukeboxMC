@@ -551,7 +551,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             currentWorld.removeEntity( this );
 
             this.setLocation( location );
-            this.playerConnection.getPlayerChunkManager().queueNewChunks();
 
             world.addEntity( this );
             this.getChunk().addEntity( this );
@@ -559,7 +558,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             world.getPlayers().forEach( player -> player.spawn( this ) );
         }
-        this.location = location;
         this.move( location, MovePlayerPacket.Mode.TELEPORT );
     }
 
