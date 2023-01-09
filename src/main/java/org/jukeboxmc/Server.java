@@ -525,6 +525,7 @@ public class Server {
                 consumer.accept( player );
             }
             unloadWorldEvent.getWorld().close();
+            this.worlds.remove( worldName.toLowerCase() );
             this.logger.info( "World \"" + worldName + "\" was unloaded" );
         } else {
             this.logger.warn( "The world \"" + worldName + "\" was not found" );
