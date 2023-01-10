@@ -286,6 +286,7 @@ public class Block implements Cloneable {
         Server.getInstance().getPluginManager().callEvent( blockBreakEvent );
 
         if ( blockBreakEvent.isCancelled() ) {
+            player.getInventory().sendItemInHand();
             this.sendUpdate( player );
             return;
         }
