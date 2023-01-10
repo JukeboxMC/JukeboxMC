@@ -90,6 +90,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     private EntityFishingHook entityFishingHook;
 
+    private boolean hasOpenForm;
     private int formId;
     private int serverSettingsForm = -1;
     private final Int2ObjectMap<Form<?>> forms = new Int2ObjectOpenHashMap<>();
@@ -754,9 +755,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             player.getPlayerConnection().sendPacket( response );
         }
     }
-
-    //TODO FORM
-    private boolean hasOpenForm;
 
     public <R> FormListener<R> showForm( Form<R> form ) {
         if ( this.hasOpenForm ) {

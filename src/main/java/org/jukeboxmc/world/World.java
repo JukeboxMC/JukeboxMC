@@ -105,7 +105,7 @@ public class World {
             }
         }
 
-        if ( this.gameRules.get( GameRule.DO_DAYLIGHT_CYCLE ) ) {
+        if ( this.getGameRule( GameRule.DO_DAYLIGHT_CYCLE ) ) {
             this.worldTime += 1;
         }
         if ( currentTick >= this.nextTimeSendTick ) {
@@ -166,6 +166,17 @@ public class World {
 
     public GameRules getGameRules() {
         return this.gameRules;
+    }
+
+    public <V> V getGameRule( GameRule gameRule ) {
+        return this.gameRules.get( gameRule );
+    }
+
+    public void setGameRule( GameRule gameRule, Object value ) {
+        this.gameRules.set( gameRule, value );
+        for ( Player player : this.getPlayers() ) {
+            player.getPlayerConnection().sendPacket( this.gameRules.updatePacket() );
+        }
     }
 
     private final FlatGenerator generator = new FlatGenerator();
