@@ -182,7 +182,7 @@ public class World {
     private final FlatGenerator generator = new FlatGenerator();
 
     public synchronized Generator getGenerator( Dimension dimension ) {
-        return generator;
+        return this.generators.get( dimension ).get();
     }
 
     public Difficulty getDifficulty() {

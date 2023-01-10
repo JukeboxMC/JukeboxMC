@@ -55,10 +55,6 @@ public class JukeboxMC {
         return server.loadWorld( name, generatorMap );
     }
 
-    public static void registerDefaultGenerator( Dimension dimension, String name, Class<? extends Generator> clazz ) {
-        server.registerDefaultGenerator( dimension, name, clazz );
-    }
-
     public static String getDefaultGenerator( Dimension dimension ) {
         return server.getDefaultGenerator( dimension );
     }

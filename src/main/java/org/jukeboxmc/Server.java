@@ -35,7 +35,6 @@ import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.generator.EmptyGenerator;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
 
@@ -155,11 +154,9 @@ public class Server {
         this.pluginManager = new PluginManager( this );
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
-        this.registerDefaultGenerator( Dimension.OVERWORLD, "empty", EmptyGenerator.class );
-        this.registerDefaultGenerator( Dimension.NETHER, "empty", EmptyGenerator.class );
-        this.registerDefaultGenerator( Dimension.THE_END, "empty", EmptyGenerator.class );
-
-        this.registerGenerator( "flat", FlatGenerator.class, Dimension.OVERWORLD, Dimension.NETHER, Dimension.THE_END );
+        this.registerGenerator( "flat", FlatGenerator.class, Dimension.OVERWORLD );
+        this.registerGenerator( "empty", FlatGenerator.class, Dimension.NETHER );
+        this.registerGenerator( "empty", FlatGenerator.class, Dimension.THE_END );
 
         this.defaultWorld = this.getWorld( this.defaultWorldName );
 
@@ -556,33 +553,7 @@ public class Server {
                 throw new RuntimeException( e );
             }
         }
-
-        String defaultGeneratorName = this.defaultGenerators.get( dimension );
-
-        if ( defaultGeneratorName == null ) {
-            throw new RuntimeException( "Could not find default generator for dimension " + dimension.name() );
-        }
-
-        generator = generators.get( defaultGeneratorName.toLowerCase() );
-        if ( generator != null ) {
-            try {
-                return generator.getConstructor().newInstance();
-            } catch ( InvocationTargetException | InstantiationException | IllegalAccessException |
-                      NoSuchMethodException e ) {
-                throw new RuntimeException( e );
-            }
-        } else {
-            throw new RuntimeException( "Could not find default generator for dimension " + dimension.name() );
-        }
-    }
-
-    public void registerDefaultGenerator( Dimension dimension, String name, Class<? extends Generator> clazz ) {
-        name = name.toLowerCase();
-        this.defaultGenerators.put( dimension, name );
-        Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.computeIfAbsent( dimension, k -> new Object2ObjectOpenHashMap<>() );
-        if ( !generators.containsKey( name ) ) {
-            generators.put( name, clazz );
-        }
+        return null;
     }
 
     public void registerGenerator( String name, Class<? extends Generator> clazz, Dimension... dimensions ) {
