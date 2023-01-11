@@ -8,9 +8,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
-import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
-import org.jukeboxmc.event.entity.EntityDamageEvent;
-import org.jukeboxmc.event.entity.EntityHealEvent;
+import org.jukeboxmc.event.entity.*;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.potion.Effect;
@@ -256,16 +254,21 @@ public abstract class EntityLiving extends Entity {
     }
 
     public void addEffect( Effect effect ) {
-        Effect oldEffect = this.getEffect( effect.getEffectType() );
+        EntityAddEffectEvent addEffectEvent = new EntityAddEffectEvent( this, effect );
+        Server.getInstance().getPluginManager().callEvent( addEffectEvent );
+        if ( addEffectEvent.isCancelled() ) {
+            return;
+        }
+        Effect oldEffect = this.getEffect( addEffectEvent.getEffect().getEffectType() );
 
-        effect.apply( this );
+        addEffectEvent.getEffect().apply( this );
         if ( this instanceof Player player ) {
             MobEffectPacket mobEffectPacket = new MobEffectPacket();
             mobEffectPacket.setRuntimeEntityId( this.entityId );
-            mobEffectPacket.setEffectId( effect.getId() );
-            mobEffectPacket.setAmplifier( effect.getAmplifier() );
-            mobEffectPacket.setParticles( effect.isVisible() );
-            mobEffectPacket.setDuration( effect.getDuration() );
+            mobEffectPacket.setEffectId( addEffectEvent.getEffect().getId() );
+            mobEffectPacket.setAmplifier( addEffectEvent.getEffect().getAmplifier() );
+            mobEffectPacket.setParticles( addEffectEvent.getEffect().isVisible() );
+            mobEffectPacket.setDuration( addEffectEvent.getEffect().getDuration() );
             if ( oldEffect != null ) {
                 mobEffectPacket.setEvent( MobEffectPacket.Event.MODIFY );
             } else {
@@ -273,7 +276,7 @@ public abstract class EntityLiving extends Entity {
             }
             player.getPlayerConnection().sendPacket( mobEffectPacket );
         }
-        this.effects.put( effect.getEffectType(), effect );
+        this.effects.put( addEffectEvent.getEffect().getEffectType(), addEffectEvent.getEffect() );
 
         this.calculateEffectColor();
     }
@@ -281,6 +284,11 @@ public abstract class EntityLiving extends Entity {
     public void removeEffect( EffectType effectType ) {
         if ( this.effects.containsKey( effectType ) ) {
             Effect effect = this.effects.get( effectType );
+            EntityRemoveEffectEvent removeEffectEvent = new EntityRemoveEffectEvent( this, effect );
+            Server.getInstance().getPluginManager().callEvent( removeEffectEvent );
+            if ( removeEffectEvent.isCancelled() ) {
+                return;
+            }
             this.effects.remove( effectType );
             effect.remove( this );
 
