@@ -14,6 +14,7 @@ import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.console.TerminalConsole;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.EntityRegistry;
+import org.jukeboxmc.event.server.TpsChangeEvent;
 import org.jukeboxmc.event.world.WorldLoadEvent;
 import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemRegistry;
@@ -35,7 +36,6 @@ import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
-import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
 
@@ -47,7 +47,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -98,6 +97,7 @@ public class Server {
     private final Map<Dimension, Object2ObjectMap<String, Class<? extends Generator>>> generators = new EnumMap<>( Dimension.class );
 
     private long currentTick;
+    private long lastTps = TICKS;
     private long currentTps;
     private long nextTickTime;
     private long internalDiffTime;
@@ -230,6 +230,10 @@ public class Server {
 
             lastTickTime = (float) diff / TimeUnit.SECONDS.toNanos( 1 );
             this.currentTps = (int) Math.round( ( 1 / (double) lastTickTime ) );
+            if ( this.currentTps != this.lastTps ) {
+                this.getPluginManager().callEvent( new TpsChangeEvent( this, this.lastTps, this.currentTick ) );
+            }
+            this.lastTps = this.currentTps;
         }
     }
 
