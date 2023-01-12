@@ -35,6 +35,7 @@ import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
 
@@ -46,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -164,7 +166,7 @@ public class Server {
 
         this.network = new Network( this, new InetSocketAddress( this.serverAddress, this.port ) );
         this.logger.info( "JukeboxMC started in " + TimeUnit.MILLISECONDS.toSeconds( System.currentTimeMillis() - this.startTime ) + " seconds!" );
-
+        System.out.println(Arrays.stream( GameRule.values() ).map( GameRule::getIdentifier ).collect( Collectors.toList()));
         this.finishedState.set( true );
         this.startTick();
         this.shutdown();

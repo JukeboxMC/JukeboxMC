@@ -28,6 +28,7 @@ public class CommandManager {
                 KickCommand.class,
                 EffectCommand.class,
                 EnchantCommand.class,
+                GameRuleCommand.class,
                 TimeCommand.class
         );
 
