@@ -37,7 +37,7 @@ public class EntityArrow extends EntityProjectile{
             this.canBePickedUp = true;
         }
 
-        if ( this.age >= TimeUnit.MINUTES.toMillis( 1 ) / 50 ) {
+        if ( this.age >= TimeUnit.MINUTES.toMillis( 5 ) / 50 ) {
             this.close();
         }
     }

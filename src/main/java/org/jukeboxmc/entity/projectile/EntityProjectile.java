@@ -28,11 +28,12 @@ public abstract class EntityProjectile extends EntityMoveable {
 
     @Override
     public void update( long currentTick ) {
-        if ( this.isClosed() ) return;
+        if ( this.isClosed() ) {
+            return;
+        }
         super.update( currentTick );
 
         if ( !this.isDead ) {
-
             if ( this.hitEntity != null ) {
                 this.location = this.hitEntity.getLocation().add( 0, this.hitEntity.getEyeHeight() + this.getHeight(), 0 );
             } else {
@@ -46,11 +47,11 @@ public abstract class EntityProjectile extends EntityMoveable {
                 float nearDistance = Integer.MAX_VALUE;
                 Entity hitEntity = null;
                 for ( Entity entity : nearbyEntities ) {
-                    if ( ( entity == this.shooter && this.age < 5 ) ) {
+                    if ( ( entity == this.shooter && this.age < 20 ) ) {
                         continue;
                     }
                     AxisAlignedBB axisAlignedBB = entity.getBoundingBox().grow( 0.3f, 0.3f, 0.3f );
-                    Vector onLineVector = axisAlignedBB.calculateIntercept( location, moveVector ); //ONLY
+                    Vector onLineVector = axisAlignedBB.calculateIntercept( location, moveVector );
                     if ( onLineVector == null ) {
                         continue;
                     }
