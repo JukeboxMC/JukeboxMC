@@ -96,8 +96,13 @@ public class Utils {
         return floatNumber > truncated ? truncated + 1 : truncated;
     }
 
-    public static int randomRange( Random random, int start, int end) {
-        return start + (random.nextInt() % (end + 1 - start));
+    public static int randomRange( Random random, int start, int end ) {
+        return start + ( random.nextInt() % ( end + 1 - start ) );
+    }
+
+    public static double round( double value, int precision ) {
+        double pow = Math.pow( 10, precision );
+        return ( (double) Math.round( value * pow ) ) / pow;
     }
 
     public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {

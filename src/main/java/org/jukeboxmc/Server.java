@@ -342,6 +342,10 @@ public class Server {
         return instance;
     }
 
+    public long getStartTime() {
+        return this.startTime;
+    }
+
     public AtomicBoolean getFinishedState() {
         return this.finishedState;
     }

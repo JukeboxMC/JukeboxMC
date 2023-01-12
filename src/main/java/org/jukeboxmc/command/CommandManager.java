@@ -29,6 +29,7 @@ public class CommandManager {
                 EffectCommand.class,
                 EnchantCommand.class,
                 GameRuleCommand.class,
+                StatusCommand.class,
                 TimeCommand.class
         );
 
