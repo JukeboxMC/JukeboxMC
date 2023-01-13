@@ -82,12 +82,7 @@ public class World {
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
             String generatorName = generatorMap.get( dimension );
-            if ( generatorName == null ) {
-                generatorName = server.getDefaultGenerator( dimension );
-            }
-
-            final String finalGeneratorName = generatorName;
-            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( finalGeneratorName, dimension ) ) );
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( generatorName, dimension ) ) );
         }
 
         Generator generator = this.getGenerator( Dimension.OVERWORLD );

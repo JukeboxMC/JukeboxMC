@@ -92,15 +92,12 @@ public class Server {
 
     private final Set<Player> players = new HashSet<>();
     private final Map<String, World> worlds = new HashMap<>();
-    private final Map<Dimension, String> defaultGenerators = new EnumMap<>( Dimension.class );
     private final Object2ObjectMap<UUID, PlayerListPacket.Entry> playerListEntry = new Object2ObjectOpenHashMap<>();
     private final Map<Dimension, Object2ObjectMap<String, Class<? extends Generator>>> generators = new EnumMap<>( Dimension.class );
 
     private long currentTick;
     private long lastTps = TICKS;
     private long currentTps;
-    private long nextTickTime;
-    private long internalDiffTime;
     private long sleepBalance;
 
     public Server( Logger logger ) {
@@ -172,21 +169,21 @@ public class Server {
     }
 
     private void startTick() {
-        this.nextTickTime = System.currentTimeMillis();
+        long nextTickTime = System.currentTimeMillis();
 
         try {
             while ( this.runningState.get() ) {
                 final long startTimeMillis = System.currentTimeMillis();
 
-                if ( this.nextTickTime - startTimeMillis > 25 ) {
+                if ( nextTickTime - startTimeMillis > 25 ) {
                     synchronized (this) {
-                        this.wait( Math.max( 5, this.nextTickTime - startTimeMillis - 25 ) );
+                        this.wait( Math.max( 5, nextTickTime - startTimeMillis - 25 ) );
                     }
                 }
 
                 this.tick();
 
-                this.nextTickTime += 50;
+                nextTickTime += 50;
             }
         } catch ( InterruptedException e ) {
             Logger.getInstance().error( "Error whilst waiting for next tick!", e );
@@ -198,7 +195,7 @@ public class Server {
         float lastTickTime;
 
         while ( this.runningState.get() ) {
-            this.internalDiffTime = System.nanoTime();
+            long internalDiffTime = System.nanoTime();
 
             this.currentTick++;
 
@@ -212,7 +209,7 @@ public class Server {
             }
 
             long startSleep = System.nanoTime();
-            long diff = startSleep - this.internalDiffTime;
+            long diff = startSleep - internalDiffTime;
             if ( diff <= skipNanos ) {
                 long sleepNeeded = ( skipNanos - diff ) - this.sleepBalance;
                 this.sleepBalance = 0;
@@ -464,18 +461,12 @@ public class Server {
         }
         Map<Dimension, String> generatorMap = new EnumMap<>( Dimension.class );
         generatorMap.put( Dimension.OVERWORLD, this.generatorName );
-        for ( Dimension dimension : Dimension.values() ) {
-            generatorMap.putIfAbsent( dimension, this.defaultGenerators.get( dimension ) );
-        }
         return this.loadWorld( name, generatorMap );
     }
 
     public World loadWorld( String name ) {
         Map<Dimension, String> generatorMap = new EnumMap<>( Dimension.class );
         generatorMap.put( Dimension.OVERWORLD, this.generatorName );
-        for ( Dimension dimension : Dimension.values() ) {
-            generatorMap.putIfAbsent( dimension, this.defaultGenerators.get( dimension ) );
-        }
         return this.loadWorld( name, generatorMap );
     }
 
@@ -544,10 +535,6 @@ public class Server {
 
     public boolean isWorldLoaded( String name ) {
         return this.worlds.containsKey( name.toLowerCase() );
-    }
-
-    public synchronized String getDefaultGenerator( Dimension dimension ) {
-        return this.defaultGenerators.get( dimension );
     }
 
     public synchronized Generator createGenerator( String generatorName, Dimension dimension ) {
