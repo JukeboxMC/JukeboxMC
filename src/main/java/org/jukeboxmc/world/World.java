@@ -235,7 +235,7 @@ public class World {
     }
 
     public Block getBlock( Vector vector, int layer, Dimension dimension ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         return chunk.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer );
     }
 
@@ -264,7 +264,7 @@ public class World {
     }
 
     public void setBlock( Vector vector, Block block, int layer, Dimension dimension, boolean updateBlock ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
         chunk.setDirty( true );
 
@@ -323,32 +323,32 @@ public class World {
     }
 
     public synchronized BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         return chunk.getBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
     public synchronized BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
-        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
         return chunk.getBlockEntity( x, y, z );
     }
 
     public synchronized void setBlockEntity( int x, int y, int z, BlockEntity blockEntity, Dimension dimension ) {
-        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
         chunk.setBlockEntity( x, y, z, blockEntity );
     }
 
     public synchronized void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.setBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), blockEntity );
     }
 
     public synchronized void removeBlockEntity( Vector vector, Dimension dimension ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         chunk.removeBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
     public synchronized void removeBlockEntity( int x, int y, int z, Dimension dimension ) {
-        Chunk chunk = this.getChunk( x >> 4, z >> 4, dimension );
+        Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
         chunk.removeBlockEntity( x, y, z );
     }
 

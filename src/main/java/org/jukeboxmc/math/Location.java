@@ -120,6 +120,10 @@ public class Location extends Vector implements Cloneable {
         return this.world.getChunk( this.getBlockX() >> 4, this.getBlockZ() >> 4, this.dimension );
     }
 
+    public Chunk getLoadedChunk() {
+        return this.world.getLoadedChunk( this.getBlockX() >> 4, this.getBlockZ() >> 4, this.dimension );
+    }
+
     public Vector getDirection() {
         double pitch = ( ( this.pitch + 90 ) * Math.PI ) / 180;
         double yaw = ( ( this.yaw + 90 ) * Math.PI ) / 180;

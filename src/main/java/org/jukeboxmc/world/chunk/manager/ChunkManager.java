@@ -71,11 +71,16 @@ public final class ChunkManager {
     }
 
     public Chunk getChunk( int x, int z ) {
-        Chunk chunk = this.getLoadedChunk( x, z );
-        if ( chunk == null ) {
-            chunk = this.getChunkFuture( x, z ).join();
+        try {
+            Chunk chunk = this.getLoadedChunk( x, z );
+            if ( chunk == null ) {
+                chunk = this.getChunkFuture( x, z ).join();
+            }
+            return chunk;
+        } catch ( Exception e ) {
+            e.printStackTrace();
         }
-        return chunk;
+        return null;
     }
 
     public CompletableFuture<Chunk> getChunkFuture( int x, int z ) {

@@ -11,11 +11,9 @@ import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.gamerule.GameRule;
-import org.jukeboxmc.world.gamerule.GameRules;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT

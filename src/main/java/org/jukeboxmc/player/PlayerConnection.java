@@ -13,7 +13,6 @@ import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.event.network.PacketSendEvent;
-import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -101,7 +100,7 @@ public class PlayerConnection {
 
         this.playerChunkManager.sendQueued();
 
-        if ( this.playerChunkManager.getChunksSent() >= 46 && !this.spawned.get() ) {
+        if ( this.playerChunkManager.getChunksSent() >= 46 && !this.spawned.get() && this.player.getTeleportLocation() == null ) {
             this.doFirstSpawn();
         }
     }

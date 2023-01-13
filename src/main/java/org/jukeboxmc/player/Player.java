@@ -41,10 +41,12 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.data.LoginData;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.potion.EffectType;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Difficulty;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.Sound;
 import org.jukeboxmc.world.World;
+import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkLoader;
 
 import java.util.*;
@@ -83,6 +85,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private Vector lasBreakPosition;
     private boolean breakingBlock = false;
 
+    private Location teleportLocation = null;
     private Location spawnLocation;
     private Location respawnLocation = null;
 
@@ -228,7 +231,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 }
             }
         }
-
+        this.checkTeleportPosition();
         this.updateAttributes();
     }
 
@@ -517,6 +520,28 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
+    public Location getTeleportLocation() {
+        return this.teleportLocation;
+    }
+
+    protected void checkTeleportPosition() {
+        if ( this.teleportLocation != null ) {
+            int chunkX = this.teleportLocation.getChunkX();
+            int chunkZ = this.teleportLocation.getChunkZ();
+
+            for ( int X = -1; X <= 1; ++X ) {
+                for ( int Z = -1; Z <= 1; ++Z ) {
+                    long index = Utils.toLong( chunkX + X, chunkZ + Z );
+                    if ( !this.playerConnection.getPlayerChunkManager().isChunkInView( index ) ) {
+                        return;
+                    }
+                }
+            }
+
+            this.teleportLocation = null;
+        }
+    }
+
     public void teleport( Player player ) {
         this.teleport( player.getLocation() );
     }
@@ -525,6 +550,10 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         World currentWorld = this.getWorld();
         World world = location.getWorld();
         Dimension fromDimension = this.location.getDimension();
+
+        this.teleportLocation = location;
+
+        this.playerConnection.getPlayerChunkManager().queueNewChunks(this.teleportLocation);
 
         //TODO DESPAWN PLAYER AND SPAWN TO NEW DIMENSION
         if ( !fromDimension.equals( location.getDimension() ) ) {
@@ -548,18 +577,30 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
 
-            this.getChunk().removeEntity( this );
+            Chunk loadedChunk = this.getLoadedChunk();
+            if ( loadedChunk != null ) {
+                loadedChunk.removeEntity( this );
+            } else {
+                System.out.println("Loaded chunk for removeEntity is null");
+            }
             currentWorld.removeEntity( this );
 
             this.setLocation( location );
 
             world.addEntity( this );
-            this.getChunk().addEntity( this );
+
+            if ( this.getLoadedChunk() != null ) {
+                this.getLoadedChunk().addEntity( this );
+            } else {
+                System.out.println("Loaded chunk for addEntity is null");
+            }
+
             this.spawn();
 
             world.getPlayers().forEach( player -> player.spawn( this ) );
         }
         this.move( location, MovePlayerPacket.Mode.TELEPORT );
+        this.checkTeleportPosition();
     }
 
     private void move( Location location, MovePlayerPacket.Mode mode ) {

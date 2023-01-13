@@ -21,6 +21,9 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         if ( !player.isSpawned() ) {
             return;
         }
+        if ( player.getTeleportLocation() != null ) {
+            return;
+        }
         Location toLocation = new Location( player.getWorld(), new Vector( packet.getPosition().sub( 0, player.getEyeHeight(), 0 ) ), packet.getRotation().getY(), packet.getRotation().getX(), player.getLocation().getDimension() );
         PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent( player, player.getLocation(), toLocation );
         Server.getInstance().getPluginManager().callEvent( playerMoveEvent );
@@ -39,8 +42,10 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         if ( to.getX() != fromLocation.getX() || to.getY() != fromLocation.getY() || to.getZ() != fromLocation.getZ() || to.getWorld() != fromLocation.getWorld() || to.getYaw() != fromLocation.getYaw() || to.getPitch() != fromLocation.getPitch() ) {
             player.teleport( playerMoveEvent.getFrom() );
         } else {
-            Chunk fromChunk = player.getLastLocation().getChunk();
-            Chunk toChunk = player.getChunk();
+            Chunk fromChunk = player.getLastLocation().getLoadedChunk();
+            if ( fromChunk == null ) return;
+            Chunk toChunk = player.getLoadedChunk();
+            if ( toChunk == null ) return;
             if ( toChunk.getX() != fromChunk.getX() || toChunk.getZ() != fromChunk.getZ() ) {
                 fromChunk.removeEntity( player );
                 toChunk.addEntity( player );

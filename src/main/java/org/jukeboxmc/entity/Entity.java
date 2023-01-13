@@ -308,6 +308,10 @@ public abstract class Entity {
         return this.location.getWorld().getChunk( this.location.getChunkX(), this.location.getChunkZ(), this.location.getDimension() );
     }
 
+    public Chunk getLoadedChunk() {
+        return this.location.getWorld().getLoadedChunk( this.location.getChunkX(), this.location.getChunkZ(), this.location.getDimension() );
+    }
+
     public Location getLastLocation() {
         return this.lastLocation;
     }
