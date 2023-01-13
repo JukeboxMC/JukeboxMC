@@ -42,6 +42,7 @@ public class Chunk {
     private static final Block BLOCK_AIR = Block.create( BlockType.AIR );
     public static final int CHUNK_LAYERS = 2;
     public static final int CHUNK_VERSION = 40;
+    public static final int SUB_CHUNK_VERSION = 9;
 
     private final World world;
     private final Dimension dimension;
@@ -363,16 +364,15 @@ public class Chunk {
         return levelChunkPacket;
     }
 
-    public void saveChunkSlice( int subY, WriteBatch writeBatch ) {
+    public void saveChunkSlice( Palette<Block>[] blockPalettes, int subY, WriteBatch writeBatch ) {
         ByteBuf buffer = Unpooled.buffer();
-        SubChunk subChunk = this.subChunks[this.dimension.equals( Dimension.OVERWORLD ) ? subY + 4 : subY];
 
-        buffer.writeByte( (byte) subChunk.getSubChunkVersion() );
-        buffer.writeByte( (byte) subChunk.getLayer() );
+        buffer.writeByte( (byte) SUB_CHUNK_VERSION );
+        buffer.writeByte( (byte) blockPalettes.length );
         buffer.writeByte( (byte) subY );
 
-        for ( int layer = 0; layer < CHUNK_LAYERS; layer++ ) {
-            subChunk.getBlocks()[layer].writeToStoragePersistent( buffer, value -> BlockPalette.getBlockNbt( value.getRuntimeId() ) );
+        for ( Palette<Block> blockPalette : blockPalettes ) {
+            blockPalette.writeToStoragePersistent( buffer, value -> BlockPalette.getBlockNbt( value.getRuntimeId() ) );
         }
 
         byte[] subChunkKey = Utils.getSubChunkKey( this.x, this.z, this.dimension, (byte) 0x2f, (byte) subY );

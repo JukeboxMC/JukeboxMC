@@ -30,6 +30,7 @@ import org.jukeboxmc.world.chunk.SubChunk;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,7 +56,6 @@ public class LevelDB {
         }
     }
 
-
     public CompletableFuture<Chunk> readChunk( Chunk chunk ) {
         return CompletableFuture.supplyAsync( () -> {
             byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
@@ -66,7 +66,6 @@ public class LevelDB {
             if ( version == null ) {
                 return null;
             }
-
             byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
             if ( finalized == null ) {
                 chunk.setChunkState( ChunkState.FINISHED );
@@ -196,19 +195,18 @@ public class LevelDB {
             }
             try ( WriteBatch writeBatch = this.db.createWriteBatch() ) {
                 //Write subChunks
-                for ( int subY = 0; subY < chunk.getSubChunks().length; subY++ ) {
+                final int minY = chunk.getMinY() >> 4;
+                for ( int subY = 0; subY < chunk.getAvailableSubChunks(); subY++ ) {
                     if ( chunk.getSubChunks()[subY] == null ) {
                         continue;
                     }
-                    int value = chunk.getDimension().equals( Dimension.OVERWORLD ) ? subY - 4 : subY;
-                    chunk.saveChunkSlice( value, writeBatch );
+                    final int subChunkIndex = subY + minY;
+                    chunk.saveChunkSlice( chunk.getSubChunks()[subY].getBlocks(), subChunkIndex, writeBatch );
                 }
 
                 //Write chunkVersion
                 byte[] chunkVersion = Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2c );
-                ByteBuf versionBuffer = Unpooled.buffer();
-                versionBuffer.writeByte( Chunk.CHUNK_VERSION );
-                writeBatch.put( chunkVersion, Utils.array( versionBuffer ) );
+                writeBatch.put( chunkVersion, new byte[]{Chunk.CHUNK_VERSION} );
 
                 //Write blockEntities
                 byte[] blockEntitiesKey = Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x31 );
