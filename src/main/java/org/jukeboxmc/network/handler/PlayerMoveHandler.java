@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import com.nukkitx.protocol.bedrock.packet.MovePlayerPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
