@@ -85,14 +85,12 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
     }
 
     private void move( Player target, Player player ) {
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
-        movePlayerPacket.setRuntimeEntityId( target.getEntityId() );
-        movePlayerPacket.setPosition( target.getLocation().toVector3f().add( 0, target.getEyeHeight(), 0 ) );
-        movePlayerPacket.setRotation( Vector3f.from( target.getLocation().getPitch(), target.getLocation().getYaw(), target.getLocation().getYaw() ) );
-        movePlayerPacket.setMode( MovePlayerPacket.Mode.NORMAL );
-        movePlayerPacket.setOnGround( target.isOnGround() );
-        movePlayerPacket.setRidingRuntimeEntityId( 0 );
-        movePlayerPacket.setTick( target.getServer().getCurrentTick() );
-        player.getPlayerConnection().sendPacket( movePlayerPacket );
+        MoveEntityAbsolutePacket moveAbsolutePacket = new MoveEntityAbsolutePacket();
+        moveAbsolutePacket.setRuntimeEntityId( target.getEntityId() );
+        moveAbsolutePacket.setPosition( target.getLocation().toVector3f().add( 0, target.getEyeHeight(), 0 ) );
+        moveAbsolutePacket.setRotation( Vector3f.from( target.getLocation().getPitch(), target.getLocation().getYaw(), target.getLocation().getYaw() ) );
+        moveAbsolutePacket.setOnGround( target.isOnGround() );
+        moveAbsolutePacket.setTeleported( false );
+        player.getPlayerConnection().sendPacket( moveAbsolutePacket );
     }
 }
