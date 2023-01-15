@@ -42,6 +42,7 @@ public class HandlerRegistry {
         packetHandlerMap.put( ModalFormResponsePacket.class, new ModalFormResponseHandler() );
         packetHandlerMap.put( NpcRequestPacket.class, new NpcRequestPacketHandler() );
         packetHandlerMap.put( SetLocalPlayerAsInitializedPacket.class, new SetLocalPlayerAsInitializedHandler() );
+        packetHandlerMap.put( EmotePacket.class, new EmoteHandler() );
     }
 
     public static PacketHandler<? extends BedrockPacket> getPacketHandler( Class<? extends BedrockPacket> clazz ) {
