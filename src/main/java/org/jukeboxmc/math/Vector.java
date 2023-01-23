@@ -130,9 +130,13 @@ public class Vector implements Cloneable {
     public int getChunkZ() {
         return this.getBlockZ() >> 4;
     }
-
-    public Dimension getDimension() {
+    
+    public Dimension checkDimensionIsNull() { // i've added this to fix <Cannot invoke "org.jukeboxmc.math.Vector.getDimension()" because "vector" is null> error
         return this.dimension;
+    }
+    
+    public Dimension getDimension() {
+        return (Vector.checkDimensionIsNull() == null) ? 0 : this.dimension;
     }
 
     public void setDimension( Dimension dimension ) {
