@@ -7,6 +7,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerLoginEvent;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.data.LoginData;
+import org.jukeboxmc.resourcepack.ResourcePack;
 
 /**
  * @author LucGamesYT
@@ -37,6 +38,20 @@ public class LoginHandler implements PacketHandler<LoginPacket>{
         player.getPlayerConnection().sendPlayStatus( PlayStatusPacket.Status.LOGIN_SUCCESS );
 
         ResourcePacksInfoPacket resourcePacksInfoPacket = new ResourcePacksInfoPacket();
+        for( ResourcePack resourcePack : server.getResourcePackManager().retrieveResourcePacks() ) {
+            resourcePacksInfoPacket.getBehaviorPackInfos().add( 
+                new ResourcePacksInfoPacket.Entry(
+                    resourcePack.getUuid().toString(),
+                    resourcePack.getVersion(),
+                    resourcePack.getSize(),
+                    "",
+                    "",
+                    resourcePack.getUuid().toString(),
+                    false,
+                    false 
+                )
+            );
+        }
         resourcePacksInfoPacket.setForcedToAccept( false );
         resourcePacksInfoPacket.setForcingServerPacksEnabled( false );
         resourcePacksInfoPacket.setScriptingEnabled( false );
