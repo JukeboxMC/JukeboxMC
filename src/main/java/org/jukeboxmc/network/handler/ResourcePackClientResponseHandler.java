@@ -1,5 +1,6 @@
 package org.jukeboxmc.network.handler;
 
+import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackClientResponsePacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
@@ -30,16 +31,21 @@ public class ResourcePackClientResponseHandler implements PacketHandler<Resource
 
                         ResourcePackDataInfoPacket resourcePackDataInfoPacket = new ResourcePackDataInfoPacket();
                         resourcePackDataInfoPacket.setPackId(resourcePack.getUuid());
+                        resourcePackDataInfoPacket.setPackVersion(resourcePack.getVersion());
                         resourcePackDataInfoPacket.setMaxChunkSize(maxChunkSize);
                         resourcePackDataInfoPacket.setChunkCount((int) (resourcePack.getSize() / maxChunkSize));
                         resourcePackDataInfoPacket.setCompressedPackSize(resourcePack.getSize());
-                        resourcePackDataInfoPacket.setHash( resourcePack.getSha256());
+                        resourcePackDataInfoPacket.setHash(resourcePack.getSha256());
+                        resourcePackDataInfoPacket.setType(ResourcePackType.RESOURCE);
                         player.getPlayerConnection().sendPacket(resourcePackDataInfoPacket);
                     }
                 }
             }
             case HAVE_ALL_PACKS -> {
                 ResourcePackStackPacket resourcePackStackPacket = new ResourcePackStackPacket();
+                for (ResourcePack pack : server.getResourcePackManager().retrieveResourcePacks()) {
+                    resourcePackStackPacket.getBehaviorPacks().add(new ResourcePackStackPacket.Entry(pack.getUuid().toString(), pack.getVersion(), ""));
+                }
                 resourcePackStackPacket.setGameVersion( "*" );
                 resourcePackStackPacket.setExperimentsPreviouslyToggled( false );
                 resourcePackStackPacket.setForcedToAccept( server.isForceResourcePacks() );
