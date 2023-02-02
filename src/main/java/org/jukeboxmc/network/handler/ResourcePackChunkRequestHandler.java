@@ -24,7 +24,7 @@ public class ResourcePackChunkRequestHandler implements PacketHandler<ResourcePa
             resourcePackChunkDataPacket.setPackVersion( packet.getPackVersion() );
             resourcePackChunkDataPacket.setChunkIndex( packet.getChunkIndex() );
             resourcePackChunkDataPacket.setData( resourcePack.getChunk( ( int ) 1048576 * packet.getChunkIndex(), (int) 1048576) );
-            resourcePackChunkDataPacket.setProgress( 1048576 * packet.getChunkIndex() );
+            resourcePackChunkDataPacket.setProgress( 1048576L * packet.getChunkIndex() );
             player.getPlayerConnection().sendPacketImmediately( resourcePackChunkDataPacket ); 
         }
     }
