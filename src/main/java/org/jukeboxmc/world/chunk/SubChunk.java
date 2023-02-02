@@ -1,15 +1,10 @@
 package org.jukeboxmc.world.chunk;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.palette.Palette;
-import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.world.Biome;
-
-import java.util.Collection;
 
 /**
  * @author LucGamesYT
@@ -22,16 +17,16 @@ public class SubChunk {
     private int subChunkVersion = 9;
     private final Palette<Biome> biomes;
     private final Palette<Block>[] blocks;
-    private final Int2ObjectMap<BlockEntity> blockEntities;
+
+    private final static Block BLOCK_AIR = Block.create( BlockType.AIR );
 
     public SubChunk( int subChunkY ) {
         this.y = subChunkY;
         this.biomes = new Palette<>( Biome.PLAINS );
         this.blocks = new Palette[Chunk.CHUNK_LAYERS];
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
-            this.blocks[layer] = new Palette<>( Block.create( BlockType.AIR ) );
+            this.blocks[layer] = new Palette<>( BLOCK_AIR );
         }
-        this.blockEntities = new Int2ObjectOpenHashMap<>();
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
@@ -44,22 +39,6 @@ public class SubChunk {
 
     public void setBiome( int x, int y, int z, Biome biome ) {
         this.biomes.set( this.indexOf( x, y, z ), biome );
-    }
-
-    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
-        this.blockEntities.put( this.indexOf( x, y, z ), blockEntity );
-    }
-
-    public void removeBlockEntity( int x, int y, int z ) {
-        this.blockEntities.remove( this.indexOf( x, y, z ) );
-    }
-
-    public BlockEntity getBlockEntity( int x, int y, int z ) {
-        return this.blockEntities.get( this.indexOf( x, y, z ) );
-    }
-
-    public Collection<BlockEntity> getBlockEntities() {
-        return this.blockEntities.values();
     }
 
     public Biome getBiome( int x, int y, int z ) {

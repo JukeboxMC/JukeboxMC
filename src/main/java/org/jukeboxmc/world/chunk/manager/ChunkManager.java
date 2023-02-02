@@ -195,7 +195,7 @@ public final class ChunkManager {
         // Spawn chunk
         final int spawnX = this.world.getSpawnLocation().getChunkX();
         final int spawnZ = this.world.getSpawnLocation().getChunkZ();
-        final int spawnRadius = 4;//server.getConfiguration().getAdvanced().getSpawnChunkRadius();
+        final int spawnRadius = Server.getInstance().getViewDistance();
 
         // Do chunk garbage collection
         ObjectIterator<Long2ObjectMap.Entry<LoadingChunk>> iterator = this.chunks.long2ObjectEntrySet().iterator();

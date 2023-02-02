@@ -8,6 +8,7 @@ import com.nukkitx.protocol.bedrock.packet.*;
 import org.apache.commons.math3.util.FastMath;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.BlockUpdateList;
 import org.jukeboxmc.block.BlockUpdateNormal;
 import org.jukeboxmc.block.data.UpdateReason;
@@ -25,7 +26,6 @@ import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.gamerule.GameRules;
-import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
 import org.jukeboxmc.world.leveldb.LevelDB;
 
@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 public class World {
+
+    private final Block BLOCK_AIR = Block.create( BlockType.AIR );
 
     private final String name;
     private final Server server;
@@ -57,6 +59,8 @@ public class World {
 
     private int worldTime;
     private long nextTimeSendTick;
+
+    private boolean autoSave = false;
 
     private final Map<Long, Entity> entities;
     private final Queue<BlockUpdateNormal> blockUpdateNormals;
@@ -174,7 +178,13 @@ public class World {
         }
     }
 
-    private final FlatGenerator generator = new FlatGenerator();
+    public boolean isAutoSave() {
+        return this.autoSave;
+    }
+
+    public void setAutoSave( boolean autoSave ) {
+        this.autoSave = autoSave;
+    }
 
     public synchronized Generator getGenerator( Dimension dimension ) {
         return this.generators.get( dimension ).get();
@@ -236,6 +246,7 @@ public class World {
 
     public Block getBlock( Vector vector, int layer, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        if ( chunk == null ) return BLOCK_AIR;
         return chunk.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer );
     }
 
@@ -265,6 +276,7 @@ public class World {
 
     public void setBlock( Vector vector, Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        if ( chunk == null ) return;
         chunk.setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
         chunk.setDirty( true );
 
@@ -324,31 +336,37 @@ public class World {
 
     public synchronized BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        if ( chunk == null ) return null;
         return chunk.getBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
     public synchronized BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
+        if ( chunk == null ) return null;
         return chunk.getBlockEntity( x, y, z );
     }
 
     public synchronized void setBlockEntity( int x, int y, int z, BlockEntity blockEntity, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
+        if ( chunk == null ) return;
         chunk.setBlockEntity( x, y, z, blockEntity );
     }
 
     public synchronized void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        if ( chunk == null ) return;
         chunk.setBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), blockEntity );
     }
 
     public synchronized void removeBlockEntity( Vector vector, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+        if ( chunk == null ) return;
         chunk.removeBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
     public synchronized void removeBlockEntity( int x, int y, int z, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
+        if ( chunk == null ) return;
         chunk.removeBlockEntity( x, y, z );
     }
 
@@ -400,6 +418,10 @@ public class World {
 
     public synchronized Chunk getLoadedChunk( long hash, Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunk( hash );
+    }
+
+    public synchronized Set<Chunk> getLoadedChunks( Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).getLoadedChunks();
     }
 
     public CompletableFuture<Chunk> getChunkFuture( int chunkX, int chunkZ, Dimension dimension ) {
@@ -536,12 +558,12 @@ public class World {
 
     public Vector getSidePosition( Vector blockPosition, BlockFace blockFace ) {
         return switch ( blockFace ) {
-            case DOWN -> this.getRelative( blockPosition, Vector.down() );
-            case UP -> this.getRelative( blockPosition, Vector.up() );
-            case NORTH -> this.getRelative( blockPosition, Vector.north() );
-            case SOUTH -> this.getRelative( blockPosition, Vector.south() );
-            case WEST -> this.getRelative( blockPosition, Vector.west() );
-            case EAST -> this.getRelative( blockPosition, Vector.east() );
+            case DOWN -> this.getRelative( blockPosition, new Vector( 0, -1, 0 ) );
+            case UP -> this.getRelative( blockPosition, new Vector( 0, 1, 0 ) );
+            case NORTH -> this.getRelative( blockPosition, new Vector( 0, 0, -1 ) );
+            case SOUTH -> this.getRelative( blockPosition, new Vector( 0, 0, 1 ) );
+            case WEST -> this.getRelative( blockPosition, new Vector( -1, 0, 0 ) );
+            case EAST -> this.getRelative( blockPosition, new Vector( 1, 0, 0 ) );
         };
     }
 

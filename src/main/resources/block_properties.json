@@ -5811,7 +5811,7 @@
   },
   "minecraft:seagrass": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": false,
     "transparent": false,

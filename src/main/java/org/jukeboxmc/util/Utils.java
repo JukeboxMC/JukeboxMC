@@ -39,6 +39,10 @@ public class Utils {
         return ( (long) x << 32 ) | ( z & 0xffffffffL );
     }
 
+    public static int indexOf( int x, int y, int z ) {
+        return ( ( x & 15 ) << 8 ) + ( ( z & 15 ) << 4 ) + ( y & 15 );
+    }
+
     public static int fromHashX( long hash ) {
         return (int) ( hash >> 32 );
     }

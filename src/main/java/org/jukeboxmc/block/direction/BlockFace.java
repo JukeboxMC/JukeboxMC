@@ -1,17 +1,29 @@
 package org.jukeboxmc.block.direction;
 
+import org.jukeboxmc.math.Vector;
+
 /**
  * @author LucGamesYT
  * @version 1.0
  */
 public enum BlockFace {
 
-    DOWN,
-    UP,
-    NORTH,
-    SOUTH,
-    WEST,
-    EAST;
+    DOWN(new Vector( 0, -1, 0 )),
+    UP(new Vector( 0, 1, 0 )),
+    NORTH(new Vector( 0, 0,-1 )),
+    SOUTH(new Vector( 0, 0, 1 )),
+    WEST(new Vector( -1, 0,0 )),
+    EAST(new Vector( 1, 0, 0 ));
+
+    private final Vector offset;
+
+    BlockFace( Vector offset ) {
+        this.offset = offset;
+    }
+
+    public Vector getOffset() {
+        return offset;
+    }
 
     public BlockFace opposite() {
         return switch ( this ) {
@@ -55,6 +67,10 @@ public enum BlockFace {
             case 5 -> BlockFace.EAST;
             default -> null;
         };
+    }
+
+    public static BlockFace[] getHorizontal() {
+        return new BlockFace[]{NORTH, EAST, SOUTH, WEST};
     }
 
 }

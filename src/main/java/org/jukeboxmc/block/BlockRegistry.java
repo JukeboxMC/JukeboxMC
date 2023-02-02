@@ -424,7 +424,7 @@ public class BlockRegistry {
         register( BlockType.JUNGLE_STANDING_SIGN, Identifier.fromString( "minecraft:jungle_standing_sign" ), BlockJungleStandingSign.class );
         register( BlockType.JUNGLE_TRAPDOOR, Identifier.fromString( "minecraft:jungle_trapdoor" ), BlockTrapdoor.class );
         register( BlockType.JUNGLE_WALL_SIGN, Identifier.fromString( "minecraft:jungle_wall_sign" ), BlockJungleWallSign.class );
-        register( BlockType.KELP, Identifier.fromString( "minecraft:kelp" ) );
+        register( BlockType.KELP, Identifier.fromString( "minecraft:kelp" ), BlockKelp.class );
         register( BlockType.LADDER, Identifier.fromString( "minecraft:ladder" ), BlockLadder.class );
         register( BlockType.LANTERN, Identifier.fromString( "minecraft:lantern" ), BlockLantern.class );
         register( BlockType.LAPIS_BLOCK, Identifier.fromString( "minecraft:lapis_block" ) );
