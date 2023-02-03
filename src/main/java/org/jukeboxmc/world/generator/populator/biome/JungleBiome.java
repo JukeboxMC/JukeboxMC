@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator.biome;
 
+import org.jukeboxmc.world.generator.populator.BigJungleTreePopulator;
 import org.jukeboxmc.world.generator.populator.SmallJungleTreePopulator;
 
 /**
@@ -12,5 +13,9 @@ public class JungleBiome extends GrassyBiome {
         SmallJungleTreePopulator smallJungleTreePopulator = new SmallJungleTreePopulator();
         smallJungleTreePopulator.setBaseAmount( 10 );
         this.addPopulator( smallJungleTreePopulator );
+
+        BigJungleTreePopulator bigJungleTreePopulator = new BigJungleTreePopulator();
+        bigJungleTreePopulator.setBaseAmount( 6 );
+        this.addPopulator( bigJungleTreePopulator );
     }
 }

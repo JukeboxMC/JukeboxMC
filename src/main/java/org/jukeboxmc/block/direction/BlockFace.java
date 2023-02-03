@@ -8,21 +8,27 @@ import org.jukeboxmc.math.Vector;
  */
 public enum BlockFace {
 
-    DOWN(new Vector( 0, -1, 0 )),
-    UP(new Vector( 0, 1, 0 )),
-    NORTH(new Vector( 0, 0,-1 )),
-    SOUTH(new Vector( 0, 0, 1 )),
-    WEST(new Vector( -1, 0,0 )),
-    EAST(new Vector( 1, 0, 0 ));
+    DOWN( -1, new Vector( 0, -1, 0 )),
+    UP( -1, new Vector( 0, 1, 0 )),
+    NORTH( 2, new Vector( 0, 0,-1 )),
+    SOUTH( 0, new Vector( 0, 0, 1 )),
+    WEST( 1, new Vector( -1, 0,0 )),
+    EAST( 3, new Vector( 1, 0, 0 ));
 
+    private final int horizontalIndex;
     private final Vector offset;
 
-    BlockFace( Vector offset ) {
+    BlockFace( int horizontalIndex, Vector offset ) {
+        this.horizontalIndex = horizontalIndex;
         this.offset = offset;
     }
 
     public Vector getOffset() {
         return offset;
+    }
+
+    public int getHorizontalIndex() {
+        return horizontalIndex;
     }
 
     public BlockFace opposite() {

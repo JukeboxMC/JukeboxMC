@@ -3,6 +3,8 @@ package org.jukeboxmc.world.generator;
 import com.google.common.collect.Maps;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.behavior.BlockStone;
+import org.jukeboxmc.block.data.StoneType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
@@ -16,13 +18,13 @@ import org.jukeboxmc.world.generator.biomegrid.MapLayer;
 import org.jukeboxmc.world.generator.noise.PerlinOctaveGenerator;
 import org.jukeboxmc.world.generator.noise.SimplexOctaveGenerator;
 import org.jukeboxmc.world.generator.noise.bukkit.OctaveGenerator;
+import org.jukeboxmc.world.generator.object.OreType;
+import org.jukeboxmc.world.generator.populator.OrePopulator;
 import org.jukeboxmc.world.generator.populator.Populator;
 import org.jukeboxmc.world.generator.populator.biome.BiomePopulator;
 import org.jukeboxmc.world.generator.populator.biome.BiomePopulatorRegistry;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -45,6 +47,7 @@ public class NormalGenerator extends Generator {
 
     public static final int WATER_HEIGHT = 64;
 
+    private final Set<Populator> populators = new HashSet<>();
     private static final Map<Biome, BiomeHeight> HEIGHT_MAP = new HashMap<>();
     private static final Map<Biome, GroundGenerator> GROUND_MAP = new HashMap<>();
     private static final double[][] ELEVATION_WEIGHT = new double[5][5];
@@ -111,6 +114,22 @@ public class NormalGenerator extends Generator {
         this.blockStone = Block.create( BlockType.STONE );
         this.blockWater = Block.create( BlockType.WATER );
         this.blockBedrock = Block.create( BlockType.BEDROCK );
+
+        this.populators.add( new OrePopulator(
+                new OreType[]{
+                        new OreType( Block.create( BlockType.COAL_ORE ), 20, 17, 0, 128 ),
+                        new OreType( Block.create( BlockType.IRON_ORE ), 20, 9, 0, 64 ),
+                        new OreType( Block.create( BlockType.REDSTONE_ORE ), 8, 8, 0, 16 ),
+                        new OreType( Block.create( BlockType.LAPIS_ORE ), 1, 7, 0, 16 ),
+                        new OreType( Block.create( BlockType.GOLD_ORE ), 2, 9, 0, 32 ),
+                        new OreType( Block.create( BlockType.DIAMOND_ORE ), 1, 8, 0, 16 ),
+                        new OreType( Block.create( BlockType.DIRT ), 10, 33, 0, 128 ),
+                        new OreType( Block.create( BlockType.GRAVEL ), 8, 33, 0, 128 ),
+                        new OreType( Block.<BlockStone>create( BlockType.STONE ).setStoneType( StoneType.GRANITE ), 10, 33, 0, 80 ),
+                        new OreType( Block.<BlockStone>create( BlockType.STONE ).setStoneType( StoneType.ANDESITE ), 10, 33, 0, 80 ),
+                        new OreType( Block.<BlockStone>create( BlockType.STONE ).setStoneType( StoneType.DIORITE ), 10, 33, 0, 80 ),
+                }
+        ) );
     }
 
     @Override
@@ -263,6 +282,9 @@ public class NormalGenerator extends Generator {
             BiomePopulator biomePopulator = BiomePopulatorRegistry.getBiomePopulator( biome );
             if ( biomePopulator == null ) return;
             for ( Populator populator : biomePopulator.getPopulators() ) {
+                populator.populate( this.random, chunk.getWorld(), manager, chunkX, chunkZ );
+            }
+            for ( Populator populator : this.populators ) {
                 populator.populate( this.random, chunk.getWorld(), manager, chunkX, chunkZ );
             }
         } catch ( Throwable e ) {
