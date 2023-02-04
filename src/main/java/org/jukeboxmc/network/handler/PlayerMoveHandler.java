@@ -11,6 +11,9 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -57,6 +60,15 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
 
             float distance = (float) Math.sqrt( moveX * moveX + moveZ * moveZ );
 
+            StringBuilder builder = new StringBuilder();
+            builder.append( "Biome: " + player.getWorld().getBiome( player.getLocation(), player.getDimension() ).getName() ).append( "\n" );
+            builder.append( "TPS: " + Server.getInstance().getCurrentTps() ).append( "\n" );
+            builder.append( "ChunkX: " + player.getChunkX() ).append( " ChunkZ: " + player.getChunkZ() ).append( "\n" );
+            builder.append( "ItemInHand: " + player.getInventory().getItemInHand().getType() ).append( "\n" );
+            builder.append( "Block(0): " + player.getWorld().getBlock( player.getLocation() ).getType() ).append( "\n" );
+            builder.append( "Block(1): " + player.getWorld().getBlock( player.getLocation(), 1 ).getType() );
+            player.sendTip( builder.toString() );
+
             if ( distance >= 0.01 ) {
                 float swimmingValue = player.isSwimming() || player.isInWater() ? 0.15f * distance : 0f;
                 if ( swimmingValue != 0 ) {
@@ -85,6 +97,21 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         }
     }
 
+    private byte[] getBytesFromObject( Object object ) {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream( bos );
+            oos.writeObject( object );
+            byte[] bytes = bos.toByteArray();
+            bos.close();
+            oos.close();
+            return bytes;
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
+
     private void move( Player target, Player player ) {
         MoveEntityAbsolutePacket moveAbsolutePacket = new MoveEntityAbsolutePacket();
         moveAbsolutePacket.setRuntimeEntityId( target.getEntityId() );
@@ -94,4 +121,6 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         moveAbsolutePacket.setTeleported( false );
         player.getPlayerConnection().sendPacket( moveAbsolutePacket );
     }
+
+
 }

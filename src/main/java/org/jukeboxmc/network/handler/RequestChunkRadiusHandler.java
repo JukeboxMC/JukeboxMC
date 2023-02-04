@@ -13,6 +13,6 @@ public class RequestChunkRadiusHandler implements PacketHandler<RequestChunkRadi
 
     @Override
     public void handle( RequestChunkRadiusPacket packet, Server server, Player player ) {
-        player.setChunkRadius( FastMath.min( packet.getRadius(), server.getViewDistance() ) );
+        player.setChunkRadius( packet.getRadius() );
     }
 }

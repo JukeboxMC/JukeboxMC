@@ -123,6 +123,16 @@ public enum Biome {
         return this.name;
     }
 
+    public boolean isFreezing() {
+        return this.equals( COLD_BEACH ) ||
+                this.equals( COLD_TAIGA ) ||
+                this.equals( COLD_TAIGA_HILLS ) ||
+                this.equals( COLD_TAIGA_MUTATED ) ||
+                this.equals( FROZEN_RIVER ) ||
+                this.equals( FROZEN_OCEAN ) ||
+                this.equals( ICE_PLAINS_SPIKES );
+    }
+
     public static Biome findById( int id ) {
         return BIOME_FROM_ID.get( id );
     }

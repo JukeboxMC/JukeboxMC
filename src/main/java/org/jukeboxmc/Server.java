@@ -38,6 +38,8 @@ import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.generator.FlatGenerator;
 import org.jukeboxmc.world.generator.Generator;
+import org.jukeboxmc.world.generator.NormalGenerator;
+import org.jukeboxmc.world.generator.populator.biome.BiomePopulatorRegistry;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -137,6 +139,7 @@ public class Server {
         BlockEntityRegistry.init();
         EnchantmentRegistry.init();
         EffectRegistry.init();
+        BiomePopulatorRegistry.init();
 
         this.scheduler = new Scheduler( this );
 
@@ -154,6 +157,9 @@ public class Server {
         this.pluginManager.enableAllPlugins( PluginLoadOrder.STARTUP );
 
         this.registerGenerator( "flat", FlatGenerator.class, Dimension.OVERWORLD );
+        this.registerGenerator( "normal", NormalGenerator.class, Dimension.OVERWORLD );
+
+        this.registerGenerator( "empty", FlatGenerator.class, Dimension.OVERWORLD );
         this.registerGenerator( "empty", FlatGenerator.class, Dimension.NETHER );
         this.registerGenerator( "empty", FlatGenerator.class, Dimension.THE_END );
 
@@ -223,6 +229,10 @@ public class Server {
                 if ( sleptFor > sleepNeeded ) {
                     this.sleepBalance = sleptFor - sleepNeeded;
                 }
+            }
+
+            if ( this.currentTick % ( 20 * 20 ) == 0 ) {
+                System.gc();
             }
 
             lastTickTime = (float) diff / TimeUnit.SECONDS.toNanos( 1 );

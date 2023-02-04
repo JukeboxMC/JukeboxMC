@@ -229,21 +229,21 @@ public class Block implements Cloneable {
 
     public Block getSide( Direction direction, int layer ) {
         return switch ( direction ) {
-            case SOUTH -> this.getRelative( Vector.south(), layer );
-            case NORTH -> this.getRelative( Vector.north(), layer );
-            case EAST -> this.getRelative( Vector.east(), layer );
-            case WEST -> this.getRelative( Vector.west(), layer );
+            case SOUTH -> this.getRelative( new Vector( 0, 0, 1 ), layer );
+            case NORTH -> this.getRelative(new Vector( 0, 0, -1 ), layer );
+            case EAST -> this.getRelative(new Vector( 1, 0, 0 ), layer );
+            case WEST -> this.getRelative( new Vector( -1, 0, 0 ), layer );
         };
     }
 
     public Block getSide( BlockFace blockFace, int layer ) {
         return switch ( blockFace ) {
-            case DOWN -> this.getRelative( Vector.down(), layer );
-            case UP -> this.getRelative( Vector.up(), layer );
-            case SOUTH -> this.getRelative( Vector.south(), layer );
-            case NORTH -> this.getRelative( Vector.north(), layer );
-            case EAST -> this.getRelative( Vector.east(), layer );
-            case WEST -> this.getRelative( Vector.west(), layer );
+            case DOWN -> this.getRelative( new Vector( 0, -1, 0 ), layer );
+            case UP -> this.getRelative( new Vector( 0, 1, 0 ), layer );
+            case SOUTH -> this.getRelative( new Vector( 0, 0, 1 ), layer );
+            case NORTH -> this.getRelative( new Vector( 0, 0, -1 ), layer );
+            case EAST -> this.getRelative( new Vector( 1, 0, 0 ), layer );
+            case WEST -> this.getRelative( new Vector( -1, 0, 0 ), layer );
         };
     }
 

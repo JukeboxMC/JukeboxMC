@@ -8,6 +8,8 @@ import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Synchronized;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
@@ -25,8 +27,10 @@ import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -52,13 +56,15 @@ public class Chunk {
     private final int maxY;
     private final int fullHeight;
     private final Set<Entity> entities;
+    private final Set<Player> players;
+    private final Int2ObjectMap<BlockEntity> blockEntities;
     private final SubChunk[] subChunks;
     private final short[] height;
 
     private boolean dirty;
     private ChunkState chunkState;
     private final Lock writeLock;
-    private final Lock readLock;
+   // private final Lock readLock;
 
     private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
 
@@ -78,12 +84,18 @@ public class Chunk {
         };
         this.fullHeight = Math.abs( this.minY ) + this.maxY + 1;
         this.entities = new CopyOnWriteArraySet<>();
+        this.players = new CopyOnWriteArraySet<>();
+        this.blockEntities = new Int2ObjectOpenHashMap<>();
         this.subChunks = new SubChunk[this.fullHeight >> 4];
         this.height = new short[16 * 16];
         this.chunkState = ChunkState.NEW;
+       // this.readLock = lock.readLock();
         ReadWriteLock lock = new ReentrantReadWriteLock();
-        this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
+    }
+
+    public Lock getWriteLock() {
+        return writeLock;
     }
 
     public World getWorld() {
@@ -142,14 +154,6 @@ public class Chunk {
         return this.chunkState.ordinal() >= 3;
     }
 
-    public Lock getReadLock() {
-        return this.readLock;
-    }
-
-    public Lock getWriteLock() {
-        return this.writeLock;
-    }
-
     @Synchronized ( "loaders" )
     public void addLoader( ChunkLoader chunkLoader ) {
         this.loaders.add( chunkLoader );
@@ -174,15 +178,38 @@ public class Chunk {
     }
 
     public Collection<Player> getPlayers() {
-        return this.entities.stream().filter( entity -> entity instanceof Player ).map( entity -> (Player) entity ).collect( Collectors.toSet() );
+        return this.players;
     }
 
     public void addEntity( Entity entity ) {
         this.entities.add( entity );
+        if ( entity instanceof Player player ) {
+            this.players.add( player );
+        }
     }
 
     public void removeEntity( Entity entity ) {
         this.entities.removeIf( target -> target.getEntityId() == entity.getEntityId() );
+        if ( entity instanceof Player player ) {
+            this.players.removeIf( target -> target.getEntityId() == player.getEntityId() );
+        }
+    }
+
+    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
+        this.blockEntities.put( Utils.indexOf( x, y, z ), blockEntity );
+        this.dirty = true;
+    }
+
+    public void removeBlockEntity( int x, int y, int z ) {
+        this.blockEntities.remove( Utils.indexOf( x, y, z ) );
+    }
+
+    public BlockEntity getBlockEntity( int x, int y, int z ) {
+        return this.blockEntities.get( Utils.indexOf( x, y, z ) );
+    }
+
+    public Collection<BlockEntity> getBlockEntities() {
+        return this.blockEntities.values();
     }
 
     public short[] getHeight() {
@@ -190,18 +217,18 @@ public class Chunk {
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
-        this.writeLock.lock();
+       // this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
             this.dirty = true;
         } finally {
-            this.writeLock.unlock();
+            //this.writeLock.unlock();
         }
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        this.readLock.lock();
+       // this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return BLOCK_AIR;
@@ -216,75 +243,50 @@ public class Chunk {
             block.setLayer( layer );
             return block;
         } finally {
-            this.readLock.unlock();
+         //   this.readLock.unlock();
         }
     }
 
-    public void setBlockEntity( int x, int y, int z, BlockEntity blockEntity ) {
-        this.writeLock.lock();
-        try {
-            if ( this.isHeightOutOfBounds( y ) ) return;
-            this.getOrCreateSubChunk( this.getSubY( y ) ).setBlockEntity( x, y, z, blockEntity );
-            this.dirty = true;
-        } finally {
-            this.writeLock.unlock();
-        }
-    }
-
-    public void removeBlockEntity( int x, int y, int z ) {
-        this.writeLock.lock();
-        try {
-            if ( this.isHeightOutOfBounds( y ) ) return;
-            this.getOrCreateSubChunk( this.getSubY( y ) ).removeBlockEntity( x, y, z );
-        } finally {
-            this.writeLock.unlock();
-        }
-    }
-
-    public BlockEntity getBlockEntity( int x, int y, int z ) {
-        this.readLock.lock();
-        try {
-            if ( this.isHeightOutOfBounds( y ) ) {
-                return null;
-            }
-            final int subY = this.getSubY( y );
-            if ( this.subChunks[subY] == null ) {
-                this.subChunks[subY] = new SubChunk( subY );
-            }
-            return this.subChunks[subY].getBlockEntity( x, y, z );
-        } finally {
-            this.readLock.unlock();
-        }
-    }
-
-    public Collection<BlockEntity> getBlockEntities() {
-        List<BlockEntity> blockEntities = new CopyOnWriteArrayList<>();
-        for ( SubChunk subChunk : this.subChunks ) {
-            if ( subChunk != null && subChunk.getBlockEntities() != null ) {
-                blockEntities.addAll( subChunk.getBlockEntities() );
+    public int getHighestBlockY( int x, int z ) {
+        int y;
+        for ( y = this.getMaxY(); y > this.getMinY(); --y ) {
+            BlockType blockType = this.getBlock( x, y, z, 0 ).getType();
+            if ( blockType != BlockType.AIR ) {
+                break;
             }
         }
-        return blockEntities;
+        return ++y;
+    }
+
+    public Block getHighestBlock( int x, int z ) {
+        for ( int y = this.getMaxY(); y > this.getMinY(); --y ) {
+            Block block = this.getBlock( x, y, z, 0 );
+            BlockType blockType = block.getType();
+            if ( blockType != BlockType.AIR ) {
+                return block;
+            }
+        }
+        return null;
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
-        this.writeLock.lock();
+        // this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBiome( x, y, z, biome );
             this.dirty = true;
         } finally {
-            this.writeLock.unlock();
+            //    this.writeLock.unlock();
         }
     }
 
     public Biome getBiome( int x, int y, int z ) {
-        this.readLock.lock();
+        //this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return null;
             return this.getOrCreateSubChunk( this.getSubY( y ) ).getBiome( x, y, z );
         } finally {
-            this.readLock.unlock();
+            //this.readLock.unlock();
         }
     }
 
@@ -293,7 +295,7 @@ public class Chunk {
     }
 
     public SubChunk getOrCreateSubChunk( int subY ) {
-        this.readLock.lock();
+      //  this.readLock.lock();
         try {
             for ( int y = 0; y <= subY; y++ ) {
                 if ( this.subChunks[y] == null ) {
@@ -302,7 +304,7 @@ public class Chunk {
             }
             return this.subChunks[subY];
         } finally {
-            this.readLock.unlock();
+         //   this.readLock.unlock();
         }
     }
 
@@ -349,19 +351,23 @@ public class Chunk {
 
     public LevelChunkPacket createLevelChunkPacket() {
         ByteBuf byteBuf = Unpooled.buffer();
-        final LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
-        levelChunkPacket.setChunkX( this.x );
-        levelChunkPacket.setChunkZ( this.z );
-        levelChunkPacket.setCachingEnabled( false );
-        levelChunkPacket.setRequestSubChunks( false );
-        levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
-        this.writeTo( byteBuf );
+        try {
+            final LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
+            levelChunkPacket.setChunkX( this.x );
+            levelChunkPacket.setChunkZ( this.z );
+            levelChunkPacket.setCachingEnabled( false );
+            levelChunkPacket.setRequestSubChunks( false );
+            levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
+            this.writeTo( byteBuf );
 
-        byte[] data = new byte[byteBuf.readableBytes()];
-        byteBuf.readBytes( data );
+            byte[] data = new byte[byteBuf.readableBytes()];
+            byteBuf.readBytes( data );
 
-        levelChunkPacket.setData( data );
-        return levelChunkPacket;
+            levelChunkPacket.setData( data );
+            return levelChunkPacket;
+        } finally {
+            byteBuf.release();
+        }
     }
 
     public void saveChunkSlice( Palette<Block>[] blockPalettes, int subY, WriteBatch writeBatch ) {

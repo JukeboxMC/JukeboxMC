@@ -5,6 +5,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
@@ -42,6 +43,11 @@ public class BlockSugarCane extends Block {
             }
         }
         return false;
+    }
+
+    @Override
+    public Item toItem() {
+        return Item.create( ItemType.SUGAR_CANE );
     }
 
     public void setAge( int value ) {

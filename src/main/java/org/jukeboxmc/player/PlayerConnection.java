@@ -100,7 +100,7 @@ public class PlayerConnection {
 
         this.playerChunkManager.sendQueued();
 
-        if ( this.playerChunkManager.getChunksSent() >= 46 && !this.spawned.get() && this.player.getTeleportLocation() == null ) {
+        if ( this.playerChunkManager.getChunksSent() >= 25 && !this.spawned.get() && this.player.getTeleportLocation() == null ) {
             this.doFirstSpawn();
         }
     }
