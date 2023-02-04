@@ -192,7 +192,6 @@ public class LevelDB {
     }
 
     public CompletableFuture<Void> saveChunk( Chunk chunk ) {
-        if ( !this.world.isAutoSave() ) return CompletableFuture.completedFuture( null );
         return CompletableFuture.supplyAsync( () -> {
             if ( !chunk.isGenerated() ) {
                 return null;

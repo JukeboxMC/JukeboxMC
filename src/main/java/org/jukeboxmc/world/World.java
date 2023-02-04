@@ -60,8 +60,6 @@ public class World {
     private int worldTime;
     private long nextTimeSendTick;
 
-    private boolean autoSave = false;
-
     private final Map<Long, Entity> entities;
     private final Queue<BlockUpdateNormal> blockUpdateNormals;
 
@@ -176,14 +174,6 @@ public class World {
         for ( Player player : this.getPlayers() ) {
             player.getPlayerConnection().sendPacket( this.gameRules.updatePacket() );
         }
-    }
-
-    public boolean isAutoSave() {
-        return this.autoSave;
-    }
-
-    public void setAutoSave( boolean autoSave ) {
-        this.autoSave = autoSave;
     }
 
     public synchronized Generator getGenerator( Dimension dimension ) {

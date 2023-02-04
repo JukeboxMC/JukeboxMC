@@ -10,6 +10,7 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.world.ChunkUnloadEvent;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
@@ -223,7 +224,14 @@ public final class ChunkManager {
                 continue;
             }
 
-            if ( this.unloadChunk0( chunkKey, true, true ) ) {
+            ChunkUnloadEvent chunkUnloadEvent = new ChunkUnloadEvent( this.world, chunk, true );
+            Server.getInstance().getPluginManager().callEvent( chunkUnloadEvent );
+
+            if ( chunkUnloadEvent.isCancelled() ) {
+                return;
+            }
+
+            if ( this.unloadChunk0( chunkKey, chunkUnloadEvent.isSaveChunk(), true ) ) {
                 iterator.remove();
             }
         }
