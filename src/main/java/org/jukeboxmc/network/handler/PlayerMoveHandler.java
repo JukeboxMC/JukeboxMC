@@ -60,15 +60,6 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
 
             float distance = (float) Math.sqrt( moveX * moveX + moveZ * moveZ );
 
-            StringBuilder builder = new StringBuilder();
-            builder.append( "Biome: " + player.getWorld().getBiome( player.getLocation(), player.getDimension() ).getName() ).append( "\n" );
-            builder.append( "TPS: " + Server.getInstance().getCurrentTps() ).append( "\n" );
-            builder.append( "ChunkX: " + player.getChunkX() ).append( " ChunkZ: " + player.getChunkZ() ).append( "\n" );
-            builder.append( "ItemInHand: " + player.getInventory().getItemInHand().getType() ).append( "\n" );
-            builder.append( "Block(0): " + player.getWorld().getBlock( player.getLocation() ).getType() ).append( "\n" );
-            builder.append( "Block(1): " + player.getWorld().getBlock( player.getLocation(), 1 ).getType() );
-            player.sendTip( builder.toString() );
-
             if ( distance >= 0.01 ) {
                 float swimmingValue = player.isSwimming() || player.isInWater() ? 0.15f * distance : 0f;
                 if ( swimmingValue != 0 ) {
