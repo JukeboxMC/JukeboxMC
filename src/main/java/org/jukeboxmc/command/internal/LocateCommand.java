@@ -6,6 +6,7 @@ import org.jukeboxmc.command.CommandParameter;
 import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
+import org.jukeboxmc.math.Location;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
@@ -38,8 +39,8 @@ public class LocateCommand extends Command {
         int radius = 5000;
 
         if ( commandSender instanceof Player player ) {
-            for ( int chunkX = player.getChunkX() - radius; chunkX < player.getChunkX() + radius; chunkX++ ) {
-                for ( int chunkZ = player.getChunkZ() - radius; chunkZ < player.getChunkZ() + radius; chunkZ++ ) {
+            for ( int chunkX = player.getChunkX() + radius; chunkX > player.getChunkX() - radius; chunkX-- ) {
+                for ( int chunkZ = player.getChunkZ() + radius; chunkZ > player.getChunkZ() - radius; chunkZ-- ) {
                     BiomeGrid biomes = new BiomeGrid();
                     int[] biomeValues = this.biomeGrid[0].generateValues( chunkX << 4, chunkZ << 4, 16, 16 );
                     for ( int i = 0; i < biomeValues.length; i++ ) {
@@ -49,7 +50,9 @@ public class LocateCommand extends Command {
                         for ( int sz = 0; sz < 16; sz++ ) {
                             Biome biome = biomes.getBiome( sx, sz );
                             if ( biome == Biome.valueOf( args[0].toUpperCase() ) ) {
-                                player.sendMessage( "X: " + chunkX * 16 + " Y: ~ Z: " + chunkZ * 16 );
+                                int x = chunkX * 16;
+                                int z = chunkZ * 16;
+                                player.teleport( new Location( player.getWorld(), x, 100, z ) );
                                 return;
                             }
                         }

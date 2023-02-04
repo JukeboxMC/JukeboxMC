@@ -278,13 +278,15 @@ public class NormalGenerator extends Generator {
         try {
             this.random.setSeed( 0XDEADBEEF ^ ( (long) chunkX << 8 ) ^ chunkZ ^ this.seed );
             Chunk chunk = manager.getChunk( chunkX, chunkZ );
+
+            for ( Populator populator : this.populators ) {
+                populator.populate( this.random, chunk.getWorld(), manager, chunkX, chunkZ );
+            }
+
             Biome biome = chunk.getBiome( 7, 7, 7 );
             BiomePopulator biomePopulator = BiomePopulatorRegistry.getBiomePopulator( biome );
             if ( biomePopulator == null ) return;
             for ( Populator populator : biomePopulator.getPopulators() ) {
-                populator.populate( this.random, chunk.getWorld(), manager, chunkX, chunkZ );
-            }
-            for ( Populator populator : this.populators ) {
                 populator.populate( this.random, chunk.getWorld(), manager, chunkX, chunkZ );
             }
         } catch ( Throwable e ) {

@@ -64,7 +64,7 @@ public class Chunk {
     private boolean dirty;
     private ChunkState chunkState;
     private final Lock writeLock;
-    private final Lock readLock;
+   // private final Lock readLock;
 
     private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
 
@@ -89,9 +89,13 @@ public class Chunk {
         this.subChunks = new SubChunk[this.fullHeight >> 4];
         this.height = new short[16 * 16];
         this.chunkState = ChunkState.NEW;
+       // this.readLock = lock.readLock();
         ReadWriteLock lock = new ReentrantReadWriteLock();
-        this.readLock = lock.readLock();
         this.writeLock = lock.writeLock();
+    }
+
+    public Lock getWriteLock() {
+        return writeLock;
     }
 
     public World getWorld() {
@@ -148,14 +152,6 @@ public class Chunk {
 
     public boolean isFinished() {
         return this.chunkState.ordinal() >= 3;
-    }
-
-    public Lock getReadLock() {
-        return this.readLock;
-    }
-
-    public Lock getWriteLock() {
-        return this.writeLock;
     }
 
     @Synchronized ( "loaders" )
@@ -221,18 +217,18 @@ public class Chunk {
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
-        this.writeLock.lock();
+       // this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
             this.dirty = true;
         } finally {
-            this.writeLock.unlock();
+            //this.writeLock.unlock();
         }
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-        this.readLock.lock();
+       // this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return BLOCK_AIR;
@@ -247,28 +243,50 @@ public class Chunk {
             block.setLayer( layer );
             return block;
         } finally {
-            this.readLock.unlock();
+         //   this.readLock.unlock();
         }
     }
 
+    public int getHighestBlockY( int x, int z ) {
+        int y;
+        for ( y = this.getMaxY(); y > this.getMinY(); --y ) {
+            BlockType blockType = this.getBlock( x, y, z, 0 ).getType();
+            if ( blockType != BlockType.AIR ) {
+                break;
+            }
+        }
+        return ++y;
+    }
+
+    public Block getHighestBlock( int x, int z ) {
+        for ( int y = this.getMaxY(); y > this.getMinY(); --y ) {
+            Block block = this.getBlock( x, y, z, 0 );
+            BlockType blockType = block.getType();
+            if ( blockType != BlockType.AIR ) {
+                return block;
+            }
+        }
+        return null;
+    }
+
     public void setBiome( int x, int y, int z, Biome biome ) {
-        this.writeLock.lock();
+        // this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBiome( x, y, z, biome );
             this.dirty = true;
         } finally {
-            this.writeLock.unlock();
+            //    this.writeLock.unlock();
         }
     }
 
     public Biome getBiome( int x, int y, int z ) {
-        this.readLock.lock();
+        //this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return null;
             return this.getOrCreateSubChunk( this.getSubY( y ) ).getBiome( x, y, z );
         } finally {
-            this.readLock.unlock();
+            //this.readLock.unlock();
         }
     }
 
@@ -277,7 +295,7 @@ public class Chunk {
     }
 
     public SubChunk getOrCreateSubChunk( int subY ) {
-        this.readLock.lock();
+      //  this.readLock.lock();
         try {
             for ( int y = 0; y <= subY; y++ ) {
                 if ( this.subChunks[y] == null ) {
@@ -286,7 +304,7 @@ public class Chunk {
             }
             return this.subChunks[subY];
         } finally {
-            this.readLock.unlock();
+         //   this.readLock.unlock();
         }
     }
 

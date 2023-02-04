@@ -36,10 +36,10 @@ public class BiomePopulatorRegistry {
         register( Biome.TAIGA, new TaigaBiome() );
         register( Biome.TAIGA_MUTATED, new TaigaBiome() );
         register( Biome.TAIGA_HILLS, new TaigaBiome() );
-        //register( Biome.MEGA_TAIGA, new MegaTaigaBiome() );
-        //register( Biome.COLD_TAIGA, new ColdTaigaBiome() );
-        //register( Biome.COLD_TAIGA_HILLS, new ColdTaigaHillsBiome() );
-        //register( Biome.COLD_TAIGA_MUTATED, new ColdTaigaMutatedBiome() );
+        register( Biome.MEGA_TAIGA, new MegaTaigaBiome() );
+        register( Biome.COLD_TAIGA, new ColdTaigaBiome() );
+        register( Biome.COLD_TAIGA_HILLS, new ColdTaigaBiome() );
+        register( Biome.COLD_TAIGA_MUTATED, new ColdTaigaBiome() );
 
         register( Biome.FLOWER_FOREST, new FlowerForestBiome() );
         register( Biome.FOREST, new ForestBiome() );
@@ -61,6 +61,7 @@ public class BiomePopulatorRegistry {
         register( Biome.SAVANNA_PLATEAU_MUTATED, new SavannaBiome() );
 
         register( Biome.BEACH, new BeachBiome() );
+        register( Biome.COLD_BEACH, new ColdBeachBiome() );
         register( Biome.DESERT, new DesertBiome() );
         register( Biome.DESERT_HILLS, new DesertBiome() );
         register( Biome.DESERT_MUTATED, new DesertBiome() );
