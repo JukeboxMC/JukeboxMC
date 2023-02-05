@@ -655,6 +655,14 @@ public class World {
         this.saveLevelFile();
     }
 
+    public void save() {
+        for ( Dimension dimension : Dimension.values() ) {
+            this.saveChunks( dimension ).whenComplete( ( unused, throwable ) -> {
+            } );
+        }
+        this.saveLevelFile();
+    }
+
     public Collection<Entity> getNearbyEntities( AxisAlignedBB boundingBox, Dimension dimension, Entity entity ) {
         Set<Entity> targetEntity = new HashSet<>();
 
