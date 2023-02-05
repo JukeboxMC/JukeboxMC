@@ -1,7 +1,11 @@
 package org.jukeboxmc.world;
 
 import com.google.common.collect.ImmutableSet;
+import com.nukkitx.nbt.*;
+import com.nukkitx.nbt.util.stream.LittleEndianDataInputStream;
+import com.nukkitx.nbt.util.stream.LittleEndianDataOutputStream;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -29,7 +33,10 @@ import org.jukeboxmc.world.gamerule.GameRules;
 import org.jukeboxmc.world.generator.Generator;
 import org.jukeboxmc.world.leveldb.LevelDB;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -41,8 +48,9 @@ import java.util.stream.Collectors;
 public class World {
 
     private final Block BLOCK_AIR = Block.create( BlockType.AIR );
+    private final int STORAGE_VERSION = 9;
 
-    private final String name;
+    private String name;
     private final Server server;
     private final GameRules gameRules;
     private final BlockUpdateList blockUpdateList;
@@ -56,6 +64,7 @@ public class World {
 
     private Difficulty difficulty;
     private Location spawnLocation;
+    private long seed;
 
     private int worldTime;
     private long nextTimeSendTick;
@@ -84,7 +93,7 @@ public class World {
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
             String generatorName = generatorMap.get( dimension );
-            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( generatorName, dimension ) ) );
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( generatorName, this, dimension ) ) );
         }
 
         Generator generator = this.getGenerator( Dimension.OVERWORLD );
@@ -93,6 +102,82 @@ public class World {
 
         this.entities = new ConcurrentHashMap<>();
         this.blockUpdateNormals = new ConcurrentLinkedQueue<>();
+
+        this.loadLevelFile();
+    }
+
+    private void loadLevelFile() {
+        if ( this.worldFile.exists() ) {
+            try ( LittleEndianDataInputStream inputStream = new LittleEndianDataInputStream( Files.newInputStream( this.worldFile.toPath() ) ); NBTInputStream stream = new NBTInputStream( inputStream ) ) {
+                int version = inputStream.readInt();
+                int size = inputStream.readInt();
+
+                NbtMap nbtTag = (NbtMap) stream.readTag();
+                nbtTag.listenForString( "LevelName", name -> this.name = name );
+                nbtTag.listenForInt( "Difficulty", value -> this.difficulty = Difficulty.values()[value] );
+                if ( nbtTag.containsKey( "SpawnX" ) && nbtTag.containsKey( "SpawnY" ) && nbtTag.containsKey( "SpawnZ" ) ) {
+                    this.spawnLocation = new Location( this, nbtTag.getInt( "SpawnX" ), nbtTag.getInt( "SpawnY" ), nbtTag.getInt( "SpawnZ" ) );
+                }
+                nbtTag.listenForLong( "RandomSeed", this::setSeed );
+                nbtTag.listenForLong( "Time", value -> this.worldTime = (int) value );
+
+                for ( GameRule value : GameRule.values() ) {
+                    String identifer = value.getIdentifier().toLowerCase();
+                    if ( nbtTag.containsKey( identifer ) ) {
+                        this.gameRules.set( value, nbtTag.get( identifer ) );
+                    }
+                }
+            } catch ( IOException e ) {
+                throw new RuntimeException( e );
+            }
+        } else {
+            this.seed = ThreadLocalRandom.current().nextInt();
+            try {
+                if ( this.worldFile.createNewFile() ) {
+                    this.saveLevelFile();
+                }
+            } catch ( IOException e ) {
+                throw new RuntimeException( e );
+            }
+        }
+    }
+
+    private void saveLevelFile() {
+        NbtMapBuilder nbtTag = NbtMap.builder();
+        nbtTag.putInt( "StorageVersion", STORAGE_VERSION );
+        nbtTag.putString( "LevelName", this.name );
+        nbtTag.putInt( "Difficulty", this.difficulty.ordinal() );
+        nbtTag.put( "SpawnX", this.spawnLocation.getBlockX() );
+        nbtTag.put( "SpawnY", this.spawnLocation.getBlockY() );
+        nbtTag.put( "SpawnZ", this.spawnLocation.getBlockZ() );
+        nbtTag.putLong( "RandomSeed", this.seed );
+        nbtTag.putLong( "Time", this.worldTime );
+
+        for ( GameRuleData<?> gameRule : this.gameRules.getGameRules() ) {
+            if ( gameRule.getValue() instanceof Boolean ) {
+                nbtTag.putBoolean( gameRule.getName().toUpperCase(), (boolean) gameRule.getValue() );
+            } else if ( gameRule.getValue() instanceof Integer ) {
+                nbtTag.putInt( gameRule.getName().toUpperCase(), (int) gameRule.getValue() );
+            } else if ( gameRule.getValue() instanceof Float ) {
+                nbtTag.putFloat( gameRule.getName().toUpperCase(), (float) gameRule.getValue() );
+            }
+        }
+
+        byte[] tagBytes;
+        try ( ByteArrayOutputStream stream = new ByteArrayOutputStream(); NBTOutputStream nbtOutputStream = NbtUtils.createWriterLE( stream ) ) {
+            nbtOutputStream.writeTag( nbtTag.build() );
+            tagBytes = stream.toByteArray();
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+
+        try ( LittleEndianDataOutputStream stream = new LittleEndianDataOutputStream( Files.newOutputStream( this.worldFile.toPath() ) ) ) {
+            stream.writeInt( STORAGE_VERSION );
+            stream.writeInt( tagBytes.length );
+            stream.write( tagBytes );
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
     }
 
     public void update( long currentTick ) {
@@ -206,6 +291,14 @@ public class World {
         this.server.broadcastPacket( setSpawnPositionPacket );
     }
 
+    public long getSeed() {
+        return seed;
+    }
+
+    public void setSeed( long seed ) {
+        this.seed = seed;
+    }
+
     public int getWorldTime() {
         return this.worldTime;
     }
@@ -245,7 +338,7 @@ public class World {
     }
 
     public Block getBlock( Vector vector ) {
-        return this.getBlock( vector, 0, vector.getDimension());
+        return this.getBlock( vector, 0, vector.getDimension() );
     }
 
     public Block getBlock( Vector vector, Dimension dimension ) {
@@ -309,7 +402,7 @@ public class World {
     }
 
     public void setBlock( Vector vector, Block block ) {
-        this.setBlock( vector, block, 0, vector.getDimension());
+        this.setBlock( vector, block, 0, vector.getDimension() );
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block, Dimension dimension ) {
@@ -559,6 +652,7 @@ public class World {
 
     public void close() {
         this.levelDB.close();
+        this.saveLevelFile();
     }
 
     public Collection<Entity> getNearbyEntities( AxisAlignedBB boundingBox, Dimension dimension, Entity entity ) {

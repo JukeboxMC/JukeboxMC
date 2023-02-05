@@ -1,6 +1,7 @@
 package org.jukeboxmc.world.generator;
 
 import org.jukeboxmc.math.Vector;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 
@@ -9,6 +10,10 @@ import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
  * @version 1.0
  */
 public class EmptyGenerator extends Generator {
+
+    public EmptyGenerator( World world ) {
+
+    }
 
     @Override
     public void generate( Chunk chunk, int chunkX, int chunkZ ) {

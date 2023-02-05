@@ -8,6 +8,7 @@ import org.jukeboxmc.block.data.StoneType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 import org.jukeboxmc.world.generator.biome.BiomeGrid;
@@ -41,7 +42,7 @@ public class NormalGenerator extends Generator {
     private final Block blockWater;
     private final Block blockBedrock;
 
-    private final int seed = 34465783;
+    private final World world;
     private final long localSeed1;
     private final long localSeed2;
 
@@ -102,11 +103,13 @@ public class NormalGenerator extends Generator {
         }
     }
 
-    public NormalGenerator() {
-        this.random = new Random();
-        this.random.setSeed( this.seed );
+    public NormalGenerator( World world ) {
+        this.world = world;
 
-        this.biomeGrid = MapLayer.initialize( this.seed, Dimension.OVERWORLD, 1 );
+        this.random = new Random();
+        this.random.setSeed( this.world.getSeed() );
+
+        this.biomeGrid = MapLayer.initialize( this.world.getSeed(), Dimension.OVERWORLD, 1 );
 
         this.localSeed1 = ThreadLocalRandom.current().nextLong();
         this.localSeed2 = ThreadLocalRandom.current().nextLong();
@@ -134,7 +137,7 @@ public class NormalGenerator extends Generator {
 
     @Override
     public void generate( Chunk chunk, int chunkX, int chunkZ ) {
-        this.random.setSeed( chunkX * this.localSeed1 ^ chunkZ * this.localSeed2 ^ this.seed );
+        this.random.setSeed( chunkX * this.localSeed1 ^ chunkZ * this.localSeed2 ^ this.world.getSeed() );
         int x = chunkX << 2;
         int z = chunkZ << 2;
 
@@ -276,7 +279,7 @@ public class NormalGenerator extends Generator {
     @Override
     public void populate( PopulationChunkManager manager, int chunkX, int chunkZ ) {
         try {
-            this.random.setSeed( 0XDEADBEEF ^ ( (long) chunkX << 8 ) ^ chunkZ ^ this.seed );
+            this.random.setSeed( 0XDEADBEEF ^ ( (long) chunkX << 8 ) ^ chunkZ ^ this.world.getSeed() );
             Chunk chunk = manager.getChunk( chunkX, chunkZ );
 
             for ( Populator populator : this.populators ) {
@@ -301,14 +304,14 @@ public class NormalGenerator extends Generator {
 
     @Override
     public Vector getSpawnLocation() {
-        return new Vector( -160034, 70, -74614 ); //Only for this map (testing)
+        return new Vector( 0, 100, 0 );
     }
 
     private Map<String, OctaveGenerator> getWorldOctaves() {
         Map<String, OctaveGenerator> octaves = this.octaveCache.get( "normal" );
         if ( octaves == null ) {
             octaves = Maps.newHashMap();
-            Random seed = new Random( this.seed );
+            Random seed = new Random( this.world.getSeed() );
 
             OctaveGenerator gen = new PerlinOctaveGenerator( seed, 16, 5, 5 );
             gen.setXScale( 200d );

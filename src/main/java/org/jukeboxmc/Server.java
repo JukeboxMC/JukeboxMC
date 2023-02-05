@@ -547,13 +547,13 @@ public class Server {
         return this.worlds.containsKey( name.toLowerCase() );
     }
 
-    public synchronized Generator createGenerator( String generatorName, Dimension dimension ) {
+    public synchronized Generator createGenerator( String generatorName, World world, Dimension dimension ) {
         Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.get( dimension );
 
         Class<? extends Generator> generator = generators.get( generatorName.toLowerCase() );
         if ( generator != null ) {
             try {
-                return generator.getConstructor().newInstance();
+                return generator.getConstructor( World.class ).newInstance(world);
             } catch ( InvocationTargetException | InstantiationException | IllegalAccessException |
                       NoSuchMethodException e ) {
                 throw new RuntimeException( e );

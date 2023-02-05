@@ -51,6 +51,7 @@ public enum GameRule {
         return this.defaultValue;
     }
 
+
     public static GameRule fromIdentifier( String identifier ) {
         return Arrays.stream( values() ).filter( gameRule -> gameRule.getIdentifier().equalsIgnoreCase( identifier ) ).findFirst().orElseGet( null );
     }

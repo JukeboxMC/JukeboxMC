@@ -4,6 +4,7 @@ import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.Biome;
+import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 
@@ -17,7 +18,7 @@ public class FlatGenerator extends Generator {
     private final Block blockDirt;
     private final Block blockBedrock;
 
-    public FlatGenerator() {
+    public FlatGenerator( World world ) {
         this.blockGrass = Block.create( BlockType.GRASS );
         this.blockDirt = Block.create( BlockType.DIRT );
         this.blockBedrock = Block.create( BlockType.BEDROCK );
