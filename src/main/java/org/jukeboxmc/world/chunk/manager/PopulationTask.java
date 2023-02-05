@@ -15,23 +15,23 @@ import java.util.function.BiFunction;
  * @author LucGamesYT
  * @version 1.0
  */
-@NoArgsConstructor (access = AccessLevel.PRIVATE)
+@NoArgsConstructor ( access = AccessLevel.PRIVATE )
 public class PopulationTask implements BiFunction<Chunk, List<Chunk>, Chunk> {
 
     public static final PopulationTask INSTANCE = new PopulationTask();
 
     @Override
     public Chunk apply( Chunk chunk, List<Chunk> chunks ) {
-        if (chunk.isPopulated()) {
+        if ( chunk.isPopulated() ) {
             return chunk;
         }
         chunks.add( chunk );
 
         Set<Lock> locks = new HashSet<>();
         for ( Chunk value : chunks ) {
-            //Lock lock = value.getWriteLock();
-           // lock.lock();
-            //locks.add( lock );
+            Lock lock = value.getWriteLock();
+            lock.lock();
+            locks.add( lock );
         }
         try {
             chunk.getWorld().getGenerator( chunk.getDimension() ).populate( new PopulationChunkManager( chunk, chunks ), chunk.getX(), chunk.getZ() );
@@ -39,7 +39,7 @@ public class PopulationTask implements BiFunction<Chunk, List<Chunk>, Chunk> {
             chunk.setDirty( true );
         } finally {
             for ( Lock lock : locks ) {
-            //    lock.unlock();
+                lock.unlock();
             }
         }
 

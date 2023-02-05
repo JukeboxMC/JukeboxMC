@@ -11,6 +11,9 @@ import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.world.chunk.Chunk;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -85,6 +88,21 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         }
     }
 
+    private byte[] getBytesFromObject( Object object ) {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream( bos );
+            oos.writeObject( object );
+            byte[] bytes = bos.toByteArray();
+            bos.close();
+            oos.close();
+            return bytes;
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
+
     private void move( Player target, Player player ) {
         MoveEntityAbsolutePacket moveAbsolutePacket = new MoveEntityAbsolutePacket();
         moveAbsolutePacket.setRuntimeEntityId( target.getEntityId() );
@@ -94,4 +112,6 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         moveAbsolutePacket.setTeleported( false );
         player.getPlayerConnection().sendPacket( moveAbsolutePacket );
     }
+
+
 }

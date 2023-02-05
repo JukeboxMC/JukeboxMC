@@ -63,28 +63,34 @@ public class Vector implements Cloneable {
         return new Vector( 0, 0, 0 );
     }
 
-    public static Vector up() {
-        return new Vector( 0, 1, 0 );
+    public Vector up() {
+        return new Vector( this.x, this.y + 1, this.z );
     }
 
-    public static Vector down() {
-        return new Vector( 0, -1, 0 );
+    public Vector down() {
+        return new Vector( this.x, this.y - 1, this.z );
     }
 
-    public static Vector north() {
-        return new Vector( 0, 0, -1 );
+    public Vector north() {
+        return new Vector( this.x, this.y, this.z -1 );
     }
 
-    public static Vector east() {
-        return new Vector( 1, 0, 0 );
+    public Vector east() {
+        return new Vector( this.x + 1, this.y, this.z );
     }
 
-    public static Vector south() {
-        return new Vector( 0, 0, 1 );
+    public Vector south() {
+        return new Vector( this.x, this.y, this.z + 1 );
     }
 
-    public static Vector west() {
-        return new Vector( -1, 0, 0 );
+    public Vector west() {
+        return new Vector( this.x -1, this.y, this.z );
+    }
+
+    public void setVector( int x, int y, int z ) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public float getX() {
@@ -231,7 +237,7 @@ public class Vector implements Cloneable {
 
     @SneakyThrows
     @Override
-    public Vector clone(){
+    public Vector clone() {
         Vector clone = (Vector) super.clone();
         clone.x = this.x;
         clone.y = this.y;

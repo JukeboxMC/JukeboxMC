@@ -22,7 +22,6 @@ import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Biome;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkState;
@@ -66,6 +65,7 @@ public class LevelDB {
             if ( version == null ) {
                 return null;
             }
+
             byte[] finalized = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x36 ) );
             if ( finalized == null ) {
                 chunk.setChunkState( ChunkState.FINISHED );
@@ -144,9 +144,12 @@ public class LevelDB {
             Palette<Biome> last = null;
             Palette<Biome> biomePalette;
             for ( int y = chunk.getMinY() >> 4; y < ( chunk.getMaxY() + 1 ) >> 4; y++ ) {
-                biomePalette = chunk.getOrCreateSubChunk( chunk.getSubY( y << 4 ) ).getBiomes();
-                biomePalette.readFromStorageRuntime( buffer, Biome::findById, last );
-                last = biomePalette;
+                try {
+                    biomePalette = chunk.getOrCreateSubChunk( chunk.getSubY( y << 4 ) ).getBiomes();
+                    biomePalette.readFromStorageRuntime( buffer, Biome::findById, last );
+                    last = biomePalette;
+                } catch ( Exception ignored ) {
+                }
             }
         } finally {
             buffer.release();

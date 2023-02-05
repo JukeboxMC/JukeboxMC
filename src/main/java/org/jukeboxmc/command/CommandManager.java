@@ -30,6 +30,7 @@ public class CommandManager {
                 EnchantCommand.class,
                 GameRuleCommand.class,
                 StatusCommand.class,
+                LocateCommand.class,
                 TimeCommand.class
         );
 

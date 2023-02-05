@@ -10,12 +10,15 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.event.world.ChunkLoadEvent;
+import org.jukeboxmc.event.world.ChunkUnloadEvent;
 import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,6 +103,8 @@ public final class ChunkManager {
             chunk.generate();
         }
 
+        Server.getInstance().getPluginManager().callEvent( new ChunkLoadEvent( this.world, chunk.getChunk() ) );
+
         return chunk.getFuture();
     }
 
@@ -129,7 +134,12 @@ public final class ChunkManager {
     }
 
     public boolean unloadChunk( long chunkKey, boolean save, boolean safe ) {
-        boolean result = unloadChunk0( chunkKey, save, safe );
+        Chunk loadedChunk = this.getLoadedChunk( chunkKey );
+        if ( loadedChunk == null ) return false;
+        ChunkUnloadEvent chunkUnloadEvent = new ChunkUnloadEvent( this.world, loadedChunk, save );
+        Server.getInstance().getPluginManager().callEvent( chunkUnloadEvent );
+        if ( chunkUnloadEvent.isCancelled() ) return false;
+        boolean result = unloadChunk0( chunkKey, chunkUnloadEvent.isSaveChunk(), safe );
         if ( result ) {
             this.chunks.remove( chunkKey );
         }
@@ -195,7 +205,7 @@ public final class ChunkManager {
         // Spawn chunk
         final int spawnX = this.world.getSpawnLocation().getChunkX();
         final int spawnZ = this.world.getSpawnLocation().getChunkZ();
-        final int spawnRadius = 4;//server.getConfiguration().getAdvanced().getSpawnChunkRadius();
+        final int spawnRadius = Server.getInstance().getViewDistance();
 
         // Do chunk garbage collection
         ObjectIterator<Long2ObjectMap.Entry<LoadingChunk>> iterator = this.chunks.long2ObjectEntrySet().iterator();
@@ -223,7 +233,14 @@ public final class ChunkManager {
                 continue;
             }
 
-            if ( this.unloadChunk0( chunkKey, true, true ) ) {
+            ChunkUnloadEvent chunkUnloadEvent = new ChunkUnloadEvent( this.world, chunk, true );
+            Server.getInstance().getPluginManager().callEvent( chunkUnloadEvent );
+
+            if ( chunkUnloadEvent.isCancelled() ) {
+                return;
+            }
+
+            if ( this.unloadChunk0( chunkKey, chunkUnloadEvent.isSaveChunk(), true ) ) {
                 iterator.remove();
             }
         }

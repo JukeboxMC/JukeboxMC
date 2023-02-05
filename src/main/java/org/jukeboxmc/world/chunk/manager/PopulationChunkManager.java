@@ -2,6 +2,7 @@ package org.jukeboxmc.world.chunk.manager;
 
 import com.google.common.base.Preconditions;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.List;
@@ -48,8 +49,20 @@ public class PopulationChunkManager {
         return this.chunkFromBlock( x, z ).getBlock( x, y, z, layer );
     }
 
+    public Block getBlock( Vector vector ) {
+        return this.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), 0 );
+    }
+
     public Block getBlock( int x, int y, int z ) {
         return this.getBlock( x, y, z, 0 );
+    }
+
+    public void setBlock( Vector vector, int layer, Block block ) {
+        this.chunkFromBlock( vector.getBlockX(), vector.getBlockZ() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
+    }
+
+    public void setBlock( Vector vector, Block block ) {
+        this.chunkFromBlock( vector.getBlockX(), vector.getBlockZ() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), 0, block );
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
