@@ -57,6 +57,8 @@ public class Item implements Cloneable {
     protected boolean unbreakable;
 
     private ItemProperties itemProperties;
+    
+    protected ItemLockType itemLockType;
 
     public Item( Identifier identifier ) {
         this( identifier, true );
@@ -81,6 +83,7 @@ public class Item implements Cloneable {
         this.canBreak = new LinkedList<>();
         this.enchantments = new HashMap<>();
         this.itemProperties = ItemRegistry.getItemProperties( identifier );
+        this.itemLockType = ItemLockType.NONE;
     }
 
     public Item( ItemType itemType ) {
@@ -112,6 +115,7 @@ public class Item implements Cloneable {
         this.canBreak = new LinkedList<>();
         this.enchantments = new HashMap<>();
         this.itemProperties = ItemRegistry.getItemProperties( this.identifier );
+        this.itemLockType = ItemLockType.NONE;
     }
 
     public Item( ItemData itemData ) {
@@ -137,6 +141,7 @@ public class Item implements Cloneable {
         this.canBreak = new LinkedList<>();
         this.enchantments = new HashMap<>();
         this.itemProperties = ItemRegistry.getItemProperties( identifier );
+        this.itemLockType = ItemLockType.NONE;
 
         if ( this.nbt != null ) {
             this.fromNbt( this.nbt );
@@ -410,6 +415,20 @@ public class Item implements Cloneable {
         this.unbreakable = unbreakable;
         return this;
     }
+    
+     public Item setItemLockType( ItemLockType locktype ){
+        this.itemLockType = locktype;
+        return this;
+    }
+
+    private Item setItemLockType( int locktype ){
+        this.itemLockType = ItemLockType.values()[locktype];
+        return this;
+    }
+
+    public ItemLockType getItemLockType() {
+        return this.itemLockType;
+    }
 
     public Block toBlock() {
         if ( this.blockRuntimeId == 0 ) {
@@ -450,6 +469,9 @@ public class Item implements Cloneable {
                 nbtBuilder.putList( "ench", NbtType.COMPOUND, Collections.emptyList() );
             }
         }
+        if ( !itemLockType.equals( ItemLockType.NONE ) ){
+            nbtBuilder.putByte( "minecraft:item_lock", (byte) itemLockType.ordinal() );
+        }
         return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
     }
 
@@ -467,6 +489,9 @@ public class Item implements Cloneable {
                 this.addEnchantment( EnchantmentRegistry.getEnchantmentType( id ), level );
             }
         } );
+        if( nbtMap.containsKey( "minecraft:item_lock", NbtType.BYTE ) ){
+            nbtMap.listenForByte( "minecraft:item_lock", this::setItemLockType );
+        }
     }
 
     public ItemData toItemData() {
