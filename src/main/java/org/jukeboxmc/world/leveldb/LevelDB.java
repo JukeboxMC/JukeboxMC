@@ -78,7 +78,7 @@ public class LevelDB {
                 final int arrayIndex = subChunkIndex + ( Math.abs( chunk.getMinY() ) >> 4 );
 
                 if ( chunkData != null ) {
-                    this.loadSection( chunk.getOrCreateSubChunk( arrayIndex ), chunkData );
+                    this.loadSection( chunk.getOrCreateSubChunk( arrayIndex, true ), chunkData );
                 }
             }
 

@@ -46,6 +46,12 @@ public class NormalGenerator extends Generator {
     private final long localSeed1;
     private final long localSeed2;
 
+    private PerlinOctaveGenerator heightGenerator;
+    private PerlinOctaveGenerator roughnessGenerator;
+    private PerlinOctaveGenerator roughness2Generator;
+    private PerlinOctaveGenerator detailGenerator;
+    private SimplexOctaveGenerator surfaceGenerator;
+
     public static final int WATER_HEIGHT = 64;
 
     private final Set<Populator> populators = new HashSet<>();
@@ -53,7 +59,6 @@ public class NormalGenerator extends Generator {
     private static final Map<Biome, GroundGenerator> GROUND_MAP = new HashMap<>();
     private static final double[][] ELEVATION_WEIGHT = new double[5][5];
     private final double[][][] density = new double[5][5][33];
-    private final Map<String, Map<String, OctaveGenerator>> octaveCache = Maps.newHashMap();
 
     private final GroundGenerator groundGenerator = new GroundGenerator();
 
@@ -114,6 +119,28 @@ public class NormalGenerator extends Generator {
         this.localSeed1 = ThreadLocalRandom.current().nextLong();
         this.localSeed2 = ThreadLocalRandom.current().nextLong();
 
+        this.heightGenerator = new PerlinOctaveGenerator( this.random, 16, 5, 5 );
+        this.heightGenerator.setXScale( 200 );
+        this.heightGenerator.setZScale( 200 );
+
+        this.roughnessGenerator = new PerlinOctaveGenerator( this.random, 16, 5, 33, 5 );
+        this.roughnessGenerator.setXScale( 684.412D );
+        this.roughnessGenerator.setYScale( 684.412D );
+        this.roughnessGenerator.setZScale( 684.412D );
+
+        this.roughness2Generator = new PerlinOctaveGenerator( this.random, 16, 5, 33, 5 );
+        this.roughness2Generator.setXScale( 684.412D );
+        this.roughness2Generator.setYScale( 684.412D );
+        this.roughness2Generator.setZScale( 684.412D );
+
+        this.detailGenerator = new PerlinOctaveGenerator( this.random, 8, 5, 33, 5 );
+        this.detailGenerator.setXScale( 684.412D / 80D );
+        this.detailGenerator.setYScale( 684.412D / 160D );
+        this.detailGenerator.setZScale( 684.412D / 80D );
+
+        this.surfaceGenerator = new SimplexOctaveGenerator( this.random, 4, 16, 16 );
+        this.surfaceGenerator.setScale( 0.0625D );
+
         this.blockStone = Block.create( BlockType.STONE );
         this.blockWater = Block.create( BlockType.WATER );
         this.blockBedrock = Block.create( BlockType.BEDROCK );
@@ -135,6 +162,7 @@ public class NormalGenerator extends Generator {
         ) );
     }
 
+
     @Override
     public void generate( Chunk chunk, int chunkX, int chunkZ ) {
         this.random.setSeed( chunkX * this.localSeed1 ^ chunkZ * this.localSeed2 ^ this.world.getSeed() );
@@ -143,11 +171,10 @@ public class NormalGenerator extends Generator {
 
         int[] biomeGrid = this.biomeGrid[1].generateValues( x - 2, z - 2, 10, 10 );
 
-        Map<String, OctaveGenerator> octaves = this.getWorldOctaves();
-        double[] heightNoise = ( (PerlinOctaveGenerator) octaves.get( "height" ) ).getFractalBrownianMotion( x, z, 0.5d, 2d );
-        double[] roughnessNoise = ( (PerlinOctaveGenerator) octaves.get( "roughness" ) ).getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
-        double[] roughnessNoise2 = ( (PerlinOctaveGenerator) octaves.get( "roughness2" ) ).getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
-        double[] detailNoise = ( (PerlinOctaveGenerator) octaves.get( "detail" ) ).getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
+        double[] heightNoise = this.heightGenerator.getFractalBrownianMotion( x, z, 0.5d, 2d );
+        double[] roughnessNoise = this.roughnessGenerator.getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
+        double[] roughnessNoise2 = this.roughness2Generator.getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
+        double[] detailNoise = this.detailGenerator.getFractalBrownianMotion( x, 0, z, 0.5d, 2d );
 
         int index = 0;
         int indexHeight = 0;
@@ -260,14 +287,14 @@ public class NormalGenerator extends Generator {
             biomes.biomes[i] = (byte) biomeValues[i];
         }
 
-        SimplexOctaveGenerator octaveGenerator = ( (SimplexOctaveGenerator) getWorldOctaves().get( "surface" ) );
+        SimplexOctaveGenerator octaveGenerator = this.surfaceGenerator;
         int sizeX = octaveGenerator.getSizeX();
         int sizeZ = octaveGenerator.getSizeZ();
 
         double[] surfaceNoise = octaveGenerator.getFractalBrownianMotion( cx, cz, 0.5d, 0.5d );
         for ( int sx = 0; sx < sizeX; sx++ ) {
             for ( int sz = 0; sz < sizeZ; sz++ ) {
-                GROUND_MAP.getOrDefault( biomes.getBiome( sx, sz ), groundGenerator ).generateTerrainColumn( chunk, random, cx + sx, cz + sz, surfaceNoise[sx | sz << 4] );
+                GROUND_MAP.getOrDefault( biomes.getBiome( sx, sz ), this.groundGenerator ).generateTerrainColumn( chunk, this.random, cx + sx, cz + sz, surfaceNoise[sx | sz << 4] );
                 for ( int y = chunk.getMinY(); y < chunk.getMaxY(); y++ ) {
                     chunk.setBiome( sx, y, sz, biomes.getBiome( sx, sz ) );
                 }
@@ -305,44 +332,6 @@ public class NormalGenerator extends Generator {
     @Override
     public Vector getSpawnLocation() {
         return new Vector( 0, 100, 0 );
-    }
-
-    private Map<String, OctaveGenerator> getWorldOctaves() {
-        Map<String, OctaveGenerator> octaves = this.octaveCache.get( "normal" );
-        if ( octaves == null ) {
-            octaves = Maps.newHashMap();
-            Random seed = new Random( this.world.getSeed() );
-
-            OctaveGenerator gen = new PerlinOctaveGenerator( seed, 16, 5, 5 );
-            gen.setXScale( 200d );
-            gen.setZScale( 200d );
-            octaves.put( "height", gen );
-
-            gen = new PerlinOctaveGenerator( seed, 16, 5, 33, 5 );
-            gen.setXScale( 684.412d );
-            gen.setYScale( 684.412d );
-            gen.setZScale( 684.412d );
-            octaves.put( "roughness", gen );
-
-            gen = new PerlinOctaveGenerator( seed, 16, 5, 33, 5 );
-            gen.setXScale( 684.412d );
-            gen.setYScale( 684.412d );
-            gen.setZScale( 684.412d );
-            octaves.put( "roughness2", gen );
-
-            gen = new PerlinOctaveGenerator( seed, 8, 5, 33, 5 );
-            gen.setXScale( 684.412d / 80d );
-            gen.setYScale( 684.412d / 160d );
-            gen.setZScale( 684.412d / 80d );
-            octaves.put( "detail", gen );
-
-            gen = new SimplexOctaveGenerator( seed, 4, 16, 16 );
-            gen.setScale( 0.0625d );
-            octaves.put( "surface", gen );
-
-            this.octaveCache.put( "normal", octaves );
-        }
-        return octaves;
     }
 
     private static void setBiomeHeight( BiomeHeight height, Biome... biomes ) {

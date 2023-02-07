@@ -67,11 +67,6 @@ public class GroundGenerator {
                     }
                 }
             }
-            /*
-             else if ( blockType == Block.STILL_WATER && y == seaLevel - 2 && BiomeClimate.isCold( biome, chunkX, y, chunkZ ) ) {
-                chunk.setBlock( x, y, z, ICE );
-            }
-             */
         }
     }
 }

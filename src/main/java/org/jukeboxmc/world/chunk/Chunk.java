@@ -35,7 +35,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 
 /**
  * @author LucGamesYT
@@ -43,11 +42,10 @@ import java.util.stream.Collectors;
  */
 public class Chunk {
 
-    private static final Block BLOCK_AIR = Block.create( BlockType.AIR );
     public static final int CHUNK_LAYERS = 2;
     public static final int CHUNK_VERSION = 40;
     public static final int SUB_CHUNK_VERSION = 9;
-
+    private static final Block BLOCK_AIR = Block.create( BlockType.AIR );
     private final World world;
     private final Dimension dimension;
     private final int x;
@@ -60,13 +58,11 @@ public class Chunk {
     private final Int2ObjectMap<BlockEntity> blockEntities;
     private final SubChunk[] subChunks;
     private final short[] height;
-
+    private final Lock writeLock;
+    private final Lock readLock;
+    private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
     private boolean dirty;
     private ChunkState chunkState;
-    private final Lock writeLock;
-   // private final Lock readLock;
-
-    private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
 
     public Chunk( World world, Dimension dimension, int x, int z ) {
         this.world = world;
@@ -89,9 +85,9 @@ public class Chunk {
         this.subChunks = new SubChunk[this.fullHeight >> 4];
         this.height = new short[16 * 16];
         this.chunkState = ChunkState.NEW;
-       // this.readLock = lock.readLock();
         ReadWriteLock lock = new ReentrantReadWriteLock();
         this.writeLock = lock.writeLock();
+        this.readLock = lock.readLock();
     }
 
     public Lock getWriteLock() {
@@ -217,18 +213,18 @@ public class Chunk {
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
-       // this.writeLock.lock();
+        this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
             this.dirty = true;
         } finally {
-            //this.writeLock.unlock();
+            this.writeLock.unlock();
         }
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
-       // this.readLock.lock();
+        this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
                 return BLOCK_AIR;
@@ -243,7 +239,7 @@ public class Chunk {
             block.setLayer( layer );
             return block;
         } finally {
-         //   this.readLock.unlock();
+            this.readLock.unlock();
         }
     }
 
@@ -270,23 +266,23 @@ public class Chunk {
     }
 
     public void setBiome( int x, int y, int z, Biome biome ) {
-        // this.writeLock.lock();
+        this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
             this.getOrCreateSubChunk( this.getSubY( y ) ).setBiome( x, y, z, biome );
             this.dirty = true;
         } finally {
-            //    this.writeLock.unlock();
+            this.writeLock.unlock();
         }
     }
 
     public Biome getBiome( int x, int y, int z ) {
-        //this.readLock.lock();
+        this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return null;
             return this.getOrCreateSubChunk( this.getSubY( y ) ).getBiome( x, y, z );
         } finally {
-            //this.readLock.unlock();
+            this.readLock.unlock();
         }
     }
 
@@ -295,7 +291,11 @@ public class Chunk {
     }
 
     public SubChunk getOrCreateSubChunk( int subY ) {
-      //  this.readLock.lock();
+        return this.getOrCreateSubChunk( subY, false );
+    }
+
+    public SubChunk getOrCreateSubChunk( int subY, boolean lock ) {
+        if ( lock ) this.writeLock.lock();
         try {
             for ( int y = 0; y <= subY; y++ ) {
                 if ( this.subChunks[y] == null ) {
@@ -304,7 +304,7 @@ public class Chunk {
             }
             return this.subChunks[subY];
         } finally {
-         //   this.readLock.unlock();
+            if ( lock ) this.writeLock.unlock();
         }
     }
 

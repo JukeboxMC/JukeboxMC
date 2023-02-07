@@ -21,9 +21,9 @@ public class SimplexOctaveGenerator extends OctaveGenerator {
     }
 
     /**
-     * Creates a simplex octave generator for the given {@link NukkitRandom}
+     * Creates a simplex octave generator for the given {@link Random}
      *
-     * @param rand    NukkitRandom object to construct this generator for
+     * @param rand    Random object to construct this generator for
      * @param octaves Amount of octaves to create
      */
     public SimplexOctaveGenerator( Random rand, int octaves ) {
