@@ -39,14 +39,18 @@ public class BlockSand extends Block {
 
     @Override
     public long onUpdate( UpdateReason updateReason ) {
-        Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
-        if ( blockDown.getType().equals( BlockType.AIR ) ) {
-            this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
+        if ( updateReason.equals( UpdateReason.NORMAL ) ) {
+            this.location.getWorld().scheduleBlockUpdate( this.location, 1 );
+        } else if ( updateReason.equals( UpdateReason.SCHEDULED ) ) {
+            Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
+            if ( blockDown.getType().equals( BlockType.AIR ) ) {
+                this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
 
-            EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
-            entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
-            entity.setBlock( this );
-            entity.spawn();
+                EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
+                entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
+                entity.setBlock( this );
+                entity.spawn();
+            }
         }
         return -1;
     }
