@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.SandType;
@@ -9,6 +10,7 @@ import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.passiv.EntityFallingBlock;
+import org.jukeboxmc.event.block.FallingBlockEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemSand;
@@ -44,11 +46,16 @@ public class BlockSand extends Block {
         } else if ( updateReason.equals( UpdateReason.SCHEDULED ) ) {
             Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
             if ( blockDown.getType().equals( BlockType.AIR ) ) {
-                this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
-
                 EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
                 entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
                 entity.setBlock( this );
+
+                FallingBlockEvent fallingBlockEvent = new FallingBlockEvent( this, entity );
+                Server.getInstance().getPluginManager().callEvent( fallingBlockEvent );
+                if ( fallingBlockEvent.isCancelled() ) {
+                    return -1;
+                }
+                this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
                 entity.spawn();
             }
         }
