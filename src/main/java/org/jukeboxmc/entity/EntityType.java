@@ -12,6 +12,7 @@ public enum EntityType {
     ARROW,
     SNOWBALL,
     FISHING_HOOK,
-    EGG
+    EGG,
+    FALLING_BLOCK
 
 }

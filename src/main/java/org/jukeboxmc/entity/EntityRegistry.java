@@ -1,6 +1,7 @@
 package org.jukeboxmc.entity;
 
 import org.jukeboxmc.entity.item.EntityItem;
+import org.jukeboxmc.entity.passiv.EntityFallingBlock;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.entity.passiv.EntityNPC;
 import org.jukeboxmc.entity.projectile.EntityArrow;
@@ -27,6 +28,7 @@ public class EntityRegistry {
         register( EntityType.FISHING_HOOK, EntityFishingHook.class );
         register( EntityType.SNOWBALL, EntitySnowball.class );
         register( EntityType.EGG, EntityEgg.class );
+        register( EntityType.FALLING_BLOCK, EntityFallingBlock.class );
     }
 
     private static void register( EntityType entityType, Class<? extends Entity> entityClazz ) {

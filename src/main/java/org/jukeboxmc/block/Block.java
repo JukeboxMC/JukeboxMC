@@ -505,7 +505,7 @@ public class Block implements Cloneable {
     }
 
     public List<Item> getDrops( Item item ) {
-        if ( this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) {
+        if ( item == null || (this.isCorrectToolType( item ) && this.isCorrectTierType( item ) )) {
             return Collections.singletonList( this.toItem() );
         }
         return Collections.emptyList();

@@ -254,4 +254,8 @@ public class Vector implements Cloneable {
                 ", dimension=" + dimension +
                 '}';
     }
+
+    public Vector round() {
+        return new Vector( Math.round( this.x ), Math.round( this.y ), Math.round( this.z ) );
+    }
 }
