@@ -3,15 +3,12 @@ package org.jukeboxmc.block.behavior;
 import com.nukkitx.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.block.data.SandType;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.passiv.EntityFallingBlock;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.behavior.ItemSand;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
@@ -21,13 +18,13 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSand extends Block {
+public class BlockGravel extends Block {
 
-    public BlockSand( Identifier identifier ) {
+    public BlockGravel( Identifier identifier ) {
         super( identifier );
     }
 
-    public BlockSand( Identifier identifier, NbtMap blockStates ) {
+    public BlockGravel( Identifier identifier, NbtMap blockStates ) {
         super( identifier, blockStates );
     }
 
@@ -53,18 +50,5 @@ public class BlockSand extends Block {
             }
         }
         return -1;
-    }
-
-    @Override
-    public Item toItem() {
-        return Item.<ItemSand>create( ItemType.SAND ).setSandType( this.getSandType() );
-    }
-
-    public BlockSand setSandType( SandType sandType ) {
-        return this.setState( "sand_type", sandType.name().toLowerCase() );
-    }
-
-    public SandType getSandType() {
-        return this.stateExists( "sand_type" ) ? SandType.valueOf( this.getStringState( "sand_type" ) ) : SandType.NORMAL;
     }
 }

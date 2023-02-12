@@ -385,7 +385,7 @@ public class BlockRegistry {
         register( BlockType.GRANITE_STAIRS, Identifier.fromString( "minecraft:granite_stairs" ), BlockStairs.class );
         register( BlockType.GRASS, Identifier.fromString( "minecraft:grass" ), BlockGrass.class );
         register( BlockType.GRASS_PATH, Identifier.fromString( "minecraft:grass_path" ) );
-        register( BlockType.GRAVEL, Identifier.fromString( "minecraft:gravel" ) );
+        register( BlockType.GRAVEL, Identifier.fromString( "minecraft:gravel" ), BlockGravel.class );
         register( BlockType.GRAY_CANDLE, Identifier.fromString( "minecraft:gray_candle" ), BlockCandle.class );
         register( BlockType.GRAY_CANDLE_CAKE, Identifier.fromString( "minecraft:gray_candle_cake" ) );
         register( BlockType.GRAY_GLAZED_TERRACOTTA, Identifier.fromString( "minecraft:gray_glazed_terracotta" ) );
