@@ -49,6 +49,7 @@ public class EntityFallingBlock extends EntityMoveable {
                 }
             }
         }
+        this.updateMovement();
     }
 
     @Override
