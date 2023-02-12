@@ -18,6 +18,7 @@ import org.jukeboxmc.block.palette.Palette;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Location;
+import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.NonStream;
@@ -221,6 +222,10 @@ public class Chunk {
         } finally {
             this.writeLock.unlock();
         }
+    }
+
+    public void setBlock( Vector position, int layer, Block block ) {
+        this.setBlock( position.getBlockX(), position.getBlockY(), position.getBlockZ(), layer, block );
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {
