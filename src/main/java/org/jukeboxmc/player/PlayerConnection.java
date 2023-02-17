@@ -115,6 +115,17 @@ public class PlayerConnection {
         this.player.getArmorInventory().removeViewer( this.player );
         this.player.getCursorInventory().removeViewer( this.player );
 
+        this.player.getCreativeItemCacheInventory().removeViewer( this.player );
+        this.player.getCraftingGridInventory().removeViewer( this.player );
+        this.player.getCraftingTableInventory().removeViewer( this.player );
+        this.player.getCartographyTableInventory().removeViewer( this.player );
+        this.player.getSmithingTableInventory().removeViewer( this.player );
+        this.player.getAnvilInventory().removeViewer( this.player );
+        this.player.getEnderChestInventory().removeViewer( this.player );
+        this.player.getStoneCutterInventory().removeViewer( this.player );
+        this.player.getGrindstoneInventory().removeViewer( this.player );
+        this.player.getOffHandInventory().removeViewer( this.player );
+
         this.server.removeFromTabList( this.player );
 
         this.playerChunkManager.clear();
