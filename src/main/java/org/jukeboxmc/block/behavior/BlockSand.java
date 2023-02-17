@@ -41,23 +41,19 @@ public class BlockSand extends Block {
 
     @Override
     public long onUpdate( UpdateReason updateReason ) {
-        if ( updateReason.equals( UpdateReason.NORMAL ) ) {
-            this.location.getWorld().scheduleBlockUpdate( this.location, 1 );
-        } else if ( updateReason.equals( UpdateReason.SCHEDULED ) ) {
-            Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
-            if ( blockDown.getType().equals( BlockType.AIR ) ) {
-                EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
-                entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
-                entity.setBlock( this );
+        Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
+        if ( blockDown.getType().equals( BlockType.AIR ) ) {
+            EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
+            entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
+            entity.setBlock( this );
 
-                FallingBlockEvent fallingBlockEvent = new FallingBlockEvent( this, entity );
-                Server.getInstance().getPluginManager().callEvent( fallingBlockEvent );
-                if ( fallingBlockEvent.isCancelled() ) {
-                    return -1;
-                }
-                this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
-                entity.spawn();
+            FallingBlockEvent fallingBlockEvent = new FallingBlockEvent( this, entity );
+            Server.getInstance().getPluginManager().callEvent( fallingBlockEvent );
+            if ( fallingBlockEvent.isCancelled() ) {
+                return -1;
             }
+            this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
+            entity.spawn();
         }
         return -1;
     }
