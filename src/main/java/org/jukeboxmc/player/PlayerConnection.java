@@ -121,7 +121,7 @@ public class PlayerConnection {
         this.player.getCartographyTableInventory().removeViewer( this.player );
         this.player.getSmithingTableInventory().removeViewer( this.player );
         this.player.getAnvilInventory().removeViewer( this.player );
-        this.player.getEnderChestInventory().removeViewer( this.player );
+        //this.player.getEnderChestInventory().removeViewer( this.player );
         this.player.getStoneCutterInventory().removeViewer( this.player );
         this.player.getGrindstoneInventory().removeViewer( this.player );
         this.player.getOffHandInventory().removeViewer( this.player );
