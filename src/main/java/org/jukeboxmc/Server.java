@@ -292,7 +292,7 @@ public class Server {
         serverConfig.addDefault( "generator", "flat" );
         serverConfig.addDefault( "online-mode", true );
         serverConfig.addDefault( "forceResourcePacks", false );
-        serverConfig.addDefault( "compression", "snappy" );
+        serverConfig.addDefault( "compression", "zlib" );
         serverConfig.save();
 
         this.serverAddress = serverConfig.getString( "address" );
@@ -310,8 +310,7 @@ public class Server {
 
         String compression = serverConfig.getString( "compression" );
 
-        //Snappy is used as default since v554 (1.19.30)
-        this.compressionAlgorithm = PacketCompressionAlgorithm.SNAPPY;
+        this.compressionAlgorithm = PacketCompressionAlgorithm.ZLIB;
 
         for ( PacketCompressionAlgorithm algorithm : PacketCompressionAlgorithm.values() ) {
             if ( algorithm.name().equalsIgnoreCase( compression ) ) {
