@@ -1,10 +1,8 @@
-name: Java CI with Maven
+name: Prerelease Java CI with Maven
 
 on:
   push:
-    tags:
-      - 'v*'
-
+    branches: [master]
 jobs:
   build:
 
@@ -25,10 +23,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: JukeboxMC ${{ github.ref }}
+          tag_name: pre-${{ github.run_number }}
+          release_name: JukeboxMC pre-${{ github.run_number }}
           draft: false
-          prerelease: false
+          prerelease: true
       - name: Upload JukeboxMC to Release
         uses: actions/upload-release-asset@v1
         env:
