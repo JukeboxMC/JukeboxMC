@@ -1,5 +1,8 @@
 package org.jukeboxmc.block;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -735,9 +738,32 @@ public enum BlockType {
     WOODEN_DOOR,
     WOODEN_PRESSURE_PLATE,
     WOODEN_SLAB,
-    WOOL,
+    WHITE_WOOL,
+    ORANGE_WOOL,
+    MAGENTA_WOOL,
+    LIGHT_BLUE_WOOL,
+    YELLOW_WOOL,
+    LIME_WOOL,
+    PINK_WOOL,
+    GRAY_WOOL,
+    SILVER_WOOL,
+    CYAN_WOOL,
+    PURPLE_WOOL,
+    BLUE_WOOL,
+    BROWN_WOOL,
+    GREEN_WOOL,
+    RED_WOOL,
+    BLACK_WOOL,
     YELLOW_CANDLE,
     YELLOW_CANDLE_CAKE,
     YELLOW_FLOWER,
-    YELLOW_GLAZED_TERRACOTTA
+    YELLOW_GLAZED_TERRACOTTA;
+
+    private static final List<BlockType> woolTypes = Arrays.asList(WHITE_WOOL, ORANGE_WOOL, LIGHT_BLUE_WOOL,
+            MAGENTA_WOOL, YELLOW_WOOL, LIME_WOOL, PINK_WOOL, GRAY_WOOL, SILVER_WOOL, CYAN_WOOL, PURPLE_WOOL,
+            BLUE_WOOL, BROWN_WOOL, GREEN_WOOL, RED_WOOL, BLACK_WOOL);
+
+    public boolean isWool(BlockType blockType) {
+        return BlockType.woolTypes.contains(blockType);
+    }
 }

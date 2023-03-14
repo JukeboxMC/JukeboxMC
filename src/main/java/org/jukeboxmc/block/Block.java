@@ -397,7 +397,7 @@ public class Block implements Cloneable {
     private double toolBreakTimeBonus0( ToolType itemToolType, TierType itemTierType, BlockType blockType ) {
         if ( itemToolType.equals( ToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
         if ( itemToolType.equals( ToolType.SHEARS ) ) {
-            if ( blockType.equals( BlockType.WOOL ) ||
+            if ( blockType.isWool(blockType) ||
                     blockType.equals( BlockType.LEAVES ) ||
                     blockType.equals( BlockType.LEAVES2 ) ) {
                 return 5.0;
