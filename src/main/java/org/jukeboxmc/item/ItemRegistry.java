@@ -1027,6 +1027,7 @@ public class ItemRegistry {
         register( ItemType.TROPICAL_FISH, new ItemRegistryData( Identifier.fromString( "minecraft:tropical_fish" ), ItemTropicalFish.class ) );
         register( ItemType.TROPICAL_FISH_BUCKET, new ItemRegistryData( Identifier.fromString( "minecraft:tropical_fish_bucket" ), ItemBucket.class ) );
         register( ItemType.TROPICAL_FISH_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:tropical_fish_spawn_egg" ) ) );
+        register( ItemType.TORCHFLOWER_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:torchflower_seeds" ) ) );
         register( ItemType.TUFF, new ItemRegistryData( Identifier.fromString( "minecraft:tuff" ) ) );
         register( ItemType.TURTLE_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:turtle_egg" ) ) );
         register( ItemType.TURTLE_HELMET, new ItemRegistryData( Identifier.fromString( "minecraft:turtle_helmet" ), ItemTurtleHelmet.class ) );
