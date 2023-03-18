@@ -26,6 +26,10 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -57,9 +61,9 @@
             <version>2.14.0</version>
         </dependency>
         <dependency>
-            <groupId>com.nukkitx.protocol</groupId>
-            <artifactId>bedrock-v567</artifactId>
-            <version>2.9.17-SNAPSHOT</version>
+            <groupId>com.github.Kaooot.Protocol</groupId>
+            <artifactId>bedrock-v575</artifactId>
+            <version>develop-28a683eab5-1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
