@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.world.World;
@@ -20,7 +21,7 @@ public class CactusPopulator extends Populator {
     private final Block BLOCK_CACTUS = Block.create( BlockType.CACTUS );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         for ( int i = 0; i < amount; ++i ) {
@@ -46,7 +47,7 @@ public class CactusPopulator extends Populator {
         }
     }
 
-    public boolean canStayCactus( Chunk chunk, int x, int y, int z ) {
+    public boolean canStayCactus(@NotNull Chunk chunk, int x, int y, int z ) {
         Block block = chunk.getBlock( x, y, z, 0 );
         boolean val1 = block.getType().equals( BlockType.AIR ) || block.getType().equals( BlockType.SNOW_LAYER ) || block.getType().equals( BlockType.TALLGRASS );
         boolean val2 = this.blockBelow( chunk, x, y, z, BlockType.SAND );
@@ -55,7 +56,7 @@ public class CactusPopulator extends Populator {
         return (val1 && val2 && val4 )|| val3;
     }
 
-    private boolean isAirAround( Chunk chunk, int x, int y, int z ) {
+    private boolean isAirAround(@NotNull Chunk chunk, int x, int y, int z ) {
         boolean val1 = chunk.getBlock( x + 1, y, z, 0 ).getType().equals( BlockType.AIR );
         boolean val2 = chunk.getBlock( x - 1, y, z, 0 ).getType().equals( BlockType.AIR );
         boolean val3 = chunk.getBlock( x, y, z + 1, 0 ).getType().equals( BlockType.AIR );

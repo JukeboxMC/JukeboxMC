@@ -4,6 +4,8 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
 import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.math.Vector;
@@ -32,12 +34,12 @@ public class FakeChestInventory extends FakeInventory {
     }
 
     @Override
-    public InventoryHolder getInventoryHolder() {
+    public @Nullable InventoryHolder getInventoryHolder() {
         return null;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.CONTAINER;
     }
 
@@ -47,13 +49,13 @@ public class FakeChestInventory extends FakeInventory {
     }
 
     @Override
-    public List<Vector> onOpenChest( Player player ) {
+    public List<Vector> onOpenChest(@NotNull Player player ) {
         Vector position = new Vector( player.getBlockX(), player.getBlockY() + 2, player.getBlockZ() );
         this.placeFakeChest( player, position );
         return Collections.singletonList( position );
     }
 
-    protected void placeFakeChest( Player player, Vector position ) {
+    protected void placeFakeChest(@NotNull Player player, @NotNull Vector position ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
         updateBlockPacket.setRuntimeId( Block.create( BlockType.CHEST ).getRuntimeId() );
         updateBlockPacket.setBlockPosition( position.toVector3i() );
@@ -68,7 +70,7 @@ public class FakeChestInventory extends FakeInventory {
         player.getPlayerConnection().sendPacket( blockEntityDataPacket );
     }
 
-    private NbtMap toChestNBT( Vector position ) {
+    private NbtMap toChestNBT(@NotNull Vector position ) {
         return NbtMap.builder()
                 .putString( "id", "Chest" )
                 .putInt( "x", position.getBlockX() )

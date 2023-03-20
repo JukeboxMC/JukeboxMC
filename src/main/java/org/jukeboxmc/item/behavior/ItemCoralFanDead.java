@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockCoralFanDead;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemCoralFanDead extends Item {
 
-    private final BlockCoralFanDead block;
+    private final @NotNull BlockCoralFanDead block;
 
     public ItemCoralFanDead( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemCoralFanDead extends Item {
     }
 
     @Override
-    public ItemCoralFanDead setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemCoralFanDead setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemCoralFanDead setCoralColor( CoralColor coralColor ) {
+    public @NotNull ItemCoralFanDead setCoralColor(@NotNull CoralColor coralColor ) {
         this.blockRuntimeId = this.block.setCoralColor( coralColor ).getRuntimeId();
         return this;
     }

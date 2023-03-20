@@ -11,11 +11,14 @@ import io.netty.buffer.ByteBufOutputStream;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.palette.bitarray.BitArray;
 import org.jukeboxmc.block.palette.bitarray.BitArrayVersion;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @EqualsAndHashCode
@@ -23,24 +26,24 @@ public class Palette<V> {
 
     public static final int SIZE = 4096;
 
-    private final List<V> palette;
+    private final @NotNull List<V> palette;
     private BitArray bitArray;
 
     public Palette(V first) {
         this(first, BitArrayVersion.V2);
     }
 
-    public Palette(V first, BitArrayVersion version) {
+    public Palette(V first, @NotNull BitArrayVersion version) {
         this.bitArray = version.createArray(SIZE);
         this.palette = new ReferenceArrayList<>(16);
         this.palette.add(first);
     }
 
-    private static int getPaletteHeader(BitArrayVersion version, boolean runtime) {
+    private static int getPaletteHeader(@NotNull BitArrayVersion version, boolean runtime) {
         return (version.bits << 1) | (runtime ? 1 : 0);
     }
 
-    private static BitArrayVersion getVersionFromHeader(short header) {
+    private static @Nullable BitArrayVersion getVersionFromHeader(short header) {
         return BitArrayVersion.get(header >> 1, true);
     }
 
@@ -65,7 +68,7 @@ public class Palette<V> {
         this.bitArray.set(index, paletteIndex);
     }
 
-    public void writeToNetwork(ByteBuf byteBuf, RuntimeDataSerializer<V> serializer) {
+    public void writeToNetwork(@NotNull ByteBuf byteBuf, @NotNull RuntimeDataSerializer<V> serializer) {
         byteBuf.writeByte(getPaletteHeader(this.bitArray.getVersion(), true));
 
         for(int word : this.bitArray.getWords()) byteBuf.writeIntLE(word);
@@ -74,7 +77,7 @@ public class Palette<V> {
         for(V value : this.palette) VarInts.writeInt(byteBuf, serializer.serialize(value));
     }
 
-    public void writeToNetwork(ByteBuf byteBuf, RuntimeDataSerializer<V> serializer, Palette<V> last) {
+    public void writeToNetwork(@NotNull ByteBuf byteBuf, @NotNull RuntimeDataSerializer<V> serializer, @Nullable Palette<V> last) {
         if(last != null && last.palette.equals(this.palette)) {
             byteBuf.writeByte(Palette.getCopyLastFlagHeader());
             return;
@@ -94,10 +97,10 @@ public class Palette<V> {
         for(V value : this.palette) VarInts.writeInt(byteBuf, serializer.serialize(value));
     }
 
-    public void readFromNetwork(ByteBuf byteBuf, RuntimeDataDeserializer<V> deserializer) {
+    public void readFromNetwork(@NotNull ByteBuf byteBuf, @NotNull RuntimeDataDeserializer<V> deserializer) {
         final short header = byteBuf.readUnsignedByte();
 
-        final BitArrayVersion version = Palette.getVersionFromHeader(header);
+        final BitArrayVersion version = Objects.requireNonNull(Palette.getVersionFromHeader(header));
         final int wordCount = version.getWordsForSize(SIZE);
         final int[] words = new int[wordCount];
         for(int i = 0; i < wordCount; i++) words[i] = byteBuf.readIntLE();
@@ -109,7 +112,7 @@ public class Palette<V> {
         for(int i = 0; i < size; i++) this.palette.add(deserializer.deserialize(VarInts.readInt(byteBuf)));
     }
 
-    public void writeToStoragePersistent(ByteBuf byteBuf, PersistentDataSerializer<V> serializer) {
+    public void writeToStoragePersistent(@NotNull ByteBuf byteBuf, @NotNull PersistentDataSerializer<V> serializer) {
         byteBuf.writeByte(Palette.getPaletteHeader(this.bitArray.getVersion(), false));
 
         for(int word : this.bitArray.getWords()) byteBuf.writeIntLE(word);
@@ -124,7 +127,7 @@ public class Palette<V> {
         }
     }
 
-    public void writeToStorageRuntime(ByteBuf byteBuf, RuntimeDataSerializer<V> serializer, Palette<V> last) {
+    public void writeToStorageRuntime(@NotNull ByteBuf byteBuf, @NotNull RuntimeDataSerializer<V> serializer, @Nullable Palette<V> last) {
         if(last != null && last.palette.equals(this.palette)) {
             byteBuf.writeByte(Palette.getCopyLastFlagHeader());
             return;
@@ -144,10 +147,10 @@ public class Palette<V> {
         for(V value : this.palette) byteBuf.writeIntLE(serializer.serialize(value));
     }
 
-    public void readFromStoragePersistent(ByteBuf byteBuf, PersistentDataDeserializer<V> deserializer) {
+    public void readFromStoragePersistent(@NotNull ByteBuf byteBuf, @NotNull PersistentDataDeserializer<V> deserializer) {
         final short header = byteBuf.readUnsignedByte();
 
-        final BitArrayVersion version = Palette.getVersionFromHeader(header);
+        final BitArrayVersion version = Objects.requireNonNull(Palette.getVersionFromHeader(header));
         final int wordCount = version.getWordsForSize(SIZE);
         final int[] words = new int[wordCount];
         for(int i = 0; i < wordCount; i++) words[i] = byteBuf.readIntLE();
@@ -165,15 +168,15 @@ public class Palette<V> {
         }
     }
 
-    public void readFromStorageRuntime(ByteBuf byteBuf, RuntimeDataDeserializer<V> deserializer, Palette<V> last) {
+    public void readFromStorageRuntime(@NotNull ByteBuf byteBuf, @NotNull RuntimeDataDeserializer<V> deserializer, @Nullable Palette<V> last) {
         final short header = byteBuf.readUnsignedByte();
 
         if(Palette.hasCopyLastFlag(header)) {
-            last.copyTo(this);
+            Objects.requireNonNull(last).copyTo(this);
             return;
         }
 
-        final BitArrayVersion version = Palette.getVersionFromHeader(header);
+        final BitArrayVersion version = Objects.requireNonNull(Palette.getVersionFromHeader(header));
         if(version == BitArrayVersion.V0) {
             this.bitArray = version.createArray(SIZE, null);
             this.palette.clear();
@@ -194,7 +197,7 @@ public class Palette<V> {
         for(int i = 0; i < paletteSize; i++) this.palette.add(deserializer.deserialize(byteBuf.readIntLE()));
     }
 
-    private void onResize(BitArrayVersion version) {
+    private void onResize(@NotNull BitArrayVersion version) {
         final BitArray newBitArray = version.createArray(SIZE);
         for(int i = 0; i < SIZE; i++)
             newBitArray.set(i, this.bitArray.get(i));
@@ -228,7 +231,7 @@ public class Palette<V> {
         return true;
     }
 
-    public void copyTo(Palette<V> palette) {
+    public void copyTo(@NotNull Palette<V> palette) {
         palette.bitArray = this.bitArray.copy();
         palette.palette.clear();
         palette.palette.addAll(this.palette);

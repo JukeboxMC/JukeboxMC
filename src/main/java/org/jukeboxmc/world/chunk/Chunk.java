@@ -12,6 +12,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Synchronized;
 import org.iq80.leveldb.WriteBatch;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.palette.Palette;
@@ -54,18 +56,18 @@ public class Chunk {
     private final int minY;
     private final int maxY;
     private final int fullHeight;
-    private final Set<Entity> entities;
-    private final Set<Player> players;
-    private final Int2ObjectMap<BlockEntity> blockEntities;
-    private final SubChunk[] subChunks;
-    private final short[] height;
-    private final Lock writeLock;
-    private final Lock readLock;
+    private final @NotNull Set<Entity> entities;
+    private final @NotNull Set<Player> players;
+    private final @NotNull Int2ObjectMap<BlockEntity> blockEntities;
+    private final SubChunk @NotNull [] subChunks;
+    private final short @NotNull [] height;
+    private final @NotNull Lock writeLock;
+    private final @NotNull Lock readLock;
     private final Set<ChunkLoader> loaders = Collections.newSetFromMap( new IdentityHashMap<>() );
     private boolean dirty;
     private ChunkState chunkState;
 
-    public Chunk( World world, Dimension dimension, int x, int z ) {
+    public Chunk(World world, @NotNull Dimension dimension, int x, int z ) {
         this.world = world;
         this.dimension = dimension;
         this.x = x;
@@ -91,7 +93,7 @@ public class Chunk {
         this.readLock = lock.readLock();
     }
 
-    public Lock getWriteLock() {
+    public @NotNull Lock getWriteLock() {
         return writeLock;
     }
 
@@ -162,11 +164,11 @@ public class Chunk {
     }
 
     @Synchronized ( "loaders" )
-    public Set<ChunkLoader> getLoaders() {
+    public @NotNull Set<ChunkLoader> getLoaders() {
         return ImmutableSet.copyOf( this.loaders );
     }
 
-    public Set<Entity> getEntities() {
+    public @NotNull Set<Entity> getEntities() {
         return this.entities;
     }
 
@@ -185,7 +187,7 @@ public class Chunk {
         }
     }
 
-    public void removeEntity( Entity entity ) {
+    public void removeEntity(@NotNull Entity entity ) {
         this.entities.removeIf( target -> target.getEntityId() == entity.getEntityId() );
         if ( entity instanceof Player player ) {
             this.players.removeIf( target -> target.getEntityId() == player.getEntityId() );
@@ -205,7 +207,7 @@ public class Chunk {
         return this.blockEntities.get( Utils.indexOf( x, y, z ) );
     }
 
-    public Collection<BlockEntity> getBlockEntities() {
+    public @NotNull Collection<BlockEntity> getBlockEntities() {
         return this.blockEntities.values();
     }
 
@@ -224,11 +226,11 @@ public class Chunk {
         }
     }
 
-    public void setBlock( Vector position, int layer, Block block ) {
+    public void setBlock(@NotNull Vector position, int layer, Block block ) {
         this.setBlock( position.getBlockX(), position.getBlockY(), position.getBlockZ(), layer, block );
     }
 
-    public Block getBlock( int x, int y, int z, int layer ) {
+    public @NotNull Block getBlock(int x, int y, int z, int layer ) {
         this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) {
@@ -259,7 +261,7 @@ public class Chunk {
         return ++y;
     }
 
-    public Block getHighestBlock( int x, int z ) {
+    public @Nullable Block getHighestBlock(int x, int z ) {
         for ( int y = this.getMaxY(); y > this.getMinY(); --y ) {
             Block block = this.getBlock( x, y, z, 0 );
             BlockType blockType = block.getType();
@@ -281,7 +283,7 @@ public class Chunk {
         }
     }
 
-    public Biome getBiome( int x, int y, int z ) {
+    public @Nullable Biome getBiome(int x, int y, int z ) {
         this.readLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return null;
@@ -321,7 +323,7 @@ public class Chunk {
         return NonStream.sum( this.subChunks, o -> o == null ? 0 : 1 );
     }
 
-    private void writeTo( ByteBuf byteBuf ) {
+    private void writeTo(@NotNull ByteBuf byteBuf ) {
         Palette<Biome> lastBiomes = new Palette<>( Biome.PLAINS );
 
         for ( SubChunk subChunk : this.subChunks ) {
@@ -354,7 +356,7 @@ public class Chunk {
         }
     }
 
-    public LevelChunkPacket createLevelChunkPacket() {
+    public @NotNull LevelChunkPacket createLevelChunkPacket() {
         ByteBuf byteBuf = Unpooled.buffer();
         try {
             final LevelChunkPacket levelChunkPacket = new LevelChunkPacket();
@@ -375,7 +377,7 @@ public class Chunk {
         }
     }
 
-    public void saveChunkSlice( Palette<Block>[] blockPalettes, int subY, WriteBatch writeBatch ) {
+    public void saveChunkSlice(Palette<Block> @NotNull [] blockPalettes, int subY, @NotNull WriteBatch writeBatch ) {
         ByteBuf buffer = Unpooled.buffer();
 
         buffer.writeByte( (byte) SUB_CHUNK_VERSION );
@@ -391,7 +393,7 @@ public class Chunk {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "X: " + this.x + "; Z: " + this.z;
     }
 }

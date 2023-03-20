@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -27,7 +28,7 @@ public class BlockHopper extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, @NotNull BlockFace blockFace ) {
         this.setBlockFace( blockFace == BlockFace.UP ? BlockFace.DOWN : blockFace.opposite() );
         this.setToggle( false );
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
@@ -38,7 +39,7 @@ public class BlockHopper extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityHopper blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -60,7 +61,7 @@ public class BlockHopper extends Block {
         return this.stateExists( "toggle_bit" ) && this.getByteState( "toggle_bit" ) == 1;
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

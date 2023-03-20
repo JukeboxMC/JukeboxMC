@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockAnvil;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemAnvil extends Item {
 
-    private final BlockAnvil block;
+    private final @NotNull BlockAnvil block;
 
     public ItemAnvil( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemAnvil extends Item {
     }
 
     @Override
-    public ItemAnvil setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemAnvil setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemAnvil setDamage( AnvilDamage anvilDamage ) {
+    public @NotNull ItemAnvil setDamage(@NotNull AnvilDamage anvilDamage ) {
         this.blockRuntimeId = this.block.setDamage( anvilDamage ).getRuntimeId();
         return this;
     }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -27,7 +28,7 @@ public class BlockDispenser extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this, 0 );
         BlockEntity.create( BlockEntityType.DISPENSER, this ).spawn();
@@ -35,7 +36,7 @@ public class BlockDispenser extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityDispenser blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -57,7 +58,7 @@ public class BlockDispenser extends Block {
         return this.stateExists( "triggered_bit" ) && this.getByteState( "triggered_bit" ) == 1;
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

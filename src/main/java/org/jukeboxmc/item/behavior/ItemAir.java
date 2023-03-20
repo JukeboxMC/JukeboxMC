@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 
@@ -17,7 +18,7 @@ public class ItemAir extends Item {
     }
 
     @Override
-    public ItemData toItemData() {
+    public @NotNull ItemData toItemData() {
         return ItemData.AIR;
     }
 }

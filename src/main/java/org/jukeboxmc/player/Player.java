@@ -9,6 +9,8 @@ import com.nukkitx.protocol.bedrock.packet.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
@@ -59,24 +61,24 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     private final Server server;
     private final PlayerConnection playerConnection;
-    private final AdventureSettings adventureSettings;
+    private final @NotNull AdventureSettings adventureSettings;
     private String name;
     private GameMode gameMode;
 
     private int closingWindowId = Integer.MIN_VALUE;
 
-    private ContainerInventory currentInventory;
+    private @Nullable ContainerInventory currentInventory;
     private CraftingGridInventory craftingGridInventory;
-    private final CreativeItemCacheInventory creativeItemCacheInventory;
-    private final CursorInventory cursorInventory;
-    private final CraftingTableInventory craftingTableInventory;
-    private final CartographyTableInventory cartographyTableInventory;
-    private final SmithingTableInventory smithingTableInventory;
-    private final AnvilInventory anvilInventory;
-    private final EnderChestInventory enderChestInventory;
-    private final StoneCutterInventory stoneCutterInventory;
-    private final GrindstoneInventory grindstoneInventory;
-    private final OffHandInventory offHandInventory;
+    private final @NotNull CreativeItemCacheInventory creativeItemCacheInventory;
+    private final @NotNull CursorInventory cursorInventory;
+    private final @NotNull CraftingTableInventory craftingTableInventory;
+    private final @NotNull CartographyTableInventory cartographyTableInventory;
+    private final @NotNull SmithingTableInventory smithingTableInventory;
+    private final @NotNull AnvilInventory anvilInventory;
+    private final @NotNull EnderChestInventory enderChestInventory;
+    private final @NotNull StoneCutterInventory stoneCutterInventory;
+    private final @NotNull GrindstoneInventory grindstoneInventory;
+    private final @NotNull OffHandInventory offHandInventory;
 
     private int inAirTicks = 0;
     private float highestPosition = 0;
@@ -85,9 +87,9 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     private Vector lasBreakPosition;
     private boolean breakingBlock = false;
 
-    private Location teleportLocation = null;
+    private @Nullable Location teleportLocation = null;
     private Location spawnLocation;
-    private Location respawnLocation = null;
+    private @Nullable Location respawnLocation = null;
 
     private final Map<UUID, Set<String>> permissions = new HashMap<>();
 
@@ -101,7 +103,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
     private final ObjectArrayList<NpcDialogueForm> npcDialogueForms = new ObjectArrayList<>();
 
-    public Player( Server server, PlayerConnection playerConnection ) {
+    public Player(Server server, @NotNull PlayerConnection playerConnection ) {
         this.server = server;
         this.playerConnection = playerConnection;
         this.gameMode = playerConnection.getServer().getGameMode();
@@ -239,7 +241,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return this.playerConnection;
     }
 
-    public AdventureSettings getAdventureSettings() {
+    public @NotNull AdventureSettings getAdventureSettings() {
         return this.adventureSettings;
     }
 
@@ -275,7 +277,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return this.gameMode;
     }
 
-    public void setGameMode( GameMode gameMode ) {
+    public void setGameMode(@NotNull GameMode gameMode ) {
         this.gameMode = gameMode;
 
         this.adventureSettings.set( AdventureSettings.Type.WORLD_IMMUTABLE, this.gameMode.ordinal() == 3 );
@@ -324,11 +326,11 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public boolean hasPermission( String permission ) {
+    public boolean hasPermission(@NotNull String permission ) {
         return this.permissions.containsKey( this.uuid ) && this.permissions.get( this.uuid ).contains( permission.toLowerCase() ) || this.isOp() || permission.isEmpty();
     }
 
-    public void addPermission( String permission ) {
+    public void addPermission(@NotNull String permission ) {
         if ( !this.permissions.containsKey( this.uuid ) ) {
             this.permissions.put( this.uuid, new HashSet<>() );
         }
@@ -336,7 +338,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.sendCommandData();
     }
 
-    public void addPermissions( Collection<String> permissions ) {
+    public void addPermissions(@NotNull Collection<String> permissions ) {
         if ( !this.permissions.containsKey( this.uuid ) ) {
             this.permissions.put( this.uuid, new HashSet<>( permissions ) );
         } else {
@@ -352,7 +354,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.sendCommandData();
     }
 
-    public void removePermissions( Collection<String> permissions ) {
+    public void removePermissions(@NotNull Collection<String> permissions ) {
         if ( this.permissions.containsKey( this.uuid ) ) {
             this.permissions.get( this.uuid ).removeAll( permissions );
         }
@@ -398,7 +400,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.craftingGridInventory = craftingGridInventory;
     }
 
-    public CreativeItemCacheInventory getCreativeItemCacheInventory() {
+    public @NotNull CreativeItemCacheInventory getCreativeItemCacheInventory() {
         return creativeItemCacheInventory;
     }
 
@@ -410,51 +412,51 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.closingWindowId = closingWindowId;
     }
 
-    public ContainerInventory getCurrentInventory() {
+    public @Nullable ContainerInventory getCurrentInventory() {
         return this.currentInventory;
     }
 
-    public void setCurrentInventory( ContainerInventory currentInventory ) {
+    public void setCurrentInventory(@Nullable ContainerInventory currentInventory ) {
         this.currentInventory = currentInventory;
     }
 
-    public CursorInventory getCursorInventory() {
+    public @NotNull CursorInventory getCursorInventory() {
         return this.cursorInventory;
     }
 
-    public CraftingTableInventory getCraftingTableInventory() {
+    public @NotNull CraftingTableInventory getCraftingTableInventory() {
         return this.craftingTableInventory;
     }
 
-    public CartographyTableInventory getCartographyTableInventory() {
+    public @NotNull CartographyTableInventory getCartographyTableInventory() {
         return this.cartographyTableInventory;
     }
 
-    public SmithingTableInventory getSmithingTableInventory() {
+    public @NotNull SmithingTableInventory getSmithingTableInventory() {
         return this.smithingTableInventory;
     }
 
-    public AnvilInventory getAnvilInventory() {
+    public @NotNull AnvilInventory getAnvilInventory() {
         return this.anvilInventory;
     }
 
-    public EnderChestInventory getEnderChestInventory() {
+    public @NotNull EnderChestInventory getEnderChestInventory() {
         return this.enderChestInventory;
     }
 
-    public StoneCutterInventory getStoneCutterInventory() {
+    public @NotNull StoneCutterInventory getStoneCutterInventory() {
         return this.stoneCutterInventory;
     }
 
-    public GrindstoneInventory getGrindstoneInventory() {
+    public @NotNull GrindstoneInventory getGrindstoneInventory() {
         return this.grindstoneInventory;
     }
 
-    public OffHandInventory getOffHandInventory() {
+    public @NotNull OffHandInventory getOffHandInventory() {
         return this.offHandInventory;
     }
 
-    public void openInventory( ContainerInventory inventory, Vector position, byte windowId ) {
+    public void openInventory(@NotNull ContainerInventory inventory, @NotNull Vector position, byte windowId ) {
         if ( this.currentInventory != null ) {
             return;
         }
@@ -469,11 +471,11 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.currentInventory = inventory;
     }
 
-    public void openInventory( ContainerInventory inventory, Vector position ) {
+    public void openInventory(@NotNull ContainerInventory inventory, @NotNull Vector position ) {
         this.openInventory( inventory, position, (byte) WindowId.OPEN_CONTAINER.getId() );
     }
 
-    public void openInventory( ContainerInventory inventory ) {
+    public void openInventory(@NotNull ContainerInventory inventory ) {
         this.openInventory( inventory, this.location );
     }
 
@@ -520,7 +522,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public Location getTeleportLocation() {
+    public @Nullable Location getTeleportLocation() {
         return this.teleportLocation;
     }
 
@@ -542,11 +544,11 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public void teleport( Player player ) {
+    public void teleport(@NotNull Player player ) {
         this.teleport( player.getLocation() );
     }
 
-    public void teleport( Location location ) {
+    public void teleport(@NotNull Location location ) {
         World currentWorld = this.getWorld();
         World world = location.getWorld();
         Dimension fromDimension = this.location.getDimension();
@@ -603,7 +605,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.checkTeleportPosition();
     }
 
-    private void move( Location location, MovePlayerPacket.Mode mode ) {
+    private void move(@NotNull Location location, MovePlayerPacket.Mode mode ) {
         MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
         movePlayerPacket.setRuntimeEntityId( this.entityId );
         movePlayerPacket.setPosition( location.toVector3f().add( 0, this.getEyeHeight(), 0 ) );
@@ -676,19 +678,19 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.lasBreakPosition = lasBreakPosition;
     }
 
-    public void playSound( Sound sound ) {
+    public void playSound(@NotNull Sound sound ) {
         this.playSound( this.location, sound, 1, 1, false );
     }
 
-    public void playSound( Sound sound, float volume, float pitch ) {
+    public void playSound(@NotNull Sound sound, float volume, float pitch ) {
         this.playSound( this.location, sound, volume, pitch, false );
     }
 
-    public void playSound( Vector position, Sound sound ) {
+    public void playSound(@NotNull Vector position, @NotNull Sound sound ) {
         this.playSound( position, sound, 1, 1, false );
     }
 
-    public void playSound( Vector position, Sound sound, float volume, float pitch, boolean sendInChunk ) {
+    public void playSound(@NotNull Vector position, @NotNull Sound sound, float volume, float pitch, boolean sendInChunk ) {
         PlaySoundPacket playSoundPacket = new PlaySoundPacket();
         playSoundPacket.setPosition( position.toVector3f() );
         playSoundPacket.setSound( sound.getSound() );
@@ -720,11 +722,11 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public Location getRespawnLocation() {
+    public @Nullable Location getRespawnLocation() {
         return respawnLocation;
     }
 
-    public void setRespawnLocation( Location respawnLocation ) {
+    public void setRespawnLocation(@Nullable Location respawnLocation ) {
         this.respawnLocation = respawnLocation;
     }
 
@@ -732,7 +734,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return this.spawnLocation;
     }
 
-    public void setSpawnLocation( Location spawnLocation ) {
+    public void setSpawnLocation(@NotNull Location spawnLocation ) {
         this.spawnLocation = spawnLocation;
 
         SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
@@ -786,7 +788,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         Server.getInstance().addToTabList( this.uuid, this.entityId, this.name, this.deviceInfo, this.getXuid(), this.skin );
     }
 
-    public void sendServerSettings( Player player ) {
+    public void sendServerSettings(@NotNull Player player ) {
         if ( this.serverSettingsForm != -1 ) {
             Form<?> form = this.forms.get( this.serverSettingsForm );
 
@@ -797,13 +799,13 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public <R> FormListener<R> showForm( Form<R> form ) {
+    public <R> @NotNull FormListener<R> showForm(@NotNull Form<R> form ) {
         if ( this.hasOpenForm ) {
             return new FormListener<>();
         }
         int formId = this.formId++;
         this.forms.put( formId, form );
-        FormListener<R> formListener = new FormListener<R>();
+        FormListener<R> formListener = new FormListener<>();
         this.formListeners.put( formId, formListener );
 
         String json = form.toJSON().toJSONString();
@@ -818,7 +820,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         return formListener;
     }
 
-    public <R> FormListener<R> setSettingsForm( Form<R> form ) {
+    public <R> @NotNull FormListener<R> setSettingsForm(Form<R> form ) {
         if ( this.serverSettingsForm != -1 ) {
             this.removeSettingsForm();
         }
@@ -826,7 +828,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         int formId = this.formId++;
         this.forms.put( formId, form );
 
-        FormListener<R> formListener = new FormListener<R>();
+        FormListener<R> formListener = new FormListener<>();
         this.formListeners.put( formId, formListener );
         this.serverSettingsForm = formId;
         return formListener;
@@ -840,12 +842,12 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public void parseGUIResponse( int formId, String json ) {
+    public void parseGUIResponse(int formId, @Nullable String json ) {
         // Get the listener and the form
         Form<?> form = this.forms.get( formId );
         if ( form != null ) {
             // Get listener
-            FormListener formListener = this.formListeners.get( formId );
+            FormListener<Object> formListener = (FormListener<Object>) this.formListeners.get( formId );
 
             if ( this.serverSettingsForm != formId ) {
                 this.forms.remove( formId );
@@ -874,7 +876,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.npcDialogueForms.remove( npcDialogueForm );
     }
 
-    public Set<NpcDialogueForm> getOpenNpcDialogueForms() {
+    public @NotNull Set<NpcDialogueForm> getOpenNpcDialogueForms() {
         return new HashSet<>( this.npcDialogueForms );
     }
 
@@ -911,7 +913,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     // =========== Damage ===========
 
     @Override
-    public boolean damage( EntityDamageEvent event ) {
+    public boolean damage(@NotNull EntityDamageEvent event ) {
         if ( this.adventureSettings.get( AdventureSettings.Type.ALLOW_FLIGHT ) && event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ) {
             return false;
         }
@@ -919,7 +921,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+    public float applyArmorReduction(@NotNull EntityDamageEvent event, boolean damageArmor ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ||
                 event.getDamageSource().equals( EntityDamageEvent.DamageSource.VOID ) ||
                 event.getDamageSource().equals( EntityDamageEvent.DamageSource.DROWNING ) ) {
@@ -935,7 +937,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public float applyFeatherFallingReduction( EntityDamageEvent event, float damage ) {
+    public float applyFeatherFallingReduction(@NotNull EntityDamageEvent event, float damage ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.FALL ) ) {
             Item boots = this.armorInventory.getBoots();
             if ( boots != null && !boots.getType().equals( ItemType.AIR ) ) {
@@ -950,7 +952,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public float applyProtectionReduction( EntityDamageEvent event, float damage ) {
+    public float applyProtectionReduction(@NotNull EntityDamageEvent event, float damage ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.ENTITY_ATTACK ) ) {
             float protectionReduction = this.getProtectionReduction();
             return -( damage * ( protectionReduction / 100f ) );
@@ -959,7 +961,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public float applyProjectileProtectionReduction( EntityDamageEvent event, float damage ) {
+    public float applyProjectileProtectionReduction(@NotNull EntityDamageEvent event, float damage ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.PROJECTILE ) ) {
             float protectionReduction = this.getProjectileProtectionReduction();
             return -( damage * ( protectionReduction / 100f ) );
@@ -968,7 +970,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
     }
 
     @Override
-    public float applyFireProtectionReduction( EntityDamageEvent event, float damage ) {
+    public float applyFireProtectionReduction(@NotNull EntityDamageEvent event, float damage ) {
         if ( event.getDamageSource().equals( EntityDamageEvent.DamageSource.ON_FIRE ) ) {
             float protectionReduction = this.getFireProtectionReduction();
             return -( damage * ( protectionReduction / 100f ) );
@@ -1032,8 +1034,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             this.highestPosition = 0;
             this.inAirTicks = 0;
 
-            String deathMessage = switch ( this.lastDamageSource ) {
-                case ENTITY_ATTACK -> this.getNameTag() + " was slain by " + this.getLastDamageEntity().getNameTag();
+            String deathMessage = switch (Objects.requireNonNull(this.lastDamageSource)) {
+                case ENTITY_ATTACK -> this.getNameTag() + " was slain by " + Objects.requireNonNull(this.getLastDamageEntity()).getNameTag();
                 case FALL -> this.getNameTag() + " fell from a high place";
                 case LAVA -> this.getNameTag() + " tried to swim in lava";
                 case FIRE -> this.getNameTag() + " went up in flames";
@@ -1113,7 +1115,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                 if ( crit && damage > 0.0f ) {
                     damage *= 1.5;
                 }
-                if ( success = living.damage( new EntityDamageByEntityEvent( living, this, damage, EntityDamageEvent.DamageSource.ENTITY_ATTACK ) ) ) {
+                if (success == living.damage(new EntityDamageByEntityEvent(living, this, damage, EntityDamageEvent.DamageSource.ENTITY_ATTACK))) {
                     if ( knockbackLevel > 0 ) {
                         Vector targetVelocity = target.getVelocity();
                         living.setVelocity( targetVelocity.add(
@@ -1176,7 +1178,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         }
     }
 
-    public List<Item> getDrops() {
+    public @NotNull List<Item> getDrops() {
         List<Item> drops = new ArrayList<>();
         for ( Item content : this.playerInventory.getContents() ) {
             if ( content != null && !( content.getType().equals( ItemType.AIR ) ) ) {

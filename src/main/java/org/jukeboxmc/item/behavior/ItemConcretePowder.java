@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockConcretePowder;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemConcretePowder extends Item {
 
-    private final BlockConcretePowder block;
+    private final @NotNull BlockConcretePowder block;
 
     public ItemConcretePowder( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemConcretePowder extends Item {
     }
 
     @Override
-    public ItemConcretePowder setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemConcretePowder setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemConcretePowder setColor( BlockColor blockColor ) {
+    public @NotNull ItemConcretePowder setColor(@NotNull BlockColor blockColor ) {
         this.blockRuntimeId = this.block.setColor( blockColor ).getRuntimeId();
         return this;
     }

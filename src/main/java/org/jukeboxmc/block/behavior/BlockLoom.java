@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -28,7 +29,7 @@ public class BlockLoom extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         world.setBlock( placePosition, this, 0 );
         BlockEntity.create( BlockEntityType.LOOM, this ).spawn();
@@ -36,7 +37,7 @@ public class BlockLoom extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityLoom blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -50,7 +51,7 @@ public class BlockLoom extends Block {
         return (BlockEntityLoom) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setDirection( Direction direction ) {
+    public void setDirection(@NotNull Direction direction ) {
         switch ( direction ) {
             case SOUTH -> this.setState( "direction", 0 );
             case WEST -> this.setState( "direction", 1 );
@@ -59,7 +60,7 @@ public class BlockLoom extends Block {
         }
     }
 
-    public Direction getDirection() {
+    public @NotNull Direction getDirection() {
         int value = this.stateExists( "direction" ) ? this.getIntState( "direction" ) : 0;
         return switch ( value ) {
             case 0 -> Direction.SOUTH;

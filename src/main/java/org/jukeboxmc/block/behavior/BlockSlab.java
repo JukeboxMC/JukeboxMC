@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.util.Identifier;
@@ -20,7 +21,7 @@ public class BlockSlab extends Block {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         if ( this.isTopSlot() ) {
             return new AxisAlignedBB(
                     this.location.getX(),
@@ -42,7 +43,7 @@ public class BlockSlab extends Block {
         }
     }
 
-    public BlockSlab setTopSlot( boolean value ) {
+    public @NotNull BlockSlab setTopSlot(boolean value ) {
         this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
         return this;
     }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockNetherWart;
@@ -14,7 +15,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemNetherWart extends Item {
 
-    private final BlockNetherWart block;
+    private final @NotNull BlockNetherWart block;
 
     public ItemNetherWart( Identifier identifier ) {
         super( identifier );
@@ -29,7 +30,7 @@ public class ItemNetherWart extends Item {
     }
 
     @Override
-    public ItemNetherWart setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemNetherWart setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;

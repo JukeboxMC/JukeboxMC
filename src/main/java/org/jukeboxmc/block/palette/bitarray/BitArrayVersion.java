@@ -1,6 +1,10 @@
 package org.jukeboxmc.block.palette.bitarray;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.util.Utils;
+
+import java.util.Objects;
 
 public enum BitArrayVersion {
 
@@ -28,7 +32,7 @@ public enum BitArrayVersion {
         this.next = next;
     }
 
-    public static BitArrayVersion get(int version, boolean read) {
+    public static @Nullable BitArrayVersion get(int version, boolean read) {
         for(BitArrayVersion ver : values())
             if((!read && ver.entriesPerWord <= version) || (read && ver.bits == version))
                 return ver;
@@ -37,7 +41,7 @@ public enum BitArrayVersion {
         throw new IllegalArgumentException("Invalid palette version: " + version);
     }
 
-    public static BitArrayVersion forBitsCeil(int bits) {
+    public static @Nullable BitArrayVersion forBitsCeil(int bits) {
         for(int i = VALUES.length - 1; i >= 0; i--) {
             final BitArrayVersion version = VALUES[i];
             if(version.bits >= bits) return version;
@@ -50,17 +54,17 @@ public enum BitArrayVersion {
         return Utils.ceil((float) size / this.entriesPerWord);
     }
 
-    public BitArray createArray(int size) {
+    public @NotNull BitArray createArray(int size) {
         return this.createArray(size, new int[Utils.ceil((float) size / this.entriesPerWord)]);
     }
 
-    public BitArray createArray(int size, int[] words) {
-        if(this == V3 || this == V5 || this == V6)
+    public @NotNull BitArray createArray(int size, int @Nullable [] words) {
+        if(words != null && (this == V3 || this == V5 || this == V6))
             return new PaddedBitArray(this, size, words);
         else if(this == V0)
             return new SingletonBitArray();
         else
-            return new Pow2BitArray(this, size, words);
+            return new Pow2BitArray(this, size, Objects.requireNonNull(words));
     }
 
 }

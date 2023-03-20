@@ -5,6 +5,7 @@ import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import com.nukkitx.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket;
 import it.unimi.dsi.fastutil.longs.*;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Vector;
@@ -23,14 +24,14 @@ import java.util.function.LongConsumer;
 public class PlayerChunkManager {
 
     private final Player player;
-    private final ChunkComparator comparator;
+    private final @NotNull ChunkComparator comparator;
     private final LongSet loadedChunks = new LongOpenHashSet();
     private final Long2ObjectMap<LevelChunkPacket> sendQueue = new Long2ObjectOpenHashMap<>();
     private final AtomicLong chunksSentCounter = new AtomicLong();
-    private final LongConsumer removeChunkLoader;
+    private final @NotNull LongConsumer removeChunkLoader;
     private volatile int radius;
 
-    public PlayerChunkManager( Player player ) {
+    public PlayerChunkManager(@NotNull Player player ) {
         this.player = player;
         this.comparator = new ChunkComparator( player );
         this.removeChunkLoader = chunkKey -> {
@@ -94,7 +95,7 @@ public class PlayerChunkManager {
         this.queueNewChunks( this.player.getLocation() );
     }
 
-    public void queueNewChunks( Vector pos ) {
+    public void queueNewChunks(@NotNull Vector pos ) {
         this.queueNewChunks( pos.getBlockX() >> 4, pos.getBlockZ() >> 4 );
     }
 
@@ -207,7 +208,7 @@ public class PlayerChunkManager {
         return chunksSentCounter.get();
     }
 
-    public LongSet getLoadedChunks() {
+    public @NotNull LongSet getLoadedChunks() {
         return LongSets.unmodifiable( this.loadedChunks );
     }
 
@@ -217,7 +218,7 @@ public class PlayerChunkManager {
         this.removeChunkLoader.accept( chunkKey );
     }
 
-    public void prepareRegion( Vector pos ) {
+    public void prepareRegion(@NotNull Vector pos ) {
         this.prepareRegion( pos.getChunkX(), pos.getChunkZ() );
     }
 

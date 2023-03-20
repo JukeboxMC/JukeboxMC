@@ -1,6 +1,7 @@
 package org.jukeboxmc.resourcepack;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +39,7 @@ public class ResourcePack {
         return this.name;
     }
 
-    public UUID getUuid() {
+    public @NotNull UUID getUuid() {
         return UUID.fromString( this.uuid );
     }
 

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -63,7 +64,7 @@ public class BlockLava extends BlockLiquid {
     }
 
     @Override
-    protected void flowIntoBlock( Block block, int newFlowDecay ) {
+    protected void flowIntoBlock(@NotNull Block block, int newFlowDecay ) {
         if ( block instanceof BlockWater ) {
             ( (BlockLiquid) block ).liquidCollide( Block.create( BlockType.STONE ) );
         } else {
@@ -72,7 +73,7 @@ public class BlockLava extends BlockLiquid {
     }
 
     @Override
-    public BlockLiquid getBlock( int liquidDepth ) {
+    public @NotNull BlockLiquid getBlock(int liquidDepth ) {
         BlockLava blockLava = Block.create( BlockType.LAVA );
         blockLava.setLiquidDepth( liquidDepth );
         return blockLava;

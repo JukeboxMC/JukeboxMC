@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.palette.bitarray;
 
 import io.netty.buffer.ByteBuf;
+import org.jetbrains.annotations.NotNull;
 
 public final class SingletonBitArray implements BitArray {
 
@@ -17,7 +18,7 @@ public final class SingletonBitArray implements BitArray {
     }
 
     @Override
-    public void writeSizeToNetwork(ByteBuf buffer, int size) {
+    public void writeSizeToNetwork(@NotNull ByteBuf buffer, int size) {
 
     }
 
@@ -32,12 +33,12 @@ public final class SingletonBitArray implements BitArray {
     }
 
     @Override
-    public BitArrayVersion getVersion() {
+    public @NotNull BitArrayVersion getVersion() {
         return BitArrayVersion.V0;
     }
 
     @Override
-    public SingletonBitArray copy() {
+    public @NotNull SingletonBitArray copy() {
         return new SingletonBitArray();
     }
 

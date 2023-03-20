@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 
@@ -19,11 +20,11 @@ public class Ore {
         this.oreType = oreType;
     }
 
-    public boolean canPlace( PopulationChunkManager manager, int x, int y, int z ) {
+    public boolean canPlace(@NotNull PopulationChunkManager manager, int x, int y, int z ) {
         return manager.getBlock( x, y, z ).getType().equals( BlockType.STONE );
     }
 
-    public void place( PopulationChunkManager manager, int x, int y, int z ) {
+    public void place(@NotNull PopulationChunkManager manager, int x, int y, int z ) {
         float piScaled = this.random.nextFloat() * (float) Math.PI;
         double scaleMaxX = (float) ( x + 8 ) + Math.sin( piScaled ) * (float) this.oreType.getClusterSize() / 8.0F;
         double scaleMinX = (float) ( x + 8 ) - Math.sin( piScaled ) * (float) this.oreType.getClusterSize() / 8.0F;

@@ -1,5 +1,6 @@
 package org.jukeboxmc.potion;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.event.entity.EntityDamageEvent;
 
@@ -17,17 +18,17 @@ public class FatalPoison extends Effect {
     }
 
     @Override
-    public EffectType getEffectType() {
+    public @NotNull EffectType getEffectType() {
         return EffectType.FATAL_POISON;
     }
 
     @Override
-    public Color getEffectColor() {
+    public @NotNull Color getEffectColor() {
         return new Color( 78, 147, 49 );
     }
 
     @Override
-    public void apply( EntityLiving entityLiving ) {
+    public void apply(@NotNull EntityLiving entityLiving ) {
         if ( this.canExecute() ) {
             if ( entityLiving.getHealth() > 2 ) {
                 entityLiving.damage( new EntityDamageEvent( entityLiving, 1, EntityDamageEvent.DamageSource.MAGIC_EFFECT ) );

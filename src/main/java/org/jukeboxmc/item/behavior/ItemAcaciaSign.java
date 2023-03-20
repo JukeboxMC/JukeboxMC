@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.item.Item;
@@ -21,7 +22,7 @@ public class ItemAcaciaSign extends Item {
     }
 
     @Override
-    public Block toBlock() {
+    public @NotNull Block toBlock() {
         return Block.create( BlockType.ACACIA_STANDING_SIGN );
     }
 }

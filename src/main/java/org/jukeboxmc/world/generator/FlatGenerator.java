@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.math.Vector;
@@ -14,9 +15,9 @@ import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
  */
 public class FlatGenerator extends Generator {
 
-    private final Block blockGrass;
-    private final Block blockDirt;
-    private final Block blockBedrock;
+    private final @NotNull Block blockGrass;
+    private final @NotNull Block blockDirt;
+    private final @NotNull Block blockBedrock;
 
     public FlatGenerator( World world ) {
         this.blockGrass = Block.create( BlockType.GRASS );
@@ -25,7 +26,7 @@ public class FlatGenerator extends Generator {
     }
 
     @Override
-    public void generate( Chunk chunk, int chunkX, int chunkZ ) {
+    public void generate(@NotNull Chunk chunk, int chunkX, int chunkZ ) {
         for ( int blockX = 0; blockX < 16; blockX++ ) {
             for ( int blockZ = 0; blockZ < 16; blockZ++ ) {
                 for ( int blockY = 0; blockY < 16; blockY++ ) {
@@ -51,7 +52,7 @@ public class FlatGenerator extends Generator {
     }
 
     @Override
-    public Vector getSpawnLocation() {
+    public @NotNull Vector getSpawnLocation() {
         return new Vector( 0.5f, 5, 0.5f );
     }
 }

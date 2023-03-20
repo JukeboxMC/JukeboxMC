@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Axis;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -25,7 +26,7 @@ public class BlockChain extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
@@ -36,11 +37,11 @@ public class BlockChain extends Block {
         return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
     }
 
-    public void setAxis( Axis axis ) {
+    public void setAxis(@NotNull Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }
 
-    public Axis getAxis() {
+    public @NotNull Axis getAxis() {
         return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

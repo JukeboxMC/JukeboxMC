@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.packet.RequestChunkRadiusPacket;
-import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 
@@ -12,7 +12,7 @@ import org.jukeboxmc.player.Player;
 public class RequestChunkRadiusHandler implements PacketHandler<RequestChunkRadiusPacket> {
 
     @Override
-    public void handle( RequestChunkRadiusPacket packet, Server server, Player player ) {
+    public void handle(@NotNull RequestChunkRadiusPacket packet, Server server, @NotNull Player player ) {
         player.setChunkRadius( packet.getRadius() );
     }
 }

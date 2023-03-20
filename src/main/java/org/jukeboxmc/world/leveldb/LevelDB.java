@@ -12,6 +12,7 @@ import org.iq80.leveldb.CompressionType;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.WriteBatch;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.palette.Palette;
@@ -29,7 +30,6 @@ import org.jukeboxmc.world.chunk.SubChunk;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -42,7 +42,7 @@ public class LevelDB {
     private final World world;
     private final DB db;
 
-    public LevelDB( World world ) {
+    public LevelDB(@NotNull World world ) {
         this.world = world;
         try {
             Options options = new Options()
@@ -55,7 +55,7 @@ public class LevelDB {
         }
     }
 
-    public CompletableFuture<Chunk> readChunk( Chunk chunk ) {
+    public @NotNull CompletableFuture<Chunk> readChunk(@NotNull Chunk chunk ) {
         return CompletableFuture.supplyAsync( () -> {
             byte[] version = this.db.get( Utils.getKey( chunk.getX(), chunk.getZ(), chunk.getDimension(), (byte) 0x2C ) );
             if ( version == null ) {
@@ -96,7 +96,7 @@ public class LevelDB {
         }, Server.getInstance().getScheduler().getChunkExecutor() );
     }
 
-    private void loadSection( SubChunk chunk, byte[] chunkData ) {
+    private void loadSection(@NotNull SubChunk chunk, byte @NotNull [] chunkData ) {
         ByteBuf buffer = Unpooled.wrappedBuffer( chunkData );
         try {
             byte subChunkVersion = buffer.readByte();
@@ -131,7 +131,7 @@ public class LevelDB {
         }
     }
 
-    private void loadHeightAndBiomes( Chunk chunk, byte[] heightAndBiomes ) {
+    private void loadHeightAndBiomes(@NotNull Chunk chunk, byte @NotNull [] heightAndBiomes ) {
         ByteBuf buffer = Unpooled.wrappedBuffer( heightAndBiomes );
         try {
             short[] height = chunk.getHeight();
@@ -156,7 +156,7 @@ public class LevelDB {
         }
     }
 
-    private void loadBlockEntities( Chunk chunk, byte[] blockEntityData ) {
+    private void loadBlockEntities(@NotNull Chunk chunk, byte @NotNull [] blockEntityData ) {
         ByteBuf byteBuf = Unpooled.wrappedBuffer( blockEntityData );
 
         try {
@@ -191,7 +191,7 @@ public class LevelDB {
         }
     }
 
-    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+    public @NotNull CompletableFuture<Void> saveChunk(@NotNull Chunk chunk ) {
         return CompletableFuture.supplyAsync( () -> {
             if ( !chunk.isGenerated() ) {
                 return null;

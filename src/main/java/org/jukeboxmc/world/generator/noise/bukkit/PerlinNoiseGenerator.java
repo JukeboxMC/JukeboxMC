@@ -1,5 +1,7 @@
 package org.jukeboxmc.world.generator.noise.bukkit;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 /**
@@ -52,7 +54,7 @@ public class PerlinNoiseGenerator extends NoiseGenerator {
         this( new Random( seed ) );
     }
 
-    public PerlinNoiseGenerator( Random rand ) {
+    public PerlinNoiseGenerator(@NotNull Random rand ) {
         this.offsetX = rand.nextDouble() * 256;
         this.offsetY = rand.nextDouble() * 256;
         this.offsetZ = rand.nextDouble() * 256;

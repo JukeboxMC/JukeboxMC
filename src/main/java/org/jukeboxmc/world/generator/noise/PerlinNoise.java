@@ -1,6 +1,7 @@
 package org.jukeboxmc.world.generator.noise;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.generator.noise.bukkit.PerlinNoiseGenerator;
 
 import java.util.Random;
@@ -12,7 +13,7 @@ public class PerlinNoise extends PerlinNoiseGenerator {
      *
      * @param rand the PRNG used to generate the seed permutation
      */
-    public PerlinNoise( Random rand ) {
+    public PerlinNoise(@NotNull Random rand ) {
         offsetX = rand.nextDouble() * 256;
         offsetY = rand.nextDouble() * 256;
         offsetZ = rand.nextDouble() * 256;

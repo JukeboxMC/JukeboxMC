@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Value;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class NpcDialogueButton {
         ON_EXIT
     }
 
-    public JsonObject toJsonObject() {
+    public @NotNull JsonObject toJsonObject() {
         JsonObject button = new JsonObject();
         button.addProperty( "button_name", this.text );
 

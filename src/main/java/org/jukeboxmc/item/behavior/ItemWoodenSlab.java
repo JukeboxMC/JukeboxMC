@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockWoodenSlab;
@@ -18,7 +19,7 @@ import java.time.Duration;
  */
 public class ItemWoodenSlab extends Item implements Burnable {
 
-    private final BlockWoodenSlab block;
+    private final @NotNull BlockWoodenSlab block;
 
     public ItemWoodenSlab( Identifier identifier ) {
         super( identifier );
@@ -33,13 +34,13 @@ public class ItemWoodenSlab extends Item implements Burnable {
     }
 
     @Override
-    public ItemWoodenSlab setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemWoodenSlab setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemWoodenSlab setWoodType( WoodType woodType ) {
+    public @NotNull ItemWoodenSlab setWoodType(@NotNull WoodType woodType ) {
         this.blockRuntimeId = this.block.setWoodType( woodType ).getRuntimeId();
         return this;
     }

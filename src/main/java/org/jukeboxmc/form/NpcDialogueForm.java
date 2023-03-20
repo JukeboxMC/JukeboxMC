@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.passiv.EntityNPC;
 import org.jukeboxmc.form.element.NpcDialogueButton;
@@ -43,7 +44,7 @@ public class NpcDialogueForm {
     @Getter
     private final ObjectArrayList<NpcDialogueButton> dialogueButtons = new ObjectArrayList<>();
 
-    public NpcDialogueForm buttons( NpcDialogueButton... buttons ) {
+    public @NotNull NpcDialogueForm buttons(NpcDialogueButton @NotNull ... buttons ) {
         String urlTag = this.npc.getMetadata().getString( EntityData.URL_TAG );
 
         List<JsonObject> urlTags = Utils.gson().fromJson( urlTag, List.class ) == null ?
@@ -70,7 +71,7 @@ public class NpcDialogueForm {
         return this;
     }
 
-    public void create( Player player ) {
+    public void create(@NotNull Player player ) {
         SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
         setEntityDataPacket.setRuntimeEntityId( this.npc.getEntityId() );
         setEntityDataPacket.getMetadata().putAll( this.npc.getMetadata()
@@ -92,7 +93,7 @@ public class NpcDialogueForm {
         player.addNpcDialogueForm( this );
     }
 
-    public void close( Player player ) {
+    public void close(@NotNull Player player ) {
         NpcDialoguePacket npcDialoguePacket = new NpcDialoguePacket();
         npcDialoguePacket.setUniqueEntityId( this.npc.getEntityId() );
         npcDialoguePacket.setAction( NpcDialoguePacket.Action.CLOSE );

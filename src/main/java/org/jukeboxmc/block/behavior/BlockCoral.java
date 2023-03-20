@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.CoralColor;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockCoral extends Block {
         return Item.<ItemCoral>create( ItemType.CORAL ).setCoralColor( this.getCoralColor() ).setDead( this.isDead() );
     }
 
-    public BlockCoral setCoralColor( CoralColor coralColor ) {
+    public BlockCoral setCoralColor(@NotNull CoralColor coralColor ) {
         return this.setState( "coral_color", coralColor.name().toLowerCase() );
     }
 
-    public CoralColor getCoralColor() {
+    public @NotNull CoralColor getCoralColor() {
         return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ) ) : CoralColor.BLUE;
     }
 

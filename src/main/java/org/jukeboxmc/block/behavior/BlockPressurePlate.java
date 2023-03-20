@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.UpdateReason;
@@ -31,7 +32,7 @@ public class BlockPressurePlate extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block target = world.getBlock( blockPosition );
         if ( target.isTransparent() ) {
             return false;
@@ -54,7 +55,7 @@ public class BlockPressurePlate extends Block {
     }
 
     @Override
-    public void enterBlock( Player player ) {
+    public void enterBlock(@NotNull Player player ) {
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL,
                 player.getInventory().getItemInHand(), this );
 
@@ -73,7 +74,7 @@ public class BlockPressurePlate extends Block {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         return new AxisAlignedBB(
                 this.location.getX() + 0.0625f,
                 this.location.getY(),

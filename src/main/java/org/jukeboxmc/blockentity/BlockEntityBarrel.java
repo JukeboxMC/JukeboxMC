@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.BarrelInventory;
@@ -20,21 +21,21 @@ import java.util.List;
  */
 public class BlockEntityBarrel extends BlockEntity implements InventoryHolder {
 
-    private final BarrelInventory barrelInventory;
+    private final @NotNull BarrelInventory barrelInventory;
 
-    public BlockEntityBarrel( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityBarrel(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.barrelInventory = new BarrelInventory( this );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.barrelInventory, blockPosition );
         return true;
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
 
         List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
@@ -50,7 +51,7 @@ public class BlockEntityBarrel extends BlockEntity implements InventoryHolder {
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
 
         List<NbtMap> itemsCompoundList = new ArrayList<>();
@@ -67,7 +68,7 @@ public class BlockEntityBarrel extends BlockEntity implements InventoryHolder {
         return builder;
     }
 
-    public BarrelInventory getBarrelInventory() {
+    public @NotNull BarrelInventory getBarrelInventory() {
         return this.barrelInventory;
     }
 }

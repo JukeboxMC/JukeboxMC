@@ -3,6 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
 import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -26,12 +27,12 @@ public class FakeDoubleChestInventory extends FakeChestInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.FAKE_DOUBLE_CHEST;
     }
 
     @Override
-    public void addViewer( Player player, Vector position, byte windowId ) {
+    public void addViewer(@NotNull Player player, @NotNull Vector position, byte windowId ) {
         this.viewer.add( player );
 
         if ( this.openInventory.put( player, this ) != null ){
@@ -57,7 +58,7 @@ public class FakeDoubleChestInventory extends FakeChestInventory {
     }
 
     @Override
-    public List<Vector> onOpenChest( Player player ) {
+    public @NotNull List<Vector> onOpenChest(@NotNull Player player ) {
         Vector positionA = new Vector( player.getBlockX(), player.getBlockY() + 2, player.getBlockZ() );
         Vector positionB = positionA.add( 1, 0, 0 );
 
@@ -70,14 +71,14 @@ public class FakeDoubleChestInventory extends FakeChestInventory {
         return Arrays.asList( positionA, positionB );
     }
 
-    private void pair( Player player, Vector positionA, Vector positionB ) {
+    private void pair(@NotNull Player player, @NotNull Vector positionA, @NotNull Vector positionB ) {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( positionA.toVector3i() );
         blockEntityDataPacket.setData( this.toChestNBT( positionA, positionB ) );
         player.getPlayerConnection().sendPacket( blockEntityDataPacket );
     }
 
-    private NbtMap toChestNBT( Vector positionA, Vector positionB ) {
+    private NbtMap toChestNBT(@NotNull Vector positionA, @NotNull Vector positionB ) {
         return NbtMap.builder()
                 .putString( "id", "Chest" )
                 .putInt( "x", positionA.getBlockX() )

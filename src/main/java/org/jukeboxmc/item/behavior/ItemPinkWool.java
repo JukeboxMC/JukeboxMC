@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockPinkWool;
@@ -16,7 +17,7 @@ import java.time.Duration;
  */
 public class ItemPinkWool extends Item implements Burnable {
 
-    private final BlockPinkWool block;
+    private final @NotNull BlockPinkWool block;
 
     public ItemPinkWool(Identifier identifier ) {
         super( identifier );

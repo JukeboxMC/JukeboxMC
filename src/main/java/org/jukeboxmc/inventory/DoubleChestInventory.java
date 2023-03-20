@@ -3,6 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.blockentity.BlockEntityChest;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.Location;
@@ -14,10 +15,10 @@ import org.jukeboxmc.player.Player;
  */
 public class DoubleChestInventory extends ChestInventory implements InventoryHolder {
 
-    private final ChestInventory left;
-    private final ChestInventory right;
+    private final @NotNull ChestInventory left;
+    private final @NotNull ChestInventory right;
 
-    public DoubleChestInventory( InventoryHolder holder, ChestInventory left, ChestInventory right ) {
+    public DoubleChestInventory(InventoryHolder holder, @NotNull ChestInventory left, @NotNull ChestInventory right ) {
         super( holder, left.getSize() + right.getSize());
         this.left = left;
         this.right = right;
@@ -35,17 +36,17 @@ public class DoubleChestInventory extends ChestInventory implements InventoryHol
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.DOUBLE_CHEST;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.CONTAINER;
     }
 
     @Override
-    public void setItem( int slot, Item item, boolean sendContent ) {
+    public void setItem(int slot, @NotNull Item item, boolean sendContent ) {
         if ( slot < this.left.getSize() ) {
             this.left.setItem( slot, item );
             if ( sendContent ) {
@@ -75,7 +76,7 @@ public class DoubleChestInventory extends ChestInventory implements InventoryHol
     }
 
     @Override
-    public Item[] getContents() {
+    public Item @NotNull [] getContents() {
         Item[] contents = new Item[this.left.getSize() + this.right.getSize()];
         System.arraycopy(this.left.getContents(), 0, contents, 0, this.left.getSize());
         System.arraycopy(this.right.getContents(), 0, contents, this.left.getSize(), this.right.getSize());
@@ -83,7 +84,7 @@ public class DoubleChestInventory extends ChestInventory implements InventoryHol
     }
 
     @Override
-    public void onOpen( Player player ) {
+    public void onOpen(@NotNull Player player ) {
         this.sendContents( player );
         if ( this.viewer.size() == 1 ) {
             Location leftLocation = this.left.getInventoryHolder().getBlock().getLocation();
@@ -106,7 +107,7 @@ public class DoubleChestInventory extends ChestInventory implements InventoryHol
     }
 
     @Override
-    public void onClose( Player player ) {
+    public void onClose(@NotNull Player player ) {
         if ( this.viewer.size() == 0 ) {
             Location leftLocation = this.left.getInventoryHolder().getBlock().getLocation();
 

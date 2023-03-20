@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LeverDirection;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -26,7 +27,7 @@ public class BlockLever extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, @NotNull BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
 
         if ( block.isTransparent() ) {
@@ -40,7 +41,7 @@ public class BlockLever extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         boolean open = this.isOpen();
         this.setOpen( !open );
         player.playSound( this.location, Sound.RANDOM_CLICK, 0.8f, open ? 0.5f : 0.58f, true );
@@ -55,11 +56,11 @@ public class BlockLever extends Block {
         return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
     }
 
-    public void setLeverDirection( LeverDirection leverDirection ) {
+    public void setLeverDirection(@NotNull LeverDirection leverDirection ) {
         this.setState( "lever_direction", leverDirection.name().toLowerCase() );
     }
 
-    public LeverDirection getLeverDirection() {
+    public @NotNull LeverDirection getLeverDirection() {
         return this.stateExists( "lever_direction" ) ? LeverDirection.valueOf( this.getStringState( "lever_direction" ) ) : LeverDirection.DOWN_EAST_WEST;
     }
 }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.packet.ModalFormResponsePacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 
@@ -11,7 +12,7 @@ import org.jukeboxmc.player.Player;
 public class ModalFormResponseHandler implements PacketHandler<ModalFormResponsePacket> {
 
     @Override
-    public void handle( ModalFormResponsePacket packet, Server server, Player player ) {
+    public void handle(@NotNull ModalFormResponsePacket packet, Server server, @NotNull Player player ) {
         player.parseGUIResponse( packet.getFormId(), packet.getFormData() );
     }
 }

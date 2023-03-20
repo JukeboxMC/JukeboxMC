@@ -1,5 +1,6 @@
 package org.jukeboxmc.form;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 /**
@@ -27,12 +28,12 @@ public class Modal extends Form<Boolean> {
         this.dirty = true;
     }
 
-    public String getFormType() {
+    public @NotNull String getFormType() {
         return "modal";
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         // Fast out when cached
         if ( this.cache != null && !this.dirty ) {
             return this.cache;
@@ -51,7 +52,7 @@ public class Modal extends Form<Boolean> {
     }
 
     @Override
-    public Boolean parseResponse( String json ) {
+    public @NotNull Boolean parseResponse(@NotNull String json ) {
         return json.trim().equals( "true" );
     }
 

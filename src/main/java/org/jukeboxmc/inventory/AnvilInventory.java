@@ -1,6 +1,7 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.Player;
 
@@ -20,17 +21,17 @@ public class AnvilInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.ANVIL;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.ANVIL;
     }
 
     @Override
-    public void setItem( int slot, Item item, boolean sendContent ) {
+    public void setItem(int slot, @NotNull Item item, boolean sendContent ) {
         super.setItem( slot - 1, item, sendContent );
     }
 

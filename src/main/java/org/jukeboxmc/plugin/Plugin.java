@@ -2,6 +2,8 @@ package org.jukeboxmc.plugin;
 
 import com.google.common.base.Preconditions;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.util.Utils;
@@ -28,7 +30,7 @@ public abstract class Plugin {
     private Logger logger;
     private boolean initialized = false;
 
-    protected final void init( PluginYAML description, Server server, File pluginFile ) {
+    protected final void init(@NotNull PluginYAML description, @NotNull Server server, File pluginFile ) {
         Preconditions.checkArgument( !this.initialized, "Plugin has been already initialized!" );
         this.initialized = true;
         this.description = description;
@@ -66,7 +68,7 @@ public abstract class Plugin {
      * @param filename the file name to read
      * @return Returns a file from inside the plugin jar as an InputStream
      */
-    public InputStream getResourceFile( String filename ) {
+    public @Nullable InputStream getResourceFile(String filename ) {
         try {
             JarFile pluginJar = new JarFile( this.pluginFile );
             JarEntry entry = pluginJar.getJarEntry( filename );
@@ -77,11 +79,11 @@ public abstract class Plugin {
         return null;
     }
 
-    public boolean saveResource( String filename ) {
+    public boolean saveResource(@NotNull String filename ) {
         return this.saveResource( filename, false );
     }
 
-    public boolean saveResource( String filename, boolean replace ) {
+    public boolean saveResource(@NotNull String filename, boolean replace ) {
         return this.saveResource( filename, filename, replace );
     }
 
@@ -95,7 +97,7 @@ public abstract class Plugin {
      * not be found in the jar
      * returns true if the file overwrite / copy was successful
      */
-    public boolean saveResource( String filename, String outputName, boolean replace ) {
+    public boolean saveResource(@NotNull String filename, @NotNull String outputName, boolean replace ) {
         Preconditions.checkArgument( filename != null && !filename.trim().isEmpty(), "Filename can not be null!" );
 
         File file = new File( this.dataFolder, outputName );

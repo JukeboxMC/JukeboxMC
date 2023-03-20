@@ -1,5 +1,7 @@
 package org.jukeboxmc.inventory;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -34,7 +36,7 @@ public enum WindowId {
         return this.id;
     }
 
-    public static WindowId getWindowIdById( int windowId ) {
+    public static @Nullable WindowId getWindowIdById(int windowId ) {
         for ( WindowId value : values() ) {
             if ( value.getId() == windowId ) {
                 return value;

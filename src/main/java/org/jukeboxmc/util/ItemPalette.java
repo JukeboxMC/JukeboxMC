@@ -2,6 +2,7 @@ package org.jukeboxmc.util;
 
 import com.google.gson.Gson;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Bootstrap;
 
 import java.io.IOException;
@@ -85,7 +86,7 @@ public class ItemPalette {
         return NonStream.map( IDENTIFIER_TO_RUNTIME.entrySet(), ItemPalette::toEntry, ArrayList::new, Collections::unmodifiableList );
     }
 
-    private static StartGamePacket.ItemEntry toEntry( Map.Entry<Identifier, Short> entry ) {
+    private static StartGamePacket.@NotNull ItemEntry toEntry(Map.@NotNull Entry<Identifier, Short> entry ) {
         return new StartGamePacket.ItemEntry( entry.getKey().getFullName(), entry.getValue(), false );
     }
 

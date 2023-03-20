@@ -2,6 +2,7 @@ package org.jukeboxmc.command;
 
 import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class CommandEnum {
         return this.name.hashCode();
     }
 
-    protected CommandEnumData toNetwork() {
+    protected @NotNull CommandEnumData toNetwork() {
         String[] aliases;
         if ( this.values.size() > 0 ) {
             List<String> aliasList = new ArrayList<>( this.values );

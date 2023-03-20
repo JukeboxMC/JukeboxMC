@@ -1,6 +1,8 @@
 package org.jukeboxmc.command.internal;
 
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -38,7 +40,7 @@ public class GameModeCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute( CommandSender commandSender, String command, String @NotNull [] args ) {
         if ( commandSender instanceof Player player ) {
 
             if ( args.length == 1 ) {
@@ -95,7 +97,7 @@ public class GameModeCommand extends Command {
         }
     }
 
-    private GameMode getGameModeByName( String value ) {
+    private @Nullable GameMode getGameModeByName(@NotNull String value ) {
         GameMode gameMode = null;
         switch ( value ) {
             case "survival", "0" -> gameMode = GameMode.SURVIVAL;

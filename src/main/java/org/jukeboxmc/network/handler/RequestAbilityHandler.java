@@ -2,6 +2,7 @@ package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.data.Ability;
 import com.nukkitx.protocol.bedrock.packet.RequestAbilityPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerToggleFlyEvent;
 import org.jukeboxmc.player.AdventureSettings;
@@ -14,7 +15,7 @@ import org.jukeboxmc.player.Player;
 public class RequestAbilityHandler implements PacketHandler<RequestAbilityPacket> {
 
     @Override
-    public void handle( RequestAbilityPacket packet, Server server, Player player ) {
+    public void handle(@NotNull RequestAbilityPacket packet, @NotNull Server server, @NotNull Player player ) {
         if ( !player.getAdventureSettings().get( AdventureSettings.Type.ALLOW_FLIGHT ) && packet.getAbility().equals( Ability.FLYING ) ) {
             player.getAdventureSettings().set( AdventureSettings.Type.FLYING, false );
             player.getAdventureSettings().update();

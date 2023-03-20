@@ -1,6 +1,7 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.blockentity.BlockEntityBrewingStand;
 
 /**
@@ -19,12 +20,12 @@ public class BrewingStandInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.BREWING_STAND;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.BREWING_STAND;
     }
 }

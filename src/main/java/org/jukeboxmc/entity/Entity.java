@@ -8,6 +8,8 @@ import com.nukkitx.protocol.bedrock.packet.AddEntityPacket;
 import com.nukkitx.protocol.bedrock.packet.RemoveEntityPacket;
 import com.nukkitx.protocol.bedrock.packet.SetEntityDataPacket;
 import com.nukkitx.protocol.bedrock.packet.SetEntityMotionPacket;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -26,6 +28,7 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -41,12 +44,12 @@ public abstract class Entity {
     public static long entityCount = 1;
     protected long entityId;
 
-    protected final Metadata metadata;
+    protected final @NotNull Metadata metadata;
     protected Location location;
     protected Location lastLocation;
     protected Vector velocity;
     protected Vector lastVector;
-    protected final AxisAlignedBB boundingBox;
+    protected final @NotNull AxisAlignedBB boundingBox;
 
     protected boolean onGround;
     protected boolean closed;
@@ -72,15 +75,15 @@ public abstract class Entity {
         this.metadata.setFlag( EntityFlag.CAN_CLIMB, true );
         this.metadata.setFlag( EntityFlag.BREATHING, true );
 
-        this.location = Server.getInstance().getDefaultWorld().getSpawnLocation();
-        this.lastLocation = Server.getInstance().getDefaultWorld().getSpawnLocation();
+        this.location = Objects.requireNonNull(Server.getInstance().getDefaultWorld()).getSpawnLocation();
+        this.lastLocation = Objects.requireNonNull(Server.getInstance().getDefaultWorld()).getSpawnLocation();
         this.velocity = new Vector( 0, 0, 0, this.location.getDimension() );
         this.lastVector = new Vector( 0, 0, 0, this.location.getDimension() );
         this.boundingBox = new AxisAlignedBB( 0, 0, 0, 0, 0, 0 );
         this.recalculateBoundingBox();
     }
 
-    public static <T extends Entity> T create( EntityType entityType ) {
+    public static <T extends Entity> @Nullable T create(EntityType entityType ) {
         try {
             return (T) EntityRegistry.getEntityClass( entityType ).getConstructor().newInstance();
         } catch ( Exception e ) {
@@ -145,7 +148,7 @@ public abstract class Entity {
 
     }
 
-    public Entity spawn( Player player ) {
+    public @NotNull Entity spawn(@NotNull Player player ) {
         if ( !this.spawnedFor.contains( player.getEntityId() ) ) {
             EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent( this );
             Server.getInstance().getPluginManager().callEvent( entitySpawnEvent );
@@ -161,14 +164,14 @@ public abstract class Entity {
         return this;
     }
 
-    public Entity spawn() {
+    public @NotNull Entity spawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
             this.spawn( player );
         }
         return this;
     }
 
-    public Entity despawn( Player player ) {
+    public @NotNull Entity despawn(@NotNull Player player ) {
         if ( this.spawnedFor.contains( player.getEntityId() ) ) {
             EntityDespawnEvent entityDespawnEvent = new EntityDespawnEvent( this );
             Server.getInstance().getPluginManager().callEvent( entityDespawnEvent );
@@ -183,7 +186,7 @@ public abstract class Entity {
         return this;
     }
 
-    public Entity despawn() {
+    public @NotNull Entity despawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
             this.despawn( player );
         }
@@ -204,7 +207,7 @@ public abstract class Entity {
         return this.entityId;
     }
 
-    public Metadata getMetadata() {
+    public @NotNull Metadata getMetadata() {
         return this.metadata;
     }
 
@@ -248,7 +251,7 @@ public abstract class Entity {
         this.lastVector = lastVector;
     }
 
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         return this.boundingBox;
     }
 
@@ -367,7 +370,7 @@ public abstract class Entity {
         this.metadata.setFloat( BOUNDING_BOX_WIDTH, this.getWidth() );
     }
 
-    public Direction getDirection() {
+    public @NotNull Direction getDirection() {
         double rotation = this.location.getYaw() % 360;
         if ( rotation < 0 ) {
             rotation += 360.0;
@@ -484,7 +487,7 @@ public abstract class Entity {
         }
     }
 
-    public void setBurning( long value, TimeUnit timeUnit ) {
+    public void setBurning(long value, @NotNull TimeUnit timeUnit ) {
         int newFireTicks = (int) ( timeUnit.toMillis( value ) / 50 );
         if ( newFireTicks > this.fireTicks ) {
             this.fireTicks = newFireTicks;
@@ -505,7 +508,7 @@ public abstract class Entity {
         }
     }
 
-    public void updateMetadata( Metadata metadata ) {
+    public void updateMetadata(@NotNull Metadata metadata ) {
         SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
         setEntityDataPacket.setRuntimeEntityId( this.entityId );
         setEntityDataPacket.getMetadata().putAll( metadata.getEntityDataMap() );
@@ -548,7 +551,7 @@ public abstract class Entity {
         return false;
     }
 
-    public void setOnFire( int value, TimeUnit timeUnit ) {
+    public void setOnFire(int value, @NotNull TimeUnit timeUnit ) {
         long ticks = timeUnit.toMillis( value ) / 50;
         if ( ticks > this.fireTicks ) {
             this.fireTicks = ticks;

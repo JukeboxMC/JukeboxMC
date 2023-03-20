@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.item.Item;
@@ -22,11 +23,11 @@ public class ItemSkull extends Item {
     }
 
     @Override
-    public Block toBlock() {
+    public @NotNull Block toBlock() {
         return Block.create( BlockType.SKULL );
     }
 
-    public void setSkullType( SkullType skullType ) {
+    public void setSkullType(@NotNull SkullType skullType ) {
         this.setMeta( skullType.ordinal() );
     }
 

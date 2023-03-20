@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.WoodType;
@@ -28,7 +29,7 @@ public class BlockWoodenSlab extends BlockSlab {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, @NotNull Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block targetBlock = world.getBlock( blockPosition );
         Block block = world.getBlock( placePosition );
 
@@ -66,11 +67,11 @@ public class BlockWoodenSlab extends BlockSlab {
         return Item.<ItemWoodenSlab>create( ItemType.WOODEN_SLAB ).setWoodType( this.getWoodType() );
     }
 
-    public BlockWoodenSlab setWoodType( WoodType woodType ) {
+    public BlockWoodenSlab setWoodType(@NotNull WoodType woodType ) {
         return this.setState( "wood_type", woodType.name().toLowerCase() );
     }
 
-    public WoodType getWoodType() {
+    public @NotNull WoodType getWoodType() {
         return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ) ) : WoodType.OAK;
     }
 }

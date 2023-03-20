@@ -1,6 +1,8 @@
 package org.jukeboxmc.blockentity;
 
 import com.nukkitx.protocol.bedrock.packet.ContainerSetDataPacket;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -30,11 +32,11 @@ public class SmeltingComponent extends BlockEntity {
     private short burnTime;
     private short burnDuration;
 
-    private Item output;
+    private @Nullable Item output;
 
     private Inventory inventory;
 
-    public SmeltingComponent( Block block, BlockEntityType blockEntityType ) {
+    public SmeltingComponent(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
     }
 
@@ -43,7 +45,7 @@ public class SmeltingComponent extends BlockEntity {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.sendDataProperties( player );
         return true;
     }
@@ -57,7 +59,7 @@ public class SmeltingComponent extends BlockEntity {
         if ( input != null && !( input.getType().equals( ItemType.AIR ) ) && fuelItem != null && !fuelItem.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 ) {
             this.checkForRecipe( input );
         }
-        if ( this.output != null && !this.output.getType().equals( ItemType.AIR ) && !input.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
+        if ( this.output != null && input != null && !this.output.getType().equals( ItemType.AIR ) && !input.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
             this.cookTime++;
 
             if ( this.cookTime >= (this.inventory instanceof FurnaceInventory ? 200 : 100) ) {
@@ -99,7 +101,7 @@ public class SmeltingComponent extends BlockEntity {
         }
     }
 
-    private void checkForRecipe( Item input ) {
+    private void checkForRecipe(@NotNull Item input ) {
         this.output = null;
 
         SmeltingRecipe recipe = Server.getInstance().getCraftingManager().getSmeltingRecipe( input );
@@ -145,7 +147,7 @@ public class SmeltingComponent extends BlockEntity {
         return true;
     }
 
-    private void sendTickProgress( Player player ) {
+    private void sendTickProgress(@NotNull Player player ) {
         ContainerSetDataPacket containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );
@@ -153,7 +155,7 @@ public class SmeltingComponent extends BlockEntity {
         player.getPlayerConnection().sendPacket( containerData );
     }
 
-    private void sendFuelInfo( Player player ) {
+    private void sendFuelInfo(@NotNull Player player ) {
         ContainerSetDataPacket containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_LIT_TIME );
@@ -167,7 +169,7 @@ public class SmeltingComponent extends BlockEntity {
         player.getPlayerConnection().sendPacket( containerData );
     }
 
-    private void sendDataProperties( Player player ) {
+    private void sendDataProperties(@NotNull Player player ) {
         ContainerSetDataPacket containerData = new ContainerSetDataPacket();
         containerData.setWindowId( (byte) WindowId.OPEN_CONTAINER.getId() );
         containerData.setProperty( CONTAINER_PROPERTY_TICK_COUNT );

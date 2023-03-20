@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.projectile.EntitySnowball;
@@ -11,6 +12,8 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
+
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -27,8 +30,8 @@ public class ItemSnowball extends Item {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
-        EntitySnowball entitySnowball = Entity.create( EntityType.SNOWBALL );
+    public boolean useInAir(@NotNull Player player, @NotNull Vector clickVector ) {
+        EntitySnowball entitySnowball = Objects.requireNonNull(Entity.create( EntityType.SNOWBALL ));
         entitySnowball.setShooter( player );
         entitySnowball.setLocation( player.getLocation().add( 0, player.getEyeHeight(), 0 ) );
         entitySnowball.setVelocity( clickVector.multiply( 1.5f, 1.5f, 1.5f ), false );

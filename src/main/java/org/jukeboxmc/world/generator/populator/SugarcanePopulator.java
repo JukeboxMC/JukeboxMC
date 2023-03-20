@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -21,7 +22,7 @@ public class SugarcanePopulator extends Populator {
     private final Block BLOCK_SUGAR_CANE = Block.create( BlockType.SUGAR_CANE );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         for ( int i = 0; i < amount; ++i ) {
@@ -35,7 +36,7 @@ public class SugarcanePopulator extends Populator {
         }
     }
 
-    private boolean canSugarCaneStay( Chunk chunk, int x, int y, int z ) {
+    private boolean canSugarCaneStay(@NotNull Chunk chunk, int x, int y, int z ) {
         Block block = chunk.getBlock( x, y, z, 0 );
         boolean val1 = block.getType() == BlockType.AIR || block.getType() == BlockType.SNOW_LAYER;
         boolean val2 = this.blockBelow( chunk, x, y, z, BlockType.GRAVEL ) || this.blockBelow( chunk, x, y, z, BlockType.GRASS );
@@ -51,7 +52,7 @@ public class SugarcanePopulator extends Populator {
         this.baseAmount = baseAmount;
     }
 
-    private boolean findWater( Chunk chunk, int x, int y, int z ) {
+    private boolean findWater(@NotNull Chunk chunk, int x, int y, int z ) {
         for ( int i = x - 4; i < ( x + 4 ); i++ ) {
             for ( int j = z - 4; j < ( z + 4 ); j++ ) {
                 Block block = chunk.getBlock( i, y, j, 0 );

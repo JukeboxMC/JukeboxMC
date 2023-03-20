@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -35,7 +36,7 @@ public class BlockUndyedShulkerBox extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, @NotNull Item itemIndHand, BlockFace blockFace ) {
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         if ( value ) {
             BlockEntityShulkerBox blockEntityShulkerBox = (BlockEntityShulkerBox) BlockEntity.<BlockEntityShulkerBox>create(BlockEntityType.SHULKER_BOX, this).setUndyed( true ).spawn();
@@ -57,7 +58,7 @@ public class BlockUndyedShulkerBox extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityShulkerBox blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -72,7 +73,7 @@ public class BlockUndyedShulkerBox extends Block {
     }
 
     @Override
-    public ItemUndyedShulkerBox toItem() {
+    public @NotNull ItemUndyedShulkerBox toItem() {
         ItemUndyedShulkerBox itemShulkerBox = Item.create( ItemType.UNDYED_SHULKER_BOX );
         BlockEntityShulkerBox blockEntity = this.getBlockEntity();
         if ( blockEntity == null ) {

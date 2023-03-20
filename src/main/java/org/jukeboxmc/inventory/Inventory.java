@@ -2,6 +2,7 @@ package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
@@ -14,7 +15,7 @@ import java.util.*;
  */
 public abstract class Inventory {
 
-    protected final Set<Player> viewer;
+    protected final @NotNull Set<Player> viewer;
     protected InventoryHolder holder;
     protected int size;
     protected Item[] content;
@@ -56,19 +57,19 @@ public abstract class Inventory {
         this.viewer.add( player );
     }
 
-    public void removeViewer( Player player ) {
+    public void removeViewer(@NotNull Player player ) {
         this.viewer.removeIf( target -> target.getUUID().equals( player.getUUID() ) );
     }
 
-    public Set<Player> getViewer() {
+    public @NotNull Set<Player> getViewer() {
         return this.viewer;
     }
 
-    public void setItem( int slot, Item item ) {
+    public void setItem(int slot, @NotNull Item item ) {
         this.setItem( slot, item, true );
     }
 
-    public void setItem( int slot, Item item, boolean sendContent ) {
+    public void setItem(int slot, @NotNull Item item, boolean sendContent ) {
         if ( slot < 0 || slot >= this.size ) {
             return;
         }
@@ -90,7 +91,7 @@ public abstract class Inventory {
         return content != null ? content : Item.create( ItemType.AIR );
     }
 
-    public boolean canAddItem( Item item ) {
+    public boolean canAddItem(@NotNull Item item ) {
         int amount = item.getAmount();
 
         for ( Item content : this.getContents() ) {
@@ -110,11 +111,11 @@ public abstract class Inventory {
         return false;
     }
 
-    public boolean addItem( Item item ) {
+    public boolean addItem(@NotNull Item item ) {
         return this.addItem( item, true );
     }
 
-    public boolean addItem( Item item, boolean sendContents ) {
+    public boolean addItem(@NotNull Item item, boolean sendContents ) {
         if ( this.canAddItem( item ) ) {
             Item clone = item.clone();
 
@@ -150,7 +151,7 @@ public abstract class Inventory {
         return true;
     }
 
-    public boolean addItem( Item item, int slot ) {
+    public boolean addItem(@NotNull Item item, int slot ) {
         if ( this.canAddItem( item ) ) {
             Item clone = item.clone();
 
@@ -181,7 +182,7 @@ public abstract class Inventory {
         return true;
     }
 
-    public void removeItem( int slot, Item item ) {
+    public void removeItem(int slot, @NotNull Item item ) {
         Item content = this.getItem( slot );
 
         if ( content != null && content.getType() != ItemType.AIR ) {
@@ -230,7 +231,7 @@ public abstract class Inventory {
         }
     }
 
-       public boolean contains( Item item ) {
+       public boolean contains(@NotNull Item item ) {
         for ( Item content : this.content ) {
             if ( content.getIdentifier().equals( item.getIdentifier() ) &&
                      content.getRuntimeId() == item.getRuntimeId() &&
@@ -258,7 +259,7 @@ public abstract class Inventory {
         return this.content;
     }
 
-    public List<ItemData> getItemDataContents() {
+    public @NotNull List<ItemData> getItemDataContents() {
         List<ItemData> itemDataList = new ArrayList<>();
         for ( Item content : this.getContents() ) {
             itemDataList.add( content.toItemData() );

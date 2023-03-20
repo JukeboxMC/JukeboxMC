@@ -1,6 +1,7 @@
 package org.jukeboxmc.world.chunk.manager;
 
 import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -18,7 +19,7 @@ public class PopulationChunkManager {
 
     private final Chunk[] chunks = new Chunk[3 * 3];
 
-    public PopulationChunkManager( Chunk chunk, List<Chunk> chunks ) {
+    public PopulationChunkManager(@NotNull Chunk chunk, @NotNull List<Chunk> chunks ) {
         this.cornerX = chunk.getX() - 1;
         this.cornerZ = chunk.getZ() - 1;
 
@@ -49,7 +50,7 @@ public class PopulationChunkManager {
         return this.chunkFromBlock( x, z ).getBlock( x, y, z, layer );
     }
 
-    public Block getBlock( Vector vector ) {
+    public Block getBlock(@NotNull Vector vector ) {
         return this.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), 0 );
     }
 
@@ -57,11 +58,11 @@ public class PopulationChunkManager {
         return this.getBlock( x, y, z, 0 );
     }
 
-    public void setBlock( Vector vector, int layer, Block block ) {
+    public void setBlock(@NotNull Vector vector, int layer, Block block ) {
         this.chunkFromBlock( vector.getBlockX(), vector.getBlockZ() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
     }
 
-    public void setBlock( Vector vector, Block block ) {
+    public void setBlock(@NotNull Vector vector, Block block ) {
         this.chunkFromBlock( vector.getBlockX(), vector.getBlockZ() ).setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), 0, block );
     }
 

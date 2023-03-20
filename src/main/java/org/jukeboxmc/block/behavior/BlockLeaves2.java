@@ -1,6 +1,8 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LeafType2;
 import org.jukeboxmc.item.Item;
@@ -31,8 +33,8 @@ public class BlockLeaves2 extends Block {
     }
 
     @Override
-    public List<Item> getDrops( Item item ) {
-        if ( this.isCorrectToolType( item ) ) {
+    public @NotNull List<Item> getDrops(@Nullable Item item ) {
+        if ( item != null && this.isCorrectToolType( item ) ) {
             return Collections.singletonList( this.toItem() );
         }
         return Collections.emptyList();
@@ -54,11 +56,11 @@ public class BlockLeaves2 extends Block {
         return this.stateExists( "update_bit" ) && this.getByteState( "update_bit" ) == 1;
     }
 
-    public BlockLeaves2 setLeafType( LeafType2 leafType ) {
+    public BlockLeaves2 setLeafType(@NotNull LeafType2 leafType ) {
         return this.setState( "new_leaf_type", leafType.name().toLowerCase() );
     }
 
-    public LeafType2 getLeafType() {
+    public @NotNull LeafType2 getLeafType() {
         return this.stateExists( "new_leaf_type" ) ? LeafType2.valueOf( this.getStringState( "new_leaf_type" ) ) : LeafType2.ACACIA;
     }
 }

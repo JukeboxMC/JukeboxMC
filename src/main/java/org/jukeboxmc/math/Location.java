@@ -1,5 +1,6 @@
 package org.jukeboxmc.math;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
@@ -44,39 +45,39 @@ public class Location extends Vector implements Cloneable {
         this( world, x, y, z, 0, 0, Dimension.OVERWORLD );
     }
 
-    public Location( World world, Vector vector, float yaw, float pitch, Dimension dimension ) {
+    public Location(World world, @NotNull Vector vector, float yaw, float pitch, Dimension dimension ) {
         this( world, vector.getX(), vector.getY(), vector.getZ(), yaw, pitch, dimension );
     }
 
-    public Location( World world, Vector vector, float yaw, float pitch ) {
+    public Location(World world, @NotNull Vector vector, float yaw, float pitch ) {
         this( world, vector.getX(), vector.getY(), vector.getZ(), yaw, pitch, Dimension.OVERWORLD );
     }
 
-    public Location( World world, Vector vector, Dimension dimension ) {
+    public Location(World world, @NotNull Vector vector, Dimension dimension ) {
         this( world, vector.getX(), vector.getY(), vector.getZ(), 0, 0, dimension );
     }
 
-    public Location( World world, Vector vector ) {
+    public Location(World world, @NotNull Vector vector ) {
         this( world, vector.getX(), vector.getY(), vector.getZ(), 0, 0, Dimension.OVERWORLD );
     }
 
     @Override
-    public Location add( float x, float y, float z ) {
+    public @NotNull Location add(float x, float y, float z ) {
         return new Location( this.world, this.x + x, this.y + y, this.z + z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
-    public Location subtract( float x, float y, float z ) {
+    public @NotNull Location subtract(float x, float y, float z ) {
         return new Location( this.world, this.x - x, this.y - y, this.z - z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
-    public Location multiply( float x, float y, float z ) {
+    public @NotNull Location multiply(float x, float y, float z ) {
         return new Location( this.world, this.x * x, this.y * y, this.z * z, this.yaw, this.pitch, this.dimension );
     }
 
     @Override
-    public Location divide( float x, float y, float z ) {
+    public @NotNull Location divide(float x, float y, float z ) {
         return new Location( this.world, this.x / x, this.y / y, this.z / z, this.yaw, this.pitch, this.dimension );
     }
 
@@ -134,13 +135,13 @@ public class Location extends Vector implements Cloneable {
     }
 
     @Override
-    public Location clone() {
+    public @NotNull Location clone() {
         Vector clone = super.clone();
         return new Location( this.world, clone );
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Location{" +
                 "world=" + this.world.getName() +
                 ", x=" + this.x +

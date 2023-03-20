@@ -6,6 +6,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWith
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.config.ConfigType;
@@ -158,7 +160,7 @@ public class CraftingManager {
         }
     }
 
-    public void registerRecipe( String recipeId, Recipe recipe ) {
+    public void registerRecipe(String recipeId, @NotNull Recipe recipe ) {
         try {
             this.craftingData.add( recipe.doRegister( this, recipeId ) );
         } catch ( RuntimeException e ) {
@@ -171,7 +173,7 @@ public class CraftingManager {
         return optional.map( CraftingData::getNetworkId ).orElse( -1 );
     }
 
-    public List<Item> getResultItem( int recipeNetworkId ) {
+    public @Nullable List<Item> getResultItem(int recipeNetworkId ) {
         Optional<CraftingData> optional = this.craftingData.stream().filter( craftingData -> craftingData.getNetworkId() == recipeNetworkId ).findFirst();
         if ( optional.isPresent() ) {
             CraftingData craftingData = optional.get();
@@ -184,7 +186,7 @@ public class CraftingManager {
         return null;
     }
 
-    public SmeltingRecipe getSmeltingRecipe( Item input ) {
+    public @Nullable SmeltingRecipe getSmeltingRecipe(@NotNull Item input ) {
         return this.smeltingRecipes.stream().filter( smeltingRecipe -> smeltingRecipe.getInput().getType().equals( input.getType() ) ).findFirst().orElse( null );
     }
 }

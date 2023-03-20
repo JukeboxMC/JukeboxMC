@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.item.Burnable;
@@ -24,7 +25,7 @@ public class ItemJungleSign extends Item implements Burnable {
     }
 
     @Override
-    public Block toBlock() {
+    public @NotNull Block toBlock() {
         return Block.create( BlockType.JUNGLE_STANDING_SIGN );
     }
 

@@ -1,10 +1,11 @@
 package org.jukeboxmc.world.generator.biomegrid;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.generator.noise.bukkit.SimplexOctaveGenerator;
 
 public class MapLayerNoise extends MapLayer {
 
-    private final SimplexOctaveGenerator noiseGen;
+    private final @NotNull SimplexOctaveGenerator noiseGen;
 
     public MapLayerNoise(long seed) {
         super(seed);

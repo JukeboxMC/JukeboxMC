@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockDoublePlant;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemDoublePlant extends Item {
 
-    private final BlockDoublePlant block;
+    private final @NotNull BlockDoublePlant block;
 
     public ItemDoublePlant( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemDoublePlant extends Item {
     }
 
     @Override
-    public ItemDoublePlant setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemDoublePlant setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemDoublePlant setPlantType( PlantType plantType ) {
+    public @NotNull ItemDoublePlant setPlantType(@NotNull PlantType plantType ) {
         this.blockRuntimeId = this.block.setPlantType( plantType ).getRuntimeId();
         return this;
     }

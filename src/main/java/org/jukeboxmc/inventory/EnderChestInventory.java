@@ -3,6 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
@@ -24,17 +25,17 @@ public class EnderChestInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.ENDER_CHEST;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.CONTAINER;
     }
 
     @Override
-    public void onOpen( Player player ) {
+    public void onOpen(@NotNull Player player ) {
         super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
@@ -47,7 +48,7 @@ public class EnderChestInventory extends ContainerInventory {
     }
 
     @Override
-    public void onClose( Player player ) {
+    public void onClose(@NotNull Player player ) {
         if ( this.viewer.size() == 0 ) {
             BlockEventPacket blockEventPacket = new BlockEventPacket();
             blockEventPacket.setBlockPosition( this.position.toVector3i() );

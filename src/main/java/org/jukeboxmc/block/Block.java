@@ -8,6 +8,8 @@ import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.behavior.Waterlogable;
 import org.jukeboxmc.block.data.BlockProperties;
@@ -55,7 +57,7 @@ public class Block implements Cloneable {
         this( identifier, null );
     }
 
-    public Block( Identifier identifier, NbtMap blockStates ) {
+    public Block(Identifier identifier, @Nullable NbtMap blockStates ) {
         this.identifier = identifier;
         this.blockStates = blockStates;
         this.blockType = BlockRegistry.getBlockType( identifier );
@@ -78,7 +80,7 @@ public class Block implements Cloneable {
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
     }
 
-    public static <T extends Block> T create( BlockType blockType ) {
+    public static <T extends Block> @NotNull T create(BlockType blockType ) {
         if ( BlockRegistry.blockClassExists( blockType ) ) {
             try {
                 Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class );
@@ -90,7 +92,7 @@ public class Block implements Cloneable {
         return (T) new Block( BlockRegistry.getIdentifier( blockType ) );
     }
 
-    public static <T extends Block> T create( BlockType blockType, NbtMap blockStates ) {
+    public static <T extends Block> @NotNull T create(BlockType blockType, NbtMap blockStates ) {
         if ( BlockRegistry.blockClassExists( blockType ) ) {
             try {
                 Constructor<? extends Block> constructor = BlockRegistry.getBlockClass( blockType ).getConstructor( Identifier.class, NbtMap.class );
@@ -102,7 +104,7 @@ public class Block implements Cloneable {
         return (T) new Block( BlockRegistry.getIdentifier( blockType ), blockStates );
     }
 
-    public static <T extends Block> T create( Identifier identifier ) {
+    public static <T extends Block> @NotNull T create(Identifier identifier ) {
         BlockType blockType = BlockRegistry.getBlockType( identifier );
         if ( BlockRegistry.blockClassExists( blockType ) ) {
             try {
@@ -115,7 +117,7 @@ public class Block implements Cloneable {
         return (T) new Block( identifier, null );
     }
 
-    public static <T extends Block> T create( Identifier identifier, NbtMap blockStates ) {
+    public static <T extends Block> @NotNull T create(Identifier identifier, NbtMap blockStates ) {
         BlockType blockType = BlockRegistry.getBlockType( identifier );
         if ( BlockRegistry.blockClassExists( blockType ) ) {
             try {
@@ -172,7 +174,7 @@ public class Block implements Cloneable {
         return this.location != null && this.location.getWorld() != null && this.location.getWorld().getBlock( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this.location.getDimension() ).getRuntimeId() == this.runtimeId;
     }
 
-    public <B extends Block> B setState( String state, Object value ) {
+    public <B extends Block> @NotNull B setState(@NotNull String state, @NotNull Object value ) {
         if ( !this.blockStates.containsKey( state ) ) {
             throw new AssertionError( "State " + state + " was not found in block " + this.identifier );
         }
@@ -203,31 +205,31 @@ public class Block implements Cloneable {
         return this.blockStates.containsKey( value );
     }
 
-    public String getStringState( String value ) {
+    public @NotNull String getStringState(@NotNull String value ) {
         return this.blockStates.getString( value ).toUpperCase();
     }
 
-    public byte getByteState( String value ) {
+    public byte getByteState(@NotNull String value ) {
         return this.blockStates.getByte( value );
     }
 
-    public boolean getBooleanState( String value ) {
+    public boolean getBooleanState(@NotNull String value ) {
         return this.blockStates.getByte( value ) == 1;
     }
 
-    public int getIntState( String value ) {
+    public int getIntState(@NotNull String value ) {
         return this.blockStates.getInt( value );
     }
 
-    public Block getSide( Direction direction ) {
+    public Block getSide(@NotNull Direction direction ) {
         return this.getSide( direction, 0 );
     }
 
-    public Block getSide( BlockFace blockFace ) {
+    public Block getSide(@NotNull BlockFace blockFace ) {
         return this.getSide( blockFace, 0 );
     }
 
-    public Block getSide( Direction direction, int layer ) {
+    public Block getSide(@NotNull Direction direction, int layer ) {
         return switch ( direction ) {
             case SOUTH -> this.getRelative( new Vector( 0, 0, 1 ), layer );
             case NORTH -> this.getRelative(new Vector( 0, 0, -1 ), layer );
@@ -236,7 +238,7 @@ public class Block implements Cloneable {
         };
     }
 
-    public Block getSide( BlockFace blockFace, int layer ) {
+    public Block getSide(@NotNull BlockFace blockFace, int layer ) {
         return switch ( blockFace ) {
             case DOWN -> this.getRelative( new Vector( 0, -1, 0 ), layer );
             case UP -> this.getRelative( new Vector( 0, 1, 0 ), layer );
@@ -247,7 +249,7 @@ public class Block implements Cloneable {
         };
     }
 
-    public Block getRelative( Vector position, int layer ) {
+    public Block getRelative(@NotNull Vector position, int layer ) {
         int x = this.location.getBlockX() + position.getBlockX();
         int y = this.location.getBlockY() + position.getBlockY();
         int z = this.location.getBlockZ() + position.getBlockZ();
@@ -258,7 +260,7 @@ public class Block implements Cloneable {
         return Item.create( this.identifier );
     }
 
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         return new AxisAlignedBB(
                 this.location.getX(),
                 this.location.getY(),
@@ -269,7 +271,7 @@ public class Block implements Cloneable {
         );
     }
 
-    public void breakBlock( Player player, Item item ) {
+    public void breakBlock(@NotNull Player player, @NotNull Item item ) {
         if ( player.getGameMode().equals( GameMode.SPECTATOR ) ) {
             this.sendUpdate( player );
             return;
@@ -320,7 +322,7 @@ public class Block implements Cloneable {
         this.location.getWorld().playSound( this.location, SoundEvent.BREAK, this.runtimeId );
     }
 
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         this.location.getWorld().setBlock( breakPosition, Block.create( BlockType.AIR ), 0, breakPosition.getDimension() );
     }
 
@@ -333,7 +335,7 @@ public class Block implements Cloneable {
         this.location.getWorld().sendChunkPacket( this.location.getChunkX(), this.location.getChunkZ(), updateBlockPacket );
     }
 
-    public void sendUpdate( Player player ) {
+    public void sendUpdate(@NotNull Player player ) {
         if ( this.location == null ) {
             return;
         }
@@ -345,7 +347,7 @@ public class Block implements Cloneable {
         player.getPlayerConnection().sendPacket( updateBlockPacket );
     }
 
-    public double getBreakTime( Item item, Player player ) {
+    public double getBreakTime(@NotNull Item item, @NotNull Player player ) {
         double hardness = this.getHardness();
         if ( hardness == 0 ) {
             return 0;
@@ -374,9 +376,9 @@ public class Block implements Cloneable {
         return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, miningFatigueLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
     }
 
-    private double breakTime0( Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand,
-                               BlockType blockType, ToolType itemToolType, TierType itemTierType, int efficiencyLoreLevel,
-                               int hasteEffectLevel, int miningFatigueLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
+    private double breakTime0(@NotNull Item item, double blockHardness, boolean correctTool, boolean canHarvestWithHand,
+                              @NotNull BlockType blockType, @NotNull ToolType itemToolType, TierType itemTierType, int efficiencyLoreLevel,
+                              int hasteEffectLevel, int miningFatigueLevel, boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround ) {
         double baseTime;
         if ( canHarvest( item ) || canHarvestWithHand ) {
             baseTime = 1.5 * blockHardness;
@@ -394,7 +396,7 @@ public class Block implements Cloneable {
         return 1.0 / speed;
     }
 
-    private double toolBreakTimeBonus0( ToolType itemToolType, TierType itemTierType, BlockType blockType ) {
+    private double toolBreakTimeBonus0(@NotNull ToolType itemToolType, TierType itemTierType, @NotNull BlockType blockType ) {
         if ( itemToolType.equals( ToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
         if ( itemToolType.equals( ToolType.SHEARS ) ) {
             if ( blockType.isWool(blockType) ||
@@ -427,11 +429,11 @@ public class Block implements Cloneable {
         return 1.0 + ( 0.2 * hasteLoreLevel );
     }
 
-    public boolean canHarvest( Item item ) {
+    public boolean canHarvest(@NotNull Item item ) {
         return this.getTierType().equals( TierType.NONE ) || this.getToolType().equals( ToolType.NONE ) || this.correctTool0( this.getToolType(), item.getToolType() ) && item.getTierType().ordinal() >= this.getTierType().ordinal();
     }
 
-    private boolean correctTool0( ToolType blockItemToolType, ToolType itemToolType ) {
+    private boolean correctTool0(@NotNull ToolType blockItemToolType, @NotNull ToolType itemToolType ) {
         return ( blockItemToolType.equals( ToolType.SWORD ) && itemToolType.equals( ToolType.SWORD ) ) ||
                 ( blockItemToolType.equals( ToolType.SHOVEL ) && itemToolType.equals( ToolType.SHOVEL ) ) ||
                 ( blockItemToolType.equals( ToolType.PICKAXE ) && itemToolType.equals( ToolType.PICKAXE ) ) ||
@@ -441,7 +443,7 @@ public class Block implements Cloneable {
                 blockItemToolType == ToolType.NONE;
     }
 
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         world.setBlock( placePosition, this, 0, player.getDimension(), true );
         return true;
     }
@@ -450,7 +452,7 @@ public class Block implements Cloneable {
         return false;
     }
 
-    public BlockEntity getBlockEntity() {
+    public @Nullable BlockEntity getBlockEntity() {
         return null;
     }
 
@@ -504,18 +506,18 @@ public class Block implements Cloneable {
         return this.canBeFlowedInto() || ( this instanceof Waterlogable && ( (Waterlogable) this ).getWaterLoggingLevel() > 1 );
     }
 
-    public List<Item> getDrops( Item item ) {
+    public @NotNull List<Item> getDrops(@Nullable Item item ) {
         if ( item == null || (this.isCorrectToolType( item ) && this.isCorrectTierType( item ) )) {
             return Collections.singletonList( this.toItem() );
         }
         return Collections.emptyList();
     }
 
-    public boolean isCorrectToolType( Item item ) {
+    public boolean isCorrectToolType(@NotNull Item item ) {
         return item.getToolType().ordinal() >= this.getToolType().ordinal();
     }
 
-    public boolean isCorrectTierType( Item item ) {
+    public boolean isCorrectTierType(@NotNull Item item ) {
         return item.getTierType().ordinal() >= this.getTierType().ordinal();
     }
 
@@ -528,7 +530,7 @@ public class Block implements Cloneable {
     }
 
     @Override
-    public Block clone() {
+    public @NotNull Block clone() {
         try {
             Block block = (Block) super.clone();
             block.runtimeId = this.runtimeId;

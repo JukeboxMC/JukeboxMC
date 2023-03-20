@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockGreenWool;
@@ -16,7 +17,7 @@ import java.time.Duration;
  */
 public class ItemGreenWool extends Item implements Burnable {
 
-    private final BlockGreenWool block;
+    private final @NotNull BlockGreenWool block;
 
     public ItemGreenWool(Identifier identifier ) {
         super( identifier );

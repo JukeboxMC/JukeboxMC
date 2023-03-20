@@ -7,6 +7,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWith
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
 
@@ -25,11 +27,11 @@ public class ShapedRecipe extends Recipe {
     private String[] pattern;
 
     @Override
-    public List<ItemData> getOutputs() {
+    public @NotNull List<ItemData> getOutputs() {
         return this.outputs;
     }
 
-    public ShapedRecipe shape( String... pattern ) {
+    public @NotNull ShapedRecipe shape(String @NotNull ... pattern ) {
         if ( pattern.length > 3 || pattern.length < 1 ) {
             throw new RuntimeException( "Shape height must be between 3 and 1!" );
         }
@@ -52,12 +54,12 @@ public class ShapedRecipe extends Recipe {
         return this;
     }
 
-    public ShapedRecipe setIngredient( char symbol, Item item ) {
+    public @NotNull ShapedRecipe setIngredient(char symbol, @NotNull Item item ) {
         this.ingredients.put( symbol, ItemDescriptorWithCount.fromItem( item.toItemData() ));
         return this;
     }
 
-    public ShapedRecipe addOutput( Item... items ) {
+    public @NotNull ShapedRecipe addOutput(Item @NotNull ... items ) {
         List<ItemData> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
             itemDataList.add( item.toItemData() );
@@ -67,7 +69,7 @@ public class ShapedRecipe extends Recipe {
     }
 
     @Override
-    public CraftingData doRegister( CraftingManager craftingManager, String recipeId ) {
+    public @Nullable CraftingData doRegister(@NotNull CraftingManager craftingManager, String recipeId ) {
         final List<ItemDescriptorWithCount> ingredients = new ArrayList<>();
         for ( String s : this.pattern ) {
             char[] chars = s.toCharArray();

@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockPurpurBlock;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemPurpurBlock extends Item {
 
-    private final BlockPurpurBlock block;
+    private final @NotNull BlockPurpurBlock block;
 
     public ItemPurpurBlock( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemPurpurBlock extends Item {
     }
 
     @Override
-    public ItemPurpurBlock setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemPurpurBlock setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemPurpurBlock setPurpurType( PurpurType purpurType ) {
+    public @NotNull ItemPurpurBlock setPurpurType(@NotNull PurpurType purpurType ) {
         this.blockRuntimeId = this.block.setPurpurType( purpurType ).getRuntimeId();
         return this;
     }

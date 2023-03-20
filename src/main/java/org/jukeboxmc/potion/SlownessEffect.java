@@ -1,5 +1,6 @@
 package org.jukeboxmc.potion;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 
 import java.awt.*;
@@ -16,12 +17,12 @@ public class SlownessEffect extends Effect {
     }
 
     @Override
-    public EffectType getEffectType() {
+    public @NotNull EffectType getEffectType() {
         return EffectType.SLOWNESS;
     }
 
     @Override
-    public Color getEffectColor() {
+    public @NotNull Color getEffectColor() {
         return new Color( 90, 108, 129 );
     }
 
@@ -31,12 +32,12 @@ public class SlownessEffect extends Effect {
     }
 
     @Override
-    public void apply( EntityLiving entityLiving ) {
+    public void apply(@NotNull EntityLiving entityLiving ) {
         entityLiving.setMovement(entityLiving.getMovement() * (1 - 0.15f * (this.amplifier + 1)));
     }
 
     @Override
-    public void remove( EntityLiving entityLiving ) {
+    public void remove(@NotNull EntityLiving entityLiving ) {
         entityLiving.setMovement(entityLiving.getMovement() / (1 - 0.15f * (this.amplifier + 1)));
     }
 }

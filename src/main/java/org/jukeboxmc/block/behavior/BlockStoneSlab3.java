@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.StoneSlab3Type;
@@ -26,7 +27,7 @@ public class BlockStoneSlab3 extends BlockSlab {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, @NotNull Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block targetBlock = world.getBlock( blockPosition );
         Block block = world.getBlock( placePosition );
 
@@ -59,11 +60,11 @@ public class BlockStoneSlab3 extends BlockSlab {
         return true;
     }
 
-    public BlockStoneSlab3 setStoneSlabType( StoneSlab3Type stoneSlabType ) {
+    public BlockStoneSlab3 setStoneSlabType(@NotNull StoneSlab3Type stoneSlabType ) {
         return this.setState( "stone_slab_type_3", stoneSlabType.name().toLowerCase() );
     }
 
-    public StoneSlab3Type getStoneSlabType() {
+    public @NotNull StoneSlab3Type getStoneSlabType() {
         return this.stateExists( "stone_slab_type_3" ) ? StoneSlab3Type.valueOf( this.getStringState( "stone_slab_type_3" ) ) : StoneSlab3Type.END_STONE_BRICK;
     }
 }

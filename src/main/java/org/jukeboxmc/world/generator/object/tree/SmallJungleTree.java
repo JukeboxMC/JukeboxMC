@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object.tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves;
@@ -24,7 +25,7 @@ public class SmallJungleTree {
     private final Block BLOCK_VINE = Block.<BlockVine>create( BlockType.VINE );
     private final Block BLOCK_DIRT = Block.create( BlockType.DIRT );
 
-    public void create( Random random, PopulationChunkManager manager, Vector position ) {
+    public void create(@NotNull Random random, @NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         int i = random.nextInt( 4 + random.nextInt( 7 ) ) + 3;
         boolean flag = true;
 
@@ -150,7 +151,7 @@ public class SmallJungleTree {
         }
     }
 
-    private void addHangingVine( PopulationChunkManager manager, Vector position, int value ) {
+    private void addHangingVine(@NotNull PopulationChunkManager manager, @NotNull Vector position, int value ) {
         this.addVine( manager, position, value );
         int i = 4;
 
@@ -160,15 +161,15 @@ public class SmallJungleTree {
         }
     }
 
-    private void addVine( PopulationChunkManager manager, Vector position, BlockFace blockFace ) {
+    private void addVine(@NotNull PopulationChunkManager manager, @NotNull Vector position, @NotNull BlockFace blockFace ) {
         manager.setBlock( position, ( (BlockVine) BLOCK_VINE ).setVineDirection( 1 << blockFace.getHorizontalIndex() ) );
     }
 
-    private void addVine( PopulationChunkManager manager, Vector position, int value ) {
+    private void addVine(@NotNull PopulationChunkManager manager, @NotNull Vector position, int value ) {
         manager.setBlock( position, ( (BlockVine) BLOCK_VINE.clone() ).setVineDirection( value ) );
     }
 
-    private boolean canPlace( BlockType blockType ) {
+    private boolean canPlace(@NotNull BlockType blockType ) {
         return blockType.equals( BlockType.AIR ) ||
                 blockType.equals( BlockType.LEAVES ) ||
                 blockType.equals( BlockType.GRASS ) ||
@@ -179,7 +180,7 @@ public class SmallJungleTree {
                 blockType.equals( BlockType.VINE );
     }
 
-    private boolean isAirBlock( PopulationChunkManager manager, Vector position ) {
+    private boolean isAirBlock(@NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         return manager.getBlock( position ).getType().equals( BlockType.AIR );
     }
 }

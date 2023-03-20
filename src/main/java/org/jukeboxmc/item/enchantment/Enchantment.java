@@ -1,5 +1,7 @@
 package org.jukeboxmc.item.enchantment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -18,12 +20,12 @@ public abstract class Enchantment {
         return this.level;
     }
 
-    public Enchantment setLevel( short level ) {
+    public @NotNull Enchantment setLevel(short level ) {
         this.level = level;
         return this;
     }
 
-    public static <T extends Enchantment> T create( EnchantmentType enchantmentType ) {
+    public static <T extends Enchantment> @NotNull T create(EnchantmentType enchantmentType ) {
         try {
             return (T) EnchantmentRegistry.getEnchantmentClass( enchantmentType ).getConstructor().newInstance();
         } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {

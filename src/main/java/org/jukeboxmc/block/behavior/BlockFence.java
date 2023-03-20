@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.math.AxisAlignedBB;
@@ -21,7 +22,7 @@ public class BlockFence extends Block {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         boolean north = this.canConnect( this.getSide( Direction.NORTH ) );
         boolean south = this.canConnect( this.getSide( Direction.SOUTH ) );
         boolean west = this.canConnect( this.getSide( Direction.WEST ) );

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.SaplingType;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockSapling extends Block {
         return Item.<ItemSapling>create( ItemType.SAPLING ).setSaplingType( this.getSaplingType() );
     }
 
-    public BlockSapling setSaplingType( SaplingType saplingType ) {
+    public BlockSapling setSaplingType(@NotNull SaplingType saplingType ) {
         return this.setState( "sapling_type", saplingType.name().toLowerCase() );
     }
 
-    public SaplingType getSaplingType() {
+    public @NotNull SaplingType getSaplingType() {
         return this.stateExists( "sapling_type" ) ? SaplingType.valueOf( this.getStringState( "sapling_type" ) ) : SaplingType.OAK;
     }
 

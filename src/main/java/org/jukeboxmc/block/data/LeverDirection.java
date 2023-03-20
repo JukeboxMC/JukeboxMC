@@ -1,5 +1,6 @@
 package org.jukeboxmc.block.data;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 
@@ -18,7 +19,7 @@ public enum LeverDirection {
     UP_EAST_WEST,
     DOWN_NORTH_SOUTH;
 
-    public static LeverDirection forDirection( BlockFace blockFace, Direction playerDirection ) {
+    public static @NotNull LeverDirection forDirection(@NotNull BlockFace blockFace, Direction playerDirection ) {
         return switch ( blockFace ) {
             case DOWN -> switch ( playerDirection ) {
                 case WEST, EAST -> DOWN_EAST_WEST;

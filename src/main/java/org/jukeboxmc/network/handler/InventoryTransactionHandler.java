@@ -5,6 +5,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.data.inventory.TransactionType;
 import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -35,7 +36,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
     private long spamCheckTime;
 
     @Override
-    public void handle( InventoryTransactionPacket packet, Server server, Player player ) {
+    public void handle(@NotNull InventoryTransactionPacket packet, Server server, @NotNull Player player ) {
         if ( packet.getTransactionType() == TransactionType.ITEM_USE ) {
             Vector blockPosition = new Vector( packet.getBlockPosition() );
             blockPosition.setDimension( player.getDimension() );
@@ -45,6 +46,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
             final Item itemInHand = player.getInventory().getItemInHand();
             switch ( packet.getActionType() ) {
                 case 0 -> {
+                    assert blockFace != null;
                     if ( !this.canInteract() ) {
                         player.getWorld().getBlock( player.getWorld().getSidePosition( blockPosition, blockFace ) ).sendUpdate( player );
                         return;
@@ -156,7 +158,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
         }
     }
 
-    public boolean useItemOn( Player player, Vector blockPosition, Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
+    public boolean useItemOn(@NotNull Player player, @NotNull Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, BlockFace blockFace ) {
         World world = player.getWorld();
         Block clickedBlock = world.getBlock( blockPosition );
 

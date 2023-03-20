@@ -3,6 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.blockentity.BlockEntityShulkerBox;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.player.Player;
@@ -23,17 +24,17 @@ public class ShulkerBoxInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.SHULKER_BOX;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.CONTAINER;
     }
 
     @Override
-    public void onOpen( Player player ) {
+    public void onOpen(@NotNull Player player ) {
         super.onOpen( player );
         if ( this.viewer.size() == 1 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
@@ -48,7 +49,7 @@ public class ShulkerBoxInventory extends ContainerInventory {
     }
 
     @Override
-    public void onClose( Player player ) {
+    public void onClose(@NotNull Player player ) {
         if ( this.viewer.size() == 0 ) {
             Location location = this.getInventoryHolder().getBlock().getLocation();
 

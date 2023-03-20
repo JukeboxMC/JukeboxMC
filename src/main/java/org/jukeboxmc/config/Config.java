@@ -8,6 +8,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -26,11 +28,11 @@ public class Config {
     private Yaml yaml;
     private Properties properties;
 
-    private final File file;
-    private final InputStream inputStream;
+    private final @Nullable File file;
+    private final @Nullable InputStream inputStream;
 
     @SneakyThrows
-    public Config( File file, ConfigType configType ) {
+    public Config(@NotNull File file, ConfigType configType ) {
         this.file = file;
         this.inputStream = null;
         this.configType = configType;
@@ -42,7 +44,7 @@ public class Config {
     }
 
     @SneakyThrows
-    public Config( InputStream inputStream, ConfigType configType ) {
+    public Config(@NotNull InputStream inputStream, ConfigType configType ) {
         this.file = null;
         this.inputStream = inputStream;
         this.configType = configType;
@@ -52,7 +54,7 @@ public class Config {
 
     @SneakyThrows
     public void load() {
-        try ( InputStreamReader reader = new InputStreamReader( this.file == null ? this.inputStream : new FileInputStream( this.file ) ) ) {
+        try ( InputStreamReader reader = new InputStreamReader( this.file == null ? Objects.requireNonNull(this.inputStream) : new FileInputStream( this.file ) ) ) {
             switch ( this.configType ) {
                 case JSON -> {
                     GsonBuilder gson = new GsonBuilder();
@@ -90,7 +92,7 @@ public class Config {
         };
     }
 
-    public void set( String key, Object object ) {
+    public void set(@NotNull String key, Object object ) {
         switch ( this.configType ) {
             case JSON, YAML -> this.configSection.set( key, object );
             case PROPERTIES -> this.properties.setProperty( key, String.valueOf( object ) );
@@ -110,7 +112,7 @@ public class Config {
         }
     }
 
-    public void addDefault( String key, Object value ) {
+    public void addDefault(@NotNull String key, Object value ) {
         if ( !this.exists( key ) ) {
             this.set( key, value );
             this.save();
@@ -192,11 +194,11 @@ public class Config {
         return this.configSection;
     }
 
-    public Set<String> getKeys() {
+    public @NotNull Set<String> getKeys() {
         return this.configSection.keySet();
     }
 
-    public Collection<Object> getValues() {
+    public @NotNull Collection<Object> getValues() {
         return this.configSection.values();
     }
 

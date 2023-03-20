@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.ArmorTierType;
 import org.jukeboxmc.item.Durability;
 import org.jukeboxmc.item.Item;
@@ -24,7 +25,7 @@ public class ItemLeatherChestplate extends ItemArmor implements Durability {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
+    public boolean useInAir(@NotNull Player player, Vector clickVector ) {
         Item oldItem = player.getArmorInventory().getChestplate();
         player.getArmorInventory().setChestplate( this );
         player.getInventory().setItemInHand( oldItem );
@@ -33,7 +34,7 @@ public class ItemLeatherChestplate extends ItemArmor implements Durability {
     }
 
     @Override
-    public ArmorTierType getArmorTierType() {
+    public @NotNull ArmorTierType getArmorTierType() {
         return ArmorTierType.LEATHER;
     }
 
@@ -48,7 +49,7 @@ public class ItemLeatherChestplate extends ItemArmor implements Durability {
     }
 
     @Override
-    public void playEquipSound( Player player ) {
+    public void playEquipSound(@NotNull Player player ) {
         player.playSound( Sound.ARMOR_EQUIP_LEATHER );
     }
 }

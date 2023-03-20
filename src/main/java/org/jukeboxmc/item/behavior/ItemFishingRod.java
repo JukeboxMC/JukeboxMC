@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
@@ -14,6 +15,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -30,9 +32,9 @@ public class ItemFishingRod extends Item implements Durability, Burnable {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
+    public boolean useInAir(@NotNull Player player, Vector clickVector ) {
         if ( player.getEntityFishingHook() == null ) {
-            EntityFishingHook entityFishingHook = Entity.create( EntityType.FISHING_HOOK );
+            EntityFishingHook entityFishingHook = Objects.requireNonNull(Entity.create( EntityType.FISHING_HOOK ));
             entityFishingHook.setShooter( player );
             entityFishingHook.setLocation( player.getLocation().add( 0, player.getEyeHeight(), 0 ) );
 

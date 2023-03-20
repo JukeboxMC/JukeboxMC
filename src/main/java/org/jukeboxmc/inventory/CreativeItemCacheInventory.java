@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -28,7 +29,7 @@ public class CreativeItemCacheInventory extends Inventory{
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.CREATIVE;
     }
 }

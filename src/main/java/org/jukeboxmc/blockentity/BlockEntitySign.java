@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.block.BlockSignChangeEvent;
@@ -20,32 +21,32 @@ import java.util.List;
  */
 public class BlockEntitySign extends BlockEntity {
 
-    private final List<String> lines;
+    private final @NotNull List<String> lines;
 
-    public BlockEntitySign( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntitySign(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.lines = new ArrayList<>( 4 );
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
         String text = compound.getString( "Text", "" );
         this.lines.addAll( Arrays.asList( text.split( "\n" ) ) );
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
         compound.putString( "Text", Joiner.on( "\n" ).skipNulls().join( this.lines ) );
         return compound;
     }
 
-    public List<String> getLines() {
+    public @NotNull List<String> getLines() {
         return this.lines;
     }
 
-    public void updateBlockEntitySign( NbtMap nbt, Player player ) {
+    public void updateBlockEntitySign(@NotNull NbtMap nbt, Player player ) {
         String text = nbt.getString( "Text", "" );
         String[] splitLine = text.split( "\n" );
 

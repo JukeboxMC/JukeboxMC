@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Bootstrap;
 import org.jukeboxmc.block.Block;
 
@@ -62,7 +63,7 @@ public class BlockPalette {
         return BLOCK_NBT.get( runtimeId );
     }
 
-    public static Block getBlockByNBT( NbtMap nbtMap ) {
+    public static Block getBlockByNBT(@NotNull NbtMap nbtMap ) {
         Identifier identifier = Identifier.fromString( nbtMap.getString( "name" ) );
         NbtMap blockStates = nbtMap.getCompound( "states" );
         BlockData blockData = new BlockData( identifier, blockStates );
@@ -90,7 +91,7 @@ public class BlockPalette {
         }
     }
 
-    public static Integer getRuntimeId( NbtMap blockMap ) {
+    public static @NotNull Integer getRuntimeId(NbtMap blockMap ) {
         for ( int runtimeId : STATE_FROM_RUNTIME.keySet() ) {
             if ( STATE_FROM_RUNTIME.get( runtimeId ).equals( blockMap ) ) {
                 return runtimeId;
@@ -99,7 +100,7 @@ public class BlockPalette {
         throw new NullPointerException( "Block was not found" );
     }
 
-    public static Integer getBlockRuntimeId( NbtMap blockMap ) {
+    public static @NotNull Integer getBlockRuntimeId(NbtMap blockMap ) {
         for ( int runtimeId : BLOCK_STATE_FROM_RUNTIME.keySet() ) {
             if ( BLOCK_STATE_FROM_RUNTIME.get( runtimeId ).equals( blockMap ) ) {
                 return runtimeId;
@@ -108,7 +109,7 @@ public class BlockPalette {
         throw new NullPointerException( "Block was not found: " + blockMap );
     }
 
-    public static List<NbtMap> searchBlocks( Predicate<NbtMap> predicate ) {
+    public static @NotNull List<NbtMap> searchBlocks(@NotNull Predicate<NbtMap> predicate ) {
         List<NbtMap> blocks = new ArrayList<>();
         for ( NbtMap nbtMap : STATE_FROM_RUNTIME.values() ) {
             if ( predicate.test( nbtMap ) ) {

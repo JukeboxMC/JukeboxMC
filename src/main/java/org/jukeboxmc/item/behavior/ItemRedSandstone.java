@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockRedSandstone;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemRedSandstone extends Item {
 
-    private final BlockRedSandstone block;
+    private final @NotNull BlockRedSandstone block;
 
     public ItemRedSandstone( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemRedSandstone extends Item {
     }
 
     @Override
-    public ItemRedSandstone setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemRedSandstone setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemRedSandstone setPrismarineType( SandStoneType sandStoneType ) {
+    public @NotNull ItemRedSandstone setPrismarineType(@NotNull SandStoneType sandStoneType ) {
         this.blockRuntimeId = this.block.setSandStoneType( sandStoneType ).getRuntimeId();
         return this;
     }

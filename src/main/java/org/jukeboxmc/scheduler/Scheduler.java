@@ -2,6 +2,7 @@ package org.jukeboxmc.scheduler;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 
 import java.util.LinkedList;
@@ -22,10 +23,10 @@ public class Scheduler {
     private final Server server;
 
     @Getter
-    private final ExecutorService threadedExecutor;
+    private final @NotNull ExecutorService threadedExecutor;
 
     @Getter
-    private final ExecutorService chunkExecutor;
+    private final @NotNull ExecutorService chunkExecutor;
 
     private final Map<Integer, TaskHandler> taskHandlerMap = new ConcurrentHashMap<>();
     private final Map<Long, LinkedList<TaskHandler>> assignedTasks = new ConcurrentHashMap<>();
@@ -62,7 +63,7 @@ public class Scheduler {
 
     }
 
-    private void runTask( TaskHandler taskHandler, long currentTick ) {
+    private void runTask(@NotNull TaskHandler taskHandler, long currentTick ) {
         if ( taskHandler.isCancelled() ) {
             this.taskHandlerMap.remove( taskHandler.getTaskId() );
             return;
@@ -93,11 +94,11 @@ public class Scheduler {
         return this.execute( task, true );
     }
 
-    public TaskHandler execute( Runnable task ) {
+    public @NotNull TaskHandler execute(Runnable task ) {
         return this.addTask( task, 0, 0, false );
     }
 
-    public TaskHandler execute( Runnable task, boolean async ) {
+    public @NotNull TaskHandler execute(Runnable task, boolean async ) {
         return this.addTask( task, 0, 0, async );
     }
 
@@ -105,7 +106,7 @@ public class Scheduler {
         return this.scheduleDelayed( task, delay, false );
     }
 
-    public TaskHandler scheduleDelayed( Runnable task, int delay, boolean async ) {
+    public @NotNull TaskHandler scheduleDelayed(Runnable task, int delay, boolean async ) {
         return this.addTask( task, delay, 0, async );
     }
 
@@ -113,7 +114,7 @@ public class Scheduler {
         return this.scheduleRepeating( task, period, false );
     }
 
-    public TaskHandler scheduleRepeating( Runnable task, int period, boolean async ) {
+    public @NotNull TaskHandler scheduleRepeating(Runnable task, int period, boolean async ) {
         return this.addTask( task, 0, period, async );
     }
 
@@ -121,11 +122,11 @@ public class Scheduler {
         return this.scheduleDelayedRepeating( task, delay, period, false );
     }
 
-    public TaskHandler scheduleDelayedRepeating( Runnable task, int delay, int period, boolean async ) {
+    public @NotNull TaskHandler scheduleDelayedRepeating(Runnable task, int delay, int period, boolean async ) {
         return this.addTask( task, delay, period, async );
     }
 
-    private TaskHandler addTask( Runnable runnable, int delay, int period, boolean async ) {
+    private @NotNull TaskHandler addTask(Runnable runnable, int delay, int period, boolean async ) {
         if ( delay < 0 || period < 0 ) {
             throw new RuntimeException( "Attempted to register a task with negative delay or period!" );
         }

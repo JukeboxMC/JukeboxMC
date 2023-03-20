@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -19,6 +20,8 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.world.World;
 
+import java.util.Objects;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -34,7 +37,7 @@ public class BlockSand extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         world.setBlock( placePosition, this, 0 );
         return true;
     }
@@ -43,7 +46,7 @@ public class BlockSand extends Block {
     public long onUpdate( UpdateReason updateReason ) {
         Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
         if ( blockDown.getType().equals( BlockType.AIR ) ) {
-            EntityFallingBlock entity = Entity.create( EntityType.FALLING_BLOCK );
+            EntityFallingBlock entity = Objects.requireNonNull(Entity.create( EntityType.FALLING_BLOCK ));
             entity.setLocation( this.location.add( 0.5f, 0f, 0.5f ) );
             entity.setBlock( this );
 
@@ -63,11 +66,11 @@ public class BlockSand extends Block {
         return Item.<ItemSand>create( ItemType.SAND ).setSandType( this.getSandType() );
     }
 
-    public BlockSand setSandType( SandType sandType ) {
+    public BlockSand setSandType(@NotNull SandType sandType ) {
         return this.setState( "sand_type", sandType.name().toLowerCase() );
     }
 
-    public SandType getSandType() {
+    public @NotNull SandType getSandType() {
         return this.stateExists( "sand_type" ) ? SandType.valueOf( this.getStringState( "sand_type" ) ) : SandType.NORMAL;
     }
 }

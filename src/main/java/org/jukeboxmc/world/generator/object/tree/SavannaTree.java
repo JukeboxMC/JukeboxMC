@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object.tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves2;
@@ -22,7 +23,7 @@ public class SavannaTree {
     private final Block BLOCK_ACACIA_LOG = Block.<BlockLog2>create( BlockType.LOG2 ).setLogType( LogType2.ACACIA );
     private final Block BLOCK_DIRT = Block.create( BlockType.DIRT );
 
-    public void create( Random random, PopulationChunkManager manager, Vector position ) {
+    public void create(@NotNull Random random, @NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         int i = random.nextInt( 3 ) + random.nextInt( 3 ) + 5;
         if ( position.getY() >= 1 && position.getY() + i + 1 <= 256 ) {
             Vector down = position.down();
@@ -126,7 +127,7 @@ public class SavannaTree {
         }
     }
 
-    private void setLeaves( PopulationChunkManager manager, Vector position ) {
+    private void setLeaves(@NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         BlockType type = manager.getBlock( position ).getType();
         if ( type.equals( BlockType.AIR ) || type.equals( BlockType.LEAVES2 ) ) {
             manager.setBlock( position, BLOCK_ACACIA_LEAVES );

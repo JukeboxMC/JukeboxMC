@@ -1,6 +1,8 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.StoneType;
 import org.jukeboxmc.item.Item;
@@ -31,18 +33,18 @@ public class BlockStone extends Block {
     }
 
     @Override
-    public List<Item> getDrops( Item item ) {
-        if ( this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) {
+    public @NotNull List<Item> getDrops(@Nullable Item item ) {
+        if ( item != null && this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) {
             return Collections.singletonList( Item.create( ItemType.COBBLESTONE ) );
         }
         return Collections.emptyList();
     }
 
-    public BlockStone setStoneType( StoneType stoneType ) {
+    public BlockStone setStoneType(@NotNull StoneType stoneType ) {
         return this.setState( "stone_type", stoneType.name().toLowerCase() );
     }
 
-    public StoneType getStoneType() {
+    public @NotNull StoneType getStoneType() {
         return this.stateExists( "stone_type" ) ? StoneType.valueOf( this.getStringState( "stone_type" ) ) : StoneType.STONE;
     }
 }

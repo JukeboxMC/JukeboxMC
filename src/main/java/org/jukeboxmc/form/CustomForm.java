@@ -1,5 +1,7 @@
 package org.jukeboxmc.form;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,42 +22,42 @@ public class CustomForm extends Form<FormResponse> {
         super( title );
     }
 
-    public Dropdown createDropdown( String id, String text ) {
+    public @NotNull Dropdown createDropdown(String id, String text ) {
         Dropdown dropdown = new Dropdown( this, id, text );
         this.elements.add( dropdown );
         this.dirty = true;
         return dropdown;
     }
 
-    public CustomForm addInputField( String id, String text, String placeHolder, String defaultValue ) {
+    public @NotNull CustomForm addInputField(String id, String text, String placeHolder, String defaultValue ) {
         Input input = new Input( id, text, placeHolder, defaultValue );
         this.elements.add( input );
         this.dirty = true;
         return this;
     }
 
-    public CustomForm addLabel( String text ) {
+    public @NotNull CustomForm addLabel(String text ) {
         Label label = new Label( "", text );
         this.elements.add( label );
         this.dirty = true;
         return this;
     }
 
-    public CustomForm addSlider( String id, String text, float min, float max, float step, float defaultValue ) {
+    public @NotNull CustomForm addSlider(String id, String text, float min, float max, float step, float defaultValue ) {
         Slider slider = new Slider( id, text, min, max, step, defaultValue );
         this.elements.add( slider );
         this.dirty = true;
         return this;
     }
 
-    public StepSlider createStepSlider( String id, String text ) {
+    public @NotNull StepSlider createStepSlider(String id, String text ) {
         StepSlider stepSlider = new StepSlider( this, id, text );
         this.elements.add( stepSlider );
         this.dirty = true;
         return stepSlider;
     }
 
-    public CustomForm addToggle( String id, String text, boolean value ) {
+    public @NotNull CustomForm addToggle(String id, String text, boolean value ) {
         Toggle toggle = new Toggle( id, text, value );
         this.elements.add( toggle );
         this.dirty = true;
@@ -63,12 +65,12 @@ public class CustomForm extends Form<FormResponse> {
     }
 
     @Override
-    public String getFormType() {
+    public @NotNull String getFormType() {
         return "custom_form";
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
 
         JSONArray content = (JSONArray) obj.get( "content" );
@@ -80,7 +82,7 @@ public class CustomForm extends Form<FormResponse> {
     }
 
     @Override
-    public FormResponse parseResponse( String json ) {
+    public @Nullable FormResponse parseResponse(@NotNull String json ) {
         // Response is an array with values
         try {
             FormResponse response = new FormResponse();

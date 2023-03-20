@@ -1,6 +1,7 @@
 package org.jukeboxmc.potion;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 
 import java.awt.*;
@@ -34,7 +35,7 @@ public abstract class Effect {
 
     public abstract void remove( EntityLiving entityLiving );
 
-    public static <T extends Effect> T create( EffectType effectType ) {
+    public static <T extends Effect> @NotNull T create(EffectType effectType ) {
         try {
             return (T) EffectRegistry.getEffectClass( effectType ).getConstructor().newInstance();
         } catch ( InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
@@ -46,7 +47,7 @@ public abstract class Effect {
         return this.amplifier;
     }
 
-    public Effect setAmplifier( int amplifier ) {
+    public @NotNull Effect setAmplifier(int amplifier ) {
         this.amplifier = amplifier;
         return this;
     }
@@ -55,7 +56,7 @@ public abstract class Effect {
         return this.visible;
     }
 
-    public Effect setVisible( boolean visible ) {
+    public @NotNull Effect setVisible(boolean visible ) {
         this.visible = visible;
         return this;
     }
@@ -64,12 +65,12 @@ public abstract class Effect {
         return this.duration;
     }
 
-    public Effect setDuration( int duration ) {
+    public @NotNull Effect setDuration(int duration ) {
         this.duration = duration;
         return this;
     }
 
-    public Effect setDuration( int duration, TimeUnit timeUnit ) {
+    public @NotNull Effect setDuration(int duration, @NotNull TimeUnit timeUnit ) {
         this.duration = (int) ( timeUnit.toMillis( duration ) / 50 );
         return this;
     }

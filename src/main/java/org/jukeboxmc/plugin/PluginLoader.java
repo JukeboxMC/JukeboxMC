@@ -1,5 +1,7 @@
 package org.jukeboxmc.plugin;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.logger.Logger;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
@@ -34,11 +36,11 @@ public class PluginLoader {
         this.pluginManager = pluginManager;
     }
 
-    protected static boolean isJarFile( Path file ) {
+    protected static boolean isJarFile(@NotNull Path file ) {
         return file.getFileName().toString().endsWith( ".jar" );
     }
 
-    protected Plugin loadPluginJAR( PluginYAML pluginConfig, File pluginJar ) {
+    protected @Nullable Plugin loadPluginJAR(@NotNull PluginYAML pluginConfig, @NotNull File pluginJar ) {
         PluginClassLoader loader;
         try {
             loader = new PluginClassLoader( this.pluginManager, this.getClass().getClassLoader(), pluginJar );
@@ -64,7 +66,7 @@ public class PluginLoader {
         return null;
     }
 
-    protected PluginYAML loadPluginData( File file, Yaml yaml ) {
+    protected @Nullable PluginYAML loadPluginData(@NotNull File file, @NotNull Yaml yaml ) {
         try ( JarFile pluginJar = new JarFile( file ) ) {
             JarEntry configEntry = pluginJar.getJarEntry( "plugin.yml" );
             if ( configEntry == null ) {
@@ -83,7 +85,7 @@ public class PluginLoader {
                             AtomicReference<String> pluginLoadOrder = new AtomicReference<>(PluginLoadOrder.POSTWORLD.name());
                             classReader.accept( new ClassVisitor( Opcodes.ASM7 ) {
                                 @Override
-                                public AnnotationVisitor visitAnnotation( String descriptor, boolean visible ) {
+                                public AnnotationVisitor visitAnnotation(@NotNull String descriptor, boolean visible ) {
                                     switch ( descriptor ) {
                                         case "Lorg/jukeboxmc/plugin/annotation/PluginName;" -> {
                                             return new AnnotationVisitor(Opcodes.ASM7) {
@@ -112,7 +114,7 @@ public class PluginLoader {
                                         case "Lorg/jukeboxmc/plugin/annotation/Depends;" -> {
                                             return new AnnotationVisitor(Opcodes.ASM7) {
                                                 @Override
-                                                public AnnotationVisitor visitArray(String name) {
+                                                public @NotNull AnnotationVisitor visitArray(String name) {
                                                     depends.set(new ArrayList<>());
                                                     return new AnnotationVisitor(Opcodes.ASM7) {
                                                         @Override

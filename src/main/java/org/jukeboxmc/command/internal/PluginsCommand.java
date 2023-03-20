@@ -1,5 +1,6 @@
 package org.jukeboxmc.command.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -26,7 +27,7 @@ public class PluginsCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String[] args ) {
         Collection<Plugin> plugins = Server.getInstance().getPluginManager().getPlugins();
 
         if ( plugins.isEmpty() ) {

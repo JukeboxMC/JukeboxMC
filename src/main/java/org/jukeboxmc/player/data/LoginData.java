@@ -11,6 +11,8 @@ import com.nimbusds.jose.proc.JWSVerifierFactory;
 import com.nukkitx.protocol.bedrock.packet.LoginPacket;
 import com.nukkitx.protocol.bedrock.util.EncryptionUtils;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.UIProfile;
@@ -39,7 +41,7 @@ public class LoginData {
     private String gameVersion;
     private Skin skin;
 
-    public LoginData( LoginPacket loginPacket ) {
+    public LoginData(@NotNull LoginPacket loginPacket ) {
         this.decodeChainData( loginPacket.getChainData().toString() );
         this.decodeSkinData( loginPacket.getSkinData().toString() );
     }
@@ -102,7 +104,7 @@ public class LoginData {
         }
     }
 
-    private void decodeSkinData( String skinData ) {
+    private void decodeSkinData(@NotNull String skinData ) {
         JsonObject skinMap = decodeToken( skinData );
         if ( skinMap.has( "DeviceModel" ) && skinMap.has( "DeviceId" ) &&
                 skinMap.has( "ClientRandomId" ) && skinMap.has( "DeviceOS" ) && skinMap.has( "GuiScale" ) ) {
@@ -192,7 +194,7 @@ public class LoginData {
         }
     }
 
-    private boolean verifyChains( List<String> chains ) throws Exception {
+    private boolean verifyChains(@NotNull List<String> chains ) throws Exception {
         PublicKey lastKey = null;
         boolean mojangKeyVerified = false;
         for ( String chain : chains ) {
@@ -211,7 +213,7 @@ public class LoginData {
         return mojangKeyVerified;
     }
 
-    private JsonObject decodeToken( String token ) {
+    private JsonObject decodeToken(@NotNull String token ) {
         String[] tokenSplit = token.split( "\\." );
         if ( tokenSplit.length < 2 ) {
             throw new IllegalArgumentException( "Invalid token length" );
@@ -219,11 +221,11 @@ public class LoginData {
         return GSON.fromJson( new String( Base64.getDecoder().decode( tokenSplit[1] ), StandardCharsets.UTF_8 ), JsonObject.class );
     }
 
-    private static boolean verify( PublicKey publicKey, JWSObject jwsObject ) throws JOSEException {
+    private static boolean verify(PublicKey publicKey, @NotNull JWSObject jwsObject ) throws JOSEException {
         return jwsObject.verify( JWS_VERIFIER_FACTORY.createJWSVerifier( jwsObject.getHeader(), publicKey ) );
     }
 
-    private Image getImage( JsonObject skinMap, String name ) {
+    private @Nullable Image getImage(@NotNull JsonObject skinMap, String name ) {
         if ( skinMap.has( name + "Data" ) ) {
             byte[] skinImage = Base64.getDecoder().decode( skinMap.get( name + "Data" ).getAsString() );
             if ( skinMap.has( name + "ImageHeight" ) && skinMap.has( name + "ImageWidth" ) ) {
@@ -237,7 +239,7 @@ public class LoginData {
         return new Image( 0, 0, new byte[0] );
     }
 
-    private SkinAnimation getSkinAnimationData( JsonObject animationData ) {
+    private @NotNull SkinAnimation getSkinAnimationData(@NotNull JsonObject animationData ) {
         byte[] data = Base64.getDecoder().decode( animationData.get( "Image" ).getAsString() );
         int width = animationData.get( "ImageWidth" ).getAsInt();
         int height = animationData.get( "ImageHeight" ).getAsInt();
@@ -247,7 +249,7 @@ public class LoginData {
         return new SkinAnimation( new Image( width, height, data ), type, frames, expression );
     }
 
-    private PersonaPiece getPersonaPiece( JsonObject personaPiece ) {
+    private @NotNull PersonaPiece getPersonaPiece(@NotNull JsonObject personaPiece ) {
         String pieceId = personaPiece.get( "PieceId" ).getAsString();
         String pieceType = personaPiece.get( "PieceType" ).getAsString();
         String packId = personaPiece.get( "PackId" ).getAsString();
@@ -256,7 +258,7 @@ public class LoginData {
         return new PersonaPiece( pieceId, pieceType, packId, productId, isDefault );
     }
 
-    private PersonaPieceTint getPersonaPieceTint( JsonObject personaPiceTint ) {
+    private @NotNull PersonaPieceTint getPersonaPieceTint(@NotNull JsonObject personaPiceTint ) {
         String pieceType = personaPiceTint.get( "PieceType" ).getAsString();
         List<String> colors = new ArrayList<>();
         for ( JsonElement element : personaPiceTint.get( "Colors" ).getAsJsonArray() ) {

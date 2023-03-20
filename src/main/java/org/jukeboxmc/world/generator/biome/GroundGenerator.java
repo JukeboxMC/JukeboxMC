@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.biome;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -26,7 +27,7 @@ public class GroundGenerator {
         this.groundMaterial = Block.create( BlockType.DIRT );
     }
 
-    public void generateTerrainColumn( Chunk chunk, Random random, int chunkX, int chunkZ, double surfaceNoise ) {
+    public void generateTerrainColumn(@NotNull Chunk chunk, @NotNull Random random, int chunkX, int chunkZ, double surfaceNoise ) {
         int seaLevel = NormalGenerator.WATER_HEIGHT;
 
         Block topMaterial = this.topMaterial;

@@ -2,6 +2,8 @@ package org.jukeboxmc.plugin;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.CommandManager;
 import org.jukeboxmc.event.*;
@@ -27,8 +29,8 @@ public class PluginManager {
 
     private final Logger logger;
     private final Server server;
-    private final PluginLoader pluginLoader;
-    private final CommandManager commandManager;
+    private final @NotNull PluginLoader pluginLoader;
+    private final @NotNull CommandManager commandManager;
 
     private final Yaml yamlLoader = new Yaml( new CustomClassLoaderConstructor( this.getClass().getClassLoader() ) );
     private final Object2ObjectMap<String, Plugin> pluginMap = new Object2ObjectArrayMap<>();
@@ -36,7 +38,7 @@ public class PluginManager {
     final Object2ObjectMap<String, PluginClassLoader> pluginClassLoaders = new Object2ObjectArrayMap<>();
     final Map<Class<? extends Event>, Map<EventPriority, List<RegisteredListener>>> listeners = new HashMap<>();
 
-    public PluginManager( Server server ) {
+    public PluginManager(@NotNull Server server ) {
         this.server = server;
         this.logger = server.getLogger();
         this.pluginLoader = new PluginLoader( this.logger, this );
@@ -49,8 +51,7 @@ public class PluginManager {
     }
 
     public void loadPluginsIn( Path folderPath, boolean directStartup ) {
-        try {
-            Stream<Path> pluginPaths = Files.walk( folderPath );
+        try (Stream<Path> pluginPaths = Files.walk( folderPath )) {
             pluginPaths.filter( Files::isRegularFile )
                     .filter( PluginLoader::isJarFile )
                     .forEach( jarPath -> this.loadPlugin( jarPath, directStartup ) );
@@ -59,11 +60,11 @@ public class PluginManager {
         }
     }
 
-    public Plugin loadPlugin( Path path ) {
+    public Plugin loadPlugin(@NotNull Path path ) {
         return this.loadPlugin( path, false );
     }
 
-    public Plugin loadPlugin( Path path, boolean directStartup ) {
+    public @Nullable Plugin loadPlugin(@NotNull Path path, boolean directStartup ) {
         if ( !Files.isRegularFile( path ) || !PluginLoader.isJarFile( path ) ) {
             this.logger.warn( "Cannot load plugin: Provided file is no jar file: " + path.getFileName() );
             return null;
@@ -126,7 +127,7 @@ public class PluginManager {
         }
     }
 
-    public boolean enablePlugin( Plugin plugin, String parent ) {
+    public boolean enablePlugin(@NotNull Plugin plugin, String parent ) {
         if ( plugin.isEnabled() ) return true;
         String pluginName = plugin.getName();
 
@@ -170,7 +171,7 @@ public class PluginManager {
         }
     }
 
-    Class<?> getClassFromCache( String className ) {
+    @Nullable Class<?> getClassFromCache(@NotNull String className ) {
         Class<?> clazz = this.cachedClasses.get( className );
         if ( clazz != null ) {
             return clazz;
@@ -192,11 +193,11 @@ public class PluginManager {
         this.cachedClasses.putIfAbsent( className, clazz );
     }
 
-    private Map<String, Plugin> getPluginMap() {
+    private @NotNull Map<String, Plugin> getPluginMap() {
         return this.pluginMap;
     }
 
-    public Collection<Plugin> getPlugins() {
+    public @NotNull Collection<Plugin> getPlugins() {
         return this.pluginMap.values();
     }
 
@@ -208,7 +209,7 @@ public class PluginManager {
         return this.server;
     }
 
-    public void registerListener( Listener listener ) {
+    public void registerListener(@NotNull Listener listener ) {
         Class<? extends Listener> listenerClass = listener.getClass();
         for ( Method method : listenerClass.getDeclaredMethods() ) {
             EventHandler eventHandler = method.getAnnotation( EventHandler.class );
@@ -226,7 +227,7 @@ public class PluginManager {
         }
     }
 
-    public void callEvent( Event event ) {
+    public void callEvent(@NotNull Event event ) {
         Map<EventPriority, List<RegisteredListener>> eventPriorityListMap = this.listeners.get( event.getClass() );
         if ( eventPriorityListMap != null ) {
             for ( EventPriority eventPriority : EventPriority.values() ) {
@@ -244,7 +245,7 @@ public class PluginManager {
         }
     }
 
-    public CommandManager getCommandManager() {
+    public @NotNull CommandManager getCommandManager() {
         return this.commandManager;
     }
 }

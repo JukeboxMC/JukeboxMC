@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.BlockColor;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockStainedHardenedClay extends Block {
         return Item.<ItemStainedHardenedClay>create( ItemType.STAINED_HARDENED_CLAY ).setColor( this.getColor() );
     }
 
-    public BlockStainedHardenedClay setColor( BlockColor color ) {
+    public BlockStainedHardenedClay setColor(@NotNull BlockColor color ) {
         return this.setState( "color", color.name().toLowerCase() );
     }
 
-    public BlockColor getColor() {
+    public @NotNull BlockColor getColor() {
         return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

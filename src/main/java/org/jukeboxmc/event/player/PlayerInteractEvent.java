@@ -1,6 +1,8 @@
 package org.jukeboxmc.event.player;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.item.Item;
@@ -16,7 +18,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
 
     private final Action action;
     private Item item;
-    private final Block clickedBlock;
+    private final @Nullable Block clickedBlock;
     private final Vector touchVector;
 
     /**
@@ -44,7 +46,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      * @param item         which is the interaction item
      * @param clickedBlock which stands for the block the player clicked at
      */
-    public PlayerInteractEvent( Player player, Action action, Item item, Block clickedBlock ) {
+    public PlayerInteractEvent(Player player, Action action, Item item, @NotNull Block clickedBlock ) {
         super( player );
 
         this.action = action;
@@ -85,7 +87,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      *
      * @return a fresh {@link Block}
      */
-    public Block getClickedBlock() {
+    public @Nullable Block getClickedBlock() {
         return this.clickedBlock;
     }
 

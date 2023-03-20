@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import lombok.NonNull;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,11 +36,11 @@ public class CommandData {
         this.overloads = overloads;
     }
 
-    public static Builder builder() {
+    public static @NotNull Builder builder() {
         return new Builder();
     }
 
-    public static Builder builder( @NonNull String commandName ) {
+    public static @NotNull Builder builder(@NonNull @NotNull String commandName ) {
         return new Builder( commandName );
     }
 
@@ -95,14 +96,14 @@ public class CommandData {
         this.usage = usage;
     }
 
-    public CommandData rebuild() {
+    public @NotNull CommandData rebuild() {
         if ( this.overloads.size() == 0 ) {
             this.overloads.add( new CommandParameter[]{ new CommandParameter( "args", CommandParamType.TEXT, true ) } );
         }
         return new CommandData( this.name, this.description, this.usage, this.permission, this.permissionMessage, new CommandEnum( this.name, this.getAliases() ), this.overloads );
     }
 
-    public com.nukkitx.protocol.bedrock.data.command.CommandData toNetwork() {
+    public @NotNull com.nukkitx.protocol.bedrock.data.command.CommandData toNetwork() {
         String description = this.description;
 
         CommandParamData[][] overloadData = new CommandParamData[this.overloads.size()][];
@@ -121,74 +122,74 @@ public class CommandData {
     }
 
     public static class Builder {
-        private String name = "";
+        private @NotNull String name = "";
         private String description = "";
         private String usage = "";
         private String permission = "";
         private String permissionMessage = "";
-        private List<String> aliases = new ArrayList<>();
+        private @NotNull List<String> aliases = new ArrayList<>();
         private List<CommandParameter[]> overloads = new ArrayList<>();
 
         public Builder() {
         }
 
-        public Builder( @NonNull String name ) {
+        public Builder( @NonNull @NotNull String name ) {
             this.name = name.toLowerCase();
         }
 
-        public CommandData build() {
+        public @NotNull CommandData build() {
             if ( this.overloads.size() == 0 ) {
                 this.overloads.add( new CommandParameter[]{ new CommandParameter( "args", CommandParamType.TEXT, true ) } );
             }
             return new CommandData( this.name, this.description, this.usage, this.permission, this.permissionMessage, new CommandEnum( this.name, this.aliases ), this.overloads );
         }
 
-        public Builder setDescription( @NonNull String description ) {
+        public @NotNull Builder setDescription(@NonNull String description ) {
             this.description = description;
             return this;
         }
 
-        public Builder setUsageMessage( @NonNull String usage ) {
+        public @NotNull Builder setUsageMessage(@NonNull String usage ) {
             this.usage = usage;
             return this;
         }
 
-        public Builder setPermissionMessage( @NonNull String message ) {
+        public @NotNull Builder setPermissionMessage(@NonNull String message ) {
             this.permissionMessage = message;
             return this;
         }
 
-        public Builder setPermissions( @NonNull String permissions ) {
+        public @NotNull Builder setPermissions(@NonNull String permissions ) {
             this.permission = permissions;
             return this;
         }
 
-        public Builder setAliases( @NonNull String... aliases ) {
+        public @NotNull Builder setAliases(@NonNull String... aliases ) {
             this.aliases = Arrays.asList( aliases );
             return this;
         }
 
-        public Builder addAlias( @NonNull String alias ) {
+        public @NotNull Builder addAlias(@NonNull String alias ) {
             this.aliases.add( alias );
             return this;
         }
 
-        public Builder addAliases( @NonNull String... aliases ) {
+        public @NotNull Builder addAliases(@NonNull String... aliases ) {
             this.aliases.addAll( Arrays.asList( aliases ) );
             return this;
         }
 
-        public Builder setParameters( @NonNull CommandParameter[]... paramSet ) {
+        public @NotNull Builder setParameters(@NonNull CommandParameter[]... paramSet ) {
             this.overloads = Arrays.asList( paramSet );
             return this;
         }
 
-        public Builder setParameters( @NonNull List<CommandParameter[]> parameters ) {
+        public @NotNull Builder setParameters(@NonNull List<CommandParameter[]> parameters ) {
             this.overloads = parameters;
             return this;
         }
 
-        public Builder addParameters( @NonNull CommandParameter[]... paramSet ) {
+        public @NotNull Builder addParameters(@NonNull CommandParameter[]... paramSet ) {
             this.overloads.addAll( Arrays.asList( paramSet ) );
             return this;
         }

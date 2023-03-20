@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.BlockColor;
@@ -31,7 +32,7 @@ public class BlockBed extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, @NotNull Item itemInHand, BlockFace blockFace ) {
         BlockColor blockColor = BlockColor.values()[itemInHand.getMeta()];
 
         Block blockDirection = this.getSide( player.getDirection() );
@@ -56,7 +57,7 @@ public class BlockBed extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         Direction direction = this.getDirection();
         if ( this.isHeadPiece() ) {
             direction = direction.opposite();
@@ -91,7 +92,7 @@ public class BlockBed extends Block {
         return this.stateExists( "occupied_bit" ) && this.getByteState( "occupied_bit" ) == 1;
     }
 
-    public void setDirection( Direction direction ) {
+    public void setDirection(@NotNull Direction direction ) {
         switch ( direction ) {
             case SOUTH -> this.setState( "direction", 0 );
             case WEST -> this.setState( "direction", 1 );
@@ -100,7 +101,7 @@ public class BlockBed extends Block {
         }
     }
 
-    public Direction getDirection() {
+    public @NotNull Direction getDirection() {
         int value = this.stateExists( "direction" ) ? this.getIntState( "direction" ) : 0;
         return switch ( value ) {
             case 0 -> Direction.SOUTH;

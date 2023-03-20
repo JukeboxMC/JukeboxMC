@@ -3,6 +3,7 @@ package org.jukeboxmc.entity;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
@@ -113,7 +114,7 @@ public abstract class EntityMoveable extends Entity {
         }
     }
 
-    protected void move( Vector velocity ) {
+    protected void move(@NotNull Vector velocity ) {
         if ( velocity.getX() == 0 && velocity.getY() == 0 && velocity.getZ() == 0 ) {
             return;
         }
@@ -214,7 +215,7 @@ public abstract class EntityMoveable extends Entity {
 
     }
 
-    private void sendEntityMovePacket( Location location, boolean onGround ) {
+    private void sendEntityMovePacket(@NotNull Location location, boolean onGround ) {
         MoveEntityAbsolutePacket moveEntityAbsolutePacket = new MoveEntityAbsolutePacket();
         moveEntityAbsolutePacket.setRuntimeEntityId( this.entityId );
         moveEntityAbsolutePacket.setTeleported( false );

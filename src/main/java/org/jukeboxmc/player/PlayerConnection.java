@@ -8,6 +8,8 @@ import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.packet.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
@@ -46,17 +48,17 @@ public class PlayerConnection {
     private final Server server;
     private final BedrockServerSession session;
 
-    private final AtomicBoolean loggedIn;
-    private final AtomicBoolean spawned;
+    private final @NotNull AtomicBoolean loggedIn;
+    private final @NotNull AtomicBoolean spawned;
 
     private LoginData loginData;
-    private final Player player;
+    private final @NotNull Player player;
 
     private String disconnectMessage;
 
-    private final PlayerChunkManager playerChunkManager;
+    private final @NotNull PlayerChunkManager playerChunkManager;
 
-    public PlayerConnection( Server server, BedrockServerSession session ) {
+    public PlayerConnection(@NotNull Server server, @NotNull BedrockServerSession session ) {
         this.server = server;
         this.session = session;
         this.session.getHardcodedBlockingId().set( Item.create( ItemType.SHIELD ).getRuntimeId() );
@@ -105,7 +107,7 @@ public class PlayerConnection {
         }
     }
 
-    private void onDisconnect( DisconnectReason disconnectReason ) {
+    private void onDisconnect(@Nullable DisconnectReason disconnectReason ) {
         this.server.removePlayer( this.player );
 
         this.player.getWorld().removeEntity( this.player );
@@ -282,8 +284,8 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    private String parseDisconnectMessage( DisconnectReason disconnectReason ) {
-        switch ( disconnectReason ) {
+    private @NotNull String parseDisconnectMessage(@Nullable DisconnectReason disconnectReason ) {
+        switch (disconnectReason != null ? disconnectReason : DisconnectReason.DISCONNECTED) {
             case ALREADY_CONNECTED -> {
                 return "Already connected";
             }
@@ -328,7 +330,7 @@ public class PlayerConnection {
         }
     }
 
-    public void sendPacketImmediately( BedrockPacket packet ) {
+    public void sendPacketImmediately(@NotNull BedrockPacket packet ) {
         if ( !this.isClosed() ) {
             this.session.sendPacketImmediately( packet );
         }
@@ -346,7 +348,7 @@ public class PlayerConnection {
         return this.session;
     }
 
-    public Player getPlayer() {
+    public @NotNull Player getPlayer() {
         return this.player;
     }
 
@@ -362,7 +364,7 @@ public class PlayerConnection {
         return this.loginData;
     }
 
-    public void setLoginData( LoginData loginData ) {
+    public void setLoginData(@NotNull LoginData loginData ) {
         if ( this.loginData == null ) {
             this.loginData = loginData;
             this.player.setName( loginData.getDisplayName() );
@@ -373,7 +375,7 @@ public class PlayerConnection {
         }
     }
 
-    public PlayerChunkManager getPlayerChunkManager() {
+    public @NotNull PlayerChunkManager getPlayerChunkManager() {
         return this.playerChunkManager;
     }
 }

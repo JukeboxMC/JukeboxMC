@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -24,7 +25,7 @@ public class BlockGrass extends Block {
     }
 
     @Override
-    public List<Item> getDrops( Item item ) {
+    public @NotNull List<Item> getDrops(Item item ) {
         return Collections.singletonList( Item.create( ItemType.DIRT ) );
     }
 }

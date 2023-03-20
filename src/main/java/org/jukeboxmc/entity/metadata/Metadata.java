@@ -3,6 +3,7 @@ package org.jukeboxmc.entity.metadata;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class Metadata {
 
     private final EntityDataMap entityDataMap = new EntityDataMap();
 
-    public Metadata setByte( EntityData entityData, byte value ) {
+    public @NotNull Metadata setByte(EntityData entityData, byte value ) {
         Byte oldValue = this.getByte( entityData );
         if ( oldValue != value ) {
             this.entityDataMap.putByte( entityData, value );
@@ -22,11 +23,11 @@ public class Metadata {
         return this;
     }
 
-    public Byte getByte( EntityData entityData ) {
+    public @NotNull Byte getByte(EntityData entityData ) {
         return this.entityDataMap.getByte( entityData );
     }
 
-    public Metadata setLong( EntityData entityData, long value ) {
+    public @NotNull Metadata setLong(EntityData entityData, long value ) {
         Long oldValue = this.getLong( entityData );
         if ( oldValue != value ) {
             this.entityDataMap.putLong( entityData, value );
@@ -34,11 +35,11 @@ public class Metadata {
         return this;
     }
 
-    public Long getLong( EntityData entityData ) {
+    public @NotNull Long getLong(EntityData entityData ) {
         return this.entityDataMap.getLong( entityData );
     }
 
-    public Metadata setShort( EntityData entityData, short value ) {
+    public @NotNull Metadata setShort(EntityData entityData, short value ) {
         Short oldValue = this.getShort( entityData );
         if ( oldValue != value ) {
             this.entityDataMap.putShort( entityData, value );
@@ -46,11 +47,11 @@ public class Metadata {
         return this;
     }
 
-    public Short getShort( EntityData entityData ) {
+    public @NotNull Short getShort(EntityData entityData ) {
         return this.entityDataMap.getShort( entityData );
     }
 
-    public Metadata setString( EntityData entityData, String value ) {
+    public @NotNull Metadata setString(EntityData entityData, String value ) {
         String oldValue = this.getString( entityData );
         if ( !Objects.equals( oldValue, value ) ) {
             this.entityDataMap.putString( entityData, value );
@@ -62,7 +63,7 @@ public class Metadata {
         return this.entityDataMap.getString( entityData );
     }
 
-    public Metadata setFloat( EntityData entityData, float value ) {
+    public @NotNull Metadata setFloat(EntityData entityData, float value ) {
         Float oldValue = this.getFloat( entityData );
         if ( oldValue != value ) {
             this.entityDataMap.putFloat( entityData, value );
@@ -70,11 +71,11 @@ public class Metadata {
         return this;
     }
 
-    public Float getFloat( EntityData entityData ) {
+    public @NotNull Float getFloat(EntityData entityData ) {
         return this.entityDataMap.getFloat( entityData );
     }
 
-    public Metadata setFlag( EntityFlag entityFlag, boolean value ) {
+    public @NotNull Metadata setFlag(@NotNull EntityFlag entityFlag, boolean value ) {
         boolean oldValue = this.getFlag( entityFlag );
         if ( oldValue != value ) {
             this.entityDataMap.getOrCreateFlags().setFlag( entityFlag, value );
@@ -82,11 +83,11 @@ public class Metadata {
         return this;
     }
 
-    public Integer getInt( EntityData entityData ) {
+    public @NotNull Integer getInt(EntityData entityData ) {
         return this.entityDataMap.getInt( entityData );
     }
 
-    public Metadata setInt( EntityData entityData, int value ) {
+    public @NotNull Metadata setInt(EntityData entityData, int value ) {
         Integer oldValue = this.getInt( entityData );
 
         if ( oldValue != value ) {
@@ -96,11 +97,11 @@ public class Metadata {
         return this;
     }
 
-    public boolean getFlag( EntityFlag entityFlag ) {
+    public boolean getFlag(@NotNull EntityFlag entityFlag ) {
         return this.entityDataMap.getOrCreateFlags().getFlag( entityFlag );
     }
 
-    public EntityDataMap getEntityDataMap() {
+    public @NotNull EntityDataMap getEntityDataMap() {
         return this.entityDataMap;
     }
 }

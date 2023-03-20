@@ -1,6 +1,8 @@
 package org.jukeboxmc.form;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -11,8 +13,8 @@ import org.json.simple.JSONObject;
 @RequiredArgsConstructor
 public abstract class Form<R> {
 
-    private final String title;
-    private String icon = null;
+    private final @NotNull String title;
+    private @Nullable String icon = null;
 
     // Caching
     protected JSONObject cache;
@@ -30,11 +32,11 @@ public abstract class Form<R> {
         this.dirty = true;
     }
 
-    public String getIcon() {
+    public @Nullable String getIcon() {
         return this.icon;
     }
 
-    public String getTitle() {
+    public @NotNull String getTitle() {
         return this.title;
     }
 

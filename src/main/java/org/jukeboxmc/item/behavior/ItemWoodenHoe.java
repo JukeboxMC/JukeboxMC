@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.item.*;
@@ -23,13 +24,13 @@ public class ItemWoodenHoe extends Item implements Durability, Burnable {
     }
 
     @Override
-    public void addToHand( Player player ) {
+    public void addToHand(@NotNull Player player ) {
         Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
         attribute.setCurrentValue( 2 );
     }
 
     @Override
-    public void removeFromHand( Player player ) {
+    public void removeFromHand(@NotNull Player player ) {
         Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
         attribute.setCurrentValue( attribute.getMinValue() );
     }
@@ -45,12 +46,12 @@ public class ItemWoodenHoe extends Item implements Durability, Burnable {
     }
 
     @Override
-    public ToolType getToolType() {
+    public @NotNull ToolType getToolType() {
         return ToolType.HOE;
     }
 
     @Override
-    public TierType getTierType() {
+    public @NotNull TierType getTierType() {
         return TierType.WOODEN;
     }
 }

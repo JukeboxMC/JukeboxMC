@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -25,7 +26,7 @@ public class BlockPiston extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         if ( FastMath.abs( player.getX() - this.getLocation().getX() ) < 2 && FastMath.abs( player.getZ() - this.getLocation().getZ() ) < 2 ) {
             double y = player.getY() + player.getEyeHeight();
 
@@ -42,7 +43,7 @@ public class BlockPiston extends Block {
         return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

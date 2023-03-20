@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.BlockColor;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -36,7 +37,7 @@ public class BlockShulkerBox extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemIndHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, @NotNull Item itemIndHand, BlockFace blockFace ) {
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemIndHand, blockFace );
         if ( value ) {
             BlockEntityShulkerBox blockEntityShulkerBox = (BlockEntityShulkerBox) BlockEntity.<BlockEntityShulkerBox>create( BlockEntityType.SHULKER_BOX, this ).setUndyed( false ).spawn();
@@ -58,7 +59,7 @@ public class BlockShulkerBox extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityShulkerBox blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -68,7 +69,7 @@ public class BlockShulkerBox extends Block {
     }
 
     @Override
-    public ItemShulkerBox toItem() {
+    public @NotNull ItemShulkerBox toItem() {
         ItemShulkerBox itemShulkerBox = Item.create( ItemType.SHULKER_BOX );
         itemShulkerBox.setColor( this.getColor() );
         BlockEntityShulkerBox blockEntity = this.getBlockEntity();
@@ -100,11 +101,11 @@ public class BlockShulkerBox extends Block {
         return (BlockEntityShulkerBox) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public BlockShulkerBox setColor( BlockColor color ) {
+    public BlockShulkerBox setColor(@NotNull BlockColor color ) {
         return this.setState( "color", color.name().toLowerCase() );
     }
 
-    public BlockColor getColor() {
+    public @NotNull BlockColor getColor() {
         return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

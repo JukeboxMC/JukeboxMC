@@ -2,6 +2,7 @@ package org.jukeboxmc.command.internal;
 
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
 import org.jukeboxmc.command.CommandParameter;
@@ -39,7 +40,7 @@ public class GameRuleCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute( CommandSender commandSender, String command, String @NotNull [] args ) {
         if ( commandSender instanceof Player player ) {
             if ( args.length == 2 ) {
                 String gameRuleValue = args[0];

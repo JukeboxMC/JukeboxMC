@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 
@@ -23,7 +24,7 @@ public class Slider extends Element {
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
         obj.put( "type", "slider" );
         obj.put( "min", this.min );
@@ -41,7 +42,7 @@ public class Slider extends Element {
     }
 
     @Override
-    public Object getAnswer( Object answerOption ) {
+    public @NotNull Object getAnswer(Object answerOption ) {
         Double answer = (Double) answerOption;
         this.defaultValue = answer.floatValue();
         return answer;

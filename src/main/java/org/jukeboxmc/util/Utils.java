@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.Dimension;
 
 import java.io.File;
@@ -85,7 +86,7 @@ public class Utils {
         return i;
     }
 
-    public static ByteBuf allocate( byte[] data ) {
+    public static @NotNull ByteBuf allocate(byte @NotNull [] data ) {
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer( data.length );
         buf.writeBytes( data );
         return buf;
@@ -100,7 +101,7 @@ public class Utils {
         return floatNumber > truncated ? truncated + 1 : truncated;
     }
 
-    public static int randomRange( Random random, int start, int end ) {
+    public static int randomRange(@NotNull Random random, int start, int end ) {
         return start + ( random.nextInt() % ( end + 1 - start ) );
     }
 
@@ -109,7 +110,7 @@ public class Utils {
         return ( (double) Math.round( value * pow ) ) / pow;
     }
 
-    public static byte[] getKey( int chunkX, int chunkZ, Dimension dimension, byte key ) {
+    public static byte[] getKey(int chunkX, int chunkZ, @NotNull Dimension dimension, byte key ) {
         if ( dimension.equals( Dimension.OVERWORLD ) ) {
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
@@ -142,7 +143,7 @@ public class Utils {
         }
     }
 
-    public static byte[] getSubChunkKey( int chunkX, int chunkZ, Dimension dimension, byte key, byte subChunk ) {
+    public static byte[] getSubChunkKey(int chunkX, int chunkZ, @NotNull Dimension dimension, byte key, byte subChunk ) {
         if ( dimension.equals( Dimension.OVERWORLD ) ) {
             return new byte[]{
                     (byte) ( chunkX & 0xff ),
@@ -177,7 +178,7 @@ public class Utils {
         }
     }
 
-    public static void writeFile( File file, InputStream content ) throws IOException {
+    public static void writeFile(@NotNull File file, @NotNull InputStream content ) throws IOException {
         if ( content == null ) {
             throw new IllegalArgumentException( "Content must not be null!" );
         }
@@ -197,7 +198,7 @@ public class Utils {
         stream.close();
     }
 
-    public static byte[] array( ByteBuf buffer ) {
+    public static byte[] array(@NotNull ByteBuf buffer ) {
         byte[] array = new byte[buffer.readableBytes()];
         buffer.readBytes( array );
         return array;

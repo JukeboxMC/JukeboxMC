@@ -1,8 +1,9 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.block.behavior.BlockKelp;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.block.behavior.BlockKelp;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
@@ -23,7 +24,7 @@ public class KelpPopulator extends Populator {
     private final Block BLOCK_WATER = Block.create( BlockType.WATER );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ) {
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         for ( int i = 0; i < amount; ++i ) {
@@ -61,7 +62,7 @@ public class KelpPopulator extends Populator {
     }
 
     @Override
-    public int getHighestWorkableBlock( Chunk chunk, int x, int z ) {
+    public int getHighestWorkableBlock(@NotNull Chunk chunk, int x, int z ) {
         int y;
         for ( y = NormalGenerator.WATER_HEIGHT - 1; y >= 0; --y ) {
             Block block = chunk.getBlock( x, y, z, 0 );
@@ -77,7 +78,7 @@ public class KelpPopulator extends Populator {
         return y == 0 ? -1 : ++y;
     }
 
-    public boolean canKelpStay( Chunk chunk, int x, int y, int z ) {
+    public boolean canKelpStay(@NotNull Chunk chunk, int x, int y, int z ) {
         return chunk.getBlock( x, y, z, 0 ).getType().equals( BlockType.WATER );
     }
 

@@ -3,6 +3,8 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.ChestInventory;
@@ -24,13 +26,13 @@ import java.util.List;
  */
 public class BlockEntityChest extends BlockEntity implements InventoryHolder {
 
-    private final ChestInventory chestInventory;
-    private DoubleChestInventory doubleChestInventory;
-    private Vector pairPosition;
+    private final @NotNull ChestInventory chestInventory;
+    private @Nullable DoubleChestInventory doubleChestInventory;
+    private @Nullable Vector pairPosition;
     private boolean findable;
     private boolean setPaired;
 
-    public BlockEntityChest( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityChest(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.chestInventory = new ChestInventory( this );
     }
@@ -49,14 +51,14 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         ContainerInventory chestInventory = this.getChestInventory();
         player.openInventory( chestInventory, blockPosition );
         return true;
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
 
         List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
@@ -74,7 +76,7 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
 
         List<NbtMap> itemsCompoundList = new ArrayList<>();
@@ -104,7 +106,7 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
         return false;
     }
 
-    public void pair( BlockEntityChest other ) {
+    public void pair(@NotNull BlockEntityChest other ) {
         Vector otherBP = other.getBlock().getLocation();
         long otherL = Utils.toLong( otherBP.getBlockX(), otherBP.getBlockZ() );
 
@@ -138,8 +140,8 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
         this.pairPosition = null;
     }
 
-    private BlockEntityChest getPaired() {
-        if ( this.isPaired() ) {
+    private @Nullable BlockEntityChest getPaired() {
+        if ( this.pairPosition != null && this.isPaired() ) {
             Chunk loadedChunk = this.getBlock().getWorld().getLoadedChunk( this.pairPosition.getChunkX(), this.pairPosition.getChunkZ(), this.dimension );
             if ( loadedChunk != null ) {
                 BlockEntity blockEntity = loadedChunk.getBlockEntity( this.pairPosition.getBlockX(), this.pairPosition.getBlockY(), this.pairPosition.getBlockZ() );
@@ -151,7 +153,7 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
         return null;
     }
 
-    private void setPair( Vector otherBP ) {
+    private void setPair(@NotNull Vector otherBP ) {
         this.findable = true;
         this.setPaired = true;
         this.pairPosition = new Vector( otherBP.getBlockX(), this.getBlock().getLocation().getBlockY(), otherBP.getBlockZ() );
@@ -165,7 +167,7 @@ public class BlockEntityChest extends BlockEntity implements InventoryHolder {
         return this.doubleChestInventory != null ? this.doubleChestInventory : this.chestInventory;
     }
 
-    public void setDoubleChestInventory( DoubleChestInventory doubleChestInventory ) {
+    public void setDoubleChestInventory(@Nullable DoubleChestInventory doubleChestInventory ) {
         this.doubleChestInventory = doubleChestInventory;
     }
 }

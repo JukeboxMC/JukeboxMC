@@ -1,6 +1,10 @@
 package org.jukeboxmc.scheduler;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
 import java.util.function.BiConsumer;
@@ -11,20 +15,20 @@ import java.util.function.BiConsumer;
  */
 public class SchedulerFuture<V> implements Runnable, Future<V> {
 
-    public static <V> SchedulerFuture<V> completed(Scheduler scheduler, V value) {
+    public static <V> @NotNull SchedulerFuture<V> completed(Scheduler scheduler, V value) {
         return new SchedulerFuture<>(scheduler, value);
     }
 
-    public static <V> SchedulerFuture<V> supplyAsync(Scheduler scheduler, Callable<V> callable) {
+    public static <V> @NotNull SchedulerFuture<V> supplyAsync(@NotNull Scheduler scheduler, Callable<V> callable) {
         final SchedulerFuture<V> future = new SchedulerFuture<>(scheduler, callable);
         scheduler.executeAsync(future);
         return future;
     }
 
     private final Scheduler scheduler;
-    private final Callable<V> callable;
-    private final Set<BiConsumer<V, Throwable>> consumers;
-    private final Object waiting;
+    private final @Nullable Callable<V> callable;
+    private final @Nullable Set<BiConsumer<V, Throwable>> consumers;
+    private final @Nullable Object waiting;
 
     private volatile Thread runner;
     private volatile V value;
@@ -44,7 +48,7 @@ public class SchedulerFuture<V> implements Runnable, Future<V> {
         this.cancelled = false;
     }
 
-    public SchedulerFuture(Scheduler scheduler, Callable<V> callable) {
+    public SchedulerFuture(Scheduler scheduler, @Nullable Callable<V> callable) {
         this.scheduler = scheduler;
         this.callable = callable;
         this.consumers = new LinkedHashSet<>();
@@ -60,18 +64,18 @@ public class SchedulerFuture<V> implements Runnable, Future<V> {
         this.runner = Thread.currentThread();
 
         try {
-            this.value = this.callable.call();
+            this.value = Objects.requireNonNull(this.callable).call();
         } catch(Throwable throwable) {
             this.throwable = throwable;
         } finally {
             this.finished = true;
 
-            synchronized(this.waiting) {
+            synchronized(Objects.requireNonNull(this.waiting)) {
                 this.waiting.notifyAll();
             }
 
             this.scheduler.execute(() -> {
-                for(BiConsumer<V, Throwable> consumer : this.consumers)
+                for(BiConsumer<V, Throwable> consumer : Objects.requireNonNull(this.consumers))
                     consumer.accept(this.value, this.throwable);
 
                 this.consumers.clear();
@@ -79,17 +83,17 @@ public class SchedulerFuture<V> implements Runnable, Future<V> {
         }
     }
 
-    public SchedulerFuture<V> forceRun() {
+    public @NotNull SchedulerFuture<V> forceRun() {
         if(this.callable == null || this.finished)
             throw new IllegalStateException("Cannot force run a finished future");
         this.run();
         return this;
     }
 
-    public synchronized SchedulerFuture<V> onFinish(BiConsumer<V, Throwable> consumer) {
+    public synchronized @NotNull SchedulerFuture<V> onFinish(@NotNull BiConsumer<V, Throwable> consumer) {
         this.scheduler.execute(() -> {
             if(this.finished) consumer.accept(this.value, this.throwable);
-            else this.consumers.add(consumer);
+            else Objects.requireNonNull(this.consumers).add(consumer);
         });
 
         return this;
@@ -129,7 +133,7 @@ public class SchedulerFuture<V> implements Runnable, Future<V> {
             return this.value;
         }
 
-        synchronized(this.waiting) {
+        synchronized(Objects.requireNonNull(this.waiting)) {
             this.waiting.wait();
 
             if(this.throwable != null) throw new ExecutionException(this.throwable);
@@ -138,13 +142,13 @@ public class SchedulerFuture<V> implements Runnable, Future<V> {
     }
 
     @Override
-    public V get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+    public V get(long timeout, @NotNull TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
         if(this.finished) {
             if(this.throwable != null) throw new ExecutionException(this.throwable);
             return this.value;
         }
 
-        synchronized(this.waiting) {
+        synchronized(Objects.requireNonNull(this.waiting)) {
             this.waiting.wait(timeUnit.toMillis(timeout));
 
             if(!this.finished) throw new TimeoutException();

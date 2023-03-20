@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Axis;
 import org.jukeboxmc.block.data.LogType;
@@ -28,7 +29,7 @@ public class BlockLog extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         if ( blockFace == BlockFace.UP || blockFace == BlockFace.DOWN ) {
             this.setAxis( Axis.Y );
         } else if ( blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH ) {
@@ -46,19 +47,19 @@ public class BlockLog extends Block {
         return Item.<ItemLog>create( ItemType.LOG ).setLogType( this.getLogType() );
     }
 
-    public BlockLog setLogType( LogType logType ) {
+    public BlockLog setLogType(@NotNull LogType logType ) {
         return this.setState( "old_log_type", logType.name().toLowerCase() );
     }
 
-    public LogType getLogType() {
+    public @NotNull LogType getLogType() {
         return this.stateExists( "old_log_type" ) ? LogType.valueOf( this.getStringState( "old_log_type" ) ) : LogType.OAK;
     }
 
-    public void setAxis( Axis axis ) {
+    public void setAxis(@NotNull Axis axis ) {
         this.setState( "pillar_axis", axis.name().toLowerCase() );
     }
 
-    public Axis getAxis() {
+    public @NotNull Axis getAxis() {
         return this.stateExists( "pillar_axis" ) ? Axis.valueOf( this.getStringState( "pillar_axis" ) ) : Axis.Y;
     }
 }

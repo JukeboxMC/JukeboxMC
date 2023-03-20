@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.MonsterEggStoneType;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockInfestedStone extends Block {
         return Item.<ItemInfestedStone>create( ItemType.INFESTED_STONE ).setMonsterEggStoneType( this.getMonsterEggStoneType() );
     }
 
-    public BlockInfestedStone setMonsterEggStoneType( MonsterEggStoneType monsterEggStoneType ) {
+    public BlockInfestedStone setMonsterEggStoneType(@NotNull MonsterEggStoneType monsterEggStoneType ) {
         return this.setState( "monster_egg_stone_type", monsterEggStoneType.name().toLowerCase() );
     }
 
-    public MonsterEggStoneType getMonsterEggStoneType() {
+    public @NotNull MonsterEggStoneType getMonsterEggStoneType() {
         return this.stateExists( "monster_egg_stone_type" ) ? MonsterEggStoneType.valueOf( this.getStringState( "monster_egg_stone_type" ) ) : MonsterEggStoneType.STONE;
     }
 }

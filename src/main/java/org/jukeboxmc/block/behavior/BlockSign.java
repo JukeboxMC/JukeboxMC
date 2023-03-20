@@ -1,6 +1,8 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.SignDirection;
 import org.jukeboxmc.blockentity.BlockEntitySign;
@@ -28,7 +30,7 @@ public class BlockSign extends Block {
         return (BlockEntitySign) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public List<String> getLines() {
+    public @Nullable List<String> getLines() {
         BlockEntitySign blockEntity = this.getBlockEntity();
         return blockEntity != null ? new ArrayList<>( blockEntity.getLines() ) : null;
     }
@@ -45,7 +47,7 @@ public class BlockSign extends Block {
         }
     }
 
-    public void setSignDirection( SignDirection signDirection ) {
+    public void setSignDirection(@NotNull SignDirection signDirection ) {
         this.setState( "ground_sign_direction", signDirection.ordinal() );
     }
 

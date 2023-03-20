@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.jukeboxmc.form.CustomForm;
@@ -22,13 +23,13 @@ public class Dropdown extends Element  {
         this.form = customForm;
     }
 
-    public Dropdown addOption( String option ) {
+    public @NotNull Dropdown addOption(String option ) {
         this.options.add( option );
         this.form.setDirty();
         return this;
     }
 
-    public Dropdown addOption( String option, boolean defaultOption ) {
+    public @NotNull Dropdown addOption(String option, boolean defaultOption ) {
         if ( defaultOption ) {
             this.defaultOption = this.options.size();
         }
@@ -39,7 +40,7 @@ public class Dropdown extends Element  {
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
         obj.put( "type", "dropdown" );
 

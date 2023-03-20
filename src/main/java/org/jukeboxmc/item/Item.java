@@ -7,6 +7,8 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -47,7 +49,7 @@ public class Item implements Cloneable {
     protected int durability;
     protected String displayname;
     protected List<String> lore;
-    protected NbtMap nbt;
+    protected @Nullable NbtMap nbt;
 
     protected List<String> canPlace;
     protected List<String> canBreak;
@@ -86,11 +88,11 @@ public class Item implements Cloneable {
         this.itemLockType = ItemLockType.NONE;
     }
 
-    public Item( ItemType itemType ) {
+    public Item(@NotNull ItemType itemType ) {
         this( itemType, true );
     }
 
-    public Item( ItemType itemType, boolean withNetworkId ) {
+    public Item(@NotNull ItemType itemType, boolean withNetworkId ) {
         this.itemType = itemType;
         ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( itemType );
         this.identifier = itemRegistryData.getIdentifier();
@@ -118,11 +120,11 @@ public class Item implements Cloneable {
         this.itemLockType = ItemLockType.NONE;
     }
 
-    public Item( ItemData itemData ) {
+    public Item(@NotNull ItemData itemData ) {
         this( itemData, true );
     }
 
-    public Item( ItemData itemData, boolean withNetworkId ) {
+    public Item(@NotNull ItemData itemData, boolean withNetworkId ) {
         this.itemType = ItemRegistry.getItemType( ItemPalette.getIdentifier( (short) itemData.getId() ) );
         ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( this.itemType );
         this.identifier = itemRegistryData.getIdentifier();
@@ -148,7 +150,7 @@ public class Item implements Cloneable {
         }
     }
 
-    public static <T extends Item> T create( ItemData itemData ) {
+    public static <T extends Item> @NotNull T create(@NotNull ItemData itemData ) {
         if ( itemData.getId() == 0 ) {
             return Item.create( ItemType.AIR );
         }
@@ -163,7 +165,7 @@ public class Item implements Cloneable {
         return item;
     }
 
-    public static <T extends Item> T create( Identifier identifier ) {
+    public static <T extends Item> @NotNull T create(Identifier identifier ) {
         ItemType itemType = ItemRegistry.getItemType( identifier );
         if ( ItemRegistry.itemClassExists( itemType ) ) {
             try {
@@ -177,7 +179,7 @@ public class Item implements Cloneable {
         return (T) new Item( itemType );
     }
 
-    public static <T extends Item> T create( ItemType itemType ) {
+    public static <T extends Item> @NotNull T create(@NotNull ItemType itemType ) {
         if ( ItemRegistry.itemClassExists( itemType ) ) {
             try {
                 Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
@@ -190,7 +192,7 @@ public class Item implements Cloneable {
         return (T) new Item( itemType );
     }
 
-    public static <T extends Item> T create( ItemType itemType, int amount ) {
+    public static <T extends Item> T create(@NotNull ItemType itemType, int amount ) {
         if ( ItemRegistry.itemClassExists( itemType ) ) {
             try {
                 Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
@@ -203,7 +205,7 @@ public class Item implements Cloneable {
         return (T) new Item( itemType, true ).setAmount( amount );
     }
 
-    public static <T extends Item> T create( ItemType itemType, int amount, int meta ) {
+    public static <T extends Item> T create(@NotNull ItemType itemType, int amount, int meta ) {
         if ( ItemRegistry.itemClassExists( itemType ) ) {
             try {
                 Constructor<? extends Item> constructor = ItemRegistry.getItemClass( itemType ).getConstructor( ItemType.class );
@@ -216,7 +218,7 @@ public class Item implements Cloneable {
         return (T) new Item( itemType, true ).setAmount( amount ).setMeta( meta );
     }
 
-    public static String toBase64( Item item ) {
+    public static String toBase64(@NotNull Item item ) {
         NbtMap itemNbt = NbtMap.builder()
                 .putString( "Name", item.getIdentifier().getFullName() )
                 .putInt( "Count", item.getAmount() )
@@ -274,7 +276,7 @@ public class Item implements Cloneable {
         return this.runtimeId;
     }
 
-    public Item setRuntimeId( int runtimeId ) {
+    public @NotNull Item setRuntimeId(int runtimeId ) {
         this.runtimeId = runtimeId;
         return this;
     }
@@ -283,7 +285,7 @@ public class Item implements Cloneable {
         return this.blockRuntimeId;
     }
 
-    public Item setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull Item setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         return this;
     }
@@ -292,7 +294,7 @@ public class Item implements Cloneable {
         return this.stackNetworkId;
     }
 
-    public Item setStackNetworkId( int stackNetworkId ) {
+    public @NotNull Item setStackNetworkId(int stackNetworkId ) {
         this.stackNetworkId = stackNetworkId;
         return this;
     }
@@ -301,7 +303,7 @@ public class Item implements Cloneable {
         return this.amount;
     }
 
-    public Item setAmount( int amount ) {
+    public @NotNull Item setAmount(int amount ) {
         if ( amount > this.getMaxStackSize() ) {
             this.amount = this.getMaxStackSize();
             return this;
@@ -314,7 +316,7 @@ public class Item implements Cloneable {
         return this.meta;
     }
 
-    public Item setMeta( int meta ) {
+    public @NotNull Item setMeta(int meta ) {
         this.meta = meta;
         return this;
     }
@@ -323,7 +325,7 @@ public class Item implements Cloneable {
         return this.durability;
     }
 
-    public Item setDurability( int durability ) {
+    public @NotNull Item setDurability(int durability ) {
         this.durability = durability;
         return this;
     }
@@ -332,7 +334,7 @@ public class Item implements Cloneable {
         return this.displayname;
     }
 
-    public Item setDisplayname( String displayname ) {
+    public @NotNull Item setDisplayname(String displayname ) {
         this.displayname = displayname;
         return this;
     }
@@ -341,16 +343,16 @@ public class Item implements Cloneable {
         return this.lore;
     }
 
-    public Item setLore( List<String> lore ) {
+    public @NotNull Item setLore(List<String> lore ) {
         this.lore = lore;
         return this;
     }
 
-    public NbtMap getNbt() {
+    public @Nullable NbtMap getNbt() {
         return this.nbt;
     }
 
-    public Item setNbt( NbtMap nbt ) {
+    public @NotNull Item setNbt(NbtMap nbt ) {
         this.nbt = nbt;
         if ( this.nbt != null ) {
             this.fromNbt( this.nbt );
@@ -362,7 +364,7 @@ public class Item implements Cloneable {
         return this.canPlace;
     }
 
-    public Item setCanPlace( List<String> canPlace ) {
+    public @NotNull Item setCanPlace(List<String> canPlace ) {
         this.canPlace = canPlace;
         return this;
     }
@@ -371,7 +373,7 @@ public class Item implements Cloneable {
         return this.canBreak;
     }
 
-    public Item setCanBreak( List<String> canBreak ) {
+    public @NotNull Item setCanBreak(List<String> canBreak ) {
         this.canBreak = canBreak;
         return this;
     }
@@ -384,7 +386,7 @@ public class Item implements Cloneable {
         return this.setAmount( this.getAmount() - 1 );
     }
 
-    public Item addEnchantment( EnchantmentType enchantmentType, int level ) {
+    public @NotNull Item addEnchantment(EnchantmentType enchantmentType, int level ) {
         Enchantment enchantment = Enchantment.create( enchantmentType );
         this.enchantments.put( enchantmentType, enchantment.setLevel( (short) ( Math.min( level, enchantment.getMaxLevel() ) ) ) );
         return this;
@@ -394,7 +396,7 @@ public class Item implements Cloneable {
         return this.enchantments.get( enchantmentType );
     }
 
-    public Collection<Enchantment> getEntchantments() {
+    public @NotNull Collection<Enchantment> getEntchantments() {
         return this.enchantments.values();
     }
 
@@ -402,7 +404,7 @@ public class Item implements Cloneable {
         return emptyEnchanted;
     }
 
-    public Item setEmptyEnchanted( boolean emptyEnchanted ) {
+    public @NotNull Item setEmptyEnchanted(boolean emptyEnchanted ) {
         this.emptyEnchanted = emptyEnchanted;
         return this;
     }
@@ -411,17 +413,17 @@ public class Item implements Cloneable {
         return unbreakable;
     }
 
-    public Item setUnbreakable( boolean unbreakable ) {
+    public @NotNull Item setUnbreakable(boolean unbreakable ) {
         this.unbreakable = unbreakable;
         return this;
     }
     
-     public Item setItemLockType( ItemLockType locktype ){
+     public @NotNull Item setItemLockType(ItemLockType locktype ){
         this.itemLockType = locktype;
         return this;
     }
 
-    private Item setItemLockType( int locktype ){
+    private @NotNull Item setItemLockType(int locktype ){
         this.itemLockType = ItemLockType.values()[locktype];
         return this;
     }
@@ -437,7 +439,7 @@ public class Item implements Cloneable {
         return BlockPalette.getBlockByNBT( BlockPalette.getBlockNbt( this.blockRuntimeId ) ).clone();
     }
 
-    public NbtMap toNbt() {
+    public @Nullable NbtMap toNbt() {
         NbtMapBuilder nbtBuilder = this.nbt == null ? NbtMap.builder() : this.nbt.toBuilder();
 
         if ( this.durability > 0 ) {
@@ -475,7 +477,7 @@ public class Item implements Cloneable {
         return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
     }
 
-    protected void fromNbt( NbtMap nbtMap ) {
+    protected void fromNbt(@NotNull NbtMap nbtMap ) {
         nbtMap.listenForByte( "Count", this::setAmount );
         nbtMap.listenForInt( "Damage", this::setDurability );
         nbtMap.listenForCompound( "display", displayTag -> {
@@ -508,11 +510,11 @@ public class Item implements Cloneable {
                 .build();
     }
 
-    public void updateItem( Player player, int amount ) {
+    public void updateItem(@NotNull Player player, int amount ) {
         this.updateItem( player, amount, true );
     }
 
-    public void updateItem( Player player, int amount, boolean playSound ) {
+    public void updateItem(@NotNull Player player, int amount, boolean playSound ) {
         if ( player.getGameMode().equals( GameMode.SURVIVAL ) ) {
             if ( this.calculateDurability( amount ) ) {
                 player.getInventory().setItemInHand( Item.create( ItemType.AIR ) );
@@ -583,16 +585,16 @@ public class Item implements Cloneable {
     public void removeFromHand( Player player ) {
     }
 
-    public ToolType getToolType() {
+    public @NotNull ToolType getToolType() {
         return ToolType.NONE;
     }
 
-    public TierType getTierType() {
+    public @NotNull TierType getTierType() {
         return TierType.NONE;
     }
 
     @Override
-    public Item clone() {
+    public @NotNull Item clone() {
         try {
             Item clone = (Item) super.clone();
             clone.itemType = this.itemType;
@@ -616,7 +618,7 @@ public class Item implements Cloneable {
         }
     }
 
-    public boolean equalsExact( Item item ) {
+    public boolean equalsExact(@NotNull Item item ) {
         return this.equals( item ) && this.amount == item.amount;
     }
 

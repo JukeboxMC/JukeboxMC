@@ -1,6 +1,7 @@
 package org.jukeboxmc.item;
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Bootstrap;
 import org.jukeboxmc.item.behavior.*;
 import org.jukeboxmc.util.Identifier;
@@ -1153,15 +1154,13 @@ public class ItemRegistry {
         try ( InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "item_properties.json" ) ) ) {
             InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
             Map<String, Map<String, Object>> itemEntries = GSON.<Map<String, Map<String, Object>>>fromJson( inputStreamReader, Map.class );
-            itemEntries.forEach( ( identifier, map ) -> {
-                ITEM_PROPERTIES.put( Identifier.fromString( identifier ), new ItemProperties( (int) (double) map.get( "max_stack_size" ) ));
-            } );
+            itemEntries.forEach( ( identifier, map ) -> ITEM_PROPERTIES.put( Identifier.fromString( identifier ), new ItemProperties( (int) (double) map.get( "max_stack_size" ) )));
         } catch ( Exception e ) {
             e.printStackTrace();
         }
     }
 
-    private static void register( ItemType itemType, ItemRegistryData registryData ) {
+    private static void register(ItemType itemType, @NotNull ItemRegistryData registryData ) {
         ITEMS.put( itemType, registryData );
         ITEMTYPE_FROM_IDENTIFIER.put( registryData.identifier, itemType );
         if ( registryData.getItemClass() != null ) {
@@ -1177,7 +1176,7 @@ public class ItemRegistry {
         return ITEMCLASS_FROM_ITEMTYPE.containsKey( itemType );
     }
 
-    public static List<Identifier> getItemIdentifiers() {
+    public static @NotNull List<Identifier> getItemIdentifiers() {
         return ITEMS.values().stream().map( registryData -> registryData.identifier ).collect( Collectors.toList());
     }
 

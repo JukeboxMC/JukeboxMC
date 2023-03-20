@@ -1,6 +1,7 @@
 package org.jukeboxmc.world.chunk;
 
 import io.netty.buffer.ByteBuf;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.palette.Palette;
@@ -15,8 +16,8 @@ public class SubChunk {
     private final int y;
     private int layer = 1;
     private int subChunkVersion = 9;
-    private final Palette<Biome> biomes;
-    private final Palette<Block>[] blocks;
+    private final @NotNull Palette<Biome> biomes;
+    private final Palette<Block> @NotNull [] blocks;
 
     private final static Block BLOCK_AIR = Block.create( BlockType.AIR );
 
@@ -45,11 +46,11 @@ public class SubChunk {
         return this.biomes.get( this.indexOf( x, y, z ) );
     }
 
-    public Palette<Biome> getBiomes() {
+    public @NotNull Palette<Biome> getBiomes() {
         return this.biomes;
     }
 
-    public Palette<Block>[] getBlocks() {
+    public Palette<Block> @NotNull [] getBlocks() {
         return this.blocks;
     }
 
@@ -77,7 +78,7 @@ public class SubChunk {
         return ( ( x & 15 ) << 8 ) + ( ( z & 15 ) << 4 ) + ( y & 15 );
     }
 
-    public void writeToNetwork( ByteBuf byteBuf ) {
+    public void writeToNetwork(@NotNull ByteBuf byteBuf ) {
         byteBuf.writeByte( this.subChunkVersion );
         byteBuf.writeByte( this.blocks.length );
         byteBuf.writeByte( this.y );

@@ -5,6 +5,8 @@ import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.block.BlockRegistry;
 import org.jukeboxmc.blockentity.BlockEntityRegistry;
 import org.jukeboxmc.command.CommandSender;
@@ -60,21 +62,21 @@ public class Server {
     private static Server instance;
 
     private final long startTime;
-    private final AtomicBoolean finishedState;
-    private final AtomicBoolean runningState;
+    private final @NotNull AtomicBoolean finishedState;
+    private final @NotNull AtomicBoolean runningState;
 
-    private final Thread mainThread;
+    private final @NotNull Thread mainThread;
     private final Logger logger;
-    private final Network network;
-    private final Scheduler scheduler;
-    private final ResourcePackManager resourcePackManager;
-    private final ConsoleSender consoleSender;
-    private final TerminalConsole terminalConsole;
-    private final PluginManager pluginManager;
-    private final CraftingManager craftingManager;
+    private final @NotNull Network network;
+    private final @NotNull Scheduler scheduler;
+    private final @NotNull ResourcePackManager resourcePackManager;
+    private final @NotNull ConsoleSender consoleSender;
+    private final @NotNull TerminalConsole terminalConsole;
+    private final @NotNull PluginManager pluginManager;
+    private final @NotNull CraftingManager craftingManager;
 
     private Config operatorConfig;
-    private final File pluginFolder;
+    private final @NotNull File pluginFolder;
 
     private String serverAddress;
     private int port;
@@ -90,7 +92,7 @@ public class Server {
     private boolean forceResourcePacks;
     private PacketCompressionAlgorithm compressionAlgorithm;
 
-    private final World defaultWorld;
+    private final @Nullable World defaultWorld;
 
     private final Set<Player> players = new HashSet<>();
     private final Map<String, World> worlds = new HashMap<>();
@@ -356,11 +358,11 @@ public class Server {
         return this.startTime;
     }
 
-    public AtomicBoolean getFinishedState() {
+    public @NotNull AtomicBoolean getFinishedState() {
         return this.finishedState;
     }
 
-    public AtomicBoolean getRunningState() {
+    public @NotNull AtomicBoolean getRunningState() {
         return this.runningState;
     }
 
@@ -424,7 +426,7 @@ public class Server {
         return this.generatorName;
     }
 
-    public World getDefaultWorld() {
+    public @Nullable World getDefaultWorld() {
         return this.defaultWorld;
     }
 
@@ -440,7 +442,7 @@ public class Server {
         return this.compressionAlgorithm;
     }
 
-    public File getPluginFolder() {
+    public @NotNull File getPluginFolder() {
         return this.pluginFolder;
     }
 
@@ -448,19 +450,19 @@ public class Server {
         this.players.add( player );
     }
 
-    public void removePlayer( Player player ) {
+    public void removePlayer(@NotNull Player player ) {
         this.players.removeIf( target -> target.getUUID().equals( player.getUUID() ) );
     }
 
-    public Collection<Player> getOnlinePlayers() {
+    public @NotNull Collection<Player> getOnlinePlayers() {
         return this.players;
     }
 
-    public Scheduler getScheduler() {
+    public @NotNull Scheduler getScheduler() {
         return this.scheduler;
     }
 
-    public World getWorld( String name ) {
+    public @Nullable World getWorld(@Nullable String name ) {
         if ( name == null || name.isEmpty() ) {
             return null;
         }
@@ -479,7 +481,7 @@ public class Server {
         return this.loadWorld( name, generatorMap );
     }
 
-    public World loadWorld( String name, Map<Dimension, String> generatorMap ) {
+    public @Nullable World loadWorld(@Nullable String name, @NotNull Map<Dimension, String> generatorMap ) {
         if ( name == null || name.isEmpty() ) {
             return null;
         }
@@ -504,7 +506,7 @@ public class Server {
         return null;
     }
 
-    public void unloadWorld( String worldName ) {
+    public void unloadWorld(@NotNull String worldName ) {
         this.unloadWorld( worldName, player -> {
             World world = this.getWorld( worldName );
             if ( world != null ) {
@@ -517,7 +519,7 @@ public class Server {
         } );
     }
 
-    public void unloadWorld( String worldName, Consumer<Player> consumer ) {
+    public void unloadWorld(@NotNull String worldName, @NotNull Consumer<Player> consumer ) {
         World world = this.getWorld( worldName );
         WorldUnloadEvent unloadWorldEvent = new WorldUnloadEvent( world );
         this.pluginManager.callEvent( unloadWorldEvent );
@@ -538,15 +540,15 @@ public class Server {
         }
     }
 
-    public Collection<World> getWorlds() {
+    public @NotNull Collection<World> getWorlds() {
         return this.worlds.values();
     }
 
-    public boolean isWorldLoaded( String name ) {
+    public boolean isWorldLoaded(@NotNull String name ) {
         return this.worlds.containsKey( name.toLowerCase() );
     }
 
-    public synchronized Generator createGenerator( String generatorName, World world, Dimension dimension ) {
+    public synchronized @Nullable Generator createGenerator(@NotNull String generatorName, World world, Dimension dimension ) {
         Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.get( dimension );
 
         Class<? extends Generator> generator = generators.get( generatorName.toLowerCase() );
@@ -561,7 +563,7 @@ public class Server {
         return null;
     }
 
-    public void registerGenerator( String name, Class<? extends Generator> clazz, Dimension... dimensions ) {
+    public void registerGenerator( String name, Class<? extends Generator> clazz, Dimension @NotNull ... dimensions ) {
         name = name.toLowerCase();
         for ( Dimension dimension : dimensions ) {
             Object2ObjectMap<String, Class<? extends Generator>> generators = this.generators.computeIfAbsent( dimension, k -> new Object2ObjectOpenHashMap<>() );
@@ -571,27 +573,27 @@ public class Server {
         }
     }
 
-    public ResourcePackManager getResourcePackManager() {
+    public @NotNull ResourcePackManager getResourcePackManager() {
         return this.resourcePackManager;
     }
 
-    public CraftingManager getCraftingManager() {
+    public @NotNull CraftingManager getCraftingManager() {
         return this.craftingManager;
     }
 
-    public ConsoleSender getConsoleSender() {
+    public @NotNull ConsoleSender getConsoleSender() {
         return this.consoleSender;
     }
 
-    public PluginManager getPluginManager() {
+    public @NotNull PluginManager getPluginManager() {
         return this.pluginManager;
     }
 
-    public void addToTabList( Player player ) {
+    public void addToTabList(@NotNull Player player ) {
         this.addToTabList( player.getUUID(), player.getEntityId(), player.getName(), player.getDeviceInfo(), player.getXuid(), player.getSkin() );
     }
 
-    public void addToTabList( UUID uuid, long entityId, String name, DeviceInfo deviceInfo, String xuid, Skin skin ) {
+    public void addToTabList(UUID uuid, long entityId, String name, @NotNull DeviceInfo deviceInfo, String xuid, @NotNull Skin skin ) {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setAction( PlayerListPacket.Action.ADD );
         PlayerListPacket.Entry entry = new PlayerListPacket.Entry( uuid );
@@ -606,7 +608,7 @@ public class Server {
         this.broadcastPacket( playerListPacket );
     }
 
-    public void removeFromTabList( Player player ) {
+    public void removeFromTabList(@NotNull Player player ) {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setAction( PlayerListPacket.Action.REMOVE );
         playerListPacket.getEntries().add( new PlayerListPacket.Entry( player.getUUID() ) );
@@ -614,7 +616,7 @@ public class Server {
         this.playerListEntry.remove( player.getUUID() );
     }
 
-    public Object2ObjectMap<UUID, PlayerListPacket.Entry> getPlayerListEntry() {
+    public @NotNull Object2ObjectMap<UUID, PlayerListPacket.Entry> getPlayerListEntry() {
         return this.playerListEntry;
     }
 
@@ -622,7 +624,7 @@ public class Server {
         this.players.forEach( player -> player.getPlayerConnection().sendPacket( packet ) );
     }
 
-    public void broadcastPacket( Set<Player> players, BedrockPacket packet ) {
+    public void broadcastPacket(@NotNull Set<Player> players, BedrockPacket packet ) {
         players.forEach( player -> player.getPlayerConnection().sendPacket( packet ) );
     }
 
@@ -633,7 +635,7 @@ public class Server {
         this.logger.info( message );
     }
 
-    public Player getPlayer( String playerName ) {
+    public @Nullable Player getPlayer(String playerName ) {
         for ( Player player : new ArrayList<>( this.players ) ) {
             if ( player.getName().equalsIgnoreCase( playerName ) ) {
                 return player;
@@ -642,7 +644,7 @@ public class Server {
         return null;
     }
 
-    public Player getPlayer( UUID uuid ) {
+    public @Nullable Player getPlayer(UUID uuid ) {
         for ( Player player : new ArrayList<>( this.players ) ) {
             if ( player.getUUID().equals( uuid ) ) {
                 return player;
@@ -651,7 +653,7 @@ public class Server {
         return null;
     }
 
-    public void dispatchCommand( CommandSender commandSender, String command ) {
+    public void dispatchCommand(@NotNull CommandSender commandSender, String command ) {
         this.pluginManager.getCommandManager().handleCommandInput( commandSender, "/" + command );
     }
 }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.block.direction;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -11,7 +13,7 @@ public enum Direction {
     SOUTH,
     WEST;
 
-    public Direction opposite() {
+    public @NotNull Direction opposite() {
         return switch ( this ) {
             case NORTH -> SOUTH;
             case WEST -> EAST;
@@ -20,7 +22,7 @@ public enum Direction {
         };
     }
 
-    public Direction getRightDirection() {
+    public @NotNull Direction getRightDirection() {
         return switch ( this ) {
             case NORTH -> EAST;
             case EAST -> SOUTH;
@@ -29,7 +31,7 @@ public enum Direction {
         };
     }
 
-    public Direction getLeftDirection() {
+    public @NotNull Direction getLeftDirection() {
         return switch ( this ) {
             case NORTH -> WEST;
             case EAST -> NORTH;
@@ -38,7 +40,7 @@ public enum Direction {
         };
     }
 
-    public BlockFace toBlockFace() {
+    public @NotNull BlockFace toBlockFace() {
         return switch ( this ) {
             case SOUTH -> BlockFace.SOUTH;
             case WEST -> BlockFace.WEST;
@@ -47,7 +49,7 @@ public enum Direction {
         };
     }
 
-    public CrossDirection toCrossDirection() {
+    public @NotNull CrossDirection toCrossDirection() {
         return switch ( this ) {
             case SOUTH -> CrossDirection.SOUTH;
             case WEST -> CrossDirection.WEST;
@@ -56,7 +58,7 @@ public enum Direction {
         };
     }
 
-    public static Direction fromAngle( float value ) {
+    public static @NotNull Direction fromAngle(float value ) {
         value -= 90;
         value %= 360;
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.logger.Logger;
 
 import java.io.File;
@@ -104,11 +105,11 @@ public class ResourcePackManager {
         return this.resourcePacks.get( uuid );
     }
 
-    public Collection<ResourcePack> retrieveResourcePacks() {
+    public @NotNull Collection<ResourcePack> retrieveResourcePacks() {
         return this.resourcePacks.values();
     }
 
-    private boolean isManifestValid( final JsonObject manifest ) {
+    private boolean isManifestValid( final @NotNull JsonObject manifest ) {
         if ( manifest.has( "format_version" ) && manifest.has( "header" ) &&
                 manifest.has( "modules" ) ) {
             final JsonObject manifestHeader = manifest.get( "header" ).getAsJsonObject();

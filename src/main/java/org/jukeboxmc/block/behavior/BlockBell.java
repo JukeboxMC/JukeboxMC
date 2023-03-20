@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Attachment;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -26,14 +27,16 @@ public class BlockBell extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, @NotNull BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         if ( blockFace == BlockFace.UP ) {
             this.setAttachment( Attachment.STANDING );
         } else if ( blockFace == BlockFace.DOWN ) {
             this.setAttachment( Attachment.HANGING );
         } else {
-            this.setDirection( blockFace.toDirection() );
+            if (blockFace.toDirection() != null) {
+                this.setDirection(blockFace.toDirection());
+            }
             if( world.getBlock( placePosition ).getSide( blockFace ).isSolid() && world.getBlock( placePosition ).getSide( blockFace.opposite() ).isSolid() ) {
                 this.setAttachment( Attachment.MULTIPLE );
             } else {
@@ -47,11 +50,11 @@ public class BlockBell extends Block {
         return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
     }
 
-    public void setAttachment( Attachment attachment ) {
+    public void setAttachment(@NotNull Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }
 
-    public Attachment getAttachment() {
+    public @NotNull Attachment getAttachment() {
         return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ) ) : Attachment.STANDING;
     }
 
@@ -63,7 +66,7 @@ public class BlockBell extends Block {
         return this.stateExists( "toggle_bit" ) && this.getByteState( "toggle_bit" ) == 1;
     }
 
-    public void setDirection( Direction direction ) {
+    public void setDirection(@NotNull Direction direction ) {
         switch ( direction ) {
             case SOUTH -> this.setState( "direction", 0 );
             case WEST -> this.setState( "direction", 1 );
@@ -72,7 +75,7 @@ public class BlockBell extends Block {
         }
     }
 
-    public Direction getDirection() {
+    public @NotNull Direction getDirection() {
         int value = this.stateExists( "direction" ) ? this.getIntState( "direction" ) : 0;
         return switch ( value ) {
             case 0 -> Direction.SOUTH;

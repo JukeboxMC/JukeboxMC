@@ -1,5 +1,6 @@
 package org.jukeboxmc.blockentity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.InventoryHolder;
@@ -14,21 +15,21 @@ import org.jukeboxmc.player.Player;
  */
 public class BlockEntityLoom extends BlockEntity implements InventoryHolder {
 
-    private final LoomInventory loomInventory;
+    private final @NotNull LoomInventory loomInventory;
 
-    public BlockEntityLoom( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityLoom(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.loomInventory = new LoomInventory( this );
     }
 
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.loomInventory, blockPosition );
         return true;
     }
 
-    public LoomInventory getLoomInventory() {
+    public @NotNull LoomInventory getLoomInventory() {
         return this.loomInventory;
     }
 }

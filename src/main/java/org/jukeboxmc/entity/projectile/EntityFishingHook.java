@@ -2,6 +2,7 @@ package org.jukeboxmc.entity.projectile;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLiquid;
@@ -50,7 +51,7 @@ public class EntityFishingHook extends EntityProjectile {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Fishing Hook";
     }
 
@@ -75,7 +76,7 @@ public class EntityFishingHook extends EntityProjectile {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.FISHING_HOOK;
     }
 

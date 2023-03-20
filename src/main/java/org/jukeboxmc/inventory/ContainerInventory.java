@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 
@@ -27,7 +28,7 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void sendContents( Player player ) {
+    public void sendContents(@NotNull Player player ) {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
         inventoryContentPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
         inventoryContentPacket.setContents( this.getItemDataContents() );
@@ -35,7 +36,7 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void sendContents( int slot, Player player ) {
+    public void sendContents(int slot, @NotNull Player player ) {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
         inventorySlotPacket.setSlot( slot );
@@ -43,7 +44,7 @@ public abstract class ContainerInventory extends Inventory {
         player.getPlayerConnection().sendPacket( inventorySlotPacket );
     }
 
-    public void addViewer( Player player, Vector position, byte windowId ) {
+    public void addViewer(@NotNull Player player, @NotNull Vector position, byte windowId ) {
         ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
         containerOpenPacket.setUniqueEntityId( this.holderId );
         containerOpenPacket.setId( windowId );
@@ -55,12 +56,12 @@ public abstract class ContainerInventory extends Inventory {
     }
 
     @Override
-    public void removeViewer( Player player ) {
+    public void removeViewer(@NotNull Player player ) {
         super.removeViewer( player );
         this.onClose( player );
     }
 
-    public void onOpen( Player player ) {
+    public void onOpen(@NotNull Player player ) {
         this.sendContents( player );
     }
 

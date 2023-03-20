@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Attachment;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -26,34 +27,36 @@ public class BlockGrindstone extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, @NotNull BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
         if ( blockFace == BlockFace.UP ) {
             this.setAttachment( Attachment.STANDING );
         } else if ( blockFace == BlockFace.DOWN ) {
             this.setAttachment( Attachment.HANGING );
         } else {
-            this.setDirection( blockFace.toDirection() );
+            if (blockFace.toDirection() != null) {
+                this.setDirection(blockFace.toDirection());
+            }
             this.setAttachment( Attachment.SIDE );
         }
         return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( player.getGrindstoneInventory(), blockPosition );
         return true;
     }
 
-    public void setAttachment( Attachment attachment ) {
+    public void setAttachment(@NotNull Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }
 
-    public Attachment getAttachment() {
+    public @NotNull Attachment getAttachment() {
         return this.stateExists( "attachment" ) ? Attachment.valueOf( this.getStringState( "attachment" ) ) : Attachment.STANDING;
     }
 
-    public void setDirection( Direction direction ) {
+    public void setDirection(@NotNull Direction direction ) {
         switch ( direction ) {
             case SOUTH -> this.setState( "direction", 0 );
             case WEST -> this.setState( "direction", 1 );
@@ -62,7 +65,7 @@ public class BlockGrindstone extends Block {
         }
     }
 
-    public Direction getDirection() {
+    public @NotNull Direction getDirection() {
         int value = this.stateExists( "direction" ) ? this.getIntState( "direction" ) : 0;
         return switch ( value ) {
             case 0 -> Direction.SOUTH;

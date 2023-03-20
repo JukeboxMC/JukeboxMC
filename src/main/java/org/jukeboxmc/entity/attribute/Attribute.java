@@ -2,6 +2,7 @@ package org.jukeboxmc.entity.attribute;
 
 import com.nukkitx.protocol.bedrock.data.AttributeData;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author LucGamesYT
@@ -66,7 +67,7 @@ public class Attribute implements Cloneable {
         this.dirty = true;
     }
 
-    public AttributeData toNetwork() {
+    public @NotNull AttributeData toNetwork() {
         return new AttributeData( this.key, this.minValue, this.maxValue, this.currentValue, this.defaultValue );
     }
 

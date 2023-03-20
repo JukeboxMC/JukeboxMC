@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object.tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves;
@@ -23,7 +24,7 @@ public class SwampTree extends Tree {
         super( treeHeight );
     }
 
-    public void create( Random random, PopulationChunkManager manager, int x, int y, int z ) {
+    public void create(@NotNull Random random, @NotNull PopulationChunkManager manager, int x, int y, int z ) {
         for ( int j = 0; j < this.treeHeight; j++ ) {
             manager.setBlock( x, y + j, z, BLOCK_OAK_LOG );
         }

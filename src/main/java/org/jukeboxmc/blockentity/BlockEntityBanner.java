@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.BlockColor;
 
@@ -22,12 +23,12 @@ public class BlockEntityBanner extends BlockEntity {
 
     private final Map<String, Integer> patterns = new LinkedHashMap<>();
 
-    public BlockEntityBanner( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityBanner(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
         this.baseColor = compound.getInt( "Base", 0 );
         this.type = compound.getInt( "Type", 0 );
@@ -41,7 +42,7 @@ public class BlockEntityBanner extends BlockEntity {
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder compound = super.toCompound();
         compound.putInt( "Base", this.baseColor );
         compound.putInt( "Type", this.type );
@@ -59,7 +60,7 @@ public class BlockEntityBanner extends BlockEntity {
         return compound;
     }
 
-    public BlockEntityBanner setColor( BlockColor blockColor ) {
+    public @NotNull BlockEntityBanner setColor(@NotNull BlockColor blockColor ) {
         this.baseColor = blockColor.ordinal();
         return this;
     }
@@ -68,7 +69,7 @@ public class BlockEntityBanner extends BlockEntity {
         return BlockColor.values()[this.baseColor];
     }
 
-    public BlockEntityBanner setType( int type ) {
+    public @NotNull BlockEntityBanner setType(int type ) {
         this.type = type;
         return this;
     }

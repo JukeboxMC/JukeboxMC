@@ -1,6 +1,7 @@
 package org.jukeboxmc.entity.projectile;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
@@ -43,7 +44,7 @@ public class EntityArrow extends EntityProjectile{
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Arrow";
     }
 
@@ -58,7 +59,7 @@ public class EntityArrow extends EntityProjectile{
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.ARROW;
     }
 
@@ -68,7 +69,7 @@ public class EntityArrow extends EntityProjectile{
     }
 
     @Override
-    public void onCollideWithPlayer( Player player ) {
+    public void onCollideWithPlayer(@NotNull Player player ) {
         if ( Server.getInstance().getCurrentTick() > this.pickupDelay && this.canBePickedUp && !this.closed && !player.isDead() ) {
             Item arrow = Item.create( ItemType.ARROW );
 
@@ -92,7 +93,7 @@ public class EntityArrow extends EntityProjectile{
     }
 
     @Override
-    protected void applyCustomKnockback( Entity hitEntity ) {
+    protected void applyCustomKnockback(@NotNull Entity hitEntity ) {
         if ( this.punchModifier > 0 ) {
             float sqrtMotion = (float) Math.sqrt( this.velocity.getX() * this.velocity.getX() + this.velocity.getZ() * this.velocity.getZ() );
             if ( sqrtMotion > 0.0F ) {
@@ -127,7 +128,7 @@ public class EntityArrow extends EntityProjectile{
         return this.pickupDelay;
     }
 
-    public void setPickupDelay( long duration, TimeUnit timeUnit ) {
+    public void setPickupDelay(long duration, @NotNull TimeUnit timeUnit ) {
         this.pickupDelay = Server.getInstance().getCurrentTick() + timeUnit.toMillis( duration ) / 50;
     }
 

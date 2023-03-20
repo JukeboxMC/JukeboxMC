@@ -10,6 +10,8 @@ import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.*;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -54,15 +56,15 @@ public class World {
 
     private String name;
     private final Server server;
-    private final GameRules gameRules;
-    private final BlockUpdateList blockUpdateList;
+    private final @NotNull GameRules gameRules;
+    private final @NotNull BlockUpdateList blockUpdateList;
 
-    private final File worldFolder;
-    private final File worldFile;
-    private final LevelDB levelDB;
+    private final @NotNull File worldFolder;
+    private final @NotNull File worldFile;
+    private final @NotNull LevelDB levelDB;
 
-    private final Map<Dimension, ChunkManager> chunkManagers;
-    private final Map<Dimension, ThreadLocal<Generator>> generators;
+    private final @NotNull Map<Dimension, ChunkManager> chunkManagers;
+    private final @NotNull Map<Dimension, ThreadLocal<Generator>> generators;
 
     private Difficulty difficulty;
     private Location spawnLocation;
@@ -71,10 +73,10 @@ public class World {
     private int worldTime;
     private long nextTimeSendTick;
 
-    private final Map<Long, Entity> entities;
-    private final Queue<BlockUpdateNormal> blockUpdateNormals;
+    private final @NotNull Map<Long, Entity> entities;
+    private final @NotNull Queue<BlockUpdateNormal> blockUpdateNormals;
 
-    public World( String name, Server server, Map<Dimension, String> generatorMap ) {
+    public World(String name, @NotNull Server server, @NotNull Map<Dimension, String> generatorMap ) {
         this.name = name;
         this.server = server;
         this.gameRules = new GameRules();
@@ -98,7 +100,7 @@ public class World {
             String generatorName = generatorMap.get( dimension );
             this.generators.put( dimension, ThreadLocal.withInitial( () -> {
                 Generator generator = server.createGenerator( generatorName, this, dimension );
-                if ( generator.getClass().equals( NormalGenerator.class ) && !sendWarning.get() ) {
+                if ( generator != null && generator.getClass().equals( NormalGenerator.class ) && !sendWarning.get() ) {
                     Server.getInstance().getLogger().warn( "§cYou are currently using the Normal Generator, it may cause strong peformance problems!" );
                     sendWarning.set( true );
                 }
@@ -252,15 +254,15 @@ public class World {
         return this.server;
     }
 
-    public File getWorldFolder() {
+    public @NotNull File getWorldFolder() {
         return this.worldFolder;
     }
 
-    public GameRules getGameRules() {
+    public @NotNull GameRules getGameRules() {
         return this.gameRules;
     }
 
-    public <V> V getGameRule( GameRule gameRule ) {
+    public <V> V getGameRule(@NotNull GameRule gameRule ) {
         return this.gameRules.get( gameRule );
     }
 
@@ -279,7 +281,7 @@ public class World {
         return this.difficulty;
     }
 
-    public void setDifficulty( Difficulty difficulty ) {
+    public void setDifficulty(@NotNull Difficulty difficulty ) {
         this.difficulty = difficulty;
 
         SetDifficultyPacket setDifficultyPacket = new SetDifficultyPacket();
@@ -291,7 +293,7 @@ public class World {
         return this.spawnLocation;
     }
 
-    public void setSpawnLocation( Location spawnLocation ) {
+    public void setSpawnLocation(@NotNull Location spawnLocation ) {
         this.spawnLocation = spawnLocation;
 
         SetSpawnPositionPacket setSpawnPositionPacket = new SetSpawnPositionPacket();
@@ -321,37 +323,37 @@ public class World {
         Server.getInstance().broadcastPacket( setTimePacket );
     }
 
-    public void addEntity( Entity entity ) {
+    public void addEntity(@NotNull Entity entity ) {
         this.entities.put( entity.getEntityId(), entity );
     }
 
-    public void removeEntity( Entity entity ) {
+    public void removeEntity(@NotNull Entity entity ) {
         this.entities.remove( entity.getEntityId() );
     }
 
-    public Collection<Entity> getEntitys() {
+    public @NotNull Collection<Entity> getEntitys() {
         return this.entities.values();
     }
 
-    public Collection<Player> getPlayers() {
+    public @NotNull Collection<Player> getPlayers() {
         return this.entities.values().stream().filter( entity -> entity instanceof Player ).map( entity -> (Player) entity ).collect( Collectors.toSet() );
     }
 
-    public Block getBlock( Vector vector, int layer, Dimension dimension ) {
+    public Block getBlock(@NotNull Vector vector, int layer, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         if ( chunk == null ) return BLOCK_AIR;
         return chunk.getBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer );
     }
 
-    public Block getBlock( Vector vector, int layer ) {
+    public Block getBlock(@NotNull Vector vector, int layer ) {
         return this.getBlock( vector, layer, Dimension.OVERWORLD );
     }
 
-    public Block getBlock( Vector vector ) {
+    public Block getBlock(@NotNull Vector vector ) {
         return this.getBlock( vector, 0, vector.getDimension() );
     }
 
-    public Block getBlock( Vector vector, Dimension dimension ) {
+    public Block getBlock(@NotNull Vector vector, Dimension dimension ) {
         return this.getBlock( vector, 0, dimension );
     }
 
@@ -367,7 +369,7 @@ public class World {
         return this.getBlock( x, y, z, 0 );
     }
 
-    public void setBlock( Vector vector, Block block, int layer, Dimension dimension, boolean updateBlock ) {
+    public void setBlock(@NotNull Vector vector, @NotNull Block block, int layer, Dimension dimension, boolean updateBlock ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         if ( chunk == null ) return;
         chunk.setBlock( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), layer, block );
@@ -403,37 +405,37 @@ public class World {
         }
     }
 
-    public void setBlock( Vector vector, Block block, int layer, Dimension dimension ) {
+    public void setBlock(@NotNull Vector vector, @NotNull Block block, int layer, Dimension dimension ) {
         this.setBlock( vector, block, layer, dimension, true );
     }
 
-    public void setBlock( Vector vector, Block block, int layer ) {
+    public void setBlock(@NotNull Vector vector, @NotNull Block block, int layer ) {
         this.setBlock( vector, block, layer, vector.getDimension() );
     }
 
-    public void setBlock( Vector vector, Block block ) {
+    public void setBlock(@NotNull Vector vector, @NotNull Block block ) {
         this.setBlock( vector, block, 0, vector.getDimension() );
     }
 
-    public void setBlock( int x, int y, int z, int layer, Block block, Dimension dimension ) {
+    public void setBlock(int x, int y, int z, int layer, @NotNull Block block, Dimension dimension ) {
         this.setBlock( new Vector( x, y, z ), block, layer, dimension );
     }
 
-    public void setBlock( int x, int y, int z, int layer, Block block ) {
+    public void setBlock(int x, int y, int z, int layer, @NotNull Block block ) {
         this.setBlock( x, y, z, layer, block, Dimension.OVERWORLD );
     }
 
-    public void setBlock( int x, int y, int z, Block block ) {
+    public void setBlock(int x, int y, int z, @NotNull Block block ) {
         this.setBlock( x, y, z, 0, block );
     }
 
-    public synchronized BlockEntity getBlockEntity( Vector vector, Dimension dimension ) {
+    public synchronized @Nullable BlockEntity getBlockEntity(@NotNull Vector vector, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         if ( chunk == null ) return null;
         return chunk.getBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public synchronized BlockEntity getBlockEntity( int x, int y, int z, Dimension dimension ) {
+    public synchronized @Nullable BlockEntity getBlockEntity(int x, int y, int z, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( x >> 4, z >> 4, dimension );
         if ( chunk == null ) return null;
         return chunk.getBlockEntity( x, y, z );
@@ -445,13 +447,13 @@ public class World {
         chunk.setBlockEntity( x, y, z, blockEntity );
     }
 
-    public synchronized void setBlockEntity( Vector vector, BlockEntity blockEntity, Dimension dimension ) {
+    public synchronized void setBlockEntity(@NotNull Vector vector, BlockEntity blockEntity, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         if ( chunk == null ) return;
         chunk.setBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), blockEntity );
     }
 
-    public synchronized void removeBlockEntity( Vector vector, Dimension dimension ) {
+    public synchronized void removeBlockEntity(@NotNull Vector vector, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
         if ( chunk == null ) return;
         chunk.removeBlockEntity( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
@@ -463,7 +465,7 @@ public class World {
         chunk.removeBlockEntity( x, y, z );
     }
 
-    public synchronized Collection<BlockEntity> getBlockEntities( Dimension dimension ) {
+    public synchronized @NotNull Collection<BlockEntity> getBlockEntities(Dimension dimension ) {
         Set<BlockEntity> blockEntities = new LinkedHashSet<>();
         for ( Chunk loadedChunk : this.chunkManagers.get( dimension ).getLoadedChunks() ) {
             blockEntities.addAll( loadedChunk.getBlockEntities() );
@@ -471,13 +473,13 @@ public class World {
         return blockEntities;
     }
 
-    public synchronized Biome getBiome( Vector vector, Dimension dimension ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+    public synchronized Biome getBiome(@NotNull Vector vector, Dimension dimension ) {
+        Chunk chunk = Objects.requireNonNull(this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension ));
         return chunk.getBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ() );
     }
 
-    public synchronized void setBiome( Vector vector, Dimension dimension, Biome biome ) {
-        Chunk chunk = this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
+    public synchronized void setBiome(@NotNull Vector vector, Dimension dimension, Biome biome ) {
+        Chunk chunk = Objects.requireNonNull(this.getChunk( vector.getChunkX(), vector.getChunkZ(), dimension ));
         chunk.setBiome( vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), biome );
     }
 
@@ -485,7 +487,7 @@ public class World {
         this.setBiome( new Vector( x, y, z ), dimension, biome );
     }
 
-    public void setBiome( Vector vector, Biome biome ) {
+    public void setBiome(@NotNull Vector vector, Biome biome ) {
         this.setBiome( vector, Dimension.OVERWORLD, biome );
     }
 
@@ -497,7 +499,7 @@ public class World {
         return this.chunkManagers.get( dimension ).isChunkLoaded( chunkX, chunkZ );
     }
 
-    public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {
+    public synchronized @Nullable Chunk getChunk(int chunkX, int chunkZ, Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getChunk( chunkX, chunkZ );
     }
 
@@ -505,15 +507,15 @@ public class World {
         return this.chunkManagers.get( dimension ).getLoadedChunk( chunkX, chunkZ );
     }
 
-    public synchronized Chunk getLoadedChunk( Vector vector, Dimension dimension ) {
+    public synchronized Chunk getLoadedChunk(@NotNull Vector vector, Dimension dimension ) {
         return this.getLoadedChunk( vector.getChunkX(), vector.getChunkZ(), dimension );
     }
 
-    public synchronized Chunk getLoadedChunk( long hash, Dimension dimension ) {
+    public synchronized @Nullable Chunk getLoadedChunk(long hash, Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunk( hash );
     }
 
-    public synchronized Set<Chunk> getLoadedChunks( Dimension dimension ) {
+    public synchronized @NotNull Set<Chunk> getLoadedChunks(Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunks();
     }
 
@@ -521,23 +523,23 @@ public class World {
         return this.chunkManagers.get( dimension ).getChunkFuture( chunkX, chunkZ );
     }
 
-    public Set<Chunk> getChunks( Dimension dimension ) {
+    public @NotNull Set<Chunk> getChunks(Dimension dimension ) {
         return this.chunkManagers.get( dimension ).getLoadedChunks();
     }
 
-    public CompletableFuture<Void> saveChunk( Chunk chunk ) {
+    public CompletableFuture<Void> saveChunk(@NotNull Chunk chunk ) {
         return this.levelDB.saveChunk( chunk );
     }
 
-    public CompletableFuture<Void> saveChunks( Dimension dimension ) {
+    public @NotNull CompletableFuture<Void> saveChunks(Dimension dimension ) {
         return this.chunkManagers.get( dimension ).saveChunks();
     }
 
-    public CompletableFuture<Chunk> readChunk( Chunk chunk ) {
+    public CompletableFuture<Chunk> readChunk(@NotNull Chunk chunk ) {
         return this.levelDB.readChunk( chunk );
     }
 
-    public Set<Player> getChunkPlayers( int chunkX, int chunkZ, Dimension dimension ) {
+    public @NotNull Set<Player> getChunkPlayers(int chunkX, int chunkZ, Dimension dimension ) {
         Chunk chunk = this.getLoadedChunk( chunkX, chunkZ, dimension );
         return chunk == null ? ImmutableSet.of() : new HashSet<>( chunk.getPlayers() );
     }
@@ -552,31 +554,31 @@ public class World {
         }
     }
 
-    public void playSound( Location location, SoundEvent soundEvent ) {
+    public void playSound(@NotNull Location location, SoundEvent soundEvent ) {
         this.playSound( null, location, soundEvent, -1, ":", false, false );
     }
 
-    public void playSound( Vector position, SoundEvent soundEvent ) {
+    public void playSound(@NotNull Vector position, SoundEvent soundEvent ) {
         this.playSound( null, position, soundEvent, -1, ":", false, false );
     }
 
-    public void playSound( Player player, SoundEvent soundEvent ) {
+    public void playSound(@NotNull Player player, SoundEvent soundEvent ) {
         this.playSound( player, player.getLocation(), soundEvent, -1, ":", false, false );
     }
 
-    public void playSound( Vector position, SoundEvent soundEvent, int data ) {
+    public void playSound(@NotNull Vector position, SoundEvent soundEvent, int data ) {
         this.playSound( null, position, soundEvent, data, ":", false, false );
     }
 
-    public void playSound( Vector position, SoundEvent soundEvent, int data, String entityIdentifier ) {
+    public void playSound(@NotNull Vector position, SoundEvent soundEvent, int data, String entityIdentifier ) {
         this.playSound( null, position, soundEvent, data, entityIdentifier, false, false );
     }
 
-    public void playSound( Vector position, SoundEvent soundEvent, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound(@NotNull Vector position, SoundEvent soundEvent, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
         this.playSound( null, position, soundEvent, data, entityIdentifier, isBaby, isGlobal );
     }
 
-    public void playSound( Player player, Vector position, SoundEvent soundEvent, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
+    public void playSound(@Nullable Player player, @NotNull Vector position, SoundEvent soundEvent, int data, String entityIdentifier, boolean isBaby, boolean isGlobal ) {
         LevelSoundEventPacket levelSoundEventPacket = new LevelSoundEventPacket();
         levelSoundEventPacket.setSound( soundEvent );
         levelSoundEventPacket.setPosition( position.toVector3f() );
@@ -592,19 +594,19 @@ public class World {
         }
     }
 
-    public void spawnParticle( Particle particle, Vector position ) {
+    public void spawnParticle(@NotNull Particle particle, @NotNull Vector position ) {
         this.spawnParticle( null, particle, position, 0 );
     }
 
-    public void spawnParticle( Particle particle, Vector position, int data ) {
+    public void spawnParticle(@NotNull Particle particle, @NotNull Vector position, int data ) {
         this.spawnParticle( null, particle, position, data );
     }
 
-    public void spawnParticle( Player player, Particle particle, Vector position ) {
+    public void spawnParticle(Player player, @NotNull Particle particle, @NotNull Vector position ) {
         this.spawnParticle( player, particle, position, 0 );
     }
 
-    public void spawnParticle( Player player, Particle particle, Vector position, int data ) {
+    public void spawnParticle(@Nullable Player player, @NotNull Particle particle, @NotNull Vector position, int data ) {
         LevelEventPacket levelEventPacket = new LevelEventPacket();
         levelEventPacket.setType( particle.toLevelEvent() );
         levelEventPacket.setData( data );
@@ -617,19 +619,19 @@ public class World {
         }
     }
 
-    public void sendLevelEvent( Vector position, LevelEventType levelEventType ) {
+    public void sendLevelEvent(@NotNull Vector position, LevelEventType levelEventType ) {
         this.sendLevelEvent( null, position, levelEventType, 0 );
     }
 
-    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType ) {
+    public void sendLevelEvent(Player player, @NotNull Vector position, LevelEventType levelEventType ) {
         this.sendLevelEvent( player, position, levelEventType, 0 );
     }
 
-    public void sendLevelEvent( Vector position, LevelEventType levelEventType, int data ) {
+    public void sendLevelEvent(@NotNull Vector position, LevelEventType levelEventType, int data ) {
         this.sendLevelEvent( null, position, levelEventType, data );
     }
 
-    public void sendLevelEvent( Player player, Vector position, LevelEventType levelEventType, int data ) {
+    public void sendLevelEvent(@Nullable Player player, @NotNull Vector position, LevelEventType levelEventType, int data ) {
         LevelEventPacket levelEventPacket = new LevelEventPacket();
         levelEventPacket.setPosition( position.toVector3f() );
         levelEventPacket.setType( levelEventType );
@@ -642,14 +644,14 @@ public class World {
         }
     }
 
-    private Vector getRelative( Vector blockPosition, Vector position ) {
+    private @NotNull Vector getRelative(@NotNull Vector blockPosition, @NotNull Vector position ) {
         float x = blockPosition.getX() + position.getX();
         float y = blockPosition.getY() + position.getY();
         float z = blockPosition.getZ() + position.getZ();
         return new Vector( x, y, z, blockPosition.getDimension() );
     }
 
-    public Vector getSidePosition( Vector blockPosition, BlockFace blockFace ) {
+    public @NotNull Vector getSidePosition(@NotNull Vector blockPosition, @NotNull BlockFace blockFace ) {
         return switch ( blockFace ) {
             case DOWN -> this.getRelative( blockPosition, new Vector( 0, -1, 0 ) );
             case UP -> this.getRelative( blockPosition, new Vector( 0, 1, 0 ) );
@@ -673,7 +675,7 @@ public class World {
         this.saveLevelFile();
     }
 
-    public Collection<Entity> getNearbyEntities( AxisAlignedBB boundingBox, Dimension dimension, Entity entity ) {
+    public @NotNull Collection<Entity> getNearbyEntities(@NotNull AxisAlignedBB boundingBox, Dimension dimension, @Nullable Entity entity ) {
         Set<Entity> targetEntity = new HashSet<>();
 
         int minX = (int) FastMath.floor( ( boundingBox.getMinX() - 2 ) / 16 );
@@ -708,7 +710,7 @@ public class World {
         return targetEntity;
     }
 
-    public List<AxisAlignedBB> getCollisionCubes( Entity entity, AxisAlignedBB boundingBox, boolean includeEntities ) {
+    public @NotNull List<AxisAlignedBB> getCollisionCubes(@NotNull Entity entity, @NotNull AxisAlignedBB boundingBox, boolean includeEntities ) {
         int minX = (int) FastMath.floor( boundingBox.getMinX() );
         int minY = (int) FastMath.floor( boundingBox.getMinY() );
         int minZ = (int) FastMath.floor( boundingBox.getMinZ() );
@@ -744,7 +746,7 @@ public class World {
         this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
     }
 
-    public void updateBlockAround( Vector location ) {
+    public void updateBlockAround(@NotNull Vector location ) {
         Block block = this.getBlock( location );
         for ( BlockFace blockFace : BlockFace.values() ) {
             Block blockLayer0 = block.getSide( blockFace, 0 );
@@ -754,7 +756,7 @@ public class World {
         }
     }
 
-    public EntityItem dropItem( Item item, Vector location, Vector velocity ) {
+    public @NotNull EntityItem dropItem(Item item, @NotNull Vector location, @Nullable Vector velocity ) {
         if ( velocity == null ) {
             velocity = new Vector(
                     (float) ( ThreadLocalRandom.current().nextDouble() * 0.2f - 0.1f ),
@@ -762,7 +764,7 @@ public class World {
                     (float) ( ThreadLocalRandom.current().nextDouble() * 0.2f - 0.1f ) );
         }
 
-        EntityItem entityItem = Entity.create( EntityType.ITEM );
+        EntityItem entityItem = Objects.requireNonNull(Entity.create( EntityType.ITEM ));
         entityItem.setItem( item );
         entityItem.setVelocity( velocity, false );
         entityItem.setLocation( new Location( this, location ) );

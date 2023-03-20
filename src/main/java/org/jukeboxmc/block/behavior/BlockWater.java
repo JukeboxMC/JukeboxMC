@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.util.Identifier;
@@ -40,7 +41,7 @@ public class BlockWater extends BlockLiquid {
     }
 
     @Override
-    public BlockLiquid getBlock( int liquidDepth ) {
+    public @NotNull BlockLiquid getBlock(int liquidDepth ) {
         BlockWater blockWater = Block.create( BlockType.WATER );
         blockWater.setLiquidDepth( liquidDepth );
         return blockWater;

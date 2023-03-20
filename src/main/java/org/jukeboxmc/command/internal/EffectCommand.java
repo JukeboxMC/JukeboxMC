@@ -3,6 +3,7 @@ package org.jukeboxmc.command.internal;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -48,7 +49,7 @@ public class EffectCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String @NotNull [] args ) {
         if ( args.length >= 2 ) {
             Player target = Server.getInstance().getPlayer( args[0] );
             String type = args[1].toLowerCase();

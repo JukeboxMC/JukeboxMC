@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -26,7 +27,7 @@ public class BlockButton extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, @NotNull BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
 
         if ( block.isTransparent() ) {
@@ -69,7 +70,7 @@ public class BlockButton extends Block {
         return this.stateExists( "button_pressed_bit" ) && this.getByteState( "button_pressed_bit" ) == 1;
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

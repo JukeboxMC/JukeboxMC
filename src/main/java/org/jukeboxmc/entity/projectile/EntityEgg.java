@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.projectile;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.item.Item;
@@ -35,7 +36,7 @@ public class EntityEgg extends EntityProjectile {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Egg";
     }
 
@@ -50,7 +51,7 @@ public class EntityEgg extends EntityProjectile {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.EGG;
     }
 
@@ -59,7 +60,7 @@ public class EntityEgg extends EntityProjectile {
         return Identifier.fromString( "minecraft:egg" );
     }
 
-    private void spawnEggParticle( Location location ) {
+    private void spawnEggParticle(@NotNull Location location ) {
         Item itemEgg = Item.create( ItemType.EGG );
         for ( int i = 0; i < 6; i++ ) {
             this.getWorld().spawnParticle( Particle.ITEM_BREAK, location.add( 0f, 0.5f, 0f ), ( itemEgg.getRuntimeId() << 16 | itemEgg.getMeta() ) );

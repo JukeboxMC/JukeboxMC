@@ -2,6 +2,7 @@ package org.jukeboxmc.form.element;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 /**
@@ -12,9 +13,9 @@ import org.json.simple.JSONObject;
 public abstract class Element {
 
     @Getter
-    private final String id;
+    private final @NotNull String id;
     @Getter
-    private final String text;
+    private final @NotNull String text;
 
     /**
      * Get the JSON representation of a form

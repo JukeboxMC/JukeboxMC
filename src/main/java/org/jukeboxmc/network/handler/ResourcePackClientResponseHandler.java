@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackClientResponsePacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.resourcepack.ResourcePack;
@@ -15,11 +16,9 @@ import org.jukeboxmc.resourcepack.ResourcePack;
 public class ResourcePackClientResponseHandler implements PacketHandler<ResourcePackClientResponsePacket> {
 
     @Override
-    public void handle( ResourcePackClientResponsePacket packet, Server server, Player player ) {
+    public void handle(@NotNull ResourcePackClientResponsePacket packet, @NotNull Server server, @NotNull Player player ) {
         switch ( packet.getStatus() ) {
-            case REFUSED -> {
-                player.getPlayerConnection().disconnect( "You have been disconnected." );
-            }
+            case REFUSED -> player.getPlayerConnection().disconnect( "You have been disconnected." );
             case SEND_PACKS -> {
                 for ( String packIds : packet.getPackIds()) {
                     String[] resourcePackEntryElements = packIds.split( "_" );

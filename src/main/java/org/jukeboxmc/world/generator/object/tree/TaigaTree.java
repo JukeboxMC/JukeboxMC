@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object.tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves;
@@ -23,7 +24,7 @@ public class TaigaTree extends Tree {
         super( treeHeight );
     }
 
-    public void create( Random random, PopulationChunkManager manager, int x, int y, int z ) {
+    public void create(@NotNull Random random, @NotNull PopulationChunkManager manager, int x, int y, int z ) {
         this.treeHeight = this.treeHeight - random.nextInt(3);
         for ( int i = 0; i < this.treeHeight; i++ ) {
             manager.setBlock( x, y + i, z, BLOCK_SPRUCE_LOG );

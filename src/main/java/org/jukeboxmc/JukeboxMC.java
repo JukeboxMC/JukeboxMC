@@ -1,5 +1,6 @@
 package org.jukeboxmc;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.console.ConsoleSender;
 import org.jukeboxmc.logger.Logger;
 import org.jukeboxmc.player.Player;
@@ -51,7 +52,7 @@ public class JukeboxMC {
         return server.loadWorld( name );
     }
 
-    public static World loadWorld( String name, Map<Dimension, String> generatorMap ) {
+    public static World loadWorld(String name, @NotNull Map<Dimension, String> generatorMap ) {
         return server.loadWorld( name, generatorMap );
     }
 
@@ -59,15 +60,15 @@ public class JukeboxMC {
         server.registerGenerator( name, clazz, dimensions );
     }
 
-    public static void unloadWorld( String name ) {
+    public static void unloadWorld(@NotNull String name ) {
         server.unloadWorld( name );
     }
 
-    public static void unloadWorld( String worldName, Consumer<Player> consumer ) {
+    public static void unloadWorld(@NotNull String worldName, @NotNull Consumer<Player> consumer ) {
         server.unloadWorld( worldName, consumer );
     }
 
-    public static boolean isWorldLoaded( String name ) {
+    public static boolean isWorldLoaded(@NotNull String name ) {
         return server.isWorldLoaded( name );
     }
 
@@ -99,7 +100,7 @@ public class JukeboxMC {
         return server.getCurrentTps();
     }
 
-    public static InetSocketAddress getAddress() {
+    public static @NotNull InetSocketAddress getAddress() {
         return new InetSocketAddress( server.getServerAddress(), server.getPort() );
     }
 
@@ -107,7 +108,7 @@ public class JukeboxMC {
         return server.getPort();
     }
 
-    public static void dispatchCommand( ConsoleSender consoleSender, String command ) {
+    public static void dispatchCommand(@NotNull ConsoleSender consoleSender, String command ) {
         server.dispatchCommand( consoleSender, command );
     }
 

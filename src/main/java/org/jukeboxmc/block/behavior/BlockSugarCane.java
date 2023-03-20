@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -26,7 +27,7 @@ public class BlockSugarCane extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, @NotNull Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block block = world.getBlock( blockPosition );
 
         if ( world.getBlock( placePosition.subtract( 0, 1, 0 ) ).getType().equals( BlockType.SUGAR_CANE ) ) {
@@ -46,7 +47,7 @@ public class BlockSugarCane extends Block {
     }
 
     @Override
-    public Item toItem() {
+    public @NotNull Item toItem() {
         return Item.create( ItemType.SUGAR_CANE );
     }
 

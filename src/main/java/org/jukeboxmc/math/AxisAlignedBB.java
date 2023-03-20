@@ -1,6 +1,8 @@
 package org.jukeboxmc.math;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author LucGamesYT
@@ -25,7 +27,7 @@ public class AxisAlignedBB {
         this.maxZ = maxZ;
     }
 
-    public AxisAlignedBB setBounds( float minX, float minY, float minZ, float maxX, float maxY, float maxZ ) {
+    public @NotNull AxisAlignedBB setBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ ) {
         this.minX = minX;
         this.minY = minY;
         this.minZ = minZ;
@@ -35,7 +37,7 @@ public class AxisAlignedBB {
         return this;
     }
 
-    public AxisAlignedBB setBounds( AxisAlignedBB other ) {
+    public @NotNull AxisAlignedBB setBounds(@NotNull AxisAlignedBB other ) {
         this.minX = other.minX;
         this.minY = other.minY;
         this.minZ = other.minZ;
@@ -45,7 +47,7 @@ public class AxisAlignedBB {
         return this;
     }
 
-    public AxisAlignedBB addCoordinates( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB addCoordinates(float x, float y, float z ) {
         float minX = this.minX;
         float minY = this.minY;
         float minZ = this.minZ;
@@ -74,11 +76,11 @@ public class AxisAlignedBB {
         return new AxisAlignedBB( minX, minY, minZ, maxX, maxY, maxZ );
     }
 
-    public AxisAlignedBB grow( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB grow(float x, float y, float z ) {
         return new AxisAlignedBB( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
 
-    public AxisAlignedBB expand( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB expand(float x, float y, float z ) {
         this.minX -= x;
         this.minY -= y;
         this.minZ -= z;
@@ -88,7 +90,7 @@ public class AxisAlignedBB {
         return this;
     }
 
-    public AxisAlignedBB offset( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB offset(float x, float y, float z ) {
         this.minX += x;
         this.minY += y;
         this.minZ += z;
@@ -98,11 +100,11 @@ public class AxisAlignedBB {
         return this;
     }
 
-    public AxisAlignedBB shrink( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB shrink(float x, float y, float z ) {
         return new AxisAlignedBB( this.minX + x, this.minY + y, this.minZ + z, this.maxX - x, this.maxY - y, this.maxZ - z );
     }
 
-    public AxisAlignedBB contract( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB contract(float x, float y, float z ) {
         this.minX += x;
         this.minY += y;
         this.minZ += z;
@@ -112,11 +114,11 @@ public class AxisAlignedBB {
         return this;
     }
 
-    public AxisAlignedBB getOffsetBoundingBox( float x, float y, float z ) {
+    public @NotNull AxisAlignedBB getOffsetBoundingBox(float x, float y, float z ) {
         return new AxisAlignedBB( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
 
-    public float calculateXOffset( AxisAlignedBB bb, float x ) {
+    public float calculateXOffset(@NotNull AxisAlignedBB bb, float x ) {
         if ( bb.maxY <= this.minY || bb.minY >= this.maxY ) {
             return x;
         }
@@ -142,7 +144,7 @@ public class AxisAlignedBB {
         return x;
     }
 
-    public float calculateYOffset( AxisAlignedBB bb, float y ) {
+    public float calculateYOffset(@NotNull AxisAlignedBB bb, float y ) {
         if ( bb.maxX <= this.minX || bb.minX >= this.maxX ) {
             return y;
         }
@@ -168,7 +170,7 @@ public class AxisAlignedBB {
         return y;
     }
 
-    public float calculateZOffset( AxisAlignedBB bb, float z ) {
+    public float calculateZOffset(@NotNull AxisAlignedBB bb, float z ) {
         if ( bb.maxX <= this.minX || bb.minX >= this.maxX ) {
             return z;
         }
@@ -194,7 +196,7 @@ public class AxisAlignedBB {
         return z;
     }
 
-    public boolean intersectsWith( AxisAlignedBB bb ) {
+    public boolean intersectsWith(@NotNull AxisAlignedBB bb ) {
         if ( bb.maxX - this.minX > 0.01f && this.maxX - bb.minX > 0.01f ) {
             if ( bb.maxY - this.minY > 0.01f && this.maxY - bb.minY > 0.01f ) {
                 return bb.maxZ - this.minZ > 0.01f && this.maxZ - bb.minZ > 0.01f;
@@ -204,7 +206,7 @@ public class AxisAlignedBB {
         return false;
     }
 
-    public boolean isVectorInside( Vector vector ) {
+    public boolean isVectorInside(@NotNull Vector vector ) {
         return !( vector.getX() <= this.minX || vector.getX() >= this.maxX ) &&
                 !( vector.getY() <= this.minY || vector.getY() >= this.maxY ) &&
                 ( vector.getZ() > this.minZ || vector.getZ() < this.maxZ );
@@ -214,19 +216,19 @@ public class AxisAlignedBB {
         return ( this.maxX - this.minX + this.maxY - this.minY + this.maxZ - this.minZ ) / 3;
     }
 
-    public boolean isVectorInYZ( Vector vector ) {
+    public boolean isVectorInYZ(@NotNull Vector vector ) {
         return vector.getY() >= this.minY && vector.getY() <= this.maxY && vector.getZ() >= this.minZ && vector.getZ() <= this.maxZ;
     }
 
-    public boolean isVectorInXZ( Vector vector ) {
+    public boolean isVectorInXZ(@NotNull Vector vector ) {
         return vector.getX() >= this.minX && vector.getX() <= this.maxX && vector.getZ() >= this.minZ && vector.getZ() <= this.maxZ;
     }
 
-    public boolean isVectorInXY( Vector vector ) {
+    public boolean isVectorInXY(@NotNull Vector vector ) {
         return vector.getX() >= this.minX && vector.getX() <= this.maxX && vector.getY() >= this.minY && vector.getY() <= this.maxY;
     }
 
-    public Vector calculateIntercept( Vector pos1, Vector pos2 ) {
+    public @Nullable Vector calculateIntercept(@NotNull Vector pos1, @NotNull Vector pos2 ) {
         Vector v1 = pos1.getVectorWhenXIsOnLine( pos2, this.minX );
         Vector v2 = pos1.getVectorWhenXIsOnLine( pos2, this.maxX );
         Vector v3 = pos1.getVectorWhenYIsOnLine( pos2, this.minY );

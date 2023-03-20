@@ -1,5 +1,7 @@
 package org.jukeboxmc.world.generator.noise.bukkit;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 /**
@@ -26,7 +28,7 @@ public class SimplexOctaveGenerator extends OctaveGenerator {
      * @param rand    Random object to construct this generator for
      * @param octaves Amount of octaves to create
      */
-    public SimplexOctaveGenerator( Random rand, int octaves ) {
+    public SimplexOctaveGenerator(@NotNull Random rand, int octaves ) {
         super( createOctaves( rand, octaves ) );
     }
 
@@ -108,7 +110,7 @@ public class SimplexOctaveGenerator extends OctaveGenerator {
         return result;
     }
 
-    private static NoiseGenerator[] createOctaves( Random rand, int octaves ) {
+    private static NoiseGenerator @NotNull [] createOctaves(@NotNull Random rand, int octaves ) {
         NoiseGenerator[] result = new NoiseGenerator[octaves];
 
         for ( int i = 0; i < octaves; ++i ) {

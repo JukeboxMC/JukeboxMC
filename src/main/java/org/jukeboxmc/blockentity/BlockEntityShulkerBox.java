@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.InventoryHolder;
@@ -23,21 +24,21 @@ public class BlockEntityShulkerBox extends BlockEntity implements InventoryHolde
     private byte facing = 1;
     private boolean undyed = false;
 
-    private final ShulkerBoxInventory shulkerBoxInventory;
+    private final @NotNull ShulkerBoxInventory shulkerBoxInventory;
 
-    public BlockEntityShulkerBox( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityShulkerBox(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.shulkerBoxInventory = new ShulkerBoxInventory( this );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.shulkerBoxInventory, blockPosition );
         return true;
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
 
         List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
@@ -55,7 +56,7 @@ public class BlockEntityShulkerBox extends BlockEntity implements InventoryHolde
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
         List<NbtMap> itemsCompoundList = new ArrayList<>();
         for ( int slot = 0; slot < this.shulkerBoxInventory.getSize(); slot++ ) {
@@ -77,7 +78,7 @@ public class BlockEntityShulkerBox extends BlockEntity implements InventoryHolde
         return this.facing;
     }
 
-    public BlockEntityShulkerBox setFacing( byte facing ) {
+    public @NotNull BlockEntityShulkerBox setFacing(byte facing ) {
         this.facing = facing;
         return this;
     }
@@ -86,12 +87,12 @@ public class BlockEntityShulkerBox extends BlockEntity implements InventoryHolde
         return this.undyed;
     }
 
-    public BlockEntityShulkerBox setUndyed( boolean undyed ) {
+    public @NotNull BlockEntityShulkerBox setUndyed(boolean undyed ) {
         this.undyed = undyed;
         return this;
     }
 
-    public ShulkerBoxInventory getShulkerBoxInventory() {
+    public @NotNull ShulkerBoxInventory getShulkerBoxInventory() {
         return this.shulkerBoxInventory;
     }
 

@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.projectile;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.math.Location;
@@ -33,7 +34,7 @@ public class EntitySnowball extends EntityProjectile {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Snowball";
     }
 
@@ -58,7 +59,7 @@ public class EntitySnowball extends EntityProjectile {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.SNOWBALL;
     }
 
@@ -67,7 +68,7 @@ public class EntitySnowball extends EntityProjectile {
         return Identifier.fromString( "minecraft:snowball" );
     }
 
-    private void spawnSnowballParticle( Location location ) {
+    private void spawnSnowballParticle(@NotNull Location location ) {
         for ( int i = 0; i < 6; i++ ) {
             this.getWorld().spawnParticle( Particle.SNOWBALL_POOF, location.add( 0f, 0.5f, 0f ) );
         }

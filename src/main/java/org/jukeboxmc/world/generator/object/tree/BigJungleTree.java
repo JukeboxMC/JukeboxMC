@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.object.tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves;
@@ -31,7 +32,7 @@ public class BigJungleTree {
         this.extraRandomHeight = extraRandomHeight;
     }
 
-    public void create( Random random, PopulationChunkManager manager, Vector position ) {
+    public void create(@NotNull Random random, @NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         int height = this.getHeight( random );
 
         if ( this.ensureGrowable( manager, random, position, height ) ) {
@@ -104,11 +105,11 @@ public class BigJungleTree {
         }
     }
 
-    public boolean ensureGrowable( PopulationChunkManager manager, Random random, Vector position, int height ) {
+    public boolean ensureGrowable(@NotNull PopulationChunkManager manager, Random random, @NotNull Vector position, int height ) {
         return this.isSpaceAt( manager, position, height ) && this.ensureDirtsUnderneath( position, manager );
     }
 
-    private boolean ensureDirtsUnderneath( Vector pos, PopulationChunkManager manager ) {
+    private boolean ensureDirtsUnderneath(@NotNull Vector pos, @NotNull PopulationChunkManager manager ) {
         Vector blockpos = pos.down();
         BlockType block = manager.getBlock( blockpos ).getType();
 
@@ -123,7 +124,7 @@ public class BigJungleTree {
         }
     }
 
-    private boolean isSpaceAt( PopulationChunkManager manager, Vector leavesPos, int height ) {
+    private boolean isSpaceAt(@NotNull PopulationChunkManager manager, @NotNull Vector leavesPos, int height ) {
         boolean flag = true;
 
         if ( leavesPos.getY() >= 1 && leavesPos.getY() + height + 1 <= 256 ) {
@@ -152,13 +153,13 @@ public class BigJungleTree {
         }
     }
 
-    public void createCrown( PopulationChunkManager manager, Vector position, int value ) {
+    public void createCrown(@NotNull PopulationChunkManager manager, @NotNull Vector position, int value ) {
         for ( int j = -2; j <= 0; ++j ) {
             this.growLeavesLayerStrict( manager, position.add( 0, j, 0 ), value + 1 - j );
         }
     }
 
-    public boolean canPlace( BlockType blockType ) {
+    public boolean canPlace(@NotNull BlockType blockType ) {
         return blockType.equals( BlockType.AIR ) ||
                 blockType.equals( BlockType.LEAVES ) ||
                 blockType.equals( BlockType.GRASS ) ||
@@ -169,7 +170,7 @@ public class BigJungleTree {
                 blockType.equals( BlockType.VINE );
     }
 
-    public void growLeavesLayer( PopulationChunkManager manager, Vector position, int width ) {
+    public void growLeavesLayer(@NotNull PopulationChunkManager manager, @NotNull Vector position, int width ) {
         int i = width * width;
 
         for ( int j = -width; j <= width + 1; ++j ) {
@@ -189,7 +190,7 @@ public class BigJungleTree {
         }
     }
 
-    protected void growLeavesLayerStrict( PopulationChunkManager manager, Vector position, int width ) {
+    protected void growLeavesLayerStrict(@NotNull PopulationChunkManager manager, @NotNull Vector position, int width ) {
         int i = width * width;
 
         for ( int j = -width; j <= width + 1; ++j ) {
@@ -209,13 +210,13 @@ public class BigJungleTree {
         }
     }
 
-    public void placeVine( PopulationChunkManager manager, Random random, Vector position, int meta ) {
+    public void placeVine(@NotNull PopulationChunkManager manager, @NotNull Random random, @NotNull Vector position, int meta ) {
         if ( random.nextInt( 3 ) > 0 && manager.getBlock( position ).getType().equals( BlockType.AIR ) ) {
             manager.setBlock( position, ( (BlockVine) BLOCK_VINE.clone() ).setVineDirection( meta ) );
         }
     }
 
-    private int getHeight( Random rand ) {
+    private int getHeight(@NotNull Random rand ) {
         int height = rand.nextInt( 3 ) + this.baseHeight;
         if ( this.extraRandomHeight > 1 ) {
             height += rand.nextInt( this.extraRandomHeight );

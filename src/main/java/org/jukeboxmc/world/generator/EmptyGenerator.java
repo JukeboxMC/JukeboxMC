@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -31,7 +32,7 @@ public class EmptyGenerator extends Generator {
     }
 
     @Override
-    public Vector getSpawnLocation() {
+    public @NotNull Vector getSpawnLocation() {
         return new Vector( 0, 64, 0 );
     }
 }

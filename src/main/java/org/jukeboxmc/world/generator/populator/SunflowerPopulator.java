@@ -1,10 +1,9 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockDoublePlant;
-import org.jukeboxmc.block.behavior.BlockRedFlower;
-import org.jukeboxmc.block.data.FlowerType;
 import org.jukeboxmc.block.data.PlantType;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
@@ -24,7 +23,7 @@ public class SunflowerPopulator extends Populator{
     private final Block BLOCK_SUNFLOWER = Block.create( BlockType.DOUBLE_PLANT );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         for ( int i = 0; i < amount; ++i ) {
@@ -39,7 +38,7 @@ public class SunflowerPopulator extends Populator{
         }
     }
 
-    private boolean canFlowerStay( Chunk chunk, int x, int y, int z ) {
+    private boolean canFlowerStay(@NotNull Chunk chunk, int x, int y, int z ) {
         Block block = chunk.getBlock( x, y, z, 0 );
         boolean val1 = block.getType().equals( BlockType.AIR ) || block.getType().equals( BlockType.TALLGRASS );
         boolean val2 = this.blockBelow( chunk, x, y, z, BlockType.GRASS );

@@ -2,6 +2,7 @@ package org.jukeboxmc.world.chunk.manager;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkState;
 
@@ -18,7 +19,7 @@ public class GenerationTask implements Function<Chunk, Chunk> {
     public static final GenerationTask INSTANCE = new GenerationTask();
 
     @Override
-    public Chunk apply( Chunk chunk ) {
+    public @NotNull Chunk apply(@NotNull Chunk chunk ) {
         if (chunk.isGenerated()) {
             return chunk;
         }

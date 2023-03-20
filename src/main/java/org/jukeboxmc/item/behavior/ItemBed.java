@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.BlockColor;
@@ -21,7 +22,7 @@ public class ItemBed extends Item {
         super( itemType );
     }
 
-    public void setColor( BlockColor blockColor ) {
+    public void setColor(@NotNull BlockColor blockColor ) {
         this.setMeta( blockColor.ordinal() );
     }
 
@@ -30,7 +31,7 @@ public class ItemBed extends Item {
     }
 
     @Override
-    public Block toBlock() {
+    public @NotNull Block toBlock() {
         return Block.create( BlockType.BED );
     }
 }

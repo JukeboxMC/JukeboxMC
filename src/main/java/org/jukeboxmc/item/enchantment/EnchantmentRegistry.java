@@ -1,5 +1,7 @@
 package org.jukeboxmc.item.enchantment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class EnchantmentRegistry {
         register( EnchantmentType.SWIFT_SNEAK, EnchantmentSwiftSneak.class );
     }
 
-    private static void register( EnchantmentType enchantmentType, Class<? extends Enchantment> enchantmentClass ) {
+    private static void register(EnchantmentType enchantmentType, @NotNull Class<? extends Enchantment> enchantmentClass ) {
         ENCHANTMENTS.put( enchantmentType, enchantmentClass );
         try {
             Enchantment enchantment = enchantmentClass.getConstructor().newInstance();

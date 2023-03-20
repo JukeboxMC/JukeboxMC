@@ -1,5 +1,6 @@
 package org.jukeboxmc.potion;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 
 import java.awt.*;
@@ -16,12 +17,12 @@ public class ResistanceEffect extends Effect {
     }
 
     @Override
-    public EffectType getEffectType() {
+    public @NotNull EffectType getEffectType() {
         return EffectType.RESISTANCE;
     }
 
     @Override
-    public Color getEffectColor() {
+    public @NotNull Color getEffectColor() {
         return new Color( 153, 69, 58 );
     }
 

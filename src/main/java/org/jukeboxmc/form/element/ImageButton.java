@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 /**
@@ -16,7 +17,7 @@ public class ImageButton extends Button {
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject button = super.toJSON();
         JSONObject jsonIcon = new JSONObject();
         jsonIcon.put( "type", this.image.startsWith( "http" ) || this.image.startsWith( "https" ) ? "url" : "path" );

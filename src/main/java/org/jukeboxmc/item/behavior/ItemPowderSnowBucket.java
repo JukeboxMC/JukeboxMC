@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.item.ItemType;
@@ -20,7 +21,7 @@ public class ItemPowderSnowBucket extends ItemBucket {
     }
 
     @Override
-    public Block toBlock() {
+    public @NotNull Block toBlock() {
         return Block.create( BlockType.POWDER_SNOW );
     }
 }

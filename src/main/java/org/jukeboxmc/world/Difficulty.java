@@ -1,5 +1,7 @@
 package org.jukeboxmc.world;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -11,7 +13,7 @@ public enum Difficulty {
     NORMAL,
     HARD;
 
-    public static Difficulty getDifficulty( int value ) {
+    public static @NotNull Difficulty getDifficulty(int value ) {
         return switch ( value ) {
             case 0 -> Difficulty.PEACEFUL;
             case 1 -> Difficulty.EASY;

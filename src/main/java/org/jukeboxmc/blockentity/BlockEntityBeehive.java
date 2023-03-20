@@ -1,5 +1,6 @@
 package org.jukeboxmc.blockentity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 
 /**
@@ -8,7 +9,7 @@ import org.jukeboxmc.block.Block;
  */
 public class BlockEntityBeehive extends BlockEntity {
 
-    public BlockEntityBeehive( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityBeehive(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
     }
 

@@ -2,6 +2,8 @@ package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
 import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
@@ -17,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class FakeInventory extends ContainerInventory {
 
-    protected String customName = null;
+    protected @Nullable String customName = null;
 
     protected final Map<Player, FakeInventory> openInventory = new ConcurrentHashMap<>();
     protected final Map<Player, List<Vector>> blockPositions = new HashMap<>();
@@ -27,7 +29,7 @@ public abstract class FakeInventory extends ContainerInventory {
     }
 
     @Override
-    public void addViewer( Player player, Vector position, byte windowId ) {
+    public void addViewer(@NotNull Player player, @NotNull Vector position, byte windowId ) {
         this.viewer.add( player );
 
         if ( this.openInventory.put( player, this ) != null ){
@@ -53,7 +55,7 @@ public abstract class FakeInventory extends ContainerInventory {
     }
 
     @Override
-    public void removeViewer( Player player ) {
+    public void removeViewer(@NotNull Player player ) {
         super.removeViewer( player );
         List<Vector> vectors = this.blockPositions.get( player );
         Server.getInstance().getScheduler().scheduleDelayed( () -> {
@@ -72,11 +74,11 @@ public abstract class FakeInventory extends ContainerInventory {
 
     public abstract List<Vector> onOpenChest( Player player );
 
-    public void setCustomName( String customName ) {
+    public void setCustomName(@Nullable String customName ) {
         this.customName = customName;
     }
 
-    public String getCustomName() {
+    public @Nullable String getCustomName() {
         return this.customName;
     }
 }

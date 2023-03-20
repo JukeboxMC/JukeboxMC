@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -31,7 +32,7 @@ public class ItemBucket extends Item {
     }
 
     @Override
-    public boolean useOnBlock( Player player, Block block, Location placeLocation ) {
+    public boolean useOnBlock(@NotNull Player player, Block block, Location placeLocation ) {
         if ( !( block instanceof BlockLiquid ) && !( block.getType().equals( BlockType.POWDER_SNOW ) ) ) {
             block = player.getWorld().getBlock( block.getLocation(), 1 );
         }
@@ -74,25 +75,21 @@ public class ItemBucket extends Item {
         } else {
             block = block.getLocation().getWorld().getBlock( block.getLocation(), 0 );
             Block placedBlock;
-            switch ( this.getType() ) {
-                case BUCKET:
-                case MILK_BUCKET:
-                case COD_BUCKET:
-                case SALMON_BUCKET:
-                case PUFFERFISH_BUCKET:
-                case TROPICAL_FISH_BUCKET:
-                case AXOLOTL_BUCKET:
+            switch (this.getType()) {
+                case BUCKET, MILK_BUCKET, COD_BUCKET, SALMON_BUCKET, PUFFERFISH_BUCKET, TROPICAL_FISH_BUCKET, AXOLOTL_BUCKET -> {
                     return false;
-                default:
+                }
+                default -> {
                     placedBlock = this.toBlock();
-                    if ( block instanceof Waterlogable && this.getType() == ItemType.WATER_BUCKET ) {
-                        placedBlock.setLocation( block.getLocation() );
-                        placedBlock.setLayer( 1 );
-                    } else if ( block instanceof BlockLiquid ) {
+                    if (block instanceof Waterlogable && this.getType() == ItemType.WATER_BUCKET) {
+                        placedBlock.setLocation(block.getLocation());
+                        placedBlock.setLayer(1);
+                    } else if (block instanceof BlockLiquid) {
                         return false;
                     } else {
-                        placedBlock.setLocation( placeLocation );
+                        placedBlock.setLocation(placeLocation);
                     }
+                }
             }
 
             PlayerBucketEmptyEvent playerBucketEmptyEvent = new PlayerBucketEmptyEvent( player, this,

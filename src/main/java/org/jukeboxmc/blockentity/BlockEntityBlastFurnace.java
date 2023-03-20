@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.BlastFurnaceInventory;
@@ -20,22 +21,22 @@ import java.util.List;
  */
 public class BlockEntityBlastFurnace extends SmeltingComponent implements InventoryHolder {
 
-    private final BlastFurnaceInventory blastFurnaceInventory;
+    private final @NotNull BlastFurnaceInventory blastFurnaceInventory;
 
-    public BlockEntityBlastFurnace( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityBlastFurnace(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.blastFurnaceInventory = new BlastFurnaceInventory( this );
         this.initInventory( this.blastFurnaceInventory );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.blastFurnaceInventory, blockPosition );
         return super.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
 
         List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
@@ -51,7 +52,7 @@ public class BlockEntityBlastFurnace extends SmeltingComponent implements Invent
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
 
         List<NbtMap> itemsCompoundList = new ArrayList<>();
@@ -69,7 +70,7 @@ public class BlockEntityBlastFurnace extends SmeltingComponent implements Invent
         return builder;
     }
 
-    public BlastFurnaceInventory getBlastFurnaceInventory() {
+    public @NotNull BlastFurnaceInventory getBlastFurnaceInventory() {
         return this.blastFurnaceInventory;
     }
 }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.FlowerType;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockRedFlower extends Block {
         return Item.<ItemRedFlower>create( ItemType.RED_FLOWER ).setFlowerType( this.getFlowerType() );
     }
 
-    public BlockRedFlower setFlowerType( FlowerType flowerType ) {
+    public BlockRedFlower setFlowerType(@NotNull FlowerType flowerType ) {
         return this.setState( "flower_type", flowerType.name().toLowerCase() );
     }
 
-    public FlowerType getFlowerType() {
+    public @NotNull FlowerType getFlowerType() {
         return this.stateExists( "flower_type" ) ? FlowerType.valueOf( this.getStringState( "flower_type" ) ) : FlowerType.TULIP_RED;
     }
 

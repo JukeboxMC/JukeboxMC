@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -30,7 +31,7 @@ public class BlockChest extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
         if ( value ) {
@@ -40,7 +41,7 @@ public class BlockChest extends Block {
                 if ( side.getType().equals( this.getType() )) {
                     BlockEntityChest blockEntity = this.getBlockEntity();
                     BlockEntityChest sideBlockEntity = (BlockEntityChest) side.getBlockEntity();
-                    if ( !blockEntity.isPaired() && !sideBlockEntity.isPaired()) {
+                    if ( blockEntity != null && sideBlockEntity != null && !blockEntity.isPaired() && !sideBlockEntity.isPaired()) {
                         blockEntity.pair( sideBlockEntity );
                         blockEntity.update( player );
                         sideBlockEntity.update( player );
@@ -53,7 +54,7 @@ public class BlockChest extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityChest blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -63,7 +64,7 @@ public class BlockChest extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         BlockEntityChest blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             if ( blockEntity.isPaired() ) {
@@ -86,7 +87,7 @@ public class BlockChest extends Block {
         return (BlockEntityChest) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

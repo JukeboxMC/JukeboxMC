@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
@@ -20,6 +21,7 @@ import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.world.Sound;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,7 +39,7 @@ public class ItemBow extends Item implements Durability, Burnable {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
+    public boolean useInAir(@NotNull Player player, Vector clickVector ) {
         player.setAction( true );
         return super.useInAir( player, clickVector );
     }
@@ -52,7 +54,7 @@ public class ItemBow extends Item implements Durability, Burnable {
         return 384;
     }
 
-    public void shoot( Player player ) {
+    public void shoot(@NotNull Player player ) {
         if ( player.getActionStart() == -1 ) {
             return;
         }
@@ -84,7 +86,7 @@ public class ItemBow extends Item implements Durability, Burnable {
             flameModifier = flame.getLevel();
         }
 
-        EntityArrow arrow = Entity.create( EntityType.ARROW );
+        EntityArrow arrow = Objects.requireNonNull(Entity.create( EntityType.ARROW ));
         arrow.setShooter( player );
         arrow.setLocation( new Location( player.getWorld(), player.getX(), player.getY() + player.getEyeHeight(), player.getZ(), ( player.getYaw() > 180 ? 360 : 0 ) - player.getYaw(), -player.getPitch() ) );
         arrow.setVelocity( new Vector(

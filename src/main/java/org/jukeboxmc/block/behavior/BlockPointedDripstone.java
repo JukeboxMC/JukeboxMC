@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.DripstoneThickness;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -25,7 +26,7 @@ public class BlockPointedDripstone extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block upBlock = world.getBlock( placePosition ).getSide( BlockFace.UP );
         Block downBlock = world.getBlock( placePosition ).getSide( BlockFace.DOWN );
         if ( upBlock.isSolid() ) {
@@ -39,11 +40,11 @@ public class BlockPointedDripstone extends Block {
         return false;
     }
 
-    public void setDripstoneThickness( DripstoneThickness dripstoneThickness ) {
+    public void setDripstoneThickness(@NotNull DripstoneThickness dripstoneThickness ) {
         this.setState( "dripstone_thickness", dripstoneThickness.name().toLowerCase() );
     }
 
-    public DripstoneThickness getDripstoneThickness() {
+    public @NotNull DripstoneThickness getDripstoneThickness() {
         return this.stateExists( "dripstone_thickness" ) ? DripstoneThickness.valueOf( this.getStringState( "dripstone_thickness" ) ) : DripstoneThickness.TIP;
     }
 

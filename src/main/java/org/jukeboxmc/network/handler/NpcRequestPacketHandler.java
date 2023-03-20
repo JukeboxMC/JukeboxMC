@@ -2,6 +2,7 @@ package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.data.NpcRequestType;
 import com.nukkitx.protocol.bedrock.packet.NpcRequestPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.form.NpcDialogueForm;
 import org.jukeboxmc.form.element.NpcDialogueButton;
@@ -14,7 +15,7 @@ import org.jukeboxmc.player.Player;
 public class NpcRequestPacketHandler implements PacketHandler<NpcRequestPacket> {
 
     @Override
-    public void handle( NpcRequestPacket packet, Server server, Player player ) {
+    public void handle(@NotNull NpcRequestPacket packet, Server server, @NotNull Player player ) {
         NpcDialogueForm form = player.getOpenNpcDialogueForms().stream()
                 .filter( npcDialogueForm -> npcDialogueForm.sceneName().equalsIgnoreCase( packet.getSceneName() ) )
                 .findAny().orElse( null );

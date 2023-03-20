@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import com.nukkitx.protocol.bedrock.packet.LoginPacket;
 import com.nukkitx.protocol.bedrock.packet.PlayStatusPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerLoginEvent;
 import org.jukeboxmc.player.Player;
@@ -16,7 +17,7 @@ import org.jukeboxmc.resourcepack.ResourcePack;
 public class LoginHandler implements PacketHandler<LoginPacket>{
 
     @Override
-    public void handle( LoginPacket packet, Server server, Player player ) {
+    public void handle(@NotNull LoginPacket packet, @NotNull Server server, @NotNull Player player ) {
         player.getPlayerConnection().setLoginData( new LoginData( packet ) );
 
         if ( !player.getPlayerConnection().getLoginData().isXboxAuthenticated() && server.isOnlineMode() ) {

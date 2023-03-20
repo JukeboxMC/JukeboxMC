@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.SpongeType;
 import org.jukeboxmc.util.Identifier;
@@ -19,11 +20,11 @@ public class BlockSponge extends Block {
         super( identifier, blockStates );
     }
 
-    public BlockSponge setSpongeType( SpongeType spongeType ) {
+    public BlockSponge setSpongeType(@NotNull SpongeType spongeType ) {
         return this.setState( "sponge_type", spongeType.name().toLowerCase() );
     }
 
-    public SpongeType getSpongeType() {
+    public @NotNull SpongeType getSpongeType() {
         return this.stateExists( "sponge_type" ) ? SpongeType.valueOf( this.getStringState( "sponge_type" ) ) : SpongeType.DRY;
     }
 }

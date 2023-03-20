@@ -1,5 +1,6 @@
 package org.jukeboxmc.block;
 
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.math.Vector;
 
 import java.util.LinkedList;
@@ -16,8 +17,8 @@ public class BlockUpdateList {
 
     public synchronized void addElement( long timeValue, Vector blockPosition ) {
         if ( this.element == null ) {
-            this.element = new Element( timeValue, null, new LinkedList<Vector>() {{
-                add( blockPosition );
+            this.element = new Element( timeValue, null, new LinkedList<>() {{
+                add(blockPosition);
             }} );
         } else {
             Element element = this.element;
@@ -29,13 +30,13 @@ public class BlockUpdateList {
             }
 
             if ( element == null ) {
-                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<Vector>() {{
-                    add( blockPosition );
+                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<>() {{
+                    add(blockPosition);
                 }} ) );
             } else {
                 if ( element.getTimeValue() != timeValue ) {
-                    Element nextElement = new Element( timeValue, element, new LinkedList<Vector>() {{
-                        add( blockPosition );
+                    Element nextElement = new Element( timeValue, element, new LinkedList<>() {{
+                        add(blockPosition);
                     }} );
 
                     if ( previousElement != null ) {
@@ -58,7 +59,7 @@ public class BlockUpdateList {
         }
     }
 
-    public synchronized Vector getNextElement() {
+    public synchronized @Nullable Vector getNextElement() {
         if ( this.element == null ) {
             return null;
         }

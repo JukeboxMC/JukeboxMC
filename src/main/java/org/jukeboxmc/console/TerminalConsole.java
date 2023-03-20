@@ -2,6 +2,7 @@ package org.jukeboxmc.console;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecrell.terminalconsole.SimpleTerminalConsole;
+import org.jetbrains.annotations.NotNull;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jukeboxmc.Server;
@@ -16,7 +17,7 @@ import java.util.concurrent.Executors;
 public class TerminalConsole extends SimpleTerminalConsole {
 
     private final Server server;
-    private final ExecutorService executor;
+    private final @NotNull ExecutorService executor;
 
     public TerminalConsole( Server server ) {
         this.server = server;
@@ -24,7 +25,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
     }
 
     @Override
-    protected void runCommand( String command ) {
+    protected void runCommand(@NotNull String command ) {
         if(command.equals( "checkexception" )) {
             Exception exception = new Exception();
             exception.setStackTrace( this.server.getMainThread().getStackTrace() );
@@ -33,9 +34,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
             server.getOnlinePlayers().forEach( player -> player.sendMessage( "Hallo das ist ein Test!" ) );
         }
         if ( this.isRunning() ) {
-            this.server.getScheduler().execute( () -> {
-                this.server.dispatchCommand( this.server.getConsoleSender(), command );
-            } );
+            this.server.getScheduler().execute( () -> this.server.dispatchCommand( this.server.getConsoleSender(), command ));
         }
     }
 
@@ -50,7 +49,7 @@ public class TerminalConsole extends SimpleTerminalConsole {
     }
 
     @Override
-    protected LineReader buildReader( LineReaderBuilder builder ) {
+    protected LineReader buildReader(@NotNull LineReaderBuilder builder ) {
         builder.completer( new CommandCompleter( this.server ) );
         builder.appName( "JukeboxMC" );
         builder.option( LineReader.Option.HISTORY_BEEP, false );

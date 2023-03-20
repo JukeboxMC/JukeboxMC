@@ -1,5 +1,6 @@
 package org.jukeboxmc.inventory;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.Player;
 
@@ -19,12 +20,12 @@ public class SmallCraftingGridInventory extends CraftingGridInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.SMALL_CRAFTING_GRID;
     }
 
     @Override
-    public void setItem( int slot, Item item, boolean sendContent ) {
+    public void setItem(int slot, @NotNull Item item, boolean sendContent ) {
         super.setItem( slot - this.getOffset(), item, sendContent );
     }
 

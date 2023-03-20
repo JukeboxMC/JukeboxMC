@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.projectile.EntityEgg;
@@ -11,6 +12,8 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
+
+import java.util.Objects;
 
 /**
  * @author LucGamesYT
@@ -27,8 +30,8 @@ public class ItemEgg extends Item {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
-        EntityEgg entityEgg = Entity.create( EntityType.EGG );
+    public boolean useInAir(@NotNull Player player, @NotNull Vector clickVector ) {
+        EntityEgg entityEgg = Objects.requireNonNull(Entity.create( EntityType.EGG ));
         entityEgg.setShooter( player );
         entityEgg.setLocation( player.getLocation().add( 0, player.getEyeHeight(), 0 ) );
         entityEgg.setVelocity( clickVector.multiply( 1.5f, 1.5f, 1.5f ), false );

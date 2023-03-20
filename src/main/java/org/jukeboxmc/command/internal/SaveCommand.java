@@ -1,5 +1,6 @@
 package org.jukeboxmc.command.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -7,7 +8,6 @@ import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 
 /**
@@ -24,7 +24,7 @@ public class SaveCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String[] args ) {
         commandSender.sendMessage( "Saving all worlds..." );
         for ( World world : Server.getInstance().getWorlds() ) {
             world.save();

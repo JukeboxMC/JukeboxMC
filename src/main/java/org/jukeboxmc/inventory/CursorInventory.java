@@ -1,6 +1,7 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.player.Player;
 
@@ -20,17 +21,17 @@ public class CursorInventory extends Inventory{
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.CURSOR;
     }
 
     @Override
-    public void sendContents( Player player ) {
+    public void sendContents(@NotNull Player player ) {
         this.sendContents( 0, player );
     }
 
     @Override
-    public void sendContents( int slot, Player player ) {
+    public void sendContents(int slot, @NotNull Player player ) {
         InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
         inventorySlotPacket.setContainerId( WindowId.CURSOR_DEPRECATED.getId() );
         inventorySlotPacket.setItem( this.content[slot].toItemData() );
@@ -39,7 +40,7 @@ public class CursorInventory extends Inventory{
     }
 
 
-    public void setItem( Item item ) {
+    public void setItem(@NotNull Item item ) {
         this.setItem( 0, item );
     }
 

@@ -1,6 +1,8 @@
 package org.jukeboxmc.player.skin;
 
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author LucGamesYT
@@ -31,18 +33,13 @@ public class Image {
         return this.data;
     }
 
-    public static Image getImage( byte[] data ) {
-        switch ( data.length ) {
-            case Skin.SINGLE_SKIN_SIZE:
-                return new Image( 64, 32, data );
-            case Skin.DOUBLE_SKIN_SIZE:
-                return new Image( 64, 64, data );
-            case Skin.SKIN_128_64_SIZE:
-                return new Image( 128, 64, data );
-            case Skin.SKIN_128_128_SIZE:
-                return new Image( 128, 128, data );
-            default:
-                return null;
-        }
+    public static @Nullable Image getImage(byte @NotNull [] data ) {
+        return switch (data.length) {
+            case Skin.SINGLE_SKIN_SIZE -> new Image(64, 32, data);
+            case Skin.DOUBLE_SKIN_SIZE -> new Image(64, 64, data);
+            case Skin.SKIN_128_64_SIZE -> new Image(128, 64, data);
+            case Skin.SKIN_128_128_SIZE -> new Image(128, 128, data);
+            default -> null;
+        };
     }
 }

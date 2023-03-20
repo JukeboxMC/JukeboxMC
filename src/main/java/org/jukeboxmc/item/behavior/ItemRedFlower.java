@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockRedFlower;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemRedFlower extends Item {
 
-    private final BlockRedFlower block;
+    private final @NotNull BlockRedFlower block;
 
     public ItemRedFlower( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemRedFlower extends Item {
     }
 
     @Override
-    public ItemRedFlower setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemRedFlower setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemRedFlower setFlowerType( FlowerType flowerType ) {
+    public @NotNull ItemRedFlower setFlowerType(@NotNull FlowerType flowerType ) {
         this.blockRuntimeId = this.block.setFlowerType( flowerType ).getRuntimeId();
         return this;
     }

@@ -1,6 +1,6 @@
 package org.jukeboxmc.world.generator;
 
-import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockStone;
@@ -18,7 +18,6 @@ import org.jukeboxmc.world.generator.biome.generation.*;
 import org.jukeboxmc.world.generator.biomegrid.MapLayer;
 import org.jukeboxmc.world.generator.noise.PerlinOctaveGenerator;
 import org.jukeboxmc.world.generator.noise.SimplexOctaveGenerator;
-import org.jukeboxmc.world.generator.noise.bukkit.OctaveGenerator;
 import org.jukeboxmc.world.generator.object.OreType;
 import org.jukeboxmc.world.generator.populator.OrePopulator;
 import org.jukeboxmc.world.generator.populator.Populator;
@@ -34,13 +33,13 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class NormalGenerator extends Generator {
 
-    private final MapLayer[] biomeGrid;
+    private final MapLayer @NotNull [] biomeGrid;
 
-    private final Random random;
+    private final @NotNull Random random;
 
-    private final Block blockStone;
-    private final Block blockWater;
-    private final Block blockBedrock;
+    private final @NotNull Block blockStone;
+    private final @NotNull Block blockWater;
+    private final @NotNull Block blockBedrock;
 
     private final World world;
     private final long localSeed1;
@@ -164,7 +163,7 @@ public class NormalGenerator extends Generator {
 
 
     @Override
-    public void generate( Chunk chunk, int chunkX, int chunkZ ) {
+    public void generate(@NotNull Chunk chunk, int chunkX, int chunkZ ) {
         this.random.setSeed( chunkX * this.localSeed1 ^ chunkZ * this.localSeed2 ^ this.world.getSeed() );
         int x = chunkX << 2;
         int z = chunkZ << 2;
@@ -304,7 +303,7 @@ public class NormalGenerator extends Generator {
     }
 
     @Override
-    public void populate( PopulationChunkManager manager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull PopulationChunkManager manager, int chunkX, int chunkZ ) {
         try {
             this.random.setSeed( 0XDEADBEEF ^ ( (long) chunkX << 8 ) ^ chunkZ ^ this.world.getSeed() );
             Chunk chunk = manager.getChunk( chunkX, chunkZ );
@@ -330,17 +329,17 @@ public class NormalGenerator extends Generator {
     }
 
     @Override
-    public Vector getSpawnLocation() {
+    public @NotNull Vector getSpawnLocation() {
         return new Vector( 0, 100, 0 );
     }
 
-    private static void setBiomeHeight( BiomeHeight height, Biome... biomes ) {
+    private static void setBiomeHeight( BiomeHeight height, Biome @NotNull ... biomes ) {
         for ( Biome biome : biomes ) {
             HEIGHT_MAP.put( biome, height );
         }
     }
 
-    protected static void setBiomeGround( GroundGenerator groundGenerator, Biome... biomes ) {
+    protected static void setBiomeGround( GroundGenerator groundGenerator, Biome @NotNull ... biomes ) {
         for ( Biome biome : biomes ) {
             GROUND_MAP.put( biome, groundGenerator );
         }

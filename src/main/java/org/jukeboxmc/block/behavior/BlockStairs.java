@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.CrossDirection;
@@ -25,7 +26,7 @@ public class BlockStairs extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, @NotNull Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setCrossDirection( player.getDirection().toCrossDirection() );
 
         if ( ( clickedPosition.getY() > 0.5 && blockFace != BlockFace.UP ) || blockFace == BlockFace.DOWN ) {
@@ -43,7 +44,7 @@ public class BlockStairs extends Block {
         return this.stateExists( "upside_down_bit" ) && this.getByteState( "upside_down_bit" ) == 1;
     }
 
-    public void setCrossDirection( CrossDirection crossDirection ) {
+    public void setCrossDirection(@NotNull CrossDirection crossDirection ) {
         switch ( crossDirection ) {
             case EAST -> this.setState( "weirdo_direction", 0 );
             case WEST -> this.setState( "weirdo_direction", 1 );
@@ -52,7 +53,7 @@ public class BlockStairs extends Block {
         }
     }
 
-    public CrossDirection getCrossDirection() {
+    public @NotNull CrossDirection getCrossDirection() {
         int value = this.stateExists( "weirdo_direction" ) ? this.getIntState( "weirdo_direction" ) : 0;
         return switch ( value ) {
             case 0 -> CrossDirection.EAST;

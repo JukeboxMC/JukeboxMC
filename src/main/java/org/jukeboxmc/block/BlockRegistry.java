@@ -1,6 +1,7 @@
 package org.jukeboxmc.block;
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Bootstrap;
 import org.jukeboxmc.block.behavior.*;
 import org.jukeboxmc.block.data.BlockProperties;
@@ -782,17 +783,15 @@ public class BlockRegistry {
         try ( InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "block_properties.json" ) ) ) {
             InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
             Map<String, Map<String, Object>> itemEntries = GSON.<Map<String, Map<String, Object>>>fromJson( inputStreamReader, Map.class );
-            itemEntries.forEach( ( identifier, map ) -> {
-                BLOCK_PROPERTIES.put( Identifier.fromString( identifier ), new BlockProperties(
-                        (double) map.get( "hardness" ),
-                        (boolean) map.get( "solid" ),
-                        (boolean) map.get( "transparent" ),
-                        ToolType.valueOf( (String) map.get( "tool_type" ) ),
-                        TierType.valueOf( (String) map.get( "tier_type" ) ),
-                        (boolean) map.get( "can_break_with_hand" ),
-                        (boolean) map.get( "can_pass_through" )
-                ) );
-            } );
+            itemEntries.forEach( ( identifier, map ) -> BLOCK_PROPERTIES.put( Identifier.fromString( identifier ), new BlockProperties(
+                    (double) map.get( "hardness" ),
+                    (boolean) map.get( "solid" ),
+                    (boolean) map.get( "transparent" ),
+                    ToolType.valueOf( (String) map.get( "tool_type" ) ),
+                    TierType.valueOf( (String) map.get( "tier_type" ) ),
+                    (boolean) map.get( "can_break_with_hand" ),
+                    (boolean) map.get( "can_pass_through" )
+            ) ));
         } catch ( Exception e ) {
             e.printStackTrace();
         }
@@ -802,7 +801,7 @@ public class BlockRegistry {
         register( blockType, identifier, null );
     }
 
-    private static void register( BlockType blockType, Identifier identifier, Class<? extends Block> blockClass ) {
+    private static void register(BlockType blockType, Identifier identifier, @Nullable Class<? extends Block> blockClass ) {
         IDENTIFIER_FROM_BLOCKTYPE.put( blockType, identifier );
         BLOCKTYPE_FROM_IDENTIFIER.put( identifier, blockType );
         if ( blockClass != null ) {

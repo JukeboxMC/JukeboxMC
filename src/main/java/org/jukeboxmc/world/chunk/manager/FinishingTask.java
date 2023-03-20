@@ -2,6 +2,7 @@ package org.jukeboxmc.world.chunk.manager;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.ChunkState;
 
@@ -22,7 +23,7 @@ public class FinishingTask implements BiFunction<Chunk, List<Chunk>, Chunk> {
     public static final FinishingTask INSTANCE = new FinishingTask();
 
     @Override
-    public Chunk apply( Chunk chunk, List<Chunk> chunks ) {
+    public @NotNull Chunk apply(@NotNull Chunk chunk, @NotNull List<Chunk> chunks ) {
         if (chunk.isFinished()) {
             return chunk;
         }

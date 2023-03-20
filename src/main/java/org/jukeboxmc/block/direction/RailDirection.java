@@ -15,6 +15,6 @@ public enum RailDirection {
     SOUTH_EAST,
     SOUTH_WEST,
     NORTH_WEST,
-    NORTH_EAST;
+    NORTH_EAST
 
 }

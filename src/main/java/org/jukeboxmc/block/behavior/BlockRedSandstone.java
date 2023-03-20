@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.SandStoneType;
 import org.jukeboxmc.item.Item;
@@ -27,12 +28,12 @@ public class BlockRedSandstone extends Block {
         return Item.<ItemRedSandstone>create( ItemType.RED_SANDSTONE ).setPrismarineType( this.getSandStoneType() );
     }
 
-    public BlockRedSandstone setSandStoneType( SandStoneType sandStoneType ) {
+    public @NotNull BlockRedSandstone setSandStoneType(@NotNull SandStoneType sandStoneType ) {
         this.setState( "sand_stone_type", sandStoneType.name().toLowerCase() );
         return this;
     }
 
-    public SandStoneType getSandStoneType() {
+    public @NotNull SandStoneType getSandStoneType() {
         return this.stateExists( "sand_stone_type" ) ? SandStoneType.valueOf( this.getStringState( "sand_stone_type" ) ) : SandStoneType.DEFAULT;
     }
 }

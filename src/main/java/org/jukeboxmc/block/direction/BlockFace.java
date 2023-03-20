@@ -1,5 +1,7 @@
 package org.jukeboxmc.block.direction;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.math.Vector;
 
 /**
@@ -31,7 +33,7 @@ public enum BlockFace {
         return horizontalIndex;
     }
 
-    public BlockFace opposite() {
+    public @NotNull BlockFace opposite() {
         return switch ( this ) {
             case DOWN -> UP;
             case UP -> DOWN;
@@ -42,7 +44,7 @@ public enum BlockFace {
         };
     }
 
-    public Direction toDirection() {
+    public @Nullable Direction toDirection() {
         return switch ( this ) {
             case NORTH -> Direction.NORTH;
             case EAST -> Direction.EAST;
@@ -52,7 +54,7 @@ public enum BlockFace {
         };
     }
 
-    public TorchFacing torchFacing() {
+    public @NotNull TorchFacing torchFacing() {
         return switch ( this ) {
             case UP -> TorchFacing.TOP;
             case WEST -> TorchFacing.WEST;
@@ -63,7 +65,7 @@ public enum BlockFace {
         };
     }
 
-    public static BlockFace fromId( int value ) {
+    public static @Nullable BlockFace fromId(int value ) {
         return switch ( value ) {
             case 0 -> BlockFace.DOWN;
             case 1 -> BlockFace.UP;
@@ -75,7 +77,7 @@ public enum BlockFace {
         };
     }
 
-    public static BlockFace[] getHorizontal() {
+    public static BlockFace @NotNull [] getHorizontal() {
         return new BlockFace[]{NORTH, EAST, SOUTH, WEST};
     }
 

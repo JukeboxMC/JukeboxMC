@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
 import org.jukeboxmc.world.generator.object.Ore;
@@ -20,7 +21,7 @@ public class OrePopulator extends Populator {
     }
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         for ( OreType oreType : this.oreTypes ) {
             Ore ore = new Ore( random, oreType );
             for ( int i = 0; i < oreType.getClusterCount(); i++ ) {

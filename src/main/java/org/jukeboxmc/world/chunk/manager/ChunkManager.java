@@ -9,6 +9,8 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.world.ChunkLoadEvent;
 import org.jukeboxmc.event.world.ChunkUnloadEvent;
@@ -18,7 +20,6 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,8 +37,8 @@ public final class ChunkManager {
     private static final AtomicIntegerFieldUpdater<LoadingChunk> POPULATION_RUNNING_UPDATER = AtomicIntegerFieldUpdater.newUpdater( LoadingChunk.class, "populationRunning" );
     private static final AtomicIntegerFieldUpdater<LoadingChunk> FINISH_RUNNING_UPDATER = AtomicIntegerFieldUpdater.newUpdater( LoadingChunk.class, "finishRunning" );
 
-    private final World world;
-    private final Dimension dimension;
+    private final @NotNull World world;
+    private final @NotNull Dimension dimension;
     private final Long2ObjectMap<LoadingChunk> chunks = new Long2ObjectOpenHashMap<>();
     private final Long2LongMap chunkLoadedTimes = new Long2LongOpenHashMap();
     private final Long2LongMap chunkLastAccessTimes = new Long2LongOpenHashMap();
@@ -49,7 +50,7 @@ public final class ChunkManager {
         this.executor = this.world.getServer().getScheduler().getChunkExecutor();
     }
 
-    public synchronized Set<Chunk> getLoadedChunks() {
+    public synchronized @NotNull Set<Chunk> getLoadedChunks() {
         ImmutableSet.Builder<Chunk> chunks = ImmutableSet.builder();
         for ( LoadingChunk loadingChunk : this.chunks.values() ) {
             Chunk chunk = loadingChunk.getChunk();
@@ -64,16 +65,16 @@ public final class ChunkManager {
         return this.chunks.size();
     }
 
-    public synchronized Chunk getLoadedChunk( long key ) {
+    public synchronized @Nullable Chunk getLoadedChunk(long key ) {
         LoadingChunk chunk = this.chunks.get( key );
         return chunk == null ? null : chunk.getChunk();
     }
 
-    public synchronized Chunk getLoadedChunk( int x, int z ) {
+    public synchronized @Nullable Chunk getLoadedChunk(int x, int z ) {
         return getLoadedChunk( Utils.toLong( x, z ) );
     }
 
-    public Chunk getChunk( int x, int z ) {
+    public @Nullable Chunk getChunk(int x, int z ) {
         try {
             Chunk chunk = this.getLoadedChunk( x, z );
             if ( chunk == null ) {
@@ -173,7 +174,7 @@ public final class ChunkManager {
         return true;
     }
 
-    public synchronized CompletableFuture<Void> saveChunks() {
+    public synchronized @NotNull CompletableFuture<Void> saveChunks() {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         for ( LoadingChunk loadingChunk : this.chunks.values() ) {
             Chunk chunk = loadingChunk.getChunk();
@@ -288,7 +289,7 @@ public final class ChunkManager {
             return future;
         }
 
-        private Chunk getChunk() {
+        private @Nullable Chunk getChunk() {
             if ( this.chunk != null && this.chunk.isGenerated() && this.chunk.isPopulated() && this.chunk.isFinished() ) {
                 return this.chunk;
             }
@@ -347,7 +348,7 @@ public final class ChunkManager {
         }
     }
 
-    public Dimension getDimension() {
+    public @NotNull Dimension getDimension() {
         return this.dimension;
     }
 }

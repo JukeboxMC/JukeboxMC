@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockCobblestoneWall;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemWall extends Item {
 
-    private final BlockCobblestoneWall block;
+    private final @NotNull BlockCobblestoneWall block;
 
     public ItemWall( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemWall extends Item {
     }
 
     @Override
-    public ItemWall setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemWall setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemWall setWallType( WallType wallType ) {
+    public @NotNull ItemWall setWallType(@NotNull WallType wallType ) {
         this.blockRuntimeId = this.block.setWallBlockType( wallType ).getRuntimeId();
         return this;
     }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.world.World;
@@ -20,7 +21,7 @@ public class TallGrassPopulator extends Populator {
     private final Block BLOCK_TALLGRASS = Block.create( BlockType.TALLGRASS );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         for ( int i = 0; i < amount; ++i ) {
@@ -42,7 +43,7 @@ public class TallGrassPopulator extends Populator {
         this.baseAmount = baseAmount;
     }
 
-    private boolean canTallGrassStay( Chunk chunk, int x, int y, int z ) {
+    private boolean canTallGrassStay(@NotNull Chunk chunk, int x, int y, int z ) {
         Block block = chunk.getBlock( x, y, z, 0 );
         return ( block.getType() == BlockType.AIR || block.getType() == BlockType.SNOW_LAYER ) && this.blockBelow( chunk, x, y, z, BlockType.GRASS );
     }

@@ -3,6 +3,7 @@ package org.jukeboxmc.inventory;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
 import com.nukkitx.protocol.bedrock.packet.MobArmorEquipmentPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -26,12 +27,12 @@ public class ArmorInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.ARMOR;
     }
 
     @Override
-    public void sendContents( Player player ) {
+    public void sendContents(@NotNull Player player ) {
         if ( this.getInventoryHolder().equals( player ) ) {
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
@@ -43,7 +44,7 @@ public class ArmorInventory extends ContainerInventory {
     }
 
     @Override
-    public void sendContents( int slot, Player player ) {
+    public void sendContents(int slot, @NotNull Player player ) {
         if ( this.getInventoryHolder().equals( player ) ) {
             InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setContainerId( WindowId.ARMOR_DEPRECATED.getId() );
@@ -56,7 +57,7 @@ public class ArmorInventory extends ContainerInventory {
     }
 
     @Override
-    public void setItem( int slot, Item item, boolean sendContent ) {
+    public void setItem(int slot, @NotNull Item item, boolean sendContent ) {
         super.setItem( slot, item, sendContent );
 
         if ( this.holder instanceof Player player ) {
@@ -83,7 +84,7 @@ public class ArmorInventory extends ContainerInventory {
         }
     }
 
-    private void sendMobArmor( Player player ) {
+    private void sendMobArmor(@NotNull Player player ) {
         MobArmorEquipmentPacket mobArmorEquipmentPacket = new MobArmorEquipmentPacket();
         mobArmorEquipmentPacket.setRuntimeEntityId( this.getInventoryHolder().getEntityId() );
         mobArmorEquipmentPacket.setHelmet( this.content[0].toItemData() );
@@ -97,7 +98,7 @@ public class ArmorInventory extends ContainerInventory {
         return this.content[0];
     }
 
-    public void setHelmet( Item item ) {
+    public void setHelmet(@NotNull Item item ) {
         this.setItem( 0, item );
     }
 
@@ -105,7 +106,7 @@ public class ArmorInventory extends ContainerInventory {
         return this.content[1];
     }
 
-    public void setChestplate( Item item ) {
+    public void setChestplate(@NotNull Item item ) {
         this.setItem( 1, item );
     }
 
@@ -113,7 +114,7 @@ public class ArmorInventory extends ContainerInventory {
         return this.content[2];
     }
 
-    public void setLeggings( Item item ) {
+    public void setLeggings(@NotNull Item item ) {
         this.setItem( 2, item );
     }
 
@@ -121,7 +122,7 @@ public class ArmorInventory extends ContainerInventory {
         return this.content[3];
     }
 
-    public void setBoots( Item item ) {
+    public void setBoots(@NotNull Item item ) {
         this.setItem( 3, item );
     }
 

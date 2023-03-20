@@ -5,6 +5,7 @@ import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Bootstrap;
 
 import java.io.ByteArrayInputStream;
@@ -54,7 +55,7 @@ public class CreativeItems {
         }
     }
 
-    public static List<ItemData> getCreativeItems() {
+    public static @NotNull List<ItemData> getCreativeItems() {
         return CREATIVE_ITEMS;
     }
 

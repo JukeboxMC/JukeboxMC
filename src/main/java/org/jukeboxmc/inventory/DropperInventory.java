@@ -1,6 +1,7 @@
 package org.jukeboxmc.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.blockentity.BlockEntityDropper;
 
 /**
@@ -19,12 +20,12 @@ public class DropperInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.DROPPER;
     }
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.DROPPER;
     }
 }

@@ -3,6 +3,7 @@ package org.jukeboxmc.util;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Bootstrap;
 
 import java.io.InputStream;
@@ -13,7 +14,7 @@ import java.io.InputStream;
  */
 public class BiomeDefinitions {
 
-    private static NbtMap BIOME_DEFINITIONS = null;
+    private static @Nullable NbtMap BIOME_DEFINITIONS = null;
 
     public static void init() {
         try ( InputStream inputStream = Bootstrap.class.getClassLoader().getResourceAsStream("biome_definitions.dat")){

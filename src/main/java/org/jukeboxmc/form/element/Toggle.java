@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 /**
@@ -16,7 +17,7 @@ public class Toggle extends Element {
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
         obj.put( "type", "toggle" );
         obj.put( "default", this.value );
@@ -24,7 +25,7 @@ public class Toggle extends Element {
     }
 
     @Override
-    public Object getAnswer( Object answerOption ) {
+    public @NotNull Object getAnswer(Object answerOption ) {
         boolean answer = (boolean) answerOption;
         this.value = answer;
         return answer;

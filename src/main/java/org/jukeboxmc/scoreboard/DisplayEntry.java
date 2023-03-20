@@ -2,6 +2,7 @@ package org.jukeboxmc.scoreboard;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author GoMint
@@ -14,7 +15,7 @@ public class DisplayEntry {
      * The api is from the server software GoMint
      */
 
-    private final Scoreboard scoreboard;
+    private final @NotNull Scoreboard scoreboard;
     @Getter
     private final long scoreId;
 

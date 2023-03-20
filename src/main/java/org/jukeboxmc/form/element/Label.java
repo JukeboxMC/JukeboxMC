@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 /**
@@ -13,7 +14,7 @@ public class Label extends Element {
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
         obj.put( "type", "label" );
         return obj;

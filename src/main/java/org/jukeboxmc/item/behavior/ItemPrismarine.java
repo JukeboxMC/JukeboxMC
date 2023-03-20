@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockPrismarine;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemPrismarine extends Item {
 
-    private final BlockPrismarine block;
+    private final @NotNull BlockPrismarine block;
 
     public ItemPrismarine( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemPrismarine extends Item {
     }
 
     @Override
-    public ItemPrismarine setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemPrismarine setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemPrismarine setPrismarineType( PrismarineType prismarineType ) {
+    public @NotNull ItemPrismarine setPrismarineType(@NotNull PrismarineType prismarineType ) {
         this.blockRuntimeId = this.block.setPrismarineType( prismarineType ).getRuntimeId();
         return this;
     }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.palette.bitarray;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.util.Utils;
 
 import java.util.Arrays;
@@ -12,7 +13,7 @@ public final class Pow2BitArray implements BitArray {
     private final BitArrayVersion version;
     private final int size;
 
-    Pow2BitArray(BitArrayVersion version, int size, int[] words) {
+    Pow2BitArray(@NotNull BitArrayVersion version, int size, int @NotNull [] words) {
         this.size = size;
         this.version = version;
         this.words = words;
@@ -38,7 +39,7 @@ public final class Pow2BitArray implements BitArray {
     }
 
     @Override
-    public BitArray copy() {
+    public @NotNull BitArray copy() {
         return new Pow2BitArray(this.version, this.size, Arrays.copyOf(this.words, this.words.length));
     }
 

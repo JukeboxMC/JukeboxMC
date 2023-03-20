@@ -15,13 +15,15 @@
 
 package org.jukeboxmc.scheduler;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @author WaterdogPE
  * @version 1.0
  */
 public abstract class Task implements Runnable {
 
-    private TaskHandler handler = null;
+    private @Nullable TaskHandler handler = null;
 
     public abstract void onRun( long currentTick );
 
@@ -29,7 +31,7 @@ public abstract class Task implements Runnable {
 
     @Override
     public void run() {
-        this.onRun( this.handler.getLastRunTick() );
+        this.onRun( this.handler == null ? -1 : this.handler.getLastRunTick() );
     }
 
     public int getTaskId() {
@@ -37,10 +39,12 @@ public abstract class Task implements Runnable {
     }
 
     public void cancel() {
-        this.handler.cancel();
+        if (this.handler != null) {
+            this.handler.cancel();
+        }
     }
 
-    public TaskHandler getHandler() {
+    public @Nullable TaskHandler getHandler() {
         return this.handler;
     }
 

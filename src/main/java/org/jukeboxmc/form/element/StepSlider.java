@@ -1,5 +1,7 @@
 package org.jukeboxmc.form.element;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.jukeboxmc.form.CustomForm;
@@ -22,13 +24,13 @@ public class StepSlider extends Element{
         this.form = form;
     }
 
-    public StepSlider addStep( String step ) {
+    public @NotNull StepSlider addStep(String step ) {
         this.steps.add( step );
         this.form.setDirty();
         return this;
     }
 
-    public StepSlider addStep( String step, boolean defaultStep ) {
+    public @Nullable StepSlider addStep(String step, boolean defaultStep ) {
         if ( defaultStep ) {
             this.defaultStep = this.steps.size();
         }
@@ -39,7 +41,7 @@ public class StepSlider extends Element{
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         JSONObject obj = super.toJSON();
         obj.put( "type", "step_slider" );
 

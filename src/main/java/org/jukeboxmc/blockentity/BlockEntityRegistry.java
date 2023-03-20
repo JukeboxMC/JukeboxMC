@@ -1,5 +1,7 @@
 package org.jukeboxmc.blockentity;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,7 +51,7 @@ public class BlockEntityRegistry {
         return BLOCKENTITYID.get( blockEntityType );
     }
 
-    public static BlockEntityType getBlockEntityTypeById( String blockEntityId ) {
+    public static @Nullable BlockEntityType getBlockEntityTypeById(String blockEntityId ) {
         for ( Map.Entry<BlockEntityType, String> entry : BLOCKENTITYID.entrySet() ) {
             if ( entry.getValue().equalsIgnoreCase( blockEntityId ) ) {
                 return entry.getKey();

@@ -22,13 +22,13 @@ public class Network implements BedrockServerEventHandler {
 
     private final Server server;
     private final InetSocketAddress inetSocketAddress;
-    private final BedrockPong bedrockPong;
-    private final BedrockServer bedrockServer;
+    private final @NotNull BedrockPong bedrockPong;
+    private final @NotNull BedrockServer bedrockServer;
 
     private final Set<PlayerConnection> connections = new HashSet<>();
 
-    private final Predicate<PlayerConnection> removePredicate;
-    private final Consumer<PlayerConnection> updater;
+    private final @NotNull Predicate<PlayerConnection> removePredicate;
+    private final @NotNull Consumer<PlayerConnection> updater;
 
     public Network( Server server, InetSocketAddress inetSocketAddress ) {
         this.server = server;
@@ -87,7 +87,7 @@ public class Network implements BedrockServerEventHandler {
         this.connections.forEach( this.updater );
     }
 
-    public BedrockServer getBedrockServer() {
+    public @NotNull BedrockServer getBedrockServer() {
         return this.bedrockServer;
     }
 

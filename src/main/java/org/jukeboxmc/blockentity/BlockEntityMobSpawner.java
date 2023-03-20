@@ -1,5 +1,6 @@
 package org.jukeboxmc.blockentity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 
 /**
@@ -8,7 +9,7 @@ import org.jukeboxmc.block.Block;
  */
 public class BlockEntityMobSpawner extends BlockEntity {
 
-    public BlockEntityMobSpawner( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityMobSpawner(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
     }
 }

@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockSeagrass;
@@ -30,7 +31,7 @@ public class SeagrassPopulator extends Populator {
     }
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         for ( int i = 0; i < amount; ++i ) {
@@ -56,7 +57,7 @@ public class SeagrassPopulator extends Populator {
     }
 
     @Override
-    public int getHighestWorkableBlock( Chunk chunk, int x, int z ) {
+    public int getHighestWorkableBlock(@NotNull Chunk chunk, int x, int z ) {
         int y;
         for ( y = NormalGenerator.WATER_HEIGHT - 1; y >= 0; --y ) {
             Block block = chunk.getBlock( x, y, z, 0 );
@@ -72,7 +73,7 @@ public class SeagrassPopulator extends Populator {
         return y == 0 ? -1 : ++y;
     }
 
-    public boolean canSeagrassStay( Chunk chunk, int x, int y, int z, boolean tallSeagrass ) {
+    public boolean canSeagrassStay(@NotNull Chunk chunk, int x, int y, int z, boolean tallSeagrass ) {
         if ( tallSeagrass ) {
             return chunk.getBlock( x, y, z, 0 ).getType().equals( BlockType.WATER );
         } else {

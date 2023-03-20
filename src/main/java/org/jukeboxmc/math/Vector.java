@@ -6,6 +6,8 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.math.vector.Vector3l;
 import lombok.SneakyThrows;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.world.Dimension;
 
 import java.util.Objects;
@@ -47,43 +49,43 @@ public class Vector implements Cloneable {
         this.z = z;
     }
 
-    public Vector( Vector3f vector3f ) {
+    public Vector(@NotNull Vector3f vector3f ) {
         this.x = vector3f.getX();
         this.y = vector3f.getY();
         this.z = vector3f.getZ();
     }
 
-    public Vector( Vector3i vector3i ) {
+    public Vector(@NotNull Vector3i vector3i ) {
         this.x = vector3i.getX();
         this.y = vector3i.getY();
         this.z = vector3i.getZ();
     }
 
-    public static Vector zero() {
+    public static @NotNull Vector zero() {
         return new Vector( 0, 0, 0 );
     }
 
-    public Vector up() {
+    public @NotNull Vector up() {
         return new Vector( this.x, this.y + 1, this.z );
     }
 
-    public Vector down() {
+    public @NotNull Vector down() {
         return new Vector( this.x, this.y - 1, this.z );
     }
 
-    public Vector north() {
+    public @NotNull Vector north() {
         return new Vector( this.x, this.y, this.z -1 );
     }
 
-    public Vector east() {
+    public @NotNull Vector east() {
         return new Vector( this.x + 1, this.y, this.z );
     }
 
-    public Vector south() {
+    public @NotNull Vector south() {
         return new Vector( this.x, this.y, this.z + 1 );
     }
 
-    public Vector west() {
+    public @NotNull Vector west() {
         return new Vector( this.x -1, this.y, this.z );
     }
 
@@ -145,7 +147,7 @@ public class Vector implements Cloneable {
         this.dimension = dimension;
     }
 
-    public Vector getVectorWhenXIsOnLine( Vector other, float x ) {
+    public @Nullable Vector getVectorWhenXIsOnLine(@NotNull Vector other, float x ) {
         float xDiff = other.x - this.x;
         float yDiff = other.y - this.y;
         float zDiff = other.z - this.z;
@@ -154,7 +156,7 @@ public class Vector implements Cloneable {
         return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
-    public Vector getVectorWhenYIsOnLine( Vector other, float y ) {
+    public @Nullable Vector getVectorWhenYIsOnLine(@NotNull Vector other, float y ) {
         float xDiff = other.x - this.x;
         float yDiff = other.y - this.y;
         float zDiff = other.z - this.z;
@@ -163,7 +165,7 @@ public class Vector implements Cloneable {
         return ( f >= 0F && f <= 1F ) ? new Vector( this.x + xDiff * f, this.y + yDiff * f, this.z + zDiff * f, this.dimension ) : null;
     }
 
-    public Vector getVectorWhenZIsOnLine( Vector other, float z ) {
+    public @Nullable Vector getVectorWhenZIsOnLine(@NotNull Vector other, float z ) {
         float xDiff = other.x - this.x;
         float yDiff = other.y - this.y;
         float zDiff = other.z - this.z;
@@ -193,11 +195,11 @@ public class Vector implements Cloneable {
         return this.divide( squaredLength, squaredLength, squaredLength );
     }
 
-    public float distance( final Vector vector ) {
+    public float distance( final @NotNull Vector vector ) {
         return (float) Math.sqrt( this.distanceSquared( vector ) );
     }
 
-    public float distanceSquared( final Vector vector ) {
+    public float distanceSquared( final @NotNull Vector vector ) {
         return (float) ( FastMath.pow( ( this.x - vector.getX() ), 2 ) + FastMath.pow( ( this.y - vector.getY() ), 2 ) +
                 FastMath.pow( ( this.z - vector.getZ() ), 2 ) );
     }
@@ -206,24 +208,24 @@ public class Vector implements Cloneable {
         return (float) ( FastMath.sqrt( this.x * this.x + this.y * this.y + this.z * this.z ) );
     }
 
-    public Vector3f toVector3f() {
+    public @NotNull Vector3f toVector3f() {
         return Vector3f.from( this.x, this.y, this.z );
     }
 
-    public Vector3d toVector3D() {
+    public @NotNull Vector3d toVector3D() {
         return Vector3d.from( this.x, this.y, this.z );
     }
 
-    public Vector3l toVector3l() {
+    public @NotNull Vector3l toVector3l() {
         return Vector3l.from( this.x, this.y, this.z );
     }
 
-    public Vector3i toVector3i() {
+    public @NotNull Vector3i toVector3i() {
         return Vector3i.from( this.x, this.y, this.z );
     }
 
     @Override
-    public boolean equals( Object o ) {
+    public boolean equals(@Nullable Object o ) {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
         Vector vector = (Vector) o;
@@ -255,7 +257,7 @@ public class Vector implements Cloneable {
                 '}';
     }
 
-    public Vector round() {
+    public @NotNull Vector round() {
         return new Vector( Math.round( this.x ), Math.round( this.y ), Math.round( this.z ) );
     }
 }

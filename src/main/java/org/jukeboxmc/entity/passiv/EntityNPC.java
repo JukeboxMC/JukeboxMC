@@ -1,5 +1,6 @@
 package org.jukeboxmc.entity.passiv;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.util.Identifier;
@@ -11,7 +12,7 @@ import org.jukeboxmc.util.Identifier;
 public class EntityNPC extends EntityLiving {
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "NPC";
     }
 
@@ -26,7 +27,7 @@ public class EntityNPC extends EntityLiving {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.NPC;
     }
 

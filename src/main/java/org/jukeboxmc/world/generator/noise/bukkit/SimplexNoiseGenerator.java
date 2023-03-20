@@ -1,5 +1,7 @@
 package org.jukeboxmc.world.generator.noise.bukkit;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 /**
@@ -60,20 +62,20 @@ public class SimplexNoiseGenerator extends PerlinNoiseGenerator {
         this( new Random( seed ) );
     }
 
-    public SimplexNoiseGenerator( Random rand ) {
+    public SimplexNoiseGenerator(@NotNull Random rand ) {
         super( rand );
         this.offsetW = rand.nextDouble() * 256;
     }
 
-    protected static double dot( int[] g, double x, double y ) {
+    protected static double dot(int @NotNull [] g, double x, double y ) {
         return g[0] * x + g[1] * y;
     }
 
-    protected static double dot( int[] g, double x, double y, double z ) {
+    protected static double dot(int @NotNull [] g, double x, double y, double z ) {
         return g[0] * x + g[1] * y + g[2] * z;
     }
 
-    protected static double dot( int[] g, double x, double y, double z, double w ) {
+    protected static double dot(int @NotNull [] g, double x, double y, double z, double w ) {
         return g[0] * x + g[1] * y + g[2] * z + g[3] * w;
     }
 

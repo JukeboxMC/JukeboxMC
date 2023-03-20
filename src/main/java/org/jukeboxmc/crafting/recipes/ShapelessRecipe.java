@@ -5,6 +5,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
 
@@ -22,11 +23,11 @@ public class ShapelessRecipe extends Recipe {
     private final List<ItemData> outputs = new ObjectArrayList<>();
 
     @Override
-    public List<ItemData> getOutputs() {
+    public @NotNull List<ItemData> getOutputs() {
         return this.outputs;
     }
 
-    public ShapelessRecipe addIngredient( Item... items ) {
+    public @NotNull ShapelessRecipe addIngredient(Item @NotNull ... items ) {
         List<ItemDescriptorWithCount> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
             itemDataList.add( ItemDescriptorWithCount.fromItem( item.toItemData() ) );
@@ -35,7 +36,7 @@ public class ShapelessRecipe extends Recipe {
         return this;
     }
 
-    public ShapelessRecipe addOutput( Item... items ) {
+    public @NotNull ShapelessRecipe addOutput(Item @NotNull ... items ) {
         List<ItemData> itemDataList = new ArrayList<>();
         for ( Item item : items ) {
             itemDataList.add( item.toItemData() );
@@ -45,7 +46,7 @@ public class ShapelessRecipe extends Recipe {
     }
 
     @Override
-    public CraftingData doRegister( CraftingManager craftingManager, String recipeId ) {
+    public @NotNull CraftingData doRegister(@NotNull CraftingManager craftingManager, String recipeId ) {
         return new CraftingData(
                 CraftingDataType.SHAPELESS,
                 recipeId,

@@ -1,5 +1,6 @@
 package org.jukeboxmc.command.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -23,7 +24,7 @@ public class StatusCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String[] args ) {
         StringBuilder builder = new StringBuilder();
         builder.append( "§7======== §8| §bServer Status §8| §7========" ).append( "\n" );
         builder.append( "§7Uptime§8: §b" ).append( this.formatUptime( System.currentTimeMillis() - Server.getInstance().getStartTime() ) ).append( "\n" );
@@ -43,7 +44,7 @@ public class StatusCommand extends Command {
         commandSender.sendMessage( builder.toString() );
     }
 
-    private String formatUptime( long uptime ) {
+    private @NotNull String formatUptime(long uptime ) {
         long days = TimeUnit.MILLISECONDS.toDays( uptime );
         uptime -= TimeUnit.DAYS.toMillis( days );
         long hours = TimeUnit.MILLISECONDS.toHours( uptime );

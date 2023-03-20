@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockStainedGlassPane;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemStainedGlassPane extends Item {
 
-    private final BlockStainedGlassPane block;
+    private final @NotNull BlockStainedGlassPane block;
 
     public ItemStainedGlassPane( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemStainedGlassPane extends Item {
     }
 
     @Override
-    public ItemStainedGlassPane setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemStainedGlassPane setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemStainedGlassPane setColor( BlockColor blockColor ) {
+    public @NotNull ItemStainedGlassPane setColor(@NotNull BlockColor blockColor ) {
         this.blockRuntimeId = this.block.setColor( blockColor ).getRuntimeId();
         return this;
     }

@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -27,7 +28,7 @@ public class BlockCandle extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, @NotNull Item itemInHand, BlockFace blockFace ) {
         Block clickedBlock = world.getBlock( blockPosition );
         if ( clickedBlock instanceof BlockCandle blockCandle ) {
             if ( blockCandle.getIdentifier().equals( itemInHand.getIdentifier() ) ) {

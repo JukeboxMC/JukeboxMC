@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLeaves2;
@@ -28,7 +29,7 @@ public class DarkOakTreePopulator extends Populator {
     private final Block BLOCK_DIRT = Block.create( BlockType.DIRT );
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         for ( int i = 0; i < amount; ++i ) {
@@ -44,7 +45,7 @@ public class DarkOakTreePopulator extends Populator {
     }
 
     @Override
-    public int getHighestWorkableBlock( Chunk chunk, int x, int z ) {
+    public int getHighestWorkableBlock(@NotNull Chunk chunk, int x, int z ) {
         int y;
         for ( y = 127; y > 0; --y ) {
             BlockType blockType = chunk.getBlock( x, y, z, 0 ).getType();
@@ -66,7 +67,7 @@ public class DarkOakTreePopulator extends Populator {
         this.baseAmount = baseAmount;
     }
 
-    private void place( Random random, PopulationChunkManager manager, Vector position ) {
+    private void place(@NotNull Random random, @NotNull PopulationChunkManager manager, @NotNull Vector position ) {
         int treeHeight = random.nextInt( 3 ) + random.nextInt( 2 ) + 6;
         int blockX = position.getBlockX();
         int blockY = position.getBlockY();
@@ -169,7 +170,7 @@ public class DarkOakTreePopulator extends Populator {
         }
     }
 
-    private boolean isAnotherTreeNearby( PopulationChunkManager manager, Vector pos, int height ) {
+    private boolean isAnotherTreeNearby(@NotNull PopulationChunkManager manager, @NotNull Vector pos, int height ) {
         int i = pos.getBlockX();
         int j = pos.getBlockY();
         int k = pos.getBlockZ();
@@ -198,7 +199,7 @@ public class DarkOakTreePopulator extends Populator {
         return false;
     }
 
-    private void setDirtAt( PopulationChunkManager manager, Vector pos ) {
+    private void setDirtAt(@NotNull PopulationChunkManager manager, @NotNull Vector pos ) {
         if ( manager.getBlock( pos.getBlockX(), pos.getBlockY(), pos.getBlockZ() ).getType() != BlockType.DIRT ) {
             manager.setBlock( pos.getBlockX(), pos.getBlockY(), pos.getBlockZ(), BLOCK_DIRT );
         }

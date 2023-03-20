@@ -1,6 +1,7 @@
 package org.jukeboxmc.item.behavior;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -28,7 +29,7 @@ public class ItemWoodenShovel extends Item implements Durability, Burnable {
     }
 
     @Override
-    public boolean interact( Player player, BlockFace blockFace, Vector clickedVector, Block clickedBlock ) {
+    public boolean interact(@NotNull Player player, BlockFace blockFace, Vector clickedVector, @NotNull Block clickedBlock ) {
         if ( clickedBlock.getType().equals( BlockType.GRASS ) ) {
             player.getWorld().setBlock( clickedBlock.getLocation(), Block.create( BlockType.GRASS_PATH ) );
             player.getWorld().playSound( clickedBlock.getLocation(), SoundEvent.ITEM_USE_ON, 12259 );
@@ -39,13 +40,13 @@ public class ItemWoodenShovel extends Item implements Durability, Burnable {
     }
 
     @Override
-    public void addToHand( Player player ) {
+    public void addToHand(@NotNull Player player ) {
         Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
         attribute.setCurrentValue( 1 );
     }
 
     @Override
-    public void removeFromHand( Player player ) {
+    public void removeFromHand(@NotNull Player player ) {
         Attribute attribute = player.getAttribute( AttributeType.ATTACK_DAMAGE );
         attribute.setCurrentValue( attribute.getMinValue() );
     }
@@ -61,12 +62,12 @@ public class ItemWoodenShovel extends Item implements Durability, Burnable {
     }
 
     @Override
-    public ToolType getToolType() {
+    public @NotNull ToolType getToolType() {
         return ToolType.SHOVEL;
     }
 
     @Override
-    public TierType getTierType() {
+    public @NotNull TierType getTierType() {
         return TierType.WOODEN;
     }
 }

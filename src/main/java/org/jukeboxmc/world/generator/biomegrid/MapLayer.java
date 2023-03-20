@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.biomegrid;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.Biome;
 import org.jukeboxmc.world.Dimension;
 
@@ -22,7 +23,7 @@ public abstract class MapLayer {
      * @param worldType the world generator
      * @return an array of all map layers this dimension needs
      */
-    public static MapLayer[] initialize( long seed, Dimension dimension, int worldType ) {
+    public static MapLayer @NotNull [] initialize(long seed, Dimension dimension, int worldType ) {
         if ( dimension == Dimension.OVERWORLD && worldType == 2 ) {
             return new MapLayer[]{ new MapLayerBiomeConstant( seed, Biome.PLAINS.getId() ), null };
         } else if ( dimension == Dimension.NETHER ) {

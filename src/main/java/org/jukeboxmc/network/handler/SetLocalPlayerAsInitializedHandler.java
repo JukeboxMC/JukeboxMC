@@ -1,6 +1,7 @@
 package org.jukeboxmc.network.handler;
 
 import com.nukkitx.protocol.bedrock.packet.SetLocalPlayerAsInitializedPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerJoinEvent;
 import org.jukeboxmc.player.Player;
@@ -12,7 +13,7 @@ import org.jukeboxmc.player.Player;
 public class SetLocalPlayerAsInitializedHandler implements PacketHandler<SetLocalPlayerAsInitializedPacket>{
 
     @Override
-    public void handle( SetLocalPlayerAsInitializedPacket packet, Server server, Player player ) {
+    public void handle(SetLocalPlayerAsInitializedPacket packet, Server server, @NotNull Player player ) {
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent( player, "§e" + player.getName() + " has joined the game" );
         Server.getInstance().getPluginManager().callEvent( playerJoinEvent );
         if ( playerJoinEvent.getJoinMessage() != null && !playerJoinEvent.getJoinMessage().isEmpty() ) {

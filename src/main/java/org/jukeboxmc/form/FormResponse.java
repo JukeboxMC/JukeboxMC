@@ -1,5 +1,7 @@
 package org.jukeboxmc.form;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ public class FormResponse {
         this.answers.put( id, data );
     }
 
-    public Boolean getToggle( String id ) {
+    public @Nullable Boolean getToggle(String id ) {
         Object val = this.answers.get( id );
         if ( val != null ) {
             if ( val instanceof Boolean ) {
@@ -26,7 +28,7 @@ public class FormResponse {
         return null;
     }
 
-    public String getStepSlider( String id ) {
+    public @Nullable String getStepSlider(String id ) {
         Object val = this.answers.get( id );
         if ( val != null ) {
             if ( val instanceof String ) {
@@ -37,7 +39,7 @@ public class FormResponse {
         return null;
     }
 
-    public Float getSlider( String id ) {
+    public @Nullable Float getSlider(String id ) {
         Object val = this.answers.get( id );
         if ( val != null ) {
             if ( val instanceof Double ) {
@@ -48,7 +50,7 @@ public class FormResponse {
         return null;
     }
 
-    public String getInput( String id ) {
+    public @Nullable String getInput(String id ) {
         Object val = this.answers.get( id );
         if ( val != null ) {
             if ( val instanceof String ) {
@@ -59,7 +61,7 @@ public class FormResponse {
         return null;
     }
 
-    public String getDropbox( String id ) {
+    public @Nullable String getDropbox(String id ) {
         Object val = this.answers.get( id );
         if ( val != null ) {
             if ( val instanceof String ) {

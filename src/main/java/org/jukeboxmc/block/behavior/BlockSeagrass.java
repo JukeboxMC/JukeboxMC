@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.SeaGrassType;
@@ -26,7 +27,7 @@ public class BlockSeagrass extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition );
         if ( block.getType().equals( BlockType.WATER ) ) {
             world.setBlock( placePosition, this, 0 );
@@ -37,7 +38,7 @@ public class BlockSeagrass extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         World world = this.getWorld();
         Block block = world.getBlock( breakPosition, 1 );
         if( block instanceof BlockWater ) {
@@ -49,12 +50,12 @@ public class BlockSeagrass extends Block {
     }
 
 
-    public BlockSeagrass setSeaGrassType( SeaGrassType seaGrassType ) {
+    public @NotNull BlockSeagrass setSeaGrassType(@NotNull SeaGrassType seaGrassType ) {
         this.setState( "sea_grass_type",seaGrassType.name().toLowerCase() );
         return this;
     }
 
-    public SeaGrassType getSeaGrassType() {
+    public @NotNull SeaGrassType getSeaGrassType() {
         return this.stateExists( "sea_grass_type" ) ? SeaGrassType.valueOf( this.getStringState( "sea_grass_type" ) ) : SeaGrassType.DEFAULT;
     }
 }

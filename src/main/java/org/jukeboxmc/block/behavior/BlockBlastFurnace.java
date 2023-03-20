@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -29,7 +30,7 @@ public class BlockBlastFurnace extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
         world.setBlock( placePosition, this, 0 );
         BlockEntity.create( BlockEntityType.BLAST_FURNACE, this ).spawn();
@@ -37,7 +38,7 @@ public class BlockBlastFurnace extends Block {
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         BlockEntityBlastFurnace blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             blockEntity.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
@@ -47,7 +48,7 @@ public class BlockBlastFurnace extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         BlockEntityBlastFurnace blockEntity = this.getBlockEntity();
         if ( blockEntity != null ) {
             BlastFurnaceInventory furnaceInventory = blockEntity.getBlastFurnaceInventory();
@@ -67,7 +68,7 @@ public class BlockBlastFurnace extends Block {
         return (BlockEntityBlastFurnace) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    public void setBlockFace(@NotNull BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

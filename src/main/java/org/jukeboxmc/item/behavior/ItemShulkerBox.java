@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockShulkerBox;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemShulkerBox extends Item {
 
-    private final BlockShulkerBox block;
+    private final @NotNull BlockShulkerBox block;
 
     public ItemShulkerBox( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemShulkerBox extends Item {
     }
 
     @Override
-    public ItemShulkerBox setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemShulkerBox setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemShulkerBox setColor( BlockColor blockColor ) {
+    public @NotNull ItemShulkerBox setColor(@NotNull BlockColor blockColor ) {
         this.blockRuntimeId = this.block.setColor( blockColor ).getRuntimeId();
         return this;
     }

@@ -1,5 +1,7 @@
 package org.jukeboxmc.world.generator.noise;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 /**
@@ -31,7 +33,7 @@ public class SimplexNoise extends PerlinNoise {
      *
      * @param rand the PRNG to use
      */
-    public SimplexNoise( Random rand ) {
+    public SimplexNoise(@NotNull Random rand ) {
         super( rand );
         for ( int i = 0; i < 512; i++ ) {
             permMod12[i] = perm[i] % 12;
@@ -42,11 +44,11 @@ public class SimplexNoise extends PerlinNoise {
         return x > 0 ? (int) x : (int) x - 1;
     }
 
-    protected static double dot( Grad g, double x, double y ) {
+    protected static double dot(@NotNull Grad g, double x, double y ) {
         return g.x * x + g.y * y;
     }
 
-    protected static double dot( Grad g, double x, double y, double z ) {
+    protected static double dot(@NotNull Grad g, double x, double y, double z ) {
         return g.x * x + g.y * y + g.z * z;
     }
 

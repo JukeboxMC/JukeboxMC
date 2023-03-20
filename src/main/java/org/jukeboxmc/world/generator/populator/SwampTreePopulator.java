@@ -1,11 +1,7 @@
 package org.jukeboxmc.world.generator.populator;
 
-import org.jukeboxmc.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.block.behavior.BlockLeaves;
-import org.jukeboxmc.block.behavior.BlockLog;
-import org.jukeboxmc.block.data.LeafType;
-import org.jukeboxmc.block.data.LogType;
 import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 import org.jukeboxmc.world.chunk.manager.PopulationChunkManager;
@@ -23,7 +19,7 @@ public class SwampTreePopulator extends Populator {
     private int baseAmount;
 
     @Override
-    public void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
+    public void populate(@NotNull Random random, World world, @NotNull PopulationChunkManager chunkManager, int chunkX, int chunkZ ) {
         int amount = random.nextInt( this.randomAmount + 1 ) + this.baseAmount;
         Chunk chunk = chunkManager.getChunk( chunkX, chunkZ );
         for ( int i = 0; i < amount; ++i ) {
@@ -38,7 +34,7 @@ public class SwampTreePopulator extends Populator {
     }
 
     @Override
-    public int getHighestWorkableBlock( Chunk chunk, int x, int z ) {
+    public int getHighestWorkableBlock(@NotNull Chunk chunk, int x, int z ) {
         int y;
         for ( y = 127; y > 0; --y ) {
             BlockType blockType = chunk.getBlock( x, y, z, 0 ).getType();

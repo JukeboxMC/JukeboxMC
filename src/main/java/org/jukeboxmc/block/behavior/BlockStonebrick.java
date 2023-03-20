@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.StoneBrickType;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockStonebrick extends Block {
         return Item.<ItemStonebrick>create( ItemType.STONEBRICK ).setStoneBrickType( this.getStoneBrickType() );
     }
 
-    public BlockStonebrick setStoneBrickType( StoneBrickType stoneBrickType ) {
+    public BlockStonebrick setStoneBrickType(@NotNull StoneBrickType stoneBrickType ) {
         return this.setState( "stone_brick_type", stoneBrickType.name().toLowerCase() );
     }
 
-    public StoneBrickType getStoneBrickType() {
+    public @NotNull StoneBrickType getStoneBrickType() {
         return this.stateExists( "stone_brick_type" ) ? StoneBrickType.valueOf( this.getStringState( "stone_brick_type" ) ) : StoneBrickType.DEFAULT;
     }
 }

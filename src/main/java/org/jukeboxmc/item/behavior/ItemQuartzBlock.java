@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockQuartzBlock;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemQuartzBlock extends Item {
 
-    private final BlockQuartzBlock block;
+    private final @NotNull BlockQuartzBlock block;
 
     public ItemQuartzBlock( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemQuartzBlock extends Item {
     }
 
     @Override
-    public ItemQuartzBlock setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemQuartzBlock setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemQuartzBlock setPrismarineType( QuartzType quartzType ) {
+    public @NotNull ItemQuartzBlock setPrismarineType(@NotNull QuartzType quartzType ) {
         this.blockRuntimeId = this.block.setQuartzType( quartzType ).getRuntimeId();
         return this;
     }

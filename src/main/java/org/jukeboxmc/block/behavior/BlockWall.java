@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.data.WallConnectionType;
@@ -28,7 +29,7 @@ public class BlockWall extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.updateWall();
         return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
     }
@@ -42,7 +43,7 @@ public class BlockWall extends Block {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
+    public @NotNull AxisAlignedBB getBoundingBox() {
         boolean north = this.canConnect( this.getSide( BlockFace.NORTH ) );
         boolean south = this.canConnect( this.getSide( BlockFace.SOUTH ) );
         boolean west = this.canConnect( this.getSide( BlockFace.WEST ) );
@@ -96,7 +97,7 @@ public class BlockWall extends Block {
         this.location.getChunk().setBlock( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), 0, this );
     }
 
-    public boolean canConnect( Block block ) {
+    public boolean canConnect(@NotNull Block block ) {
         return switch ( block.getType() ) {
             case COBBLESTONE_WALL,
                     BLACKSTONE_WALL,
@@ -115,7 +116,7 @@ public class BlockWall extends Block {
         };
     }
 
-    public void connect( Direction direction, WallConnectionType wallConnectionType ) {
+    public void connect(@NotNull Direction direction, @NotNull WallConnectionType wallConnectionType ) {
         switch ( direction ) {
             case SOUTH -> this.setWallConnectionTypeSouth( wallConnectionType );
             case EAST -> this.setWallConnectionTypeEast( wallConnectionType );
@@ -124,7 +125,7 @@ public class BlockWall extends Block {
         }
     }
 
-    public WallConnectionType getWallConnectionType( Direction direction ) {
+    public WallConnectionType getWallConnectionType(@NotNull Direction direction ) {
         return switch ( direction ) {
             case SOUTH -> this.getWallConnectionTypeSouth();
             case EAST -> this.getWallConnectionTypeEast();
@@ -141,35 +142,35 @@ public class BlockWall extends Block {
         return this.stateExists( "wall_post_bit" ) && this.getByteState( "wall_post_bit" ) == 1;
     }
 
-    public void setWallConnectionTypeEast( WallConnectionType wallConnectionTypeEast ) {
+    public void setWallConnectionTypeEast(@NotNull WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_east", wallConnectionTypeEast.name().toLowerCase() );
     }
 
-    public WallConnectionType getWallConnectionTypeEast() {
+    public @NotNull WallConnectionType getWallConnectionTypeEast() {
         return this.stateExists( "wall_connection_type_east" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_east" ) ) : WallConnectionType.NONE;
     }
 
-    public void setWallConnectionTypeSouth( WallConnectionType wallConnectionTypeEast ) {
+    public void setWallConnectionTypeSouth(@NotNull WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_south", wallConnectionTypeEast.name().toLowerCase() );
     }
 
-    public WallConnectionType getWallConnectionTypeSouth() {
+    public @NotNull WallConnectionType getWallConnectionTypeSouth() {
         return this.stateExists( "wall_connection_type_south" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_south" ) ) : WallConnectionType.NONE;
     }
 
-    public void setWallConnectionTypeWest( WallConnectionType wallConnectionTypeEast ) {
+    public void setWallConnectionTypeWest(@NotNull WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_west", wallConnectionTypeEast.name().toLowerCase() );
     }
 
-    public WallConnectionType getWallConnectionTypeWest() {
+    public @NotNull WallConnectionType getWallConnectionTypeWest() {
         return this.stateExists( "wall_connection_type_west" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_west" ) ) : WallConnectionType.NONE;
     }
 
-    public void setWallConnectionTypeNorth( WallConnectionType wallConnectionTypeEast ) {
+    public void setWallConnectionTypeNorth(@NotNull WallConnectionType wallConnectionTypeEast ) {
         this.setState( "wall_connection_type_north", wallConnectionTypeEast.name().toLowerCase() );
     }
 
-    public WallConnectionType getWallConnectionTypeNorth() {
+    public @NotNull WallConnectionType getWallConnectionTypeNorth() {
         return this.stateExists( "wall_connection_type_north" ) ? WallConnectionType.valueOf( this.getStringState( "wall_connection_type_north" ) ) : WallConnectionType.NONE;
     }
 }

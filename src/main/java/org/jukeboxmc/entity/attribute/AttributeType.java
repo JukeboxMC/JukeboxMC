@@ -1,5 +1,7 @@
 package org.jukeboxmc.entity.attribute;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -41,7 +43,7 @@ public enum AttributeType {
         this.defaultValue = defaultValue;
     }
 
-    public Attribute getAttribute() {
+    public @NotNull Attribute getAttribute() {
         return new Attribute( this.key, this.minValue, this.maxValue, this.defaultValue );
     }
 }

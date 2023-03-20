@@ -2,6 +2,7 @@ package org.jukeboxmc.player.skin;
 
 import com.nukkitx.protocol.bedrock.data.skin.*;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Skin {
         this.skinId = skinId;
     }
 
-    public String getResourcePatch() {
+    public @NotNull String getResourcePatch() {
         return this.resourcePatch == null ? "" : this.resourcePatch;
     }
 
@@ -67,7 +68,7 @@ public class Skin {
         this.geometryName = geometryName;
     }
 
-    public String getGeometryData() {
+    public @NotNull String getGeometryData() {
         return this.geometryData == null ? "" : this.geometryData;
     }
 
@@ -75,7 +76,7 @@ public class Skin {
         this.geometryData = geometryData;
     }
 
-    public String getAnimationData() {
+    public @NotNull String getAnimationData() {
         return this.animationData == null ? "" : this.animationData;
     }
 
@@ -83,7 +84,7 @@ public class Skin {
         this.animationData = animationData;
     }
 
-    public String getCapeId() {
+    public @NotNull String getCapeId() {
         return this.capeId == null ? "" : this.capeId;
     }
 
@@ -131,7 +132,7 @@ public class Skin {
         this.skinData = skinData;
     }
 
-    public Image getCapeData() {
+    public @NotNull Image getCapeData() {
         return this.capeData != null ? this.capeData : new Image( 0, 0, new byte[0] );
     }
 
@@ -203,7 +204,7 @@ public class Skin {
         this.personaPieceTints = personaPieceTints;
     }
 
-    public static Skin fromNetwork( SerializedSkin serializedSkin ) {
+    public static @NotNull Skin fromNetwork(@NotNull SerializedSkin serializedSkin ) {
         Skin skin = new Skin();
         skin.setSkinId( serializedSkin.getSkinId() );
         skin.setPlayFabId( serializedSkin.getPlayFabId() );

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.GrassType;
@@ -28,7 +29,7 @@ public class BlockTallGrass extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block blockDown = world.getBlock( blockPosition );
         if ( blockDown.getType().equals( BlockType.GRASS ) || blockDown.getType().equals( BlockType.DIRT ) || blockDown.getType().equals( BlockType.PODZOL ) ) {
             world.setBlock( placePosition, this );
@@ -42,11 +43,11 @@ public class BlockTallGrass extends Block {
         return Item.<ItemTallGrass>create( ItemType.TALLGRASS ).setGrassType( this.getGrassType() );
     }
 
-    public BlockTallGrass setGrassType( GrassType grassType ) {
+    public BlockTallGrass setGrassType(@NotNull GrassType grassType ) {
         return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }
 
-    public GrassType getGrassType() {
+    public @NotNull GrassType getGrassType() {
         return this.stateExists( "tall_grass_type" ) ? GrassType.valueOf( this.getStringState( "tall_grass_type" ) ) : GrassType.DEFAULT;
     }
 }

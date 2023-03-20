@@ -1,5 +1,6 @@
 package org.jukeboxmc.blockentity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.DispenserInventory;
@@ -14,20 +15,20 @@ import org.jukeboxmc.player.Player;
  */
 public class BlockEntityDispenser extends BlockEntity implements InventoryHolder {
 
-    private final DispenserInventory dispenserInventory;
+    private final @NotNull DispenserInventory dispenserInventory;
 
-    public BlockEntityDispenser( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityDispenser(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.dispenserInventory = new DispenserInventory( this );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.dispenserInventory, blockPosition );
         return true;
     }
 
-    public DispenserInventory getDispenserInventory() {
+    public @NotNull DispenserInventory getDispenserInventory() {
         return this.dispenserInventory;
     }
 }

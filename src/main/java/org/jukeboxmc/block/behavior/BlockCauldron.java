@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LiquidType;
 import org.jukeboxmc.util.Identifier;
@@ -27,11 +28,11 @@ public class BlockCauldron extends Block {
         return this.stateExists( "fill_level" ) ? this.getIntState( "fill_level" ) : 0;
     }
 
-    public void setLiquid( LiquidType liquidType ) {
+    public void setLiquid(@NotNull LiquidType liquidType ) {
         this.setState( "cauldron_liquid", liquidType.name().toLowerCase() );
     }
 
-    public LiquidType getLiquidType() {
+    public @NotNull LiquidType getLiquidType() {
         return this.stateExists( "cauldron_liquid" ) ? LiquidType.valueOf( this.getStringState( "cauldron_liquid" ) ) : LiquidType.WATER;
     }
 }

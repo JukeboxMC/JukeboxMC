@@ -5,6 +5,8 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
 import com.nukkitx.protocol.bedrock.packet.MobEffectPacket;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -28,8 +30,8 @@ public abstract class EntityLiving extends Entity {
     protected float lastDamage = 0;
     protected byte attackCoolDown = 0;
 
-    protected EntityDamageEvent.DamageSource lastDamageSource = EntityDamageEvent.DamageSource.COMMAND;
-    protected Entity lastDamageEntity;
+    protected EntityDamageEvent.@Nullable DamageSource lastDamageSource = EntityDamageEvent.DamageSource.COMMAND;
+    protected @Nullable Entity lastDamageEntity;
 
     protected final Map<AttributeType, Attribute> attributes = new HashMap<>();
     protected final Map<EffectType, Effect> effects = new HashMap<>();
@@ -91,7 +93,7 @@ public abstract class EntityLiving extends Entity {
     }
 
     @Override
-    public boolean damage( EntityDamageEvent event ) {
+    public boolean damage(@NotNull EntityDamageEvent event ) {
         if ( this.getHealth() <= 0 ) {
             return false;
         }
@@ -186,7 +188,7 @@ public abstract class EntityLiving extends Entity {
         return true;
     }
 
-    public float applyArmorReduction( EntityDamageEvent event, boolean damageArmor ) {
+    public float applyArmorReduction(@NotNull EntityDamageEvent event, boolean damageArmor ) {
         return event.getDamage();
     }
 
@@ -206,7 +208,7 @@ public abstract class EntityLiving extends Entity {
         return 0;
     }
 
-    public float applyResistanceEffectReduction( EntityDamageEvent event, float damage ) {
+    public float applyResistanceEffectReduction(@NotNull EntityDamageEvent event, float damage ) {
         if ( event.getEntity() instanceof EntityLiving entityLiving ) {
             if ( entityLiving.hasEffect( EffectType.RESISTANCE ) ) {
                 int amplifier = entityLiving.getEffect( EffectType.RESISTANCE ).getAmplifier();
@@ -245,11 +247,11 @@ public abstract class EntityLiving extends Entity {
         this.setBurning( false );
     }
 
-    public EntityDamageEvent.DamageSource getLastDamageSource() {
+    public EntityDamageEvent.@Nullable DamageSource getLastDamageSource() {
         return this.lastDamageSource;
     }
 
-    public Entity getLastDamageEntity() {
+    public @Nullable Entity getLastDamageEntity() {
         return this.lastDamageEntity;
     }
 
@@ -344,7 +346,7 @@ public abstract class EntityLiving extends Entity {
         }
     }
 
-    public void addAttribute( AttributeType attributeType ) {
+    public void addAttribute(@NotNull AttributeType attributeType ) {
         this.attributes.put( attributeType, attributeType.getAttribute() );
     }
 
@@ -364,7 +366,7 @@ public abstract class EntityLiving extends Entity {
         return this.getAttribute( attributeType ).getCurrentValue();
     }
 
-    public Collection<Attribute> getAttributes() {
+    public @NotNull Collection<Attribute> getAttributes() {
         return this.attributes.values();
     }
 

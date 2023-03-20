@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.noise;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.generator.noise.bukkit.NoiseGenerator;
 import org.jukeboxmc.world.generator.noise.bukkit.OctaveGenerator;
 
@@ -13,11 +14,11 @@ public class PerlinOctaveGenerator extends OctaveGenerator {
     protected final int sizeZ;
     protected double[] noise;
 
-    public PerlinOctaveGenerator( Random rand, int octaves, int sizeX, int sizeZ ) {
+    public PerlinOctaveGenerator(@NotNull Random rand, int octaves, int sizeX, int sizeZ ) {
         this( rand, octaves, sizeX, 1, sizeZ );
     }
 
-    public PerlinOctaveGenerator( Random rand, int octaves, int sizeX, int sizeY, int sizeZ ) {
+    public PerlinOctaveGenerator(@NotNull Random rand, int octaves, int sizeX, int sizeY, int sizeZ ) {
         this( createOctaves( rand, octaves ), rand, sizeX, sizeY, sizeZ );
     }
 
@@ -38,7 +39,7 @@ public class PerlinOctaveGenerator extends OctaveGenerator {
         noise = new double[sizeX * sizeY * sizeZ];
     }
 
-    protected static NoiseGenerator[] createOctaves( Random rand, int octaves ) {
+    protected static NoiseGenerator @NotNull [] createOctaves(@NotNull Random rand, int octaves ) {
         NoiseGenerator[] result = new NoiseGenerator[octaves];
 
         for ( int i = 0; i < octaves; i++ ) {

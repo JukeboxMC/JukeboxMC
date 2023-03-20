@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.packet.NetworkSettingsPacket;
 import com.nukkitx.protocol.bedrock.packet.PlayStatusPacket;
 import com.nukkitx.protocol.bedrock.packet.RequestNetworkSettingsPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.network.Network;
 import org.jukeboxmc.player.Player;
@@ -15,7 +16,7 @@ import org.jukeboxmc.player.Player;
 public class RequestNetworkSettingsHandler implements PacketHandler<RequestNetworkSettingsPacket> {
 
     @Override
-    public void handle( RequestNetworkSettingsPacket packet, Server server, Player player ) {
+    public void handle(@NotNull RequestNetworkSettingsPacket packet, @NotNull Server server, @NotNull Player player ) {
         if ( player.getPlayerConnection().isLoggedIn() ) {
             player.getPlayerConnection().disconnect( "Player is already logged in." );
             return;

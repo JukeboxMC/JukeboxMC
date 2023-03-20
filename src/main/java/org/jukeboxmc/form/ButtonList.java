@@ -1,5 +1,7 @@
 package org.jukeboxmc.form;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.jukeboxmc.form.element.Button;
@@ -21,20 +23,20 @@ public class ButtonList extends Form<String> {
         super( title );
     }
 
-    public ButtonList setContent( String content ) {
+    public @NotNull ButtonList setContent(String content ) {
         this.content = content;
         this.dirty = true;
         return this;
     }
 
-    public ButtonList addButton( String id, String text ) {
+    public @NotNull ButtonList addButton(String id, String text ) {
         Button button = new Button( id, text );
         this.buttons.add( button );
         this.dirty = true;
         return this;
     }
 
-    public ButtonList addImageButton( String id, String text, String imagePath ) {
+    public @NotNull ButtonList addImageButton(String id, String text, String imagePath ) {
         ImageButton imageButton = new ImageButton( id, text, imagePath );
         this.buttons.add( imageButton );
         this.dirty = true;
@@ -42,12 +44,12 @@ public class ButtonList extends Form<String> {
     }
 
     @Override
-    public String getFormType() {
+    public @NotNull String getFormType() {
         return "form";
     }
 
     @Override
-    public JSONObject toJSON() {
+    public @NotNull JSONObject toJSON() {
         // Fast out when cached
         if ( this.cache != null && !this.dirty ) {
             return this.cache;
@@ -71,7 +73,7 @@ public class ButtonList extends Form<String> {
     }
 
     @Override
-    public String parseResponse( String json ) {
+    public @Nullable String parseResponse(@NotNull String json ) {
         // Input is LF terminated
         try {
             int buttonId = Integer.parseInt( json.trim() );

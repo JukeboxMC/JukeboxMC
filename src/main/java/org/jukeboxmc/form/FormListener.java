@@ -1,6 +1,7 @@
 package org.jukeboxmc.form;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -14,12 +15,12 @@ public class FormListener<R> {
     private Consumer<R> responseConsumer = r -> { };
     private Consumer<Void> closeConsumer = aVoid -> { };
 
-    public FormListener<R> onResponse( Consumer<R> consumer ) {
+    public @NotNull FormListener<R> onResponse(Consumer<R> consumer ) {
         this.responseConsumer = consumer;
         return this;
     }
 
-    public FormListener<R> onClose( Consumer<Void> consumer ) {
+    public @NotNull FormListener<R> onClose(Consumer<Void> consumer ) {
         this.closeConsumer = consumer;
         return this;
     }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.PrismarineType;
 import org.jukeboxmc.item.Item;
@@ -27,11 +28,11 @@ public class BlockPrismarine extends Block {
         return Item.<ItemPrismarine>create( ItemType.PRISMARINE ).setPrismarineType( this.getPrismarineType() );
     }
 
-    public BlockPrismarine setPrismarineType( PrismarineType prismarineType ) {
+    public BlockPrismarine setPrismarineType(@NotNull PrismarineType prismarineType ) {
         return this.setState( "prismarine_block_type", prismarineType.name().toLowerCase() );
     }
 
-    public PrismarineType getPrismarineType() {
+    public @NotNull PrismarineType getPrismarineType() {
         return this.stateExists( "prismarine_block_type" ) ? PrismarineType.valueOf( this.getStringState( "prismarine_block_type" ) ) : PrismarineType.DEFAULT;
     }
 }

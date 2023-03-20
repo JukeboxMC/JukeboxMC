@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -152,7 +153,7 @@ public abstract class BlockLiquid extends Block {
         return 1;
     }
 
-    protected int getFlowDecay( Block block ) {
+    protected int getFlowDecay(@NotNull Block block ) {
         if ( block.getType() != this.getType() ) {
             Block layer1 = block.getLocation().getWorld().getBlock( this.location, 1 );
             if ( layer1.getType() != this.getType() ) {
@@ -164,7 +165,7 @@ public abstract class BlockLiquid extends Block {
         return ( (BlockLiquid) block ).getLiquidDepth();
     }
 
-    private int getSmallestFlowDecay( Block block, int decay ) {
+    private int getSmallestFlowDecay(@NotNull Block block, int decay ) {
         int blockDecay = this.getFlowDecay( block );
         if ( blockDecay < 0 ) {
             return decay;
@@ -176,7 +177,7 @@ public abstract class BlockLiquid extends Block {
         return ( decay >= 0 && blockDecay >= decay ) ? decay : blockDecay;
     }
 
-    protected boolean canFlowInto( Block block ) {
+    protected boolean canFlowInto(@NotNull Block block ) {
         if ( usesWaterLogging() ) {
             if ( block.canWaterloggingFlowInto() ) {
                 Block blockLayer1 = this.location.getWorld().getBlock( this.location, 1 );
@@ -186,7 +187,7 @@ public abstract class BlockLiquid extends Block {
         return block.canBeFlowedInto() && !( block instanceof BlockLiquid && ( (BlockLiquid) block ).getLiquidDepth() == 0 );
     }
 
-    protected void flowIntoBlock( Block block, int newFlowDecay) {
+    protected void flowIntoBlock(@NotNull Block block, int newFlowDecay) {
         if ( this.canFlowInto( block ) && !( block instanceof BlockLiquid ) ) {
             if ( usesWaterLogging() ) {
                 Block layer1 = location.getWorld().getBlock( location, 1 );

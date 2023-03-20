@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator.biome;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.world.generator.populator.Populator;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class BiomePopulator {
         this.populators.add( populator );
     }
 
-    public List<Populator> getPopulators() {
+    public @NotNull List<Populator> getPopulators() {
         return this.populators;
     }
 }

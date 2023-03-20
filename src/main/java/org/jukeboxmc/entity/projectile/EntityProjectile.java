@@ -2,6 +2,8 @@ package org.jukeboxmc.entity.projectile;
 
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityMoveable;
@@ -115,7 +117,7 @@ public abstract class EntityProjectile extends EntityMoveable {
     }
 
     @Override
-    public boolean damage( EntityDamageEvent event ) {
+    public boolean damage(@NotNull EntityDamageEvent event ) {
         return event.getDamageSource().equals( EntityDamageEvent.DamageSource.VOID ) && super.damage( event );
     }
 
@@ -140,11 +142,11 @@ public abstract class EntityProjectile extends EntityMoveable {
 
     }
 
-    public EntityLiving getShooter() {
+    public @Nullable EntityLiving getShooter() {
         return this.shooter.isDead() ? null : this.shooter;
     }
 
-    public void setShooter( EntityLiving shooter ) {
+    public void setShooter(@NotNull EntityLiving shooter ) {
         this.shooter = shooter;
         this.metadata.setLong( EntityData.OWNER_EID, shooter.getEntityId() );
     }

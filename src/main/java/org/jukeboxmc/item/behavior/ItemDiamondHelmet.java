@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.item.ArmorTierType;
 import org.jukeboxmc.item.Durability;
 import org.jukeboxmc.item.Item;
@@ -24,7 +25,7 @@ public class ItemDiamondHelmet extends ItemArmor implements Durability {
     }
 
     @Override
-    public boolean useInAir( Player player, Vector clickVector ) {
+    public boolean useInAir(@NotNull Player player, Vector clickVector ) {
         Item oldItem = player.getArmorInventory().getHelmet();
         player.getArmorInventory().setHelmet( this );
         player.getInventory().setItemInHand( oldItem );
@@ -32,7 +33,7 @@ public class ItemDiamondHelmet extends ItemArmor implements Durability {
     }
 
     @Override
-    public ArmorTierType getArmorTierType() {
+    public @NotNull ArmorTierType getArmorTierType() {
         return ArmorTierType.DIAMOND;
     }
 
@@ -42,7 +43,7 @@ public class ItemDiamondHelmet extends ItemArmor implements Durability {
     }
 
     @Override
-    public void playEquipSound( Player player ) {
+    public void playEquipSound(@NotNull Player player ) {
         player.playSound( Sound.ARMOR_EQUIP_DIAMOND );
     }
 

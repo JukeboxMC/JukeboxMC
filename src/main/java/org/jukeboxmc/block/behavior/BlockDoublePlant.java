@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.PlantType;
@@ -29,7 +30,7 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block blockAbove = world.getBlock( placePosition.add( 0, 1, 0 ) );
         Block blockDown = world.getBlock( placePosition.subtract( 0, 1, 0 ) );
 
@@ -55,7 +56,7 @@ public class BlockDoublePlant extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         if ( this.isUpperBlock() ) {
             this.location.getWorld().setBlock( this.location.subtract( 0, 1, 0 ), Block.create( BlockType.AIR ) );
         } else {
@@ -69,11 +70,11 @@ public class BlockDoublePlant extends Block {
         return Item.<ItemDoublePlant>create( ItemType.DOUBLE_PLANT ).setPlantType( this.getPlantType() );
     }
 
-    public BlockDoublePlant setPlantType( PlantType plantType ) {
+    public BlockDoublePlant setPlantType(@NotNull PlantType plantType ) {
         return this.setState( "double_plant_type", plantType.name().toLowerCase() );
     }
 
-    public PlantType getPlantType() {
+    public @NotNull PlantType getPlantType() {
         return this.stateExists( "double_plant_type" ) ? PlantType.valueOf( this.getStringState( "double_plant_type" ) ) : PlantType.SUNFLOWER;
     }
 

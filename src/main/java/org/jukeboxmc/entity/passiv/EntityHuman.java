@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
@@ -37,8 +38,8 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     protected Skin skin;
     protected DeviceInfo deviceInfo;
 
-    protected final PlayerInventory playerInventory;
-    protected final ArmorInventory armorInventory;
+    protected final @NotNull PlayerInventory playerInventory;
+    protected final @NotNull ArmorInventory armorInventory;
 
     protected int foodTicks;
     private long actionStart = -1;
@@ -72,7 +73,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.HUMAN;
     }
 
@@ -87,7 +88,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public BedrockPacket createSpawnPacket() {
+    public @NotNull BedrockPacket createSpawnPacket() {
         AddPlayerPacket addPlayerPacket = new AddPlayerPacket();
         addPlayerPacket.setRuntimeEntityId( this.entityId );
         addPlayerPacket.setUniqueEntityId( this.entityId );
@@ -105,7 +106,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public EntityHuman spawn( Player player ) {
+    public @NotNull EntityHuman spawn(@NotNull Player player ) {
         if ( this != player ) {
             super.spawn( player );
             this.armorInventory.sendContents( player );
@@ -114,7 +115,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public EntityHuman spawn() {
+    public @NotNull EntityHuman spawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
             if ( this.getDimension().equals( player.getDimension() ) ) {
                 this.spawn( player );
@@ -124,7 +125,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public EntityHuman despawn( Player player ) {
+    public @NotNull EntityHuman despawn(@NotNull Player player ) {
         if ( this != player ) {
             super.despawn( player );
         }
@@ -132,7 +133,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     @Override
-    public EntityHuman despawn() {
+    public @NotNull EntityHuman despawn() {
         for ( Player player : this.getWorld().getPlayers() ) {
             if ( this.getDimension().equals( player.getDimension() ) ) {
                 this.despawn( player );
@@ -169,7 +170,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
         return this.playerInventory;
     }
 
-    public ArmorInventory getArmorInventory() {
+    public @NotNull ArmorInventory getArmorInventory() {
         return this.armorInventory;
     }
 

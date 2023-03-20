@@ -1,6 +1,7 @@
 package org.jukeboxmc.entity.passiv;
 
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.entity.EntityMoveable;
 import org.jukeboxmc.entity.EntityType;
@@ -53,7 +54,7 @@ public class EntityFallingBlock extends EntityMoveable {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Falling Block";
     }
 
@@ -78,7 +79,7 @@ public class EntityFallingBlock extends EntityMoveable {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.FALLING_BLOCK;
     }
 

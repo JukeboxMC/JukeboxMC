@@ -53,6 +53,6 @@ public enum GameRule {
 
 
     public static GameRule fromIdentifier( String identifier ) {
-        return Arrays.stream( values() ).filter( gameRule -> gameRule.getIdentifier().equalsIgnoreCase( identifier ) ).findFirst().orElseGet( null );
+        return Arrays.stream(values()).filter(gameRule -> gameRule.getIdentifier().equalsIgnoreCase(identifier)).findFirst().orElse(null);
     }
 }

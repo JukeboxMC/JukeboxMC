@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockStoneSlab4;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemStoneSlab4 extends Item {
 
-    private final BlockStoneSlab4 block;
+    private final @NotNull BlockStoneSlab4 block;
 
     public ItemStoneSlab4( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemStoneSlab4 extends Item {
     }
 
     @Override
-    public ItemStoneSlab4 setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemStoneSlab4 setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemStoneSlab4 setStoneType( StoneSlab4Type stoneSlabType ) {
+    public @NotNull ItemStoneSlab4 setStoneType(@NotNull StoneSlab4Type stoneSlabType ) {
         this.blockRuntimeId = this.block.setStoneSlabType( stoneSlabType ).getRuntimeId();
         return this;
     }

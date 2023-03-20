@@ -1,6 +1,7 @@
 package org.jukeboxmc.util;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class Identifier {
@@ -15,14 +16,14 @@ public class Identifier {
     private final String fullName;
     private final int hashCode;
 
-    public Identifier( String namespace, String name, String fullName) {
+    public Identifier(String namespace, String name, @NotNull String fullName) {
         this.namespace = namespace;
         this.name = name;
         this.fullName = fullName;
         this.hashCode = fullName.hashCode();
     }
 
-    public static Identifier fromString(String str) {
+    public static Identifier fromString(@NotNull String str) {
         if(str.isBlank()) return EMPTY;
         str = str.trim();
         final String[] nameParts = str.indexOf(SEPARATOR) != -1 ? str.split(String.valueOf(SEPARATOR)) : new String[]{str};

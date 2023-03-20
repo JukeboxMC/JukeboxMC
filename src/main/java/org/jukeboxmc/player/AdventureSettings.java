@@ -7,6 +7,8 @@ import com.nukkitx.protocol.bedrock.data.command.CommandPermission;
 import com.nukkitx.protocol.bedrock.packet.UpdateAbilitiesPacket;
 import com.nukkitx.protocol.bedrock.packet.UpdateAdventureSettingsPacket;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -29,12 +31,12 @@ public class AdventureSettings {
         this.player = player;
     }
 
-    public AdventureSettings set( Type type, boolean value ) {
+    public @NotNull AdventureSettings set(Type type, boolean value ) {
         this.values.put( type, value );
         return this;
     }
 
-    public boolean get( Type type ) {
+    public boolean get(@NotNull Type type ) {
         final Boolean value = this.values.get( type );
         return value == null ? type.getDefaultValue() : value;
     }
@@ -119,10 +121,10 @@ public class AdventureSettings {
         TELEPORT( Ability.TELEPORT, false ),
         BUILD( Ability.BUILD, true );
 
-        private final Ability ability;
+        private final @Nullable Ability ability;
         private final Boolean defaultValue;
 
-        Type( Ability ability, Boolean defaultValue ) {
+        Type(@Nullable Ability ability, Boolean defaultValue ) {
             this.ability = ability;
             this.defaultValue = defaultValue;
         }

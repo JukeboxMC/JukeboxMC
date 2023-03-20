@@ -1,5 +1,6 @@
 package org.jukeboxmc.command.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
 import org.jukeboxmc.command.CommandSender;
@@ -21,7 +22,7 @@ public class StopCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String[] args ) {
         commandSender.sendMessage( "Stopping the server..." );
         commandSender.getServer().shutdown();
     }

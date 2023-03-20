@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockTallGrass;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemTallGrass extends Item {
 
-    private final BlockTallGrass block;
+    private final @NotNull BlockTallGrass block;
 
     public ItemTallGrass( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemTallGrass extends Item {
     }
 
     @Override
-    public ItemTallGrass setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemTallGrass setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemTallGrass setGrassType( GrassType grassType ) {
+    public @NotNull ItemTallGrass setGrassType(@NotNull GrassType grassType ) {
         this.blockRuntimeId = this.block.setGrassType( grassType ).getRuntimeId();
         return this;
     }

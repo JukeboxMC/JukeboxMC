@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.biome.generation;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockDirt;
@@ -16,7 +17,7 @@ import java.util.Random;
 public class GroundGeneratorPatchDirt extends GroundGenerator {
 
     @Override
-    public void generateTerrainColumn( Chunk chunk, Random random, int chunkX, int chunkZ, double surfaceNoise ) {
+    public void generateTerrainColumn(@NotNull Chunk chunk, @NotNull Random random, int chunkX, int chunkZ, double surfaceNoise ) {
         if ( surfaceNoise > 1.75D ) {
             this.topMaterial = Block.<BlockDirt>create( BlockType.DIRT ).setDirtType( DirtType.COARSE );
         } else if ( surfaceNoise > -0.95D ) {

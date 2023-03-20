@@ -3,6 +3,8 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -30,13 +32,13 @@ public class BlockEntity {
     protected boolean isSpawned;
 
 
-    public BlockEntity( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntity(@NotNull Block block, BlockEntityType blockEntityType ) {
         this.block = block;
         this.dimension = block.getLocation().getDimension();
         this.blockEntityType = blockEntityType;
     }
 
-    public static <T extends BlockEntity> T create( BlockEntityType blockEntityType, Block block ) {
+    public static <T extends BlockEntity> @NotNull T create(BlockEntityType blockEntityType, Block block ) {
         try {
             Constructor<? extends BlockEntity> constructor = BlockEntityRegistry.getBlockEntityClass( blockEntityType ).getConstructor( Block.class, BlockEntityType.class );
             constructor.setAccessible( true );
@@ -55,7 +57,7 @@ public class BlockEntity {
 
     }
 
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         this.isMovable = compound.getBoolean( "isMovable", true );
     }
 
@@ -71,7 +73,7 @@ public class BlockEntity {
         return compound;
     }
 
-    public void fromItem( Item item, NbtMapBuilder builder ) {
+    public void fromItem(@NotNull Item item, @NotNull NbtMapBuilder builder ) {
         builder.putString( "Name", item.getIdentifier().getFullName() );
         builder.putShort( "Damage", (short) item.getMeta() );
         builder.putByte( "Count", (byte) item.getAmount() );
@@ -82,7 +84,7 @@ public class BlockEntity {
         }
     }
 
-    public Item toItem( NbtMap compound ) {
+    public Item toItem(@Nullable NbtMap compound ) {
         if ( compound == null ) {
             return Item.create( ItemType.AIR );
         }
@@ -99,7 +101,7 @@ public class BlockEntity {
         return Item.create( ItemType.AIR );
     }
 
-    public BlockEntity spawn() {
+    public @NotNull BlockEntity spawn() {
         World world = this.block.getLocation().getWorld();
         Vector location = this.block.getLocation();
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
@@ -112,7 +114,7 @@ public class BlockEntity {
         return this;
     }
 
-    public void update( Player player ) {
+    public void update(@NotNull Player player ) {
         BlockEntityDataPacket blockEntityDataPacket = new BlockEntityDataPacket();
         blockEntityDataPacket.setBlockPosition( this.block.getLocation().toVector3i() );
         blockEntityDataPacket.setData( this.toCompound().build() );

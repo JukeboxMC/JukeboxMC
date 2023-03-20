@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.data.StoneSlab2Type;
 import org.jukeboxmc.util.Identifier;
 
@@ -18,11 +19,11 @@ public class BlockDoubleStoneSlab2 extends BlockSlab {
         super( identifier, blockStates );
     }
 
-    public BlockDoubleStoneSlab2 setStoneSlabType( StoneSlab2Type stoneSlabType ) {
+    public BlockDoubleStoneSlab2 setStoneSlabType(@NotNull StoneSlab2Type stoneSlabType ) {
         return this.setState( "stone_slab_type_2", stoneSlabType.name().toLowerCase() );
     }
 
-    public StoneSlab2Type getStoneSlabType() {
+    public @NotNull StoneSlab2Type getStoneSlabType() {
         return this.stateExists( "stone_slab_type_2" ) ? StoneSlab2Type.valueOf( this.getStringState( "stone_slab_type_2" ) ) : StoneSlab2Type.RED_SANDSTONE;
     }
 }

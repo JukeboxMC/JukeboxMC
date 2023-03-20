@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
 import org.apache.commons.math3.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.BlockColor;
@@ -31,7 +32,7 @@ public class BlockStandingBanner extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, @NotNull Item itemInHand, @NotNull BlockFace blockFace ) {
         Block block = world.getBlock( placePosition );
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) FastMath.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
@@ -51,7 +52,7 @@ public class BlockStandingBanner extends Block {
         return (BlockEntityBanner) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setSignDirection( SignDirection signDirection ) {
+    public void setSignDirection(@NotNull SignDirection signDirection ) {
         this.setState( "ground_sign_direction", signDirection.ordinal() );
     }
 

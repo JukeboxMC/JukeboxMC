@@ -1,5 +1,7 @@
 package org.jukeboxmc.player.info;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -31,7 +33,7 @@ public enum Device {
         return id;
     }
 
-    public static Device getDevice( int id ) {
+    public static @Nullable Device getDevice(int id ) {
         return switch ( id ) {
             case 1 -> ANDROID;
             case 2 -> IOS;

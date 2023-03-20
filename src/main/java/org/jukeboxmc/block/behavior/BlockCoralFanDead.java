@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.CoralColor;
 import org.jukeboxmc.block.direction.RotationDirection;
@@ -28,7 +29,7 @@ public class BlockCoralFanDead extends Block {
         return Item.<ItemCoralFanDead>create( ItemType.CORAL_FAN_DEAD ).setCoralColor( this.getCoralColor() );
     }
 
-    public void setCoralDirection( RotationDirection rotationDirection ) {
+    public void setCoralDirection(@NotNull RotationDirection rotationDirection ) {
         this.setState( "coral_fan_direction", rotationDirection.ordinal() );
     }
 
@@ -36,11 +37,11 @@ public class BlockCoralFanDead extends Block {
         return this.stateExists( "coral_fan_direction" ) ? RotationDirection.values()[this.getIntState( "coral_fan_direction" )] : RotationDirection.EAST_WEST;
     }
 
-    public BlockCoralFanDead setCoralColor( CoralColor coralColor ) {
+    public BlockCoralFanDead setCoralColor(@NotNull CoralColor coralColor ) {
         return this.setState( "coral_color", coralColor.name().toLowerCase() );
     }
 
-    public CoralColor getCoralColor() {
+    public @NotNull CoralColor getCoralColor() {
         return this.stateExists( "coral_color" ) ? CoralColor.valueOf( this.getStringState( "coral_color" ) ) : CoralColor.BLUE;
     }
 }

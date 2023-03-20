@@ -1,5 +1,7 @@
 package org.jukeboxmc.command;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jukeboxmc.command.internal.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +45,7 @@ public class CommandManager {
         }
     }
 
-    public void handleCommandInput( CommandSender commandSender, String input ) {
+    public void handleCommandInput(@NotNull CommandSender commandSender, @NotNull String input ) {
         try {
             final String[] commandParts = input.substring( 1 ).split( " " );
             final String commandIdentifier = commandParts[0];
@@ -111,11 +113,11 @@ public class CommandManager {
         return false;
     }
 
-    public List<Command> getCommands() {
+    public @NotNull List<Command> getCommands() {
         return new ArrayList<>( this.commands );
     }
 
-    private Command getCommandByNameOrAlias( String identifier ) {
+    private @Nullable Command getCommandByNameOrAlias(String identifier ) {
         for( Command command : this.commands ) {
             if ( command.getCommandData().getName().equalsIgnoreCase( identifier ) || ( command.getCommandData().getAliases() != null &&
                     command.getCommandData().getAliases().contains( identifier ) ) ) {

@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.WoodType;
 import org.jukeboxmc.item.Item;
@@ -27,12 +28,12 @@ public class BlockDoubleWoodenSlab extends BlockSlab {
         return Item.<ItemWoodenSlab>create( ItemType.WOODEN_SLAB ).setWoodType( this.getWoodType() );
     }
 
-    public Block setWoodType( WoodType woodType ) {
+    public @NotNull Block setWoodType(@NotNull WoodType woodType ) {
         this.setState( "wood_type", woodType.name().toLowerCase() );
         return this;
     }
 
-    public WoodType getWoodType() {
+    public @NotNull WoodType getWoodType() {
         return this.stateExists( "wood_type" ) ? WoodType.valueOf( this.getStringState( "wood_type" ) ) : WoodType.OAK;
     }
 }

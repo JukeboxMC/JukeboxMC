@@ -1,5 +1,6 @@
 package org.jukeboxmc.potion;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.attribute.AttributeType;
 
@@ -17,12 +18,12 @@ public class SpeedEffect extends Effect {
     }
 
     @Override
-    public EffectType getEffectType() {
+    public @NotNull EffectType getEffectType() {
         return EffectType.SPEED;
     }
 
     @Override
-    public Color getEffectColor() {
+    public @NotNull Color getEffectColor() {
         return new Color( 124, 175, 198 );
     }
 
@@ -32,12 +33,12 @@ public class SpeedEffect extends Effect {
     }
 
     @Override
-    public void apply( EntityLiving entityLiving ) {
+    public void apply(@NotNull EntityLiving entityLiving ) {
         entityLiving.setMovement( ( this.amplifier + 1 ) * 0.2f );
     }
 
     @Override
-    public void remove( EntityLiving entityLiving ) {
+    public void remove(@NotNull EntityLiving entityLiving ) {
         entityLiving.getAttribute( AttributeType.MOVEMENT ).reset();
     }
 }

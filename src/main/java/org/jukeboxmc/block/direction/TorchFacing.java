@@ -1,5 +1,7 @@
 package org.jukeboxmc.block.direction;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @author LucGamesYT
  * @version 1.0
@@ -13,21 +15,15 @@ public enum TorchFacing {
     SOUTH,
     TOP;
 
-    public BlockFace toBlockFace() {
-        switch ( this ) {
-            case WEST:
-                return BlockFace.WEST;
-            case EAST:
-                return BlockFace.EAST;
-            case NORTH:
-                return BlockFace.NORTH;
-            case SOUTH:
-                return BlockFace.SOUTH;
-            case TOP:
-                return BlockFace.UP;
-            default:
-                return null;
-        }
+    public @Nullable BlockFace toBlockFace() {
+        return switch (this) {
+            case WEST -> BlockFace.WEST;
+            case EAST -> BlockFace.EAST;
+            case NORTH -> BlockFace.NORTH;
+            case SOUTH -> BlockFace.SOUTH;
+            case TOP -> BlockFace.UP;
+            default -> null;
+        };
     }
 
 }

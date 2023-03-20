@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockStainedHardenedClay;
@@ -15,7 +16,7 @@ import org.jukeboxmc.util.Identifier;
  */
 public class ItemStainedHardenedClay extends Item {
 
-    private final BlockStainedHardenedClay block;
+    private final @NotNull BlockStainedHardenedClay block;
 
     public ItemStainedHardenedClay( Identifier identifier ) {
         super( identifier );
@@ -30,13 +31,13 @@ public class ItemStainedHardenedClay extends Item {
     }
 
     @Override
-    public ItemStainedHardenedClay setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemStainedHardenedClay setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemStainedHardenedClay setColor( BlockColor blockColor ) {
+    public @NotNull ItemStainedHardenedClay setColor(@NotNull BlockColor blockColor ) {
         this.blockRuntimeId = this.block.setColor( blockColor ).getRuntimeId();
         return this;
     }

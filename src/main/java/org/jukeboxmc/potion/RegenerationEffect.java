@@ -1,5 +1,6 @@
 package org.jukeboxmc.potion;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.event.entity.EntityHealEvent;
 
@@ -17,17 +18,17 @@ public class RegenerationEffect extends Effect {
     }
 
     @Override
-    public EffectType getEffectType() {
+    public @NotNull EffectType getEffectType() {
         return EffectType.REGENERATION;
     }
 
     @Override
-    public Color getEffectColor() {
+    public @NotNull Color getEffectColor() {
         return new Color( 205, 92, 171 );
     }
 
     @Override
-    public void apply( EntityLiving entityLiving ) {
+    public void apply(@NotNull EntityLiving entityLiving ) {
         if ( this.canExecute() ) {
             entityLiving.setHeal( 1, EntityHealEvent.Cause.REGENERATION_EFFECT );
         }

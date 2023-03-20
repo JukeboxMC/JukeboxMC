@@ -1,5 +1,8 @@
 package org.jukeboxmc.config;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -12,7 +15,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         super();
     }
 
-    public ConfigSection( LinkedHashMap<String, Object> map ) {
+    public ConfigSection(@Nullable LinkedHashMap<String, Object> map ) {
         this();
         if ( map == null || map.isEmpty() ) return;
         for ( Map.Entry<String, Object> entry : map.entrySet() ) {
@@ -26,7 +29,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         }
     }
 
-    private List<Object> parseList( List<Object> list ) {
+    private @NotNull List<Object> parseList(@NotNull List<Object> list ) {
         List<Object> newList = new ArrayList<>();
 
         for ( Object o : list ) {
@@ -40,15 +43,15 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return newList;
     }
 
-    public Map<String, Object> getAllMap() {
+    public @NotNull Map<String, Object> getAllMap() {
         return new LinkedHashMap<>( this );
     }
 
-    public ConfigSection getAll() {
+    public @NotNull ConfigSection getAll() {
         return new ConfigSection( this );
     }
 
-    public <T> T get( String key, T defaultValue ) {
+    public <T> T get(@Nullable String key, T defaultValue ) {
         if ( key == null || key.isEmpty() ) {
             return defaultValue;
         }
@@ -60,8 +63,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
             return defaultValue;
         }
         Object value = super.get( keys[0] );
-        if ( value instanceof ConfigSection ) {
-            ConfigSection section = (ConfigSection) value;
+        if (value instanceof ConfigSection section) {
             return section.get( keys[1], defaultValue );
         }
         return defaultValue;
@@ -71,7 +73,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return this.get( key, null );
     }
 
-    public void set( String key, Object value ) {
+    public void set(@NotNull String key, Object value ) {
         String[] subKeys = key.split( "\\.", 2 );
         if ( subKeys.length > 1 ) {
             ConfigSection childSection = new ConfigSection();
@@ -96,7 +98,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return getSections( null );
     }
 
-    public ConfigSection getSections( String key ) {
+    public @NotNull ConfigSection getSections(@Nullable String key ) {
         ConfigSection sections = new ConfigSection();
         ConfigSection parent = key == null || key.isEmpty() ? this.getAll() : getSection( key );
         if ( parent == null ) {
@@ -214,11 +216,11 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return val instanceof Short;
     }
 
-    public List getList( String key ) {
+    public List<?> getList( String key ) {
         return this.getList( key, null );
     }
 
-    public List getList( String key, List<?> defaultList ) {
+    public List<?> getList( String key, List<?> defaultList ) {
         return this.get( key, defaultList );
     }
 
@@ -227,8 +229,8 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return val instanceof List;
     }
 
-    public List<String> getStringList( String key ) {
-        List value = this.getList(key);
+    public @NotNull List<String> getStringList(String key ) {
+        List<?> value = this.getList(key);
         if (value == null) {
             return new ArrayList<>(0);
         }
@@ -241,7 +243,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Integer> getIntegerList( String key ) {
+    public @NotNull List<Integer> getIntegerList(String key ) {
         List<?> list = getList( key );
         if ( list == null ) {
             return new ArrayList<>( 0 );
@@ -266,7 +268,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Boolean> getBooleanList( String key ) {
+    public @NotNull List<Boolean> getBooleanList(String key ) {
         List<?> list = getList( key );
         if ( list == null ) {
             return new ArrayList<>( 0 );
@@ -286,7 +288,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Double> getDoubleList( String key ) {
+    public @NotNull List<Double> getDoubleList(String key ) {
         List<?> list = getList( key );
         if ( list == null ) {
             return new ArrayList<>( 0 );
@@ -310,7 +312,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Float> getFloatList( String key ) {
+    public @NotNull List<Float> getFloatList(String key ) {
         List<?> list = getList( key );
         if ( list == null ) {
             return new ArrayList<>( 0 );
@@ -334,7 +336,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Long> getLongList( String key ) {
+    public @NotNull List<Long> getLongList(String key ) {
         List<?> list = getList( key );
         if ( list == null ) {
             return new ArrayList<>( 0 );
@@ -358,7 +360,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Byte> getByteList( String key ) {
+    public @NotNull List<Byte> getByteList(String key ) {
         List<?> list = getList( key );
 
         if ( list == null ) {
@@ -386,7 +388,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Character> getCharacterList( String key ) {
+    public @NotNull List<Character> getCharacterList(String key ) {
         List<?> list = getList( key );
 
         if ( list == null ) {
@@ -398,8 +400,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         for ( Object object : list ) {
             if ( object instanceof Character ) {
                 result.add( (Character) object );
-            } else if ( object instanceof String ) {
-                String str = (String) object;
+            } else if (object instanceof String str) {
 
                 if ( str.length() == 1 ) {
                     result.add( str.charAt( 0 ) );
@@ -412,7 +413,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Short> getShortList( String key ) {
+    public @NotNull List<Short> getShortList(String key ) {
         List<?> list = getList( key );
 
         if ( list == null ) {
@@ -440,8 +441,8 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return result;
     }
 
-    public List<Map<String, Object>> getMapList( String key ) {
-        List<Map> list = getList( key );
+    public @NotNull List<Map<String, Object>> getMapList(String key ) {
+        List<?> list = getList( key );
         List<Map<String, Object>> result = new ArrayList<>();
 
         if ( list == null ) {
@@ -450,7 +451,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
 
         for ( Object object : list ) {
             if ( object instanceof Map ) {
-                result.add( (Map) object );
+                result.add( (Map<String, Object>) object );
             }
         }
 
@@ -470,19 +471,18 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
         return exists( key, false );
     }
 
-    public void remove( String key ) {
+    public void remove(@Nullable String key ) {
         if ( key == null || key.isEmpty() ) return;
         if ( super.containsKey( key ) ) super.remove( key );
         else if ( this.containsKey( "." ) ) {
             String[] keys = key.split( "\\.", 2 );
-            if ( super.get( keys[0] ) instanceof ConfigSection ) {
-                ConfigSection section = (ConfigSection) super.get( keys[0] );
+            if (super.get(keys[0]) instanceof ConfigSection section) {
                 section.remove( keys[1] );
             }
         }
     }
 
-    public Set<String> getKeys( boolean child ) {
+    public @NotNull Set<String> getKeys(boolean child ) {
         Set<String> keys = new LinkedHashSet<>();
         this.forEach( ( key, value ) -> {
             keys.add( key );

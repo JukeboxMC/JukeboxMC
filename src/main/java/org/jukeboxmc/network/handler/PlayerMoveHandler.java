@@ -3,6 +3,7 @@ package org.jukeboxmc.network.handler;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import com.nukkitx.protocol.bedrock.packet.MovePlayerPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;
@@ -21,7 +22,7 @@ import java.io.ObjectOutputStream;
 public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
 
     @Override
-    public void handle( MovePlayerPacket packet, Server server, Player player ) {
+    public void handle(@NotNull MovePlayerPacket packet, Server server, @NotNull Player player ) {
         if ( !player.isSpawned() ) {
             return;
         }
@@ -103,7 +104,7 @@ public class PlayerMoveHandler implements PacketHandler<MovePlayerPacket> {
         return new byte[0];
     }
 
-    private void move( Player target, Player player ) {
+    private void move(@NotNull Player target, @NotNull Player player ) {
         MoveEntityAbsolutePacket moveAbsolutePacket = new MoveEntityAbsolutePacket();
         moveAbsolutePacket.setRuntimeEntityId( target.getEntityId() );
         moveAbsolutePacket.setPosition( target.getLocation().toVector3f().add( 0, target.getEyeHeight(), 0 ) );

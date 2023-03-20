@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.packet.LevelEventPacket;
 import com.nukkitx.protocol.bedrock.packet.PlayerActionPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -20,7 +21,7 @@ import org.jukeboxmc.world.Particle;
 public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
 
     @Override
-    public void handle( PlayerActionPacket packet, Server server, Player player ) {
+    public void handle(@NotNull PlayerActionPacket packet, @NotNull Server server, @NotNull Player player ) {
         final Vector lasBreakPosition = new Vector( packet.getBlockPosition() );
         switch ( packet.getAction() ) {
             case DIMENSION_CHANGE_SUCCESS -> {
@@ -143,9 +144,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                     player.getWorld().spawnParticle( null, Particle.CRACK_BLOCK, lasBreakPosition, continueBlockBreak.getRuntimeId() | packet.getFace() << 24 );
                 }
             }
-            case RESPAWN -> {
-                player.respawn();
-            }
+            case RESPAWN -> player.respawn();
             case JUMP -> {
                 PlayerJumpEvent playerJumpEvent = new PlayerJumpEvent( player );
                 Server.getInstance().getPluginManager().callEvent( playerJumpEvent );

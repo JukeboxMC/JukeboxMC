@@ -1,6 +1,7 @@
 package org.jukeboxmc.command.internal;
 
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;
@@ -30,7 +31,7 @@ public class KickCommand extends Command {
     }
 
     @Override
-    public void execute( CommandSender commandSender, String command, String[] args ) {
+    public void execute(@NotNull CommandSender commandSender, String command, String @NotNull [] args ) {
         if ( args.length == 1 || args.length == 2 ) {
             Player target = Server.getInstance().getPlayer( args[0] );
             if ( target != null ) {

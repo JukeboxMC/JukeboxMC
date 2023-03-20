@@ -3,6 +3,7 @@ package org.jukeboxmc.blockentity;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.nbt.NbtType;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.inventory.FurnaceInventory;
@@ -20,22 +21,22 @@ import java.util.List;
  */
 public class BlockEntityFurnace extends SmeltingComponent implements InventoryHolder {
 
-    private final FurnaceInventory furnaceInventory;
+    private final @NotNull FurnaceInventory furnaceInventory;
 
-    public BlockEntityFurnace( Block block, BlockEntityType blockEntityType ) {
+    public BlockEntityFurnace(@NotNull Block block, BlockEntityType blockEntityType ) {
         super( block, blockEntityType );
         this.furnaceInventory = new FurnaceInventory( this );
         this.initInventory( this.furnaceInventory );
     }
 
     @Override
-    public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
+    public boolean interact(@NotNull Player player, @NotNull Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         player.openInventory( this.furnaceInventory, blockPosition );
         return super.interact( player, blockPosition, clickedPosition, blockFace, itemInHand );
     }
 
     @Override
-    public void fromCompound( NbtMap compound ) {
+    public void fromCompound(@NotNull NbtMap compound ) {
         super.fromCompound( compound );
         List<NbtMap> items = compound.getList( "Items", NbtType.COMPOUND );
         for ( NbtMap nbtMap : items ) {
@@ -50,7 +51,7 @@ public class BlockEntityFurnace extends SmeltingComponent implements InventoryHo
     }
 
     @Override
-    public NbtMapBuilder toCompound() {
+    public @NotNull NbtMapBuilder toCompound() {
         NbtMapBuilder builder = super.toCompound();
 
         List<NbtMap> itemsCompoundList = new ArrayList<>();
@@ -67,7 +68,7 @@ public class BlockEntityFurnace extends SmeltingComponent implements InventoryHo
         return builder;
     }
 
-    public FurnaceInventory getFurnaceInventory() {
+    public @NotNull FurnaceInventory getFurnaceInventory() {
         return this.furnaceInventory;
     }
 

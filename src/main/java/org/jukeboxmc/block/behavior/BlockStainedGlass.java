@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.BlockColor;
 import org.jukeboxmc.item.Item;
@@ -27,12 +28,12 @@ public class BlockStainedGlass extends Block {
         return Item.<ItemStainedGlass>create( ItemType.STAINED_GLASS ).setColor( this.getColor() );
     }
 
-    public BlockStainedGlass setColor( BlockColor color ) {
+    public @NotNull BlockStainedGlass setColor(@NotNull BlockColor color ) {
         this.setState( "color", color.name().toLowerCase() );
         return this;
     }
 
-    public BlockColor getColor() {
+    public @NotNull BlockColor getColor() {
         return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

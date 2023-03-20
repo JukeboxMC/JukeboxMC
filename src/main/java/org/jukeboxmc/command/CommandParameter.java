@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,7 +74,7 @@ public class CommandParameter {
         this.optional = optional;
     }
 
-    protected CommandParamData toNetwork() {
+    protected @NotNull CommandParamData toNetwork() {
         return new CommandParamData( this.name, this.optional,
                 this.enumData != null ? new CommandEnumData( this.name, this.enumData.getValues().toArray( new String[0] ), false ) : null,
                 PARAM_MAPPINGS.get( this.type ), this.postFix, Collections.emptyList() );

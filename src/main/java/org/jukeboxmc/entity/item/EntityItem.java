@@ -2,6 +2,7 @@ package org.jukeboxmc.entity.item;
 
 import com.nukkitx.protocol.bedrock.packet.AddItemEntityPacket;
 import com.nukkitx.protocol.bedrock.packet.TakeItemEntityPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.Entity;
@@ -70,7 +71,7 @@ public class EntityItem extends EntityMoveable {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "EntityItem";
     }
 
@@ -90,7 +91,7 @@ public class EntityItem extends EntityMoveable {
     }
 
     @Override
-    public EntityType getType() {
+    public @NotNull EntityType getType() {
         return EntityType.ITEM;
     }
 
@@ -100,7 +101,7 @@ public class EntityItem extends EntityMoveable {
     }
 
     @Override
-    public AddItemEntityPacket createSpawnPacket() {
+    public @NotNull AddItemEntityPacket createSpawnPacket() {
         AddItemEntityPacket addItemEntityPacket = new AddItemEntityPacket();
         addItemEntityPacket.setRuntimeEntityId( this.entityId );
         addItemEntityPacket.setUniqueEntityId( this.entityId );
@@ -112,7 +113,7 @@ public class EntityItem extends EntityMoveable {
     }
 
     @Override
-    public void onCollideWithPlayer( Player player ) {
+    public void onCollideWithPlayer(@NotNull Player player ) {
         if ( Server.getInstance().getCurrentTick() > this.pickupDelay && !this.isClosed() && !player.isDead() ) {
             PlayerPickupItemEvent playerPickupItemEvent = new PlayerPickupItemEvent( player, this.item );
             Server.getInstance().getPluginManager().callEvent( playerPickupItemEvent );
@@ -148,7 +149,7 @@ public class EntityItem extends EntityMoveable {
         return this.pickupDelay;
     }
 
-    public void setPickupDelay( long duration, TimeUnit timeUnit ) {
+    public void setPickupDelay(long duration, @NotNull TimeUnit timeUnit ) {
         this.pickupDelay = Server.getInstance().getCurrentTick() + timeUnit.toMillis( duration ) / 50;
     }
 

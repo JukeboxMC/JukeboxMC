@@ -1,5 +1,6 @@
 package org.jukeboxmc.world.generator.populator;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.world.World;
@@ -16,11 +17,11 @@ public abstract class Populator {
 
     public abstract void populate( Random random, World world, PopulationChunkManager chunkManager, int chunkX, int chunkZ );
 
-    public boolean blockBelow( Chunk chunk, int x, int y, int z, BlockType blockType ) {
+    public boolean blockBelow(@NotNull Chunk chunk, int x, int y, int z, BlockType blockType ) {
         return chunk.getBlock( x, y - 1, z, 0 ).getType().equals( blockType );
     }
 
-    public int getHighestWorkableBlock( Chunk chunk, int x, int z ) {
+    public int getHighestWorkableBlock(@NotNull Chunk chunk, int x, int z ) {
         int y = 255;
         for ( ; y >= 0; --y ) {
             Block block = chunk.getBlock( x, y, z, 0 );

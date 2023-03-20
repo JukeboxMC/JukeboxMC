@@ -1,5 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockSapling;
@@ -18,7 +19,7 @@ import java.time.Duration;
  */
 public class ItemSapling extends Item implements Burnable {
 
-    private final BlockSapling block;
+    private final @NotNull BlockSapling block;
 
     public ItemSapling( Identifier identifier ) {
         super( identifier );
@@ -33,13 +34,13 @@ public class ItemSapling extends Item implements Burnable {
     }
 
     @Override
-    public ItemSapling setBlockRuntimeId( int blockRuntimeId ) {
+    public @NotNull ItemSapling setBlockRuntimeId(int blockRuntimeId ) {
         this.blockRuntimeId = blockRuntimeId;
         this.block.setBlockStates( BlockPalette.getBlockNbt( blockRuntimeId ).getCompound( "states" ) );
         return this;
     }
 
-    public ItemSapling setSaplingType( SaplingType saplingType ) {
+    public @NotNull ItemSapling setSaplingType(@NotNull SaplingType saplingType ) {
         this.blockRuntimeId = this.block.setSaplingType( saplingType ).getRuntimeId();
         return this;
     }

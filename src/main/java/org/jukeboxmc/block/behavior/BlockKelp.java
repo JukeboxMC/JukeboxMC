@@ -1,6 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
 import com.nukkitx.nbt.NbtMap;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -25,7 +26,7 @@ public class BlockKelp extends Block {
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+    public boolean placeBlock(@NotNull Player player, @NotNull World world, Vector blockPosition, @NotNull Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition );
         if ( block.getType().equals( BlockType.WATER ) ) {
             Block blockDown = block.getSide( BlockFace.DOWN );
@@ -39,7 +40,7 @@ public class BlockKelp extends Block {
     }
 
     @Override
-    public void onBlockBreak( Vector breakPosition ) {
+    public void onBlockBreak(@NotNull Vector breakPosition ) {
         World world = this.getWorld();
         Block block = world.getBlock( breakPosition, 1 );
         if ( block instanceof BlockWater ) {
@@ -50,7 +51,7 @@ public class BlockKelp extends Block {
         super.onBlockBreak( breakPosition );
     }
 
-    public BlockKelp setKelpAge( int value ) {
+    public @NotNull BlockKelp setKelpAge(int value ) {
         this.setState( "kelp_age", value );
         return this;
     }

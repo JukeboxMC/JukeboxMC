@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
 import com.nukkitx.protocol.bedrock.packet.MobEquipmentPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -24,13 +25,13 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public InventoryType getType() {
+    public @NotNull InventoryType getType() {
         return InventoryType.PLAYER;
     }
 
 
     @Override
-    public ContainerType getWindowTypeId() {
+    public @NotNull ContainerType getWindowTypeId() {
         return ContainerType.INVENTORY;
     }
 
@@ -40,7 +41,7 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public void sendContents( Player player ) {
+    public void sendContents(@NotNull Player player ) {
         InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
         if ( player.getCurrentInventory() == this ) {
             inventoryContentPacket.setContainerId( WindowId.OPEN_CONTAINER.getId() );
@@ -54,7 +55,7 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public void sendContents( int slot, Player player ) {
+    public void sendContents(int slot, @NotNull Player player ) {
         if ( player.getCurrentInventory() != null && player.getCurrentInventory() == this ) {
             InventorySlotPacket inventorySlotPacket = new InventorySlotPacket();
             inventorySlotPacket.setSlot( slot );
@@ -71,14 +72,14 @@ public class PlayerInventory extends ContainerInventory {
     }
 
     @Override
-    public void removeViewer( Player player ) {
+    public void removeViewer(@NotNull Player player ) {
         if ( player != this.holder ) {
             super.removeViewer( player );
         }
     }
 
     @Override
-    public void setItem( int slot, Item item ) {
+    public void setItem(int slot, @NotNull Item item ) {
         Item oldItem = this.getItem( slot );
         super.setItem( slot, item );
 
@@ -89,7 +90,7 @@ public class PlayerInventory extends ContainerInventory {
         }
     }
 
-    public Item getItemInHand() {
+    public @NotNull Item getItemInHand() {
         Item content = this.content[this.itemInHandSlot];
         return Objects.requireNonNullElseGet( content, () -> Item.create( ItemType.AIR ) );
     }
@@ -112,12 +113,12 @@ public class PlayerInventory extends ContainerInventory {
         }
     }
 
-    public void setItemInHand( Item itemInHand ) {
+    public void setItemInHand(@NotNull Item itemInHand ) {
         this.setItem( this.itemInHandSlot, itemInHand );
         this.sendItemInHand();
     }
 
-    public MobEquipmentPacket createMobEquipmentPacket( EntityHuman entityHuman ) {
+    public @NotNull MobEquipmentPacket createMobEquipmentPacket(@NotNull EntityHuman entityHuman ) {
         MobEquipmentPacket mobEquipmentPacket = new MobEquipmentPacket();
         mobEquipmentPacket.setRuntimeEntityId( entityHuman.getEntityId() );
         mobEquipmentPacket.setItem( this.getItemInHand().toItemData() );
