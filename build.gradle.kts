@@ -1,10 +1,6 @@
-import org.jmailen.gradle.kotlinter.tasks.FormatTask
-import org.jmailen.gradle.kotlinter.tasks.LintTask
-
 plugins {
-    kotlin("jvm") version "1.8.10"
+    application
     id("com.github.johnrengelman.shadow") version "8.1.0"
-    id("org.jmailen.kotlinter") version "3.14.0"
 }
 
 repositories {
@@ -40,7 +36,6 @@ dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("commons-io:commons-io:2.11.0")
     implementation("org.yaml:snakeyaml:2.0")
-    implementation("org.jetbrains:annotations:23.1.0")
     implementation("org.apache.logging.log4j:log4j-api:2.19.0")
     implementation("org.apache.logging.log4j:log4j-core:2.19.0")
     implementation("org.jline:jline-terminal:3.21.0")
@@ -70,19 +65,8 @@ tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 
-tasks.create<LintTask>("ktLint") {
-    group = "verification"
-    source(files("src"))
-}
-
-tasks.create<FormatTask>("ktFormat") {
-    group = "formatting"
-    source(files("src"))
-}
-
 tasks {
     shadowJar {
-        dependsOn("ktLint")
         archiveClassifier.set("")
         manifest {
             attributes(
