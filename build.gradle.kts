@@ -51,6 +51,8 @@ dependencies {
         exclude(group = "org.apache.logging.log4j", module = "log4j-api")
     }
     implementation("org.projectlombok:lombok:1.18.22")
+
+    compileOnly("org.jetbrains:annotations:24.0.1")
 }
 
 group = "org.jukeboxmc"
