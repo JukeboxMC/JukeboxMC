@@ -81,6 +81,10 @@ public class ItemPalette {
         return RUNTIME_TO_IDENTIFIER.getOrDefault( runtimeId, Identifier.fromString( "minecraft:air" ) );
     }
 
+    public static Set<Identifier> getIdentifiers() {
+        return IDENTIFIER_TO_RUNTIME.keySet();
+    }
+
     public static List<StartGamePacket.ItemEntry> getEntries() {
         return NonStream.map( IDENTIFIER_TO_RUNTIME.entrySet(), ItemPalette::toEntry, ArrayList::new, Collections::unmodifiableList );
     }
