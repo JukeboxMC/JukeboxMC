@@ -91,7 +91,6 @@ public class World {
             this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
         }
 
-        AtomicBoolean sendWarning = new AtomicBoolean( false );
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
             String generatorName = generatorMap.get( dimension );
