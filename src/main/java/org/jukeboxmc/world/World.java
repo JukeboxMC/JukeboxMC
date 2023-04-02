@@ -31,7 +31,6 @@ import org.jukeboxmc.world.chunk.manager.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.gamerule.GameRules;
 import org.jukeboxmc.world.generator.Generator;
-import org.jukeboxmc.world.generator.NormalGenerator;
 import org.jukeboxmc.world.leveldb.LevelDB;
 
 import java.io.ByteArrayOutputStream;
@@ -92,18 +91,10 @@ public class World {
             this.chunkManagers.put( dimension, new ChunkManager( this, dimension ) );
         }
 
-        AtomicBoolean sendWarning = new AtomicBoolean( false );
         this.generators = new EnumMap<>( Dimension.class );
         for ( Dimension dimension : Dimension.values() ) {
             String generatorName = generatorMap.get( dimension );
-            this.generators.put( dimension, ThreadLocal.withInitial( () -> {
-                Generator generator = server.createGenerator( generatorName, this, dimension );
-                if ( generator.getClass().equals( NormalGenerator.class ) && !sendWarning.get() ) {
-                    Server.getInstance().getLogger().warn( "§cYou are currently using the Normal Generator, it may cause strong peformance problems!" );
-                    sendWarning.set( true );
-                }
-                return generator;
-            } ) );
+            this.generators.put( dimension, ThreadLocal.withInitial( () -> server.createGenerator( generatorName, this, dimension ) ) );
         }
 
         Generator generator = this.getGenerator( Dimension.OVERWORLD );
