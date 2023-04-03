@@ -1,13 +1,13 @@
 package org.jukeboxmc.block;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtMapBuilder;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import lombok.ToString;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMapBuilder;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateBlockPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.behavior.Waterlogable;
 import org.jukeboxmc.block.data.BlockProperties;
@@ -29,6 +29,7 @@ import org.jukeboxmc.player.Player;
 import org.jukeboxmc.potion.*;
 import org.jukeboxmc.util.BlockPalette;
 import org.jukeboxmc.util.Identifier;
+import org.jukeboxmc.util.RuntimeBlockDefination;
 import org.jukeboxmc.world.World;
 
 import java.lang.reflect.Constructor;
@@ -313,7 +314,7 @@ public class Block implements Cloneable {
         }
 
         this.playBreakSound();
-        breakLocation.getWorld().sendLevelEvent( breakLocation, LevelEventType.PARTICLE_DESTROY_BLOCK, this.runtimeId );
+        breakLocation.getWorld().sendLevelEvent( breakLocation, LevelEvent.PARTICLE_DESTROY_BLOCK, this.runtimeId );
     }
 
     private void playBreakSound() {
@@ -326,7 +327,7 @@ public class Block implements Cloneable {
 
     public void sendUpdate() {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( this.runtimeId );
+        updateBlockPacket.setDefinition( new RuntimeBlockDefination( this.runtimeId ) );
         updateBlockPacket.setBlockPosition( this.location.toVector3i() );
         updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setDataLayer( this.layer );
@@ -338,7 +339,7 @@ public class Block implements Cloneable {
             return;
         }
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( this.runtimeId );
+        updateBlockPacket.setDefinition( new RuntimeBlockDefination( this.runtimeId ) );
         updateBlockPacket.setBlockPosition( this.location.toVector3i() );
         updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
         updateBlockPacket.setDataLayer( this.layer );

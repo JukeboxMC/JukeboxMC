@@ -1,15 +1,10 @@
 package org.jukeboxmc.command;
 
 import com.google.common.collect.ImmutableMap;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
-import com.nukkitx.protocol.bedrock.data.command.CommandParam;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.command.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Cloudburst
@@ -74,8 +69,20 @@ public class CommandParameter {
     }
 
     protected CommandParamData toNetwork() {
-        return new CommandParamData( this.name, this.optional,
-                this.enumData != null ? new CommandEnumData( this.name, this.enumData.getValues().toArray( new String[0] ), false ) : null,
-                PARAM_MAPPINGS.get( this.type ), this.postFix, Collections.emptyList() );
+        CommandParamData commandParameter = new CommandParamData();
+        commandParameter.setName( this.name );
+        commandParameter.setOptional( this.optional );
+        commandParameter.setPostfix( this.postFix );
+        commandParameter.setEnumData( this.enumData != null ? new CommandEnumData( this.name, this.toNetwork(this.enumData.getValues().toArray( new String[0] )), false ) : null );
+        commandParameter.setType( PARAM_MAPPINGS.get(this.type) );
+        return commandParameter;
+    }
+
+    protected LinkedHashMap<String, Set<CommandEnumConstraint>> toNetwork( String[] values ) {
+        LinkedHashMap<String, Set<CommandEnumConstraint>> map = new LinkedHashMap<>();
+        for ( String value : values ) {
+            map.put( value, Collections.emptySet() );
+        }
+        return map;
     }
 }

@@ -1,6 +1,7 @@
 package org.jukeboxmc.player;
 
-import com.nukkitx.protocol.bedrock.data.GameType;
+
+import org.cloudburstmc.protocol.bedrock.data.GameType;
 
 /**
  * @author LucGamesYT

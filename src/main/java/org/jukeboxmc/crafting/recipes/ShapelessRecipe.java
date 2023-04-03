@@ -1,10 +1,10 @@
 package org.jukeboxmc.crafting.recipes;
 
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.RecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
 
@@ -45,21 +45,9 @@ public class ShapelessRecipe extends Recipe {
     }
 
     @Override
-    public CraftingData doRegister( CraftingManager craftingManager, String recipeId ) {
-        return new CraftingData(
-                CraftingDataType.SHAPELESS,
-                recipeId,
-                -1,
-                -1,
-                -1,
-                -1,
-                this.ingredients,
-                this.outputs,
-                UUID.randomUUID(),
-                "crafting_table",
-                1,
-                craftingManager.getHighestNetworkId() + 1
-        );
+    public RecipeData doRegister( CraftingManager craftingManager, String recipeId ) {
+       return ShapelessRecipeData.shapeless( recipeId, ingredients, this.outputs, UUID.randomUUID(), "crafting_table", 1, craftingManager.getHighestNetworkId() + 1);
+
     }
 
 }

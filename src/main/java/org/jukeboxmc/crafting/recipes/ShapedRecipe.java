@@ -1,12 +1,12 @@
 package org.jukeboxmc.crafting.recipes;
 
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.RecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.item.Item;
 
@@ -67,7 +67,7 @@ public class ShapedRecipe extends Recipe {
     }
 
     @Override
-    public CraftingData doRegister( CraftingManager craftingManager, String recipeId ) {
+    public RecipeData doRegister( CraftingManager craftingManager, String recipeId ) {
         final List<ItemDescriptorWithCount> ingredients = new ArrayList<>();
         for ( String s : this.pattern ) {
             char[] chars = s.toCharArray();
@@ -86,21 +86,7 @@ public class ShapedRecipe extends Recipe {
                 ingredients.add( ingredient );
             }
         }
-
-        return new CraftingData(
-                CraftingDataType.SHAPED,
-                recipeId,
-                this.pattern[0].length(),
-                this.pattern.length,
-                -1,
-                -1,
-                ingredients,
-                this.outputs,
-                UUID.randomUUID(),
-                "crafting_table",
-                1,
-                craftingManager.getHighestNetworkId() + 1
-        );
+        return ShapedRecipeData.shaped( recipeId, this.pattern[0].length(), this.pattern.length, ingredients, this.outputs, UUID.randomUUID(), "crafting_table", 1, craftingManager.getHighestNetworkId() +1 );
     }
 
 }

@@ -7,7 +7,6 @@ import org.jukeboxmc.command.CommandSender;
 import org.jukeboxmc.command.annotation.Description;
 import org.jukeboxmc.command.annotation.Name;
 import org.jukeboxmc.command.annotation.Permission;
-import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 
 /**

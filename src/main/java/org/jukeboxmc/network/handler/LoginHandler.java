@@ -1,8 +1,8 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.LoginPacket;
-import com.nukkitx.protocol.bedrock.packet.PlayStatusPacket;
-import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerLoginEvent;
 import org.jukeboxmc.player.Player;

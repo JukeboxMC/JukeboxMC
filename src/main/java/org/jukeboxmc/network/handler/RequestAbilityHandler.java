@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.Ability;
-import com.nukkitx.protocol.bedrock.packet.RequestAbilityPacket;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.packet.RequestAbilityPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerToggleFlyEvent;
 import org.jukeboxmc.player.AdventureSettings;

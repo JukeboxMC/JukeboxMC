@@ -1,14 +1,14 @@
 package org.jukeboxmc.player;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.protocol.bedrock.data.command.CommandData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
-import com.nukkitx.protocol.bedrock.packet.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandSender;
@@ -213,8 +213,8 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             this.updateMetadata( this.metadata.setFlag( EntityFlag.BREATHING, breathing ) );
         }
 
-        short air = this.metadata.getShort( EntityData.AIR_SUPPLY );
-        short maxAir = this.metadata.getShort( EntityData.MAX_AIR_SUPPLY );
+        short air = this.metadata.getShort( EntityDataTypes.AIR_SUPPLY );
+        short maxAir = this.metadata.getShort( EntityDataTypes.AIR_SUPPLY_MAX );
 
         if ( this.gameMode.equals( GameMode.SURVIVAL ) ) {
             if ( !breathing ) {
@@ -223,11 +223,11 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
                         this.damage( new EntityDamageEvent( this, 2f, EntityDamageEvent.DamageSource.DROWNING ) );
                     }
                 } else {
-                    this.updateMetadata( this.metadata.setShort( EntityData.AIR_SUPPLY, air ) );
+                    this.updateMetadata( this.metadata.setShort( EntityDataTypes.AIR_SUPPLY, air ) );
                 }
             } else {
                 if ( air != maxAir ) {
-                    this.updateMetadata( this.metadata.setShort( EntityData.AIR_SUPPLY, maxAir ) );
+                    this.updateMetadata( this.metadata.setShort( EntityDataTypes.AIR_SUPPLY, maxAir ) );
                 }
             }
         }
@@ -488,7 +488,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             ContainerClosePacket containerClosePacket = new ContainerClosePacket();
             containerClosePacket.setId( windowId );
-            containerClosePacket.setUnknownBool0( this.closingWindowId != windowId );
+            containerClosePacket.setServerInitiated( this.closingWindowId != windowId );
             this.playerConnection.sendPacket( containerClosePacket );
 
             this.currentInventory.removeViewer( this );
@@ -504,7 +504,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
             ContainerClosePacket containerClosePacket = new ContainerClosePacket();
             containerClosePacket.setId( windowId );
-            containerClosePacket.setUnknownBool0( isServerSide );
+            containerClosePacket.setServerInitiated( isServerSide );
             this.playerConnection.sendPacket( containerClosePacket );
 
             this.currentInventory.removeViewer( this );
@@ -515,7 +515,7 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         } else {
             ContainerClosePacket containerClosePacket = new ContainerClosePacket();
             containerClosePacket.setId( windowId );
-            containerClosePacket.setUnknownBool0( isServerSide );
+            containerClosePacket.setServerInitiated( isServerSide );
             this.playerConnection.sendPacket( containerClosePacket );
         }
     }

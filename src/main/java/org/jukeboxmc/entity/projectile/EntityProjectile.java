@@ -1,7 +1,7 @@
 package org.jukeboxmc.entity.projectile;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityMoveable;
@@ -78,7 +78,7 @@ public abstract class EntityProjectile extends EntityMoveable {
                                     player.playSound( Sound.RANDOM_BOWHIT );
                                 }
                             }
-                            this.updateMetadata(this.metadata.setLong( EntityData.TARGET_EID, hitEntity.getEntityId() ));
+                            this.updateMetadata(this.metadata.setLong( EntityDataTypes.TARGET_EID, hitEntity.getEntityId() ));
                         }
                         this.onCollidedWithEntity( hitEntity );
                         this.hitEntity = hitEntity;
@@ -146,6 +146,6 @@ public abstract class EntityProjectile extends EntityMoveable {
 
     public void setShooter( EntityLiving shooter ) {
         this.shooter = shooter;
-        this.metadata.setLong( EntityData.OWNER_EID, shooter.getEntityId() );
+        this.metadata.setLong( EntityDataTypes.OWNER_EID, shooter.getEntityId() );
     }
 }

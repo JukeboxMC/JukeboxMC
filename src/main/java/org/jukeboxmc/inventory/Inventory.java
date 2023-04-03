@@ -1,7 +1,7 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;

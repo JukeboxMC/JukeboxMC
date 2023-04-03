@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.BambooLeafSize;
 import org.jukeboxmc.block.data.BambooStalkThickness;
@@ -29,7 +29,7 @@ public class BlockBamboo extends Block {
     }
 
     public void setAge( boolean value ) {
-        this.setState( "age_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "age_bit", value ? 1 : 0 );
     }
 
     public boolean hasAge() {

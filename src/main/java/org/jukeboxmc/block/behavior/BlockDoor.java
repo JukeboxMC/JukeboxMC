@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -66,7 +66,7 @@ public class BlockDoor extends Block {
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen() );
-        this.location.getWorld().sendLevelEvent( this.location, LevelEventType.SOUND_DOOR_OPEN, 0 );
+        this.location.getWorld().sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 
@@ -85,7 +85,7 @@ public class BlockDoor extends Block {
     }
 
     public BlockDoor setOpen( boolean value ) {
-        return this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "open_bit", value ? 1 : 0 );
     }
 
     public boolean isOpen() {
@@ -93,7 +93,7 @@ public class BlockDoor extends Block {
     }
 
     public BlockDoor setUpperBlock( boolean value ) {
-        return this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "upper_block_bit", value ? 1 : 0 );
     }
 
     public boolean isUpperBlock() {
@@ -101,7 +101,7 @@ public class BlockDoor extends Block {
     }
 
     public BlockDoor setDoorHinge( boolean value ) {
-        return this.setState( "door_hinge_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "door_hinge_bit", value ? 1 : 0 );
     }
 
     public boolean isDoorHinge() {

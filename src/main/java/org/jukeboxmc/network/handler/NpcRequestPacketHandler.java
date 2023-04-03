@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.NpcRequestType;
-import com.nukkitx.protocol.bedrock.packet.NpcRequestPacket;
+import org.cloudburstmc.protocol.bedrock.data.NpcRequestType;
+import org.cloudburstmc.protocol.bedrock.packet.NpcRequestPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.form.NpcDialogueForm;
 import org.jukeboxmc.form.element.NpcDialogueButton;

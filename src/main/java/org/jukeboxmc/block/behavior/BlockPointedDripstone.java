@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.DripstoneThickness;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -48,7 +48,7 @@ public class BlockPointedDripstone extends Block {
     }
 
     public void setHanging( boolean value ) {
-        this.setState( "hanging", value ? (byte) 1 : (byte) 0 );
+        this.setState( "hanging", value ? 1 : 0 );
     }
 
     public boolean isHanging() {

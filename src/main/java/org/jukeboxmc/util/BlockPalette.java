@@ -1,14 +1,15 @@
 package org.jukeboxmc.util;
 
-import com.nukkitx.nbt.NBTInputStream;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtType;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.cloudburstmc.nbt.NBTInputStream;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtType;
+import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleBlockDefinition;
 import org.jukeboxmc.Bootstrap;
 import org.jukeboxmc.block.Block;
 
@@ -33,6 +34,7 @@ public class BlockPalette {
     public static final Int2ObjectMap<NbtMap> BLOCK_STATE_FROM_RUNTIME = new Int2ObjectLinkedOpenHashMap<>();
     public static final Object2ObjectMap<BlockData, Block> BLOCK_CACHE = new Object2ObjectOpenHashMap<>();
     public static final Object2ObjectMap<Identifier, Integer> IDENTIFIER_TO_RUNTIME = new Object2ObjectOpenHashMap<>();
+    private static final List<SimpleBlockDefinition> SIMPLE_BLOCK_DEFINITIONS = new ArrayList<>();
     public static final List<NbtMap> BLOCK_NBT = new LinkedList<>();
 
     public static void init() {
@@ -47,6 +49,7 @@ public class BlockPalette {
                     BLOCK_STATE_FROM_RUNTIME.put( runtimeId, blockMap.getCompound( "states" ) );
                     STATE_FROM_RUNTIME.put( runtimeId, blockMap );
                     IDENTIFIER_TO_RUNTIME.putIfAbsent( Identifier.fromString( blockMap.getString( "name" ) ), runtimeId );
+                    SIMPLE_BLOCK_DEFINITIONS.add( new SimpleBlockDefinition( blockMap.getString( "name" ), runtimeId, blockMap.getCompound( "states" ) ) );
                 }
             } catch ( IOException e ) {
                 throw new RuntimeException( e );
@@ -116,6 +119,10 @@ public class BlockPalette {
             }
         }
         return Collections.unmodifiableList( blocks );
+    }
+
+    public static List<SimpleBlockDefinition> getSimpleBlockDefinitions() {
+        return SIMPLE_BLOCK_DEFINITIONS;
     }
 
     @Data

@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LeverDirection;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -48,7 +48,7 @@ public class BlockLever extends Block {
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "open_bit", value ? 1 : 0 );
     }
 
     public boolean isOpen() {

@@ -1,6 +1,6 @@
 package org.jukeboxmc.blockentity;
 
-import com.nukkitx.protocol.bedrock.packet.ContainerSetDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ContainerSetDataPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -59,7 +59,6 @@ public class SmeltingComponent extends BlockEntity {
         }
         if ( this.output != null && !this.output.getType().equals( ItemType.AIR ) && !input.getType().equals( ItemType.AIR ) && outputItem.getAmount() < 64 && this.burnTime > 0 ) {
             this.cookTime++;
-
             if ( this.cookTime >= (this.inventory instanceof FurnaceInventory ? 200 : 100) ) {
                 Item itemStack = this.inventory.getItem( 2 );
                 if ( itemStack.getType() != this.output.getType() ) {
@@ -105,6 +104,8 @@ public class SmeltingComponent extends BlockEntity {
         SmeltingRecipe recipe = Server.getInstance().getCraftingManager().getSmeltingRecipe( input );
         if ( recipe != null ) {
             this.output = recipe.getOutput().clone();
+        } else {
+            System.out.println("Output is null");
         }
     }
 

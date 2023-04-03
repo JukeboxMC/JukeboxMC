@@ -1,9 +1,9 @@
 package org.jukeboxmc.blockentity;
 
 import com.google.common.base.Joiner;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtMapBuilder;
-import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMapBuilder;
+import org.cloudburstmc.protocol.bedrock.packet.BlockEntityDataPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.event.block.BlockSignChangeEvent;

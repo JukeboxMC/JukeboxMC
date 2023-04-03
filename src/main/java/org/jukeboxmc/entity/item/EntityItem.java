@@ -1,7 +1,7 @@
 package org.jukeboxmc.entity.item;
 
-import com.nukkitx.protocol.bedrock.packet.AddItemEntityPacket;
-import com.nukkitx.protocol.bedrock.packet.TakeItemEntityPacket;
+import org.cloudburstmc.protocol.bedrock.packet.AddItemEntityPacket;
+import org.cloudburstmc.protocol.bedrock.packet.TakeItemEntityPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.Entity;

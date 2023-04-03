@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.MobEquipmentPacket;
+import org.cloudburstmc.protocol.bedrock.packet.MobEquipmentPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.inventory.Inventory;
 import org.jukeboxmc.inventory.PlayerInventory;

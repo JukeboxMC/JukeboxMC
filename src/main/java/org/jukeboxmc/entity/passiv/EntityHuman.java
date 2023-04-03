@@ -1,11 +1,11 @@
 package org.jukeboxmc.entity.passiv;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.GameType;
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
-import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;

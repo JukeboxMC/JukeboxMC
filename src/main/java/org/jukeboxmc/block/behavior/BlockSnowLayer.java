@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -68,7 +68,7 @@ public class BlockSnowLayer extends Block {
     }
 
     public void setCovered( boolean value ) {
-        this.setState( "covered_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "covered_bit", value ? 1 : 0 );
     }
 
     public boolean isCovered() {

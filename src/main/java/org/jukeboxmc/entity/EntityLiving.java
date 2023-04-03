@@ -1,10 +1,10 @@
 package org.jukeboxmc.entity;
 
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
-import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
-import com.nukkitx.protocol.bedrock.packet.MobEffectPacket;
 import org.apache.commons.math3.util.FastMath;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
+import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
@@ -336,11 +336,11 @@ public abstract class EntityLiving extends Entity {
             int g = ( color[1] / count ) & 0xff;
             int b = ( color[2] / count ) & 0xff;
 
-            this.updateMetadata( this.metadata.setInt( EntityData.EFFECT_COLOR, ( r << 16 ) + ( g << 8 ) + b ) );
-            this.updateMetadata( this.metadata.setByte( EntityData.EFFECT_AMBIENT, (byte) 0 ) );
+            this.updateMetadata( this.metadata.setInt( EntityDataTypes.EFFECT_COLOR, ( r << 16 ) + ( g << 8 ) + b ) );
+            this.updateMetadata( this.metadata.setByte( EntityDataTypes.EFFECT_AMBIENCE, (byte) 0 ) );
         } else {
-            this.updateMetadata( this.metadata.setInt( EntityData.EFFECT_COLOR, 0 ) );
-            this.updateMetadata( this.metadata.setByte( EntityData.EFFECT_AMBIENT, (byte) 0 ) );
+            this.updateMetadata( this.metadata.setInt( EntityDataTypes.EFFECT_COLOR, 0 ) );
+            this.updateMetadata( this.metadata.setByte( EntityDataTypes.EFFECT_AMBIENCE, (byte) 0 ) );
         }
     }
 

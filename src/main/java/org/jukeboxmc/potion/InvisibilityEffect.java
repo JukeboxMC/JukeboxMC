@@ -1,6 +1,6 @@
 package org.jukeboxmc.potion;
 
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.jukeboxmc.entity.EntityLiving;
 
 import java.awt.*;

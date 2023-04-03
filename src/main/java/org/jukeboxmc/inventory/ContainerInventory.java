@@ -1,9 +1,9 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
-import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
-import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
-import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.packet.ContainerOpenPacket;
+import org.cloudburstmc.protocol.bedrock.packet.InventoryContentPacket;
+import org.cloudburstmc.protocol.bedrock.packet.InventorySlotPacket;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 

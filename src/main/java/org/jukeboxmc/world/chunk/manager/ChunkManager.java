@@ -18,7 +18,6 @@ import org.jukeboxmc.world.World;
 import org.jukeboxmc.world.chunk.Chunk;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

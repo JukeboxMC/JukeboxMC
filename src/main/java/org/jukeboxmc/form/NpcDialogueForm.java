@@ -1,13 +1,13 @@
 package org.jukeboxmc.form;
 
 import com.google.gson.JsonObject;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.packet.NpcDialoguePacket;
-import com.nukkitx.protocol.bedrock.packet.SetEntityDataPacket;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.packet.NpcDialoguePacket;
+import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.passiv.EntityNPC;
 import org.jukeboxmc.form.element.NpcDialogueButton;
@@ -44,7 +44,7 @@ public class NpcDialogueForm {
     private final ObjectArrayList<NpcDialogueButton> dialogueButtons = new ObjectArrayList<>();
 
     public NpcDialogueForm buttons( NpcDialogueButton... buttons ) {
-        String urlTag = this.npc.getMetadata().getString( EntityData.URL_TAG );
+        String urlTag = this.npc.getMetadata().getString( EntityDataTypes.NPC_DATA );
 
         List<JsonObject> urlTags = Utils.gson().fromJson( urlTag, List.class ) == null ?
                 new ArrayList<>() : Utils.gson().fromJson( urlTag, List.class );
@@ -74,8 +74,8 @@ public class NpcDialogueForm {
         SetEntityDataPacket setEntityDataPacket = new SetEntityDataPacket();
         setEntityDataPacket.setRuntimeEntityId( this.npc.getEntityId() );
         setEntityDataPacket.getMetadata().putAll( this.npc.getMetadata()
-                .setString( EntityData.NAMETAG, this.title )
-                .setString( EntityData.INTERACTIVE_TAG, this.dialogue )
+                .setString( EntityDataTypes.NAME, this.title )
+                .setString( EntityDataTypes.NPC_DATA, this.dialogue )
                 .getEntityDataMap() );
         Server.getInstance().broadcastPacket( setEntityDataPacket );
 

@@ -1,9 +1,9 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
-import com.nukkitx.protocol.bedrock.data.PlayerActionType;
-import com.nukkitx.protocol.bedrock.packet.LevelEventPacket;
-import com.nukkitx.protocol.bedrock.packet.PlayerActionPacket;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayerActionPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -11,7 +11,6 @@ import org.jukeboxmc.event.player.*;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.world.Particle;
 
 /**
  * @author LucGamesYT
@@ -118,7 +117,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
                     double breakTime = Math.ceil( startBreakBlock.getBreakTime( player.getInventory().getItemInHand(), player ) * 20 );
                     if ( breakTime > 0 ) {
                         LevelEventPacket levelEventPacket = new LevelEventPacket();
-                        levelEventPacket.setType( LevelEventType.BLOCK_START_BREAK );
+                        levelEventPacket.setType( LevelEvent.BLOCK_START_BREAK );
                         levelEventPacket.setPosition( packet.getBlockPosition().toFloat() );
                         levelEventPacket.setData( (int) ( 65535 / breakTime ) );
                         player.getWorld().sendChunkPacket( lasBreakPosition.getChunkX(), lasBreakPosition.getChunkZ(), levelEventPacket );
@@ -131,7 +130,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
             }
             case STOP_BREAK, ABORT_BREAK -> {
                 LevelEventPacket levelEventPacket = new LevelEventPacket();
-                levelEventPacket.setType( LevelEventType.BLOCK_STOP_BREAK );
+                levelEventPacket.setType( LevelEvent.BLOCK_STOP_BREAK );
                 levelEventPacket.setPosition( packet.getBlockPosition().toFloat() );
                 levelEventPacket.setData( 0 );
                 player.getWorld().sendChunkPacket( lasBreakPosition.getChunkX(), lasBreakPosition.getChunkZ(), levelEventPacket );
@@ -140,7 +139,7 @@ public class PlayerActionHandler implements PacketHandler<PlayerActionPacket> {
             case CONTINUE_BREAK -> {
                 if ( player.isBreakingBlock() ) {
                     Block continueBlockBreak = player.getWorld().getBlock( lasBreakPosition );
-                    player.getWorld().spawnParticle( null, Particle.CRACK_BLOCK, lasBreakPosition, continueBlockBreak.getRuntimeId() | packet.getFace() << 24 );
+                    player.getWorld().sendLevelEvent( null, lasBreakPosition, LevelEvent.PARTICLE_CRACK_BLOCK,continueBlockBreak.getRuntimeId() | packet.getFace() << 24 );
                 }
             }
             case RESPAWN -> {

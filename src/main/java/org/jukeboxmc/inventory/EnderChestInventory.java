@@ -1,8 +1,8 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
-import com.nukkitx.protocol.bedrock.packet.BlockEventPacket;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.packet.BlockEventPacket;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 

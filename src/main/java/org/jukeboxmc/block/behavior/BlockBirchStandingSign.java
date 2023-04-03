@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
 import org.apache.commons.math3.util.FastMath;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;

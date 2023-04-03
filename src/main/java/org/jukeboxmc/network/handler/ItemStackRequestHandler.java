@@ -1,12 +1,16 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
-import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
-import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.*;
-import com.nukkitx.protocol.bedrock.packet.ItemStackRequestPacket;
-import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseStatus;
+import org.cloudburstmc.protocol.bedrock.packet.ItemStackRequestPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.item.EntityItem;
 import org.jukeboxmc.event.inventory.InventoryClickEvent;
@@ -30,13 +34,13 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
 
     @Override
     public void handle( ItemStackRequestPacket packet, Server server, Player player ) {
-        List<ItemStackResponsePacket.Response> responses = new LinkedList<>();
+        List<ItemStackResponse> responses = new LinkedList<>();
         for ( ItemStackRequest request : packet.getRequests() ) {
-            Map<Integer, List<ItemStackResponsePacket.ItemEntry>> itemEntryMap = new HashMap<>();
-            for ( StackRequestActionData action : request.getActions() ) {
+            Map<Integer, List<ItemStackResponseSlot>> itemEntryMap = new HashMap<>();
+            for ( ItemStackRequestAction action : request.getActions() ) {
                 switch ( action.getType() ) {
                     case CONSUME -> {
-                        ItemStackResponsePacket.ItemEntry itemEntry = this.handleConsumeAction( player, (ConsumeStackRequestActionData) action, request ).get( 0 );
+                        ItemStackResponseSlot itemEntry = this.handleConsumeAction( player, (ConsumeAction) action, request ).get( 0 );
                         if ( !itemEntryMap.containsKey( request.getRequestId() ) ) {
                             itemEntryMap.put( request.getRequestId(), new LinkedList<>() {{
                                 add( itemEntry );
@@ -46,21 +50,21 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                         }
                     }
                     case CRAFT_CREATIVE ->
-                            this.handleCraftCreativeAction( player, (CraftCreativeStackRequestActionData) action );
+                            this.handleCraftCreativeAction( player, (CraftCreativeAction) action );
                     case CRAFT_RECIPE ->
-                            responses.addAll( this.handleCraftRecipeAction( player, (CraftRecipeStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleCraftRecipeAction( player, (CraftRecipeAction) action, request ) );
                     case TAKE ->
-                            responses.addAll( this.handleTakeStackRequestAction( player, (TakeStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleTakeStackRequestAction( player, (TakeAction) action, request ) );
                     case PLACE ->
-                            responses.addAll( this.handlePlaceAction( player, (PlaceStackRequestActionData) action, request ) );
+                            responses.addAll( this.handlePlaceAction( player, (PlaceAction) action, request ) );
                     case DESTROY ->
-                            responses.addAll( this.handleDestroyAction( player, (DestroyStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleDestroyAction( player, (DestroyAction) action, request ) );
                     case SWAP ->
-                            responses.addAll( this.handleSwapAction( player, (SwapStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleSwapAction( player, (SwapAction) action, request ) );
                     case DROP ->
-                            responses.addAll( this.handleDropItemAction( player, (DropStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleDropItemAction( player, (DropAction) action, request ) );
                     case CRAFT_RECIPE_OPTIONAL ->
-                            responses.addAll( this.handleCraftRecipeOptionalAction( player, (CraftRecipeOptionalStackRequestActionData) action, request ) );
+                            responses.addAll( this.handleCraftRecipeOptionalAction( player, (CraftRecipeOptionalAction) action, request ) );
                     case CRAFT_RESULTS_DEPRECATED -> {
                         //responses.addAll( this.handleCraftResult( player, (CraftResultsDeprecatedStackRequestActionData) action, requestId ) );
                     }
@@ -69,16 +73,16 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                 }
             }
             ItemStackResponsePacket itemStackResponsePacket = new ItemStackResponsePacket();
-            Map<Integer, List<ItemStackResponsePacket.ContainerEntry>> containerEntryMap = new HashMap<>();
+            Map<Integer, List<ItemStackResponseContainer>> containerEntryMap = new HashMap<>();
             if ( !itemEntryMap.isEmpty() ) {
-                for ( ItemStackResponsePacket.Response respons : responses ) {
+                for ( ItemStackResponse respons : responses ) {
                     containerEntryMap.put( respons.getRequestId(), respons.getContainers() );
                 }
                 if ( containerEntryMap.containsKey( request.getRequestId() ) ) {
-                    containerEntryMap.get( request.getRequestId() ).add( 0, new ItemStackResponsePacket.ContainerEntry( ContainerSlotType.CRAFTING_INPUT, itemEntryMap.get( request.getRequestId() ) ) );
+                    containerEntryMap.get( request.getRequestId() ).add( 0, new ItemStackResponseContainer( ContainerSlotType.CRAFTING_INPUT, itemEntryMap.get( request.getRequestId() ) ) );
                 }
-                for ( Map.Entry<Integer, List<ItemStackResponsePacket.ContainerEntry>> entry : containerEntryMap.entrySet() ) {
-                    itemStackResponsePacket.getEntries().add( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, entry.getKey(), entry.getValue() ) );
+                for ( Map.Entry<Integer, List<ItemStackResponseContainer>> entry : containerEntryMap.entrySet() ) {
+                    itemStackResponsePacket.getEntries().add( new ItemStackResponse( ItemStackResponseStatus.OK, entry.getKey(), entry.getValue() ) );
                 }
             } else {
                 itemStackResponsePacket.getEntries().addAll( responses );
@@ -87,28 +91,28 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         }
     }
 
-    private Collection<ItemStackResponsePacket.Response> handleCraftRecipeOptionalAction( Player player, CraftRecipeOptionalStackRequestActionData action, ItemStackRequest request ) {
+    private Collection<ItemStackResponse> handleCraftRecipeOptionalAction( Player player, CraftRecipeOptionalAction action, ItemStackRequest request ) {
         return Collections.emptyList();
     }
 
-    private Collection<ItemStackResponsePacket.Response> handleCraftResult( Player player, CraftResultsDeprecatedStackRequestActionData action, int requestId ) {
+    private Collection<ItemStackResponse> handleCraftResult( Player player, CraftResultsDeprecatedAction action, int requestId ) {
         CraftingGridInventory craftingGridInventory = player.getCraftingGridInventory();
 
-        List<ItemStackResponsePacket.ItemEntry> itemEntries = new LinkedList<>();
+        List<ItemStackResponseSlot> itemEntries = new LinkedList<>();
         for ( int slot = craftingGridInventory.getOffset(); slot < craftingGridInventory.getSize() + craftingGridInventory.getOffset(); slot++ ) {
             Item item = craftingGridInventory.getItem( slot );
-            itemEntries.add( new ItemStackResponsePacket.ItemEntry( (byte) slot, (byte) slot, (byte) item.getAmount(), item.getStackNetworkId(), item.getDisplayname(), item.getDurability() ) );
+            itemEntries.add( new ItemStackResponseSlot( (byte) slot, (byte) slot, (byte) item.getAmount(), item.getStackNetworkId(), item.getDisplayname(), item.getDurability() ) );
         }
 
-        List<ItemStackResponsePacket.ContainerEntry> containerEntryList = new LinkedList<>();
-        containerEntryList.add( new ItemStackResponsePacket.ContainerEntry( ContainerSlotType.CRAFTING_INPUT, itemEntries ) );
+        List<ItemStackResponseContainer> containerEntryList = new LinkedList<>();
+        containerEntryList.add( new ItemStackResponseContainer( ContainerSlotType.CRAFTING_INPUT, itemEntries ) );
 
-        return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, requestId, containerEntryList ) );
+        return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, requestId, containerEntryList ) );
     }
 
-    private List<ItemStackResponsePacket.ItemEntry> handleConsumeAction( Player player, ConsumeStackRequestActionData action, ItemStackRequest request ) {
-        byte amount = action.getCount();
-        StackRequestSlotInfoData source = action.getSource();
+    private List<ItemStackResponseSlot> handleConsumeAction( Player player, ConsumeAction action, ItemStackRequest request ) {
+        int amount = action.getCount();
+        ItemStackRequestSlotData source = action.getSource();
 
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
 
@@ -119,8 +123,8 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
 
         this.setItem( player, source.getContainer(), source.getSlot(), sourceItem );
 
-        List<ItemStackResponsePacket.ItemEntry> containerEntryList = new LinkedList<>();
-        containerEntryList.add( new ItemStackResponsePacket.ItemEntry(
+        List<ItemStackResponseSlot> containerEntryList = new LinkedList<>();
+        containerEntryList.add( new ItemStackResponseSlot(
                 source.getSlot(),
                 source.getSlot(),
                 (byte) sourceItem.getAmount(),
@@ -131,29 +135,29 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         return containerEntryList;
     }
 
-    private List<ItemStackResponsePacket.Response> handleCraftRecipeAction( Player player, CraftRecipeStackRequestActionData action, ItemStackRequest request ) {
+    private List<ItemStackResponse> handleCraftRecipeAction( Player player, CraftRecipeAction action, ItemStackRequest request ) {
         List<Item> resultItem = Server.getInstance().getCraftingManager().getResultItem( action.getRecipeNetworkId() );
         player.getCreativeItemCacheInventory().setItem( 0, resultItem.get( 0 ) );
         return Collections.emptyList();
     }
 
-    private void handleCraftCreativeAction( Player player, CraftCreativeStackRequestActionData actionData ) {
+    private void handleCraftCreativeAction( Player player, CraftCreativeAction actionData ) {
         ItemData itemData = CreativeItems.getCreativeItems().get( actionData.getCreativeItemNetworkId() - 1 );
         Item item = Item.create( itemData );
         item.setAmount( item.getMaxStackSize() );
         player.getCreativeItemCacheInventory().setItem( 0, item );
     }
 
-    private List<ItemStackResponsePacket.Response> handlePlaceAction( Player player, PlaceStackRequestActionData actionData, ItemStackRequest itemStackRequest ) {
-        byte amount = actionData.getCount();
-        StackRequestSlotInfoData source = actionData.getSource();
-        StackRequestSlotInfoData destination = actionData.getDestination();
+    private List<ItemStackResponse> handlePlaceAction( Player player, PlaceAction actionData, ItemStackRequest itemStackRequest ) {
+        int amount = actionData.getCount();
+        ItemStackRequestSlotData source = actionData.getSource();
+        ItemStackRequestSlotData destination = actionData.getDestination();
 
-        List<ItemStackResponsePacket.ContainerEntry> containerEntryList = new LinkedList<>();
+        List<ItemStackResponseContainer> containerEntryList = new LinkedList<>();
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
         Item destinationItem = this.getItem( player, destination.getContainer(), destination.getSlot() );
 
-        if ( source.getContainer().equals( ContainerSlotType.CREATIVE_OUTPUT ) ) {
+        if ( source.getContainer().equals( ContainerSlotType.CREATED_OUTPUT ) ) {
             Inventory sourceInventory = this.getInventory( player, source.getContainer() );
             Inventory destinationInventory = this.getInventory( player, destination.getContainer() );
 
@@ -163,7 +167,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             if ( inventoryClickEvent.isCancelled() ) {
                 sourceInventory.setItem( source.getSlot(), sourceItem );
                 return List.of(
-                        new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
+                        new ItemStackResponse( ItemStackResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
             }
 
             sourceItem.setStackNetworkId( Item.stackNetworkCount++ );
@@ -171,10 +175,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                 sourceItem.setAmount( Math.min( destinationItem.getAmount() + sourceItem.getAmount(), sourceItem.getMaxStackSize() ) );
             }
             this.setItem( player, destination.getContainer(), destination.getSlot(), sourceItem );
-            containerEntryList.add( new ItemStackResponsePacket.ContainerEntry(
+            containerEntryList.add( new ItemStackResponseContainer(
                     destination.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     destination.getSlot(),
                                     destination.getSlot(),
                                     (byte) sourceItem.getAmount(),
@@ -184,7 +188,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                             )
                     )
             ) );
-            return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
+            return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
         } else {
             Inventory sourceInventory = this.getInventory( player, source.getContainer() );
             Inventory destinationInventory = this.getInventory( player, destination.getContainer() );
@@ -194,7 +198,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             if ( inventoryClickEvent.isCancelled() || ( sourceInventory.getType().equals( InventoryType.ARMOR ) && sourceItem.getEnchantment( EnchantmentType.CURSE_OF_BINDING ) != null ) ) {
                 sourceInventory.setItem( source.getSlot(), sourceItem );
                 return List.of(
-                        new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
+                        new ItemStackResponse( ItemStackResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
             }
 
             if ( destinationItem.equals( sourceItem ) && sourceItem.getAmount() > 0 ) {
@@ -218,10 +222,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             this.setItem( player, destination.getContainer(), destination.getSlot(), destinationItem );
 
             Item finalSourceItem = sourceItem;
-            containerEntryList.add( new ItemStackResponsePacket.ContainerEntry(
+            containerEntryList.add( new ItemStackResponseContainer(
                     source.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     source.getSlot(),
                                     source.getSlot(),
                                     (byte) finalSourceItem.getAmount(),
@@ -232,10 +236,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                     )
             ) );
             Item finalDestinationItem = destinationItem;
-            containerEntryList.add( new ItemStackResponsePacket.ContainerEntry(
+            containerEntryList.add( new ItemStackResponseContainer(
                     destination.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     destination.getSlot(),
                                     destination.getSlot(),
                                     (byte) finalDestinationItem.getAmount(),
@@ -245,20 +249,20 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                             )
                     )
             ) );
-            return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
+            return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
         }
     }
 
-    private List<ItemStackResponsePacket.Response> handleTakeStackRequestAction( Player player, TakeStackRequestActionData actionData, ItemStackRequest itemStackRequest ) {
-        byte amount = actionData.getCount();
-        StackRequestSlotInfoData source = actionData.getSource();
-        StackRequestSlotInfoData destination = actionData.getDestination();
+    private List<ItemStackResponse> handleTakeStackRequestAction( Player player, TakeAction actionData, ItemStackRequest itemStackRequest ) {
+        int amount = actionData.getCount();
+        ItemStackRequestSlotData source = actionData.getSource();
+        ItemStackRequestSlotData destination = actionData.getDestination();
 
-        List<ItemStackResponsePacket.ContainerEntry> entryList = new LinkedList<>();
+        List<ItemStackResponseContainer> entryList = new LinkedList<>();
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
         Item destinationItem = this.getItem( player, destination.getContainer(), destination.getSlot() );
 
-        if ( source.getContainer().equals( ContainerSlotType.CREATIVE_OUTPUT ) ) {
+        if ( source.getContainer().equals( ContainerSlotType.CREATED_OUTPUT ) ) {
             Inventory sourceInventory = this.getInventory( player, source.getContainer() );
             Inventory destinationInventory = this.getInventory( player, destination.getContainer() );
             InventoryClickEvent inventoryClickEvent = new InventoryClickEvent( sourceInventory, destinationInventory, player, sourceItem, destinationItem, source.getSlot() );
@@ -267,7 +271,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             if ( inventoryClickEvent.isCancelled() ) {
                 sourceInventory.setItem( source.getSlot(), sourceItem );
                 return List.of(
-                        new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
+                        new ItemStackResponse( ItemStackResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
             }
 
             sourceItem.setStackNetworkId( Item.stackNetworkCount++ );
@@ -275,10 +279,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                 sourceItem.setAmount( Math.min( destinationItem.getAmount() + sourceItem.getAmount(), sourceItem.getMaxStackSize() ) );
             }
             this.setItem( player, destination.getContainer(), destination.getSlot(), sourceItem );
-            entryList.add( new ItemStackResponsePacket.ContainerEntry(
+            entryList.add( new ItemStackResponseContainer(
                     destination.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     destination.getSlot(),
                                     destination.getSlot(),
                                     (byte) sourceItem.getAmount(),
@@ -288,7 +292,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                             )
                     )
             ) );
-            return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), entryList ) );
+            return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), entryList ) );
         } else {
             Inventory sourceInventory = this.getInventory( player, source.getContainer() );
             Inventory destinationInventory = this.getInventory( player, destination.getContainer() );
@@ -298,7 +302,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             if ( inventoryClickEvent.isCancelled() || ( sourceInventory.getType().equals( InventoryType.ARMOR ) && sourceItem.getEnchantment( EnchantmentType.CURSE_OF_BINDING ) != null ) ) {
                 sourceInventory.setItem( source.getSlot(), sourceItem );
                 return List.of(
-                        new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
+                        new ItemStackResponse( ItemStackResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
             }
 
             if ( destinationItem.equals( sourceItem ) && sourceItem.getAmount() > 0 ) {
@@ -323,10 +327,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             this.setItem( player, destination.getContainer(), destination.getSlot(), destinationItem );
 
             Item finalSourceItem = sourceItem;
-            entryList.add( new ItemStackResponsePacket.ContainerEntry(
+            entryList.add( new ItemStackResponseContainer(
                     source.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     source.getSlot(),
                                     source.getSlot(),
                                     (byte) finalSourceItem.getAmount(),
@@ -337,10 +341,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                     )
             ) );
             Item finalDestinationItem = destinationItem;
-            entryList.add( new ItemStackResponsePacket.ContainerEntry(
+            entryList.add( new ItemStackResponseContainer(
                     destination.getContainer(),
                     Collections.singletonList(
-                            new ItemStackResponsePacket.ItemEntry(
+                            new ItemStackResponseSlot(
                                     destination.getSlot(),
                                     destination.getSlot(),
                                     (byte) finalDestinationItem.getAmount(),
@@ -350,13 +354,13 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                             )
                     )
             ) );
-            return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), entryList ) );
+            return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), entryList ) );
         }
     }
 
-    private List<ItemStackResponsePacket.Response> handleSwapAction( Player player, SwapStackRequestActionData actionData, ItemStackRequest itemStackRequest ) {
-        StackRequestSlotInfoData source = actionData.getSource();
-        StackRequestSlotInfoData destination = actionData.getDestination();
+    private List<ItemStackResponse> handleSwapAction( Player player, SwapAction actionData, ItemStackRequest itemStackRequest ) {
+        ItemStackRequestSlotData source = actionData.getSource();
+        ItemStackRequestSlotData destination = actionData.getDestination();
 
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
         Item destinationItem = this.getItem( player, destination.getContainer(), destination.getSlot() );
@@ -364,12 +368,12 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         this.setItem( player, source.getContainer(), source.getSlot(), destinationItem );
         this.setItem( player, destination.getContainer(), destination.getSlot(), sourceItem );
 
-        List<ItemStackResponsePacket.ContainerEntry> containerEntryList = new LinkedList<>();
+        List<ItemStackResponseContainer> containerEntryList = new LinkedList<>();
 
-        containerEntryList.add( new ItemStackResponsePacket.ContainerEntry(
+        containerEntryList.add( new ItemStackResponseContainer(
                 destination.getContainer(),
                 Collections.singletonList(
-                        new ItemStackResponsePacket.ItemEntry(
+                        new ItemStackResponseSlot(
                                 destination.getSlot(),
                                 destination.getSlot(),
                                 (byte) sourceItem.getAmount(),
@@ -380,10 +384,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                 )
         ) );
 
-        containerEntryList.add( new ItemStackResponsePacket.ContainerEntry(
+        containerEntryList.add( new ItemStackResponseContainer(
                 source.getContainer(),
                 Collections.singletonList(
-                        new ItemStackResponsePacket.ItemEntry(
+                        new ItemStackResponseSlot(
                                 source.getSlot(),
                                 source.getSlot(),
                                 (byte) destinationItem.getAmount(),
@@ -393,12 +397,12 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                         )
                 )
         ) );
-        return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
+        return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), containerEntryList ) );
     }
 
-    private List<ItemStackResponsePacket.Response> handleDestroyAction( Player player, DestroyStackRequestActionData actionData, ItemStackRequest itemStackRequest ) {
-        byte amount = actionData.getCount();
-        StackRequestSlotInfoData source = actionData.getSource();
+    private List<ItemStackResponse> handleDestroyAction( Player player, DestroyAction actionData, ItemStackRequest itemStackRequest ) {
+        int amount = actionData.getCount();
+        ItemStackRequestSlotData source = actionData.getSource();
 
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
         sourceItem.setAmount( sourceItem.getAmount() - amount );
@@ -408,11 +412,11 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         }
         Item finalSourceItem = sourceItem;
 
-        return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), Collections.singletonList(
-                new ItemStackResponsePacket.ContainerEntry(
+        return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), Collections.singletonList(
+                new ItemStackResponseContainer(
                         source.getContainer(),
                         Collections.singletonList(
-                                new ItemStackResponsePacket.ItemEntry(
+                                new ItemStackResponseSlot(
                                         source.getSlot(),
                                         source.getSlot(),
                                         (byte) finalSourceItem.getAmount(),
@@ -425,9 +429,9 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         ) );
     }
 
-    private List<ItemStackResponsePacket.Response> handleDropItemAction( Player player, DropStackRequestActionData dropStackRequestActionData, ItemStackRequest itemStackRequest ) {
-        byte amount = dropStackRequestActionData.getCount();
-        StackRequestSlotInfoData source = dropStackRequestActionData.getSource();
+    private List<ItemStackResponse> handleDropItemAction( Player player, DropAction dropStackRequestActionData, ItemStackRequest itemStackRequest ) {
+        int amount = dropStackRequestActionData.getCount();
+        ItemStackRequestSlotData source = dropStackRequestActionData.getSource();
 
         Inventory sourceInventory = getInventory( player, source.getContainer() );
         Item sourceItem = this.getItem( player, source.getContainer(), source.getSlot() );
@@ -437,7 +441,7 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         if ( playerDropItemEvent.isCancelled() || ( sourceInventory.getType().equals( InventoryType.ARMOR ) && sourceItem.getEnchantment( EnchantmentType.CURSE_OF_BINDING ) != null ) ) {
             sourceInventory.setItem( source.getSlot(), sourceItem );
             return List.of(
-                    new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
+                    new ItemStackResponse( ItemStackResponseStatus.ERROR, itemStackRequest.getRequestId(), Collections.emptyList() ) );
         }
 
         sourceItem.setAmount( sourceItem.getAmount() - amount );
@@ -459,11 +463,11 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         entityItem.spawn();
 
         Item finalSourceItem = sourceItem;
-        return Collections.singletonList( new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, itemStackRequest.getRequestId(), Collections.singletonList(
-                new ItemStackResponsePacket.ContainerEntry(
+        return Collections.singletonList( new ItemStackResponse( ItemStackResponseStatus.OK, itemStackRequest.getRequestId(), Collections.singletonList(
+                new ItemStackResponseContainer(
                         source.getContainer(),
                         Collections.singletonList(
-                                new ItemStackResponsePacket.ItemEntry(
+                                new ItemStackResponseSlot(
                                         source.getSlot(),
                                         source.getSlot(),
                                         (byte) finalSourceItem.getAmount(),
@@ -476,18 +480,18 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
         ) ) );
     }
 
-    private ItemStackResponsePacket.Response rejectItemStackRequest( Player player, int requestId, Inventory sourceInventory, Inventory destinationInventory, int sourceSlot, int destinationSlot, Item sourceItem, Item destinationItem ) {
+    private ItemStackResponse rejectItemStackRequest( Player player, int requestId, Inventory sourceInventory, Inventory destinationInventory, int sourceSlot, int destinationSlot, Item sourceItem, Item destinationItem ) {
         Server.getInstance().getScheduler().scheduleDelayed( () -> {
             sourceInventory.setItem( sourceSlot, sourceItem );
             sourceInventory.sendContents( sourceSlot, player );
             destinationInventory.setItem( destinationSlot, destinationItem );
             destinationInventory.sendContents( destinationSlot, player );
         }, 20 );
-        return new ItemStackResponsePacket.Response( ItemStackResponsePacket.ResponseStatus.OK, requestId, Arrays.asList(
-                new ItemStackResponsePacket.ContainerEntry(
+        return new ItemStackResponse( ItemStackResponseStatus.OK, requestId, Arrays.asList(
+                new ItemStackResponseContainer(
                         ContainerSlotType.HOTBAR,
                         Collections.singletonList(
-                                new ItemStackResponsePacket.ItemEntry(
+                                new ItemStackResponseSlot(
                                         (byte) sourceSlot,
                                         (byte) sourceSlot,
                                         (byte) sourceItem.getAmount(),
@@ -497,10 +501,10 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
                                 )
                         )
                 ),
-                new ItemStackResponsePacket.ContainerEntry(
+                new ItemStackResponseContainer(
                         ContainerSlotType.CURSOR,
                         Collections.singletonList(
-                                new ItemStackResponsePacket.ItemEntry(
+                                new ItemStackResponseSlot(
                                         (byte) destinationSlot,
                                         (byte) destinationSlot,
                                         (byte) destinationItem.getAmount(),
@@ -515,13 +519,13 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
 
     private Inventory getInventory( Player player, ContainerSlotType containerSlotType ) {
         return switch ( containerSlotType ) {
-            case CREATIVE_OUTPUT -> player.getCreativeItemCacheInventory();
+            case CREATED_OUTPUT -> player.getCreativeItemCacheInventory();
             case CURSOR -> player.getCursorInventory();
             case INVENTORY, HOTBAR, HOTBAR_AND_INVENTORY -> player.getInventory();
             case ARMOR -> player.getArmorInventory();
-            case CONTAINER, BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
-                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_OUTPUT, BLAST_FURNACE_INGREDIENT,
-                    ENCHANTING_INPUT, ENCHANTING_LAPIS -> player.getCurrentInventory();
+            case BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
+                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_RESULT , BLAST_FURNACE_INGREDIENT,
+                    ENCHANTING_INPUT, ENCHANTING_MATERIAL -> player.getCurrentInventory();
             case CRAFTING_INPUT -> player.getCraftingGridInventory();
             case CARTOGRAPHY_ADDITIONAL, CARTOGRAPHY_INPUT, CARTOGRAPHY_RESULT -> player.getCartographyTableInventory();
             case SMITHING_TABLE_INPUT, SMITHING_TABLE_MATERIAL, SMITHING_TABLE_RESULT ->
@@ -535,14 +539,14 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
 
     private Item getItem( Player player, ContainerSlotType containerSlotType, int slot ) {
         return switch ( containerSlotType ) {
-            case CREATIVE_OUTPUT -> player.getCreativeItemCacheInventory().getItem( 0 );
+            case CREATED_OUTPUT -> player.getCreativeItemCacheInventory().getItem( 0 );
             case CURSOR -> player.getCursorInventory().getItem( slot );
             case OFFHAND -> player.getOffHandInventory().getItem( slot );
             case INVENTORY, HOTBAR, HOTBAR_AND_INVENTORY -> player.getInventory().getItem( slot );
             case ARMOR -> player.getArmorInventory().getItem( slot );
-            case CONTAINER, BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
-                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_OUTPUT, BLAST_FURNACE_INGREDIENT,
-                    ENCHANTING_INPUT, ENCHANTING_LAPIS -> player.getCurrentInventory().getItem( slot );
+            case  BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
+                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_RESULT, BLAST_FURNACE_INGREDIENT,
+                    ENCHANTING_INPUT, ENCHANTING_MATERIAL -> player.getCurrentInventory().getItem( slot );
             case CRAFTING_INPUT -> player.getCraftingGridInventory().getItem( slot );
             case CARTOGRAPHY_ADDITIONAL, CARTOGRAPHY_INPUT, CARTOGRAPHY_RESULT ->
                     player.getCartographyTableInventory().getItem( slot );
@@ -574,9 +578,9 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
             case ARMOR -> {
                 player.getArmorInventory().setItem( slot, item, sendContent );
             }
-            case CONTAINER, BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
-                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_OUTPUT, BLAST_FURNACE_INGREDIENT,
-                    ENCHANTING_INPUT, ENCHANTING_LAPIS -> {
+            case BARREL, BREWING_RESULT, BREWING_FUEL, BREWING_INPUT,
+                    FURNACE_FUEL, FURNACE_INGREDIENT, FURNACE_RESULT, BLAST_FURNACE_INGREDIENT,
+                    ENCHANTING_INPUT, ENCHANTING_MATERIAL -> {
                 player.getCurrentInventory().setItem( slot, item, sendContent );
             }
             case CRAFTING_INPUT -> {

@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.BlockColor;
@@ -76,7 +76,7 @@ public class BlockBed extends Block {
     }
 
     public void setHeadPiece( boolean value ) {
-        this.setState( "head_piece_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "head_piece_bit", value ? 1 : 0 );
     }
 
     public boolean isHeadPiece() {
@@ -84,7 +84,7 @@ public class BlockBed extends Block {
     }
 
     public void setOccupied( boolean value ) {
-        this.setState( "occupied_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "occupied_bit", value ? 1 : 0 );
     }
 
     public boolean isOccupied() {

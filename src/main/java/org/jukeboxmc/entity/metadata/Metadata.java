@@ -1,8 +1,8 @@
 package org.jukeboxmc.entity.metadata;
 
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 
 import java.util.Objects;
 
@@ -14,90 +14,88 @@ public class Metadata {
 
     private final EntityDataMap entityDataMap = new EntityDataMap();
 
-    public Metadata setByte( EntityData entityData, byte value ) {
+    public Metadata setByte( EntityDataType<Byte> entityData, byte value ) {
         Byte oldValue = this.getByte( entityData );
         if ( oldValue != value ) {
-            this.entityDataMap.putByte( entityData, value );
+            this.entityDataMap.put( entityData, value );
         }
         return this;
     }
 
-    public Byte getByte( EntityData entityData ) {
-        return this.entityDataMap.getByte( entityData );
+    public Byte getByte( EntityDataType<Byte> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : 0;
     }
 
-    public Metadata setLong( EntityData entityData, long value ) {
+    public Metadata setLong( EntityDataType<Long> entityData, long value ) {
         Long oldValue = this.getLong( entityData );
         if ( oldValue != value ) {
-            this.entityDataMap.putLong( entityData, value );
+            this.entityDataMap.put( entityData, value );
         }
         return this;
     }
 
-    public Long getLong( EntityData entityData ) {
-        return this.entityDataMap.getLong( entityData );
+    public Long getLong( EntityDataType<Long> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : 0L;
     }
 
-    public Metadata setShort( EntityData entityData, short value ) {
+    public Metadata setShort( EntityDataType<Short> entityData, short value ) {
         Short oldValue = this.getShort( entityData );
         if ( oldValue != value ) {
-            this.entityDataMap.putShort( entityData, value );
+            this.entityDataMap.put( entityData, value );
         }
         return this;
     }
 
-    public Short getShort( EntityData entityData ) {
-        return this.entityDataMap.getShort( entityData );
+    public Short getShort( EntityDataType<Short> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : 0;
     }
 
-    public Metadata setString( EntityData entityData, String value ) {
+    public Metadata setString( EntityDataType<String> entityData, String value ) {
         String oldValue = this.getString( entityData );
         if ( !Objects.equals( oldValue, value ) ) {
-            this.entityDataMap.putString( entityData, value );
+            this.entityDataMap.put( entityData, value );
         }
         return this;
     }
 
-    public String getString( EntityData entityData ) {
-        return this.entityDataMap.getString( entityData );
+    public String getString( EntityDataType<String> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : "";
     }
 
-    public Metadata setFloat( EntityData entityData, float value ) {
+    public Metadata setFloat( EntityDataType<Float> entityData, float value ) {
         Float oldValue = this.getFloat( entityData );
         if ( oldValue != value ) {
-            this.entityDataMap.putFloat( entityData, value );
+            this.entityDataMap.put( entityData, value );
         }
         return this;
     }
 
-    public Float getFloat( EntityData entityData ) {
-        return this.entityDataMap.getFloat( entityData );
+    public Float getFloat( EntityDataType<Float> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : 0F;
+    }
+
+    public Metadata setInt( EntityDataType<Integer> entityData, int value ) {
+        Integer oldValue = this.getInt( entityData );
+        if ( oldValue != value ) {
+            this.entityDataMap.put( entityData, value );
+        }
+        return this;
+    }
+
+    public Integer getInt( EntityDataType<Integer> entityData ) {
+        return this.entityDataMap.containsKey( entityData ) ? this.entityDataMap.get( entityData ) : 0;
     }
 
     public Metadata setFlag( EntityFlag entityFlag, boolean value ) {
         boolean oldValue = this.getFlag( entityFlag );
         if ( oldValue != value ) {
-            this.entityDataMap.getOrCreateFlags().setFlag( entityFlag, value );
+            this.entityDataMap.setFlag( entityFlag, value );
         }
-        return this;
-    }
-
-    public Integer getInt( EntityData entityData ) {
-        return this.entityDataMap.getInt( entityData );
-    }
-
-    public Metadata setInt( EntityData entityData, int value ) {
-        Integer oldValue = this.getInt( entityData );
-
-        if ( oldValue != value ) {
-            this.entityDataMap.putInt( entityData, value );
-        }
-
         return this;
     }
 
     public boolean getFlag( EntityFlag entityFlag ) {
-        return this.entityDataMap.getOrCreateFlags().getFlag( entityFlag );
+        return this.entityDataMap.getOrCreateFlags().contains( entityFlag );
     }
 
     public EntityDataMap getEntityDataMap() {

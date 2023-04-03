@@ -1,8 +1,8 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
-import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
-import com.nukkitx.protocol.bedrock.packet.MobArmorEquipmentPacket;
+import org.cloudburstmc.protocol.bedrock.packet.InventoryContentPacket;
+import org.cloudburstmc.protocol.bedrock.packet.InventorySlotPacket;
+import org.cloudburstmc.protocol.bedrock.packet.MobArmorEquipmentPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;

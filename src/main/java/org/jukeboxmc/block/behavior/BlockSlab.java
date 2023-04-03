@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.util.Identifier;
@@ -43,7 +43,7 @@ public class BlockSlab extends Block {
     }
 
     public BlockSlab setTopSlot( boolean value ) {
-        this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "top_slot_bit", value ? 1 : 0 );
         return this;
     }
 

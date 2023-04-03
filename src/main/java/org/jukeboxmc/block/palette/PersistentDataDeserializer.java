@@ -1,9 +1,10 @@
 package org.jukeboxmc.block.palette;
 
-import com.nukkitx.nbt.NbtMap;
+
+import org.cloudburstmc.nbt.NbtMap;
 
 public interface PersistentDataDeserializer<V> {
 
-    V deserialize(NbtMap nbtMap);
+    V deserialize( NbtMap nbtMap);
 
 }

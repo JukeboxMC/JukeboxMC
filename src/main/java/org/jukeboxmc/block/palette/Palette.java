@@ -1,16 +1,16 @@
 package org.jukeboxmc.block.palette;
 
-import com.nukkitx.nbt.NBTInputStream;
-import com.nukkitx.nbt.NBTOutputStream;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.cloudburstmc.nbt.NBTInputStream;
+import org.cloudburstmc.nbt.NBTOutputStream;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.common.util.VarInts;
 import org.jukeboxmc.block.palette.bitarray.BitArray;
 import org.jukeboxmc.block.palette.bitarray.BitArrayVersion;
 

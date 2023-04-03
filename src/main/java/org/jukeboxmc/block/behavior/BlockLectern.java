@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -44,7 +44,7 @@ public class BlockLectern extends Block {
     }
 
     public void setPowered( boolean value ) {
-        this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "powered_bit", value ? 1 : 0 );
     }
 
     public boolean isPowered() {

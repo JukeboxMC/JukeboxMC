@@ -1,7 +1,7 @@
 package org.jukeboxmc.entity.projectile;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.behavior.BlockLiquid;
@@ -45,7 +45,7 @@ public class EntityFishingHook extends EntityProjectile {
 
     @Override
     public BedrockPacket createSpawnPacket() {
-        this.metadata.setLong( EntityData.OWNER_EID, this.shooter != null ? this.shooter.getEntityId() : -1 );
+        this.metadata.setLong( EntityDataTypes.OWNER_EID, this.shooter != null ? this.shooter.getEntityId() : -1 );
         return super.createSpawnPacket();
     }
 

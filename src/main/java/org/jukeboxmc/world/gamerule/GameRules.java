@@ -1,7 +1,7 @@
 package org.jukeboxmc.world.gamerule;
 
-import com.nukkitx.protocol.bedrock.data.GameRuleData;
-import com.nukkitx.protocol.bedrock.packet.GameRulesChangedPacket;
+import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.packet.GameRulesChangedPacket;
 
 import java.util.*;
 

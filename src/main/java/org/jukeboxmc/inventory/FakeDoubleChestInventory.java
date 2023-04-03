@@ -1,8 +1,8 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
-import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ContainerOpenPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;

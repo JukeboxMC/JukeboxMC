@@ -1,13 +1,14 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
-import com.nukkitx.protocol.bedrock.packet.BlockEntityDataPacket;
-import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateBlockPacket;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.RuntimeBlockDefination;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +56,7 @@ public class FakeChestInventory extends FakeInventory {
 
     protected void placeFakeChest( Player player, Vector position ) {
         UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-        updateBlockPacket.setRuntimeId( Block.create( BlockType.CHEST ).getRuntimeId() );
+        updateBlockPacket.setDefinition( new RuntimeBlockDefination( Block.create( BlockType.CHEST ).getRuntimeId() ) );
         updateBlockPacket.setBlockPosition( position.toVector3i() );
         updateBlockPacket.setDataLayer( 0 );
         updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );

@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.RespawnPacket;
+import org.cloudburstmc.protocol.bedrock.packet.RespawnPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 

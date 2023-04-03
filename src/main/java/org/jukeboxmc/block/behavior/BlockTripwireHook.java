@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.util.Identifier;
@@ -20,7 +20,7 @@ public class BlockTripwireHook extends Block {
     }
 
     public void setPowered( boolean value ) {
-        this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "powered_bit", value ? 1 : 0 );
     }
 
     public boolean isPowered() {
@@ -28,7 +28,7 @@ public class BlockTripwireHook extends Block {
     }
 
     public void setAttached( boolean value ) {
-        this.setState( "attached_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "attached_bit", value ? 1 : 0 );
     }
 
     public boolean isAttached() {

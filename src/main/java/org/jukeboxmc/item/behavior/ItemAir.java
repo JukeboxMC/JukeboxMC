@@ -1,6 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 

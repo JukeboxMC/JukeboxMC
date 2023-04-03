@@ -1,10 +1,10 @@
 package org.jukeboxmc.player.manager;
 
-import com.nukkitx.protocol.bedrock.packet.ChunkRadiusUpdatedPacket;
-import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
-import com.nukkitx.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket;
 import it.unimi.dsi.fastutil.longs.*;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import org.cloudburstmc.protocol.bedrock.packet.ChunkRadiusUpdatedPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
+import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.math.Vector;

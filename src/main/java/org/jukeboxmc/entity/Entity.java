@@ -1,13 +1,9 @@
 package org.jukeboxmc.entity;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
-import com.nukkitx.protocol.bedrock.packet.AddEntityPacket;
-import com.nukkitx.protocol.bedrock.packet.RemoveEntityPacket;
-import com.nukkitx.protocol.bedrock.packet.SetEntityDataPacket;
-import com.nukkitx.protocol.bedrock.packet.SetEntityMotionPacket;
+import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -28,9 +24,6 @@ import org.jukeboxmc.world.chunk.Chunk;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import static com.nukkitx.protocol.bedrock.data.entity.EntityData.BOUNDING_BOX_HEIGHT;
-import static com.nukkitx.protocol.bedrock.data.entity.EntityData.BOUNDING_BOX_WIDTH;
 
 /**
  * @author LucGamesYT
@@ -61,12 +54,12 @@ public abstract class Entity {
     public Entity() {
         this.entityId = Entity.entityCount++;
         this.metadata = new Metadata();
-        this.metadata.setLong( EntityData.PLAYER_INDEX, 0 );
-        this.metadata.setShort( EntityData.AIR_SUPPLY, (short) 400 );
-        this.metadata.setShort( EntityData.MAX_AIR_SUPPLY, (short) 400 );
-        this.metadata.setFloat( EntityData.SCALE, 1 );
-        this.metadata.setFloat( EntityData.BOUNDING_BOX_WIDTH, this.getWidth() );
-        this.metadata.setFloat( EntityData.BOUNDING_BOX_HEIGHT, this.getHeight() );
+        this.metadata.setInt( EntityDataTypes.PLAYER_INDEX, 0 );
+        this.metadata.setShort( EntityDataTypes.AIR_SUPPLY, (short) 400 );
+        this.metadata.setShort( EntityDataTypes.AIR_SUPPLY_MAX, (short) 400 );
+        this.metadata.setFloat( EntityDataTypes.SCALE, 1 );
+        this.metadata.setFloat( EntityDataTypes.WIDTH, this.getWidth() );
+        this.metadata.setFloat( EntityDataTypes.HEIGHT, this.getHeight() );
         this.metadata.setFlag( EntityFlag.HAS_GRAVITY, true );
         this.metadata.setFlag( EntityFlag.HAS_COLLISION, true );
         this.metadata.setFlag( EntityFlag.CAN_CLIMB, true );
@@ -124,7 +117,7 @@ public abstract class Entity {
         addEntityPacket.setIdentifier( this.getIdentifier().getFullName() );
         addEntityPacket.setPosition( this.location.add( 0, this.getEyeHeight(), 0 ).toVector3f() );
         addEntityPacket.setMotion( this.velocity.toVector3f() );
-        addEntityPacket.setRotation( Vector3f.from( this.location.getPitch(), this.location.getYaw(), this.location.getYaw() ) );
+        addEntityPacket.setRotation( Vector2f.from( this.location.getPitch(), this.location.getYaw() ) );
         addEntityPacket.getMetadata().putAll( this.metadata.getEntityDataMap() );
         return addEntityPacket;
     }
@@ -363,8 +356,8 @@ public abstract class Entity {
                 this.location.getY() + height,
                 this.location.getZ() + radius );
 
-        this.metadata.setFloat( BOUNDING_BOX_HEIGHT, this.getHeight() );
-        this.metadata.setFloat( BOUNDING_BOX_WIDTH, this.getWidth() );
+        this.metadata.setFloat( EntityDataTypes.HEIGHT, this.getHeight() );
+        this.metadata.setFloat( EntityDataTypes.WIDTH, this.getWidth() );
     }
 
     public Direction getDirection() {
@@ -387,22 +380,22 @@ public abstract class Entity {
     //============ Metadata =============
 
     public short getMaxAirSupply() {
-        return this.metadata.getShort( EntityData.AIR_SUPPLY );
+        return this.metadata.getShort( EntityDataTypes.AIR_SUPPLY );
     }
 
     public void setMaxAirSupply( short value ) {
         if ( value != this.getMaxAirSupply() ) {
-            this.updateMetadata( this.metadata.setShort( EntityData.AIR_SUPPLY, value ) );
+            this.updateMetadata( this.metadata.setShort( EntityDataTypes.AIR_SUPPLY, value ) );
         }
     }
 
     public float getScale() {
-        return this.metadata.getFloat( EntityData.SCALE );
+        return this.metadata.getFloat( EntityDataTypes.SCALE );
     }
 
     public void setScale( float value ) {
         if ( value != this.getScale() ) {
-            this.updateMetadata( this.metadata.setFloat( EntityData.SCALE, value ) );
+            this.updateMetadata( this.metadata.setFloat( EntityDataTypes.SCALE, value ) );
         }
     }
 
@@ -427,11 +420,11 @@ public abstract class Entity {
     }
 
     public String getNameTag() {
-        return this.metadata.getString( EntityData.NAMETAG );
+        return this.metadata.getString( EntityDataTypes.NAME );
     }
 
     public void setNameTag( String value ) {
-        this.updateMetadata( this.metadata.setString( EntityData.NAMETAG, value ) );
+        this.updateMetadata( this.metadata.setString( EntityDataTypes.NAME, value ) );
     }
 
     public boolean isNameTagVisible() {

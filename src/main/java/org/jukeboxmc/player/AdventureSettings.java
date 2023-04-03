@@ -1,12 +1,12 @@
 package org.jukeboxmc.player;
 
-import com.nukkitx.protocol.bedrock.data.Ability;
-import com.nukkitx.protocol.bedrock.data.AbilityLayer;
-import com.nukkitx.protocol.bedrock.data.PlayerPermission;
-import com.nukkitx.protocol.bedrock.data.command.CommandPermission;
-import com.nukkitx.protocol.bedrock.packet.UpdateAbilitiesPacket;
-import com.nukkitx.protocol.bedrock.packet.UpdateAdventureSettingsPacket;
 import lombok.Getter;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateAdventureSettingsPacket;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -58,7 +58,7 @@ public class AdventureSettings {
     public void update() {
         UpdateAbilitiesPacket updateAbilitiesPacket = new UpdateAbilitiesPacket();
         updateAbilitiesPacket.setUniqueEntityId( this.player.getEntityId() );
-        updateAbilitiesPacket.setCommandPermission( this.player.isOp() ? CommandPermission.OPERATOR : CommandPermission.NORMAL );
+        updateAbilitiesPacket.setCommandPermission( this.player.isOp() ? CommandPermission.ADMIN : CommandPermission.ANY );
         updateAbilitiesPacket.setPlayerPermission( this.player.isOp() && !this.player.getGameMode().equals( GameMode.SPECTATOR ) ? PlayerPermission.OPERATOR : PlayerPermission.MEMBER );
 
         AbilityLayer abilityLayer = new AbilityLayer();

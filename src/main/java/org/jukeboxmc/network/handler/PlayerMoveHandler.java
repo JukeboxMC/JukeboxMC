@@ -1,8 +1,8 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.protocol.bedrock.packet.MoveEntityAbsolutePacket;
-import com.nukkitx.protocol.bedrock.packet.MovePlayerPacket;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
+import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.event.player.PlayerMoveEvent;
 import org.jukeboxmc.math.Location;

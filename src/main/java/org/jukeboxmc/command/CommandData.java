@@ -1,9 +1,9 @@
 package org.jukeboxmc.command;
 
-import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import lombok.NonNull;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +102,7 @@ public class CommandData {
         return new CommandData( this.name, this.description, this.usage, this.permission, this.permissionMessage, new CommandEnum( this.name, this.getAliases() ), this.overloads );
     }
 
-    public com.nukkitx.protocol.bedrock.data.command.CommandData toNetwork() {
+    public org.cloudburstmc.protocol.bedrock.data.command.CommandData toNetwork() {
         String description = this.description;
 
         CommandParamData[][] overloadData = new CommandParamData[this.overloads.size()][];
@@ -116,7 +116,7 @@ public class CommandData {
             overloadData[i] = params;
         }
 
-        return new com.nukkitx.protocol.bedrock.data.command.CommandData( this.name, description, Collections.emptyList(),
+        return new org.cloudburstmc.protocol.bedrock.data.command.CommandData( this.name, description, Collections.emptySet(),
                 (byte) 0, this.aliases.toNetwork(), overloadData );
     }
 

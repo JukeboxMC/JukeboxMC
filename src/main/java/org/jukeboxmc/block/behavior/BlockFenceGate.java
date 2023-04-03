@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -55,12 +55,12 @@ public class BlockFenceGate extends Block {
             }
         }
         this.setOpen( !this.isOpen() );
-        this.location.getWorld().sendLevelEvent( this.location, LevelEventType.SOUND_DOOR_OPEN, 0 );
+        this.location.getWorld().sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 
     public void setInWall( boolean value ) {
-        this.setState( "in_wall_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "in_wall_bit", value ? 1 : 0 );
     }
 
     public boolean isInWall() {
@@ -68,7 +68,7 @@ public class BlockFenceGate extends Block {
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "open_bit", value ? 1 : 0 );
     }
 
     public boolean isOpen() {

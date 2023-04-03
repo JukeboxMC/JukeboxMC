@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -69,7 +69,7 @@ public class BlockBrewingStand extends Block {
     }
 
     public void setBrewingStandSlotA( boolean value ) {
-        this.setState( "brewing_stand_slot_a_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "brewing_stand_slot_a_bit", value ? 1 : 0 );
     }
 
     public boolean isBrewingStandSlotA() {
@@ -77,7 +77,7 @@ public class BlockBrewingStand extends Block {
     }
 
     public void setBrewingStandSlotB( boolean value ) {
-        this.setState( "brewing_stand_slot_a_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "brewing_stand_slot_a_bit", value ? 1 : 0 );
     }
 
     public boolean isBrewingStandSlotB() {
@@ -85,7 +85,7 @@ public class BlockBrewingStand extends Block {
     }
 
     public void setBrewingStandSlotC( boolean value ) {
-        this.setState( "brewing_stand_slot_a_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "brewing_stand_slot_a_bit", value ? 1 : 0 );
     }
 
     public boolean isBrewingStandSlotC() {

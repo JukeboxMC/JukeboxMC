@@ -1,6 +1,6 @@
 package org.jukeboxmc.event.network;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.event.Event;
 import org.jukeboxmc.player.Player;

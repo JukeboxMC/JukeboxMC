@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
 import org.apache.commons.math3.util.FastMath;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -82,7 +82,7 @@ public class BlockBarrel extends Block {
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "open_bit", value ? 1 : 0 );
     }
 
     public boolean isOpen() {

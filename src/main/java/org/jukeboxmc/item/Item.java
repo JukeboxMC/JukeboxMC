@@ -1,12 +1,14 @@
 package org.jukeboxmc.item;
 
-import com.nukkitx.nbt.*;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import lombok.ToString;
+import org.cloudburstmc.nbt.*;
+import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -17,10 +19,7 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
-import org.jukeboxmc.util.BlockPalette;
-import org.jukeboxmc.util.Identifier;
-import org.jukeboxmc.util.ItemPalette;
-import org.jukeboxmc.util.Utils;
+import org.jukeboxmc.util.*;
 import org.jukeboxmc.world.Sound;
 
 import java.io.IOException;
@@ -123,11 +122,11 @@ public class Item implements Cloneable {
     }
 
     public Item( ItemData itemData, boolean withNetworkId ) {
-        this.itemType = ItemRegistry.getItemType( ItemPalette.getIdentifier( (short) itemData.getId() ) );
+        this.itemType = ItemRegistry.getItemType( ItemPalette.getIdentifier( (short) itemData.getDefinition().getRuntimeId() ) );
         ItemRegistry.ItemRegistryData itemRegistryData = ItemRegistry.getItemRegistryData( this.itemType );
         this.identifier = itemRegistryData.getIdentifier();
         this.runtimeId = ItemPalette.getRuntimeId( this.identifier );
-        this.blockRuntimeId = itemData.getBlockRuntimeId();
+        this.blockRuntimeId = itemData.getBlockDefinition() != null ? itemData.getBlockDefinition().getRuntimeId() : 0;
         if ( withNetworkId ) {
             this.stackNetworkId = stackNetworkCount++;
         }
@@ -149,11 +148,11 @@ public class Item implements Cloneable {
     }
 
     public static <T extends Item> T create( ItemData itemData ) {
-        if ( itemData.getId() == 0 ) {
+        if ( itemData.getDefinition() == ItemDefinition.AIR ) {
             return Item.create( ItemType.AIR );
         }
-        T item = create( ItemPalette.getIdentifier( (short) itemData.getId() ) );
-        item.setBlockRuntimeId( itemData.getBlockRuntimeId() );
+        T item = create( ItemPalette.getIdentifier( (short) itemData.getDefinition().getRuntimeId() ) );
+        item.setBlockRuntimeId( itemData.getBlockDefinition() != null ? itemData.getBlockDefinition().getRuntimeId() : 0 );
         item.setMeta( itemData.getDamage() );
         item.setAmount( itemData.getCount() );
         item.setNbt( itemData.getTag() );
@@ -498,8 +497,8 @@ public class Item implements Cloneable {
         return ItemData.builder()
                 .netId( this.stackNetworkId )
                 .usingNetId( this.stackNetworkId > 0 )
-                .id( this.runtimeId )
-                .blockRuntimeId( this.blockRuntimeId )
+                .definition( new SimpleItemDefinition( this.identifier.getFullName(), this.runtimeId, false ) )
+                .blockDefinition( new RuntimeBlockDefination( this.blockRuntimeId ) )
                 .damage( this.meta )
                 .count( this.amount )
                 .tag( this.toNbt() )

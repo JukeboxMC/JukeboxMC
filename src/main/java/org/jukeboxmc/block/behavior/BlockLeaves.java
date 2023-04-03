@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.LeafType;
 import org.jukeboxmc.item.Item;
@@ -39,7 +39,7 @@ public class BlockLeaves extends Block {
     }
 
     public void setPersistent( boolean value ) {
-        this.setState( "persistent_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "persistent_bit", value ? 1 : 0 );
     }
 
     public boolean isPersistent() {
@@ -47,7 +47,7 @@ public class BlockLeaves extends Block {
     }
 
     public void setUpdate( boolean value ) {
-        this.setState( "update_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "update_bit", value ? 1 : 0 );
     }
 
     public boolean isUpdate() {

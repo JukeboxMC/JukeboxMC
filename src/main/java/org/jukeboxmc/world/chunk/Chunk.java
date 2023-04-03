@@ -1,16 +1,16 @@
 package org.jukeboxmc.world.chunk;
 
 import com.google.common.collect.ImmutableSet;
-import com.nukkitx.nbt.NBTOutputStream;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Synchronized;
+import org.cloudburstmc.nbt.NBTOutputStream;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
 import org.iq80.leveldb.WriteBatch;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -364,11 +364,7 @@ public class Chunk {
             levelChunkPacket.setRequestSubChunks( false );
             levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
             this.writeTo( byteBuf );
-
-            byte[] data = new byte[byteBuf.readableBytes()];
-            byteBuf.readBytes( data );
-
-            levelChunkPacket.setData( data );
+            levelChunkPacket.setData( byteBuf.retainedDuplicate() );
             return levelChunkPacket;
         } finally {
             byteBuf.release();
