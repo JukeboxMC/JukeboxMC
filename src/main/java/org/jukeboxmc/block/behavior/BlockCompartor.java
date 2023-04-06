@@ -41,7 +41,7 @@ public class BlockCompartor extends Block {
     }
 
     public boolean isOutputSubtract() {
-        return this.stateExists( "output_subtract_bit" ) && this.getByteState( "output_subtract_bit" ) == 1;
+        return this.stateExists( "output_subtract_bit" ) && this.getIntState( "output_subtract_bit" ) == 1;
     }
 
     public void setOutputLit( boolean value ) {
@@ -49,7 +49,7 @@ public class BlockCompartor extends Block {
     }
 
     public boolean isOutputLit() {
-        return this.stateExists( "output_lit_bit" ) && this.getByteState( "output_lit_bit" ) == 1;
+        return this.stateExists( "output_lit_bit" ) && this.getIntState( "output_lit_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

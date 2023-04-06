@@ -48,7 +48,7 @@ public class BlockLectern extends Block {
     }
 
     public boolean isPowered() {
-        return this.stateExists( "powered_bit" ) && this.getByteState( "powered_bit" ) == 1;
+        return this.stateExists( "powered_bit" ) && this.getIntState( "powered_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

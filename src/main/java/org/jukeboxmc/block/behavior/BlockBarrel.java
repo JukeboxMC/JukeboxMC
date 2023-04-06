@@ -86,7 +86,7 @@ public class BlockBarrel extends Block {
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

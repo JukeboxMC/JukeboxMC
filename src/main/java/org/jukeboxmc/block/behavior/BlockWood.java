@@ -58,7 +58,7 @@ public class BlockWood extends Block {
     }
 
     public boolean isStripped() {
-        return this.stateExists( "stripped_bit" ) && this.getByteState( "stripped_bit" ) == 1;
+        return this.stateExists( "stripped_bit" ) && this.getIntState( "stripped_bit" ) == 1;
     }
 
     public void setAxis( Axis axis ) {

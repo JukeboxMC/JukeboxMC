@@ -80,7 +80,7 @@ public class BlockBed extends Block {
     }
 
     public boolean isHeadPiece() {
-        return this.stateExists( "head_piece_bit" ) && this.getByteState( "head_piece_bit" ) == 1;
+        return this.stateExists( "head_piece_bit" ) && this.getIntState( "head_piece_bit" ) == 1;
     }
 
     public void setOccupied( boolean value ) {
@@ -88,7 +88,7 @@ public class BlockBed extends Block {
     }
 
     public boolean isOccupied() {
-        return this.stateExists( "occupied_bit" ) && this.getByteState( "occupied_bit" ) == 1;
+        return this.stateExists( "occupied_bit" ) && this.getIntState( "occupied_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

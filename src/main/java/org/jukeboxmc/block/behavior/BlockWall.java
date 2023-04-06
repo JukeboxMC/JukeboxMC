@@ -138,7 +138,7 @@ public class BlockWall extends Block {
     }
 
     public boolean isWallPost() {
-        return this.stateExists( "wall_post_bit" ) && this.getByteState( "wall_post_bit" ) == 1;
+        return this.stateExists( "wall_post_bit" ) && this.getIntState( "wall_post_bit" ) == 1;
     }
 
     public void setWallConnectionTypeEast( WallConnectionType wallConnectionTypeEast ) {

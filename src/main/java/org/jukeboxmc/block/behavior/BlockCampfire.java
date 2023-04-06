@@ -35,7 +35,7 @@ public class BlockCampfire extends Block {
     }
 
     public boolean isExtinguished() {
-        return this.stateExists( "extinguished" ) && this.getByteState( "extinguished" ) == 1;
+        return this.stateExists( "extinguished" ) && this.getIntState( "extinguished" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

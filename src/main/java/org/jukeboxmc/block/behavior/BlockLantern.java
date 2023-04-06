@@ -65,6 +65,6 @@ public class BlockLantern extends Block {
     }
 
     public boolean isHanging() {
-        return this.stateExists( "hanging" ) && this.getByteState( "hanging" ) == 1;
+        return this.stateExists( "hanging" ) && this.getIntState( "hanging" ) == 1;
     }
 }

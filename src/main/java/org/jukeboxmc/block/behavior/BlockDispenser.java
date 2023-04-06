@@ -54,7 +54,7 @@ public class BlockDispenser extends Block {
     }
 
     public boolean isTriggered() {
-        return this.stateExists( "triggered_bit" ) && this.getByteState( "triggered_bit" ) == 1;
+        return this.stateExists( "triggered_bit" ) && this.getIntState( "triggered_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

@@ -35,7 +35,7 @@ public class BlockEndPortalFrame extends Block {
     }
 
     public boolean isEndPortalEye() {
-        return this.stateExists( "end_portal_eye_bit" ) && this.getByteState( "end_portal_eye_bit" ) == 1;
+        return this.stateExists( "end_portal_eye_bit" ) && this.getIntState( "end_portal_eye_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

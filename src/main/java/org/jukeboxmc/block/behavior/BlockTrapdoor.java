@@ -58,7 +58,7 @@ public class BlockTrapdoor extends Block {
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
     }
 
     public void setUpsideDown( boolean value ) {
@@ -66,7 +66,7 @@ public class BlockTrapdoor extends Block {
     }
 
     public boolean isUpsideDown() {
-        return this.stateExists( "upside_down_bit" ) && this.getByteState( "upside_down_bit" ) == 1;
+        return this.stateExists( "upside_down_bit" ) && this.getIntState( "upside_down_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

@@ -60,7 +60,7 @@ public class BlockBell extends Block {
     }
 
     public boolean isToggle() {
-        return this.stateExists( "toggle_bit" ) && this.getByteState( "toggle_bit" ) == 1;
+        return this.stateExists( "toggle_bit" ) && this.getIntState( "toggle_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

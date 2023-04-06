@@ -66,7 +66,7 @@ public class BlockButton extends Block {
     }
 
     public boolean isButtonPressed() {
-        return this.stateExists( "button_pressed_bit" ) && this.getByteState( "button_pressed_bit" ) == 1;
+        return this.stateExists( "button_pressed_bit" ) && this.getIntState( "button_pressed_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

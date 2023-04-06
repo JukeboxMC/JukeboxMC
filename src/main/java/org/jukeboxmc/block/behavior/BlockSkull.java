@@ -49,7 +49,7 @@ public class BlockSkull extends Block {
     }
 
     public boolean isNoDrop() {
-        return this.stateExists( "no_drop_bit" ) && this.getByteState( "no_drop_bit" ) == 1;
+        return this.stateExists( "no_drop_bit" ) && this.getIntState( "no_drop_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

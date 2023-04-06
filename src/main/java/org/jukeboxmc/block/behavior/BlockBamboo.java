@@ -33,7 +33,7 @@ public class BlockBamboo extends Block {
     }
 
     public boolean hasAge() {
-        return this.stateExists( "age_bit" ) && this.getByteState( "age_bit" ) == 1;
+        return this.stateExists( "age_bit" ) && this.getIntState( "age_bit" ) == 1;
     }
 
     public void setBambooStalkThickness( BambooStalkThickness bambooStalkThickness ) {

@@ -24,7 +24,7 @@ public class BlockTripwireHook extends Block {
     }
 
     public boolean isPowered() {
-        return this.stateExists( "powered_bit" ) && this.getByteState( "powered_bit" ) == 1;
+        return this.stateExists( "powered_bit" ) && this.getIntState( "powered_bit" ) == 1;
     }
 
     public void setAttached( boolean value ) {
@@ -32,7 +32,7 @@ public class BlockTripwireHook extends Block {
     }
 
     public boolean isAttached() {
-        return this.stateExists( "attached_bit" ) && this.getByteState( "attached_bit" ) == 1;
+        return this.stateExists( "attached_bit" ) && this.getIntState( "attached_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

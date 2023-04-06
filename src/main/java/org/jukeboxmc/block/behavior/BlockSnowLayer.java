@@ -72,7 +72,7 @@ public class BlockSnowLayer extends Block {
     }
 
     public boolean isCovered() {
-        return this.stateExists( "covered_bit" ) && this.getByteState( "covered_bit" ) == 1;
+        return this.stateExists( "covered_bit" ) && this.getIntState( "covered_bit" ) == 1;
     }
 
     public BlockSnowLayer setHeight( int value ) {

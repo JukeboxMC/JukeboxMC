@@ -82,6 +82,6 @@ public class BlockDoublePlant extends Block {
     }
 
     public boolean isUpperBlock() {
-        return this.stateExists( "upper_block_bit" ) && this.getByteState( "upper_block_bit" ) == 1;
+        return this.stateExists( "upper_block_bit" ) && this.getIntState( "upper_block_bit" ) == 1;
     }
 }

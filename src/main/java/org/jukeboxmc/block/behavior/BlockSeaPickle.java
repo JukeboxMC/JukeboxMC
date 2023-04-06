@@ -31,6 +31,6 @@ public class BlockSeaPickle extends Block {
     }
 
     public boolean isDead() {
-        return this.stateExists( "dead_bit" ) && this.getByteState( "dead_bit" ) == 1;
+        return this.stateExists( "dead_bit" ) && this.getIntState( "dead_bit" ) == 1;
     }
 }

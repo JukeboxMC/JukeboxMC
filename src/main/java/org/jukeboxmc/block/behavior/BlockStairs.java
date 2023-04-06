@@ -40,7 +40,7 @@ public class BlockStairs extends Block {
     }
 
     public boolean isUpsideDown() {
-        return this.stateExists( "upside_down_bit" ) && this.getByteState( "upside_down_bit" ) == 1;
+        return this.stateExists( "upside_down_bit" ) && this.getIntState( "upside_down_bit" ) == 1;
     }
 
     public void setCrossDirection( CrossDirection crossDirection ) {

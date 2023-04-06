@@ -78,6 +78,6 @@ public class BlockCandle extends Block {
     }
 
     public boolean isLit() {
-        return this.stateExists( "lit" ) && this.getByteState( "lit" ) == 1;
+        return this.stateExists( "lit" ) && this.getIntState( "lit" ) == 1;
     }
 }
