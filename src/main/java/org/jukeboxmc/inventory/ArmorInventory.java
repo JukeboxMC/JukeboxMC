@@ -4,6 +4,7 @@ import org.cloudburstmc.protocol.bedrock.packet.InventoryContentPacket;
 import org.cloudburstmc.protocol.bedrock.packet.InventorySlotPacket;
 import org.cloudburstmc.protocol.bedrock.packet.MobArmorEquipmentPacket;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.entity.passiv.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.item.behavior.ItemArmor;
@@ -21,8 +22,8 @@ public class ArmorInventory extends ContainerInventory {
     }
 
     @Override
-    public Player getInventoryHolder() {
-        return (Player) this.holder;
+    public EntityHuman getInventoryHolder() {
+        return (EntityHuman) this.holder;
     }
 
     @Override

@@ -1,8 +1,17 @@
 package org.jukeboxmc.player.skin;
 
+import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
+import org.jukeboxmc.util.Utils;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,18 +29,18 @@ public class Skin {
     public static final int SKIN_128_128_SIZE = 65536;
 
     private String skinId;
-    private String resourcePatch;
+    private String resourcePatch = legacyGeometryName( "geometry.humanoid.custom" );
     private String geometryName = "";
-    private String geometryData;
-    private String animationData;
-    private String capeId;
+    private String geometryData = "";
+    private String animationData = "";
+    private String capeId = "";
     private String fullSkinId = UUID.randomUUID().toString();
     private String skinColor = "#0";
     private String armSize = "wide";
     private String playFabId = "";
 
-    private Image skinData;
-    private Image capeData;
+    private Image skinData = new Image( 0, 0, new byte[0] );
+    private Image capeData = new Image( 0, 0, new byte[0] );
 
     private boolean isPremium;
     private boolean isPersona;
@@ -131,6 +140,10 @@ public class Skin {
         this.skinData = skinData;
     }
 
+    public void setSkinData( BufferedImage bufferedImage ) {
+        this.skinData = parseBufferedImage( bufferedImage );
+    }
+
     public Image getCapeData() {
         return this.capeData != null ? this.capeData : new Image( 0, 0, new byte[0] );
     }
@@ -213,7 +226,7 @@ public class Skin {
         List<SkinAnimation> skinAnimations = new ArrayList<>();
         for ( AnimationData animation : serializedSkin.getAnimations() ) {
             Image image = new Image( animation.getImage().getWidth(), animation.getImage().getHeight(), animation.getImage().getImage() );
-            skinAnimations.add( new SkinAnimation( image, animation.getTextureType().ordinal(), animation.getFrames(), animation.getExpressionType().ordinal() ));
+            skinAnimations.add( new SkinAnimation( image, animation.getTextureType().ordinal(), animation.getFrames(), animation.getExpressionType().ordinal() ) );
         }
         skin.setSkinAnimations( skinAnimations );
         skin.setCapeData( new Image( serializedSkin.getCapeData().getWidth(), serializedSkin.getCapeData().getHeight(), serializedSkin.getCapeData().getImage() ) );
@@ -252,6 +265,9 @@ public class Skin {
         for ( PersonaPieceTint pieceTint : this.personaPieceTints ) {
             personaPieceTintList.add( new PersonaPieceTintData( pieceTint.getPieceType(), pieceTint.getColors() ) );
         }
+        if ( this.skinId == null) {
+            this.skinId = generateSkinId( "Custom" );
+        }
         return SerializedSkin.builder()
                 .skinId( this.skinId )
                 .playFabId( this.playFabId )
@@ -272,5 +288,62 @@ public class Skin {
                 .personaPieces( personaPieceDataList )
                 .tintColors( personaPieceTintList )
                 .build();
+    }
+
+    public static Skin fromInputStream( InputStream inputStream ) {
+        Skin skin = new Skin();
+        skin.setTrusted( true );
+        BufferedImage skinData = null;
+        try {
+            skinData = ImageIO.read( inputStream );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        if ( skinData != null ) {
+            skin.setSkinData( skinData );
+        }
+        return skin;
+    }
+
+    public static Skin fromFile( File file ) {
+        Skin skin = new Skin();
+        skin.setTrusted( true );
+        BufferedImage skinData = null;
+        try {
+            skinData = ImageIO.read( file );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        if ( skinData != null ) {
+            skin.setSkinData( skinData );
+        }
+        return skin;
+    }
+
+    public static String legacyGeometryName( String geometryName ) {
+        return "{\"geometry\" : {\"default\" : \"" + geometryName + "\"}}";
+    }
+
+    public static Image parseBufferedImage( BufferedImage image ) {
+        try (FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream()){
+            for ( int y = 0; y < image.getHeight(); y++ ) {
+                for ( int x = 0; x < image.getWidth(); x++ ) {
+                    Color color = new Color( image.getRGB( x, y ), true );
+                    outputStream.write( color.getRed() );
+                    outputStream.write( color.getGreen() );
+                    outputStream.write( color.getBlue() );
+                    outputStream.write( color.getAlpha() );
+                }
+            }
+            image.flush();
+            return new Image( image.getWidth(), image.getHeight(), outputStream.array );
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+    }
+
+    public String generateSkinId( String name ) {
+        byte[] data = Utils.appendBytes(this.skinData.getData(), this.resourcePatch.getBytes( StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(data) + "." + name;
     }
 }

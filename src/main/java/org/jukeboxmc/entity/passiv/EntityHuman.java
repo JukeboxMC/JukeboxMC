@@ -45,7 +45,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
 
     public EntityHuman() {
         this.uuid = UUID.randomUUID();
-        this.deviceInfo = new DeviceInfo( "Unknown", UUID.randomUUID().toString(), new Random().nextLong(), Device.DEDICATED, UIProfile.CLASSIC );
+        this.deviceInfo = new DeviceInfo( "", "", new Random().nextLong(), Device.UNKNOWN, UIProfile.CLASSIC );
         this.playerInventory = new PlayerInventory( this );
         this.armorInventory = new ArmorInventory( this );
 
@@ -107,8 +107,14 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     @Override
     public EntityHuman spawn( Player player ) {
         if ( this != player ) {
+            if ( !( this instanceof Player ) ) {
+                Server.getInstance().addToTabList( this.uuid, this.entityId, this.getName(), this.deviceInfo, "", this.skin );
+            }
             super.spawn( player );
             this.armorInventory.sendContents( player );
+            if ( !( this instanceof Player ) ) {
+                Server.getInstance().removeFromTabList( this.uuid, player );
+            }
         }
         return this;
     }
@@ -194,7 +200,7 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
             this.updateMetadata( this.metadata.setFlag( EntityFlag.SPRINTING, value ) );
             this.setMovement( value ? this.getMovement() * 1.3f : this.getMovement() / 1.3f );
 
-            if ( this.hasEffect( EffectType.SPEED ) ){
+            if ( this.hasEffect( EffectType.SPEED ) ) {
                 float movement = this.getMovement();
                 this.setMovement( value ? movement * 1.3f : movement );
             }
@@ -302,20 +308,20 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
     }
 
     public void addExperience( int value, boolean playLevelUpSound ) {
-        if (value == 0) return;
+        if ( value == 0 ) return;
         int now = (int) this.getExperience();
         int added = now + value;
         int level = (int) this.getLevel();
-        int most = calculateRequireExperience(level);
-        while (added >= most) {  //Level Up!
+        int most = calculateRequireExperience( level );
+        while ( added >= most ) {  //Level Up!
             added = added - most;
             level++;
-            most = calculateRequireExperience(level);
+            most = calculateRequireExperience( level );
         }
         this.setExhaustion( added );
         this.setLevel( level );
         if ( playLevelUpSound ) {
-            this.location.getWorld().playSound( this.location, SoundEvent.LEVELUP, Math.min(7, level / 5) << 28 );
+            this.location.getWorld().playSound( this.location, SoundEvent.LEVELUP, Math.min( 7, level / 5 ) << 28 );
         }
     }
 
