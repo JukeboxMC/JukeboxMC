@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -31,11 +31,11 @@ public class BlockCampfire extends Block {
     }
 
     public void setExtinguished( boolean value ) {
-        this.setState( "extinguished", value ? (byte) 1 : (byte) 0 );
+        this.setState( "extinguished", value ? 1 : 0 );
     }
 
     public boolean isExtinguished() {
-        return this.stateExists( "extinguished" ) && this.getByteState( "extinguished" ) == 1;
+        return this.stateExists( "extinguished" ) && this.getIntState( "extinguished" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

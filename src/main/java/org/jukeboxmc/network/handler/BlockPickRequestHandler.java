@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.BlockPickRequestPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BlockPickRequestPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.item.Item;

@@ -1,8 +1,8 @@
 package org.jukeboxmc.command.internal;
 
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamType;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;

@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.data.WallConnectionType;
@@ -134,11 +134,11 @@ public class BlockWall extends Block {
     }
 
     public void setWallPost( boolean value ) {
-        this.setState( "wall_post_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "wall_post_bit", value ? 1 : 0 );
     }
 
     public boolean isWallPost() {
-        return this.stateExists( "wall_post_bit" ) && this.getByteState( "wall_post_bit" ) == 1;
+        return this.stateExists( "wall_post_bit" ) && this.getIntState( "wall_post_bit" ) == 1;
     }
 
     public void setWallConnectionTypeEast( WallConnectionType wallConnectionTypeEast ) {

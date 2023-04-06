@@ -1,18 +1,26 @@
 package org.jukeboxmc.crafting;
 
-import com.nukkitx.protocol.bedrock.data.inventory.*;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
+import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ComplexAliasDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.config.Config;
 import org.jukeboxmc.config.ConfigType;
 import org.jukeboxmc.crafting.recipes.Recipe;
 import org.jukeboxmc.crafting.recipes.SmeltingRecipe;
 import org.jukeboxmc.item.Item;
+import org.jukeboxmc.util.Identifier;
 import org.jukeboxmc.util.ItemPalette;
+import org.jukeboxmc.util.RuntimeBlockDefination;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +33,7 @@ import java.util.*;
 @Getter
 public class CraftingManager {
 
-    private final List<CraftingData> craftingData = new ObjectArrayList<>();
+    private final List<RecipeData> craftingData = new ObjectArrayList<>();
     private final List<PotionMixData> potionMixData = new ObjectArrayList<>();
     private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
 
@@ -39,98 +47,183 @@ public class CraftingManager {
         }
         Config config = new Config( recipesStream, ConfigType.JSON );
         List<Map<String, Object>> recipes = (List<Map<String, Object>>) config.getMap().get( "recipes" );
+
         for ( Map<String, Object> recipe : recipes ) {
             CraftingDataType craftingDataType = CraftingDataType.valueOf( (String) recipe.get( "type" ) );
-            String recipeId = (String) recipe.get( "recipeId" );
-            int width = (int) (double) recipe.get( "width" );
-            int height = (int) (double) recipe.get( "height" );
-            int inputId = (int) (double) recipe.get( "inputId" );
-            int inputDamage = (int) (double) recipe.get( "inputDamage" );
 
-            List<ItemDescriptorWithCount> inputItems = new ArrayList<>();
-            if ( recipe.containsKey( "inputs" ) ) {
-                List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" );
-                for ( Map<String, Object> input : inputs ) {
-                    if ( input.containsKey( "descriptor" ) ) {
-                        List<Map<String, Object>> list = (List<Map<String, Object>>) input.get( "descriptor" );
-                        for ( Map<String, Object> map : list ) {
-                            String type = (String) map.get( "descriptorType" );
+            if ( craftingDataType.equals( CraftingDataType.SHAPELESS ) || craftingDataType.equals( CraftingDataType.SHULKER_BOX ) ) {
+                String id = (String) recipe.get( "id" );
+                UUID uuid = UUID.fromString( (String) recipe.get( "uuid" ) );
+                String tag = (String) recipe.get( "tag" );
+                int priority = (int) (double) recipe.get( "priority" );
+                int netId = (int) (double) recipe.get( "netId" );
 
-                            if ( type.equalsIgnoreCase( "DEFAULT" ) ) {
-                                int id = (int) (double) map.get( "id" );
-                                int damage = (int) (double) map.get( "damage" );
-                                int count = (int) (double) map.get( "count" );
-                                List<Object> canPlace = (List<Object>) map.get( "canPlace" );
-                                List<Object> canBreak = (List<Object>) map.get( "canBreak" );
-                                int blockingTicks = (int) (double) map.get( "blockingTicks" );
-                                int blockRuntimeId = (int) (double) map.get( "blockRuntimeId" );
-                                boolean usingNetId = (boolean) map.get( "usingNetId" );
-                                int netId = (int) (double) map.get( "netId" );
+                List<ItemDescriptorWithCount> inputItems = new ArrayList<>();
+                if ( recipe.containsKey( "inputs" ) ) {
+                    List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" );
+                    for ( Map<String, Object> input : inputs ) {
+                        if ( input.containsKey( "descriptor" ) ) {
+                            List<Map<String, Object>> list = (List<Map<String, Object>>) input.get( "descriptor" );
+                            for ( Map<String, Object> map : list ) {
+                                String type = (String) map.get( "descriptorType" );
 
-                                inputItems.add( ItemDescriptorWithCount.fromItem( ItemData.builder()
-                                        .id( id )
-                                        .damage( damage )
-                                        .count( count )
-                                        .blockingTicks( blockingTicks )
-                                        .blockRuntimeId( blockRuntimeId )
-                                        .usingNetId( usingNetId )
-                                        .netId( netId )
-                                        .build() ) );
-                            } else if ( type.equalsIgnoreCase( "INVALID" ) ) {
-                                inputItems.add( new ItemDescriptorWithCount( InvalidDescriptor.INSTANCE, 1 ) );
-                            } else if ( type.equalsIgnoreCase( "ITEMTAG" ) ) {
-                                String itemTag = (String) map.get( "itemTag" );
-                                inputItems.add( new ItemDescriptorWithCount( new ItemTagDescriptor( itemTag ), 1 ) );
+                                if ( type.equalsIgnoreCase( "DEFAULT" ) ) {
+                                    String identifier = (String) map.get( "identifier" );
+                                    int runtimeId = (int) (double) map.get( "runtimeId" );
+                                    boolean componentBased = (boolean) map.get( "componentBased" );
+                                    int auxValue = (int) (double) map.get( "auxValue" );
+                                    inputItems.add( ItemDescriptorWithCount.fromItem( ItemData.builder()
+                                            .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
+                                            .damage( auxValue )
+                                            .count( 1 )
+                                            .build() ) );
+                                } else if ( type.equalsIgnoreCase( "INVALID" ) ) {
+                                    inputItems.add( new ItemDescriptorWithCount( InvalidDescriptor.INSTANCE, 1 ) );
+                                } else if ( type.equalsIgnoreCase( "ITEMTAG" ) ) {
+                                    String itemTag = (String) map.get( "itemTag" );
+                                    inputItems.add( new ItemDescriptorWithCount( new ItemTagDescriptor( itemTag ), 1 ) );
+                                } else if ( type.equalsIgnoreCase( "COMPLEX" ) ) {
+                                    String name = (String) map.get( "name" );
+                                    inputItems.add( new ItemDescriptorWithCount( new ComplexAliasDescriptor( name ), 1 ) );
+                                }
                             }
                         }
-
                     }
                 }
-            }
-
-            List<ItemData> outputItems = new ArrayList<>();
-            List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" );
-            if ( recipe.containsKey( "outputs" ) ) {
-                for ( Map<String, Object> output : outputs ) {
-                    int id = (int) (double) output.get( "id" );
-                    int damage = (int) (double) output.get( "damage" );
-                    int count = (int) (double) output.get( "count" );
-                    List<Object> canPlace = (List<Object>) output.get( "canPlace" );
-                    List<Object> canBreak = (List<Object>) output.get( "canBreak" );
-                    int blockingTicks = (int) (double) output.get( "blockingTicks" );
-                    int blockRuntimeId = (int) (double) output.get( "blockRuntimeId" );
-                    boolean usingNetId = (boolean) output.get( "usingNetId" );
-                    int netId = (int) (double) output.get( "netId" );
-
-                    outputItems.add( ItemData.builder()
-                            .id( id )
-                            .damage( damage )
-                            .count( count )
-                            .blockingTicks( blockingTicks )
-                            .blockRuntimeId( blockRuntimeId )
-                            .usingNetId( usingNetId )
-                            .netId( netId )
-                            .build() );
+                List<ItemData> outputItems = new ArrayList<>();
+                if ( recipe.containsKey( "outputs" ) ) {
+                    List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" );
+                    for ( Map<String, Object> output : outputs ) {
+                        int runtimeId = (int) (double) output.get( "id" );
+                        String identifier = (String) output.get( "identifier" );
+                        boolean componentBased = (boolean) output.get( "componentBased" );
+                        int blockRuntimeId = (int) (double) output.get( "blockRuntimeId" );
+                        int amount = (int) (double) output.get( "amount" );
+                        outputItems.add( ItemData.builder()
+                                .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
+                                .blockDefinition( new RuntimeBlockDefination( blockRuntimeId ) )
+                                .count( amount )
+                                .build() );
+                    }
                 }
-            }
+                this.craftingData.add( ShapelessRecipeData.shapeless( id, inputItems, outputItems, uuid, tag, priority, netId ) );
+            } else if ( craftingDataType.equals( CraftingDataType.SHAPED ) ) {
+                String id = (String) recipe.get( "id" );
+                int width = (int) (double) recipe.get( "width" );
+                int height = (int) (double) recipe.get( "height" );
+                UUID uuid = UUID.fromString( (String) recipe.get( "uuid" ) );
+                String tag = (String) recipe.get( "tag" );
+                int priority = (int) (double) recipe.get( "priority" );
+                int netId = (int) (double) recipe.get( "netId" );
 
-            if ( craftingDataType.equals( CraftingDataType.FURNACE ) || craftingDataType.equals( CraftingDataType.FURNACE_DATA ) ) {
+                List<ItemDescriptorWithCount> inputItems = new ArrayList<>();
+                if ( recipe.containsKey( "inputs" ) ) {
+                    List<Map<String, Object>> inputs = (List<Map<String, Object>>) recipe.get( "inputs" );
+                    for ( Map<String, Object> input : inputs ) {
+                        if ( input.containsKey( "descriptor" ) ) {
+                            List<Map<String, Object>> list = (List<Map<String, Object>>) input.get( "descriptor" );
+                            for ( Map<String, Object> map : list ) {
+                                String type = (String) map.get( "descriptorType" );
+
+                                if ( type.equalsIgnoreCase( "DEFAULT" ) ) {
+                                    String identifier = (String) map.get( "identifier" );
+                                    int runtimeId = (int) (double) map.get( "runtimeId" );
+                                    boolean componentBased = (boolean) map.get( "componentBased" );
+                                    int auxValue = (int) (double) map.get( "auxValue" );
+                                    inputItems.add( ItemDescriptorWithCount.fromItem( ItemData.builder()
+                                            .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
+                                            .damage( auxValue )
+                                            .count( 1 )
+                                            .build() ) );
+                                } else if ( type.equalsIgnoreCase( "INVALID" ) ) {
+                                    inputItems.add( new ItemDescriptorWithCount( InvalidDescriptor.INSTANCE, 1 ) );
+                                } else if ( type.equalsIgnoreCase( "ITEMTAG" ) ) {
+                                    String itemTag = (String) map.get( "itemTag" );
+                                    inputItems.add( new ItemDescriptorWithCount( new ItemTagDescriptor( itemTag ), 1 ) );
+                                } else if ( type.equalsIgnoreCase( "COMPLEX" ) ) {
+                                    String name = (String) map.get( "name" );
+                                    inputItems.add( new ItemDescriptorWithCount( new ComplexAliasDescriptor( name ), 1 ) );
+                                }
+                            }
+                        }
+                    }
+                }
+                List<ItemData> outputItems = new ArrayList<>();
+                if ( recipe.containsKey( "outputs" ) ) {
+                    List<Map<String, Object>> outputs = (List<Map<String, Object>>) recipe.get( "outputs" );
+                    for ( Map<String, Object> output : outputs ) {
+                        int runtimeId = (int) (double) output.get( "id" );
+                        String identifier = (String) output.get( "identifier" );
+                        boolean componentBased = (boolean) output.get( "componentBased" );
+                        int blockRuntimeId = (int) (double) output.get( "blockRuntimeId" );
+                        int amount = (int) (double) output.get( "amount" );
+                        outputItems.add( ItemData.builder()
+                                .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
+                                .blockDefinition( new RuntimeBlockDefination( blockRuntimeId ) )
+                                .count( amount )
+                                .build() );
+                    }
+                }
+                ShapedRecipeData shaped = ShapedRecipeData.shaped( id, width, height, inputItems, outputItems, uuid, tag, priority, netId );
+                this.craftingData.add( shaped );
+            } else if ( craftingDataType.equals( CraftingDataType.SMITHING_TRANSFORM ) ) {
+                String id = (String) recipe.get( "id" );
+                String tag = (String) recipe.get( "tag" );
+                int netId = (int) (double) recipe.get( "netId" );
+                ItemDescriptorWithCount baseDescriptor = null;
+                ItemDescriptorWithCount additionDescriptor = null;
+                ItemData resultDescriptor = null;
+                if ( recipe.containsKey( "base" ) ) {
+                    Map<String, Object> baseMap = (Map<String, Object>) recipe.get( "base" );
+                    String identifier = (String) baseMap.get( "identifier" );
+                    int runtimeId = (int) (double) baseMap.get( "runtimeId" );
+                    boolean componentBased = (boolean) baseMap.get( "componentBased" );
+                    int auxValue = (int) (double) baseMap.get( "auxValue" );
+                    baseDescriptor = ItemDescriptorWithCount.fromItem( ItemData.builder().definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) ).damage( auxValue ).build() );
+                }
+                if ( recipe.containsKey( "addition" ) ) {
+                    Map<String, Object> additionMap = (Map<String, Object>) recipe.get( "addition" );
+                    String identifier = (String) additionMap.get( "identifier" );
+                    int runtimeId = (int) (double) additionMap.get( "runtimeId" );
+                    boolean componentBased = (boolean) additionMap.get( "componentBased" );
+                    int auxValue = (int) (double) additionMap.get( "auxValue" );
+                    additionDescriptor = ItemDescriptorWithCount.fromItem( ItemData.builder().definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) ).damage( auxValue ).build() );
+                }
+                if ( recipe.containsKey( "result" ) ) {
+                    Map<String, Object> resultMap = (Map<String, Object>) recipe.get( "result" );
+                    String identifier = (String) resultMap.get( "identifier" );
+                    int runtimeId = (int) (double) resultMap.get( "runtimeId" );
+                    boolean componentBased = (boolean) resultMap.get( "componentBased" );
+                    int blockRuntimeId = (int) (double) resultMap.get( "blockRuntimeId" );
+                    resultDescriptor = ItemData.builder().definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) ).blockDefinition( new RuntimeBlockDefination( blockRuntimeId ) ).build();
+                }
+                this.craftingData.add( SmithingTransformRecipeData.of( id, baseDescriptor, additionDescriptor, resultDescriptor, tag, netId ) );
+            } else if ( craftingDataType.equals( CraftingDataType.MULTI ) ) {
+                String uuid = (String) recipe.get( "uuid" );
+                int netId = (int) (double) recipe.get( "netId" );
+                this.craftingData.add( MultiRecipeData.of( UUID.fromString( uuid ), netId ) );
+            } else if ( craftingDataType.equals( CraftingDataType.FURNACE_DATA ) ) {
+                String tag = (String) recipe.get( "tag" );
+
+                int inputId = (int) (double) recipe.get( "inputId" );
+                int inputData = (int) (double) recipe.get( "inputData" );
+
+                int id = (int) (double) recipe.get( "id" );
+                String identifier = (String) recipe.get( "identifier" );
+
+                boolean componentBased = (boolean) recipe.get( "componentBased" );
+                this.craftingData.add( FurnaceRecipeData.of( inputId, inputData, ItemData.builder()
+                        .definition( new SimpleItemDefinition( identifier, id, componentBased ) )
+                        .build(), tag ) );
+
                 Item input = new Item( ItemPalette.getIdentifier( (short) inputId ), false );
-                if ( inputDamage != 32767 ) {
-                    input.setMeta( inputDamage );
+                if ( inputData != 32767 ) {
+                    input.setMeta( inputData );
                 }
-                Item output = new Item( outputItems.get( 0 ), false );
-                if ( output.getMeta() == 32767 ) {
-                    output.setMeta( 0 );
-                }
+                Item output = new Item( Identifier.fromString( identifier ), false );
+
                 this.smeltingRecipes.add( new SmeltingRecipe( input, output ) );
             }
-
-            UUID uuid = recipe.get( "uuid" ) != null ? UUID.fromString( (String) recipe.get( "uuid" ) ) : null;
-            String craftingTag = (String) recipe.get( "craftingTag" );
-            int priority = (int) (double) recipe.get( "priority" );
-            int networkId = (int) (double) recipe.get( "networkId" );
-            this.craftingData.add( new CraftingData( craftingDataType, recipeId, width, height, inputId, inputDamage, inputItems, outputItems, uuid, craftingTag, priority, networkId ) );
         }
 
         List<Map<String, Object>> containerMixes = (List<Map<String, Object>>) config.getMap().get( "containerMixes" );
@@ -167,21 +260,35 @@ public class CraftingManager {
     }
 
     public int getHighestNetworkId() {
-        Optional<CraftingData> optional = craftingData.stream().max( Comparator.comparing( CraftingData::getNetworkId ) );
-        return optional.map( CraftingData::getNetworkId ).orElse( -1 );
+        return this.craftingData.stream()
+                .filter( recipeData -> recipeData instanceof NetworkRecipeData )
+                .map( recipeData -> (NetworkRecipeData) recipeData )
+                .max( Comparator.comparing( NetworkRecipeData::getNetId ) )
+                .map( NetworkRecipeData::getNetId ).orElse( -1 );
     }
 
     public List<Item> getResultItem( int recipeNetworkId ) {
-        Optional<CraftingData> optional = this.craftingData.stream().filter( craftingData -> craftingData.getNetworkId() == recipeNetworkId ).findFirst();
+        List<NetworkRecipeData> collect = this.craftingData.stream()
+                .filter( recipeData -> recipeData instanceof NetworkRecipeData )
+                .map( recipeData -> (NetworkRecipeData) recipeData ).toList();
+        Optional<NetworkRecipeData> optional = collect.stream().filter( networkRecipeData -> networkRecipeData.getNetId() == recipeNetworkId ).findFirst();
         if ( optional.isPresent() ) {
-            CraftingData craftingData = optional.get();
-            List<Item> items = new LinkedList<>();
-            for ( ItemData output : craftingData.getOutputs() ) {
-                items.add( new Item( output, false ) );
+            NetworkRecipeData networkRecipeData = optional.get();
+            if ( networkRecipeData instanceof ShapedRecipeData recipeData ) {
+                List<Item> items = new LinkedList<>();
+                for ( ItemData result : recipeData.getResults() ) {
+                    items.add( new Item( result, false ) );
+                }
+                return items;
+            } else if ( networkRecipeData instanceof ShapelessRecipeData recipeData ) {
+                List<Item> items = new LinkedList<>();
+                for ( ItemData result : recipeData.getResults() ) {
+                    items.add( new Item( result, false ) );
+                }
+                return items;
             }
-            return items;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public SmeltingRecipe getSmeltingRecipe( Item input ) {

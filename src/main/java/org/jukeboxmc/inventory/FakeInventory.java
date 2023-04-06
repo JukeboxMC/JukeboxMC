@@ -1,10 +1,11 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.packet.ContainerOpenPacket;
-import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ContainerOpenPacket;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateBlockPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.util.RuntimeBlockDefination;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public abstract class FakeInventory extends ContainerInventory {
                 UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
                 updateBlockPacket.setBlockPosition( position.toVector3i() );
                 updateBlockPacket.setDataLayer( 0 );
-                updateBlockPacket.setRuntimeId( player.getWorld().getBlock( position ).getRuntimeId() );
+                updateBlockPacket.setDefinition( new RuntimeBlockDefination( player.getWorld().getBlock( position ).getRuntimeId() ) );
                 updateBlockPacket.getFlags().addAll( UpdateBlockPacket.FLAG_ALL_PRIORITY );
                 player.getPlayerConnection().sendPacket( updateBlockPacket );
             }

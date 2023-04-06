@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.CrossDirection;
@@ -36,11 +36,11 @@ public class BlockStairs extends Block {
     }
 
     public void setUpsideDown( boolean value ) {
-        this.setState( "upside_down_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "upside_down_bit", value ? 1 : 0 );
     }
 
     public boolean isUpsideDown() {
-        return this.stateExists( "upside_down_bit" ) && this.getByteState( "upside_down_bit" ) == 1;
+        return this.stateExists( "upside_down_bit" ) && this.getIntState( "upside_down_bit" ) == 1;
     }
 
     public void setCrossDirection( CrossDirection crossDirection ) {

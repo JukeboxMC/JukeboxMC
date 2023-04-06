@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -45,11 +45,11 @@ public class BlockSkull extends Block {
     }
 
     public BlockSkull setNoDrop( boolean value ) {
-        return this.setState( "no_drop_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "no_drop_bit", value ? 1 : 0 );
     }
 
     public boolean isNoDrop() {
-        return this.stateExists( "no_drop_bit" ) && this.getByteState( "no_drop_bit" ) == 1;
+        return this.stateExists( "no_drop_bit" ) && this.getIntState( "no_drop_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

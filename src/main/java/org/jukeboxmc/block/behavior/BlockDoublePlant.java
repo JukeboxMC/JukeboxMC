@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.PlantType;
@@ -78,10 +78,10 @@ public class BlockDoublePlant extends Block {
     }
 
     public BlockDoublePlant setUpperBlock( boolean value ) {
-        return this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "upper_block_bit", value ? 1 : 0 );
     }
 
     public boolean isUpperBlock() {
-        return this.stateExists( "upper_block_bit" ) && this.getByteState( "upper_block_bit" ) == 1;
+        return this.stateExists( "upper_block_bit" ) && this.getIntState( "upper_block_bit" ) == 1;
     }
 }

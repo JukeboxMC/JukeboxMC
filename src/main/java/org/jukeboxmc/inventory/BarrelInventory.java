@@ -1,7 +1,7 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.behavior.BlockBarrel;
 import org.jukeboxmc.blockentity.BlockEntityBarrel;

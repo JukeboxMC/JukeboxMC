@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.InteractPacket;
+import org.cloudburstmc.protocol.bedrock.packet.InteractPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 

@@ -1,11 +1,11 @@
 package org.jukeboxmc.network.handler;
 
+import io.netty.buffer.Unpooled;
+import org.cloudburstmc.protocol.bedrock.packet.ResourcePackChunkDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ResourcePackChunkRequestPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.resourcepack.ResourcePack;
-
-import com.nukkitx.protocol.bedrock.packet.ResourcePackChunkDataPacket;
-import com.nukkitx.protocol.bedrock.packet.ResourcePackChunkRequestPacket;
 
 /**
  * @author pooooooon
@@ -23,9 +23,9 @@ public class ResourcePackChunkRequestHandler implements PacketHandler<ResourcePa
             resourcePackChunkDataPacket.setPackId( packet.getPackId() );
             resourcePackChunkDataPacket.setPackVersion( packet.getPackVersion() );
             resourcePackChunkDataPacket.setChunkIndex( packet.getChunkIndex() );
-            resourcePackChunkDataPacket.setData( resourcePack.getChunk( ( int ) 1048576 * packet.getChunkIndex(), (int) 1048576) );
+            resourcePackChunkDataPacket.setData( Unpooled.wrappedBuffer( resourcePack.getChunk( 1048576 * packet.getChunkIndex(), 1048576 ) ) ); //Maybe wrong
             resourcePackChunkDataPacket.setProgress( 1048576L * packet.getChunkIndex() );
-            player.getPlayerConnection().sendPacketImmediately( resourcePackChunkDataPacket ); 
+            player.getPlayerConnection().sendPacketImmediately( resourcePackChunkDataPacket );
         }
     }
 }

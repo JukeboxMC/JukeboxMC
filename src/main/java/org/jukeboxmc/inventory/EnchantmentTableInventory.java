@@ -1,6 +1,6 @@
 package org.jukeboxmc.inventory;
 
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.jukeboxmc.blockentity.BlockEntityEnchantmentTable;
 
 /**

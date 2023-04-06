@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.ModalFormResponsePacket;
+import org.cloudburstmc.protocol.bedrock.packet.ModalFormResponsePacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 

@@ -1,9 +1,9 @@
 package org.jukeboxmc.block.palette;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 
 public interface PersistentDataSerializer<V> {
 
-    NbtMap serialize(V value);
+    NbtMap serialize( V value);
 
 }

@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
-import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
+import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 

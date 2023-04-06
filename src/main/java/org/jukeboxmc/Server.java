@@ -1,10 +1,10 @@
 package org.jukeboxmc;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
-import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
 import org.jukeboxmc.block.BlockRegistry;
 import org.jukeboxmc.blockentity.BlockEntityRegistry;
 import org.jukeboxmc.command.CommandSender;
@@ -20,10 +20,11 @@ import org.jukeboxmc.event.world.WorldUnloadEvent;
 import org.jukeboxmc.item.ItemRegistry;
 import org.jukeboxmc.item.enchantment.EnchantmentRegistry;
 import org.jukeboxmc.logger.Logger;
-import org.jukeboxmc.network.Network;
+import org.jukeboxmc.network.BedrockServer;
 import org.jukeboxmc.network.handler.HandlerRegistry;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
+import org.jukeboxmc.player.PlayerConnection;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.skin.Skin;
 import org.jukeboxmc.plugin.PluginLoadOrder;
@@ -47,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * @author LucGamesYT
@@ -63,7 +65,7 @@ public class Server {
 
     private final Thread mainThread;
     private final Logger logger;
-    private final Network network;
+    private final BedrockServer bedrockServer;
     private final Scheduler scheduler;
     private final ResourcePackManager resourcePackManager;
     private final ConsoleSender consoleSender;
@@ -94,6 +96,10 @@ public class Server {
     private final Map<String, World> worlds = new HashMap<>();
     private final Object2ObjectMap<UUID, PlayerListPacket.Entry> playerListEntry = new Object2ObjectOpenHashMap<>();
     private final Map<Dimension, Object2ObjectMap<String, Class<? extends Generator>>> generators = new EnumMap<>( Dimension.class );
+    private final Set<PlayerConnection> connections = new HashSet<>();
+
+    private final Predicate<PlayerConnection> removePredicate;
+    private final Consumer<PlayerConnection> updater;
 
     private long currentTick;
     private long lastTps = TICKS;
@@ -163,11 +169,28 @@ public class Server {
 
         this.pluginManager.enableAllPlugins( PluginLoadOrder.POSTWORLD );
 
-        this.network = new Network( this, new InetSocketAddress( this.serverAddress, this.port ) );
+        this.removePredicate = PlayerConnection::isClosed;
+        this.updater = PlayerConnection::update;
+
+        this.bedrockServer = new BedrockServer( new InetSocketAddress( this.getServerAddress(), this.getPort() ), this );
+        this.bedrockServer.registerServerSession( bedrockServerSession -> {
+            this.addPlayer( this.addPlayer( new PlayerConnection( this, this.bedrockServer, bedrockServerSession ) ).getPlayer() );
+        } );
+        this.bedrockServer.bind();
         this.logger.info( "JukeboxMC started in " + TimeUnit.MILLISECONDS.toSeconds( System.currentTimeMillis() - this.startTime ) + " seconds!" );
         this.finishedState.set( true );
         this.startTick();
         this.shutdown();
+    }
+
+    private synchronized PlayerConnection addPlayer( PlayerConnection playerConnection ) {
+        this.connections.add( playerConnection );
+        return playerConnection;
+    }
+
+    public synchronized void update() {
+        this.connections.removeIf( this.removePredicate );
+        this.connections.forEach( this.updater );
     }
 
     private void startTick() {
@@ -202,7 +225,7 @@ public class Server {
             this.currentTick++;
 
             this.scheduler.onTick( this.currentTick );
-            this.network.update();
+            this.update();
             for ( World value : this.worlds.values() ) {
                 value.update( this.currentTick );
             }
@@ -261,7 +284,7 @@ public class Server {
 
         this.terminalConsole.stopConsole();
         this.scheduler.shutdown();
-        this.network.getBedrockServer().close( true );
+        this.bedrockServer.close();
 
         this.logger.info( "Stopping other threads" );
         for ( Thread thread : Thread.getAllStackTraces().keySet() ) {

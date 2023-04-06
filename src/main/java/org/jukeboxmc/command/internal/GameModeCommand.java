@@ -1,6 +1,6 @@
 package org.jukeboxmc.command.internal;
 
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamType;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.command.Command;
 import org.jukeboxmc.command.CommandData;

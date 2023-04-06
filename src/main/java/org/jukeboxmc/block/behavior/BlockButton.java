@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -62,11 +62,11 @@ public class BlockButton extends Block {
     }
 
     public void setButtonPressed( boolean value ) {
-        this.setState( "button_pressed_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "button_pressed_bit", value ? 1 : 0 );
     }
 
     public boolean isButtonPressed() {
-        return this.stateExists( "button_pressed_bit" ) && this.getByteState( "button_pressed_bit" ) == 1;
+        return this.stateExists( "button_pressed_bit" ) && this.getIntState( "button_pressed_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

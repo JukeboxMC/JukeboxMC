@@ -1,6 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.PlayerSkinPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayerSkinPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.player.skin.Skin;

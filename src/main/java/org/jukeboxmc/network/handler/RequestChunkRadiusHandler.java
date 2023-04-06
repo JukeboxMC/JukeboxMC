@@ -1,7 +1,6 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.packet.RequestChunkRadiusPacket;
-import org.apache.commons.math3.util.FastMath;
+import org.cloudburstmc.protocol.bedrock.packet.RequestChunkRadiusPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.Player;
 

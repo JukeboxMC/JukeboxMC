@@ -1,30 +1,27 @@
 package org.jukeboxmc.player;
 
-import com.nukkitx.math.vector.Vector2f;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.network.util.DisconnectReason;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.BedrockServerSession;
-import com.nukkitx.protocol.bedrock.data.*;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.packet.*;
+import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
+import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.common.SimpleDefinitionRegistry;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.crafting.CraftingManager;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.event.network.PacketReceiveEvent;
 import org.jukeboxmc.event.network.PacketSendEvent;
 import org.jukeboxmc.event.player.PlayerQuitEvent;
-import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.network.Network;
+import org.jukeboxmc.network.BedrockServer;
 import org.jukeboxmc.network.handler.HandlerRegistry;
 import org.jukeboxmc.network.handler.PacketHandler;
 import org.jukeboxmc.player.data.LoginData;
 import org.jukeboxmc.player.manager.PlayerChunkManager;
-import org.jukeboxmc.util.BiomeDefinitions;
-import org.jukeboxmc.util.CreativeItems;
-import org.jukeboxmc.util.EntityIdentifiers;
-import org.jukeboxmc.util.ItemPalette;
+import org.jukeboxmc.util.*;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,14 +31,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @version 1.0
  */
 public class PlayerConnection {
-
-    private static final SyncedPlayerMovementSettings SYNCED_PLAYER_MOVEMENT_SETTINGS = new SyncedPlayerMovementSettings();
-
-    static {
-        SYNCED_PLAYER_MOVEMENT_SETTINGS.setMovementMode( AuthoritativeMovementMode.CLIENT );
-        SYNCED_PLAYER_MOVEMENT_SETTINGS.setRewindHistorySize( 0 );
-        SYNCED_PLAYER_MOVEMENT_SETTINGS.setServerAuthoritativeBlockBreaking( false );
-    }
 
     private final Server server;
     private final BedrockServerSession session;
@@ -56,35 +45,31 @@ public class PlayerConnection {
 
     private final PlayerChunkManager playerChunkManager;
 
-    public PlayerConnection( Server server, BedrockServerSession session ) {
+    public PlayerConnection( Server server, BedrockServer bedrockServer, BedrockServerSession session ) {
         this.server = server;
-        this.session = session;
-        this.session.getHardcodedBlockingId().set( Item.create( ItemType.SHIELD ).getRuntimeId() );
-        this.session.addDisconnectHandler( disconnectReason -> this.server.getScheduler().execute( () -> this.onDisconnect( disconnectReason ) ) );
+        bedrockServer.registerDisconnectHandler( disconnectReason -> this.server.getScheduler().execute( () -> this.onDisconnect( disconnectReason ) ) );
         this.loggedIn = new AtomicBoolean( false );
         this.spawned = new AtomicBoolean( false );
         this.player = new Player( server, this );
         this.playerChunkManager = new PlayerChunkManager( this.player );
-        session.setPacketCodec( Network.CODEC );
-        session.setBatchHandler( ( bedrockSession, byteBuf, packets ) -> {
-            for ( BedrockPacket packet : packets ) {
-                try {
-                    server.getScheduler().execute( () -> {
-                        PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
-                        server.getPluginManager().callEvent( packetReceiveEvent );
-                        if ( packetReceiveEvent.isCancelled() ) {
-                            return;
-                        }
-                        PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packetReceiveEvent.getPacket().getClass() );
-                        if ( packetHandler != null ) {
-                            packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
-                        } else {
-                            this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
-                        }
-                    } );
-                } catch ( Throwable throwable ) {
-                    throwable.printStackTrace();
-                }
+        this.session = session;
+        bedrockServer.registerPacketHandler( ( packet, bedrockServerSession ) -> {
+            try {
+                server.getScheduler().execute( () -> {
+                    PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
+                    server.getPluginManager().callEvent( packetReceiveEvent );
+                    if ( packetReceiveEvent.isCancelled() ) {
+                        return;
+                    }
+                    PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packetReceiveEvent.getPacket().getClass() );
+                    if ( packetHandler != null ) {
+                        packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
+                    } else {
+                        this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                    }
+                } );
+            } catch ( Throwable throwable ) {
+                throwable.printStackTrace();
             }
         } );
     }
@@ -105,7 +90,7 @@ public class PlayerConnection {
         }
     }
 
-    private void onDisconnect( DisconnectReason disconnectReason ) {
+    private void onDisconnect( String disconnectReason ) {
         this.server.removePlayer( this.player );
 
         this.player.getWorld().removeEntity( this.player );
@@ -121,7 +106,6 @@ public class PlayerConnection {
         this.player.getCartographyTableInventory().removeViewer( this.player );
         this.player.getSmithingTableInventory().removeViewer( this.player );
         this.player.getAnvilInventory().removeViewer( this.player );
-        //this.player.getEnderChestInventory().removeViewer( this.player );
         this.player.getStoneCutterInventory().removeViewer( this.player );
         this.player.getGrindstoneInventory().removeViewer( this.player );
         this.player.getOffHandInventory().removeViewer( this.player );
@@ -137,7 +121,7 @@ public class PlayerConnection {
         if ( playerQuitEvent.getQuitMessage() != null && !playerQuitEvent.getQuitMessage().isEmpty() ) {
             this.server.broadcastMessage( playerQuitEvent.getQuitMessage() );
         }
-        this.server.getLogger().info( this.player.getName() + " logged out reason: " + ( this.disconnectMessage == null ? this.parseDisconnectMessage( disconnectReason ) : this.disconnectMessage ) );
+        this.server.getLogger().info( this.player.getName() + " logged out reason: " + ( this.disconnectMessage == null ? disconnectReason : this.disconnectMessage ) );
     }
 
     private void doFirstSpawn() {
@@ -243,23 +227,34 @@ public class PlayerConnection {
         startGamePacket.setLevelId( "" );
         startGamePacket.setLevelName( this.player.getWorld().getName() );
         startGamePacket.setGeneratorId( 1 );
-        startGamePacket.setItemEntries( ItemPalette.getEntries() );
+        startGamePacket.setItemDefinitions( ItemPalette.getEntries() );
         startGamePacket.setXblBroadcastMode( GamePublishSetting.PUBLIC );
         startGamePacket.setPlatformBroadcastMode( GamePublishSetting.PUBLIC );
         startGamePacket.setDefaultPlayerPermission( PlayerPermission.MEMBER );
         startGamePacket.setServerChunkTickRange( 4 );
-        startGamePacket.setVanillaVersion( Network.CODEC.getMinecraftVersion() );
+        startGamePacket.setVanillaVersion( BedrockServer.CODEC.getMinecraftVersion() );
         startGamePacket.setPremiumWorldTemplateId( "" );
         startGamePacket.setMultiplayerCorrelationId( "" );
         startGamePacket.setInventoriesServerAuthoritative( true );
-        startGamePacket.setPlayerMovementSettings( SYNCED_PLAYER_MOVEMENT_SETTINGS );
+        startGamePacket.setAuthoritativeMovementMode( AuthoritativeMovementMode.CLIENT );
         startGamePacket.setBlockRegistryChecksum( 0L );
         startGamePacket.setPlayerPropertyData( NbtMap.EMPTY );
         startGamePacket.setWorldTemplateId( new UUID( 0, 0 ) );
         startGamePacket.setChatRestrictionLevel( ChatRestrictionLevel.NONE );
         startGamePacket.setDisablingPlayerInteractions( false );
         startGamePacket.setClientSideGenerationEnabled( false );
+        startGamePacket.setSpawnBiomeType( SpawnBiomeType.DEFAULT );
+        startGamePacket.setForceExperimentalGameplay( OptionalBoolean.empty() );
+        startGamePacket.setCustomBiomeName( "" );
+        startGamePacket.setEducationProductionId( "" );
         this.sendPacket( startGamePacket );
+
+        this.session.getPeer().getCodecHelper().setItemDefinitions( SimpleDefinitionRegistry.<ItemDefinition>builder()
+                .addAll( startGamePacket.getItemDefinitions() )
+                .build() );
+        this.session.getPeer().getCodecHelper().setBlockDefinitions( SimpleDefinitionRegistry.<BlockDefinition>builder()
+                .addAll( BlockPalette.getSimpleBlockDefinitions() )
+                .build() );
 
         AvailableEntityIdentifiersPacket availableEntityIdentifiersPacket = new AvailableEntityIdentifiersPacket();
         availableEntityIdentifiersPacket.setIdentifiers( EntityIdentifiers.getIdentifiers() );
@@ -282,23 +277,9 @@ public class PlayerConnection {
         this.sendPacket( craftingDataPacket );
     }
 
-    private String parseDisconnectMessage( DisconnectReason disconnectReason ) {
-        switch ( disconnectReason ) {
-            case ALREADY_CONNECTED -> {
-                return "Already connected";
-            }
-            case SHUTTING_DOWN -> {
-                return "Shutdown";
-            }
-            default -> {
-                return "Disconnect";
-            }
-        }
-    }
-
     public void disconnect() {
-        this.onDisconnect( DisconnectReason.DISCONNECTED );
-        this.session.disconnect();
+        this.onDisconnect( "Disconnected" );
+        this.session.close( "Disconnected" );
     }
 
     public void disconnect( String message ) {
@@ -318,7 +299,7 @@ public class PlayerConnection {
     }
 
     public void sendPacket( BedrockPacket packet ) {
-        if ( !this.isClosed() && this.session.getPacketCodec() != null ) {
+        if ( !this.isClosed() ) {
             PacketSendEvent packetSendEvent = new PacketSendEvent( this.player, packet );
             Server.getInstance().getPluginManager().callEvent( packetSendEvent );
             if ( packetSendEvent.isCancelled() ) {
@@ -335,7 +316,7 @@ public class PlayerConnection {
     }
 
     public boolean isClosed() {
-        return this.session.isClosed();
+        return this.session == null || !this.session.isConnected();
     }
 
     public Server getServer() {

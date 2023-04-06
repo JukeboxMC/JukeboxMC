@@ -1,8 +1,8 @@
 package org.jukeboxmc.crafting.recipes;
 
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import lombok.RequiredArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.RecipeData;
 import org.jukeboxmc.crafting.CraftingManager;
 
 import java.util.List;
@@ -16,6 +16,6 @@ public abstract class Recipe {
 
     public abstract List<ItemData> getOutputs();
 
-    public abstract CraftingData doRegister( CraftingManager craftingManager, String recipeId );
+    public abstract RecipeData doRegister( CraftingManager craftingManager, String recipeId );
 
 }

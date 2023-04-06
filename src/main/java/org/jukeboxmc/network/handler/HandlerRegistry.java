@@ -1,7 +1,7 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.packet.*;
+
+import org.cloudburstmc.protocol.bedrock.packet.*;
 
 import java.util.HashMap;
 import java.util.Map;

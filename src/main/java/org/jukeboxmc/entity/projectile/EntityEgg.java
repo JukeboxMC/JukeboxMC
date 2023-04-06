@@ -1,12 +1,12 @@
 package org.jukeboxmc.entity.projectile;
 
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.math.Location;
 import org.jukeboxmc.util.Identifier;
-import org.jukeboxmc.world.Particle;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +62,7 @@ public class EntityEgg extends EntityProjectile {
     private void spawnEggParticle( Location location ) {
         Item itemEgg = Item.create( ItemType.EGG );
         for ( int i = 0; i < 6; i++ ) {
-            this.getWorld().spawnParticle( Particle.ITEM_BREAK, location.add( 0f, 0.5f, 0f ), ( itemEgg.getRuntimeId() << 16 | itemEgg.getMeta() ) );
+            this.getWorld().sendLevelEvent( null, location.add( 0f, 0.5f, 0f ), LevelEvent.PARTICLE_DESTROY_EGG, ( itemEgg.getRuntimeId() << 16 | itemEgg.getMeta() ) );
         }
     }
 }

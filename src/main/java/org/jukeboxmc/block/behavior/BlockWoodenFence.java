@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.data.WoodType;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;

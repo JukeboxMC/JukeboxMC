@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -51,11 +51,11 @@ public class BlockDropper extends Block {
     }
 
     public void setTriggered( boolean value ) {
-        this.setState( "triggered_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "triggered_bit", value ? 1 : 0 );
     }
 
     public boolean isTriggered() {
-        return this.stateExists( "triggered_bit" ) && this.getByteState( "triggered_bit" ) == 1;
+        return this.stateExists( "triggered_bit" ) && this.getIntState( "triggered_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

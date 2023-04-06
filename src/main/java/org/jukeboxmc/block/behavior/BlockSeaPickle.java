@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.util.Identifier;
 
@@ -27,10 +27,10 @@ public class BlockSeaPickle extends Block {
     }
 
     public void setDead( boolean value ) {
-        this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "dead_bit", value ? 1 : 0 );
     }
 
     public boolean isDead() {
-        return this.stateExists( "dead_bit" ) && this.getByteState( "dead_bit" ) == 1;
+        return this.stateExists( "dead_bit" ) && this.getIntState( "dead_bit" ) == 1;
     }
 }

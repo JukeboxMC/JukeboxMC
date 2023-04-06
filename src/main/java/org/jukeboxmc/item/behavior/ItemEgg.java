@@ -1,6 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.projectile.EntityEgg;

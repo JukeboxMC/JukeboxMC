@@ -1,10 +1,10 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
-import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
-import com.nukkitx.protocol.bedrock.data.inventory.TransactionType;
-import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionType;
+import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
@@ -36,7 +36,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
 
     @Override
     public void handle( InventoryTransactionPacket packet, Server server, Player player ) {
-        if ( packet.getTransactionType() == TransactionType.ITEM_USE ) {
+        if ( packet.getTransactionType() == InventoryTransactionType.ITEM_USE ) {
             Vector blockPosition = new Vector( packet.getBlockPosition() );
             blockPosition.setDimension( player.getDimension() );
             Vector clickPosition = new Vector( packet.getClickPosition() );
@@ -89,7 +89,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     block.breakBlock( player, itemInHand );
                 }
             }
-        } else if ( packet.getTransactionType().equals( TransactionType.NORMAL ) ){
+        } else if ( packet.getTransactionType().equals( InventoryTransactionType.NORMAL ) ){
             for ( InventoryActionData action : packet.getActions() ) {
                 if ( action.getSource().getType().equals( InventorySource.Type.WORLD_INTERACTION ) ) {
                     if ( action.getSource().getFlag().equals( InventorySource.Flag.DROP_ITEM ) ) {
@@ -122,7 +122,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     }
                 }
             }
-        } else if ( packet.getTransactionType().equals( TransactionType.ITEM_USE_ON_ENTITY ) ) {
+        } else if ( packet.getTransactionType().equals( InventoryTransactionType.ITEM_USE_ON_ENTITY ) ) {
             switch ( packet.getActionType() ) {
                 case 0 -> {
                     Entity interactEntity = player.getWorld().getEntity( packet.getRuntimeEntityId() );
@@ -144,7 +144,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                 default -> {
                 }
             }
-        } else if ( packet.getTransactionType().equals( TransactionType.ITEM_RELEASE ) ) {
+        } else if ( packet.getTransactionType().equals( InventoryTransactionType.ITEM_RELEASE ) ) {
             if ( packet.getActionType() == 0 ) {
                 if ( player.getInventory().getItemInHand() instanceof ItemBow ) {
                     ( (ItemBow) player.getInventory().getItemInHand() ).shoot( player );

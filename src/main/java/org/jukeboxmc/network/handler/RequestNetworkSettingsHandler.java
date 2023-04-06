@@ -1,11 +1,11 @@
 package org.jukeboxmc.network.handler;
 
-import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
-import com.nukkitx.protocol.bedrock.packet.NetworkSettingsPacket;
-import com.nukkitx.protocol.bedrock.packet.PlayStatusPacket;
-import com.nukkitx.protocol.bedrock.packet.RequestNetworkSettingsPacket;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.packet.NetworkSettingsPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
+import org.cloudburstmc.protocol.bedrock.packet.RequestNetworkSettingsPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.network.Network;
+import org.jukeboxmc.network.BedrockServer;
 import org.jukeboxmc.player.Player;
 
 /**
@@ -21,7 +21,7 @@ public class RequestNetworkSettingsHandler implements PacketHandler<RequestNetwo
             return;
         }
         int protocolVersion = packet.getProtocolVersion();
-        int currentProtocol = Network.CODEC.getProtocolVersion();
+        int currentProtocol = BedrockServer.CODEC.getProtocolVersion();
 
         if ( protocolVersion != currentProtocol ) {
             player.getPlayerConnection().sendPlayStatus( protocolVersion > currentProtocol ? PlayStatusPacket.Status.LOGIN_FAILED_SERVER_OLD : PlayStatusPacket.Status.LOGIN_FAILED_CLIENT_OLD );

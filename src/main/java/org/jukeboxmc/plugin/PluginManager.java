@@ -6,6 +6,7 @@ import org.jukeboxmc.Server;
 import org.jukeboxmc.command.CommandManager;
 import org.jukeboxmc.event.*;
 import org.jukeboxmc.logger.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
@@ -30,7 +31,7 @@ public class PluginManager {
     private final PluginLoader pluginLoader;
     private final CommandManager commandManager;
 
-    private final Yaml yamlLoader = new Yaml( new CustomClassLoaderConstructor( this.getClass().getClassLoader() ) );
+    private final Yaml yamlLoader = new Yaml( new CustomClassLoaderConstructor( this.getClass().getClassLoader(), new LoaderOptions() ) );
     private final Object2ObjectMap<String, Plugin> pluginMap = new Object2ObjectArrayMap<>();
     private final Object2ObjectMap<String, Class<?>> cachedClasses = new Object2ObjectArrayMap<>();
     final Object2ObjectMap<String, PluginClassLoader> pluginClassLoaders = new Object2ObjectArrayMap<>();

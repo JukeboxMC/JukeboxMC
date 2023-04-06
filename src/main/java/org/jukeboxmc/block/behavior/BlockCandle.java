@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -74,10 +74,10 @@ public class BlockCandle extends Block {
     }
 
     public BlockCandle setLit( boolean value ) {
-        return this.setState( "lit", value ? (byte) 1 : (byte) 0 );
+        return this.setState( "lit", value ? 1 : 0 );
     }
 
     public boolean isLit() {
-        return this.stateExists( "lit" ) && this.getByteState( "lit" ) == 1;
+        return this.stateExists( "lit" ) && this.getIntState( "lit" ) == 1;
     }
 }

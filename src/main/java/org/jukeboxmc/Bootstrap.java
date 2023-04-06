@@ -1,7 +1,7 @@
 package org.jukeboxmc;
 
 import org.jukeboxmc.logger.Logger;
-import org.jukeboxmc.network.Network;
+import org.jukeboxmc.network.BedrockServer;
 
 /**
  * @author LucGamesYT
@@ -11,7 +11,7 @@ public class Bootstrap {
 
     public static void main( String[] args ) {
         Logger logger = new Logger();
-        logger.info( "Starting JukeboxMC (Bedrock Edition " + Network.CODEC.getMinecraftVersion() + " with Protocol " + Network.CODEC.getProtocolVersion() + ")" );
+        logger.info( "Starting JukeboxMC (Bedrock Edition " + BedrockServer.CODEC.getMinecraftVersion() + " with Protocol " + BedrockServer.CODEC.getProtocolVersion() + ")" );
         new Server(logger);
     }
 }

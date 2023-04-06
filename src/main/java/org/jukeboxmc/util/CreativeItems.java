@@ -1,10 +1,11 @@
 package org.jukeboxmc.util;
 
 import com.google.gson.Gson;
-import com.nukkitx.nbt.NBTInputStream;
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.nbt.NBTInputStream;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.Bootstrap;
 
 import java.io.ByteArrayInputStream;
@@ -64,10 +65,8 @@ public class CreativeItems {
 
     private static ItemData.Builder toItemData( Identifier identifier, int blockRuntimeId ) {
         return ItemData.builder()
-                .id( ItemPalette.getRuntimeId( identifier ) )
-                .blockRuntimeId( blockRuntimeId )
-                .count( 1 )
-                .canPlace( new String[]{} )
-                .canBreak( new String[]{} );
+                .definition( new SimpleItemDefinition( identifier.getFullName(), ItemPalette.getRuntimeId( identifier ), false ) )
+                .blockDefinition( new RuntimeBlockDefination( blockRuntimeId ))
+                .count( 1 );
     }
 }

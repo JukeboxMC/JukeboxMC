@@ -1,21 +1,23 @@
 package org.jukeboxmc.player.data;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.crypto.factories.DefaultJWSVerifierFactory;
 import com.nimbusds.jose.proc.JWSVerifierFactory;
-import com.nukkitx.protocol.bedrock.packet.LoginPacket;
-import com.nukkitx.protocol.bedrock.util.EncryptionUtils;
+import com.nimbusds.jwt.SignedJWT;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
+import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
 import org.jukeboxmc.player.info.Device;
 import org.jukeboxmc.player.info.DeviceInfo;
 import org.jukeboxmc.player.info.UIProfile;
 import org.jukeboxmc.player.skin.*;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.util.*;
@@ -29,6 +31,7 @@ public class LoginData {
 
     private static final Gson GSON = new Gson();
     private static final JWSVerifierFactory JWS_VERIFIER_FACTORY = new DefaultJWSVerifierFactory();
+    private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
 
     private boolean xboxAuthenticated;
     private String displayName;
@@ -40,8 +43,8 @@ public class LoginData {
     private Skin skin;
 
     public LoginData( LoginPacket loginPacket ) {
-        this.decodeChainData( loginPacket.getChainData().toString() );
-        this.decodeSkinData( loginPacket.getSkinData().toString() );
+        this.decodeChainData( loginPacket.getChain() );
+        this.decodeSkinData( loginPacket.getExtra() );
     }
 
     public boolean isXboxAuthenticated() {
@@ -76,134 +79,126 @@ public class LoginData {
         return this.skin;
     }
 
-    private void decodeChainData( String chainData ) {
-        Map<String, List<String>> map = GSON.<Map<String, List<String>>>fromJson( chainData, Map.class );
-        if ( map.isEmpty() || !map.containsKey( "chain" ) || map.get( "chain" ).isEmpty() ) {
-            return;
-        }
-        List<String> chains = map.get( "chain" );
+    private void decodeChainData( List<SignedJWT> chainData ) {
         try {
-            this.xboxAuthenticated = verifyChains( chains );
+            this.xboxAuthenticated = verifyChains( chainData );
         } catch ( Exception e ) {
             this.xboxAuthenticated = false;
         }
 
-        for ( String chain : chains ) {
-            JsonObject chainMap = decodeToken( chain );
+        for ( SignedJWT chain : chainData ) {
+            JsonNode chainMap = decodeToken( chain );
             if ( chainMap == null ) {
                 continue;
             }
             if ( chainMap.has( "extraData" ) ) {
-                JsonObject extraData = chainMap.get( "extraData" ).getAsJsonObject();
-                this.displayName = extraData.get( "displayName" ).getAsString();
-                this.uuid = UUID.fromString( extraData.get( "identity" ).getAsString() );
-                this.xuid = extraData.get( "XUID" ).getAsString();
+                JsonNode extraData = chainMap.get( "extraData" );
+                this.displayName = extraData.get( "displayName" ).asText();
+                this.uuid = UUID.fromString( extraData.get( "identity" ).asText() );
+                this.xuid = extraData.get( "XUID" ).asText();
             }
         }
     }
 
-    private void decodeSkinData( String skinData ) {
-        JsonObject skinMap = decodeToken( skinData );
+    private void decodeSkinData( SignedJWT skinData ) {
+        JsonNode skinMap = decodeToken( skinData );
         if ( skinMap.has( "DeviceModel" ) && skinMap.has( "DeviceId" ) &&
                 skinMap.has( "ClientRandomId" ) && skinMap.has( "DeviceOS" ) && skinMap.has( "GuiScale" ) ) {
-            String deviceModel = skinMap.get( "DeviceModel" ).getAsString();
-            String deviceId = skinMap.get( "DeviceId" ).getAsString();
-            long clientId = skinMap.get( "ClientRandomId" ).getAsLong();
-            int deviceOS = skinMap.get( "DeviceOS" ).getAsInt();
-            int uiProfile = skinMap.get( "UIProfile" ).getAsInt();
+            String deviceModel = skinMap.get( "DeviceModel" ).asText();
+            String deviceId = skinMap.get( "DeviceId" ).asText();
+            long clientId = skinMap.get( "ClientRandomId" ).asLong();
+            int deviceOS = skinMap.get( "DeviceOS" ).asInt();
+            int uiProfile = skinMap.get( "UIProfile" ).asInt();
             this.deviceInfo = new DeviceInfo( deviceModel, deviceId, clientId, Device.getDevice( deviceOS ), UIProfile.getById( uiProfile ) );
         }
 
         if ( skinMap.has( "LanguageCode" ) ) {
-            this.languageCode = skinMap.get( "LanguageCode" ).getAsString();
+            this.languageCode = skinMap.get( "LanguageCode" ).asText();
         }
 
         if ( skinMap.has( "GameVersion" ) ) {
-            this.gameVersion = skinMap.get( "GameVersion" ).getAsString();
+            this.gameVersion = skinMap.get( "GameVersion" ).asText();
         }
 
         this.skin = new Skin();
         if ( skinMap.has( "SkinId" ) ) {
-            this.skin.setSkinId( skinMap.get( "SkinId" ).getAsString() );
+            this.skin.setSkinId( skinMap.get( "SkinId" ).asText() );
         }
 
         if ( skinMap.has( "SkinResourcePatch" ) ) {
-            this.skin.setResourcePatch( new String( Base64.getDecoder().decode( skinMap.get( "SkinResourcePatch" ).getAsString() ), StandardCharsets.UTF_8 ) );
+            this.skin.setResourcePatch( new String( Base64.getDecoder().decode( skinMap.get( "SkinResourcePatch" ).asText() ), StandardCharsets.UTF_8 ) );
         }
 
         if ( skinMap.has( "SkinGeometryData" ) ) {
-            this.skin.setGeometryData( new String( Base64.getDecoder().decode( skinMap.get( "SkinGeometryData" ).getAsString() ), StandardCharsets.UTF_8 ) );
+            this.skin.setGeometryData( new String( Base64.getDecoder().decode( skinMap.get( "SkinGeometryData" ).asText() ), StandardCharsets.UTF_8 ) );
         }
 
         if ( skinMap.has( "AnimationData" ) ) {
-            this.skin.setAnimationData( new String( Base64.getDecoder().decode( skinMap.get( "AnimationData" ).getAsString() ), StandardCharsets.UTF_8 ) );
+            this.skin.setAnimationData( new String( Base64.getDecoder().decode( skinMap.get( "AnimationData" ).asText() ), StandardCharsets.UTF_8 ) );
         }
 
         if ( skinMap.has( "CapeId" ) ) {
-            this.skin.setCapeId( skinMap.get( "CapeId" ).getAsString() );
+            this.skin.setCapeId( skinMap.get( "CapeId" ).asText() );
         }
 
         if ( skinMap.has( "SkinColor" ) ) {
-            this.skin.setSkinColor( skinMap.get( "SkinColor" ).getAsString() );
+            this.skin.setSkinColor( skinMap.get( "SkinColor" ).asText() );
         }
 
         if ( skinMap.has( "ArmSize" ) ) {
-            this.skin.setArmSize( skinMap.get( "ArmSize" ).getAsString() );
+            this.skin.setArmSize( skinMap.get( "ArmSize" ).asText() );
         }
 
         if ( skinMap.has( "PlayFabID" ) ) {
-            this.skin.setPlayFabId( skinMap.get( "PlayFabID" ).getAsString() );
+            this.skin.setPlayFabId( skinMap.get( "PlayFabID" ).asText() );
         }
 
         this.skin.setSkinData( this.getImage( skinMap, "Skin" ) );
         this.skin.setCapeData( this.getImage( skinMap, "Cape" ) );
 
         if ( skinMap.has( "PremiumSkin" ) ) {
-            this.skin.setPremium( skinMap.get( "PremiumSkin" ).getAsBoolean() );
+            this.skin.setPremium( skinMap.get( "PremiumSkin" ).asBoolean() );
         }
 
         if ( skinMap.has( "PersonaSkin" ) ) {
-            this.skin.setPersona( skinMap.get( "PersonaSkin" ).getAsBoolean() );
+            this.skin.setPersona( skinMap.get( "PersonaSkin" ).asBoolean() );
         }
 
         if ( skinMap.has( "CapeOnClassicSkin" ) ) {
-            this.skin.setCapeOnClassic( skinMap.get( "CapeOnClassicSkin" ).getAsBoolean() );
+            this.skin.setCapeOnClassic( skinMap.get( "CapeOnClassicSkin" ).asBoolean() );
         }
 
         if ( skinMap.has( "AnimatedImageData" ) ) {
-            JsonArray array = skinMap.get( "AnimatedImageData" ).getAsJsonArray();
-            for ( JsonElement jsonElement : array ) {
-                this.skin.getSkinAnimations().add( this.getSkinAnimationData( jsonElement.getAsJsonObject() ) );
+            JsonNode array = skinMap.get( "AnimatedImageData" );
+            for ( JsonNode jsonElement : array ) {
+                this.skin.getSkinAnimations().add( this.getSkinAnimationData( jsonElement ) );
             }
         }
 
         if ( skinMap.has( "PersonaPieces" ) ) {
-            JsonArray array = skinMap.get( "PersonaPieces" ).getAsJsonArray();
-            for ( JsonElement jsonElement : array ) {
-                this.skin.getPersonaPieces().add( this.getPersonaPiece( jsonElement.getAsJsonObject() ) );
+            for ( JsonNode jsonElement : skinMap.get( "PersonaPieces" ) ) {
+                this.skin.getPersonaPieces().add( this.getPersonaPiece( jsonElement ) );
             }
         }
 
         if ( skinMap.has( "PieceTintColors" ) ) {
-            JsonArray array = skinMap.get( "PieceTintColors" ).getAsJsonArray();
-            for ( JsonElement jsonElement : array ) {
-                this.skin.getPersonaPieceTints().add( this.getPersonaPieceTint( jsonElement.getAsJsonObject() ) );
+            for ( JsonNode jsonElement : skinMap.get( "PieceTintColors" ) ) {
+                this.skin.getPersonaPieceTints().add( this.getPersonaPieceTint( jsonElement ) );
             }
         }
     }
 
-    private boolean verifyChains( List<String> chains ) throws Exception {
+    private boolean verifyChains( List<SignedJWT> chains ) throws Exception {
         PublicKey lastKey = null;
         boolean mojangKeyVerified = false;
-        for ( String chain : chains ) {
-            JWSObject jws = JWSObject.parse( chain );
+        for ( SignedJWT chain : chains ) {
             if ( !mojangKeyVerified ) {
-                mojangKeyVerified = verify( EncryptionUtils.getMojangPublicKey(), jws );
+                mojangKeyVerified = verify( EncryptionUtils.getMojangPublicKey(), chain );
             }
-            if ( lastKey != null && !verify( lastKey, jws ) ) {
+            if ( lastKey != null && !verify( lastKey, chain ) ) {
                 throw new JOSEException( "Unable to verify key in chain." );
             }
-            Map<String, Object> payload = jws.getPayload().toJSONObject();
+            Map<String, Object> payload = chain.getPayload().toJSONObject();
             String base64key = (String) payload.get( "identityPublicKey" );
             if ( base64key == null ) throw new RuntimeException( "No key found" );
             lastKey = EncryptionUtils.generateKey( base64key );
@@ -219,16 +214,24 @@ public class LoginData {
         return GSON.fromJson( new String( Base64.getDecoder().decode( tokenSplit[1] ), StandardCharsets.UTF_8 ), JsonObject.class );
     }
 
+    private JsonNode decodeToken( SignedJWT token ) {
+        try {
+            return JSON_MAPPER.readTree( token.getPayload().toBytes() );
+        } catch ( IOException e ) {
+            throw new IllegalArgumentException( "Invalid token JSON", e );
+        }
+    }
+
     private static boolean verify( PublicKey publicKey, JWSObject jwsObject ) throws JOSEException {
         return jwsObject.verify( JWS_VERIFIER_FACTORY.createJWSVerifier( jwsObject.getHeader(), publicKey ) );
     }
 
-    private Image getImage( JsonObject skinMap, String name ) {
+    private Image getImage( JsonNode skinMap, String name ) {
         if ( skinMap.has( name + "Data" ) ) {
-            byte[] skinImage = Base64.getDecoder().decode( skinMap.get( name + "Data" ).getAsString() );
+            byte[] skinImage = Base64.getDecoder().decode( skinMap.get( name + "Data" ).asText() );
             if ( skinMap.has( name + "ImageHeight" ) && skinMap.has( name + "ImageWidth" ) ) {
-                int width = skinMap.get( name + "ImageWidth" ).getAsInt();
-                int height = skinMap.get( name + "ImageHeight" ).getAsInt();
+                int width = skinMap.get( name + "ImageWidth" ).asInt();
+                int height = skinMap.get( name + "ImageHeight" ).asInt();
                 return new Image( width, height, skinImage );
             } else {
                 return Image.getImage( skinImage );
@@ -237,30 +240,30 @@ public class LoginData {
         return new Image( 0, 0, new byte[0] );
     }
 
-    private SkinAnimation getSkinAnimationData( JsonObject animationData ) {
-        byte[] data = Base64.getDecoder().decode( animationData.get( "Image" ).getAsString() );
-        int width = animationData.get( "ImageWidth" ).getAsInt();
-        int height = animationData.get( "ImageHeight" ).getAsInt();
-        float frames = animationData.get( "Frames" ).getAsFloat();
-        int type = animationData.get( "Type" ).getAsInt();
-        int expression = animationData.get( "AnimationExpression" ).getAsInt();
+    private SkinAnimation getSkinAnimationData( JsonNode animationData ) {
+        byte[] data = Base64.getDecoder().decode( animationData.get( "Image" ).asText() );
+        int width = animationData.get( "ImageWidth" ).asInt();
+        int height = animationData.get( "ImageHeight" ).asInt();
+        float frames = animationData.get( "Frames" ).floatValue();
+        int type = animationData.get( "Type" ).asInt();
+        int expression = animationData.get( "AnimationExpression" ).asInt();
         return new SkinAnimation( new Image( width, height, data ), type, frames, expression );
     }
 
-    private PersonaPiece getPersonaPiece( JsonObject personaPiece ) {
-        String pieceId = personaPiece.get( "PieceId" ).getAsString();
-        String pieceType = personaPiece.get( "PieceType" ).getAsString();
-        String packId = personaPiece.get( "PackId" ).getAsString();
-        String productId = personaPiece.get( "ProductId" ).getAsString();
-        boolean isDefault = personaPiece.get( "IsDefault" ).getAsBoolean();
+    private PersonaPiece getPersonaPiece( JsonNode personaPiece ) {
+        String pieceId = personaPiece.get( "PieceId" ).asText();
+        String pieceType = personaPiece.get( "PieceType" ).asText();
+        String packId = personaPiece.get( "PackId" ).asText();
+        String productId = personaPiece.get( "ProductId" ).asText();
+        boolean isDefault = personaPiece.get( "IsDefault" ).asBoolean();
         return new PersonaPiece( pieceId, pieceType, packId, productId, isDefault );
     }
 
-    private PersonaPieceTint getPersonaPieceTint( JsonObject personaPiceTint ) {
-        String pieceType = personaPiceTint.get( "PieceType" ).getAsString();
+    private PersonaPieceTint getPersonaPieceTint( JsonNode personaPiceTint ) {
+        String pieceType = personaPiceTint.get( "PieceType" ).asText();
         List<String> colors = new ArrayList<>();
-        for ( JsonElement element : personaPiceTint.get( "Colors" ).getAsJsonArray() ) {
-            colors.add( element.getAsString() );
+        for ( JsonNode element : personaPiceTint.get( "Colors" ) ) {
+            colors.add( element.textValue() );
         }
         return new PersonaPieceTint( pieceType, colors );
     }

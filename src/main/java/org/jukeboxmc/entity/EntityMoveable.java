@@ -1,8 +1,8 @@
 package org.jukeboxmc.entity;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.apache.commons.math3.util.FastMath;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.math.AxisAlignedBB;
 import org.jukeboxmc.math.Location;
@@ -202,7 +202,7 @@ public abstract class EntityMoveable extends Entity {
             this.lastLocation.setZ( this.location.getZ() );
             this.lastLocation.setYaw( this.location.getYaw() );
             this.lastLocation.setPitch( this.location.getPitch() );
-            this.sendEntityMovePacket( new Location( this.location.getWorld(), this.location.getX(), this.location.getY() + 0, this.location.getZ(), this.location.getYaw(), this.location.getPitch(), this.location.getDimension()                                                  ), this.onGround );
+            this.sendEntityMovePacket( new Location( this.location.getWorld(), this.location.getX(), this.location.getY() + 0, this.location.getZ(), this.location.getYaw(), this.location.getPitch(), this.location.getDimension() ), this.onGround );
         }
 
         if ( diffMotion > 0.0025 || ( diffMotion > 0.0001 && this.getVelocity().squaredLength() <= 0.0001 ) ) {
@@ -220,7 +220,7 @@ public abstract class EntityMoveable extends Entity {
         moveEntityAbsolutePacket.setTeleported( false );
         moveEntityAbsolutePacket.setOnGround( onGround );
         moveEntityAbsolutePacket.setPosition( location.toVector3f() );
-        moveEntityAbsolutePacket.setRotation( Vector3f.from( location.getPitch(), location.getYaw(), location.getYaw() ) );
+        moveEntityAbsolutePacket.setRotation( Vector3f.from( location.getPitch(), location.getYaw(), location.getYaw() ));
         Server.getInstance().broadcastPacket( moveEntityAbsolutePacket );
     }
 

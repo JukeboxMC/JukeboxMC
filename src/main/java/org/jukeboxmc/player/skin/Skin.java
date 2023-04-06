@@ -1,7 +1,7 @@
 package org.jukeboxmc.player.skin;
 
-import com.nukkitx.protocol.bedrock.data.skin.*;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.skin.*;
 
 import java.util.ArrayList;
 import java.util.List;

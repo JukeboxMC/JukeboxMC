@@ -1,7 +1,7 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -49,24 +49,24 @@ public class BlockTrapdoor extends Block {
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         this.setOpen( !this.isOpen()  );
-        this.location.getWorld().sendLevelEvent( this.location, LevelEventType.SOUND_DOOR_OPEN, 0 );
+        this.location.getWorld().sendLevelEvent( this.location, LevelEvent.SOUND_DOOR_OPEN, 0 );
         return true;
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "open_bit", value ? 1 : 0 );
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
     }
 
     public void setUpsideDown( boolean value ) {
-        this.setState( "upside_down_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "upside_down_bit", value ? 1 : 0 );
     }
 
     public boolean isUpsideDown() {
-        return this.stateExists( "upside_down_bit" ) && this.getByteState( "upside_down_bit" ) == 1;
+        return this.stateExists( "upside_down_bit" ) && this.getIntState( "upside_down_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

@@ -1,10 +1,5 @@
 package org.jukeboxmc.scoreboard;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.ScoreInfo;
-import com.nukkitx.protocol.bedrock.packet.RemoveObjectivePacket;
-import com.nukkitx.protocol.bedrock.packet.SetDisplayObjectivePacket;
-import com.nukkitx.protocol.bedrock.packet.SetScorePacket;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -12,6 +7,11 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.RemoveObjectivePacket;
+import org.cloudburstmc.protocol.bedrock.packet.SetDisplayObjectivePacket;
+import org.cloudburstmc.protocol.bedrock.packet.SetScorePacket;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.player.Player;
 

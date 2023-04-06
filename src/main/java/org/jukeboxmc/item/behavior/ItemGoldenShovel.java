@@ -1,6 +1,6 @@
 package org.jukeboxmc.item.behavior;
 
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;

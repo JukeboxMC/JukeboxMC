@@ -1,6 +1,6 @@
 package org.jukeboxmc.block.behavior;
 
-import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Attachment;
 import org.jukeboxmc.block.direction.BlockFace;
@@ -56,11 +56,11 @@ public class BlockBell extends Block {
     }
 
     public void setToggle( boolean value ) {
-        this.setState( "toggle_bit", value ? (byte) 1 : (byte) 0 );
+        this.setState( "toggle_bit", value ? 1 : 0 );
     }
 
     public boolean isToggle() {
-        return this.stateExists( "toggle_bit" ) && this.getByteState( "toggle_bit" ) == 1;
+        return this.stateExists( "toggle_bit" ) && this.getIntState( "toggle_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {
