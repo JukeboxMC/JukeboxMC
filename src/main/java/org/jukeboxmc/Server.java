@@ -620,6 +620,7 @@ public class Server {
         entry.setPlatformChatId( deviceInfo.getDeviceName() );
         entry.setBuildPlatform( deviceInfo.getDevice().getId() );
         entry.setSkin( skin.toNetwork() );
+        entry.setTrustedSkin( skin.isTrusted() );
         playerListPacket.getEntries().add( entry );
         this.playerListEntry.put( uuid, entry );
         this.broadcastPacket( playerListPacket );
@@ -629,6 +630,14 @@ public class Server {
         PlayerListPacket playerListPacket = new PlayerListPacket();
         playerListPacket.setAction( PlayerListPacket.Action.REMOVE );
         playerListPacket.getEntries().add( new PlayerListPacket.Entry( player.getUUID() ) );
+        this.broadcastPacket( playerListPacket );
+        this.playerListEntry.remove( player.getUUID() );
+    }
+
+    public void removeFromTabList( UUID uuid, Player player ) {
+        PlayerListPacket playerListPacket = new PlayerListPacket();
+        playerListPacket.setAction( PlayerListPacket.Action.REMOVE );
+        playerListPacket.getEntries().add( new PlayerListPacket.Entry( uuid ) );
         this.broadcastPacket( playerListPacket );
         this.playerListEntry.remove( player.getUUID() );
     }

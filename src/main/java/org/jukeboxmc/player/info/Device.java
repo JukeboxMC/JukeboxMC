@@ -6,6 +6,7 @@ package org.jukeboxmc.player.info;
  */
 public enum Device {
 
+    UNKNOWN(-1),
     ANDROID( 1 ),
     IOS( 2 ),
     OSX( 3 ),
