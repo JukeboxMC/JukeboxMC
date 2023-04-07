@@ -13,6 +13,6 @@ public class PlayerSkinHandler implements PacketHandler<PlayerSkinPacket> {
 
     @Override
     public void handle( PlayerSkinPacket packet, Server server, Player player ) {
-        player.updateSkin( Skin.fromNetwork( packet.getSkin() ) );
+        player.setSkin( Skin.fromNetwork( packet.getSkin() ) );
     }
 }

@@ -11,6 +11,7 @@ import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
+import org.jukeboxmc.event.player.PlayerChangeSkinEvent;
 import org.jukeboxmc.event.player.PlayerFoodLevelChangeEvent;
 import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
