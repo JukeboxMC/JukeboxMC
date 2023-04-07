@@ -785,6 +785,20 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         if ( playerChangeSkinEvent.isCancelled() ) return;
         Server.getInstance().addToTabList( this.uuid, this.entityId, this.name, this.deviceInfo, this.getXuid(), this.skin );
     }
+    
+    public void updateSkin( Skin skin ) {
+        super.setSkin( skin );
+
+        PlayerChangeSkinEvent playerChangeSkinEvent = new PlayerChangeSkinEvent( this, skin );
+        if ( playerChangeSkinEvent.isCancelled() ) return;
+        PlayerSkinPacket skinPacket = new PlayerSkinPacket();
+        skinPacket.setUuid( this.uuid );
+        skinPacket.setSkin( skin.toNetwork() );
+        skinPacket.setNewSkinName( "" );
+        skinPacket.setOldSkinName( "" );
+        skinPacket.setTrustedSkin( skin.isTrusted() );
+        Server.getInstance().broadcastPacket( skinPacket );
+    }
 
     public void sendServerSettings( Player player ) {
         if ( this.serverSettingsForm != -1 ) {
