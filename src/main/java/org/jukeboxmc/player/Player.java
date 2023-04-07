@@ -776,15 +776,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
         this.adventureSettings.setWalkSpeed( value );
         this.adventureSettings.update();
     }
-
-    @Override
-    public void setSkin( Skin skin ) {
-        super.setSkin( skin );
-
-        PlayerChangeSkinEvent playerChangeSkinEvent = new PlayerChangeSkinEvent( this, skin );
-        if ( playerChangeSkinEvent.isCancelled() ) return;
-        Server.getInstance().addToTabList( this.uuid, this.entityId, this.name, this.deviceInfo, this.getXuid(), this.skin );
-    }
     
     public void updateSkin( Skin skin ) {
         super.setSkin( skin );
