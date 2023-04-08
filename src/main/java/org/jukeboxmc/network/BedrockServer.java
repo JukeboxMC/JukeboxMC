@@ -11,14 +11,10 @@ import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer;
-import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
-import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
-import org.cloudburstmc.protocol.common.PacketSignal;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.player.PlayerConnection;
 
 import java.net.InetSocketAddress;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * @author LucGamesYT
@@ -31,25 +27,10 @@ public class BedrockServer {
     private final InetSocketAddress bindAddress;
     private final Server server;
     private Channel channel;
-    private Consumer<BedrockServerSession> consumer;
-    private Consumer<String> disconnectConsumer;
-    private BiConsumer<BedrockPacket, BedrockServerSession> packetConsumer;
 
     public BedrockServer( InetSocketAddress bindAddress, Server server ) {
         this.bindAddress = bindAddress;
         this.server = server;
-    }
-
-    public void registerServerSession( Consumer<BedrockServerSession> consumer ) {
-        this.consumer = consumer;
-    }
-
-    public void registerPacketHandler( BiConsumer<BedrockPacket, BedrockServerSession> packetConsumer ) {
-        this.packetConsumer = packetConsumer;
-    }
-
-    public void registerDisconnectHandler( Consumer<String> disconnectConsumer ) {
-        this.disconnectConsumer = disconnectConsumer;
     }
 
     public void bind() {
@@ -74,20 +55,7 @@ public class BedrockServer {
                     @Override
                     protected void initSession( BedrockServerSession session ) {
                         session.setCodec( CODEC );
-                        BedrockServer.this.consumer.accept( session );
-                        session.setPacketHandler( new BedrockPacketHandler() {
-                            @Override
-                            public PacketSignal handlePacket( BedrockPacket packet ) {
-                                BedrockServer.this.packetConsumer.accept( packet, session );
-                                return PacketSignal.HANDLED;
-                            }
-
-                            @Override
-                            public void onDisconnect( String reason ) {
-                                BedrockServer.this.disconnectConsumer.accept( reason );
-                                BedrockPacketHandler.super.onDisconnect( reason );
-                            }
-                        } );
+                        BedrockServer.this.server.addPlayer( BedrockServer.this.server.addPlayerConnection( new PlayerConnection( BedrockServer.this.server, BedrockServer.this, session ) ).getPlayer() );
                     }
                 } )
                 .bind( this.bindAddress )

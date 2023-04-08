@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.common.PacketSignal;
 import org.cloudburstmc.protocol.common.SimpleDefinitionRegistry;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.jukeboxmc.Server;
@@ -47,29 +48,37 @@ public class PlayerConnection {
 
     public PlayerConnection( Server server, BedrockServer bedrockServer, BedrockServerSession session ) {
         this.server = server;
-        bedrockServer.registerDisconnectHandler( disconnectReason -> this.server.getScheduler().execute( () -> this.onDisconnect( disconnectReason ) ) );
         this.loggedIn = new AtomicBoolean( false );
         this.spawned = new AtomicBoolean( false );
         this.player = new Player( server, this );
         this.playerChunkManager = new PlayerChunkManager( this.player );
         this.session = session;
-        bedrockServer.registerPacketHandler( ( packet, bedrockServerSession ) -> {
-            try {
-                server.getScheduler().execute( () -> {
-                    PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( this.player, packet );
-                    server.getPluginManager().callEvent( packetReceiveEvent );
-                    if ( packetReceiveEvent.isCancelled() ) {
-                        return;
-                    }
-                    PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packetReceiveEvent.getPacket().getClass() );
-                    if ( packetHandler != null ) {
-                        packetHandler.handle( packetReceiveEvent.getPacket(), this.server, this.player );
-                    } else {
-                        this.server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
-                    }
-                } );
-            } catch ( Throwable throwable ) {
-                throwable.printStackTrace();
+        this.session.setPacketHandler( new BedrockPacketHandler() {
+            @Override
+            public PacketSignal handlePacket( BedrockPacket packet ) {
+                try {
+                    server.getScheduler().execute( () -> {
+                        PacketReceiveEvent packetReceiveEvent = new PacketReceiveEvent( player, packet );
+                        server.getPluginManager().callEvent( packetReceiveEvent );
+                        if ( packetReceiveEvent.isCancelled() ) {
+                            return;
+                        }
+                        PacketHandler<BedrockPacket> packetHandler = (PacketHandler<BedrockPacket>) HandlerRegistry.getPacketHandler( packetReceiveEvent.getPacket().getClass() );
+                        if ( packetHandler != null ) {
+                            packetHandler.handle( packetReceiveEvent.getPacket(), server, player );
+                        } else {
+                            server.getLogger().info( "Handler missing for packet: " + packet.getClass().getSimpleName() );
+                        }
+                    } );
+                } catch ( Throwable throwable ) {
+                    throwable.printStackTrace();
+                }
+                return PacketSignal.HANDLED;
+            }
+
+            @Override
+            public void onDisconnect( String reason ) {
+                server.getScheduler().execute( () -> PlayerConnection.this.onDisconnect( reason ) );
             }
         } );
     }
@@ -351,6 +360,7 @@ public class PlayerConnection {
             this.player.setUUID( loginData.getUuid() );
             this.player.setSkin( loginData.getSkin() );
             this.player.setDeviceInfo( loginData.getDeviceInfo() );
+            Server.SESSION.put( this.session, loginData.getDisplayName() );
         }
     }
 

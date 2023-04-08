@@ -2,6 +2,7 @@ package org.jukeboxmc;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
@@ -106,6 +107,8 @@ public class Server {
     private long currentTps;
     private long sleepBalance;
 
+    public static Map<BedrockServerSession, String> SESSION = new HashMap<>();
+
     public Server( Logger logger ) {
         instance = this;
         JukeboxMC.setServer( this );
@@ -173,9 +176,6 @@ public class Server {
         this.updater = PlayerConnection::update;
 
         this.bedrockServer = new BedrockServer( new InetSocketAddress( this.getServerAddress(), this.getPort() ), this );
-        this.bedrockServer.registerServerSession( bedrockServerSession -> {
-            this.addPlayer( this.addPlayer( new PlayerConnection( this, this.bedrockServer, bedrockServerSession ) ).getPlayer() );
-        } );
         this.bedrockServer.bind();
         this.logger.info( "JukeboxMC started in " + TimeUnit.MILLISECONDS.toSeconds( System.currentTimeMillis() - this.startTime ) + " seconds!" );
         this.finishedState.set( true );
@@ -183,7 +183,7 @@ public class Server {
         this.shutdown();
     }
 
-    private synchronized PlayerConnection addPlayer( PlayerConnection playerConnection ) {
+    public synchronized PlayerConnection addPlayerConnection( PlayerConnection playerConnection ) {
         this.connections.add( playerConnection );
         return playerConnection;
     }
