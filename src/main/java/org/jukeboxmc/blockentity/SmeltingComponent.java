@@ -104,8 +104,6 @@ public class SmeltingComponent extends BlockEntity {
         SmeltingRecipe recipe = Server.getInstance().getCraftingManager().getSmeltingRecipe( input );
         if ( recipe != null ) {
             this.output = recipe.getOutput().clone();
-        } else {
-            System.out.println("Output is null");
         }
     }
 

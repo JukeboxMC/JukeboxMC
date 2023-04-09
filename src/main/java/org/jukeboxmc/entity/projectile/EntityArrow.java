@@ -88,6 +88,8 @@ public class EntityArrow extends EntityProjectile{
                 player.getInventory().addItem( arrow );
             }
             player.getInventory().sendContents( player );
+        } else if ( this.hitEntity != null ) {
+            this.close();
         }
     }
 

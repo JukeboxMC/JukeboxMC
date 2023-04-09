@@ -66,25 +66,25 @@ public abstract class EntityProjectile extends EntityMoveable {
                     ProjectileHitEntityEvent projectileHitEntityEvent = new ProjectileHitEntityEvent( hitEntity, this );
                     this.getWorld().getServer().getPluginManager().callEvent( projectileHitEntityEvent );
 
-                    if ( !projectileHitEntityEvent.isCancelled() ) {
-                        float damage = this.getDamage();
-
-                        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent( hitEntity, this.shooter, damage, EntityDamageEvent.DamageSource.PROJECTILE );
-                        if ( hitEntity.damage( event ) ) {
-                            this.applyCustomKnockback( hitEntity );
-                            this.applyCustomDamageEffects( hitEntity );
-                            if ( this instanceof EntityArrow ) {
-                                if ( this.shooter instanceof Player player ) {
-                                    player.playSound( Sound.RANDOM_BOWHIT );
-                                }
-                            }
-                            this.updateMetadata(this.metadata.setLong( EntityDataTypes.TARGET_EID, hitEntity.getEntityId() ));
-                        }
-                        this.onCollidedWithEntity( hitEntity );
-                        this.hitEntity = hitEntity;
-                        this.updateMovement();
+                    if ( projectileHitEntityEvent.isCancelled() ) {
                         return;
                     }
+                    float damage = this.getDamage();
+
+                    EntityDamageByEntityEvent event = new EntityDamageByEntityEvent( hitEntity, this.shooter, damage, EntityDamageEvent.DamageSource.PROJECTILE );
+                    if ( hitEntity.damage( event ) ) {
+                        this.applyCustomKnockback( hitEntity );
+                        this.applyCustomDamageEffects( hitEntity );
+                        if ( this instanceof EntityArrow ) {
+                            if ( this.shooter instanceof Player player ) {
+                                player.playSound( Sound.RANDOM_BOWHIT );
+                            }
+                        }
+                        this.updateMetadata(this.metadata.setLong( EntityDataTypes.TARGET_EID, hitEntity.getEntityId() ));
+                    }
+                    this.onCollidedWithEntity( hitEntity );
+                    this.hitEntity = hitEntity;
+                    this.updateMovement();
                 }
 
                 this.move( this.velocity );
