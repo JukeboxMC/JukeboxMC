@@ -40,7 +40,7 @@
     "max_stack_size": 64
   },
   "minecraft:acacia_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -80,7 +80,7 @@
     "max_stack_size": 64
   },
   "minecraft:activator_rail": {
-    "hardness": 0.7,
+    "hardness": 0.5,
     "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -90,7 +90,7 @@
     "max_stack_size": 64
   },
   "minecraft:air": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -100,7 +100,7 @@
     "max_stack_size": 64
   },
   "minecraft:allow": {
-    "hardness": -1,
+    "hardness": 0.2,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -140,7 +140,7 @@
     "max_stack_size": 64
   },
   "minecraft:andesite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -190,7 +190,7 @@
     "max_stack_size": 64
   },
   "minecraft:bamboo": {
-    "hardness": 1,
+    "hardness": 2,
     "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -300,7 +300,7 @@
     "max_stack_size": 64
   },
   "minecraft:bell": {
-    "hardness": 5,
+    "hardness": 1,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -310,7 +310,7 @@
     "max_stack_size": 64
   },
   "minecraft:big_dripleaf": {
-    "hardness": 0.1,
+    "hardness": 0,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -360,7 +360,7 @@
     "max_stack_size": 64
   },
   "minecraft:birch_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -430,7 +430,7 @@
     "max_stack_size": 64
   },
   "minecraft:blackstone_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -440,7 +440,7 @@
     "max_stack_size": 64
   },
   "minecraft:blackstone_wall": {
-    "hardness": 2,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -550,7 +550,7 @@
     "max_stack_size": 64
   },
   "minecraft:border_block": {
-    "hardness": -1,
+    "hardness": 0.2,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -580,7 +580,7 @@
     "max_stack_size": 64
   },
   "minecraft:brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -640,7 +640,7 @@
     "max_stack_size": 64
   },
   "minecraft:bubble_column": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -700,7 +700,7 @@
     "max_stack_size": 64
   },
   "minecraft:campfire": {
-    "hardness": 2,
+    "hardness": 5,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -820,7 +820,7 @@
     "max_stack_size": 64
   },
   "minecraft:chain_command_block": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -840,7 +840,7 @@
     "max_stack_size": 64
   },
   "minecraft:chemistry_table": {
-    "hardness": 0,
+    "hardness": 2.5,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -860,7 +860,7 @@
     "max_stack_size": 64
   },
   "minecraft:chiseled_deepslate": {
-    "hardness": 3,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -880,7 +880,7 @@
     "max_stack_size": 64
   },
   "minecraft:chiseled_polished_blackstone": {
-    "hardness": 2,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -890,7 +890,7 @@
     "max_stack_size": 64
   },
   "minecraft:chorus_flower": {
-    "hardness": 0,
+    "hardness": 0.4,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -900,7 +900,7 @@
     "max_stack_size": 64
   },
   "minecraft:chorus_plant": {
-    "hardness": 0,
+    "hardness": 0.4,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -920,7 +920,7 @@
     "max_stack_size": 64
   },
   "minecraft:client_request_placeholder_block": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -960,7 +960,7 @@
     "max_stack_size": 64
   },
   "minecraft:cobbled_deepslate_double_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -970,7 +970,7 @@
     "max_stack_size": 64
   },
   "minecraft:cobbled_deepslate_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -980,7 +980,7 @@
     "max_stack_size": 64
   },
   "minecraft:cobbled_deepslate_stairs": {
-    "hardness": 6,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -990,7 +990,7 @@
     "max_stack_size": 64
   },
   "minecraft:cobbled_deepslate_wall": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1050,7 +1050,7 @@
     "max_stack_size": 64
   },
   "minecraft:command_block": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -1060,7 +1060,7 @@
     "max_stack_size": 64
   },
   "minecraft:composter": {
-    "hardness": 0.6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -1130,7 +1130,7 @@
     "max_stack_size": 64
   },
   "minecraft:coral_block": {
-    "hardness": 1.5,
+    "hardness": 7,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1300,7 +1300,7 @@
     "max_stack_size": 64
   },
   "minecraft:crimson_hyphae": {
-    "hardness": 0,
+    "hardness": 0.3,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -1360,7 +1360,7 @@
     "max_stack_size": 64
   },
   "minecraft:crimson_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -1410,7 +1410,7 @@
     "max_stack_size": 64
   },
   "minecraft:crying_obsidian": {
-    "hardness": 50,
+    "hardness": 35,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1430,7 +1430,7 @@
     "max_stack_size": 64
   },
   "minecraft:cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1440,7 +1440,7 @@
     "max_stack_size": 64
   },
   "minecraft:cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -1540,7 +1540,7 @@
     "max_stack_size": 64
   },
   "minecraft:dark_oak_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -1560,7 +1560,7 @@
     "max_stack_size": 64
   },
   "minecraft:dark_prismarine_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -1620,7 +1620,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_brick_double_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1630,7 +1630,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_brick_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1640,7 +1640,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_brick_stairs": {
-    "hardness": 6,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -1650,7 +1650,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_brick_wall": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1750,7 +1750,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_tile_double_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1760,7 +1760,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_tile_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1770,7 +1770,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_tile_stairs": {
-    "hardness": 6,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -1780,7 +1780,7 @@
     "max_stack_size": 64
   },
   "minecraft:deepslate_tile_wall": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -1790,7 +1790,7 @@
     "max_stack_size": 64
   },
   "minecraft:deny": {
-    "hardness": 0,
+    "hardness": 0.2,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -1830,7 +1830,7 @@
     "max_stack_size": 64
   },
   "minecraft:diorite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -1870,7 +1870,7 @@
     "max_stack_size": 64
   },
   "minecraft:double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -3210,7 +3210,7 @@
     "max_stack_size": 64
   },
   "minecraft:end_bricks": {
-    "hardness": 3,
+    "hardness": 0.8,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -3220,7 +3220,7 @@
     "max_stack_size": 64
   },
   "minecraft:end_brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -3300,7 +3300,7 @@
     "max_stack_size": 64
   },
   "minecraft:exposed_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -3310,7 +3310,7 @@
     "max_stack_size": 64
   },
   "minecraft:exposed_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -3320,7 +3320,7 @@
     "max_stack_size": 64
   },
   "minecraft:exposed_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -3400,7 +3400,7 @@
     "max_stack_size": 64
   },
   "minecraft:flowing_lava": {
-    "hardness": 0,
+    "hardness": 100,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -3410,7 +3410,7 @@
     "max_stack_size": 64
   },
   "minecraft:flowing_water": {
-    "hardness": 0,
+    "hardness": 100,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -3420,7 +3420,7 @@
     "max_stack_size": 64
   },
   "minecraft:frame": {
-    "hardness": 0,
+    "hardness": 0.25,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -3490,7 +3490,7 @@
     "max_stack_size": 64
   },
   "minecraft:glowingobsidian": {
-    "hardness": 50,
+    "hardness": 10,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -3510,7 +3510,7 @@
     "max_stack_size": 64
   },
   "minecraft:glow_frame": {
-    "hardness": 0,
+    "hardness": 0.25,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -3560,7 +3560,7 @@
     "max_stack_size": 64
   },
   "minecraft:granite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -3800,7 +3800,7 @@
     "max_stack_size": 64
   },
   "minecraft:info_update": {
-    "hardness": 0,
+    "hardness": 1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -3810,7 +3810,7 @@
     "max_stack_size": 64
   },
   "minecraft:info_update2": {
-    "hardness": 0,
+    "hardness": 1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -3820,7 +3820,7 @@
     "max_stack_size": 64
   },
   "minecraft:invisible_bedrock": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -3890,7 +3890,7 @@
     "max_stack_size": 64
   },
   "minecraft:jukebox": {
-    "hardness": 2,
+    "hardness": 0.8,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -3940,7 +3940,7 @@
     "max_stack_size": 64
   },
   "minecraft:jungle_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -4000,7 +4000,7 @@
     "max_stack_size": 64
   },
   "minecraft:lantern": {
-    "hardness": 3.5,
+    "hardness": 5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4040,7 +4040,7 @@
     "max_stack_size": 64
   },
   "minecraft:lava": {
-    "hardness": 0,
+    "hardness": 100,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -4080,7 +4080,7 @@
     "max_stack_size": 64
   },
   "minecraft:lectern": {
-    "hardness": 2.5,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -4110,7 +4110,7 @@
     "max_stack_size": 64
   },
   "minecraft:light_block": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -4150,7 +4150,7 @@
     "max_stack_size": 64
   },
   "minecraft:light_gray_candle": {
-    "hardness": 0.1,
+    "hardness": 0,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -4280,7 +4280,7 @@
     "max_stack_size": 64
   },
   "minecraft:lodestone": {
-    "hardness": 3.5,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -4480,7 +4480,7 @@
     "max_stack_size": 64
   },
   "minecraft:mangrove_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -4590,7 +4590,7 @@
     "max_stack_size": 64
   },
   "minecraft:mossy_cobblestone_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4600,7 +4600,7 @@
     "max_stack_size": 64
   },
   "minecraft:mossy_stone_brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4610,7 +4610,7 @@
     "max_stack_size": 64
   },
   "minecraft:moss_block": {
-    "hardness": 0,
+    "hardness": 0.1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -4630,7 +4630,7 @@
     "max_stack_size": 64
   },
   "minecraft:moving_block": {
-    "hardness": 1.5,
+    "hardness": -1,
     "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4660,7 +4660,7 @@
     "max_stack_size": 64
   },
   "minecraft:mud_bricks": {
-    "hardness": 1.5,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4690,7 +4690,7 @@
     "max_stack_size": 64
   },
   "minecraft:mud_brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4740,7 +4740,7 @@
     "max_stack_size": 64
   },
   "minecraft:netherreactor": {
-    "hardness": 10,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -4770,7 +4770,7 @@
     "max_stack_size": 64
   },
   "minecraft:nether_brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4820,7 +4820,7 @@
     "max_stack_size": 64
   },
   "minecraft:normal_stone_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4840,7 +4840,7 @@
     "max_stack_size": 64
   },
   "minecraft:oak_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -4860,7 +4860,7 @@
     "max_stack_size": 64
   },
   "minecraft:obsidian": {
-    "hardness": 50,
+    "hardness": 35,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -4870,7 +4870,7 @@
     "max_stack_size": 64
   },
   "minecraft:ochre_froglight": {
-    "hardness": 0,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -4930,7 +4930,7 @@
     "max_stack_size": 64
   },
   "minecraft:oxidized_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -4940,7 +4940,7 @@
     "max_stack_size": 64
   },
   "minecraft:oxidized_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -4950,7 +4950,7 @@
     "max_stack_size": 64
   },
   "minecraft:oxidized_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -4980,7 +4980,7 @@
     "max_stack_size": 64
   },
   "minecraft:pearlescent_froglight": {
-    "hardness": 0,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -5020,7 +5020,7 @@
     "max_stack_size": 64
   },
   "minecraft:piston": {
-    "hardness": 1.5,
+    "hardness": 0.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5030,7 +5030,7 @@
     "max_stack_size": 64
   },
   "minecraft:piston_arm_collision": {
-    "hardness": 1.5,
+    "hardness": 0.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5070,7 +5070,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_andesite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5130,7 +5130,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_blackstone_brick_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5140,7 +5140,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_blackstone_brick_wall": {
-    "hardness": 2,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -5190,7 +5190,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_blackstone_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5200,7 +5200,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_blackstone_wall": {
-    "hardness": 2,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -5220,7 +5220,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_deepslate_double_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -5230,7 +5230,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_deepslate_slab": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -5240,7 +5240,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_deepslate_stairs": {
-    "hardness": 6,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5250,7 +5250,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_deepslate_wall": {
-    "hardness": 2,
+    "hardness": 3.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -5260,7 +5260,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_diorite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5270,7 +5270,7 @@
     "max_stack_size": 64
   },
   "minecraft:polished_granite_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5280,7 +5280,7 @@
     "max_stack_size": 64
   },
   "minecraft:portal": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -5340,7 +5340,7 @@
     "max_stack_size": 64
   },
   "minecraft:prismarine_bricks_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5350,7 +5350,7 @@
     "max_stack_size": 64
   },
   "minecraft:prismarine_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5420,7 +5420,7 @@
     "max_stack_size": 64
   },
   "minecraft:purpur_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5630,7 +5630,7 @@
     "max_stack_size": 64
   },
   "minecraft:red_nether_brick_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5650,7 +5650,7 @@
     "max_stack_size": 64
   },
   "minecraft:red_sandstone_stairs": {
-    "hardness": 6,
+    "hardness": 0.8,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5750,7 +5750,7 @@
     "max_stack_size": 64
   },
   "minecraft:scaffolding": {
-    "hardness": 0,
+    "hardness": 0.6,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -5850,7 +5850,7 @@
     "max_stack_size": 64
   },
   "minecraft:shulker_box": {
-    "hardness": 2,
+    "hardness": 2.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5940,7 +5940,7 @@
     "max_stack_size": 64
   },
   "minecraft:smooth_quartz_stairs": {
-    "hardness": 6,
+    "hardness": 0.8,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5950,7 +5950,7 @@
     "max_stack_size": 64
   },
   "minecraft:smooth_red_sandstone_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5960,7 +5960,7 @@
     "max_stack_size": 64
   },
   "minecraft:smooth_sandstone_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -5970,7 +5970,7 @@
     "max_stack_size": 64
   },
   "minecraft:smooth_stone": {
-    "hardness": 2,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -6000,7 +6000,7 @@
     "max_stack_size": 64
   },
   "minecraft:soul_campfire": {
-    "hardness": 2,
+    "hardness": 5,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6020,7 +6020,7 @@
     "max_stack_size": 64
   },
   "minecraft:soul_lantern": {
-    "hardness": 3.5,
+    "hardness": 5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6040,7 +6040,7 @@
     "max_stack_size": 64
   },
   "minecraft:soul_soil": {
-    "hardness": 0.5,
+    "hardness": 1,
     "solid": true,
     "tool_type": "SHOVEL",
     "can_break_with_hand": true,
@@ -6120,7 +6120,7 @@
     "max_stack_size": 64
   },
   "minecraft:spruce_stairs": {
-    "hardness": 3,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6210,7 +6210,7 @@
     "max_stack_size": 64
   },
   "minecraft:sticky_piston": {
-    "hardness": 1.5,
+    "hardness": 0.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6220,7 +6220,7 @@
     "max_stack_size": 64
   },
   "minecraft:sticky_piston_arm_collision": {
-    "hardness": 1.5,
+    "hardness": 0.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6310,7 +6310,7 @@
     "max_stack_size": 64
   },
   "minecraft:stone_brick_stairs": {
-    "hardness": 6,
+    "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6340,7 +6340,7 @@
     "max_stack_size": 64
   },
   "minecraft:stone_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6370,7 +6370,7 @@
     "max_stack_size": 64
   },
   "minecraft:stripped_crimson_hyphae": {
-    "hardness": 2,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6450,7 +6450,7 @@
     "max_stack_size": 64
   },
   "minecraft:stripped_warped_hyphae": {
-    "hardness": 2,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6470,7 +6470,7 @@
     "max_stack_size": 64
   },
   "minecraft:structure_block": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -6480,7 +6480,7 @@
     "max_stack_size": 64
   },
   "minecraft:structure_void": {
-    "hardness": 0,
+    "hardness": -1,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -6490,7 +6490,7 @@
     "max_stack_size": 64
   },
   "minecraft:sweet_berry_bush": {
-    "hardness": 0,
+    "hardness": 0.2,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -6600,7 +6600,7 @@
     "max_stack_size": 64
   },
   "minecraft:turtle_egg": {
-    "hardness": 0.5,
+    "hardness": 0.4,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -6630,7 +6630,7 @@
     "max_stack_size": 64
   },
   "minecraft:undyed_shulker_box": {
-    "hardness": 2,
+    "hardness": 2.5,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -6680,7 +6680,7 @@
     "max_stack_size": 64
   },
   "minecraft:verdant_froglight": {
-    "hardness": 0,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
@@ -6780,7 +6780,7 @@
     "max_stack_size": 64
   },
   "minecraft:warped_hyphae": {
-    "hardness": 2,
+    "hardness": 0.3,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6840,7 +6840,7 @@
     "max_stack_size": 64
   },
   "minecraft:warped_stairs": {
-    "hardness": 6,
+    "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
     "can_break_with_hand": true,
@@ -6900,7 +6900,7 @@
     "max_stack_size": 64
   },
   "minecraft:water": {
-    "hardness": 0,
+    "hardness": 100,
     "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
@@ -6940,7 +6940,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -6950,7 +6950,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -6960,7 +6960,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -6990,7 +6990,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_exposed_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7000,7 +7000,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_exposed_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -7010,7 +7010,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_exposed_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7040,7 +7040,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_oxidized_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7050,7 +7050,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_oxidized_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -7060,7 +7060,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_oxidized_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7090,7 +7090,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_weathered_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7100,7 +7100,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_weathered_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -7110,7 +7110,7 @@
     "max_stack_size": 64
   },
   "minecraft:waxed_weathered_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7140,7 +7140,7 @@
     "max_stack_size": 64
   },
   "minecraft:weathered_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
@@ -7150,7 +7150,7 @@
     "max_stack_size": 64
   },
   "minecraft:weathered_cut_copper_stairs": {
-    "hardness": 6,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
@@ -7160,7 +7160,7 @@
     "max_stack_size": 64
   },
   "minecraft:weathered_double_cut_copper_slab": {
-    "hardness": 2,
+    "hardness": 3,
     "solid": true,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
