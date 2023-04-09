@@ -41,7 +41,7 @@
   },
   "minecraft:acacia_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -121,7 +121,7 @@
   },
   "minecraft:amethyst_cluster": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -141,7 +141,7 @@
   },
   "minecraft:andesite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -151,7 +151,7 @@
   },
   "minecraft:anvil": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -161,7 +161,7 @@
   },
   "minecraft:azalea": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -171,7 +171,7 @@
   },
   "minecraft:azalea_leaves": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -181,7 +181,7 @@
   },
   "minecraft:azalea_leaves_flowered": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -251,7 +251,7 @@
   },
   "minecraft:bed": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -301,7 +301,7 @@
   },
   "minecraft:bell": {
     "hardness": 1,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -311,7 +311,7 @@
   },
   "minecraft:big_dripleaf": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -361,7 +361,7 @@
   },
   "minecraft:birch_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -421,7 +421,7 @@
   },
   "minecraft:blackstone_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -431,7 +431,7 @@
   },
   "minecraft:blackstone_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -441,7 +441,7 @@
   },
   "minecraft:blackstone_wall": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -461,7 +461,7 @@
   },
   "minecraft:black_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -501,7 +501,7 @@
   },
   "minecraft:blue_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -551,7 +551,7 @@
   },
   "minecraft:border_block": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -561,7 +561,7 @@
   },
   "minecraft:brewing_stand": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -581,7 +581,7 @@
   },
   "minecraft:brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -601,7 +601,7 @@
   },
   "minecraft:brown_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -661,7 +661,7 @@
   },
   "minecraft:cactus": {
     "hardness": 0.4,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -671,7 +671,7 @@
   },
   "minecraft:cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -691,7 +691,7 @@
   },
   "minecraft:camera": {
     "hardness": 0,
-    "solid": false,
+    "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -701,7 +701,7 @@
   },
   "minecraft:campfire": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -721,7 +721,7 @@
   },
   "minecraft:candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -771,7 +771,7 @@
   },
   "minecraft:cauldron": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -781,7 +781,7 @@
   },
   "minecraft:cave_vines": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -791,7 +791,7 @@
   },
   "minecraft:cave_vines_body_with_berries": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -801,7 +801,7 @@
   },
   "minecraft:cave_vines_head_with_berries": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -811,7 +811,7 @@
   },
   "minecraft:chain": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -841,7 +841,7 @@
   },
   "minecraft:chemistry_table": {
     "hardness": 2.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -851,7 +851,7 @@
   },
   "minecraft:chest": {
     "hardness": 2.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -971,7 +971,7 @@
   },
   "minecraft:cobbled_deepslate_slab": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -981,7 +981,7 @@
   },
   "minecraft:cobbled_deepslate_stairs": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -991,7 +991,7 @@
   },
   "minecraft:cobbled_deepslate_wall": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1011,7 +1011,7 @@
   },
   "minecraft:cobblestone_wall": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1021,7 +1021,7 @@
   },
   "minecraft:cocoa": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1031,7 +1031,7 @@
   },
   "minecraft:colored_torch_bp": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1041,7 +1041,7 @@
   },
   "minecraft:colored_torch_rg": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1061,7 +1061,7 @@
   },
   "minecraft:composter": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1091,7 +1091,7 @@
   },
   "minecraft:conduit": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1271,7 +1271,7 @@
   },
   "minecraft:crimson_fence": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1301,7 +1301,7 @@
   },
   "minecraft:crimson_hyphae": {
     "hardness": 0.3,
-    "solid": false,
+    "solid": true,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1351,7 +1351,7 @@
   },
   "minecraft:crimson_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1361,7 +1361,7 @@
   },
   "minecraft:crimson_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1431,7 +1431,7 @@
   },
   "minecraft:cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1441,7 +1441,7 @@
   },
   "minecraft:cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1461,7 +1461,7 @@
   },
   "minecraft:cyan_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1541,7 +1541,7 @@
   },
   "minecraft:dark_oak_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1561,7 +1561,7 @@
   },
   "minecraft:dark_prismarine_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1571,7 +1571,7 @@
   },
   "minecraft:daylight_detector": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1581,7 +1581,7 @@
   },
   "minecraft:daylight_detector_inverted": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1631,7 +1631,7 @@
   },
   "minecraft:deepslate_brick_slab": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1641,7 +1641,7 @@
   },
   "minecraft:deepslate_brick_stairs": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1651,7 +1651,7 @@
   },
   "minecraft:deepslate_brick_wall": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1761,7 +1761,7 @@
   },
   "minecraft:deepslate_tile_slab": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1771,7 +1771,7 @@
   },
   "minecraft:deepslate_tile_stairs": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1781,7 +1781,7 @@
   },
   "minecraft:deepslate_tile_wall": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -1831,7 +1831,7 @@
   },
   "minecraft:diorite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -1881,7 +1881,7 @@
   },
   "minecraft:double_plant": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": true,
@@ -1941,7 +1941,7 @@
   },
   "minecraft:dragon_egg": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3191,7 +3191,7 @@
   },
   "minecraft:enchanting_table": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -3201,7 +3201,7 @@
   },
   "minecraft:ender_chest": {
     "hardness": 22.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -3221,7 +3221,7 @@
   },
   "minecraft:end_brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3251,7 +3251,7 @@
   },
   "minecraft:end_portal_frame": {
     "hardness": -1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -3261,7 +3261,7 @@
   },
   "minecraft:end_rod": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3301,7 +3301,7 @@
   },
   "minecraft:exposed_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3311,7 +3311,7 @@
   },
   "minecraft:exposed_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3331,7 +3331,7 @@
   },
   "minecraft:farmland": {
     "hardness": 0.6,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHOVEL",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3341,7 +3341,7 @@
   },
   "minecraft:fence": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3381,7 +3381,7 @@
   },
   "minecraft:flowering_azalea": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3391,7 +3391,7 @@
   },
   "minecraft:flower_pot": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3441,7 +3441,7 @@
   },
   "minecraft:frosted_ice": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -3471,7 +3471,7 @@
   },
   "minecraft:glass": {
     "hardness": 0.3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3481,7 +3481,7 @@
   },
   "minecraft:glass_pane": {
     "hardness": 0.3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3521,7 +3521,7 @@
   },
   "minecraft:glow_lichen": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3561,7 +3561,7 @@
   },
   "minecraft:granite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3581,7 +3581,7 @@
   },
   "minecraft:grass_path": {
     "hardness": 0.65,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHOVEL",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3611,7 +3611,7 @@
   },
   "minecraft:gray_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3641,7 +3641,7 @@
   },
   "minecraft:green_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3661,7 +3661,7 @@
   },
   "minecraft:grindstone": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3671,7 +3671,7 @@
   },
   "minecraft:hanging_roots": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3691,7 +3691,7 @@
   },
   "minecraft:hard_glass": {
     "hardness": 10,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3701,7 +3701,7 @@
   },
   "minecraft:hard_glass_pane": {
     "hardness": 10,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3711,7 +3711,7 @@
   },
   "minecraft:hard_stained_glass": {
     "hardness": 10,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3721,7 +3721,7 @@
   },
   "minecraft:hard_stained_glass_pane": {
     "hardness": 10,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -3771,7 +3771,7 @@
   },
   "minecraft:hopper": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3781,7 +3781,7 @@
   },
   "minecraft:ice": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -3821,7 +3821,7 @@
   },
   "minecraft:invisible_bedrock": {
     "hardness": -1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3831,7 +3831,7 @@
   },
   "minecraft:iron_bars": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -3941,7 +3941,7 @@
   },
   "minecraft:jungle_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -3991,7 +3991,7 @@
   },
   "minecraft:ladder": {
     "hardness": 0.4,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4001,7 +4001,7 @@
   },
   "minecraft:lantern": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4031,7 +4031,7 @@
   },
   "minecraft:large_amethyst_bud": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4051,7 +4051,7 @@
   },
   "minecraft:lava_cauldron": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -4061,7 +4061,7 @@
   },
   "minecraft:leaves": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4071,7 +4071,7 @@
   },
   "minecraft:leaves2": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4081,7 +4081,7 @@
   },
   "minecraft:lectern": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4091,7 +4091,7 @@
   },
   "minecraft:lever": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4101,7 +4101,7 @@
   },
   "minecraft:lightning_rod": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4111,7 +4111,7 @@
   },
   "minecraft:light_block": {
     "hardness": -1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4131,7 +4131,7 @@
   },
   "minecraft:light_blue_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4161,7 +4161,7 @@
   },
   "minecraft:light_gray_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4191,7 +4191,7 @@
   },
   "minecraft:lime_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4331,7 +4331,7 @@
   },
   "minecraft:magenta_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4391,7 +4391,7 @@
   },
   "minecraft:mangrove_fence": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4411,7 +4411,7 @@
   },
   "minecraft:mangrove_leaves": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4461,7 +4461,7 @@
   },
   "minecraft:mangrove_roots": {
     "hardness": 0.7,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -4471,7 +4471,7 @@
   },
   "minecraft:mangrove_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4481,7 +4481,7 @@
   },
   "minecraft:mangrove_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4531,7 +4531,7 @@
   },
   "minecraft:medium_amethyst_bud": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4551,7 +4551,7 @@
   },
   "minecraft:melon_stem": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4591,7 +4591,7 @@
   },
   "minecraft:mossy_cobblestone_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4601,7 +4601,7 @@
   },
   "minecraft:mossy_stone_brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4621,7 +4621,7 @@
   },
   "minecraft:moss_carpet": {
     "hardness": 0.1,
-    "solid": true,
+    "solid": false,
     "tool_type": "HOE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4681,7 +4681,7 @@
   },
   "minecraft:mud_brick_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -4691,7 +4691,7 @@
   },
   "minecraft:mud_brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4701,7 +4701,7 @@
   },
   "minecraft:mud_brick_wall": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -4761,7 +4761,7 @@
   },
   "minecraft:nether_brick_fence": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4771,7 +4771,7 @@
   },
   "minecraft:nether_brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4821,7 +4821,7 @@
   },
   "minecraft:normal_stone_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4841,7 +4841,7 @@
   },
   "minecraft:oak_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -4891,7 +4891,7 @@
   },
   "minecraft:orange_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -4931,7 +4931,7 @@
   },
   "minecraft:oxidized_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -4941,7 +4941,7 @@
   },
   "minecraft:oxidized_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5001,7 +5001,7 @@
   },
   "minecraft:pink_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5021,7 +5021,7 @@
   },
   "minecraft:piston": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5031,7 +5031,7 @@
   },
   "minecraft:piston_arm_collision": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5061,7 +5061,7 @@
   },
   "minecraft:pointed_dripstone": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5071,7 +5071,7 @@
   },
   "minecraft:polished_andesite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5121,7 +5121,7 @@
   },
   "minecraft:polished_blackstone_brick_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5131,7 +5131,7 @@
   },
   "minecraft:polished_blackstone_brick_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5141,7 +5141,7 @@
   },
   "minecraft:polished_blackstone_brick_wall": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5181,7 +5181,7 @@
   },
   "minecraft:polished_blackstone_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5191,7 +5191,7 @@
   },
   "minecraft:polished_blackstone_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5201,7 +5201,7 @@
   },
   "minecraft:polished_blackstone_wall": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5231,7 +5231,7 @@
   },
   "minecraft:polished_deepslate_slab": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5241,7 +5241,7 @@
   },
   "minecraft:polished_deepslate_stairs": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5251,7 +5251,7 @@
   },
   "minecraft:polished_deepslate_wall": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5261,7 +5261,7 @@
   },
   "minecraft:polished_diorite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5271,7 +5271,7 @@
   },
   "minecraft:polished_granite_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5281,7 +5281,7 @@
   },
   "minecraft:portal": {
     "hardness": -1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -5301,7 +5301,7 @@
   },
   "minecraft:powder_snow": {
     "hardness": 0.25,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -5341,7 +5341,7 @@
   },
   "minecraft:prismarine_bricks_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5351,7 +5351,7 @@
   },
   "minecraft:prismarine_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5391,7 +5391,7 @@
   },
   "minecraft:purple_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5421,7 +5421,7 @@
   },
   "minecraft:purpur_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5461,7 +5461,7 @@
   },
   "minecraft:quartz_stairs": {
     "hardness": 0.8,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5571,7 +5571,7 @@
   },
   "minecraft:red_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5601,7 +5601,7 @@
   },
   "minecraft:red_mushroom": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5631,7 +5631,7 @@
   },
   "minecraft:red_nether_brick_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5651,7 +5651,7 @@
   },
   "minecraft:red_sandstone_stairs": {
     "hardness": 0.8,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5661,7 +5661,7 @@
   },
   "minecraft:reeds": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5731,7 +5731,7 @@
   },
   "minecraft:sandstone_stairs": {
     "hardness": 0.8,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5751,7 +5751,7 @@
   },
   "minecraft:scaffolding": {
     "hardness": 0.6,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5781,7 +5781,7 @@
   },
   "minecraft:sculk_sensor": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "HOE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5791,7 +5791,7 @@
   },
   "minecraft:sculk_shrieker": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "HOE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5801,7 +5801,7 @@
   },
   "minecraft:sculk_vein": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "HOE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5831,7 +5831,7 @@
   },
   "minecraft:sea_pickle": {
     "hardness": 0,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5851,7 +5851,7 @@
   },
   "minecraft:shulker_box": {
     "hardness": 2.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5871,7 +5871,7 @@
   },
   "minecraft:skull": {
     "hardness": 1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5891,7 +5891,7 @@
   },
   "minecraft:small_amethyst_bud": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -5941,7 +5941,7 @@
   },
   "minecraft:smooth_quartz_stairs": {
     "hardness": 0.8,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5951,7 +5951,7 @@
   },
   "minecraft:smooth_red_sandstone_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5961,7 +5961,7 @@
   },
   "minecraft:smooth_sandstone_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -5991,7 +5991,7 @@
   },
   "minecraft:snow_layer": {
     "hardness": 0.1,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHOVEL",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6001,7 +6001,7 @@
   },
   "minecraft:soul_campfire": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -6021,7 +6021,7 @@
   },
   "minecraft:soul_lantern": {
     "hardness": 5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -6121,7 +6121,7 @@
   },
   "minecraft:spruce_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6161,7 +6161,7 @@
   },
   "minecraft:stained_glass": {
     "hardness": 0.3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6171,7 +6171,7 @@
   },
   "minecraft:stained_glass_pane": {
     "hardness": 0.3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6211,7 +6211,7 @@
   },
   "minecraft:sticky_piston": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6221,7 +6221,7 @@
   },
   "minecraft:sticky_piston_arm_collision": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6261,7 +6261,7 @@
   },
   "minecraft:stonecutter_block": {
     "hardness": 3.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6271,7 +6271,7 @@
   },
   "minecraft:stone_block_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6281,7 +6281,7 @@
   },
   "minecraft:stone_block_slab2": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6291,7 +6291,7 @@
   },
   "minecraft:stone_block_slab3": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6301,7 +6301,7 @@
   },
   "minecraft:stone_block_slab4": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6311,7 +6311,7 @@
   },
   "minecraft:stone_brick_stairs": {
     "hardness": 1.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6341,7 +6341,7 @@
   },
   "minecraft:stone_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6481,7 +6481,7 @@
   },
   "minecraft:structure_void": {
     "hardness": -1,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6521,7 +6521,7 @@
   },
   "minecraft:tinted_glass": {
     "hardness": 0.3,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6551,7 +6551,7 @@
   },
   "minecraft:trapdoor": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -6561,7 +6561,7 @@
   },
   "minecraft:trapped_chest": {
     "hardness": 2.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6631,7 +6631,7 @@
   },
   "minecraft:undyed_shulker_box": {
     "hardness": 2.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": false,
@@ -6691,7 +6691,7 @@
   },
   "minecraft:vine": {
     "hardness": 0.2,
-    "solid": true,
+    "solid": false,
     "tool_type": "SHEARS",
     "can_break_with_hand": false,
     "transparent": false,
@@ -6751,7 +6751,7 @@
   },
   "minecraft:warped_fence": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -6831,7 +6831,7 @@
   },
   "minecraft:warped_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -6841,7 +6841,7 @@
   },
   "minecraft:warped_stairs": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6941,7 +6941,7 @@
   },
   "minecraft:waxed_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -6951,7 +6951,7 @@
   },
   "minecraft:waxed_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -6991,7 +6991,7 @@
   },
   "minecraft:waxed_exposed_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -7001,7 +7001,7 @@
   },
   "minecraft:waxed_exposed_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -7041,7 +7041,7 @@
   },
   "minecraft:waxed_oxidized_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -7051,7 +7051,7 @@
   },
   "minecraft:waxed_oxidized_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -7091,7 +7091,7 @@
   },
   "minecraft:waxed_weathered_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -7101,7 +7101,7 @@
   },
   "minecraft:waxed_weathered_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -7141,7 +7141,7 @@
   },
   "minecraft:weathered_cut_copper_slab": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": false,
     "transparent": true,
@@ -7151,7 +7151,7 @@
   },
   "minecraft:weathered_cut_copper_stairs": {
     "hardness": 3,
-    "solid": true,
+    "solid": false,
     "tool_type": "PICKAXE",
     "can_break_with_hand": true,
     "transparent": false,
@@ -7211,7 +7211,7 @@
   },
   "minecraft:white_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -7281,7 +7281,7 @@
   },
   "minecraft:wooden_slab": {
     "hardness": 2,
-    "solid": true,
+    "solid": false,
     "tool_type": "AXE",
     "can_break_with_hand": true,
     "transparent": true,
@@ -7311,7 +7311,7 @@
   },
   "minecraft:yellow_candle_cake": {
     "hardness": 0.5,
-    "solid": true,
+    "solid": false,
     "tool_type": "NONE",
     "can_break_with_hand": true,
     "transparent": true,
