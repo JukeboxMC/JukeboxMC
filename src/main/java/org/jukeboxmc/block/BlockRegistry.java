@@ -92,7 +92,7 @@ public class BlockRegistry {
         register( BlockType.BROWN_MUSHROOM_BLOCK, Identifier.fromString( "minecraft:brown_mushroom_block" ) );
         register( BlockType.BUBBLE_COLUMN, Identifier.fromString( "minecraft:bubble_column" ) );
         register( BlockType.BUDDING_AMETHYST, Identifier.fromString( "minecraft:budding_amethyst" ) );
-        register( BlockType.CACTUS, Identifier.fromString( "minecraft:cactus" ) );
+        register( BlockType.CACTUS, Identifier.fromString( "minecraft:cactus" ), BlockCactus.class );
         register( BlockType.CAKE, Identifier.fromString( "minecraft:cake" ) );
         register( BlockType.CALCITE, Identifier.fromString( "minecraft:calcite" ) );
         register( BlockType.CAMERA, Identifier.fromString( "minecraft:camera" ) );
