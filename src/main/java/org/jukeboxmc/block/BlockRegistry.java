@@ -790,7 +790,8 @@ public class BlockRegistry {
                         ToolType.valueOf( (String) map.get( "tool_type" ) ),
                         TierType.valueOf( (String) map.get( "tier_type" ) ),
                         (boolean) map.get( "can_break_with_hand" ),
-                        (boolean) map.get( "can_pass_through" )
+                        (boolean) map.get( "can_pass_through" ),
+                        (boolean) map.getOrDefault( "can_random_tick", false )
                 ) );
             } );
         } catch ( Exception e ) {

@@ -1,6 +1,8 @@
 package org.jukeboxmc.world;
 
 import com.google.common.collect.ImmutableSet;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import org.apache.commons.math3.util.FastMath;
 import org.cloudburstmc.nbt.*;
 import org.cloudburstmc.nbt.util.stream.LittleEndianDataInputStream;
@@ -27,7 +29,9 @@ import org.jukeboxmc.math.Location;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.RuntimeBlockDefination;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.chunk.Chunk;
+import org.jukeboxmc.world.chunk.SubChunk;
 import org.jukeboxmc.world.chunk.manager.ChunkManager;
 import org.jukeboxmc.world.gamerule.GameRule;
 import org.jukeboxmc.world.gamerule.GameRules;
@@ -72,6 +76,9 @@ public class World {
 
     private final Map<Long, Entity> entities;
     private final Queue<BlockUpdateNormal> blockUpdateNormals;
+
+    private int updateLCG = ThreadLocalRandom.current().nextInt();
+    private final Queue<Long> chunkQueue = new PriorityQueue<>();
 
     public World( String name, Server server, Map<Dimension, String> generatorMap ) {
         this.name = name;
@@ -233,6 +240,68 @@ public class World {
                 }
             }
         }
+        this.tickChunks();
+    }
+
+    private void tickChunks() {
+        for ( Player player : this.server.getOnlinePlayers() ) {
+            LongList chunksToTick = new LongArrayList();
+
+            int playerChunkX = player.getChunkX();
+            int playerChunkZ = player.getChunkZ();
+
+            int simulationDistance = this.server.getSimulationDistance();
+
+            for ( int rx = -simulationDistance; rx <= simulationDistance; rx++ ) {
+                for ( int rz = -simulationDistance; rz <= simulationDistance; rz++ ) {
+                    if ( rx * rx + rz * rz > simulationDistance * simulationDistance ) continue;
+
+                    if ( this.isChunkLoaded( playerChunkX + rx, playerChunkZ + rz, Dimension.OVERWORLD ) ) {
+                        chunksToTick.add( Utils.toLong( playerChunkX + rx, playerChunkZ + rz ) );
+                    }
+                }
+            }
+
+            if ( chunksToTick.size() != 0 ) {
+                this.chunkQueue.addAll( chunksToTick );
+            }
+        }
+
+        while ( !this.chunkQueue.isEmpty() ) {
+            long hash = this.chunkQueue.poll();
+            Chunk chunk = this.getLoadedChunk( hash, Dimension.OVERWORLD );
+
+            int chunkX = chunk.getX();
+            int chunkZ = chunk.getZ();
+            int tickSpeed = this.getGameRule( GameRule.RANDOM_TICK_SPEED );
+
+            for ( SubChunk subChunk : chunk.getSubChunks() ) {
+                if ( subChunk == null ) continue;
+                if ( subChunk.isEmptySubChunk() ) continue;
+                if ( !subChunk.canRandomTick() ) continue;
+
+                int Y = subChunk.getY();
+                for ( int i = 0; i < tickSpeed; i++ ) {
+                    int lcg = this.getUpdateLCG();
+                    int x = lcg & 0x0f;
+                    int y = lcg >>> 8 & 0x0f;
+                    int z = lcg >>> 16 & 0x0f;
+
+                    Block block = subChunk.getBlock( x, y, z, 0 );
+                    if ( block.isRandomTicking() ) {
+                        Vector blockVector = new Vector( chunkX * 16 + x, ( ( Y - ( chunk.getDimension().equals( Dimension.OVERWORLD ) ? 4 : 0 ) ) << 4 ) + y, chunkZ * 16 + z );
+                        Block chunkBlock = subChunk.getBlock( blockVector.getBlockX(), blockVector.getBlockY(), blockVector.getBlockZ(), 0 );
+                        chunkBlock.setLocation( new Location( this, blockVector ) );
+                        chunkBlock.setLayer( 0 );
+                        chunkBlock.onUpdate( UpdateReason.RANDOM );
+                    }
+                }
+            }
+        }
+    }
+
+    public int getUpdateLCG() {
+        return ( this.updateLCG = ( this.updateLCG * 3 ) ^ 1013904223 );
     }
 
     public String getName() {
@@ -486,6 +555,10 @@ public class World {
 
     public synchronized boolean isChunkLoaded( int chunkX, int chunkZ, Dimension dimension ) {
         return this.chunkManagers.get( dimension ).isChunkLoaded( chunkX, chunkZ );
+    }
+
+    public synchronized boolean isChunkLoaded( long hash, Dimension dimension ) {
+        return this.chunkManagers.get( dimension ).isChunkLoaded( hash );
     }
 
     public synchronized Chunk getChunk( int chunkX, int chunkZ, Dimension dimension ) {

@@ -20,4 +20,5 @@ public class BlockProperties {
     private final TierType tierType;
     private final boolean canBreakWithHand;
     private final boolean canPassThrough;
+    private final boolean randomTicking;
 }

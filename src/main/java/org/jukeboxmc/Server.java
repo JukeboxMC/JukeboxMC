@@ -81,6 +81,7 @@ public class Server {
     private int port;
     private int maxPlayers;
     private int viewDistance;
+    private int simulationDistance;
     private String motd;
     private String subMotd;
     private GameMode gameMode;
@@ -303,6 +304,7 @@ public class Server {
         serverConfig.addDefault( "port", 19132 );
         serverConfig.addDefault( "max-players", 20 );
         serverConfig.addDefault( "view-distance", 32 );
+        serverConfig.addDefault( "simulation-distance", 4 );
         serverConfig.addDefault( "motd", "§bJukeboxMC" );
         serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
         serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
@@ -318,6 +320,7 @@ public class Server {
         this.port = serverConfig.getInt( "port" );
         this.maxPlayers = serverConfig.getInt( "max-players" );
         this.viewDistance = serverConfig.getInt( "view-distance" );
+        this.simulationDistance = serverConfig.getInt( "simulation-distance" );
         this.motd = serverConfig.getString( "motd" );
         this.subMotd = serverConfig.getString( "sub-motd" );
         this.gameMode = GameMode.valueOf( serverConfig.getString( "gamemode" ) );
@@ -417,6 +420,10 @@ public class Server {
 
     public int getViewDistance() {
         return this.viewDistance;
+    }
+
+    public int getSimulationDistance() {
+        return this.simulationDistance;
     }
 
     public String getMotd() {

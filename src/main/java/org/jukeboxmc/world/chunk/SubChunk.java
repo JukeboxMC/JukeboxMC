@@ -18,6 +18,8 @@ public class SubChunk {
     private final Palette<Biome> biomes;
     private final Palette<Block>[] blocks;
 
+    private short randomTickingBlocks;
+
     private final static Block BLOCK_AIR = Block.create( BlockType.AIR );
 
     public SubChunk( int subChunkY ) {
@@ -27,10 +29,50 @@ public class SubChunk {
         for ( int layer = 0; layer < Chunk.CHUNK_LAYERS; layer++ ) {
             this.blocks[layer] = new Palette<>( BLOCK_AIR );
         }
+
+        this.randomTickingBlocks = 0;
+    }
+
+    public boolean canRandomTick() {
+        return this.randomTickingBlocks > 0;
+    }
+
+    public void markChanged() {
+        short count = 0;
+        for ( Palette<Block> palette : this.blocks ) {
+            for ( Block block : palette.getPalette() ) {
+                if ( block.isRandomTicking() ) {
+                    count++;
+                }
+            }
+        }
+
+        this.randomTickingBlocks = count;
+    }
+
+    public boolean isEmptySubChunk() {
+        int count = 0;
+        for ( Palette<Block> block : this.blocks ) {
+            for ( Block value : block.getPalette() ) {
+                if ( !value.getType().equals( BlockType.AIR ) ) {
+                    count++;
+                }
+            }
+        }
+        return count <= 0;
     }
 
     public void setBlock( int x, int y, int z, int layer, Block block ) {
+        Block oldBlock = this.getBlock( x, y, z, layer );
+        if(oldBlock.isRandomTicking()) {
+            this.randomTickingBlocks--;
+        }
+
         this.blocks[layer].set( this.indexOf( x, y, z ), block );
+
+        if(block.isRandomTicking()) {
+            this.randomTickingBlocks++;
+        }
     }
 
     public Block getBlock( int x, int y, int z, int layer ) {

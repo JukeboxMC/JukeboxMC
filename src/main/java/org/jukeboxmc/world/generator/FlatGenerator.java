@@ -35,7 +35,7 @@ public class FlatGenerator extends Generator {
                 chunk.setBlock( blockX, 0, blockZ, 0, this.blockBedrock );
                 chunk.setBlock( blockX, 1, blockZ, 0, this.blockDirt );
                 chunk.setBlock( blockX, 2, blockZ, 0, this.blockDirt );
-                chunk.setBlock( blockX, 3, blockZ, 0, this.blockGrass );
+                chunk.setBlock( blockX, 3, blockZ, 0, this.blockDirt );
             }
         }
     }

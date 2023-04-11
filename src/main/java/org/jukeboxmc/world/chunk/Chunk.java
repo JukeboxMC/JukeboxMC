@@ -217,7 +217,8 @@ public class Chunk {
         this.writeLock.lock();
         try {
             if ( this.isHeightOutOfBounds( y ) ) return;
-            this.getOrCreateSubChunk( this.getSubY( y ) ).setBlock( x, y, z, layer, block );
+            SubChunk subChunk = this.getOrCreateSubChunk( this.getSubY( y ) );
+            subChunk.setBlock( x, y, z, layer, block );
             this.dirty = true;
         } finally {
             this.writeLock.unlock();
@@ -304,7 +305,7 @@ public class Chunk {
         try {
             for ( int y = 0; y <= subY; y++ ) {
                 if ( this.subChunks[y] == null ) {
-                    this.subChunks[y] = new SubChunk( y + ( Math.abs( this.minY ) >> 4 ) );
+                    this.subChunks[y] = new SubChunk( subY );
                 }
             }
             return this.subChunks[subY];

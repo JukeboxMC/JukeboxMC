@@ -8,6 +8,7 @@ public enum UpdateReason {
 
     NORMAL,
     SCHEDULED,
-    NEIGHBORS
+    NEIGHBORS,
+    RANDOM
 
 }

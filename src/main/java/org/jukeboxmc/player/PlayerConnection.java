@@ -256,6 +256,7 @@ public class PlayerConnection {
         startGamePacket.setForceExperimentalGameplay( OptionalBoolean.empty() );
         startGamePacket.setCustomBiomeName( "" );
         startGamePacket.setEducationProductionId( "" );
+        startGamePacket.setServerChunkTickRange( Math.min( this.server.getSimulationDistance(), 12 ) );
         this.sendPacket( startGamePacket );
 
         this.session.getPeer().getCodecHelper().setItemDefinitions( SimpleDefinitionRegistry.<ItemDefinition>builder()

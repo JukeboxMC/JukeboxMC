@@ -125,6 +125,8 @@ public class LevelDB {
                     }
                     break;
             }
+
+            chunk.markChanged();
         } finally {
             buffer.release();
         }

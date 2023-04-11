@@ -483,6 +483,10 @@ public class Block implements Cloneable {
         return this.blockProperties.getTierType();
     }
 
+    public boolean isRandomTicking() {
+        return this.blockProperties.isRandomTicking();
+    }
+
     public boolean canBeReplaced( Block block ) {
         return false;
     }

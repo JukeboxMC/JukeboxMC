@@ -45,13 +45,13 @@ public class GameRuleCommand extends Command {
                 String gameRuleValue = args[0];
                 GameRule gameRule = GameRule.fromIdentifier( gameRuleValue );
                 if ( gameRule != null ) {
-                    if ( NumberUtils.isCreatable( args[1] ) ) {
-                        int value = Integer.parseInt( args[1] );
-                        if ( gameRule.equals( GameRule.MAX_COMMAND_CHAIN_LENGTH ) || gameRule.equals( GameRule.SPAWN_RADIUS ) ) {
+                    if ( gameRule.getType().equals( GameRule.Type.INT ) ) {
+                        if ( NumberUtils.isCreatable( args[1] ) ) {
+                            int value = Integer.parseInt( args[1] );
                             player.getWorld().setGameRule( gameRule, value );
                             player.sendMessage( "Gamerule " + gameRule.getIdentifier() + " has been updated to " + value );
                         } else {
-                            player.sendMessage( "§cYou can only use one number for maxCommandChainLength or spawnRadius." );
+                            player.sendMessage( "§cValue must be a integer." );
                         }
                     } else {
                         String boolValue = args[1];

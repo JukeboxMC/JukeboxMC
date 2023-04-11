@@ -4,43 +4,45 @@ import java.util.Arrays;
 
 public enum GameRule {
 
-    COMMAND_BLOCKS_ENABLED( "commandBlocksEnabled", true ),
-    COMMAND_BLOCK_OUTPUT( "commandBlockOutput", true ),
-    DO_DAYLIGHT_CYCLE( "doDaylightCycle", true ), //Implemented
-    DO_ENTITY_DROPS( "doEntityDrops", true ),
-    DO_FIRE_TICK( "doFireTick", true ),
-    DO_INSOMNIA( "doInsomnia", true ),
-    DO_IMMEDIATE_RESPAWN( "doImmediateRespawn", false ),
-    DO_MOB_LOOT( "doMobLoot", true ),
-    DO_MOB_SPAWNING( "doMobSpawning", true ),
-    DO_TILE_DROPS( "doTileDrops", true ),
-    DO_WEATHER_CYCLE( "doWeatherCycle", true ),
-    DROWNING_DAMAGE( "drowningDamage", true ),
-    FALL_DAMAGE( "fallDamage", true ),
-    FIRE_DAMAGE( "fireDamage", true ),
-    KEEP_INVENTORY( "keepInventory", false ),
-    MAX_COMMAND_CHAIN_LENGTH( "maxCommandChainLength", 65536 ),
-    MOB_GRIEFING( "mobGriefing", true ),
-    NATURAL_REGENERATION( "naturalRegeneration", true ),
-    PVP( "pvp", true ),
-    RANDOM_TICK_SPEED( "randomTickSpeed", 1 ),
-    SEND_COMMAND_FEEDBACK( "sendCommandFeedback", true ),
-    SHOW_COORDINATES( "showCoordinates", true ), //Implemented
-    SHOW_DEATH_MESSAGES( "showDeathMessages", true ),
-    SPAWN_RADIUS( "spawnRadius", 5 ),
-    TNT_EXPLODES( "tntExplodes", true ),
-    SHOW_TAGS( "showTags", true ),
-    FREEZE_DAMAGE( "freezeDamage", true ),
-    RESPAWN_BLOCKS_EXPLODE( "respawnBlocksExplode", true ),
-    SHOW_BORDER_EFFECT( "showBorderEffect", true ),
-    FUNCTION_COMMAND_LIMIT( "functionCommandLimit", 10000 );
+    COMMAND_BLOCKS_ENABLED( "commandBlocksEnabled", true, Type.BOOLEAN ),
+    COMMAND_BLOCK_OUTPUT( "commandBlockOutput", true, Type.BOOLEAN ),
+    DO_DAYLIGHT_CYCLE( "doDaylightCycle", true, Type.BOOLEAN ), //Implemented
+    DO_ENTITY_DROPS( "doEntityDrops", true, Type.BOOLEAN ),
+    DO_FIRE_TICK( "doFireTick", true, Type.BOOLEAN ),
+    DO_INSOMNIA( "doInsomnia", true, Type.BOOLEAN ),
+    DO_IMMEDIATE_RESPAWN( "doImmediateRespawn", false, Type.BOOLEAN ),
+    DO_MOB_LOOT( "doMobLoot", true, Type.BOOLEAN ),
+    DO_MOB_SPAWNING( "doMobSpawning", true, Type.BOOLEAN ),
+    DO_TILE_DROPS( "doTileDrops", true, Type.BOOLEAN ),
+    DO_WEATHER_CYCLE( "doWeatherCycle", true, Type.BOOLEAN ),
+    DROWNING_DAMAGE( "drowningDamage", true, Type.BOOLEAN ),
+    FALL_DAMAGE( "fallDamage", true, Type.BOOLEAN ),
+    FIRE_DAMAGE( "fireDamage", true, Type.BOOLEAN ),
+    KEEP_INVENTORY( "keepInventory", false, Type.BOOLEAN ),
+    MAX_COMMAND_CHAIN_LENGTH( "maxCommandChainLength", 65536, Type.INT ),
+    MOB_GRIEFING( "mobGriefing", true, Type.BOOLEAN ),
+    NATURAL_REGENERATION( "naturalRegeneration", true, Type.BOOLEAN ),
+    PVP( "pvp", true, Type.BOOLEAN ),
+    RANDOM_TICK_SPEED( "randomTickSpeed", 1, Type.INT ),
+    SEND_COMMAND_FEEDBACK( "sendCommandFeedback", true, Type.BOOLEAN ),
+    SHOW_COORDINATES( "showCoordinates", true, Type.BOOLEAN ), //Implemented
+    SHOW_DEATH_MESSAGES( "showDeathMessages", true, Type.BOOLEAN ),
+    SPAWN_RADIUS( "spawnRadius", 5, Type.INT),
+    TNT_EXPLODES( "tntExplodes", true, Type.BOOLEAN ),
+    SHOW_TAGS( "showTags", true, Type.BOOLEAN ),
+    FREEZE_DAMAGE( "freezeDamage", true, Type.BOOLEAN ),
+    RESPAWN_BLOCKS_EXPLODE( "respawnBlocksExplode", true, Type.BOOLEAN ),
+    SHOW_BORDER_EFFECT( "showBorderEffect", true, Type.BOOLEAN ),
+    FUNCTION_COMMAND_LIMIT( "functionCommandLimit", 10000, Type.BOOLEAN );
 
     private final String identifier;
     private final Object defaultValue;
+    private final Type type;
 
-    GameRule( String identifier, Object defaultValue ) {
+    GameRule( String identifier, Object defaultValue, Type type ) {
         this.identifier = identifier;
         this.defaultValue = defaultValue;
+        this.type = type;
     }
 
     public String getIdentifier() {
@@ -51,8 +53,16 @@ public enum GameRule {
         return this.defaultValue;
     }
 
+    public Type getType() {
+        return this.type;
+    }
 
     public static GameRule fromIdentifier( String identifier ) {
         return Arrays.stream( values() ).filter( gameRule -> gameRule.getIdentifier().equalsIgnoreCase( identifier ) ).findFirst().orElseGet( null );
+    }
+
+    public enum Type {
+        INT,
+        BOOLEAN
     }
 }
