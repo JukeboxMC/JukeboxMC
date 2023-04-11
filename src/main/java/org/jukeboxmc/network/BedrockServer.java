@@ -26,30 +26,29 @@ public class BedrockServer {
 
     private final InetSocketAddress bindAddress;
     private final Server server;
+    private final BedrockPong bedrockPong;
     private Channel channel;
 
     public BedrockServer( InetSocketAddress bindAddress, Server server ) {
         this.bindAddress = bindAddress;
         this.server = server;
+        this.bedrockPong = new BedrockPong();
+        this.bedrockPong.edition( "MCPE" );
+        this.bedrockPong.gameType( this.server.getGameMode().getIdentifier() );
+        this.bedrockPong.motd( this.server.getMotd() );
+        this.bedrockPong.subMotd( this.server.getSubMotd() );
+        this.bedrockPong.playerCount( this.server.getOnlinePlayers().size() );
+        this.bedrockPong.maximumPlayerCount( this.server.getMaxPlayers() );
+        this.bedrockPong.ipv4Port( this.bindAddress.getPort() );
+        this.bedrockPong.nintendoLimited( false );
+        this.bedrockPong.protocolVersion( CODEC.getProtocolVersion() );
+        this.bedrockPong.version( CODEC.getMinecraftVersion() );
     }
 
     public void bind() {
-        //TODO UPDATE MOTD
-        BedrockPong bedrockPong = new BedrockPong();
-        bedrockPong.edition( "MCPE" );
-        bedrockPong.gameType( this.server.getGameMode().getIdentifier() );
-        bedrockPong.motd( this.server.getMotd() );
-        bedrockPong.subMotd( this.server.getSubMotd() );
-        bedrockPong.playerCount( this.server.getOnlinePlayers().size() );
-        bedrockPong.maximumPlayerCount( this.server.getMaxPlayers() );
-        bedrockPong.ipv4Port( this.bindAddress.getPort() );
-        bedrockPong.nintendoLimited( false );
-        bedrockPong.protocolVersion( CODEC.getProtocolVersion() );
-        bedrockPong.version( CODEC.getMinecraftVersion() );
-
         this.channel = new ServerBootstrap()
                 .channelFactory( RakChannelFactory.server( NioDatagramChannel.class ) )
-                .option( RakChannelOption.RAK_ADVERTISEMENT, bedrockPong.toByteBuf() )
+                .option( RakChannelOption.RAK_ADVERTISEMENT, this.bedrockPong.toByteBuf() )
                 .group( new NioEventLoopGroup() )
                 .childHandler( new BedrockServerInitializer() {
                     @Override
@@ -61,6 +60,20 @@ public class BedrockServer {
                 .bind( this.bindAddress )
                 .syncUninterruptibly().channel();
         this.server.getLogger().info( "Server started successfully at " + this.bindAddress.getHostString() + ":" + this.bindAddress.getPort() + "!" );
+    }
+
+    public void updateMotd() {
+        this.bedrockPong.edition( "MCPE" );
+        this.bedrockPong.gameType( this.server.getGameMode().getIdentifier() );
+        this.bedrockPong.motd( this.server.getMotd() );
+        this.bedrockPong.subMotd( this.server.getSubMotd() );
+        this.bedrockPong.playerCount( this.server.getOnlinePlayers().size() );
+        this.bedrockPong.maximumPlayerCount( this.server.getMaxPlayers() );
+        this.bedrockPong.ipv4Port( this.bindAddress.getPort() );
+        this.bedrockPong.nintendoLimited( false );
+        this.bedrockPong.protocolVersion( CODEC.getProtocolVersion() );
+        this.bedrockPong.version( CODEC.getMinecraftVersion() );
+        this.channel.config().setOption( RakChannelOption.RAK_ADVERTISEMENT, this.bedrockPong.toByteBuf() );
     }
 
     public void close() {

@@ -225,6 +225,7 @@ public class Server {
 
             this.currentTick++;
 
+            this.bedrockServer.updateMotd();
             this.scheduler.onTick( this.currentTick );
             this.update();
             for ( World value : this.worlds.values() ) {
