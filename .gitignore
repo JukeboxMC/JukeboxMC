@@ -45,6 +45,7 @@ logs
 plugins
 resource_packs
 players
+whitelist.json
 
 #IntelliJ
 /out/

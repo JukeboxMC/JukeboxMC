@@ -184,6 +184,11 @@ public abstract class Entity {
     }
 
     public void close() {
+        if ( this instanceof Player player) {
+            if ( !player.isSpawned() ) {
+                return;
+            }
+        }
         this.despawn();
 
         this.getChunk().removeEntity( this );

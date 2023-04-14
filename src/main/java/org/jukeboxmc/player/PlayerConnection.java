@@ -102,6 +102,10 @@ public class PlayerConnection {
     private void onDisconnect( String disconnectReason ) {
         this.server.removePlayer( this.player );
 
+        if ( !this.player.isSpawned() ) {
+            return;
+        }
+
         this.player.getWorld().removeEntity( this.player );
         this.player.getChunk().removeEntity( this.player );
 

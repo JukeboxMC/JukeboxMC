@@ -75,6 +75,8 @@ public class Server {
     private final CraftingManager craftingManager;
 
     private Config operatorConfig;
+    private Config serverConfig;
+    private Config whitelistConfig;
     private final File pluginFolder;
 
     private String serverAddress;
@@ -90,6 +92,7 @@ public class Server {
     private String generatorName;
     private boolean onlineMode;
     private boolean forceResourcePacks;
+    private boolean whitelist;
     private PacketCompressionAlgorithm compressionAlgorithm;
 
     private final World defaultWorld;
@@ -126,6 +129,7 @@ public class Server {
 
         this.initServerConfig();
         this.initOperatorConfig();
+        this.initWhitelistConfig();
 
         this.consoleSender = new ConsoleSender( this );
         this.terminalConsole = new TerminalConsole( this );
@@ -300,38 +304,40 @@ public class Server {
     }
 
     private void initServerConfig() {
-        Config serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
-        serverConfig.addDefault( "address", "0.0.0.0" );
-        serverConfig.addDefault( "port", 19132 );
-        serverConfig.addDefault( "max-players", 20 );
-        serverConfig.addDefault( "view-distance", 32 );
-        serverConfig.addDefault( "simulation-distance", 4 );
-        serverConfig.addDefault( "motd", "§bJukeboxMC" );
-        serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
-        serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
-        serverConfig.addDefault( "default-difficulty", Difficulty.NORMAL.name() );
-        serverConfig.addDefault( "default-world", "world" );
-        serverConfig.addDefault( "generator", "flat" );
-        serverConfig.addDefault( "online-mode", true );
-        serverConfig.addDefault( "forceResourcePacks", false );
-        serverConfig.addDefault( "compression", "zlib" );
-        serverConfig.save();
+        this.serverConfig = new Config( new File( System.getProperty( "user.dir" ), "properties.json" ), ConfigType.JSON );
+        this.serverConfig.addDefault( "address", "0.0.0.0" );
+        this.serverConfig.addDefault( "port", 19132 );
+        this.serverConfig.addDefault( "max-players", 20 );
+        this.serverConfig.addDefault( "view-distance", 32 );
+        this.serverConfig.addDefault( "simulation-distance", 4 );
+        this.serverConfig.addDefault( "motd", "§bJukeboxMC" );
+        this.serverConfig.addDefault( "sub-motd", "A fresh JukeboxMC Server" );
+        this.serverConfig.addDefault( "gamemode", GameMode.CREATIVE.name() );
+        this.serverConfig.addDefault( "default-difficulty", Difficulty.NORMAL.name() );
+        this.serverConfig.addDefault( "default-world", "world" );
+        this.serverConfig.addDefault( "generator", "flat" );
+        this.serverConfig.addDefault( "online-mode", true );
+        this.serverConfig.addDefault( "forceResourcePacks", false );
+        this.serverConfig.addDefault( "white-list", false );
+        this.serverConfig.addDefault( "compression", "zlib" );
+        this.serverConfig.save();
 
-        this.serverAddress = serverConfig.getString( "address" );
-        this.port = serverConfig.getInt( "port" );
-        this.maxPlayers = serverConfig.getInt( "max-players" );
-        this.viewDistance = serverConfig.getInt( "view-distance" );
-        this.simulationDistance = serverConfig.getInt( "simulation-distance" );
-        this.motd = serverConfig.getString( "motd" );
-        this.subMotd = serverConfig.getString( "sub-motd" );
-        this.gameMode = GameMode.valueOf( serverConfig.getString( "gamemode" ) );
-        this.difficulty = Difficulty.valueOf( serverConfig.getString( "default-difficulty" ) );
-        this.defaultWorldName = serverConfig.getString( "default-world" );
-        this.generatorName = serverConfig.getString( "generator" );
-        this.onlineMode = serverConfig.getBoolean( "online-mode" );
-        this.forceResourcePacks = serverConfig.getBoolean( "forceResourcePacks" );
+        this.serverAddress = this.serverConfig.getString( "address" );
+        this.port = this.serverConfig.getInt( "port" );
+        this.maxPlayers = this.serverConfig.getInt( "max-players" );
+        this.viewDistance = this.serverConfig.getInt( "view-distance" );
+        this.simulationDistance = this.serverConfig.getInt( "simulation-distance" );
+        this.motd = this.serverConfig.getString( "motd" );
+        this.subMotd = this.serverConfig.getString( "sub-motd" );
+        this.gameMode = GameMode.valueOf( this.serverConfig.getString( "gamemode" ) );
+        this.difficulty = Difficulty.valueOf( this.serverConfig.getString( "default-difficulty" ) );
+        this.defaultWorldName = this.serverConfig.getString( "default-world" );
+        this.generatorName = this.serverConfig.getString( "generator" );
+        this.onlineMode = this.serverConfig.getBoolean( "online-mode" );
+        this.forceResourcePacks = this.serverConfig.getBoolean( "forceResourcePacks" );
+        this.whitelist = this.serverConfig.getBoolean( "white-list" );
 
-        String compression = serverConfig.getString( "compression" );
+        String compression = this.serverConfig.getString( "compression" );
 
         this.compressionAlgorithm = PacketCompressionAlgorithm.ZLIB;
 
@@ -350,10 +356,12 @@ public class Server {
     }
 
     public boolean isOperatorInFile( String playerName ) {
+        playerName = playerName.toLowerCase();
         return this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName );
     }
 
     public void addOperatorToFile( String playerName ) {
+        playerName = playerName.toLowerCase();
         if ( this.operatorConfig.exists( "operators" ) && !this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
             List<String> operators = this.operatorConfig.getStringList( "operators" );
             operators.add( playerName );
@@ -363,12 +371,48 @@ public class Server {
     }
 
     public void removeOperatorFromFile( String playerName ) {
+        playerName = playerName.toLowerCase();
         if ( this.operatorConfig.exists( "operators" ) && this.operatorConfig.getStringList( "operators" ).contains( playerName ) ) {
             List<String> operators = this.operatorConfig.getStringList( "operators" );
             operators.remove( playerName );
             this.operatorConfig.set( "operators", operators );
             this.operatorConfig.save();
         }
+    }
+
+    private void initWhitelistConfig() {
+        this.whitelistConfig = new Config( new File( System.getProperty( "user.dir" ), "whitelist.json" ), ConfigType.JSON );
+        this.whitelistConfig.addDefault( "whitelist", new ArrayList<String>() );
+        this.whitelistConfig.save();
+    }
+
+    public void addPlayerToWhitelist( String playerName ) {
+        playerName = playerName.toLowerCase();
+        if ( this.whitelistConfig.exists( "whitelist" ) && !this.whitelistConfig.getStringList( "whitelist" ).contains( playerName ) ) {
+            List<String> operators = this.whitelistConfig.getStringList( "whitelist" );
+            operators.add( playerName );
+            this.whitelistConfig.set( "whitelist", operators );
+            this.whitelistConfig.save();
+        }
+    }
+
+    public void removePlayerFromWhitelist( String playerName ) {
+        playerName = playerName.toLowerCase();
+        if ( this.whitelistConfig.exists( "whitelist" ) && this.whitelistConfig.getStringList( "whitelist" ).contains( playerName ) ) {
+            List<String> operators = this.whitelistConfig.getStringList( "whitelist" );
+            operators.remove( playerName );
+            this.whitelistConfig.set( "whitelist", operators );
+            this.whitelistConfig.save();
+        }
+    }
+
+    public List<String> getWhitelist() {
+        return new ArrayList<>( this.whitelistConfig.getStringList( "whitelist" ) );
+    }
+
+    public boolean isPlayerOnWhitelist( String playerName ) {
+        playerName = playerName.toLowerCase();
+        return this.whitelistConfig.exists( "whitelist" ) && this.whitelistConfig.getStringList( "whitelist" ).contains( playerName );
     }
 
     public static Server getInstance() {
@@ -461,6 +505,16 @@ public class Server {
 
     public boolean isForceResourcePacks() {
         return this.forceResourcePacks;
+    }
+
+    public boolean hasWhitelist() {
+        return this.whitelist;
+    }
+
+    public void setWhitelist( boolean enable ) {
+        this.whitelist = enable;
+        this.serverConfig.set( "white-list", enable );
+        this.serverConfig.save();
     }
 
     public PacketCompressionAlgorithm getCompressionAlgorithm() {
@@ -579,7 +633,7 @@ public class Server {
         Class<? extends Generator> generator = generators.get( generatorName.toLowerCase() );
         if ( generator != null ) {
             try {
-                return generator.getConstructor( World.class ).newInstance(world);
+                return generator.getConstructor( World.class ).newInstance( world );
             } catch ( InvocationTargetException | InstantiationException | IllegalAccessException |
                       NoSuchMethodException e ) {
                 throw new RuntimeException( e );

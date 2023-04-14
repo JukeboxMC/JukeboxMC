@@ -30,7 +30,8 @@ public class CommandManager {
                 EnchantCommand.class,
                 GameRuleCommand.class,
                 StatusCommand.class,
-                TimeCommand.class
+                TimeCommand.class,
+                WhitelistCommand.class
         );
 
         for( Class<? extends Command> commandClass : commands ) {

@@ -1,16 +1,15 @@
 package org.jukeboxmc.event.player;
 
-import org.jukeboxmc.event.Cancellable;
 import org.jukeboxmc.player.Player;
 
 /**
  * @author LucGamesYT
  * @version 1.0
  */
-public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
+public class PlayerLoginEvent extends PlayerEvent{
 
     private String kickReason = "Disconnected";
-    private boolean canJoinFullServer = false;
+    private Result result = Result.ALLOWED;
 
     /**
      * Creates a new {@link PlayerEvent}
@@ -29,11 +28,19 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
         this.kickReason = kickReason;
     }
 
-    public boolean canJoinFullServer() {
-        return this.canJoinFullServer;
+    public void setResult( Result result ) {
+        this.result = result;
     }
 
-    public void setCanJoinFullServer( boolean canJoinFullServer ) {
-        this.canJoinFullServer = canJoinFullServer;
+    public Result getResult() {
+        return this.result;
+    }
+
+    public static enum Result {
+        ALLOWED,
+        SERVER_FULL,
+        WHITELIST,
+        XBOX_AUTHENTICATED,
+        OTHER
     }
 }
