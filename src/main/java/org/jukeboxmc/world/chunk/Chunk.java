@@ -70,15 +70,8 @@ public class Chunk {
         this.dimension = dimension;
         this.x = x;
         this.z = z;
-        this.minY = switch ( dimension ) {
-            case OVERWORLD -> -64;
-            case NETHER, THE_END -> 0;
-        };
-        this.maxY = switch ( dimension ) {
-            case OVERWORLD -> 319;
-            case NETHER -> 127;
-            case THE_END -> 255;
-        };
+        this.minY = dimension.getMinY();
+        this.maxY = dimension.getMaxY();
         this.fullHeight = Math.abs( this.minY ) + this.maxY + 1;
         this.entities = new CopyOnWriteArraySet<>();
         this.players = new CopyOnWriteArraySet<>();

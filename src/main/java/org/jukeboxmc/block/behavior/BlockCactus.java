@@ -80,7 +80,6 @@ public class BlockCactus extends Block {
                 } else {
                     this.setAge( this.getAge() + 1 );
                 }
-                this.location.getWorld().setBlock( this.location, this );
             }
         }
         return -1;

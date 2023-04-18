@@ -865,7 +865,7 @@ public class ItemRegistry {
         register( ItemType.RAW_IRON, new ItemRegistryData( Identifier.fromString( "minecraft:raw_iron" ) ) );
         register( ItemType.RAW_IRON_BLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:raw_iron_block" ) ) );
         register( ItemType.RECOVERY_COMPASS, new ItemRegistryData( Identifier.fromString( "minecraft:recovery_compass" ) ) );
-        register( ItemType.REEDS, new ItemRegistryData( Identifier.fromString( "minecraft:reeds" ), ItemSugarCane.class ) );
+        register( ItemType.REEDS, new ItemRegistryData( Identifier.fromString( "minecraft:reeds" ) ) );
         register( ItemType.RED_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:red_candle" ), ItemCandle.class ) );
         register( ItemType.RED_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:red_candle_cake" ) ) );
         register( ItemType.RED_DYE, new ItemRegistryData( Identifier.fromString( "minecraft:red_dye" ) ) );
@@ -1005,7 +1005,7 @@ public class ItemRegistry {
         register( ItemType.STRUCTURE_VOID, new ItemRegistryData( Identifier.fromString( "minecraft:structure_void" ) ) );
         register( ItemType.STRUCTURE_VOID, new ItemRegistryData( Identifier.fromString( "minecraft:structure_void" ) ) );
         register( ItemType.SUGAR, new ItemRegistryData( Identifier.fromString( "minecraft:sugar" ) ) );
-        register( ItemType.SUGAR_CANE, new ItemRegistryData( Identifier.fromString( "minecraft:sugar_cane" ) ) );
+        register( ItemType.SUGAR_CANE, new ItemRegistryData( Identifier.fromString( "minecraft:sugar_cane" ), ItemSugarCane.class ) );
         register( ItemType.SUSPICIOUS_STEW, new ItemRegistryData( Identifier.fromString( "minecraft:suspicious_stew" ) ) );
         register( ItemType.SWEET_BERRIES, new ItemRegistryData( Identifier.fromString( "minecraft:sweet_berries" ), ItemSweetBerries.class ) );
         register( ItemType.SWEET_BERRY_BUSH, new ItemRegistryData( Identifier.fromString( "minecraft:sweet_berry_bush" ) ) );
