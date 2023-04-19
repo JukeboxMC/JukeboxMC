@@ -56,7 +56,7 @@ public class Item implements Cloneable {
     protected boolean unbreakable;
 
     private ItemProperties itemProperties;
-    
+
     protected ItemLockType itemLockType;
 
     public Item( Identifier identifier ) {
@@ -393,6 +393,10 @@ public class Item implements Cloneable {
         return this.enchantments.get( enchantmentType );
     }
 
+    public boolean hasEnchantment( EnchantmentType enchantmentType ) {
+        return this.enchantments.containsKey( enchantmentType );
+    }
+
     public Collection<Enchantment> getEntchantments() {
         return this.enchantments.values();
     }
@@ -414,13 +418,13 @@ public class Item implements Cloneable {
         this.unbreakable = unbreakable;
         return this;
     }
-    
-     public Item setItemLockType( ItemLockType locktype ){
+
+    public Item setItemLockType( ItemLockType locktype ) {
         this.itemLockType = locktype;
         return this;
     }
 
-    private Item setItemLockType( int locktype ){
+    private Item setItemLockType( int locktype ) {
         this.itemLockType = ItemLockType.values()[locktype];
         return this;
     }
@@ -468,7 +472,7 @@ public class Item implements Cloneable {
                 nbtBuilder.putList( "ench", NbtType.COMPOUND, Collections.emptyList() );
             }
         }
-        if ( !itemLockType.equals( ItemLockType.NONE ) ){
+        if ( !itemLockType.equals( ItemLockType.NONE ) ) {
             nbtBuilder.putByte( "minecraft:item_lock", (byte) itemLockType.ordinal() );
         }
         return nbtBuilder.isEmpty() ? null : nbtBuilder.build();
@@ -488,7 +492,7 @@ public class Item implements Cloneable {
                 this.addEnchantment( EnchantmentRegistry.getEnchantmentType( id ), level );
             }
         } );
-        if( nbtMap.containsKey( "minecraft:item_lock", NbtType.BYTE ) ){
+        if ( nbtMap.containsKey( "minecraft:item_lock", NbtType.BYTE ) ) {
             nbtMap.listenForByte( "minecraft:item_lock", this::setItemLockType );
         }
     }
@@ -558,6 +562,51 @@ public class Item implements Cloneable {
             this.durability = intdurability;
         }
         return false;
+    }
+
+    public boolean isSword() {
+        return this.itemType.equals( ItemType.WOODEN_SWORD ) ||
+                this.itemType.equals( ItemType.STONE_SWORD ) ||
+                this.itemType.equals( ItemType.GOLDEN_SWORD ) ||
+                this.itemType.equals( ItemType.IRON_SWORD ) ||
+                this.itemType.equals( ItemType.DIAMOND_SWORD ) ||
+                this.itemType.equals( ItemType.NETHERITE_SWORD );
+    }
+
+    public boolean isAxe() {
+        return this.itemType.equals( ItemType.WOODEN_AXE ) ||
+                this.itemType.equals( ItemType.STONE_AXE ) ||
+                this.itemType.equals( ItemType.GOLDEN_AXE ) ||
+                this.itemType.equals( ItemType.IRON_AXE ) ||
+                this.itemType.equals( ItemType.DIAMOND_AXE ) ||
+                this.itemType.equals( ItemType.NETHERITE_AXE );
+    }
+
+    public boolean isPickaxe() {
+        return this.itemType.equals( ItemType.WOODEN_PICKAXE ) ||
+                this.itemType.equals( ItemType.STONE_PICKAXE ) ||
+                this.itemType.equals( ItemType.GOLDEN_PICKAXE ) ||
+                this.itemType.equals( ItemType.IRON_PICKAXE ) ||
+                this.itemType.equals( ItemType.DIAMOND_PICKAXE ) ||
+                this.itemType.equals( ItemType.NETHERITE_PICKAXE );
+    }
+
+    public boolean isShovel() {
+        return this.itemType.equals( ItemType.WOODEN_SHOVEL ) ||
+                this.itemType.equals( ItemType.STONE_SHOVEL ) ||
+                this.itemType.equals( ItemType.GOLDEN_SHOVEL ) ||
+                this.itemType.equals( ItemType.IRON_SHOVEL ) ||
+                this.itemType.equals( ItemType.DIAMOND_SHOVEL ) ||
+                this.itemType.equals( ItemType.NETHERITE_SHOVEL );
+    }
+
+    public boolean isHoe() {
+        return this.itemType.equals( ItemType.WOODEN_HOE ) ||
+                this.itemType.equals( ItemType.STONE_HOE ) ||
+                this.itemType.equals( ItemType.GOLDEN_HOE ) ||
+                this.itemType.equals( ItemType.IRON_HOE ) ||
+                this.itemType.equals( ItemType.DIAMOND_HOE ) ||
+                this.itemType.equals( ItemType.NETHERITE_HOE );
     }
 
     public boolean interact( Player player, BlockFace blockFace, Vector clickedPosition, Block clickedBlock ) {

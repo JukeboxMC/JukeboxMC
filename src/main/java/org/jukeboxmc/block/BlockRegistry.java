@@ -54,7 +54,7 @@ public class BlockRegistry {
         register( BlockType.BED, Identifier.fromString( "minecraft:bed" ), BlockBed.class );
         register( BlockType.BEDROCK, Identifier.fromString( "minecraft:bedrock" ) );
         register( BlockType.BEEHIVE, Identifier.fromString( "minecraft:beehive" ) );
-        register( BlockType.BEETROOT, Identifier.fromString( "minecraft:beetroot" ) );
+        register( BlockType.BEETROOT, Identifier.fromString( "minecraft:beetroot" ), BlockBeetroot.class );
         register( BlockType.BEE_NEST, Identifier.fromString( "minecraft:bee_nest" ) );
         register( BlockType.BELL, Identifier.fromString( "minecraft:bell" ), BlockBell.class );
         register( BlockType.BIG_DRIPLEAF, Identifier.fromString( "minecraft:big_dripleaf" ) );
@@ -100,9 +100,9 @@ public class BlockRegistry {
         register( BlockType.CANDLE, Identifier.fromString( "minecraft:candle" ), BlockCandle.class );
         register( BlockType.CANDLE_CAKE, Identifier.fromString( "minecraft:candle_cake" ) );
         register( BlockType.CARPET, Identifier.fromString( "minecraft:carpet" ), BlockCarpet.class );
-        register( BlockType.CARROTS, Identifier.fromString( "minecraft:carrots" ) );
+        register( BlockType.CARROTS, Identifier.fromString( "minecraft:carrots" ), BlockCarrots.class );
         register( BlockType.CARTOGRAPHY_TABLE, Identifier.fromString( "minecraft:cartography_table" ), BlockCartographyTable.class );
-        register( BlockType.CARVED_PUMPKIN, Identifier.fromString( "minecraft:carved_pumpkin" ) );
+        register( BlockType.CARVED_PUMPKIN, Identifier.fromString( "minecraft:carved_pumpkin" ), BlockCarvedPumpkin.class );
         register( BlockType.CAULDRON, Identifier.fromString( "minecraft:cauldron" ), BlockCauldron.class );
         register( BlockType.CAVE_VINES, Identifier.fromString( "minecraft:cave_vines" ) );
         register( BlockType.CAVE_VINES_BODY_WITH_BERRIES, Identifier.fromString( "minecraft:cave_vines_body_with_berries" ) );
@@ -359,7 +359,7 @@ public class BlockRegistry {
         register( BlockType.EXPOSED_CUT_COPPER_SLAB, Identifier.fromString( "minecraft:exposed_cut_copper_slab" ), BlockExposedCutCopperSlab.class );
         register( BlockType.EXPOSED_CUT_COPPER_STAIRS, Identifier.fromString( "minecraft:exposed_cut_copper_stairs" ), BlockStairs.class );
         register( BlockType.EXPOSED_DOUBLE_CUT_COPPER_SLAB, Identifier.fromString( "minecraft:exposed_double_cut_copper_slab" ), BlockDoubleExposedCutCopperSlab.class );
-        register( BlockType.FARMLAND, Identifier.fromString( "minecraft:farmland" ) );
+        register( BlockType.FARMLAND, Identifier.fromString( "minecraft:farmland" ), BlockFarmland.class );
         register( BlockType.FENCE, Identifier.fromString( "minecraft:fence" ), BlockWoodenFence.class );
         register( BlockType.FENCE_GATE, Identifier.fromString( "minecraft:fence_gate" ), BlockFenceGate.class );
         register( BlockType.FIRE, Identifier.fromString( "minecraft:fire" ) );
@@ -450,7 +450,7 @@ public class BlockRegistry {
         register( BlockType.LIT_BLAST_FURNACE, Identifier.fromString( "minecraft:lit_blast_furnace" ), BlockBlastFurnace.class );
         register( BlockType.LIT_DEEPSLATE_REDSTONE_ORE, Identifier.fromString( "minecraft:lit_deepslate_redstone_ore" ), BlockRedstoneOre.class );
         register( BlockType.LIT_FURNACE, Identifier.fromString( "minecraft:lit_furnace" ), BlockFurnace.class );
-        register( BlockType.LIT_PUMPKIN, Identifier.fromString( "minecraft:lit_pumpkin" ) );
+        register( BlockType.LIT_PUMPKIN, Identifier.fromString( "minecraft:lit_pumpkin" ), BlockLitPumpkin.class );
         register( BlockType.LIT_REDSTONE_LAMP, Identifier.fromString( "minecraft:lit_redstone_lamp" ) );
         register( BlockType.LIT_REDSTONE_ORE, Identifier.fromString( "minecraft:lit_redstone_ore" ), BlockRedstoneOre.class );
         register( BlockType.LIT_SMOKER, Identifier.fromString( "minecraft:lit_smoker" ) );
@@ -480,8 +480,8 @@ public class BlockRegistry {
         register( BlockType.MANGROVE_WALL_SIGN, Identifier.fromString( "minecraft:mangrove_wall_sign" ), BlockMangroveWallSign.class );
         register( BlockType.MANGROVE_WOOD, Identifier.fromString( "minecraft:mangrove_wood" ), BlockMangroveWood.class );
         register( BlockType.MEDIUM_AMETHYST_BUD, Identifier.fromString( "minecraft:medium_amethyst_bud" ) );
-        register( BlockType.MELON_BLOCK, Identifier.fromString( "minecraft:melon_block" ) );
-        register( BlockType.MELON_STEM, Identifier.fromString( "minecraft:melon_stem" ) );
+        register( BlockType.MELON_BLOCK, Identifier.fromString( "minecraft:melon_block" ), BlockMelonBlock.class );
+        register( BlockType.MELON_STEM, Identifier.fromString( "minecraft:melon_stem" ), BlockMelonStem.class );
         register( BlockType.MOB_SPAWNER, Identifier.fromString( "minecraft:mob_spawner" ) );
         register( BlockType.INFESTED_STONE, Identifier.fromString( "minecraft:monster_egg" ) );
         register( BlockType.MOSSY_COBBLESTONE, Identifier.fromString( "minecraft:mossy_cobblestone" ) );
@@ -555,15 +555,15 @@ public class BlockRegistry {
         register( BlockType.POLISHED_DIORITE_STAIRS, Identifier.fromString( "minecraft:polished_diorite_stairs" ), BlockStairs.class );
         register( BlockType.POLISHED_GRANITE_STAIRS, Identifier.fromString( "minecraft:polished_granite_stairs" ), BlockStairs.class );
         register( BlockType.PORTAL, Identifier.fromString( "minecraft:portal" ) );
-        register( BlockType.POTATOES, Identifier.fromString( "minecraft:potatoes" ) );
+        register( BlockType.POTATOES, Identifier.fromString( "minecraft:potatoes" ), BlockPotatoes.class );
         register( BlockType.POWDER_SNOW, Identifier.fromString( "minecraft:powder_snow" ) );
         register( BlockType.POWERED_COMPARATOR, Identifier.fromString( "minecraft:powered_comparator" ) );
         register( BlockType.POWERED_REPEATER, Identifier.fromString( "minecraft:powered_repeater" ) );
         register( BlockType.PRISMARINE, Identifier.fromString( "minecraft:prismarine" ), BlockPrismarine.class );
         register( BlockType.PRISMARINE_BRICKS_STAIRS, Identifier.fromString( "minecraft:prismarine_bricks_stairs" ), BlockStairs.class );
         register( BlockType.PRISMARINE_STAIRS, Identifier.fromString( "minecraft:prismarine_stairs" ), BlockStairs.class );
-        register( BlockType.PUMPKIN, Identifier.fromString( "minecraft:pumpkin" ) );
-        register( BlockType.PUMPKIN_STEM, Identifier.fromString( "minecraft:pumpkin_stem" ) );
+        register( BlockType.PUMPKIN, Identifier.fromString( "minecraft:pumpkin" ), BlockPumpkin.class );
+        register( BlockType.PUMPKIN_STEM, Identifier.fromString( "minecraft:pumpkin_stem" ), BlockPumpkinStem.class );
         register( BlockType.PURPLE_CANDLE, Identifier.fromString( "minecraft:purple_candle" ), BlockCandle.class );
         register( BlockType.PURPLE_CANDLE_CAKE, Identifier.fromString( "minecraft:purple_candle_cake" ) );
         register( BlockType.PURPLE_GLAZED_TERRACOTTA, Identifier.fromString( "minecraft:purple_glazed_terracotta" ) );
@@ -608,7 +608,7 @@ public class BlockRegistry {
         register( BlockType.SCULK_SHRIEKER, Identifier.fromString( "minecraft:sculk_shrieker" ) );
         register( BlockType.SCULK_VEIN, Identifier.fromString( "minecraft:sculk_vein" ) );
         register( BlockType.SEAGRASS, Identifier.fromString( "minecraft:seagrass" ), BlockSeagrass.class );
-        register( BlockType.SEA_LANTERN, Identifier.fromString( "minecraft:sea_lantern" ));
+        register( BlockType.SEA_LANTERN, Identifier.fromString( "minecraft:sea_lantern" ) );
         register( BlockType.SEA_PICKLE, Identifier.fromString( "minecraft:sea_pickle" ), BlockSeaPickle.class );
         register( BlockType.SHROOMLIGHT, Identifier.fromString( "minecraft:shroomlight" ) );
         register( BlockType.SHULKER_BOX, Identifier.fromString( "minecraft:shulker_box" ), BlockShulkerBox.class );
@@ -745,7 +745,7 @@ public class BlockRegistry {
         register( BlockType.WEATHERED_DOUBLE_CUT_COPPER_SLAB, Identifier.fromString( "minecraft:weathered_double_cut_copper_slab" ), BlockDoubleWeatheredCutCopperSlab.class );
         register( BlockType.WEB, Identifier.fromString( "minecraft:web" ) );
         register( BlockType.WEEPING_VINES, Identifier.fromString( "minecraft:weeping_vines" ) );
-        register( BlockType.WHEAT, Identifier.fromString( "minecraft:wheat" ) );
+        register( BlockType.WHEAT, Identifier.fromString( "minecraft:wheat" ), BlockWheat.class );
         register( BlockType.WHITE_CANDLE, Identifier.fromString( "minecraft:white_candle" ), BlockCandle.class );
         register( BlockType.WHITE_CANDLE_CAKE, Identifier.fromString( "minecraft:white_candle_cake" ) );
         register( BlockType.WHITE_GLAZED_TERRACOTTA, Identifier.fromString( "minecraft:white_glazed_terracotta" ) );

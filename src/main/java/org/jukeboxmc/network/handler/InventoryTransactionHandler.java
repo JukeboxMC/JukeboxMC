@@ -1,6 +1,5 @@
 package org.jukeboxmc.network.handler;
 
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionType;
@@ -231,7 +230,7 @@ public class InventoryTransactionHandler implements PacketHandler<InventoryTrans
                     }
                     player.getInventory().sendContents( player.getInventory().getItemInHandSlot(), player );
                 }
-                world.playSound( placePosition, SoundEvent.PLACE, placedBlock.getRuntimeId() );
+                placedBlock.playPlaceSound( placePosition );
             }
             return success;
         }

@@ -174,6 +174,10 @@ public class Block implements Cloneable {
     }
 
     public <B extends Block> B setState( String state, Object value ) {
+        return this.setState( state, value, true );
+    }
+
+    public <B extends Block> B setState( String state, Object value, boolean update ) {
         if ( !this.blockStates.containsKey( state ) ) {
             throw new AssertionError( "State " + state + " was not found in block " + this.identifier );
         }
@@ -193,7 +197,7 @@ public class Block implements Cloneable {
         }
         this.runtimeId = STATES.get( this.identifier ).get( this.blockStates );
 
-        if ( valid ) {
+        if ( valid && update ) {
             this.sendUpdate();
             this.location.getChunk().setBlock( this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ(), this.layer, this );
         }
@@ -231,8 +235,8 @@ public class Block implements Cloneable {
     public Block getSide( Direction direction, int layer ) {
         return switch ( direction ) {
             case SOUTH -> this.getRelative( new Vector( 0, 0, 1 ), layer );
-            case NORTH -> this.getRelative(new Vector( 0, 0, -1 ), layer );
-            case EAST -> this.getRelative(new Vector( 1, 0, 0 ), layer );
+            case NORTH -> this.getRelative( new Vector( 0, 0, -1 ), layer );
+            case EAST -> this.getRelative( new Vector( 1, 0, 0 ), layer );
             case WEST -> this.getRelative( new Vector( -1, 0, 0 ), layer );
         };
     }
@@ -371,7 +375,7 @@ public class Block implements Cloneable {
         boolean insideOfWaterWithoutAquaAffinity = player.isInWater() && conduitPowerLevel <= 0 &&
                 Optional.ofNullable( player.getArmorInventory().getHelmet().getEnchantment( EnchantmentType.AQUA_AFFINITY ) ).map( Enchantment::getLevel ).map( l -> l >= 1 ).orElse( false );
 
-        boolean outOfWaterButNotOnGround = (!player.isInWater()) && (!player.isOnGround());
+        boolean outOfWaterButNotOnGround = ( !player.isInWater() ) && ( !player.isOnGround() );
         return breakTime0( item, hardness, correctTool, canBreakWithHand, blockType, itemToolType, itemTier, efficiencyLoreLevel, hasteEffectLevel, miningFatigueLevel, insideOfWaterWithoutAquaAffinity, outOfWaterButNotOnGround );
     }
 
@@ -398,7 +402,7 @@ public class Block implements Cloneable {
     private double toolBreakTimeBonus0( ToolType itemToolType, TierType itemTierType, BlockType blockType ) {
         if ( itemToolType.equals( ToolType.SWORD ) ) return blockType.equals( BlockType.WEB ) ? 15.0 : 1.0;
         if ( itemToolType.equals( ToolType.SHEARS ) ) {
-            if ( blockType.isWool(blockType) ||
+            if ( blockType.isWool( blockType ) ||
                     blockType.equals( BlockType.LEAVES ) ||
                     blockType.equals( BlockType.LEAVES2 ) ) {
                 return 5.0;
@@ -449,6 +453,10 @@ public class Block implements Cloneable {
 
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
         return false;
+    }
+
+    public void playPlaceSound( Vector placePosition ) {
+        this.location.getWorld().playSound( placePosition, SoundEvent.PLACE, this.getRuntimeId() );
     }
 
     public BlockEntity getBlockEntity() {
@@ -510,7 +518,7 @@ public class Block implements Cloneable {
     }
 
     public List<Item> getDrops( Item item ) {
-        if ( item == null || (this.isCorrectToolType( item ) && this.isCorrectTierType( item ) )) {
+        if ( item == null || ( this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) ) {
             return Collections.singletonList( this.toItem() );
         }
         return Collections.emptyList();

@@ -5,13 +5,13 @@ import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
+import org.cloudburstmc.protocol.bedrock.packet.AnimatePacket;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
-import org.jukeboxmc.event.player.PlayerChangeSkinEvent;
 import org.jukeboxmc.event.player.PlayerFoodLevelChangeEvent;
 import org.jukeboxmc.inventory.ArmorInventory;
 import org.jukeboxmc.inventory.InventoryHolder;
@@ -146,6 +146,13 @@ public class EntityHuman extends EntityLiving implements InventoryHolder {
             }
         }
         return this;
+    }
+
+    public void swingArm() {
+        AnimatePacket animatePacket = new AnimatePacket();
+        animatePacket.setRuntimeEntityId( this.entityId );
+        animatePacket.setAction( AnimatePacket.Action.SWING_ARM );
+        Server.getInstance().broadcastPacket( animatePacket );
     }
 
     public UUID getUUID() {

@@ -73,7 +73,7 @@ public class ItemRegistry {
         register( ItemType.BEEF, new ItemRegistryData( Identifier.fromString( "minecraft:beef" ), ItemBeef.class ) );
         register( ItemType.BEEHIVE, new ItemRegistryData( Identifier.fromString( "minecraft:beehive" ), ItemBeehive.class ) );
         register( ItemType.BEETROOT, new ItemRegistryData( Identifier.fromString( "minecraft:beetroot" ), ItemBeetroot.class ) );
-        register( ItemType.BEETROOT_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:beetroot_seeds" ) ) );
+        register( ItemType.BEETROOT_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:beetroot_seeds" ), ItemBeetrootSeeds.class ) );
         register( ItemType.BEETROOT_SOUP, new ItemRegistryData( Identifier.fromString( "minecraft:beetroot_soup" ), ItemBeetrootSoup.class ) );
         register( ItemType.BELL, new ItemRegistryData( Identifier.fromString( "minecraft:bell" ) ) );
         register( ItemType.BIG_DRIPLEAF, new ItemRegistryData( Identifier.fromString( "minecraft:big_dripleaf" ) ) );
@@ -102,7 +102,7 @@ public class ItemRegistry {
         register( ItemType.BLAZE_ROD, new ItemRegistryData( Identifier.fromString( "minecraft:blaze_rod" ), ItemBlazeRod.class ) );
         register( ItemType.BLAZE_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:blaze_spawn_egg" ) ) );
         register( ItemType.BLEACH, new ItemRegistryData( Identifier.fromString( "minecraft:bleach" ) ) );
-        register( ItemType.BLUE_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:blue_candle" ) , ItemCandle.class) );
+        register( ItemType.BLUE_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:blue_candle" ), ItemCandle.class ) );
         register( ItemType.BLUE_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:blue_candle_cake" ) ) );
         register( ItemType.BLUE_DYE, new ItemRegistryData( Identifier.fromString( "minecraft:blue_dye" ) ) );
         register( ItemType.BLUE_GLAZED_TERRACOTTA, new ItemRegistryData( Identifier.fromString( "minecraft:blue_glazed_terracotta" ) ) );
@@ -237,7 +237,7 @@ public class ItemRegistry {
         register( ItemType.CRIMSON_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_planks" ) ) );
         register( ItemType.CRIMSON_PRESSURE_PLATE, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_pressure_plate" ) ) );
         register( ItemType.CRIMSON_ROOTS, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_roots" ) ) );
-        register( ItemType.CRIMSON_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_sign" ) , ItemCrimsonSign.class) );
+        register( ItemType.CRIMSON_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_sign" ), ItemCrimsonSign.class ) );
         register( ItemType.CRIMSON_SLAB, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_slab" ) ) );
         register( ItemType.CRIMSON_STAIRS, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_stairs" ), ItemStairs.class ) );
         register( ItemType.CRIMSON_STANDING_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:crimson_standing_sign" ) ) );
@@ -685,7 +685,7 @@ public class ItemRegistry {
         register( ItemType.MEDICINE, new ItemRegistryData( Identifier.fromString( "minecraft:medicine" ) ) );
         register( ItemType.MEDIUM_AMETHYST_BUD, new ItemRegistryData( Identifier.fromString( "minecraft:medium_amethyst_bud" ) ) );
         register( ItemType.MELON_BLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:melon_block" ) ) );
-        register( ItemType.MELON_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:melon_seeds" ) ) );
+        register( ItemType.MELON_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:melon_seeds" ), ItemMelonSeeds.class ) );
         register( ItemType.MELON_SLICE, new ItemRegistryData( Identifier.fromString( "minecraft:melon_slice" ), ItemMelonSlice.class ) );
         register( ItemType.MELON_STEM, new ItemRegistryData( Identifier.fromString( "minecraft:melon_stem" ) ) );
         register( ItemType.MILK_BUCKET, new ItemRegistryData( Identifier.fromString( "minecraft:milk_bucket" ), ItemBucket.class ) );
@@ -752,7 +752,7 @@ public class ItemRegistry {
         register( ItemType.NETHERRACK, new ItemRegistryData( Identifier.fromString( "minecraft:netherrack" ) ) );
         register( ItemType.NETHERREACTOR, new ItemRegistryData( Identifier.fromString( "minecraft:netherreactor" ) ) );
         register( ItemType.NORMAL_STONE_STAIRS, new ItemRegistryData( Identifier.fromString( "minecraft:normal_stone_stairs" ) ) );
-        register( ItemType.NOTEBLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:noteblock" ), ItemNoteblock.class) );
+        register( ItemType.NOTEBLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:noteblock" ), ItemNoteblock.class ) );
         register( ItemType.NPC_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:npc_spawn_egg" ) ) );
         register( ItemType.OAK_BOAT, new ItemRegistryData( Identifier.fromString( "minecraft:oak_boat" ) ) );
         register( ItemType.OAK_CHEST_BOAT, new ItemRegistryData( Identifier.fromString( "minecraft:oak_chest_boat" ) ) );
@@ -785,7 +785,7 @@ public class ItemRegistry {
         register( ItemType.PIGLIN_BRUTE_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:piglin_brute_spawn_egg" ) ) );
         register( ItemType.PIGLIN_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:piglin_spawn_egg" ) ) );
         register( ItemType.PILLAGER_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:pillager_spawn_egg" ) ) );
-        register( ItemType.PINK_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:pink_candle" ) , ItemCandle.class) );
+        register( ItemType.PINK_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:pink_candle" ), ItemCandle.class ) );
         register( ItemType.PINK_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:pink_candle_cake" ) ) );
         register( ItemType.PINK_DYE, new ItemRegistryData( Identifier.fromString( "minecraft:pink_dye" ) ) );
         register( ItemType.PINK_GLAZED_TERRACOTTA, new ItemRegistryData( Identifier.fromString( "minecraft:pink_glazed_terracotta" ) ) );
@@ -837,7 +837,7 @@ public class ItemRegistry {
         register( ItemType.PUFFERFISH_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:pufferfish_spawn_egg" ) ) );
         register( ItemType.PUMPKIN, new ItemRegistryData( Identifier.fromString( "minecraft:pumpkin" ) ) );
         register( ItemType.PUMPKIN_PIE, new ItemRegistryData( Identifier.fromString( "minecraft:pumpkin_pie" ), ItemPumpkinPie.class ) );
-        register( ItemType.PUMPKIN_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:pumpkin_seeds" ) ) );
+        register( ItemType.PUMPKIN_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:pumpkin_seeds" ), ItemPumpkinSeeds.class ) );
         register( ItemType.PUMPKIN_STEM, new ItemRegistryData( Identifier.fromString( "minecraft:pumpkin_stem" ) ) );
         register( ItemType.PURPLE_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:purple_candle" ), ItemCandle.class ) );
         register( ItemType.PURPLE_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:purple_candle_cake" ) ) );
@@ -1099,7 +1099,7 @@ public class ItemRegistry {
         register( ItemType.WEB, new ItemRegistryData( Identifier.fromString( "minecraft:web" ) ) );
         register( ItemType.WEEPING_VINES, new ItemRegistryData( Identifier.fromString( "minecraft:weeping_vines" ) ) );
         register( ItemType.WHEAT, new ItemRegistryData( Identifier.fromString( "minecraft:wheat" ) ) );
-        register( ItemType.WHEAT_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:wheat_seeds" ) ) );
+        register( ItemType.WHEAT_SEEDS, new ItemRegistryData( Identifier.fromString( "minecraft:wheat_seeds" ), ItemSeeds.class ) );
         register( ItemType.WHITE_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:white_candle" ), ItemCandle.class ) );
         register( ItemType.WHITE_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:white_candle_cake" ) ) );
         register( ItemType.WHITE_DYE, new ItemRegistryData( Identifier.fromString( "minecraft:white_dye" ) ) );
@@ -1117,7 +1117,7 @@ public class ItemRegistry {
         register( ItemType.WOODEN_PRESSURE_PLATE, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_pressure_plate" ), ItemWoodenPressurePlate.class ) );
         register( ItemType.WOODEN_SHOVEL, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_shovel" ), ItemWoodenShovel.class ) );
         register( ItemType.WOODEN_SLAB, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_slab" ), ItemWoodenSlab.class ) );
-        register( ItemType.WOODEN_SWORD, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_sword" ), ItemWoodenSword.class) );
+        register( ItemType.WOODEN_SWORD, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_sword" ), ItemWoodenSword.class ) );
         register( ItemType.WHITE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:white_wool" ), ItemWhiteWool.class ) );
         register( ItemType.ORANGE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:orange_wool" ), ItemOrangeWool.class ) );
         register( ItemType.MAGENTA_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_wool" ), ItemMagentaWool.class ) );
@@ -1154,7 +1154,7 @@ public class ItemRegistry {
             InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
             Map<String, Map<String, Object>> itemEntries = GSON.<Map<String, Map<String, Object>>>fromJson( inputStreamReader, Map.class );
             itemEntries.forEach( ( identifier, map ) -> {
-                ITEM_PROPERTIES.put( Identifier.fromString( identifier ), new ItemProperties( (int) (double) map.get( "max_stack_size" ) ));
+                ITEM_PROPERTIES.put( Identifier.fromString( identifier ), new ItemProperties( (int) (double) map.get( "max_stack_size" ) ) );
             } );
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -1178,7 +1178,7 @@ public class ItemRegistry {
     }
 
     public static List<Identifier> getItemIdentifiers() {
-        return ITEMS.values().stream().map( registryData -> registryData.identifier ).collect( Collectors.toList());
+        return ITEMS.values().stream().map( registryData -> registryData.identifier ).collect( Collectors.toList() );
     }
 
     public static ItemType getItemType( Identifier identifier ) {
@@ -1189,7 +1189,7 @@ public class ItemRegistry {
         return ITEMS.get( itemType );
     }
 
-    public static ItemProperties getItemProperties(Identifier identifier ) {
+    public static ItemProperties getItemProperties( Identifier identifier ) {
         return ITEM_PROPERTIES.get( identifier );
     }
 

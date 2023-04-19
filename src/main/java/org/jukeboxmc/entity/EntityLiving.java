@@ -6,9 +6,12 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket;
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket;
 import org.jukeboxmc.Server;
+import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
 import org.jukeboxmc.event.entity.*;
+import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.potion.Effect;
@@ -228,6 +231,21 @@ public abstract class EntityLiving extends Entity {
         float damage = (float) FastMath.floor( this.fallDistance - 3f - distanceReduce );
         if ( damage > 0 ) {
             this.damage( new EntityDamageEvent( this, damage, EntityDamageEvent.DamageSource.FALL ) );
+        }
+
+        if ( this.fallDistance > 0.75 ) {
+            Block blockDown = this.location.subtract( 0, 0.1f, 0 ).getBlock();
+            if ( blockDown.getType().equals( BlockType.FARMLAND ) ) {
+                if ( this instanceof Player player ) {
+                    PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent( player, PlayerInteractEvent.Action.PHYSICAL, player.getInventory().getItemInHand(), blockDown );
+                    Server.getInstance().getPluginManager().callEvent( playerInteractEvent );
+                    if ( !playerInteractEvent.isCancelled() ) {
+                        this.location.getWorld().setBlock( blockDown.getLocation(), Block.create( BlockType.DIRT ) );
+                    }
+                } else {
+                    this.location.getWorld().setBlock( blockDown.getLocation(), Block.create( BlockType.DIRT ) );
+                }
+            }
         }
     }
 

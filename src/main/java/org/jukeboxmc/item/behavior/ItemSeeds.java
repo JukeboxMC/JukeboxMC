@@ -2,6 +2,7 @@ package org.jukeboxmc.item.behavior;
 
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
+import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.util.Identifier;
 
@@ -9,28 +10,18 @@ import org.jukeboxmc.util.Identifier;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemCarrot extends ItemFood {
+public class ItemSeeds extends Item {
 
-    public ItemCarrot( Identifier identifier ) {
+    public ItemSeeds( Identifier identifier ) {
         super( identifier );
     }
 
-    public ItemCarrot( ItemType itemType ) {
+    public ItemSeeds( ItemType itemType ) {
         super( itemType );
     }
 
     @Override
     public Block toBlock() {
-        return Block.create( BlockType.CARROTS );
-    }
-
-    @Override
-    public float getSaturation() {
-        return 3.6f;
-    }
-
-    @Override
-    public int getHunger() {
-        return 3;
+        return Block.create( BlockType.WHEAT );
     }
 }

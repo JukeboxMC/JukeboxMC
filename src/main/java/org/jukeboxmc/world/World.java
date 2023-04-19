@@ -8,8 +8,8 @@ import org.cloudburstmc.nbt.*;
 import org.cloudburstmc.nbt.util.stream.LittleEndianDataInputStream;
 import org.cloudburstmc.nbt.util.stream.LittleEndianDataOutputStream;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.jukeboxmc.Server;
@@ -656,19 +656,19 @@ public class World {
         }
     }
 
-    public void spawnParticle( ParticleType particle, Vector position ) {
+    public void spawnParticle( LevelEvent particle, Vector position ) {
         this.spawnParticle( null, particle, position, 0 );
     }
 
-    public void spawnParticle( ParticleType particle, Vector position, int data ) {
+    public void spawnParticle( LevelEvent particle, Vector position, int data ) {
         this.spawnParticle( null, particle, position, data );
     }
 
-    public void spawnParticle( Player player, ParticleType particle, Vector position ) {
+    public void spawnParticle( Player player, LevelEvent particle, Vector position ) {
         this.spawnParticle( player, particle, position, 0 );
     }
 
-    public void spawnParticle( Player player, ParticleType particle, Vector position, int data ) {
+    public void spawnParticle( Player player, LevelEvent particle, Vector position, int data ) {
         LevelEventPacket levelEventPacket = new LevelEventPacket();
         levelEventPacket.setType( particle );
         levelEventPacket.setData( data );

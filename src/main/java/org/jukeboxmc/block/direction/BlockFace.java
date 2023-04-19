@@ -8,12 +8,12 @@ import org.jukeboxmc.math.Vector;
  */
 public enum BlockFace {
 
-    DOWN( -1, new Vector( 0, -1, 0 )),
-    UP( -1, new Vector( 0, 1, 0 )),
-    NORTH( 2, new Vector( 0, 0,-1 )),
-    SOUTH( 0, new Vector( 0, 0, 1 )),
-    WEST( 1, new Vector( -1, 0,0 )),
-    EAST( 3, new Vector( 1, 0, 0 ));
+    DOWN( -1, new Vector( 0, -1, 0 ) ),
+    UP( -1, new Vector( 0, 1, 0 ) ),
+    NORTH( 2, new Vector( 0, 0, -1 ) ),
+    SOUTH( 0, new Vector( 0, 0, 1 ) ),
+    WEST( 1, new Vector( -1, 0, 0 ) ),
+    EAST( 3, new Vector( 1, 0, 0 ) );
 
     private final int horizontalIndex;
     private final Vector offset;
@@ -76,7 +76,11 @@ public enum BlockFace {
     }
 
     public static BlockFace[] getHorizontal() {
-        return new BlockFace[]{NORTH, EAST, SOUTH, WEST};
+        return new BlockFace[]{ NORTH, EAST, SOUTH, WEST };
+    }
+
+    public boolean isHorizontal() {
+        return this == NORTH || this == EAST || this == SOUTH || this == WEST;
     }
 
 }

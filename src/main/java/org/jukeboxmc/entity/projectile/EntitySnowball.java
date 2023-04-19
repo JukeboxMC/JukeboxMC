@@ -1,6 +1,6 @@
 package org.jukeboxmc.entity.projectile;
 
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.entity.Entity;
 import org.jukeboxmc.entity.EntityType;
 import org.jukeboxmc.math.Location;
@@ -69,7 +69,7 @@ public class EntitySnowball extends EntityProjectile {
 
     private void spawnSnowballParticle( Location location ) {
         for ( int i = 0; i < 6; i++ ) {
-            this.getWorld().spawnParticle( ParticleType.SNOWBALL_POOF, location.add( 0f, 0.5f, 0f ) );
+            this.getWorld().spawnParticle( LevelEvent.PARTICLE_GENERIC_SPAWN, location.add( 0f, 0.5f, 0f ), 15 );
         }
     }
 }
