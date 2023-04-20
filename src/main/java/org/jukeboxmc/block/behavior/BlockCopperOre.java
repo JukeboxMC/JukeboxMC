@@ -31,10 +31,10 @@ public class BlockCopperOre extends Block {
     public List<Item> getDrops( Item item ) {
         if ( this.isCorrectToolType( item ) && this.isCorrectTierType( item ) ) {
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            int amount = Utils.randomRange( current, 2, 5 );
+            int amount = Utils.randomRange( random, 2, 5 );
             Enchantment enchantment = item.getEnchantment( EnchantmentType.FORTUNE );
             if ( enchantment != null ) {
-                amount += Utils.randomRange( current, 0, enchantment.getLevel() + 1 );
+                amount += Utils.randomRange( random, 0, enchantment.getLevel() + 1 );
             }
             return Collections.singletonList( Item.create( ItemType.COPPER_INGOT ).setAmount( amount ) );
         }
