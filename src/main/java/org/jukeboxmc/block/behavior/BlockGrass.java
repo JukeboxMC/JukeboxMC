@@ -16,6 +16,7 @@ import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.GameMode;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
+import org.jukeboxmc.util.Utils;
 import org.jukeboxmc.world.Dimension;
 import org.jukeboxmc.world.World;
 
@@ -41,9 +42,9 @@ public class BlockGrass extends Block {
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason.equals( UpdateReason.RANDOM ) ) {
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            int x = random.nextInt( this.location.getBlockX() - 1, this.location.getBlockX() + 2 );
-            int y = random.nextInt( this.location.getBlockY() - 3, this.location.getBlockY() + 2 );
-            int z = random.nextInt( this.location.getBlockZ() - 1, this.location.getBlockZ() + 2 );
+            int x = Utils.randomRange( random, this.location.getBlockX() - 1, this.location.getBlockX() + 1 );
+            int y = Utils.randomRange( random, this.location.getBlockY() - 3, this.location.getBlockY() + 1 );
+            int z = Utils.randomRange( random, this.location.getBlockZ() - 1, this.location.getBlockZ() + 1 );
 
             Block block = this.location.getWorld().getBlock( x, y, z, 0 );
             if ( block.getType().equals( BlockType.DIRT ) && block.getSide( BlockFace.UP ).getType().equals( BlockType.AIR ) ) {
@@ -118,9 +119,9 @@ public class BlockGrass extends Block {
                     break;
                 }
 
-                x += random.nextInt( -1, 2 );
-                y += random.nextInt( -1, 2 ) * random.nextInt( 3 ) / 2;
-                z += random.nextInt( -1, 2 );
+                x += Utils.randomRange( random, -1, 1 );
+                y += Utils.randomRange( random, -1, 1 ) * random.nextInt( 3 ) / 2;
+                z += Utils.randomRange( random, -1, 1 );
 
                 if ( world.getBlock( x, y - 1, z ).getType() != BlockType.GRASS || y > 255 || y < 0 ) {
                     break;

@@ -73,7 +73,7 @@ public abstract class BlockCropsStem extends BlockCrops {
             }
         } else if ( updateReason.equals( UpdateReason.RANDOM ) ) {
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            if ( random.nextInt( 1, 2 ) == 1 ) {
+            if ( Utils.randomRange( random, 1, 2 ) == 1 ) {
                 int growth = this.getGrowth();
                 if ( growth < 7 ) {
                     BlockCropsStem block = (BlockCropsStem) this.clone();
