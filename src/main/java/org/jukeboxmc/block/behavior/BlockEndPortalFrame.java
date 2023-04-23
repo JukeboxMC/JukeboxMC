@@ -31,11 +31,11 @@ public class BlockEndPortalFrame extends Block {
     }
 
     public void setEndPortalEye( boolean value ) {
-        this.setState( "end_portal_eye_bit", value ? 1 : 0 );
+        this.setState( "end_portal_eye_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isEndPortalEye() {
-        return this.stateExists( "end_portal_eye_bit" ) && this.getIntState( "end_portal_eye_bit" ) == 1;
+        return this.stateExists( "end_portal_eye_bit" ) && this.getByteState( "end_portal_eye_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

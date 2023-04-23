@@ -43,11 +43,11 @@ public class BlockSlab extends Block {
     }
 
     public BlockSlab setTopSlot( boolean value ) {
-        this.setState( "top_slot_bit", value ? 1 : 0 );
+        this.setState( "top_slot_bit", value ? (byte) 1 : (byte) 0 );
         return this;
     }
 
     public boolean isTopSlot() {
-        return this.stateExists( "top_slot_bit" ) && this.getIntState( "top_slot_bit" ) == 1;
+        return this.stateExists( "top_slot_bit" ) && this.getByteState( "top_slot_bit" ) == 1;
     }
 }

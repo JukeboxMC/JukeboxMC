@@ -85,27 +85,27 @@ public class BlockDoor extends Block {
     }
 
     public BlockDoor setOpen( boolean value ) {
-        return this.setState( "open_bit", value ? 1 : 0 );
+        return this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
     }
 
     public BlockDoor setUpperBlock( boolean value ) {
-        return this.setState( "upper_block_bit", value ? 1 : 0 );
+        return this.setState( "upper_block_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isUpperBlock() {
-        return this.stateExists( "upper_block_bit" ) && this.getIntState( "upper_block_bit" ) == 1;
+        return this.stateExists( "upper_block_bit" ) && this.getByteState( "upper_block_bit" ) == 1;
     }
 
     public BlockDoor setDoorHinge( boolean value ) {
-        return this.setState( "door_hinge_bit", value ? 1 : 0 );
+        return this.setState( "door_hinge_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isDoorHinge() {
-        return this.stateExists( "door_hinge_bit" ) && this.getIntState( "door_hinge_bit" ) == 1;
+        return this.stateExists( "door_hinge_bit" ) && this.getByteState( "door_hinge_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

@@ -87,6 +87,7 @@ public class BlockPalette {
             BLOCK_CACHE.put( blockData, block );
             return block;
         } catch ( Exception e ) {
+            System.out.println(identifier + " - " + blockStates);
             Block block = Block.create( identifier );
             BLOCK_CACHE.put( blockData, block );
             return block;

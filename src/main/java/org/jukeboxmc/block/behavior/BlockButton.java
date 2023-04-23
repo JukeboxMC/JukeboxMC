@@ -62,11 +62,11 @@ public class BlockButton extends Block {
     }
 
     public void setButtonPressed( boolean value ) {
-        this.setState( "button_pressed_bit", value ? 1 : 0 );
+        this.setState( "button_pressed_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isButtonPressed() {
-        return this.stateExists( "button_pressed_bit" ) && this.getIntState( "button_pressed_bit" ) == 1;
+        return this.stateExists( "button_pressed_bit" ) && this.getByteState( "button_pressed_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

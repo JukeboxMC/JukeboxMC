@@ -20,19 +20,19 @@ public class BlockTripwireHook extends Block {
     }
 
     public void setPowered( boolean value ) {
-        this.setState( "powered_bit", value ? 1 : 0 );
+        this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isPowered() {
-        return this.stateExists( "powered_bit" ) && this.getIntState( "powered_bit" ) == 1;
+        return this.stateExists( "powered_bit" ) && this.getByteState( "powered_bit" ) == 1;
     }
 
     public void setAttached( boolean value ) {
-        this.setState( "attached_bit", value ? 1 : 0 );
+        this.setState( "attached_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isAttached() {
-        return this.stateExists( "attached_bit" ) && this.getIntState( "attached_bit" ) == 1;
+        return this.stateExists( "attached_bit" ) && this.getByteState( "attached_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

@@ -82,11 +82,11 @@ public class BlockBarrel extends Block {
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? 1 : 0 );
+        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
     }
 
     public void setBlockFace( BlockFace blockFace ) {

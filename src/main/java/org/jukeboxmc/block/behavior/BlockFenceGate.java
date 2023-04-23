@@ -60,19 +60,19 @@ public class BlockFenceGate extends Block {
     }
 
     public void setInWall( boolean value ) {
-        this.setState( "in_wall_bit", value ? 1 : 0 );
+        this.setState( "in_wall_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isInWall() {
-        return this.stateExists( "in_wall_bit" ) && this.getIntState( "in_wall_bit" ) == 1;
+        return this.stateExists( "in_wall_bit" ) && this.getByteState( "in_wall_bit" ) == 1;
     }
 
     public void setOpen( boolean value ) {
-        this.setState( "open_bit", value ? 1 : 0 );
+        this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isOpen() {
-        return this.stateExists( "open_bit" ) && this.getIntState( "open_bit" ) == 1;
+        return this.stateExists( "open_bit" ) && this.getByteState( "open_bit" ) == 1;
     }
 
     public void setDirection( Direction direction ) {

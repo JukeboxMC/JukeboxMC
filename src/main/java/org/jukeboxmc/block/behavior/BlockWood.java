@@ -54,11 +54,11 @@ public class BlockWood extends Block {
     }
 
     public BlockWood setStripped( boolean value ) {
-        return this.setState( "stripped_bit", value ? 1 : 0 );
+        return this.setState( "stripped_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isStripped() {
-        return this.stateExists( "stripped_bit" ) && this.getIntState( "stripped_bit" ) == 1;
+        return this.stateExists( "stripped_bit" ) && this.getByteState( "stripped_bit" ) == 1;
     }
 
     public void setAxis( Axis axis ) {

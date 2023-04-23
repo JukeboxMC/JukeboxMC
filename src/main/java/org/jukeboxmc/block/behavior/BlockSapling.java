@@ -36,10 +36,10 @@ public class BlockSapling extends Block {
     }
 
     public void setAge( boolean value ) {
-        this.setState( "age_bit", value ? 1 : 0 );
+        this.setState( "age_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean hasAge() {
-        return this.stateExists( "age_bit" ) && this.getIntState( "age_bit" ) == 1;
+        return this.stateExists( "age_bit" ) && this.getByteState( "age_bit" ) == 1;
     }
 }

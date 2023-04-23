@@ -36,10 +36,10 @@ public class BlockCoral extends Block {
     }
 
     public BlockCoral setDead( boolean value ) {
-        return this.setState( "dead_bit", value ? 1 : 0 );
+        return this.setState( "dead_bit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isDead() {
-        return this.stateExists( "dead_bit" ) && this.getIntState( "dead_bit" ) == 1;
+        return this.stateExists( "dead_bit" ) && this.getByteState( "dead_bit" ) == 1;
     }
 }
