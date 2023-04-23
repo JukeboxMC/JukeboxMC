@@ -61,6 +61,10 @@ public enum GameRule {
         return Arrays.stream( values() ).filter( gameRule -> gameRule.getIdentifier().equalsIgnoreCase( identifier ) ).findFirst().orElseGet( null );
     }
 
+    public static boolean parseByteToBoolean( byte value ) {
+        return value == 1;
+    }
+
     public enum Type {
         INT,
         BOOLEAN

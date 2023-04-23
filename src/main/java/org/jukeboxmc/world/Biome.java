@@ -91,7 +91,8 @@ public enum Biome {
     MEADOW( 186, "meadow", "Meadow" ),
     LUSH_CAVES( 187, "lush_caves", "Lush Caves " ),
     DRIPSTONE_CAVES( 188, "dripstone_caves", "Dripstone Caves " ),
-    STONY_PEAKS( 189, "stony_peaks", "Stony Peaks " );
+    STONY_PEAKS( 189, "stony_peaks", "Stony Peaks " ),
+    DEEP_DARK( 190, "deep_dark", "Deep Dark " );
 
     private final int id;
     private final String identifier;
@@ -134,6 +135,6 @@ public enum Biome {
     }
 
     public static Biome findById( int id ) {
-        return BIOME_FROM_ID.get( id );
+        return BIOME_FROM_ID.getOrDefault( id, Biome.PLAINS );
     }
 }

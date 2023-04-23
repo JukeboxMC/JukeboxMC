@@ -129,10 +129,15 @@ public class World {
                 nbtTag.listenForLong( "RandomSeed", this::setSeed );
                 nbtTag.listenForLong( "Time", value -> this.worldTime = (int) value );
 
-                for ( GameRule value : GameRule.values() ) {
-                    String identifer = value.getIdentifier().toLowerCase();
+                for ( GameRule gameRule : GameRule.values() ) {
+                    String identifer = gameRule.getIdentifier().toLowerCase();
                     if ( nbtTag.containsKey( identifer ) ) {
-                        this.gameRules.set( value, nbtTag.get( identifer ) );
+                        Object object = nbtTag.get(identifer);
+                        if ( object instanceof Byte byteValue ) {
+                            this.gameRules.set( gameRule, byteValue == 1 );
+                        } else {
+                            this.gameRules.set( gameRule, object );
+                        }
                     }
                 }
             } catch ( IOException e ) {
