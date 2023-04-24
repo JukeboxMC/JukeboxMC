@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.nbt.NbtMapBuilder;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleBlockDefinition;
 import org.jukeboxmc.Bootstrap;
@@ -16,10 +17,7 @@ import org.jukeboxmc.block.Block;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
@@ -87,11 +85,31 @@ public class BlockPalette {
             BLOCK_CACHE.put( blockData, block );
             return block;
         } catch ( Exception e ) {
-            System.out.println(identifier + " - " + blockStates);
-            Block block = Block.create( identifier );
+            NbtMap correctState = findCorrectState( identifier, blockStates );
+            Block block = Block.create( identifier, correctState );
             BLOCK_CACHE.put( blockData, block );
             return block;
         }
+    }
+
+    private static NbtMap findCorrectState( Identifier identifier, NbtMap compound ) {
+        NbtMap blockStates = NbtMap.EMPTY;
+        for ( NbtMap map : searchBlocks( nbtMap -> nbtMap.getString( "name" ).equals( identifier.getFullName() ) ) ) {
+            NbtMap mapCompound = map.getCompound( "states" );
+            int mapAmount = compound.size();
+            int mapCounter = 0;
+            for ( Map.Entry<String, Object> entry : mapCompound.entrySet() ) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                if ( compound.containsKey(key) && compound.containsValue(value) ) {
+                    mapCounter++;
+                }
+                if ( mapCounter >= mapAmount ) {
+                    return mapCompound;
+                }
+            }
+        }
+        return blockStates;
     }
 
     public static Integer getRuntimeId( NbtMap blockMap ) {
