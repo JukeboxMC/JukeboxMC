@@ -7,6 +7,6 @@ package org.jukeboxmc.block.behavior;
 public interface Waterlogable {
 
     default int getWaterLoggingLevel() {
-        return 1;
+        return 0;
     }
 }

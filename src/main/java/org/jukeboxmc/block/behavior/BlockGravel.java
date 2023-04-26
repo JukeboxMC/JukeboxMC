@@ -39,7 +39,7 @@ public class BlockGravel extends Block {
     @Override
     public long onUpdate( UpdateReason updateReason ) {
         if ( updateReason.equals( UpdateReason.NORMAL ) ) {
-            this.location.getWorld().scheduleBlockUpdate( this.location, 1 );
+            this.location.getWorld().scheduleBlockUpdate( this, 1 );
         } else if ( updateReason.equals( UpdateReason.SCHEDULED ) ) {
             Block blockDown = this.location.getBlock().clone().getSide( BlockFace.DOWN );
             if ( blockDown.getType().equals( BlockType.AIR ) ) {

@@ -14,10 +14,10 @@ public class BlockUpdateList {
 
     private Element element;
 
-    public synchronized void addElement( long timeValue, Vector blockPosition ) {
+    public synchronized void addElement( long timeValue, Block block ) {
         if ( this.element == null ) {
-            this.element = new Element( timeValue, null, new LinkedList<Vector>() {{
-                add( blockPosition );
+            this.element = new Element( timeValue, null, new LinkedList<>() {{
+                add(block);
             }} );
         } else {
             Element element = this.element;
@@ -29,13 +29,13 @@ public class BlockUpdateList {
             }
 
             if ( element == null ) {
-                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<Vector>() {{
-                    add( blockPosition );
+                previousElement.setNextElement( new Element( timeValue, null, new LinkedList<>() {{
+                    add(block);
                 }} ) );
             } else {
                 if ( element.getTimeValue() != timeValue ) {
-                    Element nextElement = new Element( timeValue, element, new LinkedList<Vector>() {{
-                        add( blockPosition );
+                    Element nextElement = new Element( timeValue, element, new LinkedList<>() {{
+                        add(block);
                     }} );
 
                     if ( previousElement != null ) {
@@ -44,7 +44,7 @@ public class BlockUpdateList {
                         this.element = nextElement;
                     }
                 } else {
-                    element.getPositionQueue().add( blockPosition );
+                    element.getPositionQueue().add( block );
                 }
             }
         }
@@ -58,7 +58,7 @@ public class BlockUpdateList {
         }
     }
 
-    public synchronized Vector getNextElement() {
+    public synchronized Block getNextElement() {
         if ( this.element == null ) {
             return null;
         }
@@ -71,14 +71,14 @@ public class BlockUpdateList {
             return null;
         }
 
-        Vector blockPosition = this.element.getPositionQueue().poll();
+        Block block = this.element.getPositionQueue().poll();
         while ( this.element.getPositionQueue().size() == 0 ) {
             this.element = this.element.getNextElement();
             if ( this.element == null ) {
                 break;
             }
         }
-        return blockPosition;
+        return block;
     }
 
     public synchronized int size( long timeValue ) {
@@ -113,12 +113,12 @@ public class BlockUpdateList {
 
         private long timeValue;
         private Element nextElement;
-        private Queue<Vector> positionQueue;
+        private Queue<Block> blockQueue;
 
-        public Element( long timeValue, Element nextElement, Queue<Vector> positionQueue ) {
+        public Element( long timeValue, Element nextElement, Queue<Block> blockQueue ) {
             this.timeValue = timeValue;
             this.nextElement = nextElement;
-            this.positionQueue = positionQueue;
+            this.blockQueue = blockQueue;
         }
 
         public long getTimeValue() {
@@ -137,12 +137,12 @@ public class BlockUpdateList {
             this.nextElement = nextElement;
         }
 
-        public Queue<Vector> getPositionQueue() {
-            return this.positionQueue;
+        public Queue<Block> getPositionQueue() {
+            return this.blockQueue;
         }
 
-        public void setPositionQueue( Queue<Vector> positionQueue ) {
-            this.positionQueue = positionQueue;
+        public void setPositionQueue( Queue<Block> blockQueue ) {
+            this.blockQueue = blockQueue;
         }
     }
 }

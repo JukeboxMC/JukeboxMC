@@ -61,7 +61,7 @@ public class BlockSugarCane extends Block {
     public long onUpdate( UpdateReason updateReason ) {
         World world = this.location.getWorld();
         if ( updateReason.equals( UpdateReason.NORMAL ) ) {
-            world.scheduleBlockUpdate( this.location, 0 );
+            world.scheduleBlockUpdate( this, 0 );
         }
         if ( updateReason.equals( UpdateReason.SCHEDULED ) ) {
             Block blockDown = this.getSide( BlockFace.DOWN );

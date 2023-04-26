@@ -321,7 +321,7 @@ public class Block implements Cloneable {
         breakLocation.getWorld().sendLevelEvent( breakLocation, LevelEvent.PARTICLE_DESTROY_BLOCK, this.runtimeId );
     }
 
-    private void playBreakSound() {
+    public void playBreakSound() {
         this.location.getWorld().playSound( this.location, SoundEvent.BREAK, this.runtimeId );
     }
 
@@ -514,7 +514,7 @@ public class Block implements Cloneable {
     }
 
     public final boolean canWaterloggingFlowInto() {
-        return this.canBeFlowedInto() || ( this instanceof Waterlogable && ( (Waterlogable) this ).getWaterLoggingLevel() > 1 );
+        return this.canBeFlowedInto() || ( this instanceof Waterlogable waterlogable && waterlogable.getWaterLoggingLevel() > 1 );
     }
 
     public List<Item> getDrops( Item item ) {

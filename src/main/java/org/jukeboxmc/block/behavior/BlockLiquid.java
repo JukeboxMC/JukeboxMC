@@ -45,12 +45,14 @@ public abstract class BlockLiquid extends Block {
                 if ( layer0.getType() == BlockType.AIR ) {
                     this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ), 1, this.location.getDimension(), false );
                     this.location.getWorld().setBlock( this.location, this, 0, this.location.getDimension(), false );
-                } else if ( layer0 instanceof Waterlogable && ( ( (Waterlogable) layer0 ).getWaterLoggingLevel() <= 0 || ( (Waterlogable) layer0 ).getWaterLoggingLevel() == 1 && getLiquidDepth() > 0 ) ) {
-                    this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ), 1, this.location.getDimension(), true );
+                } else if ( layer0 instanceof Waterlogable waterlogable ) {
+                    if (waterlogable.getWaterLoggingLevel() <= 0  || waterlogable.getWaterLoggingLevel() == 1 && getLiquidDepth() > 0) {
+                        this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ), 1, this.location.getDimension(), true );
+                    }
                 }
             }
             this.checkForHarden();
-            this.location.getWorld().scheduleBlockUpdate( this.location, this.getTickRate() );
+            this.location.getWorld().scheduleBlockUpdate( this, this.getTickRate() );
             return 0;
         } else if ( updateReason == UpdateReason.SCHEDULED ) {
             int decay = this.getFlowDecay( this );
@@ -97,7 +99,7 @@ public abstract class BlockLiquid extends Block {
                     if ( !event.isCancelled() ) {
                         this.location.getWorld().setBlock( this.location, event.getBlockTo(), this.layer, this.location.getDimension(), true );
                         if ( !decayed ) {
-                            this.location.getWorld().scheduleBlockUpdate( this.location, this.getTickRate() );
+                            this.location.getWorld().scheduleBlockUpdate( this, this.getTickRate() );
                         }
                     }
                 }
@@ -134,6 +136,18 @@ public abstract class BlockLiquid extends Block {
         return 0;
     }
 
+    protected int getFlowDecay( Block block ) {
+        if ( block.getType() != this.getType() ) {
+            Block layer1 = block.getLocation().getBlock(1);
+            if ( layer1.getType() != this.getType() ) {
+                return -1;
+            } else {
+                return ( (BlockLiquid) layer1 ).getLiquidDepth();
+            }
+        }
+        return ( (BlockLiquid) block ).getLiquidDepth();
+    }
+
     public abstract BlockLiquid getBlock( int liquidDepth );
 
     protected void checkForHarden() {
@@ -150,18 +164,6 @@ public abstract class BlockLiquid extends Block {
 
     public int getFlowDecayPerBlock() {
         return 1;
-    }
-
-    protected int getFlowDecay( Block block ) {
-        if ( block.getType() != this.getType() ) {
-            Block layer1 = block.getLocation().getWorld().getBlock( this.location, 1 );
-            if ( layer1.getType() != this.getType() ) {
-                return -1;
-            } else {
-                return ( (BlockLiquid) layer1 ).getLiquidDepth();
-            }
-        }
-        return ( (BlockLiquid) block ).getLiquidDepth();
     }
 
     private int getSmallestFlowDecay( Block block, int decay ) {
@@ -189,12 +191,12 @@ public abstract class BlockLiquid extends Block {
     protected void flowIntoBlock( Block block, int newFlowDecay) {
         if ( this.canFlowInto( block ) && !( block instanceof BlockLiquid ) ) {
             if ( usesWaterLogging() ) {
-                Block layer1 = location.getWorld().getBlock( location, 1 );
+                Block layer1 = block.getLocation().getBlock(1);
                 if ( layer1 instanceof BlockLiquid ) {
                     return;
                 }
 
-                if ( block instanceof Waterlogable && ( (Waterlogable) block ).getWaterLoggingLevel() > 1 ) {
+                if ( block instanceof Waterlogable waterlogable && waterlogable.getWaterLoggingLevel() > 1 ) {
                     block = layer1;
                 }
             }
@@ -207,7 +209,7 @@ public abstract class BlockLiquid extends Block {
                     //this.location.getWorld().breakBlock( null, block.getLocation(), block.getType() == BlockType.WEB ? Item.create( ItemType.WOODEN_SWORD ) : null );
                 }
                 location.getWorld().setBlock( block.getLocation(), this.getBlock( newFlowDecay ), block.getLayer() );
-                location.getWorld().scheduleBlockUpdate( block.getLocation(), this.getTickRate() );
+                location.getWorld().scheduleBlockUpdate( block, this.getTickRate() );
             }
         }
     }

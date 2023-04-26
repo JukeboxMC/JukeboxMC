@@ -48,7 +48,7 @@ public class BlockButton extends Block {
 
         this.setButtonPressed( true );
         this.location.getWorld().playSound( this.location, SoundEvent.POWER_ON );
-        this.location.getWorld().scheduleBlockUpdate( this.location, 20 );
+        this.location.getWorld().scheduleBlockUpdate( this, 20 );
         return true;
     }
 

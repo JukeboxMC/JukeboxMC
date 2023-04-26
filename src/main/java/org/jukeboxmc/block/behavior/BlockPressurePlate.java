@@ -119,7 +119,7 @@ public class BlockPressurePlate extends Block {
         }
 
         if ( isPowered ) {
-            this.location.getWorld().scheduleBlockUpdate( this.location, 20 );
+            this.location.getWorld().scheduleBlockUpdate( this, 20 );
         }
     }
 }

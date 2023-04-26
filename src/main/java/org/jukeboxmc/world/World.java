@@ -231,17 +231,17 @@ public class World {
         }
 
         while ( this.blockUpdateList.getNextTaskTime() < currentTick ) {
-            Vector blockPosition = this.blockUpdateList.getNextElement();
-            if ( blockPosition == null ) {
+            Block nextBlock = this.blockUpdateList.getNextElement();
+            if ( nextBlock == null ) {
                 break;
             }
 
-            Block block = this.getBlock( blockPosition );
+            Block block = this.getBlock( nextBlock.getLocation(), nextBlock.getLayer() );
             if ( block != null ) {
                 long nextTime = block.onUpdate( UpdateReason.SCHEDULED );
 
                 if ( nextTime > currentTick ) {
-                    this.blockUpdateList.addElement( nextTime, blockPosition );
+                    this.blockUpdateList.addElement( nextTime, block );
                 }
             }
         }
@@ -462,7 +462,7 @@ public class World {
             for ( BlockFace blockFace : BlockFace.values() ) {
                 Block blockSide = block.getSide( blockFace );
                 if ( ( next = blockSide.onUpdate( UpdateReason.NEIGHBORS ) ) > this.server.getCurrentTick() ) {
-                    this.scheduleBlockUpdate( blockSide.getLocation(), next );
+                    this.scheduleBlockUpdate( blockSide, next );
                 }
             }
         }
@@ -809,8 +809,8 @@ public class World {
         return collides;
     }
 
-    public void scheduleBlockUpdate( Location location, long delay ) {
-        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, location );
+    public void scheduleBlockUpdate( Block block, long delay ) {
+        this.blockUpdateList.addElement( this.server.getCurrentTick() + delay, block );
     }
 
     public void updateBlockAround( Vector location ) {
