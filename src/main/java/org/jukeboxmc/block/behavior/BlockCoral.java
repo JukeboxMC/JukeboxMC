@@ -42,11 +42,8 @@ public class BlockCoral extends Block implements Waterlogable {
                 return false;
             }
             world.setBlock(placePosition, Block.create(BlockType.WATER), 1, placePosition.getDimension(), false);
-            if (this.getSide(BlockFace.DOWN).isSolid()) {
-                world.setBlock(placePosition, this);
-                return true;
-            }
-        } else if (this.getSide(BlockFace.DOWN).isSolid()) {
+        }
+        if (this.getSide(BlockFace.DOWN).isSolid()) {
             world.setBlock(placePosition, this);
             return true;
         }
