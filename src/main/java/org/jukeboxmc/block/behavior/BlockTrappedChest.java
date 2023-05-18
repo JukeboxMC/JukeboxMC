@@ -31,11 +31,11 @@ public class BlockTrappedChest extends Block implements Waterlogable {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
 
-        BlockEntity.create( BlockEntityType.CHEST, this ).spawn();
         if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
             world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
         world.setBlock(placePosition, this);
+        BlockEntity.create( BlockEntityType.CHEST, this ).spawn();
         return true;
     }
 

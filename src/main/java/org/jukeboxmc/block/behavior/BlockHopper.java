@@ -32,11 +32,11 @@ public class BlockHopper extends Block implements Waterlogable {
         this.setBlockFace( blockFace == BlockFace.UP ? BlockFace.DOWN : blockFace.opposite() );
         this.setToggle( false );
 
-        BlockEntity.create( BlockEntityType.HOPPER, this ).spawn();
         if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
             world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
         world.setBlock(placePosition, this);
+        BlockEntity.create( BlockEntityType.HOPPER, this ).spawn();
         return true;
     }
 

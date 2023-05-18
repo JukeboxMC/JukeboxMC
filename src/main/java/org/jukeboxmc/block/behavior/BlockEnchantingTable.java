@@ -29,11 +29,11 @@ public class BlockEnchantingTable extends Block implements Waterlogable {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
-        BlockEntity.create( BlockEntityType.ENCHANTMENT_TABLE, this ).spawn();
         if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
             world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
         world.setBlock(placePosition, this);
+        BlockEntity.create( BlockEntityType.ENCHANTMENT_TABLE, this ).spawn();
         return true;
     }
 
