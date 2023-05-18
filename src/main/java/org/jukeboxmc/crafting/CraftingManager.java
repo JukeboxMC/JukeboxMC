@@ -2,7 +2,7 @@ package org.jukeboxmc.crafting;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
-import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;

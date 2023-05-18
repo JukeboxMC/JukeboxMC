@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
-import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.Bootstrap;
 

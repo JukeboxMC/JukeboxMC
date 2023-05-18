@@ -1,6 +1,7 @@
 package org.jukeboxmc.util;
 
-import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
+
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 /**
  * @author LucGamesYT

@@ -33,7 +33,7 @@ public class BlockLantern extends Block {
 
         this.setHanging( hanging );
         if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
-            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
         world.setBlock(placePosition, this);
         return true;

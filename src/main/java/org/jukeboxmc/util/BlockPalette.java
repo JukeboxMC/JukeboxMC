@@ -8,9 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.nbt.NbtMapBuilder;
 import org.cloudburstmc.nbt.NbtType;
-import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleBlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleBlockDefinition;
 import org.jukeboxmc.Bootstrap;
 import org.jukeboxmc.block.Block;
 

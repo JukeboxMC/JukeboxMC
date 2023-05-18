@@ -1,8 +1,8 @@
 package org.jukeboxmc.util;
 
 import com.google.gson.Gson;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.jukeboxmc.Bootstrap;
 
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class ItemPalette {
         return NonStream.map( IDENTIFIER_TO_RUNTIME.entrySet(), ItemPalette::toEntry, ArrayList::new, Collections::unmodifiableList );
     }
 
-    private static SimpleItemDefinition toEntry( Map.Entry<Identifier, Short> entry ) {
+    private static SimpleItemDefinition toEntry(Map.Entry<Identifier, Short> entry ) {
         return new SimpleItemDefinition( entry.getKey().getFullName(), entry.getValue(), false );
     }
 
