@@ -20,7 +20,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockStandingBanner extends Block {
+public class BlockStandingBanner extends Block implements Waterlogable {
     
     public BlockStandingBanner( Identifier identifier ) {
         super( identifier );
@@ -33,16 +33,20 @@ public class BlockStandingBanner extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         Block block = world.getBlock( placePosition );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
+
         if ( blockFace == BlockFace.UP ) {
             this.setSignDirection( SignDirection.values()[(int) FastMath.floor( ( ( player.getLocation().getYaw() + 180 ) * 16 / 360 ) + 0.5 ) & 0x0f] );
-            world.setBlock( placePosition, this, 0 );
+            world.setBlock( placePosition, this );
         } else {
             BlockWallBanner blockWallBanner = Block.create( BlockType.WALL_BANNER );
             blockWallBanner.setBlockFace( blockFace );
-            world.setBlock( placePosition, blockWallBanner, 0 );
+            world.setBlock( placePosition, blockWallBanner );
         }
         int type = itemInHand.getNbt() != null ? itemInHand.getNbt().getInt( "Type", 0 ) : 0;
-        BlockEntity.<BlockEntityBanner>create( BlockEntityType.BANNER, block ).setColor( BlockColor.values()[itemInHand.getMeta()] ).setType( type );
+        BlockEntity.<BlockEntityBanner>create( BlockEntityType.BANNER, block ).setColor( BlockColor.values()[itemInHand.getMeta()] ).setType( type ).spawn();
         return true;
     }
 
@@ -51,7 +55,12 @@ public class BlockStandingBanner extends Block {
         return (BlockEntityBanner) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setSignDirection( SignDirection signDirection ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setSignDirection(SignDirection signDirection ) {
         this.setState( "ground_sign_direction", signDirection.ordinal() );
     }
 

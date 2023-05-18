@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -19,7 +20,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockChest extends Block {
+public class BlockChest extends Block implements Waterlogable {
 
     public BlockChest( Identifier identifier ) {
         super( identifier );
@@ -32,6 +33,9 @@ public class BlockChest extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( player.getDirection().toBlockFace().opposite() );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
         boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
         if ( value ) {
             BlockEntity.create( BlockEntityType.CHEST, this ).spawn();
@@ -86,7 +90,12 @@ public class BlockChest extends Block {
         return (BlockEntityChest) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setBlockFace(BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

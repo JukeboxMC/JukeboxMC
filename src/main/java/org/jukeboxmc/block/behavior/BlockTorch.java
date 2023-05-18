@@ -46,8 +46,8 @@ public class BlockTorch extends Block {
     @Override
     public AxisAlignedBB getBoundingBox() {
         float size = 0.15f;
-        switch ( this.getTorchFacing() ) {
-            case EAST:
+        switch (this.getTorchFacing()) {
+            case EAST -> {
                 return new AxisAlignedBB(
                         this.location.getX(),
                         this.location.getY() + 0.2f,
@@ -56,7 +56,8 @@ public class BlockTorch extends Block {
                         this.location.getY() + 0.8f,
                         this.location.getZ() + 0.5f + size
                 );
-            case WEST:
+            }
+            case WEST -> {
                 return new AxisAlignedBB(
                         this.location.getX() + 1.0f - size * 2f,
                         this.location.getY() + 0.2f,
@@ -65,7 +66,8 @@ public class BlockTorch extends Block {
                         this.location.getY() + 0.8f,
                         this.location.getZ() + 0.5f + size
                 );
-            case SOUTH:
+            }
+            case SOUTH -> {
                 return new AxisAlignedBB(
                         this.location.getX() + 0.5f - size,
                         this.location.getY() + 0.2f,
@@ -74,7 +76,8 @@ public class BlockTorch extends Block {
                         this.location.getY() + 0.8f,
                         this.location.getZ() + size * 2f
                 );
-            case NORTH:
+            }
+            case NORTH -> {
                 return new AxisAlignedBB(
                         this.location.getX() + 0.5f - size,
                         this.location.getY() + 0.2f,
@@ -83,6 +86,7 @@ public class BlockTorch extends Block {
                         this.location.getY() + 0.8f,
                         this.location.getZ() + 1f
                 );
+            }
         }
         size = 0.1f;
 

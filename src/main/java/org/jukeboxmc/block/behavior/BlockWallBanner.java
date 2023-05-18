@@ -9,7 +9,7 @@ import org.jukeboxmc.util.Identifier;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockWallBanner extends Block {
+public class BlockWallBanner extends Block implements Waterlogable {
 
     public BlockWallBanner( Identifier identifier ) {
         super( identifier );
@@ -19,7 +19,12 @@ public class BlockWallBanner extends Block {
         super( identifier, blockStates );
     }
 
-    public void setBlockFace( BlockFace blockFace ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setBlockFace(BlockFace blockFace ) {
         this.setState( "facing_direction", blockFace.ordinal() );
     }
 

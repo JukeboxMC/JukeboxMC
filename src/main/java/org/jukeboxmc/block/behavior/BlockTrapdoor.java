@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
@@ -15,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockTrapdoor extends Block {
+public class BlockTrapdoor extends Block implements Waterlogable{
 
     public BlockTrapdoor( Identifier identifier ) {
         super( identifier );
@@ -44,7 +45,11 @@ public class BlockTrapdoor extends Block {
         }
         this.setOpen( false );
 
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
+        world.setBlock(placePosition, this);
+        return true;
     }
     @Override
     public boolean interact( Player player, Vector blockPosition, Vector clickedPosition, BlockFace blockFace, Item itemInHand ) {
@@ -53,7 +58,12 @@ public class BlockTrapdoor extends Block {
         return true;
     }
 
-    public void setOpen( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setOpen(boolean value ) {
         this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 

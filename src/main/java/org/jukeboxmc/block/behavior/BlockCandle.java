@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
@@ -16,7 +17,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCandle extends Block {
+public class BlockCandle extends Block implements Waterlogable{
 
     public BlockCandle( Identifier identifier ) {
         super( identifier );
@@ -42,6 +43,10 @@ public class BlockCandle extends Block {
             } else {
                 return false;
             }
+        } else {
+            if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+                world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+            }
         }
         world.setBlock( placePosition, this, 0 );
         return true;
@@ -64,8 +69,12 @@ public class BlockCandle extends Block {
         return false;
     }
 
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
 
-    public BlockCandle setCandles( int value ) {
+    public BlockCandle setCandles(int value ) {
         return this.setState( "candles", value );
     }
 
@@ -74,10 +83,10 @@ public class BlockCandle extends Block {
     }
 
     public BlockCandle setLit( boolean value ) {
-        return this.setState( "lit", value ? 1 : 0 );
+        return this.setState( "lit", value ? (byte) 1 : (byte) 0 );
     }
 
     public boolean isLit() {
-        return this.stateExists( "lit" ) && this.getIntState( "lit" ) == 1;
+        return this.stateExists( "lit" ) && this.getByteState( "lit" ) == 1;
     }
 }

@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.blockentity.BlockEntity;
@@ -17,7 +18,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockLectern extends Block {
+public class BlockLectern extends Block implements Waterlogable {
 
     public BlockLectern( Identifier identifier ) {
         super( identifier );
@@ -31,11 +32,12 @@ public class BlockLectern extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
 
-        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-        if ( value ) {
-            BlockEntity.create( BlockEntityType.LECTERN, this ).spawn();
+        BlockEntity.create( BlockEntityType.LECTERN, this ).spawn();
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
         }
-        return value;
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -43,7 +45,12 @@ public class BlockLectern extends Block {
         return (BlockEntityLectern) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setPowered( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setPowered(boolean value ) {
         this.setState( "powered_bit", value ? (byte) 1 : (byte) 0 );
     }
 

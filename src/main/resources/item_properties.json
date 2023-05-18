@@ -1352,7 +1352,22 @@
   "minecraft:feather": {
     "max_stack_size": 64
   },
-  "minecraft:fence": {
+  "minecraft:oak_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:spruce_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:birch_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:jungle_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:acacia_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:dark_oak_fence": {
     "max_stack_size": 64
   },
   "minecraft:fence_gate": {
@@ -1880,10 +1895,22 @@
   "minecraft:lodestone_compass": {
     "max_stack_size": 64
   },
-  "minecraft:log": {
+  "minecraft:oak_log": {
     "max_stack_size": 64
   },
-  "minecraft:log2": {
+  "minecraft:spruce_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:birch_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:jungle_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:acacia_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:dark_oak_log": {
     "max_stack_size": 64
   },
   "minecraft:loom": {

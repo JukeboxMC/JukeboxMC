@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntitySkull;
@@ -16,7 +17,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockSkull extends Block {
+public class BlockSkull extends Block implements Waterlogable{
 
     public BlockSkull( Identifier identifier ) {
         super( identifier );
@@ -29,14 +30,15 @@ public class BlockSkull extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( blockFace );
-        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-        if ( value ) {
-            BlockEntity.<BlockEntitySkull>create( BlockEntityType.SKULL, this )
-                    .setRotation( (byte) ( (int) Math.floor( ( player.getYaw() * 16 / 360 ) + 0.5 ) & 0xF ) )
-                    .setSkullMeta( (byte) itemInHand.getMeta() )
-                    .spawn();
+        BlockEntity.<BlockEntitySkull>create( BlockEntityType.SKULL, this )
+                .setRotation( (byte) ( (int) Math.floor( ( player.getYaw() * 16 / 360 ) + 0.5 ) & 0xF ) )
+                .setSkullMeta( (byte) itemInHand.getMeta() )
+                .spawn();
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
         }
-        return value;
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -44,7 +46,12 @@ public class BlockSkull extends Block {
         return (BlockEntitySkull) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public BlockSkull setNoDrop( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public BlockSkull setNoDrop(boolean value ) {
         return this.setState( "no_drop_bit", value ? 1 : 0 );
     }
 

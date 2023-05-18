@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -15,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockButton extends Block {
+public class BlockButton extends Block implements Waterlogable {
 
     public BlockButton( Identifier identifier ) {
         super( identifier );
@@ -36,7 +37,11 @@ public class BlockButton extends Block {
         this.setBlockFace( blockFace );
         this.setButtonPressed( false );
 
-        world.setBlock( placePosition, this, 0 );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() ==0){
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
+
+        world.setBlock( placePosition, this );
         return true;
     }
 
@@ -61,7 +66,12 @@ public class BlockButton extends Block {
         return -1;
     }
 
-    public void setButtonPressed( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setButtonPressed(boolean value ) {
         this.setState( "button_pressed_bit", value ? (byte) 1 : (byte) 0 );
     }
 

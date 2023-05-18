@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
@@ -14,7 +15,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockCampfire extends Block {
+public class BlockCampfire extends Block implements Waterlogable {
 
     public BlockCampfire( Identifier identifier ) {
         super( identifier );
@@ -26,11 +27,24 @@ public class BlockCampfire extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+        if (this.getSide(BlockFace.DOWN).getType().equals(BlockType.CAMPFIRE)) {
+            return false;
+        }
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            this.setExtinguished(true);
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
         this.setDirection( player.getDirection().opposite() );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+        world.setBlock(placePosition, this);
+        return true;
     }
 
-    public void setExtinguished( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setExtinguished(boolean value ) {
         this.setState( "extinguished", value ? 1 : 0 );
     }
 

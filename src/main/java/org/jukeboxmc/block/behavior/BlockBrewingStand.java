@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityBrewingStand;
@@ -18,7 +19,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBrewingStand extends Block {
+public class BlockBrewingStand extends Block implements Waterlogable {
 
     public BlockBrewingStand( Identifier identifier ) {
         super( identifier );
@@ -30,11 +31,12 @@ public class BlockBrewingStand extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
-        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-        if ( value ) {
-            BlockEntity.create( BlockEntityType.BREWING_STAND, this ).spawn();
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
-        return value;
+        world.setBlock(placePosition, this);
+        BlockEntity.create( BlockEntityType.BREWING_STAND, this ).spawn();
+        return true;
     }
 
     @Override
@@ -68,7 +70,12 @@ public class BlockBrewingStand extends Block {
         return (BlockEntityBrewingStand) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setBrewingStandSlotA( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setBrewingStandSlotA(boolean value ) {
         this.setState( "brewing_stand_slot_a_bit", value ? (byte) 1 : (byte) 0 );
     }
 

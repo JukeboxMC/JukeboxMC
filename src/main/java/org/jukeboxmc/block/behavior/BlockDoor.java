@@ -17,7 +17,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockDoor extends Block {
+public class BlockDoor extends Block implements Waterlogable {
 
     public BlockDoor( Identifier identifier ) {
         super( identifier );
@@ -29,7 +29,6 @@ public class BlockDoor extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
-        Block block = world.getBlock( placePosition );
         this.setDirection( Direction.fromAngle( player.getYaw() ) );
 
         BlockDoor blockAbove = Block.create( this.getType() );
@@ -54,12 +53,10 @@ public class BlockDoor extends Block {
         world.setBlock( placePosition.add( 0, 1, 0 ), blockAbove, 0 );
         world.setBlock( placePosition, this, 0 );
 
-        /*TODO WATER LOGGING
-        if ( block.isWater() ) {
-            world.setBlock( placePosition.add( 0, 1, 0 ), block, 1 );
-            world.setBlock( placePosition, block, 1 );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
-         */
         return true;
     }
 
@@ -84,7 +81,12 @@ public class BlockDoor extends Block {
         this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ), 1 );
     }
 
-    public BlockDoor setOpen( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public BlockDoor setOpen(boolean value ) {
         return this.setState( "open_bit", value ? (byte) 1 : (byte) 0 );
     }
 

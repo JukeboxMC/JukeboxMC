@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
@@ -27,7 +28,11 @@ public class BlockEndPortalFrame extends Block {
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection().opposite() );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+        }
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     public void setEndPortalEye( boolean value ) {

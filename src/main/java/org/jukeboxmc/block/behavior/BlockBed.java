@@ -20,7 +20,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBed extends Block {
+public class BlockBed extends Block implements Waterlogable {
 
     public BlockBed( Identifier identifier ) {
         super( identifier );
@@ -38,6 +38,12 @@ public class BlockBed extends Block {
         Location directionLocation = blockDirection.getLocation();
 
         if ( blockDirection.canBeReplaced( this ) && blockDirection.isTransparent() ) {
+            if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0 &&
+                    world.getBlock(directionLocation) instanceof BlockWater blockWaterDirection && blockWaterDirection.getLiquidDepth() == 0) {
+                world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+                world.setBlock(directionLocation, Block.create(BlockType.WATER), 1, false);
+            }
+
             this.setDirection( player.getDirection() );
 
             BlockBed blockBed = Block.create( BlockType.BED );
@@ -75,7 +81,12 @@ public class BlockBed extends Block {
         return (BlockEntityBed) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setHeadPiece( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setHeadPiece(boolean value ) {
         this.setState( "head_piece_bit", value ? (byte) 1 : (byte) 0 );
     }
 

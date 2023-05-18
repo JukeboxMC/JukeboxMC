@@ -132,7 +132,7 @@ public class ItemRegistry {
         register( ItemType.BUCKET, new ItemRegistryData( Identifier.fromString( "minecraft:bucket" ), ItemBucket.class ) );
         register( ItemType.BUDDING_AMETHYST, new ItemRegistryData( Identifier.fromString( "minecraft:budding_amethyst" ) ) );
         register( ItemType.CACTUS, new ItemRegistryData( Identifier.fromString( "minecraft:cactus" ) ) );
-        register( ItemType.CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:cake" ) ) );
+        register( ItemType.CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:cake" ), ItemCake.class ) );
         register( ItemType.CALCITE, new ItemRegistryData( Identifier.fromString( "minecraft:calcite" ) ) );
         register( ItemType.CAMERA, new ItemRegistryData( Identifier.fromString( "minecraft:camera" ) ) );
         register( ItemType.CAMPFIRE, new ItemRegistryData( Identifier.fromString( "minecraft:campfire" ), ItemCampfire.class ) );
@@ -476,7 +476,14 @@ public class ItemRegistry {
         register( ItemType.EXPOSED_DOUBLE_CUT_COPPER_SLAB, new ItemRegistryData( Identifier.fromString( "minecraft:exposed_double_cut_copper_slab" ) ) );
         register( ItemType.FARMLAND, new ItemRegistryData( Identifier.fromString( "minecraft:farmland" ) ) );
         register( ItemType.FEATHER, new ItemRegistryData( Identifier.fromString( "minecraft:feather" ) ) );
-        register( ItemType.FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:fence" ), ItemFence.class ) );
+
+        register( ItemType.OAK_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:oak_fence" ), ItemFence.class ) );
+        register( ItemType.SPRUCE_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:spruce_fence" ), ItemFence.class ) );
+        register( ItemType.BIRCH_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:birch_fence" ), ItemFence.class ) );
+        register( ItemType.JUNGLE_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:jungle_fence" ), ItemFence.class ) );
+        register( ItemType.ACACIA_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:acacia_fence" ), ItemFence.class ) );
+        register( ItemType.DARK_OAK_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:dark_oak_fence" ), ItemFence.class ) );
+
         register( ItemType.OAK_FENCE_GATE, new ItemRegistryData( Identifier.fromString( "minecraft:fence_gate" ), ItemWoodenFenceGate.class ) );
         register( ItemType.FERMENTED_SPIDER_EYE, new ItemRegistryData( Identifier.fromString( "minecraft:fermented_spider_eye" ) ) );
         register( ItemType.FIELD_MASONED_BANNER_PATTERN, new ItemRegistryData( Identifier.fromString( "minecraft:field_masoned_banner_pattern" ) ) );
@@ -652,8 +659,14 @@ public class ItemRegistry {
         register( ItemType.LLAMA_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:llama_spawn_egg" ) ) );
         register( ItemType.LODESTONE, new ItemRegistryData( Identifier.fromString( "minecraft:lodestone" ) ) );
         register( ItemType.LODESTONE_COMPASS, new ItemRegistryData( Identifier.fromString( "minecraft:lodestone_compass" ) ) );
-        register( ItemType.LOG, new ItemRegistryData( Identifier.fromString( "minecraft:log" ), ItemLog.class ) );
-        register( ItemType.LOG2, new ItemRegistryData( Identifier.fromString( "minecraft:log2" ), ItemLog2.class ) );
+
+        register( ItemType.OAK_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:oak_log" )) );
+        register( ItemType.SPRUCE_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:spruce_log" )) );
+        register( ItemType.BIRCH_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:birch_log" )) );
+        register( ItemType.JUNGLE_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:jungle_log" )) );
+        register( ItemType.ACACIA_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:acacia_log" )) );
+        register( ItemType.DARK_OAK_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:dark_oak_log" )) );
+
         register( ItemType.LOOM, new ItemRegistryData( Identifier.fromString( "minecraft:loom" ) ) );
         register( ItemType.MAGENTA_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_candle" ), ItemCandle.class ) );
         register( ItemType.MAGENTA_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_candle_cake" ) ) );

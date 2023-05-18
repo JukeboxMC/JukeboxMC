@@ -357,14 +357,13 @@ public class Chunk {
             levelChunkPacket.setCachingEnabled( false );
             levelChunkPacket.setRequestSubChunks( false );
             levelChunkPacket.setSubChunksLength( this.getAvailableSubChunks() );
-            this.writeTo( byteBuf );
-            levelChunkPacket.setData( byteBuf.retainedDuplicate() );
+            this.writeTo( byteBuf.retain() );
+            levelChunkPacket.setData( byteBuf );
             return levelChunkPacket;
         } finally {
             byteBuf.release();
         }
     }
-
     public void saveChunkSlice( Palette<Block>[] blockPalettes, int subY, WriteBatch writeBatch ) {
         ByteBuf buffer = Unpooled.buffer();
 

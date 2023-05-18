@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.Attachment;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -15,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockBell extends Block {
+public class BlockBell extends Block implements Waterlogable {
 
     public BlockBell( Identifier identifier ) {
         super( identifier );
@@ -44,10 +45,19 @@ public class BlockBell extends Block {
                 }
             }
         }
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
+        world.setBlock(placePosition, this);
+        return true;
     }
 
-    public void setAttachment( Attachment attachment ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setAttachment(Attachment attachment ) {
         this.setState( "attachment", attachment.name().toLowerCase() );
     }
 

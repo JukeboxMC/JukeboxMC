@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityEnchantmentTable;
@@ -16,7 +17,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockEnchantingTable extends Block {
+public class BlockEnchantingTable extends Block implements Waterlogable {
 
     public BlockEnchantingTable( Identifier identifier ) {
         super( identifier );
@@ -28,11 +29,12 @@ public class BlockEnchantingTable extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
-        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-        if ( value ) {
-            BlockEntity.create( BlockEntityType.ENCHANTMENT_TABLE, this ).spawn();
+        BlockEntity.create( BlockEntityType.ENCHANTMENT_TABLE, this ).spawn();
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
         }
-        return value;
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -48,5 +50,10 @@ public class BlockEnchantingTable extends Block {
     @Override
     public BlockEntityEnchantmentTable getBlockEntity() {
         return (BlockEntityEnchantmentTable) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
+    }
+
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
     }
 }

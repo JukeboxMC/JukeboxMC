@@ -35,13 +35,9 @@ public class BlockCoral extends Block implements Waterlogable {
 
     @Override
     public boolean placeBlock(Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace) {
-        Block layer0 = world.getBlock(placePosition);
-
-        if (layer0 instanceof BlockWater blockWater) {
-            if (blockWater.getLiquidDepth() != 0) {
-                return false;
-            }
-            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, placePosition.getDimension(), false);
+        Block block = world.getBlock(placePosition);
+        if (block instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
         }
         if (this.getSide(BlockFace.DOWN).isSolid()) {
             world.setBlock(placePosition, this);

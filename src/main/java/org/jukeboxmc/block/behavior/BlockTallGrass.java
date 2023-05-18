@@ -42,7 +42,12 @@ public class BlockTallGrass extends Block {
         return Item.<ItemTallGrass>create( ItemType.TALLGRASS ).setGrassType( this.getGrassType() );
     }
 
-    public BlockTallGrass setGrassType( GrassType grassType ) {
+    @Override
+    public boolean canBeReplaced(Block block) {
+        return true;
+    }
+
+    public BlockTallGrass setGrassType(GrassType grassType ) {
         return this.setState( "tall_grass_type", grassType.name().toLowerCase() );
     }
 

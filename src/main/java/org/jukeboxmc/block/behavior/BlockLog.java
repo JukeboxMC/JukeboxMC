@@ -3,11 +3,8 @@ package org.jukeboxmc.block.behavior;
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.data.Axis;
-import org.jukeboxmc.block.data.LogType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.behavior.ItemLog;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
@@ -39,19 +36,6 @@ public class BlockLog extends Block {
 
         world.setBlock( placePosition, this, 0);
         return true;
-    }
-
-    @Override
-    public Item toItem() {
-        return Item.<ItemLog>create( ItemType.LOG ).setLogType( this.getLogType() );
-    }
-
-    public BlockLog setLogType( LogType logType ) {
-        return this.setState( "old_log_type", logType.name().toLowerCase() );
-    }
-
-    public LogType getLogType() {
-        return this.stateExists( "old_log_type" ) ? LogType.valueOf( this.getStringState( "old_log_type" ) ) : LogType.OAK;
     }
 
     public void setAxis( Axis axis ) {

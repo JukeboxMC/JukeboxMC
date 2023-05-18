@@ -476,6 +476,10 @@ public class World {
         this.setBlock( vector, block, layer, vector.getDimension() );
     }
 
+    public void setBlock( Vector vector, Block block, int layer, boolean update ) {
+        this.setBlock( vector, block, layer, vector.getDimension(), update );
+    }
+
     public void setBlock( Vector vector, Block block ) {
         this.setBlock( vector, block, 0, vector.getDimension() );
     }

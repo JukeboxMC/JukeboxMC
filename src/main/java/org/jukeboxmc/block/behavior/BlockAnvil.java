@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.AnvilDamage;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
@@ -15,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockAnvil extends Block {
+public class BlockAnvil extends Block implements Waterlogable {
 
     public BlockAnvil( Identifier identifier ) {
         super( identifier );
@@ -27,8 +28,12 @@ public class BlockAnvil extends Block {
 
     @Override
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, Block.create(BlockType.WATER), 1, false);
+        }
         this.setDirection( player.getDirection().getRightDirection() );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -37,7 +42,12 @@ public class BlockAnvil extends Block {
         return true;
     }
 
-    public BlockAnvil setDamage( AnvilDamage damage ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public BlockAnvil setDamage(AnvilDamage damage ) {
         return this.setState( "damage", damage.name().toLowerCase() );
     }
 

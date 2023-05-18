@@ -21,24 +21,25 @@ import org.jukeboxmc.world.World;
  */
 public class BlockCactus extends Block {
 
-    public BlockCactus( Identifier identifier ) {
-        super( identifier );
+    public BlockCactus(Identifier identifier) {
+        super(identifier);
     }
 
-    public BlockCactus( Identifier identifier, NbtMap blockStates ) {
-        super( identifier, blockStates );
+    public BlockCactus(Identifier identifier, NbtMap blockStates) {
+        super(identifier, blockStates);
     }
 
     @Override
-    public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
-        Block blockDown = this.getSide( BlockFace.DOWN );
-        if ( blockDown.getType().equals( BlockType.SAND ) || blockDown.getType().equals( BlockType.CACTUS ) ) {
-            Block blockNorth = this.getSide( BlockFace.NORTH );
-            Block blockEast = this.getSide( BlockFace.EAST );
-            Block blockSouth = this.getSide( BlockFace.SOUTH );
-            Block blockWest = this.getSide( BlockFace.WEST );
-            if ( blockNorth.canBeFlowedInto() && blockEast.canBeFlowedInto() && blockSouth.canBeFlowedInto() && blockWest.canBeFlowedInto() ) {
-                this.location.getWorld().setBlock( this.location, this );
+    public boolean placeBlock(Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace) {
+        Block blockDown = this.getSide(BlockFace.DOWN);
+        if (blockDown.getType().equals(BlockType.SAND) || blockDown.getType().equals(BlockType.CACTUS)) {
+            if (world.getBlock(placePosition) instanceof BlockWater) return false;
+            Block blockNorth = this.getSide(BlockFace.NORTH);
+            Block blockEast = this.getSide(BlockFace.EAST);
+            Block blockSouth = this.getSide(BlockFace.SOUTH);
+            Block blockWest = this.getSide(BlockFace.WEST);
+            if (blockNorth.canBeFlowedInto() && blockEast.canBeFlowedInto() && blockSouth.canBeFlowedInto() && blockWest.canBeFlowedInto()) {
+                this.location.getWorld().setBlock(this.location, this);
                 return true;
             }
         }
@@ -46,50 +47,50 @@ public class BlockCactus extends Block {
     }
 
     @Override
-    public long onUpdate( UpdateReason updateReason ) {
-        if ( updateReason.equals( UpdateReason.NORMAL ) ) {
-            Block blockDown = this.getSide( BlockFace.DOWN );
-            if ( !blockDown.getType().equals( BlockType.SAND ) && !blockDown.getType().equals( BlockType.CACTUS ) ) {
-                this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
-                this.location.getWorld().dropItem( Item.create( ItemType.CACTUS ), this.location.add( 0.5f, 0, 0.5f ), null ).spawn();
+    public long onUpdate(UpdateReason updateReason) {
+        if (updateReason.equals(UpdateReason.NORMAL)) {
+            Block blockDown = this.getSide(BlockFace.DOWN);
+            if (!blockDown.getType().equals(BlockType.SAND) && !blockDown.getType().equals(BlockType.CACTUS)) {
+                this.location.getWorld().setBlock(this.location, Block.create(BlockType.AIR));
+                this.location.getWorld().dropItem(Item.create(ItemType.CACTUS), this.location.add(0.5f, 0, 0.5f), null).spawn();
             } else {
-                for ( Direction direction : Direction.values() ) {
-                    Block block = this.getSide( direction );
-                    if ( !block.canBeFlowedInto() ) {
-                        this.location.getWorld().setBlock( this.location, Block.create( BlockType.AIR ) );
-                        this.location.getWorld().dropItem( Item.create( ItemType.CACTUS ), this.location.add( 0.5f, 0, 0.5f ), null ).spawn();
+                for (Direction direction : Direction.values()) {
+                    Block block = this.getSide(direction);
+                    if (!block.canBeFlowedInto()) {
+                        this.location.getWorld().setBlock(this.location, Block.create(BlockType.AIR));
+                        this.location.getWorld().dropItem(Item.create(ItemType.CACTUS), this.location.add(0.5f, 0, 0.5f), null).spawn();
                     }
                 }
             }
-        } else if ( updateReason.equals( UpdateReason.RANDOM ) ) {
-            Block blockDown = this.getSide( BlockFace.DOWN );
-            if ( !blockDown.getType().equals( BlockType.CACTUS ) ) {
-                if ( this.getAge() == 15 ) {
-                    for ( int y = 0; y < 3; ++y ) {
-                        Block block = this.location.getWorld().getBlock( new Vector( this.location.getBlockX(), this.location.getBlockY() + y, this.location.getBlockZ() ) );
-                        if ( block.getType().equals( BlockType.AIR ) ) {
-                            BlockGrowEvent blockGrowEvent = new BlockGrowEvent( this, Block.create( BlockType.CACTUS ) );
-                            Server.getInstance().getPluginManager().callEvent( blockGrowEvent );
-                            if ( !blockGrowEvent.isCancelled() ) {
-                                this.location.getWorld().setBlock( block.getLocation(), blockGrowEvent.getNewState() );
+        } else if (updateReason.equals(UpdateReason.RANDOM)) {
+            Block blockDown = this.getSide(BlockFace.DOWN);
+            if (!blockDown.getType().equals(BlockType.CACTUS)) {
+                if (this.getAge() == 15) {
+                    for (int y = 0; y < 3; ++y) {
+                        Block block = this.location.getWorld().getBlock(new Vector(this.location.getBlockX(), this.location.getBlockY() + y, this.location.getBlockZ()));
+                        if (block.getType().equals(BlockType.AIR)) {
+                            BlockGrowEvent blockGrowEvent = new BlockGrowEvent(this, Block.create(BlockType.CACTUS));
+                            Server.getInstance().getPluginManager().callEvent(blockGrowEvent);
+                            if (!blockGrowEvent.isCancelled()) {
+                                this.location.getWorld().setBlock(block.getLocation(), blockGrowEvent.getNewState());
                             }
                             break;
                         }
                     }
-                    this.setAge( 0 );
+                    this.setAge(0);
                 } else {
-                    this.setAge( this.getAge() + 1 );
+                    this.setAge(this.getAge() + 1);
                 }
             }
         }
         return -1;
     }
 
-    public void setAge( int value ) {
-        this.setState( "age", value );
+    public void setAge(int value) {
+        this.setState("age", value);
     }
 
     public int getAge() {
-        return this.stateExists( "age" ) ? this.getIntState( "age" ) : 0;
+        return this.stateExists("age") ? this.getIntState("age") : 0;
     }
 }

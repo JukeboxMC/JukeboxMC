@@ -109,7 +109,7 @@ public class ItemBucket extends Item {
                 player.getWorld().playSound( player.getLocation(), SoundEvent.BUCKET_EMPTY_WATER );
             }
 
-            player.getWorld().setBlock( placeLocation, placedBlock, placedBlock.getLayer(), placeLocation.getDimension(), false );
+            player.getWorld().setBlock( placeLocation, placedBlock, placedBlock.getLayer(), false );
             if ( placedBlock instanceof BlockLiquid blockLiquid) {
                 player.getWorld().scheduleBlockUpdate( placedBlock, blockLiquid.getTickRate() );
             }

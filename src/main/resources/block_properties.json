@@ -3673,7 +3673,62 @@
     "max_stack_size": 64,
     "can_random_tick": true
   },
-  "minecraft:fence": {
+  "minecraft:oak_fence": {
+    "hardness": 2,
+    "solid": false,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": true,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:spruce_fence": {
+    "hardness": 2,
+    "solid": false,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": true,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:birch_fence": {
+    "hardness": 2,
+    "solid": false,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": true,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:jungle_fence": {
+    "hardness": 2,
+    "solid": false,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": true,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:acacia_fence": {
+    "hardness": 2,
+    "solid": false,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": true,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:dark_oak_fence": {
     "hardness": 2,
     "solid": false,
     "tool_type": "AXE",
@@ -4718,7 +4773,7 @@
     "max_stack_size": 64,
     "can_random_tick": false
   },
-  "minecraft:log": {
+  "minecraft:oak_log": {
     "hardness": 2,
     "solid": true,
     "tool_type": "AXE",
@@ -4729,7 +4784,51 @@
     "max_stack_size": 64,
     "can_random_tick": false
   },
-  "minecraft:log2": {
+  "minecraft:spruce_log": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:birch_log": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:jungle_log": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:acacia_log": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:dark_oak_log": {
     "hardness": 2,
     "solid": true,
     "tool_type": "AXE",

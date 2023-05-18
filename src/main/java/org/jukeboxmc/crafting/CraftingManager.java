@@ -97,7 +97,7 @@ public class CraftingManager {
                         int runtimeId = (int) (double) output.get( "id" );
                         String identifier = (String) output.get( "identifier" );
                         boolean componentBased = (boolean) output.get( "componentBased" );
-                        int blockRuntimeId = (int) (double) output.get( "blockRuntimeId" );
+                        int blockRuntimeId = (int) (double) output.getOrDefault( "blockRuntimeId", 0D );
                         int amount = (int) (double) output.get( "amount" );
                         outputItems.add( ItemData.builder()
                                 .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
@@ -155,7 +155,7 @@ public class CraftingManager {
                         int runtimeId = (int) (double) output.get( "id" );
                         String identifier = (String) output.get( "identifier" );
                         boolean componentBased = (boolean) output.get( "componentBased" );
-                        int blockRuntimeId = (int) (double) output.get( "blockRuntimeId" );
+                        int blockRuntimeId = (int) (double) output.getOrDefault( "blockRuntimeId", 0D );
                         int amount = (int) (double) output.get( "amount" );
                         outputItems.add( ItemData.builder()
                                 .definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) )
@@ -197,7 +197,7 @@ public class CraftingManager {
                     int blockRuntimeId = (int) (double) resultMap.get( "blockRuntimeId" );
                     resultDescriptor = ItemData.builder().definition( new SimpleItemDefinition( identifier, runtimeId, componentBased ) ).blockDefinition( new RuntimeBlockDefination( blockRuntimeId ) ).build();
                 }
-                this.craftingData.add( SmithingTransformRecipeData.of( id, baseDescriptor, additionDescriptor, resultDescriptor, tag, netId ) );
+                this.craftingData.add(SmithingTransformRecipeData.of(id, new ItemDescriptorWithCount(InvalidDescriptor.INSTANCE, 0), baseDescriptor, additionDescriptor, resultDescriptor, tag, netId));
             } else if ( craftingDataType.equals( CraftingDataType.MULTI ) ) {
                 String uuid = (String) recipe.get( "uuid" );
                 int netId = (int) (double) recipe.get( "netId" );

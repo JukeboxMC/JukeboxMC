@@ -3,6 +3,7 @@ package org.jukeboxmc.block.behavior;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.block.direction.Direction;
 import org.jukeboxmc.item.Item;
@@ -15,7 +16,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockFenceGate extends Block {
+public class BlockFenceGate extends Block implements Waterlogable{
 
     public BlockFenceGate( Identifier identifier ) {
         super( identifier );
@@ -29,7 +30,12 @@ public class BlockFenceGate extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setDirection( player.getDirection() );
         this.setOpen( false );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+        }
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -59,7 +65,12 @@ public class BlockFenceGate extends Block {
         return true;
     }
 
-    public void setInWall( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setInWall(boolean value ) {
         this.setState( "in_wall_bit", value ? (byte) 1 : (byte) 0 );
     }
 

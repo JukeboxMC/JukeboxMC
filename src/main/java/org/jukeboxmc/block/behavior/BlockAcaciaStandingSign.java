@@ -41,7 +41,7 @@ public class BlockAcaciaStandingSign extends BlockSign {
             world.setBlock( placePosition, blockWallSign, 0 );
         }
         BlockEntitySign.create( BlockEntityType.SIGN, this ).spawn();
-        return true;
+        return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.blockentity.BlockEntity;
 import org.jukeboxmc.blockentity.BlockEntityHopper;
@@ -16,7 +17,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockHopper extends Block {
+public class BlockHopper extends Block implements Waterlogable {
 
     public BlockHopper( Identifier identifier ) {
         super( identifier );
@@ -30,11 +31,13 @@ public class BlockHopper extends Block {
     public boolean placeBlock( Player player, World world, Vector blockPosition, Vector placePosition, Vector clickedPosition, Item itemInHand, BlockFace blockFace ) {
         this.setBlockFace( blockFace == BlockFace.UP ? BlockFace.DOWN : blockFace.opposite() );
         this.setToggle( false );
-        boolean value = super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
-        if ( value ) {
-            BlockEntity.create( BlockEntityType.HOPPER, this ).spawn();
+
+        BlockEntity.create( BlockEntityType.HOPPER, this ).spawn();
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
         }
-        return value;
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -52,7 +55,12 @@ public class BlockHopper extends Block {
         return (BlockEntityHopper) this.location.getWorld().getBlockEntity( this.location, this.location.getDimension() );
     }
 
-    public void setToggle( boolean value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setToggle(boolean value ) {
         this.setState( "toggle_bit", value ? (byte) 1 : (byte) 0 );
     }
 

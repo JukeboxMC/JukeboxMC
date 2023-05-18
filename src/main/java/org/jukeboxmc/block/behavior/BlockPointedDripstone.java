@@ -2,6 +2,7 @@ package org.jukeboxmc.block.behavior;
 
 import org.cloudburstmc.nbt.NbtMap;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.DripstoneThickness;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.item.Item;
@@ -14,7 +15,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockPointedDripstone extends Block {
+public class BlockPointedDripstone extends Block implements Waterlogable {
 
     public BlockPointedDripstone( Identifier identifier ) {
         super( identifier );
@@ -30,16 +31,27 @@ public class BlockPointedDripstone extends Block {
         Block downBlock = world.getBlock( placePosition ).getSide( BlockFace.DOWN );
         if ( upBlock.isSolid() ) {
             this.setHanging( true );
-            world.setBlock( placePosition, this );
+            if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+                world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+            }
+            world.setBlock(placePosition, this);
             return true;
         } else if ( downBlock.isSolid() ) {
             this.setHanging( false );
-            world.setBlock( placePosition, this );
+            if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+                world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+            }
+            world.setBlock(placePosition, this);
         }
         return false;
     }
 
-    public void setDripstoneThickness( DripstoneThickness dripstoneThickness ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setDripstoneThickness(DripstoneThickness dripstoneThickness ) {
         this.setState( "dripstone_thickness", dripstoneThickness.name().toLowerCase() );
     }
 

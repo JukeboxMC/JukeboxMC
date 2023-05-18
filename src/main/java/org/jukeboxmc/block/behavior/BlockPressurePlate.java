@@ -4,6 +4,7 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
+import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.Entity;
@@ -20,7 +21,7 @@ import org.jukeboxmc.world.World;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockPressurePlate extends Block {
+public class BlockPressurePlate extends Block implements Waterlogable{
 
     public BlockPressurePlate( Identifier identifier ) {
         super( identifier );
@@ -38,7 +39,12 @@ public class BlockPressurePlate extends Block {
         }
 
         this.setRedstoneSignal( 0 );
-        return super.placeBlock( player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace );
+
+        if (world.getBlock(placePosition) instanceof BlockWater blockWater && blockWater.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0, 1, 0), Block.create(BlockType.WATER), 1, false);
+        }
+        world.setBlock(placePosition, this);
+        return true;
     }
 
     @Override
@@ -84,7 +90,12 @@ public class BlockPressurePlate extends Block {
         );
     }
 
-    public void setRedstoneSignal( int value ) {
+    @Override
+    public int getWaterLoggingLevel() {
+        return 1;
+    }
+
+    public void setRedstoneSignal(int value ) {
         this.setState( "redstone_signal", value );
     }
 
