@@ -383,7 +383,10 @@ public class World {
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.setTime( worldTime );
-        Server.getInstance().broadcastPacket( setTimePacket );
+
+        for (Player player : this.getPlayers()) {
+            player.getPlayerConnection().sendPacket(setTimePacket);
+        }
     }
 
     public void addEntity( Entity entity ) {
