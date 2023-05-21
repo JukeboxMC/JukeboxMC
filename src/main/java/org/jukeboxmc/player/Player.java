@@ -553,7 +553,6 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
 
         this.teleportLocation = location;
 
-        this.playerConnection.getPlayerChunkManager().queueNewChunks(this.teleportLocation);
 
         //TODO DESPAWN PLAYER AND SPAWN TO NEW DIMENSION
         if ( !fromDimension.equals( location.getDimension() ) ) {
@@ -571,33 +570,21 @@ public class Player extends EntityHuman implements ChunkLoader, CommandSender, I
             changeDimensionPacket.setRespawn( false );
             this.playerConnection.sendPacket( changeDimensionPacket );
         } else if ( !currentWorld.getName().equals( world.getName() ) ) {
-            this.playerConnection.getPlayerChunkManager().clear();
-
             this.despawn();
-
             currentWorld.getPlayers().forEach( player -> player.despawn( this ) );
-
             Chunk loadedChunk = this.getLoadedChunk();
             if ( loadedChunk != null ) {
                 loadedChunk.removeEntity( this );
-            } else {
-                System.out.println("Loaded chunk for removeEntity is null");
             }
             currentWorld.removeEntity( this );
 
             this.setLocation( location );
-
             world.addEntity( this );
-
-            if ( this.getLoadedChunk() != null ) {
-                this.getLoadedChunk().addEntity( this );
-            } else {
-                System.out.println("Loaded chunk for addEntity is null");
-            }
-
             this.spawn();
-
             world.getPlayers().forEach( player -> player.spawn( this ) );
+            this.getPlayerConnection().getPlayerChunkManager().prepareRegion(this.location);
+        } else {
+            this.playerConnection.getPlayerChunkManager().queueNewChunks(this.teleportLocation);
         }
         this.move( location, MovePlayerPacket.Mode.TELEPORT );
         this.checkTeleportPosition();
