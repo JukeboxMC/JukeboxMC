@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.NEXUS_REPO_USERNAME }}
           password: ${{ secrets.NEXUS_REPO_PASSWORD }}
           format: maven2
-          repository: maven-snapshots
+          repository: maven-releases
           coordinates: groupId=${{ env.GROUP_ID }} artifactId=${{ env.ARTIFACT_ID }} version=${{ env.VERSION }}
           assets: extension=jar
           filename: ./target/${{ env.BUILD_NAME }}.jar

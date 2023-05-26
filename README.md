@@ -37,10 +37,6 @@ Please add this code to your pom.xml! (Only **for Maven**!)
         <id>jukeboxmc</id>
         <url>http://jukeboxmc.eu:8081/repository/maven-releases/</url>
     </repository>
-    <repository>
-        <id>jukeboxmc</id>
-        <url>http://jukeboxmc.eu:8081/repository/maven-snapshots/</url>
-    </repository>
 </repositories>
 
 <dependency>
