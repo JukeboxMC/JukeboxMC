@@ -32,15 +32,21 @@ _Notice: Please use **Java 17**!_
 Please add this code to your pom.xml! (Only **for Maven**!)
 
 ```xml
-<repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
+<repositories>
+    <repository>
+        <id>jukeboxmc</id>
+        <url>http://jukeboxmc.eu:8081/repository/maven-releases/</url>
+    </repository>
+    <repository>
+        <id>jukeboxmc</id>
+        <url>http://jukeboxmc.eu:8081/repository/maven-snapshots/</url>
+    </repository>
+</repositories>
 
 <dependency>
-    <groupId>com.github.LucGamesYT</groupId>
+    <groupId>org.jukeboxmc</groupId>
     <artifactId>JukeboxMC</artifactId>
-    <version>Tag</version>
+    <version>1.0.0-Beta-1</version>
 </dependency>
 ```
 **_With Gradle:_**
