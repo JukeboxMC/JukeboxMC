@@ -50,12 +50,12 @@ Please add this code to your build.gradle! (Only **for Gradle**!)
 ```groovy
 allprojects {
     repositories {
-        maven { url 'https://jitpack.io' }
+        maven { url 'http://jukeboxmc.eu:8081/repository/maven-releases/' }
     }
 }
 
 dependencies {
-    implementation 'com.github.LucGamesYT:JukeboxMC:Tag'
+    implementation 'com.github.LucGamesYT:JukeboxMC:1.0.0-Beta-1'
 }
 ```
 
