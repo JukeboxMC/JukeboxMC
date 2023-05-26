@@ -45,7 +45,7 @@ jobs:
           asset_name: ${{ env.BUILD_NAME }}.jar
           asset_content_type: application/java-archive
       - name: Nexus Repo Publish
-        uses: ./
+        uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
         with:
           serverUrl: http://jukeboxmc.eu:8081
           username: ${{ secrets.NEXUS_REPO_USERNAME }}
