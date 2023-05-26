@@ -18,11 +18,11 @@
     <repositories>
         <repository>
             <id>opencollab-releases</id>
-            <url>https://repo.opencollab.dev/maven-releases/</url>
+            <url>https://repo.opencollab.dev/#/maven-releases</url>
         </repository>
         <repository>
             <id>opencollab-snapshots</id>
-            <url>https://repo.opencollab.dev/maven-snapshots/</url>
+            <url>https://repo.opencollab.dev/#/maven-snapshots</url>
         </repository>
         <repository>
             <id>jitpack</id>
