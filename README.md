@@ -25,8 +25,6 @@ Git: https://git-scm.com/downloads
 
 _Notice: Please use **Java 17**!_
 
-[![](https://jitpack.io/v/JukeboxMC/JukeboxMC.svg)](https://jitpack.io/#JukeboxMC/JukeboxMC)
-
 **_With Maven:_**
 
 Please add this code to your pom.xml! (Only **for Maven**!)
