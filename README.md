@@ -8,7 +8,7 @@ __Discord__: https://discord.gg/Jatt7tfRBF
 __Twitter__: https://twitter.com/LucGamesHD
 
 ## How to build a jar file:
-1. git clone [https://github.com/LucGamesYT/JukeboxMC.git](https://github.com/JukeboxMC/JukeboxMC.git)
+1. git clone [https://github.com/JukeboxMC/JukeboxMC.git](https://github.com/JukeboxMC/JukeboxMC.git)
 2. cd /JukeboxMC
 3. mvn clean install
 4. Done!
@@ -25,7 +25,7 @@ Git: https://git-scm.com/downloads
 
 _Notice: Please use **Java 17**!_
 
-[![](https://jitpack.io/v/LucGamesYT/JukeboxMC.svg)](https://jitpack.io/#LucGamesYT/JukeboxMC)
+[![](https://jitpack.io/v/JukeboxMC/JukeboxMC.svg)](https://jitpack.io/#JukeboxMC/JukeboxMC)
 
 **_With Maven:_**
 
