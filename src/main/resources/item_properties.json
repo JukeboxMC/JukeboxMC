@@ -3337,5 +3337,305 @@
   },
   "minecraft:zombie_villager_spawn_egg": {
     "max_stack_size": 64
+  },
+  "minecraft:bamboo_mosaic": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_mosaic_stairs": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_mosaic_slab": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_mosaic_double_slab": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_button": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_door": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_fence_gate": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_pressure_plate": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_wall_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:bamboo_standing_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:bamboo_slab": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_stairs": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_trapdoor": {
+    "max_stack_size": 64
+  },
+  "minecraft:bamboo_raft": {
+    "max_stack_size": 1
+  },
+  "minecraft:bamboo_chest_raft": {
+    "max_stack_size": 1
+  },
+  "minecraft:bamboo_block": {
+    "max_stack_size": 64
+  },
+  "minecraft:calibrated_sculk_sensor": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_leaves": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:stripped_cherry_log": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_wood": {
+    "max_stack_size": 64
+  },
+  "minecraft:stripped_cherry_wood": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_button": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_door": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_fence": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_fence_gate": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_pressure_plate": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_wall_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:cherry_standing_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:cherry_slab": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_double_slab": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_stairs": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_trapdoor": {
+    "max_stack_size": 64
+  },
+  "minecraft:cherry_boat": {
+    "max_stack_size": 1
+  },
+  "minecraft:cherry_chest_boat": {
+    "max_stack_size": 1
+  },
+  "minecraft:cherry_sapling": {
+    "max_stack_size": 64
+  },
+  "minecraft:chiseled_bookshelf": {
+    "max_stack_size": 64
+  },
+  "minecraft:decorated_pot": {
+    "max_stack_size": 1
+  },
+  "minecraft:oak_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:birch_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:spruce_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:jungle_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:acacia_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:dark_oak_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:mangrove_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:crimson_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:warped_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:bamboo_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:cherry_hanging_sign": {
+    "max_stack_size": 16
+  },
+  "minecraft:piglin_head": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_petals": {
+    "max_stack_size": 64
+  },
+  "minecraft:pitcher_plant": {
+    "max_stack_size": 64
+  },
+  "minecraft:pitcher_pod": {
+    "max_stack_size": 64
+  },
+  "minecraft:sniffer_egg": {
+    "max_stack_size": 64
+  },
+  "minecraft:suspicious_gravel": {
+    "max_stack_size": 64
+  },
+  "minecraft:suspicious_sand": {
+    "max_stack_size": 64
+  },
+  "minecraft:torchflower": {
+    "max_stack_size": 64
+  },
+  "minecraft:brush": {
+    "max_stack_size": 1
+  },
+  "minecraft:music_disc_relic": {
+    "max_stack_size": 1
+  },
+  "minecraft:angler_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:archer_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:arms_up_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:blade_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:brewer_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:burn_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:danger_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:explorer_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:friend_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:heart_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:heartbreak_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:howl_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:mourner_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:plenty_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:prize_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:sheaf_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:shelter_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:skull_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:snort_pottery_sherd": {
+    "max_stack_size": 64
+  },
+  "minecraft:coast_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:dune_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:eye_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:host_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:raiser_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:rib_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:sentry_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:shaper_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:silence_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:snout_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:spire_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:tide_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:vex_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:ward_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:wayfinder_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:wild_armor_trim_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:netherite_upgrade_smithing_template": {
+    "max_stack_size": 64
+  },
+  "minecraft:camel_spawn_egg": {
+    "max_stack_size": 64
+  },
+  "minecraft:sniffer_spawn_egg": {
+    "max_stack_size": 64
   }
 }
