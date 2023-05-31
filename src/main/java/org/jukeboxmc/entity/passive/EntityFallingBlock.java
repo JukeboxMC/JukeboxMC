@@ -1,4 +1,4 @@
-package org.jukeboxmc.entity.passiv;
+package org.jukeboxmc.entity.passive;
 
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.jukeboxmc.block.Block;

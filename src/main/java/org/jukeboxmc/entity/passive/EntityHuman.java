@@ -1,4 +1,4 @@
-package org.jukeboxmc.entity.passiv;
+package org.jukeboxmc.entity.passive;
 
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.GameType;

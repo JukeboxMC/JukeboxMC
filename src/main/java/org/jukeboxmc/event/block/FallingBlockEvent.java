@@ -1,7 +1,7 @@
 package org.jukeboxmc.event.block;
 
 import org.jukeboxmc.block.Block;
-import org.jukeboxmc.entity.passiv.EntityFallingBlock;
+import org.jukeboxmc.entity.passive.EntityFallingBlock;
 import org.jukeboxmc.event.Cancellable;
 
 /**

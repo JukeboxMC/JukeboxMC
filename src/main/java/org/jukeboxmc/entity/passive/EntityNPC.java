@@ -1,4 +1,4 @@
-package org.jukeboxmc.entity.passiv;
+package org.jukeboxmc.entity.passive;
 
 import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityType;

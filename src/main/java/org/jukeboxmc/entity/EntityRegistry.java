@@ -1,9 +1,9 @@
 package org.jukeboxmc.entity;
 
 import org.jukeboxmc.entity.item.EntityItem;
-import org.jukeboxmc.entity.passiv.EntityFallingBlock;
-import org.jukeboxmc.entity.passiv.EntityHuman;
-import org.jukeboxmc.entity.passiv.EntityNPC;
+import org.jukeboxmc.entity.passive.EntityFallingBlock;
+import org.jukeboxmc.entity.passive.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityNPC;
 import org.jukeboxmc.entity.projectile.EntityArrow;
 import org.jukeboxmc.entity.projectile.EntityEgg;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
