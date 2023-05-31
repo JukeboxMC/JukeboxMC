@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.NpcDialoguePacket;
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket;
 import org.jukeboxmc.Server;
-import org.jukeboxmc.entity.passiv.EntityNPC;
+import org.jukeboxmc.entity.passive.EntityNPC;
 import org.jukeboxmc.form.element.NpcDialogueButton;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Utils;

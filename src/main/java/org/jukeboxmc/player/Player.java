@@ -17,7 +17,7 @@ import org.jukeboxmc.entity.EntityLiving;
 import org.jukeboxmc.entity.EntityMoveable;
 import org.jukeboxmc.entity.attribute.Attribute;
 import org.jukeboxmc.entity.attribute.AttributeType;
-import org.jukeboxmc.entity.passiv.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.entity.projectile.EntityFishingHook;
 import org.jukeboxmc.event.entity.EntityDamageByEntityEvent;
 import org.jukeboxmc.event.entity.EntityDamageEvent;

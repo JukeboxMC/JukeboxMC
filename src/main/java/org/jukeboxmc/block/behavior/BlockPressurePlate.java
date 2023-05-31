@@ -8,7 +8,7 @@ import org.jukeboxmc.block.BlockType;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.entity.Entity;
-import org.jukeboxmc.entity.passiv.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.event.player.PlayerInteractEvent;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.math.AxisAlignedBB;

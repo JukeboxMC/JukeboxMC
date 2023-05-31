@@ -4,7 +4,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryContentPacket;
 import org.cloudburstmc.protocol.bedrock.packet.InventorySlotPacket;
 import org.cloudburstmc.protocol.bedrock.packet.MobEquipmentPacket;
-import org.jukeboxmc.entity.passiv.EntityHuman;
+import org.jukeboxmc.entity.passive.EntityHuman;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
 import org.jukeboxmc.player.Player;
