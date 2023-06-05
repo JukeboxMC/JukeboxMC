@@ -22,7 +22,9 @@ import java.net.InetSocketAddress;
  */
 public class BedrockServer {
 
-    public static final BedrockCodec CODEC = Bedrock_v588.CODEC;
+    public static final BedrockCodec CODEC = Bedrock_v588.CODEC.toBuilder()
+            .protocolVersion(589)
+            .build();
 
     private final InetSocketAddress bindAddress;
     private final Server server;
