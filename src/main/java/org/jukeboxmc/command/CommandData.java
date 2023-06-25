@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParamType;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,7 +118,7 @@ public class CommandData {
         }
 
         return new org.cloudburstmc.protocol.bedrock.data.command.CommandData( this.name, description, Collections.emptySet(),
-                (byte) 0, this.aliases.toNetwork(), overloadData );
+                CommandPermission.ANY, this.aliases.toNetwork(), overloadData );
     }
 
     public static class Builder {
