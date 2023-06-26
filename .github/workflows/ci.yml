@@ -12,8 +12,6 @@ jobs:
         with:
           java-version: '1.17'
           distribution: 'adopt'
-      - name: Build with Maven
-        run: mvn install
       - name: Set up Maven
         uses: stCarolas/setup-maven@v4.5
         with:
@@ -36,3 +34,38 @@ jobs:
         env:
           MAVEN_NAME: ${{ secrets.REPO_USERNAME }}
           MAVEN_SECRET: ${{ secrets.REPO_SECRET }}
+      - name: Set environment variables
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "BUILD_NAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Create Prerelease
+        if: ${{ endsWith(env.BUILD_NAME, '-SNAPSHOT') }}
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: pre-${{ github.run_number }}
+          release_name: JukeboxMC pre-${{ github.run_number }}
+          draft: false
+          prerelease: true
+      - name: Create Release
+        if: ${{ !endsWith(env.BUILD_NAME, '-SNAPSHOT') }}
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: JukeboxMC ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload JukeboxMC to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/${{ env.BUILD_NAME }}.jar
+          asset_name: ${{ env.BUILD_NAME }}.jar
+          asset_content_type: application/java-archive
