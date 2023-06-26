@@ -40,7 +40,7 @@ jobs:
           echo "BUILD_NAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> $GITHUB_ENV
       - name: Create Prerelease
         if: ${{ endsWith(env.BUILD_NAME, '-SNAPSHOT') }}
-        id: create_release
+        id: create_prerelease
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,18 @@ jobs:
           release_name: JukeboxMC ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload JukeboxMC to Release
+      - name: Upload JukeboxMC as Prerelease
+        if: ${{ !endsWith(env.BUILD_NAME, '-SNAPSHOT') }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_prerelease.outputs.upload_url }}
+          asset_path: target/${{ env.BUILD_NAME }}.jar
+          asset_name: ${{ env.BUILD_NAME }}.jar
+          asset_content_type: application/java-archive
+      - name: Upload JukeboxMC as Release
+        if: ${{ !endsWith(env.BUILD_NAME, '-SNAPSHOT') }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
