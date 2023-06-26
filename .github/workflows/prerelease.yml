@@ -2,7 +2,7 @@ name: Prerelease Java CI with Maven
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
 jobs:
   build:
 
@@ -42,14 +42,3 @@ jobs:
           asset_path: target/${{ env.BUILD_NAME }}.jar
           asset_name: ${{ env.BUILD_NAME }}.jar
           asset_content_type: application/java-archive
-      - name: Nexus Repo Publish
-        uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
-        with:
-          serverUrl: http://jukeboxmc.eu:8081
-          username: ${{ secrets.NEXUS_REPO_USERNAME }}
-          password: ${{ secrets.NEXUS_REPO_PASSWORD }}
-          format: maven2
-          repository: maven-releases
-          coordinates: groupId=${{ env.GROUP_ID }} artifactId=${{ env.ARTIFACT_ID }} version=${{ env.VERSION }}
-          assets: extension=jar
-          filename: ./target/${{ env.BUILD_NAME }}.jar
