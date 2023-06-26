@@ -32,15 +32,19 @@ Please add this code to your pom.xml! (Only **for Maven**!)
 ```xml
 <repositories>
     <repository>
-        <id>jukeboxmc</id>
-        <url>http://jukeboxmc.eu:8081/repository/maven-releases/</url>
+        <id>jukeboxmc-releases</id>
+        <url>https://repo.jukeboxmc.eu/releases</url>
+    </repository>
+    <repository>
+        <id>jukeboxmc-snapshots</id>
+        <url>https://repo.jukeboxmc.eu/snapshots</url>
     </repository>
 </repositories>
 
 <dependency>
     <groupId>org.jukeboxmc</groupId>
     <artifactId>JukeboxMC</artifactId>
-    <version>1.0.0-Beta-1</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 **_With Gradle:_**
@@ -50,12 +54,19 @@ Please add this code to your build.gradle! (Only **for Gradle**!)
 ```groovy
 allprojects {
     repositories {
-        maven { url 'http://jukeboxmc.eu:8081/repository/maven-releases/' }
+        maven {
+            name "jukeboxmcReleases"
+            url "https://repo.jukeboxmc.eu/releases"
+        }
+        maven {
+            name "jukeboxmcSnapshots"
+            url "https://repo.jukeboxmc.eu/snapshots"
+        }
     }
 }
 
 dependencies {
-    implementation 'com.github.LucGamesYT:JukeboxMC:1.0.0-Beta-1'
+    implementation 'org.jukeboxmc:JukeboxMC:1.0.0-SNAPSHOT'
 }
 ```
 
