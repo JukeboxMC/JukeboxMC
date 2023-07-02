@@ -32,8 +32,8 @@ jobs:
       - name: Publish with Maven
         run: mvn -B package deploy --file pom.xml
         env:
-          MAVEN_USERNAME: ${{ secrets.REPO_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.REPO_SECRET }}
+          MAVEN_USER: ${{ secrets.REPO_USERNAME }}
+          MAVEN_SECRET: ${{ secrets.REPO_SECRET }}
       - name: Set environment variables
         run: |
           echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
