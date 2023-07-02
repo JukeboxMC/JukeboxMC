@@ -32,7 +32,7 @@ jobs:
       - name: Publish with Maven
         run: mvn -B package deploy --file pom.xml
         env:
-          MAVEN_USER: ${{ secrets.REPO_USERNAME }}
+          MAVEN_NAME: ${{ secrets.REPO_USERNAME }}
           MAVEN_SECRET: ${{ secrets.REPO_SECRET }}
       - name: Set environment variables
         run: |
