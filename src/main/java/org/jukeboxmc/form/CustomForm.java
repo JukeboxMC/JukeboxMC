@@ -1,8 +1,8 @@
 package org.jukeboxmc.form;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import org.jukeboxmc.form.element.*;
 
 import java.util.ArrayList;

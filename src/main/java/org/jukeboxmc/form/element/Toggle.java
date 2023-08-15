@@ -1,6 +1,7 @@
 package org.jukeboxmc.form.element;
 
-import org.json.simple.JSONObject;
+
+import com.nimbusds.jose.shaded.json.JSONObject;
 
 /**
  * @author GoMint

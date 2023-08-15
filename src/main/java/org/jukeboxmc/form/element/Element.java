@@ -1,8 +1,8 @@
 package org.jukeboxmc.form.element;
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 
 /**
  * @author GoMint

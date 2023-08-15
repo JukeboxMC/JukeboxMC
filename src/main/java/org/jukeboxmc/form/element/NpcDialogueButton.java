@@ -1,5 +1,6 @@
 package org.jukeboxmc.form.element;
 
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Value;
@@ -12,7 +13,7 @@ import java.util.List;
  * @version 1.0
  */
 @Value
-@Accessors ( fluent = true )
+@Accessors( fluent = true )
 public class NpcDialogueButton {
 
     String text;

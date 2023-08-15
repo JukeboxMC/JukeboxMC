@@ -1,7 +1,7 @@
 package org.jukeboxmc.form.element;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import org.jukeboxmc.form.CustomForm;
 
 import java.util.ArrayList;
