@@ -37,20 +37,7 @@ public class BlockCarpet extends Block implements Waterlogable {
     }
 
     @Override
-    public Item toItem() {
-        return Item.<ItemCarpet>create( ItemType.CARPET ).setColor( this.getColor() );
-    }
-
-    @Override
     public int getWaterLoggingLevel() {
         return 1;
-    }
-
-    public BlockCarpet setColor(BlockColor color ) {
-        return this.setState( "color", color.name().toLowerCase() );
-    }
-
-    public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
     }
 }

@@ -338,7 +338,52 @@
   "minecraft:candle_cake": {
     "max_stack_size": 64
   },
-  "minecraft:carpet": {
+  "minecraft:blue_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:orange_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:white_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:purple_carpet": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_gray_carpet": {
     "max_stack_size": 64
   },
   "minecraft:carrot": {
@@ -515,7 +560,52 @@
   "minecraft:compound": {
     "max_stack_size": 64
   },
-  "minecraft:concrete": {
+  "minecraft:light_gray_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:purple_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:orange_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:blue_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_concrete": {
+    "max_stack_size": 64
+  },
+  "minecraft:white_concrete": {
     "max_stack_size": 64
   },
   "minecraft:concrete_powder": {
@@ -557,7 +647,34 @@
   "minecraft:copper_ore": {
     "max_stack_size": 64
   },
-  "minecraft:coral": {
+  "minecraft:fire_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:brain_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:bubble_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:tube_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:horn_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:dead_fire_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:dead_brain_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:dead_bubble_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:dead_tube_coral": {
+    "max_stack_size": 64
+  },
+  "minecraft:dead_horn_coral": {
     "max_stack_size": 64
   },
   "minecraft:coral_block": {
@@ -2684,7 +2801,52 @@
   "minecraft:shroomlight": {
     "max_stack_size": 64
   },
-  "minecraft:shulker_box": {
+  "minecraft:yellow_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:magenta_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:lime_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:white_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:pink_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:red_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:gray_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:light_gray_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:black_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:orange_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:blue_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:green_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:brown_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:light_blue_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:cyan_shulker_box": {
+    "max_stack_size": 1
+  },
+  "minecraft:purple_shulker_box": {
     "max_stack_size": 1
   },
   "minecraft:shulker_shell": {
@@ -3494,9 +3656,6 @@
   "minecraft:cherry_hanging_sign": {
     "max_stack_size": 16
   },
-  "minecraft:piglin_head": {
-    "max_stack_size": 64
-  },
   "minecraft:pink_petals": {
     "max_stack_size": 64
   },
@@ -3516,6 +3675,9 @@
     "max_stack_size": 64
   },
   "minecraft:torchflower": {
+    "max_stack_size": 64
+  },
+  "minecraft:torchflower_seeds": {
     "max_stack_size": 64
   },
   "minecraft:brush": {

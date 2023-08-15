@@ -11,18 +11,18 @@ import java.time.Duration;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemCarpet extends Item implements Burnable {
+public class ItemWool extends Item implements Burnable {
 
-    public ItemCarpet( Identifier identifier ) {
+    public ItemWool(Identifier identifier ) {
         super( identifier );
     }
 
-    public ItemCarpet( ItemType itemType ) {
+    public ItemWool(ItemType itemType ) {
         super( itemType );
     }
 
     @Override
     public Duration getBurnTime() {
-        return Duration.ofMillis( 67 );
+        return Duration.ofMillis( 100 );
     }
 }

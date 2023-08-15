@@ -13,7 +13,6 @@ import org.jukeboxmc.blockentity.BlockEntityType;
 import org.jukeboxmc.inventory.ShulkerBoxInventory;
 import org.jukeboxmc.item.Item;
 import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.behavior.ItemShulkerBox;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
@@ -69,10 +68,10 @@ public class BlockShulkerBox extends Block implements Waterlogable{
         }
         return false;
     }
-
+/*
     @Override
-    public ItemShulkerBox toItem() {
-        ItemShulkerBox itemShulkerBox = Item.create( ItemType.SHULKER_BOX );
+    public Item toItem() {
+        Item itemShulkerBox = Item.create( ItemType.SHULKER_BOX );
         itemShulkerBox.setColor( this.getColor() );
         BlockEntityShulkerBox blockEntity = this.getBlockEntity();
         if ( blockEntity == null ) {
@@ -97,6 +96,7 @@ public class BlockShulkerBox extends Block implements Waterlogable{
 
         return itemShulkerBox;
     }
+ */
 
     @Override
     public BlockEntityShulkerBox getBlockEntity() {

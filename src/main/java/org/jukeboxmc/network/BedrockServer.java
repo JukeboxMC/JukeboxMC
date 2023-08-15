@@ -9,7 +9,7 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.BedrockPong;
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.v589.Bedrock_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v594.Bedrock_v594;
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.PlayerConnection;
@@ -22,9 +22,7 @@ import java.net.InetSocketAddress;
  */
 public class BedrockServer {
 
-    public static final BedrockCodec CODEC = Bedrock_v589.CODEC.toBuilder()
-            .protocolVersion(589)
-            .build();
+    public static final BedrockCodec CODEC = Bedrock_v594.CODEC.toBuilder().build();
 
     private final InetSocketAddress bindAddress;
     private final Server server;

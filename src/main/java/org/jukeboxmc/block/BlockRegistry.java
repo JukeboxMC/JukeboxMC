@@ -99,7 +99,24 @@ public class BlockRegistry {
         register( BlockType.CAMPFIRE, Identifier.fromString( "minecraft:campfire" ), BlockCampfire.class );
         register( BlockType.CANDLE, Identifier.fromString( "minecraft:candle" ), BlockCandle.class );
         register( BlockType.CANDLE_CAKE, Identifier.fromString( "minecraft:candle_cake" ) );
-        register( BlockType.CARPET, Identifier.fromString( "minecraft:carpet" ), BlockCarpet.class );
+
+        register( BlockType.BLUE_CARPET, Identifier.fromString( "minecraft:blue_carpet" ), BlockCarpet.class );
+        register( BlockType.GRAY_CARPET, Identifier.fromString( "minecraft:gray_carpet" ), BlockCarpet.class );
+        register( BlockType.MAGENTA_CARPET, Identifier.fromString( "minecraft:magenta_carpet" ), BlockCarpet.class );
+        register( BlockType.BROWN_CARPET, Identifier.fromString( "minecraft:brown_carpet" ), BlockCarpet.class );
+        register( BlockType.CYAN_CARPET, Identifier.fromString( "minecraft:cyan_carpet" ), BlockCarpet.class );
+        register( BlockType.LIGHT_BLUE_CARPET, Identifier.fromString( "minecraft:light_blue_carpet" ), BlockCarpet.class );
+        register( BlockType.GREEN_CARPET, Identifier.fromString( "minecraft:green_carpet" ), BlockCarpet.class );
+        register( BlockType.YELLOW_CARPET, Identifier.fromString( "minecraft:yellow_carpet" ), BlockCarpet.class );
+        register( BlockType.BLACK_CARPET, Identifier.fromString( "minecraft:black_carpet" ), BlockCarpet.class );
+        register( BlockType.LIME_CARPET, Identifier.fromString( "minecraft:lime_carpet" ), BlockCarpet.class );
+        register( BlockType.ORANGE_CARPET, Identifier.fromString( "minecraft:orange_carpet" ), BlockCarpet.class );
+        register( BlockType.WHITE_CARPET, Identifier.fromString( "minecraft:white_carpet" ), BlockCarpet.class );
+        register( BlockType.RED_CARPET, Identifier.fromString( "minecraft:red_carpet" ), BlockCarpet.class );
+        register( BlockType.PINK_CARPET, Identifier.fromString( "minecraft:pink_carpet" ), BlockCarpet.class );
+        register( BlockType.PURPLE_CARPET, Identifier.fromString( "minecraft:purple_carpet" ), BlockCarpet.class );
+        register( BlockType.LIGHT_GRAY_CARPET, Identifier.fromString( "minecraft:light_gray_carpet" ), BlockCarpet.class );
+
         register( BlockType.CARROTS, Identifier.fromString( "minecraft:carrots" ), BlockCarrots.class );
         register( BlockType.CARTOGRAPHY_TABLE, Identifier.fromString( "minecraft:cartography_table" ), BlockCartographyTable.class );
         register( BlockType.CARVED_PUMPKIN, Identifier.fromString( "minecraft:carved_pumpkin" ), BlockCarvedPumpkin.class );
@@ -133,12 +150,41 @@ public class BlockRegistry {
         register( BlockType.COLORED_TORCH_RG, Identifier.fromString( "minecraft:colored_torch_rg" ) );
         register( BlockType.COMMAND_BLOCK, Identifier.fromString( "minecraft:command_block" ) );
         register( BlockType.COMPOSTER, Identifier.fromString( "minecraft:composter" ), BlockComposter.class );
-        register( BlockType.CONCRETE, Identifier.fromString( "minecraft:concrete" ), BlockConcrete.class );
+
+        register( BlockType.LIGHT_GRAY_CONCRETE, Identifier.fromString( "minecraft:light_gray_concrete" ));
+        register( BlockType.PINK_CONCRETE, Identifier.fromString( "minecraft:pink_concrete" ) );
+        register( BlockType.YELLOW_CONCRETE, Identifier.fromString( "minecraft:yellow_concrete" ));
+        register( BlockType.PURPLE_CONCRETE, Identifier.fromString( "minecraft:purple_concrete" ));
+        register( BlockType.MAGENTA_CONCRETE, Identifier.fromString( "minecraft:magenta_concrete" ));
+        register( BlockType.LIME_CONCRETE, Identifier.fromString( "minecraft:lime_concrete" ));
+        register( BlockType.GREEN_CONCRETE, Identifier.fromString( "minecraft:green_concrete" ));
+        register( BlockType.BROWN_CONCRETE, Identifier.fromString( "minecraft:brown_concrete" ));
+        register( BlockType.BLACK_CONCRETE, Identifier.fromString( "minecraft:black_concrete" ) );
+        register( BlockType.ORANGE_CONCRETE, Identifier.fromString( "minecraft:orange_concrete" ));
+        register( BlockType.CYAN_CONCRETE, Identifier.fromString( "minecraft:cyan_concrete" ));
+        register( BlockType.BLUE_CONCRETE, Identifier.fromString( "minecraft:blue_concrete" ));
+        register( BlockType.GRAY_CONCRETE, Identifier.fromString( "minecraft:gray_concrete" ));
+        register( BlockType.LIGHT_BLUE_CONCRETE, Identifier.fromString( "minecraft:light_blue_concrete" ));
+        register( BlockType.RED_CONCRETE, Identifier.fromString( "minecraft:red_concrete" ));
+        register( BlockType.WHITE_CONCRETE, Identifier.fromString( "minecraft:white_concrete" ));
+
         register( BlockType.CONCRETE_POWDER, Identifier.fromString( "minecraft:concrete_powder" ), BlockConcretePowder.class );
         register( BlockType.CONDUIT, Identifier.fromString( "minecraft:conduit" ), BlockConduit.class );
         register( BlockType.COPPER_BLOCK, Identifier.fromString( "minecraft:copper_block" ) );
         register( BlockType.COPPER_ORE, Identifier.fromString( "minecraft:copper_ore" ), BlockCopperOre.class );
-        register( BlockType.CORAL, Identifier.fromString( "minecraft:coral" ), BlockCoral.class );
+
+        register( BlockType.FIRE_CORAL, Identifier.fromString( "minecraft:fire_coral" ), BlockCoral.class );
+        register( BlockType.BRAIN_CORAL, Identifier.fromString( "minecraft:brain_coral" ), BlockCoral.class );
+        register( BlockType.BUBBLE_CORAL, Identifier.fromString( "minecraft:bubble_coral" ), BlockCoral.class );
+        register( BlockType.TUBE_CORAL, Identifier.fromString( "minecraft:tube_coral" ), BlockCoral.class );
+        register( BlockType.HORN_CORAL, Identifier.fromString( "minecraft:horn_coral" ), BlockCoral.class );
+
+        register( BlockType.DEAD_FIRE_CORAL, Identifier.fromString( "minecraft:dead_fire_coral" ), BlockCoral.class );
+        register( BlockType.DEAD_BRAIN_CORAL, Identifier.fromString( "minecraft:dead_brain_coral" ), BlockCoral.class );
+        register( BlockType.DEAD_BUBBLE_CORAL, Identifier.fromString( "minecraft:dead_bubble_coral" ), BlockCoral.class );
+        register( BlockType.DEAD_TUBE_CORAL, Identifier.fromString( "minecraft:dead_tube_coral" ), BlockCoral.class );
+        register( BlockType.DEAD_HORN_CORAL, Identifier.fromString( "minecraft:dead_horn_coral" ), BlockCoral.class );
+
         register( BlockType.CORAL_BLOCK, Identifier.fromString( "minecraft:coral_block" ), BlockCoralBlock.class );
         register( BlockType.CORAL_FAN, Identifier.fromString( "minecraft:coral_fan" ), BlockCoralFan.class );
         register( BlockType.CORAL_FAN_DEAD, Identifier.fromString( "minecraft:coral_fan_dead" ), BlockCoralFanDead.class );
@@ -496,7 +542,7 @@ public class BlockRegistry {
         register( BlockType.MELON_BLOCK, Identifier.fromString( "minecraft:melon_block" ), BlockMelonBlock.class );
         register( BlockType.MELON_STEM, Identifier.fromString( "minecraft:melon_stem" ), BlockMelonStem.class );
         register( BlockType.MOB_SPAWNER, Identifier.fromString( "minecraft:mob_spawner" ), BlockMobSpawner.class );
-        register( BlockType.INFESTED_STONE, Identifier.fromString( "minecraft:monster_egg" ) );
+        register( BlockType.INFESTED_STONE, Identifier.fromString( "minecraft:monster_egg"), BlockInfestedStone.class );
         register( BlockType.MOSSY_COBBLESTONE, Identifier.fromString( "minecraft:mossy_cobblestone" ) );
         register( BlockType.MOSSY_COBBLESTONE_STAIRS, Identifier.fromString( "minecraft:mossy_cobblestone_stairs" ), BlockStairs.class );
         register( BlockType.MOSSY_STONE_BRICK_STAIRS, Identifier.fromString( "minecraft:mossy_stone_brick_stairs" ), BlockStairs.class );
@@ -624,7 +670,24 @@ public class BlockRegistry {
         register( BlockType.SEA_LANTERN, Identifier.fromString( "minecraft:sea_lantern" ) );
         register( BlockType.SEA_PICKLE, Identifier.fromString( "minecraft:sea_pickle" ), BlockSeaPickle.class );
         register( BlockType.SHROOMLIGHT, Identifier.fromString( "minecraft:shroomlight" ) );
-        register( BlockType.SHULKER_BOX, Identifier.fromString( "minecraft:shulker_box" ), BlockShulkerBox.class );
+
+        register( BlockType.YELLOW_SHULKER_BOX, Identifier.fromString( "minecraft:yellow_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.MAGENTA_SHULKER_BOX, Identifier.fromString( "minecraft:magenta_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.LIME_SHULKER_BOX, Identifier.fromString( "minecraft:lime_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.WHITE_SHULKER_BOX, Identifier.fromString( "minecraft:white_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.PINK_SHULKER_BOX, Identifier.fromString( "minecraft:pink_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.RED_SHULKER_BOX, Identifier.fromString( "minecraft:red_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.GRAY_SHULKER_BOX, Identifier.fromString( "minecraft:gray_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.LIGHT_GRAY_SHULKER_BOX, Identifier.fromString( "minecraft:light_gray_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.BLACK_SHULKER_BOX, Identifier.fromString( "minecraft:black_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.ORANGE_SHULKER_BOX, Identifier.fromString( "minecraft:orange_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.BLUE_SHULKER_BOX, Identifier.fromString( "minecraft:blue_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.GREEN_SHULKER_BOX, Identifier.fromString( "minecraft:green_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.BROWN_SHULKER_BOX, Identifier.fromString( "minecraft:brown_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.LIGHT_BLUE_SHULKER_BOX, Identifier.fromString( "minecraft:light_blue_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.CYAN_SHULKER_BOX, Identifier.fromString( "minecraft:cyan_shulker_box" ), BlockShulkerBox.class );
+        register( BlockType.PURPLE_SHULKER_BOX, Identifier.fromString( "minecraft:purple_shulker_box" ), BlockShulkerBox.class );
+
         register( BlockType.SILVER_GLAZED_TERRACOTTA, Identifier.fromString( "minecraft:silver_glazed_terracotta" ) );
         register( BlockType.SKULL, Identifier.fromString( "minecraft:skull" ), BlockSkull.class );
         register( BlockType.SLIME, Identifier.fromString( "minecraft:slime" ) );
@@ -776,7 +839,6 @@ public class BlockRegistry {
         register( BlockType.LIME_WOOL, Identifier.fromString( "minecraft:lime_wool" ), BlockLimeWool.class );
         register( BlockType.PINK_WOOL, Identifier.fromString( "minecraft:pink_wool" ), BlockPinkWool.class );
         register( BlockType.GRAY_WOOL, Identifier.fromString( "minecraft:gray_wool" ), BlockGrayWool.class );
-        register( BlockType.SILVER_WOOL, Identifier.fromString( "minecraft:silver_wool" ), BlockSilverWool.class );
         register( BlockType.CYAN_WOOL, Identifier.fromString( "minecraft:cyan_wool" ), BlockCyanWool.class );
         register( BlockType.PURPLE_WOOL, Identifier.fromString( "minecraft:purple_wool" ), BlockPurpleWool.class );
         register( BlockType.BLUE_WOOL, Identifier.fromString( "minecraft:blue_wool" ), BlockBlueWool.class );
@@ -841,7 +903,6 @@ public class BlockRegistry {
         register( BlockType.WARPED_HANGING_SIGN, Identifier.fromString( "minecraft:warped_hanging_sign" ) );
         register( BlockType.BAMBOO_HANGING_SIGN, Identifier.fromString( "minecraft:bamboo_hanging_sign" ) );
         register( BlockType.CHERRY_HANGING_SIGN, Identifier.fromString( "minecraft:cherry_hanging_sign" ) );
-        register( BlockType.PIGLIN_HEAD, Identifier.fromString( "minecraft:piglin_head" ) );
         register( BlockType.PINK_PETALS, Identifier.fromString( "minecraft:pink_petals" ) );
         register( BlockType.PITCHER_PLANT, Identifier.fromString( "minecraft:pitcher_plant" ) );
         register( BlockType.PITCHER_POD, Identifier.fromString( "minecraft:pitcher_pod" ) );

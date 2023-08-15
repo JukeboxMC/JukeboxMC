@@ -5,13 +5,10 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.block.Block;
 import org.jukeboxmc.block.BlockType;
-import org.jukeboxmc.block.data.CoralColor;
 import org.jukeboxmc.block.data.UpdateReason;
 import org.jukeboxmc.block.direction.BlockFace;
 import org.jukeboxmc.event.block.BlockFadeEvent;
 import org.jukeboxmc.item.Item;
-import org.jukeboxmc.item.ItemType;
-import org.jukeboxmc.item.behavior.ItemCoral;
 import org.jukeboxmc.math.Vector;
 import org.jukeboxmc.player.Player;
 import org.jukeboxmc.util.Identifier;
@@ -63,11 +60,11 @@ public class BlockCoral extends Block implements Waterlogable {
             Block block = world.getBlock(this.location, 1);
             if (!this.isDead() && !(block instanceof BlockWater) && !(block.getType().equals(BlockType.FROSTED_ICE))) {
                 BlockCoral blockCoral = (BlockCoral) super.clone();
-                blockCoral.setDead(true, false);
+                blockCoral.setDead();
                 BlockFadeEvent blockFadeEvent = new BlockFadeEvent(this, blockCoral);
                 Server.getInstance().getPluginManager().callEvent(blockFadeEvent);
                 if (!blockFadeEvent.isCancelled()) {
-                    this.setDead(true, true);
+                    this.setDead();
                 }
             }
         }
@@ -75,32 +72,29 @@ public class BlockCoral extends Block implements Waterlogable {
     }
 
     @Override
-    public Item toItem() {
-        return Item.<ItemCoral>create(ItemType.CORAL).setCoralColor(this.getCoralColor()).setDead(this.isDead());
-    }
-
-    @Override
     public int getWaterLoggingLevel() {
         return 2;
     }
 
-    public BlockCoral setCoralColor(CoralColor coralColor) {
-        return this.setState("coral_color", coralColor.name().toLowerCase());
-    }
-
-    public CoralColor getCoralColor() {
-        return this.stateExists("coral_color") ? CoralColor.valueOf(this.getStringState("coral_color")) : CoralColor.BLUE;
-    }
-
-    public BlockCoral setDead(boolean value) {
-        return this.setDead(value, true);
-    }
-
-    public BlockCoral setDead(boolean value, boolean update) {
-        return this.setState("dead_bit", value ? (byte) 1 : (byte) 0, update);
-    }
-
     public boolean isDead() {
-        return this.stateExists("dead_bit") && this.getByteState("dead_bit") == 1;
+        return this.blockType.equals(BlockType.DEAD_FIRE_CORAL) ||
+                this.blockType.equals(BlockType.DEAD_TUBE_CORAL) ||
+                this.blockType.equals(BlockType.DEAD_HORN_CORAL) ||
+                this.blockType.equals(BlockType.DEAD_BUBBLE_CORAL) ||
+                this.blockType.equals(BlockType.DEAD_BRAIN_CORAL);
+    }
+
+    public void setDead() {
+        if (this.blockType.equals(BlockType.FIRE_CORAL)) {
+            this.getWorld().setBlock(this.location, Block.create(BlockType.DEAD_FIRE_CORAL));
+        } else if (this.blockType.equals(BlockType.TUBE_CORAL)) {
+            this.getWorld().setBlock(this.location, Block.create(BlockType.DEAD_TUBE_CORAL));
+        } else if (this.blockType.equals(BlockType.HORN_CORAL)) {
+            this.getWorld().setBlock(this.location, Block.create(BlockType.DEAD_HORN_CORAL));
+        } else if (this.blockType.equals(BlockType.BUBBLE_CORAL)) {
+            this.getWorld().setBlock(this.location, Block.create(BlockType.DEAD_BUBBLE_CORAL));
+        } else if (this.blockType.equals(BlockType.BRAIN_CORAL)) {
+            this.getWorld().setBlock(this.location, Block.create(BlockType.DEAD_BRAIN_CORAL));
+        }
     }
 }

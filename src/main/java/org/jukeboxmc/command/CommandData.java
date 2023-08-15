@@ -2,9 +2,7 @@ package org.jukeboxmc.command;
 
 import lombok.NonNull;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParamType;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
+import org.cloudburstmc.protocol.bedrock.data.command.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,19 +104,15 @@ public class CommandData {
     public org.cloudburstmc.protocol.bedrock.data.command.CommandData toNetwork() {
         String description = this.description;
 
-        CommandParamData[][] overloadData = new CommandParamData[this.overloads.size()][];
-
-        for ( int i = 0; i < overloadData.length; i++ ) {
+        CommandParamData[] overloadData = new CommandParamData[this.overloads.size()];
+        for ( int i = 0; i < this.overloads.size(); i++ ) {
             CommandParameter[] parameters = this.overloads.get( i );
-            CommandParamData[] params = new CommandParamData[parameters.length];
-            for ( int i2 = 0; i2 < parameters.length; i2++ ) {
-                params[i2] = parameters[i2].toNetwork();
+            for (CommandParameter parameter : parameters) {
+                overloadData[i] = parameter.toNetwork();
             }
-            overloadData[i] = params;
         }
-
         return new org.cloudburstmc.protocol.bedrock.data.command.CommandData( this.name, description, Collections.emptySet(),
-                CommandPermission.ANY, this.aliases.toNetwork(), overloadData );
+                CommandPermission.ANY, this.aliases.toNetwork(), new ArrayList<>(), new CommandOverloadData[]{new CommandOverloadData(false, overloadData)} );
     }
 
     public static class Builder {

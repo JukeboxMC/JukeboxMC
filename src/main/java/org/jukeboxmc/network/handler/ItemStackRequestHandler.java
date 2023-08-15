@@ -143,9 +143,15 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
 
     private void handleCraftCreativeAction( Player player, CraftCreativeAction actionData ) {
         ItemData itemData = CreativeItems.getCreativeItems().get( actionData.getCreativeItemNetworkId() - 1 );
-        Item item = Item.create( itemData );
-        item.setAmount( item.getMaxStackSize() );
-        player.getCreativeItemCacheInventory().setItem( 0, item );
+        try {
+            Item item = Item.create( itemData );
+            item.setAmount( item.getMaxStackSize() );
+            player.getCreativeItemCacheInventory().setItem( 0, item );
+        } catch (Exception e) {
+            e.printStackTrace();
+            player.sendMessage("§cThe item could not be created");
+            Server.getInstance().getLogger().error("The item could not be created: " + itemData);
+        }
     }
 
     private List<ItemStackResponse> handlePlaceAction( Player player, PlaceAction actionData, ItemStackRequest itemStackRequest ) {

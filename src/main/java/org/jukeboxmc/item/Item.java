@@ -151,7 +151,8 @@ public class Item implements Cloneable {
         if ( itemData.getDefinition() == ItemDefinition.AIR ) {
             return Item.create( ItemType.AIR );
         }
-        T item = create( ItemPalette.getIdentifier( (short) itemData.getDefinition().getRuntimeId() ) );
+        Identifier identifier1 = ItemPalette.getIdentifier((short) itemData.getDefinition().getRuntimeId());
+        T item = create(identifier1);
         item.setBlockRuntimeId( itemData.getBlockDefinition() != null ? itemData.getBlockDefinition().getRuntimeId() : 0 );
         item.setMeta( itemData.getDamage() );
         item.setAmount( itemData.getCount() );

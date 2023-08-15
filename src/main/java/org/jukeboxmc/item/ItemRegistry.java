@@ -138,7 +138,24 @@ public class ItemRegistry {
         register( ItemType.CAMPFIRE, new ItemRegistryData( Identifier.fromString( "minecraft:campfire" ), ItemCampfire.class ) );
         register( ItemType.CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:candle" ), ItemCandle.class ) );
         register( ItemType.CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:candle_cake" ) ) );
-        register( ItemType.CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:carpet" ), ItemCarpet.class ) );
+
+        register( ItemType.BLUE_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:blue_carpet" ), ItemCarpet.class ) );
+        register( ItemType.GRAY_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:gray_carpet" ), ItemCarpet.class ) );
+        register( ItemType.MAGENTA_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_carpet" ), ItemCarpet.class ) );
+        register( ItemType.BROWN_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:brown_carpet" ), ItemCarpet.class ) );
+        register( ItemType.CYAN_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:cyan_carpet" ), ItemCarpet.class ) );
+        register( ItemType.LIGHT_BLUE_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:light_blue_carpet" ), ItemCarpet.class ) );
+        register( ItemType.GREEN_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:green_carpet" ), ItemCarpet.class ) );
+        register( ItemType.YELLOW_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_carpet" ), ItemCarpet.class ) );
+        register( ItemType.BLACK_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:black_carpet" ), ItemCarpet.class ) );
+        register( ItemType.LIME_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:lime_carpet" ), ItemCarpet.class ) );
+        register( ItemType.ORANGE_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:orange_carpet" ), ItemCarpet.class ) );
+        register( ItemType.WHITE_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:white_carpet" ), ItemCarpet.class ) );
+        register( ItemType.RED_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:red_carpet" ), ItemCarpet.class ) );
+        register( ItemType.PINK_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:pink_carpet" ), ItemCarpet.class ) );
+        register( ItemType.PURPLE_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:purple_carpet" ), ItemCarpet.class ) );
+        register( ItemType.LIGHT_GRAY_CARPET, new ItemRegistryData( Identifier.fromString( "minecraft:light_gray_carpet" ), ItemCarpet.class ) );
+
         register( ItemType.CARROT, new ItemRegistryData( Identifier.fromString( "minecraft:carrot" ), ItemCarrot.class ) );
         register( ItemType.CARROT_ON_A_STICK, new ItemRegistryData( Identifier.fromString( "minecraft:carrot_on_a_stick" ) ) );
         register( ItemType.CARROTS, new ItemRegistryData( Identifier.fromString( "minecraft:carrots" ) ) );
@@ -197,7 +214,25 @@ public class ItemRegistry {
         register( ItemType.COMPASS, new ItemRegistryData( Identifier.fromString( "minecraft:compass" ) ) );
         register( ItemType.COMPOSTER, new ItemRegistryData( Identifier.fromString( "minecraft:composter" ) ) );
         register( ItemType.COMPOUND, new ItemRegistryData( Identifier.fromString( "minecraft:compound" ) ) );
-        register( ItemType.CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:concrete" ), ItemConcrete.class ) );
+
+        register( ItemType.LIGHT_GRAY_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:light_gray_concrete" ) ) );
+        register( ItemType.PINK_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:pink_concrete" ) ) );
+        register( ItemType.YELLOW_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_concrete" ) ) );
+        register( ItemType.PURPLE_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:purple_concrete" ) ) );
+        register( ItemType.MAGENTA_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_concrete" ) ) );
+        register( ItemType.LIME_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:lime_concrete" ) ) );
+        register( ItemType.GREEN_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:green_concrete" ) ) );
+        register( ItemType.BROWN_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:brown_concrete" ) ) );
+        register( ItemType.BLACK_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:black_concrete" ) ) );
+        register( ItemType.ORANGE_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:orange_concrete" ) ) );
+        register( ItemType.CYAN_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:cyan_concrete" ) ) );
+        register( ItemType.BLUE_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:blue_concrete" ) ) );
+        register( ItemType.GRAY_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:gray_concrete" ) ) );
+        register( ItemType.LIGHT_BLUE_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:light_blue_concrete" )) );
+        register( ItemType.RED_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:red_concrete" ) ) );
+        register( ItemType.WHITE_CONCRETE, new ItemRegistryData( Identifier.fromString( "minecraft:white_concrete" ) ) );
+
+
         register( ItemType.CONCRETE_POWDER, new ItemRegistryData( Identifier.fromString( "minecraft:concrete_powder" ), ItemConcretePowder.class ) );
         register( ItemType.CONDUIT, new ItemRegistryData( Identifier.fromString( "minecraft:conduit" ) ) );
         register( ItemType.COOKED_BEEF, new ItemRegistryData( Identifier.fromString( "minecraft:cooked_beef" ), ItemCookedBeef.class ) );
@@ -211,13 +246,27 @@ public class ItemRegistry {
         register( ItemType.COPPER_BLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:copper_block" ) ) );
         register( ItemType.COPPER_INGOT, new ItemRegistryData( Identifier.fromString( "minecraft:copper_ingot" ) ) );
         register( ItemType.COPPER_ORE, new ItemRegistryData( Identifier.fromString( "minecraft:copper_ore" ) ) );
-        register( ItemType.CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:coral" ), ItemCoral.class ) );
+
+        register( ItemType.FIRE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:fire_coral" )) );
+        register( ItemType.BRAIN_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:brain_coral" )) );
+        register( ItemType.BUBBLE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:bubble_coral" )) );
+        register( ItemType.TUBE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:tube_coral" )) );
+        register( ItemType.HORN_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:horn_coral" )) );
+
+        register( ItemType.DEAD_FIRE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:dead_fire_coral" )) );
+        register( ItemType.DEAD_BRAIN_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:dead_brain_coral" )) );
+        register( ItemType.DEAD_BUBBLE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:dead_bubble_coral" )) );
+        register( ItemType.DEAD_TUBE_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:dead_tube_coral" )) );
+        register( ItemType.DEAD_HORN_CORAL, new ItemRegistryData( Identifier.fromString( "minecraft:dead_horn_coral" )) );
+
+
         register( ItemType.CORAL_BLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:coral_block" ) ) );
         register( ItemType.CORAL_FAN, new ItemRegistryData( Identifier.fromString( "minecraft:coral_fan" ), ItemCoralFan.class ) );
         register( ItemType.CORAL_FAN_DEAD, new ItemRegistryData( Identifier.fromString( "minecraft:coral_fan_dead" ), ItemCoralFanDead.class ) );
         register( ItemType.CORAL_FAN_HANG, new ItemRegistryData( Identifier.fromString( "minecraft:coral_fan_hang" ) ) );
         register( ItemType.CORAL_FAN_HANG2, new ItemRegistryData( Identifier.fromString( "minecraft:coral_fan_hang2" ) ) );
         register( ItemType.CORAL_FAN_HANG3, new ItemRegistryData( Identifier.fromString( "minecraft:coral_fan_hang3" ) ) );
+
         register( ItemType.COW_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:cow_spawn_egg" ) ) );
         register( ItemType.CRACKED_DEEPSLATE_BRICKS, new ItemRegistryData( Identifier.fromString( "minecraft:cracked_deepslate_bricks" ) ) );
         register( ItemType.CRACKED_DEEPSLATE_TILES, new ItemRegistryData( Identifier.fromString( "minecraft:cracked_deepslate_tiles" ) ) );
@@ -622,7 +671,6 @@ public class ItemRegistry {
         register( ItemType.LARGE_AMETHYST_BUD, new ItemRegistryData( Identifier.fromString( "minecraft:large_amethyst_bud" ) ) );
         register( ItemType.LAVA, new ItemRegistryData( Identifier.fromString( "minecraft:lava" ) ) );
         register( ItemType.LAVA_BUCKET, new ItemRegistryData( Identifier.fromString( "minecraft:lava_bucket" ), ItemLavaBucket.class ) );
-        register( ItemType.LAVA_CAULDRON, new ItemRegistryData( Identifier.fromString( "minecraft:lava_cauldron" ) ) );
         register( ItemType.LEAD, new ItemRegistryData( Identifier.fromString( "minecraft:lead" ) ) );
         register( ItemType.LEATHER, new ItemRegistryData( Identifier.fromString( "minecraft:leather" ) ) );
         register( ItemType.LEATHER_BOOTS, new ItemRegistryData( Identifier.fromString( "minecraft:leather_boots" ), ItemLeatherBoots.class ) );
@@ -878,7 +926,7 @@ public class ItemRegistry {
         register( ItemType.RAW_IRON, new ItemRegistryData( Identifier.fromString( "minecraft:raw_iron" ) ) );
         register( ItemType.RAW_IRON_BLOCK, new ItemRegistryData( Identifier.fromString( "minecraft:raw_iron_block" ) ) );
         register( ItemType.RECOVERY_COMPASS, new ItemRegistryData( Identifier.fromString( "minecraft:recovery_compass" ) ) );
-        register( ItemType.REEDS, new ItemRegistryData( Identifier.fromString( "minecraft:reeds" ) ) );
+        register( ItemType.REEDS, new ItemRegistryData( Identifier.fromString( "minecraft:item.reeds" ) ) );
         register( ItemType.RED_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:red_candle" ), ItemCandle.class ) );
         register( ItemType.RED_CANDLE_CAKE, new ItemRegistryData( Identifier.fromString( "minecraft:red_candle_cake" ) ) );
         register( ItemType.RED_DYE, new ItemRegistryData( Identifier.fromString( "minecraft:red_dye" ) ) );
@@ -924,7 +972,24 @@ public class ItemRegistry {
         register( ItemType.SHEEP_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:sheep_spawn_egg" ) ) );
         register( ItemType.SHIELD, new ItemRegistryData( Identifier.fromString( "minecraft:shield" ) ) );
         register( ItemType.SHROOMLIGHT, new ItemRegistryData( Identifier.fromString( "minecraft:shroomlight" ) ) );
-        register( ItemType.SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:shulker_box" ), ItemShulkerBox.class ) );
+
+        register( ItemType.YELLOW_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_shulker_box" )) );
+        register( ItemType.MAGENTA_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_shulker_box" )) );
+        register( ItemType.LIME_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:lime_shulker_box" )) );
+        register( ItemType.WHITE_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:white_shulker_box" )) );
+        register( ItemType.PINK_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:pink_shulker_box" )) );
+        register( ItemType.RED_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:red_shulker_box" )) );
+        register( ItemType.GRAY_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:gray_shulker_box" )) );
+        register( ItemType.LIGHT_GRAY_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:light_gray_shulker_box" )) );
+        register( ItemType.BLACK_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:black_shulker_box" )) );
+        register( ItemType.ORANGE_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:orange_shulker_box" )) );
+        register( ItemType.BLUE_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:blue_shulker_box" )) );
+        register( ItemType.GREEN_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:green_shulker_box" )) );
+        register( ItemType.BROWN_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:brown_shulker_box" )) );
+        register( ItemType.LIGHT_BLUE_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:light_blue_shulker_box" )) );
+        register( ItemType.CYAN_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:cyan_shulker_box" )) );
+        register( ItemType.PURPLE_SHULKER_BOX, new ItemRegistryData( Identifier.fromString( "minecraft:purple_shulker_box" )) );
+
         register( ItemType.SHULKER_SHELL, new ItemRegistryData( Identifier.fromString( "minecraft:shulker_shell" ) ) );
         register( ItemType.SHULKER_SPAWN_EGG, new ItemRegistryData( Identifier.fromString( "minecraft:shulker_spawn_egg" ) ) );
         register( ItemType.SILVER_GLAZED_TERRACOTTA, new ItemRegistryData( Identifier.fromString( "minecraft:silver_glazed_terracotta" ) ) );
@@ -1131,22 +1196,22 @@ public class ItemRegistry {
         register( ItemType.WOODEN_SHOVEL, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_shovel" ), ItemWoodenShovel.class ) );
         register( ItemType.WOODEN_SLAB, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_slab" ), ItemWoodenSlab.class ) );
         register( ItemType.WOODEN_SWORD, new ItemRegistryData( Identifier.fromString( "minecraft:wooden_sword" ), ItemWoodenSword.class ) );
-        register( ItemType.WHITE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:white_wool" ), ItemWhiteWool.class ) );
-        register( ItemType.ORANGE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:orange_wool" ), ItemOrangeWool.class ) );
-        register( ItemType.MAGENTA_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_wool" ), ItemMagentaWool.class ) );
-        register( ItemType.LIGHT_BLUE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:light_blue_wool" ), ItemLightBlueWool.class ) );
-        register( ItemType.YELLOW_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_wool" ), ItemYellowWool.class ) );
-        register( ItemType.LIME_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:lime_wool" ), ItemLimeWool.class ) );
-        register( ItemType.PINK_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:pink_wool" ), ItemPinkWool.class ) );
-        register( ItemType.GRAY_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:gray_wool" ), ItemGrayWool.class ) );
-        register( ItemType.SILVER_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:silver_wool" ), ItemSilverWool.class ) );
-        register( ItemType.CYAN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:cyan_wool" ), ItemCyanWool.class ) );
-        register( ItemType.PURPLE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:purple_wool" ), ItemPurpleWool.class ) );
-        register( ItemType.BLUE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:blue_wool" ), ItemLightBlueWool.class ) );
-        register( ItemType.BROWN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:brown_wool" ), ItemBrownWool.class ) );
-        register( ItemType.GREEN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:green_wool" ), ItemGreenWool.class ) );
-        register( ItemType.RED_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:red_wool" ), ItemRedWool.class ) );
-        register( ItemType.BLACK_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:black_wool" ), ItemBlackWool.class ) );
+        register( ItemType.WHITE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:white_wool" ), ItemWool.class ) );
+        register( ItemType.ORANGE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:orange_wool" ), ItemWool.class ) );
+        register( ItemType.MAGENTA_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:magenta_wool" ), ItemWool.class ) );
+        register( ItemType.LIGHT_BLUE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:light_blue_wool" ), ItemWool.class ) );
+        register( ItemType.YELLOW_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_wool" ), ItemWool.class ) );
+        register( ItemType.LIME_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:lime_wool" ), ItemWool.class ) );
+        register( ItemType.PINK_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:pink_wool" ), ItemWool.class ) );
+        register( ItemType.GRAY_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:gray_wool" ), ItemWool.class ) );
+        register( ItemType.LIGHT_GRAY_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:light_gray_wool" ), ItemWool.class ) );
+        register( ItemType.CYAN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:cyan_wool" ), ItemWool.class ) );
+        register( ItemType.PURPLE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:purple_wool" ), ItemWool.class ) );
+        register( ItemType.BLUE_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:blue_wool" ), ItemWool.class ) );
+        register( ItemType.BROWN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:brown_wool" ), ItemWool.class ) );
+        register( ItemType.GREEN_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:green_wool" ), ItemWool.class ) );
+        register( ItemType.RED_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:red_wool" ), ItemWool.class ) );
+        register( ItemType.BLACK_WOOL, new ItemRegistryData( Identifier.fromString( "minecraft:black_wool" ), ItemWool.class ) );
         register( ItemType.WRITABLE_BOOK, new ItemRegistryData( Identifier.fromString( "minecraft:writable_book" ) ) );
         register( ItemType.WRITTEN_BOOK, new ItemRegistryData( Identifier.fromString( "minecraft:written_book" ) ) );
         register( ItemType.YELLOW_CANDLE, new ItemRegistryData( Identifier.fromString( "minecraft:yellow_candle" ), ItemCandle.class ) );
@@ -1185,7 +1250,7 @@ public class ItemRegistry {
         register( ItemType.CHERRY_WOOD, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_wood" ) ) );
         register( ItemType.STRIPPED_CHERRY_WOOD, new ItemRegistryData( Identifier.fromString( "minecraft:stripped_cherry_wood" ) ) );
         register( ItemType.CHERRY_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_planks" ) ) );
-        register( ItemType.CHERRY_LOG, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_button" ) ) );
+        register( ItemType.CHERRY_BUTTON, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_button" ) ) );
         register( ItemType.CHERRY_DOOR, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_door" ) ) );
         register( ItemType.CHERRY_FENCE, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_fence" ) ) );
         register( ItemType.CHERRY_FENCE_GATE, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_fence_gate" ) ) );
@@ -1212,7 +1277,6 @@ public class ItemRegistry {
         register( ItemType.WARPED_HANGING_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:warped_hanging_sign" ) ) );
         register( ItemType.BAMBOO_HANGING_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:bamboo_hanging_sign" ) ) );
         register( ItemType.CHERRY_HANGING_SIGN, new ItemRegistryData( Identifier.fromString( "minecraft:cherry_hanging_sign" ) ) );
-        register( ItemType.PIGLIN_HEAD, new ItemRegistryData( Identifier.fromString( "minecraft:piglin_head" ) ) );
         register( ItemType.PINK_PETALS, new ItemRegistryData( Identifier.fromString( "minecraft:pink_petals" ) ) );
         register( ItemType.PITCHER_PLANT, new ItemRegistryData( Identifier.fromString( "minecraft:pitcher_plant" ) ) );
         register( ItemType.PITCHER_POD, new ItemRegistryData( Identifier.fromString( "minecraft:pitcher_pod" ) ) );
