@@ -107,7 +107,7 @@ public class BlockWall extends Block implements Waterlogable {
     }
 
     public boolean canConnect( Block block ) {
-        return switch ( block.getType() ) {
+        return block.getType().name().endsWith("STAINED_GLASS_PANE") || switch ( block.getType() ) {
             case COBBLESTONE_WALL,
                     BLACKSTONE_WALL,
                     POLISHED_BLACKSTONE_WALL,
@@ -118,7 +118,6 @@ public class BlockWall extends Block implements Waterlogable {
                     MUD_BRICK_WALL,
                     COBBLED_DEEPSLATE_WALL,
                     GLASS_PANE,
-                    STAINED_GLASS_PANE,
                     IRON_BARS ->
                     true;
             default -> block.isSolid() && !block.isTransparent();

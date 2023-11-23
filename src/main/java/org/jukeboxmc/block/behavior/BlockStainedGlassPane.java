@@ -35,18 +35,4 @@ public class BlockStainedGlassPane extends Block implements Waterlogable {
         world.setBlock(placePosition, this);
         return true;
     }
-
-    @Override
-    public Item toItem() {
-        return Item.<ItemStainedGlassPane>create( ItemType.STAINED_GLASS_PANE ).setColor( this.getColor() );
-    }
-
-    public BlockStainedGlassPane setColor( BlockColor color ) {
-        this.setState( "color", color.name().toLowerCase() );
-        return this;
-    }
-
-    public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
-    }
 }

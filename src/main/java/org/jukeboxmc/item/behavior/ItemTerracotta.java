@@ -8,13 +8,13 @@ import org.jukeboxmc.util.Identifier;
  * @author LucGamesYT
  * @version 1.0
  */
-public class ItemConcretePowder extends Item {
+public class ItemTerracotta extends Item {
 
-    public ItemConcretePowder( Identifier identifier ) {
+    public ItemTerracotta(Identifier identifier ) {
         super( identifier );
     }
 
-    public ItemConcretePowder( ItemType itemType ) {
+    public ItemTerracotta(ItemType itemType ) {
         super( itemType );
     }
 }

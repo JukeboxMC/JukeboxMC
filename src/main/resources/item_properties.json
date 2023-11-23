@@ -608,7 +608,52 @@
   "minecraft:white_concrete": {
     "max_stack_size": 64
   },
-  "minecraft:concrete_powder": {
+  "minecraft:white_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:orange_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:purple_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:blue_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_gray_concrete_powder": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_concrete_powder": {
     "max_stack_size": 64
   },
   "minecraft:conduit": {
@@ -2996,13 +3041,148 @@
   "minecraft:squid_spawn_egg": {
     "max_stack_size": 64
   },
-  "minecraft:stained_glass": {
+  "minecraft:white_stained_glass": {
     "max_stack_size": 64
   },
-  "minecraft:stained_glass_pane": {
+  "minecraft:orange_stained_glass": {
     "max_stack_size": 64
   },
-  "minecraft:stained_hardened_clay": {
+  "minecraft:purple_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:blue_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_gray_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_stained_glass": {
+    "max_stack_size": 64
+  },
+  "minecraft:white_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:orange_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:purple_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:blue_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_gray_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_stained_glass_pane": {
+    "max_stack_size": 64
+  },
+  "minecraft:white_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:orange_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:purple_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:blue_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:brown_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:green_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:red_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:black_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:magenta_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_blue_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:yellow_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:lime_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:pink_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:gray_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:light_gray_terracotta": {
+    "max_stack_size": 64
+  },
+  "minecraft:cyan_terracotta": {
     "max_stack_size": 64
   },
   "minecraft:standing_banner": {

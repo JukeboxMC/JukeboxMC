@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleBlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.jukeboxmc.Bootstrap;
@@ -22,36 +23,38 @@ public class CreativeItems {
 
     private static final List<ItemData> CREATIVE_ITEMS = new LinkedList<>();
     private static final Map<Integer, Identifier> IDENTIFIER_BY_NETWORK_ID = new LinkedHashMap<>();
+    public static final Map<Identifier, Integer> IDENTIFIER_TO_BLOCK_RUNTIME_ID = new LinkedHashMap<>();
 
     public static void init() {
         Gson GSON = new Gson();
-        try ( final InputStream inputStream = Objects.requireNonNull( Bootstrap.class.getClassLoader().getResourceAsStream( "creative_items.json" ) ) ) {
-            final InputStreamReader inputStreamReader = new InputStreamReader( inputStream );
-            Map<String, List<Map<String, Object>>> itemEntries = GSON.<Map<String, List<Map<String, Object>>>>fromJson( inputStreamReader, Map.class );
+        try (final InputStream inputStream = Objects.requireNonNull(Bootstrap.class.getClassLoader().getResourceAsStream("creative_items.json"))) {
+            final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            Map<String, List<Map<String, Object>>> itemEntries = GSON.<Map<String, List<Map<String, Object>>>>fromJson(inputStreamReader, Map.class);
             int netIdCounter = 0;
-            for ( Map<String, Object> itemEntry : itemEntries.get( "items" ) ) {
+            for (Map<String, Object> itemEntry : itemEntries.get("items")) {
                 final ItemData.Builder item;
-                final Identifier identifier = Identifier.fromString( (String) itemEntry.get( "id" ) );
-                if ( itemEntry.containsKey( "blockRuntimeId" ) ) {
-                    item = toItemData( identifier, (int) (double) itemEntry.get( "blockRuntimeId" ) );
-                } else {
-                    item = toItemData( identifier, 0 );
+                final Identifier identifier = Identifier.fromString((String) itemEntry.get("id"));
+                int blockRuntimeId = 0;
+                if (itemEntry.containsKey("block_state_b64")) {
+                    blockRuntimeId = (int) (double) runtimeByBlockStateBase64((String) itemEntry.get("block_state_b64"));
                 }
-                if ( itemEntry.containsKey( "damage" ) ) {
-                    item.damage( (short) (double) itemEntry.get( "damage" ) );
+                item = toItemData(identifier, blockRuntimeId);
+                if (itemEntry.containsKey("damage")) {
+                    item.damage((short) (double) itemEntry.get("damage"));
                 }
-                final String nbtTag = (String) itemEntry.get( "nbt_b64" );
-                if ( nbtTag != null ) {
-                    try ( final NBTInputStream nbtReader = NbtUtils.createReaderLE( new ByteArrayInputStream( Base64.getDecoder().decode( nbtTag.getBytes() ) ) ) ) {
-                        item.tag( (NbtMap) nbtReader.readTag() );
+                final String nbtTag = (String) itemEntry.get("nbt_b64");
+                if (nbtTag != null) {
+                    try (final NBTInputStream nbtReader = NbtUtils.createReaderLE(new ByteArrayInputStream(Base64.getDecoder().decode(nbtTag.getBytes())))) {
+                        item.tag((NbtMap) nbtReader.readTag());
                     }
                 }
                 netIdCounter++;
-                IDENTIFIER_BY_NETWORK_ID.put( netIdCounter, identifier );
-                CREATIVE_ITEMS.add( item.netId( netIdCounter ).build() );
+                IDENTIFIER_TO_BLOCK_RUNTIME_ID.put(identifier, blockRuntimeId);
+                IDENTIFIER_BY_NETWORK_ID.put(netIdCounter, identifier);
+                CREATIVE_ITEMS.add(item.netId(netIdCounter).build());
             }
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,14 +62,33 @@ public class CreativeItems {
         return CREATIVE_ITEMS;
     }
 
-    public static Identifier getIdentifier( int networkId ) {
-        return IDENTIFIER_BY_NETWORK_ID.get( networkId );
+    public static Identifier getIdentifier(int networkId) {
+        return IDENTIFIER_BY_NETWORK_ID.get(networkId);
     }
 
-    private static ItemData.Builder toItemData( Identifier identifier, int blockRuntimeId ) {
+    private static ItemData.Builder toItemData(Identifier identifier, int blockRuntimeId) {
         return ItemData.builder()
-                .definition( new SimpleItemDefinition( identifier.getFullName(), ItemPalette.getRuntimeId( identifier ), false ) )
-                .blockDefinition( new RuntimeBlockDefination( blockRuntimeId ))
-                .count( 1 );
+                .definition(new SimpleItemDefinition(identifier.getFullName(), ItemPalette.getRuntimeId(identifier), false))
+                .blockDefinition(new RuntimeBlockDefination(blockRuntimeId))
+                .count(1);
+    }
+
+    private static int runtimeByBlockStateBase64(String blockStateBase64) {
+        final byte[] data = Base64.getDecoder().decode(blockStateBase64);
+
+        try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+             final NBTInputStream nbtInputStream = NbtUtils.createReaderLE(inputStream)) {
+            final NbtMap nbtMap = (NbtMap) nbtInputStream.readTag();
+
+            for (SimpleBlockDefinition simpleBlockDefinition : BlockPalette.getSimpleBlockDefinitions()) {
+                if (simpleBlockDefinition.getState().equals(nbtMap.getCompound("states"))) {
+                    return simpleBlockDefinition.getRuntimeId();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

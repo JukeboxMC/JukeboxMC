@@ -21,18 +21,4 @@ public class BlockStainedGlass extends Block {
     public BlockStainedGlass( Identifier identifier, NbtMap blockStates ) {
         super( identifier, blockStates );
     }
-
-    @Override
-    public Item toItem() {
-        return Item.<ItemStainedGlass>create( ItemType.STAINED_GLASS ).setColor( this.getColor() );
-    }
-
-    public BlockStainedGlass setColor( BlockColor color ) {
-        this.setState( "color", color.name().toLowerCase() );
-        return this;
-    }
-
-    public BlockColor getColor() {
-        return this.stateExists( "color" ) ? BlockColor.valueOf( this.getStringState( "color" ) ) : BlockColor.WHITE;
-    }
 }

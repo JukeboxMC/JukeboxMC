@@ -8,13 +8,13 @@ import org.jukeboxmc.util.Identifier;
  * @author LucGamesYT
  * @version 1.0
  */
-public class BlockConcretePowder extends Block {
+public class BlockTerracotta extends Block {
 
-    public BlockConcretePowder( Identifier identifier ) {
+    public BlockTerracotta(Identifier identifier ) {
         super( identifier );
     }
 
-    public BlockConcretePowder( Identifier identifier, NbtMap blockStates ) {
+    public BlockTerracotta(Identifier identifier, NbtMap blockStates ) {
         super( identifier, blockStates );
     }
 }
