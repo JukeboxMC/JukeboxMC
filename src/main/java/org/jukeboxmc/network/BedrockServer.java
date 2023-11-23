@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.BedrockPong;
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v618.Bedrock_v618;
+import org.cloudburstmc.protocol.bedrock.codec.v622.Bedrock_v622;
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer;
 import org.jukeboxmc.Server;
 import org.jukeboxmc.player.PlayerConnection;
@@ -22,7 +23,7 @@ import java.net.InetSocketAddress;
  */
 public class BedrockServer {
 
-    public static final BedrockCodec CODEC = Bedrock_v618.CODEC.toBuilder().build();
+    public static final BedrockCodec CODEC = Bedrock_v622.CODEC.toBuilder().build();
 
     private final InetSocketAddress bindAddress;
     private final Server server;
