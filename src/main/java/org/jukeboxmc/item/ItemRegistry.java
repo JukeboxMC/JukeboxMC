@@ -867,7 +867,12 @@ public class ItemRegistry {
         register( ItemType.PINK_GLAZED_TERRACOTTA, new ItemRegistryData( Identifier.fromString( "minecraft:pink_glazed_terracotta" ) ) );
         register( ItemType.PISTON, new ItemRegistryData( Identifier.fromString( "minecraft:piston" ) ) );
         register( ItemType.PISTON_ARM_COLLISION, new ItemRegistryData( Identifier.fromString( "minecraft:piston_arm_collision" ) ) );
-        register( ItemType.PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:planks" ), ItemPlanks.class ) );
+        register( ItemType.OAK_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:oak_planks" ), ItemPlanks.class ) );
+        register( ItemType.SPRUCE_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:spruce_planks" ), ItemPlanks.class ) );
+        register( ItemType.BIRCH_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:birch_planks" ), ItemPlanks.class ) );
+        register( ItemType.JUNGLE_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:jungle_planks" ), ItemPlanks.class ) );
+        register( ItemType.ACACIA_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:acacia_planks" ), ItemPlanks.class ) );
+        register( ItemType.DARK_OAK_PLANKS, new ItemRegistryData( Identifier.fromString( "minecraft:dark_oak_planks" ), ItemPlanks.class ) );
         register( ItemType.PODZOL, new ItemRegistryData( Identifier.fromString( "minecraft:podzol" ) ) );
         register( ItemType.POINTED_DRIPSTONE, new ItemRegistryData( Identifier.fromString( "minecraft:pointed_dripstone" ) ) );
         register( ItemType.POISONOUS_POTATO, new ItemRegistryData( Identifier.fromString( "minecraft:poisonous_potato" ), ItemPoisonousPotato.class ) );
@@ -1108,6 +1113,12 @@ public class ItemRegistry {
         register( ItemType.STICKY_PISTON, new ItemRegistryData( Identifier.fromString( "minecraft:sticky_piston" ) ) );
         register( ItemType.STICKY_PISTON_ARM_COLLISION, new ItemRegistryData( Identifier.fromString( "minecraft:sticky_piston_arm_collision" ) ) );
         register( ItemType.STONE, new ItemRegistryData( Identifier.fromString( "minecraft:stone" ), ItemStone.class ) );
+        register( ItemType.GRANITE, new ItemRegistryData( Identifier.fromString( "minecraft:granite" ), ItemStone.class ) );
+        register( ItemType.POLISHED_GRANITE, new ItemRegistryData( Identifier.fromString( "minecraft:polished_granite" ), ItemStone.class ) );
+        register( ItemType.DIORITE, new ItemRegistryData( Identifier.fromString( "minecraft:diorite" ), ItemStone.class ) );
+        register( ItemType.POLISHED_DIORITE, new ItemRegistryData( Identifier.fromString( "minecraft:polished_diorite" ), ItemStone.class ) );
+        register( ItemType.ANDESITE, new ItemRegistryData( Identifier.fromString( "minecraft:andesite" ), ItemStone.class ) );
+        register( ItemType.POLISHED_ANDESITE, new ItemRegistryData( Identifier.fromString( "minecraft:polished_andesite" ), ItemStone.class ) );
         register( ItemType.STONE_AXE, new ItemRegistryData( Identifier.fromString( "minecraft:stone_axe" ), ItemStoneAxe.class ) );
         register( ItemType.STONE_BLOCK_SLAB, new ItemRegistryData( Identifier.fromString( "minecraft:stone_block_slab" ), ItemStoneSlab.class ) );
         register( ItemType.STONE_BLOCK_SLAB2, new ItemRegistryData( Identifier.fromString( "minecraft:stone_block_slab2" ), ItemStoneSlab2.class ) );

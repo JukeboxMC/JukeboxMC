@@ -2486,7 +2486,22 @@
   "minecraft:piston_arm_collision": {
     "max_stack_size": 64
   },
-  "minecraft:planks": {
+  "minecraft:oak_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:spruce_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:birch_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:jungle_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:acacia_planks": {
+    "max_stack_size": 64
+  },
+  "minecraft:dark_oak_planks": {
     "max_stack_size": 64
   },
   "minecraft:podzol": {
@@ -3201,6 +3216,24 @@
     "max_stack_size": 64
   },
   "minecraft:stone": {
+    "max_stack_size": 64
+  },
+  "minecraft:granite": {
+    "max_stack_size": 64
+  },
+  "minecraft:polished_granite": {
+    "max_stack_size": 64
+  },
+  "minecraft:diorite": {
+    "max_stack_size": 64
+  },
+  "minecraft:polished_diorite": {
+    "max_stack_size": 64
+  },
+  "minecraft:andesite": {
+    "max_stack_size": 64
+  },
+  "minecraft:polished_andesite": {
     "max_stack_size": 64
   },
   "minecraft:stone_axe": {

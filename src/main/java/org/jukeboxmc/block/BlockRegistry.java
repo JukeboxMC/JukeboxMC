@@ -604,7 +604,12 @@ public class BlockRegistry {
         register( BlockType.PINK_GLAZED_TERRACOTTA, Identifier.fromString( "minecraft:pink_glazed_terracotta" ) );
         register( BlockType.PISTON, Identifier.fromString( "minecraft:piston" ), BlockPiston.class );
         register( BlockType.PISTON_ARM_COLLISION, Identifier.fromString( "minecraft:piston_arm_collision" ) );
-        register( BlockType.PLANKS, Identifier.fromString( "minecraft:planks" ), BlockPlanks.class );
+        register( BlockType.OAK_PLANKS, Identifier.fromString( "minecraft:oak_planks" ), BlockPlanks.class );
+        register( BlockType.SPRUCE_PLANKS, Identifier.fromString( "minecraft:spruce_planks" ), BlockPlanks.class );
+        register( BlockType.BIRCH_PLANKS, Identifier.fromString( "minecraft:birch_planks" ), BlockPlanks.class );
+        register( BlockType.JUNGLE_PLANKS, Identifier.fromString( "minecraft:jungle_planks" ), BlockPlanks.class );
+        register( BlockType.ACACIA_PLANKS, Identifier.fromString( "minecraft:acacia_planks" ), BlockPlanks.class );
+        register( BlockType.DARK_OAK_PLANKS, Identifier.fromString( "minecraft:dark_oak_planks" ), BlockPlanks.class );
         register( BlockType.PODZOL, Identifier.fromString( "minecraft:podzol" ) );
         register( BlockType.POINTED_DRIPSTONE, Identifier.fromString( "minecraft:pointed_dripstone" ), BlockPointedDripstone.class );
         register( BlockType.POLISHED_ANDESITE_STAIRS, Identifier.fromString( "minecraft:polished_andesite_stairs" ), BlockStairs.class );
@@ -786,6 +791,12 @@ public class BlockRegistry {
         register( BlockType.STICKY_PISTON, Identifier.fromString( "minecraft:sticky_piston" ), BlockStickyPiston.class );
         register( BlockType.STICKY_PISTON_ARM_COLLISION, Identifier.fromString( "minecraft:sticky_piston_arm_collision" ) );
         register( BlockType.STONE, Identifier.fromString( "minecraft:stone" ), BlockStone.class );
+        register( BlockType.GRANITE, Identifier.fromString( "minecraft:granite" ), BlockStone.class );
+        register( BlockType.POLISHED_GRANITE, Identifier.fromString( "minecraft:polished_granite" ), BlockStone.class );
+        register( BlockType.DIORITE, Identifier.fromString( "minecraft:diorite" ), BlockStone.class );
+        register( BlockType.POLISHED_DIORITE, Identifier.fromString( "minecraft:polished_diorite" ), BlockStone.class );
+        register( BlockType.ANDESITE, Identifier.fromString( "minecraft:andesite" ), BlockStone.class );
+        register( BlockType.POLISHED_ANDESITE, Identifier.fromString( "minecraft:polished_andesite" ), BlockStone.class );
         register( BlockType.STONEBRICK, Identifier.fromString( "minecraft:stonebrick" ), BlockStonebrick.class );
         register( BlockType.STONECUTTER, Identifier.fromString( "minecraft:stonecutter" ), BlockStoneCutter.class );
         register( BlockType.STONECUTTER_BLOCK, Identifier.fromString( "minecraft:stonecutter_block" ), BlockStonecutterBlock.class );

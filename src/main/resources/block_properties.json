@@ -5972,6 +5972,72 @@
     "max_stack_size": 64,
     "can_random_tick": false
   },
+  "minecraft:oak_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:spruce_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:birch_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:jungle_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:acacia_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:dark_oak_planks": {
+    "hardness": 2,
+    "solid": true,
+    "tool_type": "AXE",
+    "can_break_with_hand": true,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "NONE",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
   "minecraft:podzol": {
     "hardness": 0.5,
     "solid": true,
@@ -7931,6 +7997,72 @@
     "can_random_tick": false
   },
   "minecraft:stone": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:granite": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:polished_granite": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:diorite": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:polished_diorite": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:andesite": {
+    "hardness": 1.5,
+    "solid": true,
+    "tool_type": "PICKAXE",
+    "can_break_with_hand": false,
+    "transparent": false,
+    "can_pass_through": false,
+    "tier_type": "WOODEN",
+    "max_stack_size": 64,
+    "can_random_tick": false
+  },
+  "minecraft:polished_andesite": {
     "hardness": 1.5,
     "solid": true,
     "tool_type": "PICKAXE",
