@@ -100,11 +100,6 @@ public class SmeltingComponent extends BlockEntity {
 
     private void checkForRecipe( Item input ) {
         this.output = null;
-
-        SmeltingRecipe recipe = Server.getInstance().getCraftingManager().getSmeltingRecipe( input );
-        if ( recipe != null ) {
-            this.output = recipe.getOutput().clone();
-        }
     }
 
     private boolean checkForRefuel() {

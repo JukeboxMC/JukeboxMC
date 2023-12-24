@@ -74,7 +74,6 @@ public class Server {
     private final ConsoleSender consoleSender;
     private final TerminalConsole terminalConsole;
     private final PluginManager pluginManager;
-    private final CraftingManager craftingManager;
 
     private Config operatorConfig;
     private Config serverConfig;
@@ -158,8 +157,6 @@ public class Server {
 
         this.resourcePackManager = new ResourcePackManager( logger );
         this.resourcePackManager.loadResourcePacks();
-
-        this.craftingManager = new CraftingManager();
 
         this.pluginFolder = new File( "./plugins" );
         if ( !this.pluginFolder.exists() ) {
@@ -656,10 +653,6 @@ public class Server {
 
     public ResourcePackManager getResourcePackManager() {
         return this.resourcePackManager;
-    }
-
-    public CraftingManager getCraftingManager() {
-        return this.craftingManager;
     }
 
     public ConsoleSender getConsoleSender() {

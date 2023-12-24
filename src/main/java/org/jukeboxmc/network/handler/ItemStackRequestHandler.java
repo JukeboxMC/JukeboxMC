@@ -136,8 +136,6 @@ public class ItemStackRequestHandler implements PacketHandler<ItemStackRequestPa
     }
 
     private List<ItemStackResponse> handleCraftRecipeAction( Player player, CraftRecipeAction action, ItemStackRequest request ) {
-        List<Item> resultItem = Server.getInstance().getCraftingManager().getResultItem( action.getRecipeNetworkId() );
-        player.getCreativeItemCacheInventory().setItem( 0, resultItem.get( 0 ) );
         return Collections.emptyList();
     }
 

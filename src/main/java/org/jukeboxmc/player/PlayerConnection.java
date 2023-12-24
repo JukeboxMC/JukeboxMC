@@ -281,14 +281,6 @@ public class PlayerConnection {
         CreativeContentPacket creativeContentPacket = new CreativeContentPacket();
         creativeContentPacket.setContents( CreativeItems.getCreativeItems().toArray( new ItemData[0] ) );
         this.sendPacket( creativeContentPacket );
-
-        CraftingManager craftingManager = this.server.getCraftingManager();
-        CraftingDataPacket craftingDataPacket = new CraftingDataPacket();
-        craftingDataPacket.getCraftingData().addAll( craftingManager.getCraftingData() );
-        craftingDataPacket.getPotionMixData().addAll( craftingDataPacket.getPotionMixData() );
-        craftingDataPacket.getContainerMixData().addAll( craftingManager.getContainerMixData() );
-        craftingDataPacket.setCleanRecipes( true );
-        this.sendPacket( craftingDataPacket );
     }
 
     public void disconnect() {

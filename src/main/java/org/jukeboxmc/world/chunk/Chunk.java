@@ -231,7 +231,7 @@ public class Chunk {
 
             final int subY = this.getSubY( y );
             if ( this.subChunks[subY] == null ) {
-                this.subChunks[subY] = new SubChunk( subY );
+                this.subChunks[subY] = new SubChunk( y - (Math.abs(this.minY) >> 4) );
             }
             Block block = this.subChunks[subY].getBlock( x, y, z, layer );
             block.setLocation( new Location( this.world, x, y, z, this.dimension ) );
@@ -298,7 +298,7 @@ public class Chunk {
         try {
             for ( int y = 0; y <= subY; y++ ) {
                 if ( this.subChunks[y] == null ) {
-                    this.subChunks[y] = new SubChunk( subY );
+                    this.subChunks[y] = new SubChunk( y - (Math.abs(this.minY) >> 4) );
                 }
             }
             return this.subChunks[subY];
