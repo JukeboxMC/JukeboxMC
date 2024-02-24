@@ -326,7 +326,7 @@ class JukeboxChunk(
         return this.sum(subChunks) { o -> if (o == null) 0 else 1 }
     }
 
-    private fun writeTo(byteBuf: ByteBuf, serializer: RuntimeDataSerializer<JukeboxBlock>?) {
+    fun writeTo(byteBuf: ByteBuf, serializer: RuntimeDataSerializer<JukeboxBlock>?) {
         var lastBiomes: Palette<Biome> = Palette(Biome.PLAINS)
         for (subChunk in this.subChunks) {
             if (subChunk == null) continue
