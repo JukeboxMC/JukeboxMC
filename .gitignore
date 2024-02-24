@@ -1,91 +1,54 @@
-### Visual Studio Code #############################
-.vscode/
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-
-### Java #############################
-*.class
-
-
-### Mobile Tools for Java (J2ME) #############################
-.mtj.tmp/
-
-
-### Package Files #############################
-*.jar
-*.war
-*.ear
-
-
-### Virtual machine crash logs #############################
-hs_err_pid*
-
-
-### Maven #############################
-**/target
-**/dependency-reduced-pom.xml
-
-
-### OS X #############################
-**/.DS_Store
-
-
-### JetBrains IDEs #############################
-*.iml
-.idea/
-*.ipr
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
 *.iws
-dependency-reduced-pom.xml
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+.idea/
 
-
-### JukeboxMC Files ###################
-worlds
+## JukeboxMC ##
+/worlds/
+/logs/
+/plugins/
+/resource_packs/
 properties.json
 operators.json
-logs
-plugins
-resource_packs
-players
 whitelist.json
 
-#IntelliJ
-/out/
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-
-
-### Lib folder #############################
-libs/
-
-
-### Eclipse #############################
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*.idea
-*~.nib
-local.properties
-**/.classpath
-**/.project
-.settings/
-.loadpath
-.recommenders
-.recommenders/
-.apt_generated/
+### Eclipse ###
+.apt_generated
+.classpath
 .factorypath
-.externalToolBuilders/
-*.launch
-.target
-.cache-main
-.scala_dependencies
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+gradle.properties
