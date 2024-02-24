@@ -70,5 +70,3 @@ dependencies {
 
 ## IMPORTANT TO KNOW
 This server software is not yet ready! Feel free to improve code and contribute!
-
-test
