@@ -1,0 +1,4 @@
+main: org.jukeboxmc.plugin.JukeboxMCPlugin
+name: JukeboxMCPlugin
+author: LucGamesYT
+version: ${version}

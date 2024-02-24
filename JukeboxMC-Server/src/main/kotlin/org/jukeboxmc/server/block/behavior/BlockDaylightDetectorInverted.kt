@@ -1,0 +1,38 @@
+package org.jukeboxmc.server.block.behavior
+
+import org.cloudburstmc.nbt.NbtMap
+import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.DaylightDetectorInverted
+import org.jukeboxmc.api.block.data.BlockFace
+import org.jukeboxmc.api.blockentity.BlockEntity
+import org.jukeboxmc.api.blockentity.BlockEntityType
+import org.jukeboxmc.api.math.Vector
+import org.jukeboxmc.server.block.JukeboxBlock
+import org.jukeboxmc.server.item.JukeboxItem
+import org.jukeboxmc.server.player.JukeboxPlayer
+import org.jukeboxmc.server.world.JukeboxWorld
+
+class BlockDaylightDetectorInverted(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    DaylightDetectorInverted {
+
+    override fun placeBlock(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        placePosition: Vector,
+        clickedPosition: Vector,
+        itemInHand: JukeboxItem,
+        blockFace: BlockFace
+    ): Boolean {
+        BlockEntity.create(BlockEntityType.DAYLIGHTDETECTOR, this)?.spawn()
+        return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
+    }
+
+   override fun getRedstoneSignal(): Int {
+       return this.getIntState("redstone_signal")
+   }
+
+   override fun setRedstoneSignal(value: Int): BlockDaylightDetectorInverted {
+       return this.setState("redstone_signal", value)
+   }
+}

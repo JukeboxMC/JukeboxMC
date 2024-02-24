@@ -1,0 +1,33 @@
+package org.jukeboxmc.api.inventory
+
+enum class InventoryType {
+
+    NONE,
+    PLAYER,
+    ARMOR,
+    CURSOR,
+    OFFHAND,
+    CREATIVE,
+    BARREL,
+    BEACON,
+    SHULKERBOX,
+    BLAST_FURNACE,
+    BREWING_STAND,
+    CHEST,
+    DISPENSER,
+    DROPPER,
+    ENCHANTMENT_TABLE,
+    ENDERCHEST,
+    FURNACE,
+    HOPPER,
+    LOOM,
+    SMOKER,
+    CRAFTING_TABLE,
+    CARTOGRAPHY_TABLE,
+    SMITHING_TABLE,
+    ANVIL,
+    STONE_CUTTER,
+    GRINDSTONE,
+    SMALL_CRAFTING_GRID,
+    BIG_CRAFTING_GRID
+}
