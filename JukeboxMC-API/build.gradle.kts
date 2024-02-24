@@ -31,7 +31,7 @@ publishing {
         }
         repositories {
             maven {
-                url = uri("https://repo.jukeboxmc.eu/private")
+                url = uri("https://repo.jukeboxmc.eu/snapshots")
                 credentials.username = System.getenv("MAVEN_NAME")
                 credentials.password = System.getenv("MAVEN_SECRET")
             }

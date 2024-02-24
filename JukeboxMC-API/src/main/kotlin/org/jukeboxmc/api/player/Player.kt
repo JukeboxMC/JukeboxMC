@@ -4,6 +4,8 @@ import org.jukeboxmc.api.Server
 import org.jukeboxmc.api.command.CommandSender
 import org.jukeboxmc.api.entity.Entity
 import org.jukeboxmc.api.entity.passive.EntityHuman
+import org.jukeboxmc.api.form.Form
+import org.jukeboxmc.api.form.FormListener
 import org.jukeboxmc.api.inventory.CursorInventory
 import org.jukeboxmc.api.inventory.EnderChestInventory
 import org.jukeboxmc.api.inventory.Inventory
@@ -137,4 +139,11 @@ interface Player : EntityHuman, CommandSender {
 
     fun setFlying(flying: Boolean)
 
+    fun sendServerSettings(player: Player)
+
+    fun <R : Any> showForm(form: Form<R>): FormListener<R>
+
+    fun <R : Any> setSettingsForm(form: Form<R>): FormListener<R>
+
+    fun removeSettingsForm()
 }

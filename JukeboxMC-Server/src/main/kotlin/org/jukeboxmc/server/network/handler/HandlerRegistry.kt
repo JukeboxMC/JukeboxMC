@@ -31,6 +31,7 @@ class HandlerRegistry {
             packetHandlerMap[CommandRequestPacket::class.java] = CommandRequestHandler()
             packetHandlerMap[EntityEventPacket::class.java] = EntityEventHandler()
             packetHandlerMap[RespawnPacket::class.java] = RespawnHandler()
+            packetHandlerMap[ModalFormResponsePacket::class.java] = ModalFormResponseHandler()
         }
 
         fun getPacketHandler(clazz: Class<out BedrockPacket?>?): PacketHandler<out BedrockPacket>? {

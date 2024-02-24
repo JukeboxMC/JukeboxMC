@@ -10,7 +10,6 @@ import org.jukeboxmc.api.entity.passive.EntityHuman
 import org.jukeboxmc.api.event.player.PlayerPickupItemEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
-import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.api.player.Player
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.JukeboxEntity
@@ -27,16 +26,6 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
     private var pickupDelay: Long = 0
     private var thrower: EntityHuman? = null
 
-    init {
-        this.setMotion(
-            Vector(
-                Math.random().toFloat() * 0.2F - 0.1f,
-                0.2f,
-                Math.random().toFloat() * 0.2F - 0.1f,
-            )
-        )
-    }
-
     override fun tick(currentTick: Long) {
         super.tick(currentTick)
         if (this.isClosed()) return
@@ -45,18 +34,12 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
 
         velocity.setY(this.getVelocity().getY() - 0.04F)
 
-        this.checkObstruction(
-            this.getLocation().getX(),
-            (getBoundingBox().getMinY() + getBoundingBox().getMaxY()) / 2.0F,
-            this.getLocation().getZ()
-        )
+        this.checkObstruction(this.getLocation().getX(), (getBoundingBox().getMinY() + getBoundingBox().getMaxY()) / 2.0F, this.getLocation().getZ())
         this.move(velocity)
 
         var friction = 0.98f
         if (this.isOnGround()) {
-            friction = this.getWorld()
-                .getBlock(this.getBlockX(), floor(this.getBoundingBox().getMinY()).toInt() - 1, this.getBlockZ())
-                .getFriction() * 0.96F
+            friction = this.getWorld().getBlock(this.getBlockX(), floor(this.getBoundingBox().getMinY()).toInt() - 1, this.getBlockZ()).getFriction() * 0.96F
         }
 
         velocity.setX(velocity.getX() * friction)
@@ -106,9 +89,7 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
         if (JukeboxServer.getInstance().getCurrentTick() > pickupDelay && !isClosed() && !player.isDead()) {
             val playerPickupItemEvent = PlayerPickupItemEvent(player, item)
             JukeboxServer.getInstance().getPluginManager().callEvent(playerPickupItemEvent)
-            if (playerPickupItemEvent.isCancelled() || !player.getInventory()
-                    .canAddItem(playerPickupItemEvent.getItem())
-            ) {
+            if (playerPickupItemEvent.isCancelled() || !player.getInventory().canAddItem(playerPickupItemEvent.getItem())) {
                 return
             }
             val takeItemEntityPacket = TakeItemEntityPacket()

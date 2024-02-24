@@ -31,46 +31,19 @@ class JukeboxCommandManager : CommandManager {
         this.commands.add(TimeCommand())
 
         for (command in this.commands) {
-            val clazz = command::class.java
-            val commandData: CommandData.Builder = CommandData.builder()
-            if (clazz.isAnnotationPresent(Name::class.java)) {
-                commandData.name = clazz.getAnnotation(Name::class.java).value
-            }
-            if (clazz.isAnnotationPresent(Description::class.java)) {
-                commandData.description = clazz.getAnnotation(Description::class.java).value
-            }
-            if (clazz.isAnnotationPresent(Permission::class.java)) {
-                val annotation = clazz.getAnnotation(Permission::class.java)
-                commandData.permission = annotation.value
-                commandData.permissionMessage = annotation.permissionMessage
-            }
-            if (clazz.isAnnotationPresent(Alias::class.java)) {
-                commandData.aliases.addAll(clazz.getAnnotation(Alias::class.java).value)
-            }
-            val overloads: MutableList<Array<CommandParameter>> = mutableListOf()
-            for (parameters in clazz.getAnnotationsByType(Parameters::class.java)) {
-                val commandParameter: MutableList<CommandParameter> = mutableListOf()
-                for (parameter in parameters.parameter) {
-                    if (parameter.enumValues.isEmpty()) {
-                        commandParameter.add(CommandParameter(parameter.name, CommandParamType.valueOf(parameter.parameterType.name), parameter.optional))
-                    } else {
-                        commandParameter.add(CommandParameter(parameter.name, parameter.enumValues.toMutableList(), parameter.optional))
-                    }
-                }
-                overloads.add(commandParameter.toTypedArray())
-            }
-            commandData.overloads.addAll(overloads)
-            command.setCommandData(commandData.build())
+            this.initCommand(command)
         }
     }
 
     override fun registerCommand(command: Command) {
-        this.commands.add(command)
+        if (this.commands.add(command)) {
+            this.initCommand(command)
+        }
     }
 
     fun handleCommandInput(commandSender: CommandSender, input: String) {
         try {
-            val commandParts = input.substring(1).split(" ").toTypedArray()
+            val commandParts = this.parseQuoteAware(input.substring(1))
             val commandIdentifier = commandParts[0]
             var consumed = 0
             var targetCommand: Command? = null
@@ -93,7 +66,7 @@ class JukeboxCommandManager : CommandManager {
                 commandSender.sendMessage("The command for $commandIdentifier could not be found")
                 return
             }
-            val commandData = targetCommand.getCommandData()?: return
+            val commandData = targetCommand.getCommandData() ?: return
             if (commandData.permission != null && commandData.permissionMessage && !commandSender.hasPermission(commandData.permission!!)) {
                 commandSender.sendMessage("§cYou don't have permission to do that")
                 return
@@ -108,6 +81,64 @@ class JukeboxCommandManager : CommandManager {
         } catch (e: Throwable) {
             e.printStackTrace()
         }
+    }
+
+    private fun initCommand(command: Command) {
+        val clazz = command::class.java
+        val commandData: CommandData.Builder = CommandData.builder()
+        if (clazz.isAnnotationPresent(Name::class.java)) {
+            commandData.name = clazz.getAnnotation(Name::class.java).value
+        }
+        if (clazz.isAnnotationPresent(Description::class.java)) {
+            commandData.description = clazz.getAnnotation(Description::class.java).value
+        }
+        if (clazz.isAnnotationPresent(Permission::class.java)) {
+            val annotation = clazz.getAnnotation(Permission::class.java)
+            commandData.permission = annotation.value
+            commandData.permissionMessage = annotation.permissionMessage
+        }
+        if (clazz.isAnnotationPresent(Alias::class.java)) {
+            commandData.aliases.addAll(clazz.getAnnotation(Alias::class.java).value)
+        }
+        val overloads: MutableList<Array<CommandParameter>> = mutableListOf()
+        for (parameters in clazz.getAnnotationsByType(Parameters::class.java)) {
+            val commandParameter: MutableList<CommandParameter> = mutableListOf()
+            for (parameter in parameters.parameter) {
+                if (parameter.enumValues.isEmpty()) {
+                    commandParameter.add(CommandParameter(parameter.name, CommandParamType.valueOf(parameter.parameterType.name), parameter.optional))
+                } else {
+                    commandParameter.add(CommandParameter(parameter.name, parameter.enumValues.toMutableList(), parameter.optional))
+                }
+            }
+            overloads.add(commandParameter.toTypedArray())
+        }
+        commandData.overloads.addAll(overloads)
+        command.setCommandData(commandData.build())
+    }
+
+    private fun parseQuoteAware(input: String): Array<String> {
+        val args = arrayListOf<String>()
+        var insideQuote = false
+        var builder = StringBuilder()
+        val chars = input.toCharArray()
+        var i = 0
+        while (i < input.length) {
+            val c = chars[i]
+            if (c == '\\' && i < input.length - 1 && chars[i + 1] == '\"') {
+                builder.append("\"")
+                i++
+            } else if (c == '\"') {
+                insideQuote = !insideQuote
+            } else if (c == ' ' && !insideQuote) {
+                args.add(builder.toString())
+                builder = StringBuilder()
+            } else {
+                builder.append(c)
+            }
+            i++
+        }
+        args.add(builder.toString())
+        return args.toTypedArray()
     }
 
 }

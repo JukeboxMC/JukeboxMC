@@ -20,6 +20,7 @@ import org.jukeboxmc.api.world.World
 import org.jukeboxmc.api.world.chunk.Chunk
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.block.palette.Palette
+import org.jukeboxmc.server.block.palette.RuntimeDataSerializer
 import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.extensions.toJukeboxBlock
 import org.jukeboxmc.server.extensions.toJukeboxBlockEntity
@@ -325,11 +326,11 @@ class JukeboxChunk(
         return this.sum(subChunks) { o -> if (o == null) 0 else 1 }
     }
 
-    fun writeTo(byteBuf: ByteBuf) {
+    private fun writeTo(byteBuf: ByteBuf, serializer: RuntimeDataSerializer<JukeboxBlock>?) {
         var lastBiomes: Palette<Biome> = Palette(Biome.PLAINS)
         for (subChunk in this.subChunks) {
             if (subChunk == null) continue
-            subChunk.writeToNetwork(byteBuf)
+            subChunk.writeToNetwork(byteBuf, serializer)
         }
 
         for (subChunk in subChunks) {
@@ -365,7 +366,7 @@ class JukeboxChunk(
             levelChunkPacket.isCachingEnabled = false
             levelChunkPacket.isRequestSubChunks = false
             levelChunkPacket.subChunksLength = this.getAvailableSubChunks()
-            writeTo(byteBuf.retain())
+            writeTo(byteBuf.retain(), null)
             levelChunkPacket.data = byteBuf
             levelChunkPacket
         } finally {

@@ -1,6 +1,8 @@
 package org.jukeboxmc.server.player
 
 import com.google.common.collect.ImmutableSet
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.data.command.CommandData
@@ -19,6 +21,8 @@ import org.jukeboxmc.api.event.inventory.InventoryOpenEvent
 import org.jukeboxmc.api.event.player.*
 import org.jukeboxmc.api.extensions.asType
 import org.jukeboxmc.api.extensions.isType
+import org.jukeboxmc.api.form.Form
+import org.jukeboxmc.api.form.FormListener
 import org.jukeboxmc.api.inventory.EnderChestInventory
 import org.jukeboxmc.api.inventory.Inventory
 import org.jukeboxmc.api.item.Armor
@@ -38,6 +42,7 @@ import org.jukeboxmc.api.world.Sound
 import org.jukeboxmc.api.world.chunk.Chunk
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.blockentity.JukeboxBlockEntitySign
+import org.jukeboxmc.server.entity.Attribute
 import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.entity.JukeboxEntityLiving
 import org.jukeboxmc.server.entity.passive.JukeboxEntityHuman
@@ -85,6 +90,12 @@ class JukeboxPlayer(
     private val smithingTableInventory = JukeboxSmithingTableInventory(this)
     private val anvilInventory = JukeboxAnvilInventory(this)
     private val stoneCutterInventory = JukeboxStoneCutterInventory(this)
+
+    private var hasOpenForm = false
+    private var formId = 0
+    private var serverSettingsForm = -1
+    private val forms: Int2ObjectMap<Form<out Any>> = Int2ObjectOpenHashMap()
+    private val formListeners: Int2ObjectMap<FormListener<out Any>> = Int2ObjectOpenHashMap()
 
     init {
         session.packetHandler = object : BedrockPacketHandler {
@@ -666,6 +677,79 @@ class JukeboxPlayer(
     override fun setFlying(flying: Boolean) {
         this.adventureSettings.set(AdventureSettings.Type.FLYING, flying)
         this.adventureSettings.update()
+    }
+
+    override fun sendServerSettings(player: Player) {
+        if (this.serverSettingsForm != -1) {
+            val form = this.forms[this.serverSettingsForm]
+            val packet = ServerSettingsResponsePacket()
+            packet.formId = this.serverSettingsForm
+            packet.formData = form.toJson().toString()
+            this.sendPacket(packet)
+        }
+    }
+
+    override fun <R : Any> showForm(form: Form<R>): FormListener<R> {
+        if (this.hasOpenForm) {
+            return FormListener()
+        }
+        val formId = this.formId++
+        this.forms[formId] = form
+        val formListener = FormListener<R>()
+        this.formListeners[formId] = formListener
+        val json = form.toJson().toString()
+        val packet = ModalFormRequestPacket()
+        packet.formId = formId
+        packet.formData = json
+        this.sendPacket(packet)
+        this.hasOpenForm = true
+        // dirty fix to show image on button list
+        this.server.getScheduler().scheduleDelayed({
+            this.setAttributes(Attribute.PLAYER_LEVEL, this.getLevel().toFloat())
+        }, 5)
+        return formListener
+    }
+
+    override fun <R : Any> setSettingsForm(form: Form<R>): FormListener<R> {
+        if (this.serverSettingsForm != -1) {
+            this.removeSettingsForm()
+        }
+        val formId = this.formId++
+        this.forms[formId] = form
+        val formListener = FormListener<R>()
+        this.formListeners[formId] = formListener
+        this.serverSettingsForm = formId
+        return formListener
+    }
+
+    override fun removeSettingsForm() {
+        if (this.serverSettingsForm != -1) {
+            this.forms.remove(this.serverSettingsForm)
+            this.formListeners.remove(this.serverSettingsForm)
+            this.serverSettingsForm = -1
+        }
+    }
+
+    fun parseGUIResponse(formId: Int, json: String) {
+        val form = this.forms[formId]
+        if (form != null) {
+            val formListener = this.formListeners[formId]
+            if (this.serverSettingsForm != formId) {
+                this.forms.remove(formId)
+                this.formListeners.remove(formId)
+            }
+            this.hasOpenForm = false
+            if (json == "null") {
+                formListener.getCloseConsumer().accept(null)
+            } else {
+                val response = form.parseResponse(json)
+                if (response == null) {
+                    formListener.getCloseConsumer().accept(null)
+                } else {
+                    formListener.getResponseConsumer().accept(response)
+                }
+            }
+        }
     }
 
     override fun damage(event: EntityDamageEvent): Boolean {

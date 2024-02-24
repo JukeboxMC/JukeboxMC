@@ -8,6 +8,7 @@ import org.jukeboxmc.api.world.Biome
 import org.jukeboxmc.api.world.chunk.SubChunk
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.block.palette.Palette
+import org.jukeboxmc.server.block.palette.RuntimeDataSerializer
 import org.jukeboxmc.server.extensions.toJukeboxBlock
 import org.jukeboxmc.server.world.chunk.serializer.NetworkIdSerializer
 
@@ -143,12 +144,12 @@ class JukeboxSubChunk(
         return this.blockPalette
     }
 
-    fun writeToNetwork(byteBuf: ByteBuf) {
+    fun writeToNetwork(byteBuf: ByteBuf, serializer: RuntimeDataSerializer<JukeboxBlock>?) {
         byteBuf.writeByte(this.subChunkVersion)
         byteBuf.writeByte(this.blockPalette.size)
         byteBuf.writeByte(this.subChunkIndex)
         for (blockPalette in this.blockPalette) {
-            blockPalette!!.writeToNetwork(byteBuf, NetworkIdSerializer())
+            blockPalette!!.writeToNetwork(byteBuf, serializer ?: NetworkIdSerializer())
         }
     }
 
