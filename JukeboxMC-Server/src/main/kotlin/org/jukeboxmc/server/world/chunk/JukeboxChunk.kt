@@ -330,7 +330,7 @@ class JukeboxChunk(
         var lastBiomes: Palette<Biome> = Palette(Biome.PLAINS)
         for (subChunk in this.subChunks) {
             if (subChunk == null) continue
-            subChunk.writeToNetwork(byteBuf, serializer)
+            subChunk.writeToNetwork(byteBuf , serializer)
         }
 
         for (subChunk in subChunks) {
