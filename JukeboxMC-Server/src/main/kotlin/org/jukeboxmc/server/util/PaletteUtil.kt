@@ -10,6 +10,7 @@ import org.jukeboxmc.server.block.RuntimeBlockDefinition
 import java.io.ByteArrayInputStream
 import java.util.*
 
+
 /**
  * @author Kaooot
  * @version 1.0
@@ -21,6 +22,8 @@ class PaletteUtil {
         private val entityIdentifiers: NbtMap
         private val creativeItems = mutableListOf<ItemData>()
         private val gson = Gson()
+
+        val identifierToBlockRuntimeId = mutableMapOf<String, Int>()
 
         init {
             this.biomeDefinitions = this.readNbt("biome_definitions.dat")
@@ -64,6 +67,7 @@ class PaletteUtil {
                     itemBuilder.netId(netIdCounter)
 
                     this.creativeItems.add(itemBuilder.build())
+                    this.identifierToBlockRuntimeId[identifier] = blockRuntimeId
                 }
             }
         }

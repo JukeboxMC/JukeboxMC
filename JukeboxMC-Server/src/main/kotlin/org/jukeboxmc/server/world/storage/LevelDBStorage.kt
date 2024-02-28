@@ -58,7 +58,6 @@ class LevelDBStorage(
         if (this.worldData == null) {
             this.worldData = this.createWorldData(worldName)
         }
-
         val dbFolder = path.resolve("db").toFile()
         if (!dbFolder.exists()) dbFolder.mkdirs()
 
@@ -75,44 +74,46 @@ class LevelDBStorage(
                 val abilities: NbtMap = nbt.getCompound("abilities")
 
                 val gameRuleValueList = mutableListOf<GameRuleValue>()
-                gameRuleValueList.add(GameRuleValue("commandblockoutput", nbt.getBoolean("commandblockoutput")))
                 gameRuleValueList.add(GameRuleValue("commandblocksenabled", nbt.getBoolean("commandblocksenabled")))
+                gameRuleValueList.add(GameRuleValue("commandblockoutput", nbt.getBoolean("commandblockoutput")))
                 gameRuleValueList.add(GameRuleValue("dodaylightcycle", nbt.getBoolean("dodaylightcycle")))
                 gameRuleValueList.add(GameRuleValue("doentitydrops", nbt.getBoolean("doentitydrops")))
                 gameRuleValueList.add(GameRuleValue("dofiretick", nbt.getBoolean("dofiretick")))
-                gameRuleValueList.add(GameRuleValue("doimmediaterespawn", nbt.getBoolean("doimmediaterespawn")))
                 gameRuleValueList.add(GameRuleValue("doinsomnia", nbt.getBoolean("doinsomnia")))
-                gameRuleValueList.add(GameRuleValue("dolimitedcrafting", nbt.getBoolean("dolimitedcrafting")))
+                gameRuleValueList.add(GameRuleValue("doimmediaterespawn", nbt.getBoolean("doimmediaterespawn")))
                 gameRuleValueList.add(GameRuleValue("domobloot", nbt.getBoolean("domobloot")))
                 gameRuleValueList.add(GameRuleValue("domobspawning", nbt.getBoolean("domobspawning")))
                 gameRuleValueList.add(GameRuleValue("dotiledrops", nbt.getBoolean("dotiledrops")))
+
                 gameRuleValueList.add(GameRuleValue("doweathercycle", nbt.getBoolean("doweathercycle")))
                 gameRuleValueList.add(GameRuleValue("drowningdamage", nbt.getBoolean("drowningdamage")))
                 gameRuleValueList.add(GameRuleValue("falldamage", nbt.getBoolean("falldamage")))
                 gameRuleValueList.add(GameRuleValue("firedamage", nbt.getBoolean("firedamage")))
-                gameRuleValueList.add(GameRuleValue("freezedamage", nbt.getBoolean("freezedamage")))
-                gameRuleValueList.add(GameRuleValue("functioncommandlimit", nbt.getInt("functioncommandlimit")))
                 gameRuleValueList.add(GameRuleValue("keepinventory", nbt.getBoolean("keepinventory")))
                 gameRuleValueList.add(GameRuleValue("maxcommandchainlength", nbt.getInt("maxcommandchainlength")))
                 gameRuleValueList.add(GameRuleValue("mobgriefing", nbt.getBoolean("mobgriefing")))
                 gameRuleValueList.add(GameRuleValue("naturalregeneration", nbt.getBoolean("naturalregeneration")))
+                gameRuleValueList.add(GameRuleValue("pvp", nbt.getBoolean("pvp")))
+                gameRuleValueList.add(GameRuleValue("randomtickspeed", nbt.getInt("randomtickspeed")))
+                gameRuleValueList.add(GameRuleValue("sendcommandfeedback", nbt.getBoolean("sendcommandfeedback")))
+                gameRuleValueList.add(GameRuleValue("showcoordinates", nbt.getBoolean("showcoordinates")))
+                gameRuleValueList.add(GameRuleValue("showdeathmessages", nbt.getBoolean("showdeathmessages")))
+                gameRuleValueList.add(GameRuleValue("spawnradius", nbt.getInt("spawnradius")))
+                gameRuleValueList.add(GameRuleValue("tntexplodes", nbt.getBoolean("tntexplodes")))
+                gameRuleValueList.add(GameRuleValue("showtags", nbt.getBoolean("showtags")))
+                gameRuleValueList.add(GameRuleValue("freezedamage", nbt.getBoolean("freezedamage")))
+                gameRuleValueList.add(GameRuleValue("respawnblocksexplode", nbt.getBoolean("respawnblocksexplode")))
+                gameRuleValueList.add(GameRuleValue("showbordereffect", nbt.getBoolean("showbordereffect")))
+                gameRuleValueList.add(GameRuleValue("functioncommandlimit", nbt.getInt("functioncommandlimit")))
+                gameRuleValueList.add(GameRuleValue("dolimitedcrafting", nbt.getBoolean("dolimitedcrafting")))
                 gameRuleValueList.add(
                     GameRuleValue(
                         "playerssleepingpercentage",
                         nbt.getBoolean("playerssleepingpercentage")
                     )
                 )
-                gameRuleValueList.add(GameRuleValue("pvp", nbt.getBoolean("pvp")))
-                gameRuleValueList.add(GameRuleValue("randomtickspeed", nbt.getInt("randomtickspeed")))
-                gameRuleValueList.add(GameRuleValue("recipesunlock", nbt.getBoolean("recipesunlock")))
-                gameRuleValueList.add(GameRuleValue("respawnblocksexplode", nbt.getBoolean("respawnblocksexplode")))
-                gameRuleValueList.add(GameRuleValue("sendcommandfeedback", nbt.getBoolean("sendcommandfeedback")))
-                gameRuleValueList.add(GameRuleValue("showbordereffect", nbt.getBoolean("showbordereffect")))
-                gameRuleValueList.add(GameRuleValue("showcoordinates", nbt.getBoolean("showcoordinates")))
-                gameRuleValueList.add(GameRuleValue("showdeathmessages", nbt.getBoolean("showdeathmessages")))
-                gameRuleValueList.add(GameRuleValue("showtags", nbt.getBoolean("showtags")))
-                gameRuleValueList.add(GameRuleValue("spawnradius", nbt.getInt("spawnradius")))
-                gameRuleValueList.add(GameRuleValue("tntexplodes", nbt.getBoolean("tntexplodes")))
+                //gameRuleValueList.add(GameRuleValue("recipesunlock", nbt.getBoolean("recipesunlock")))
+
                 return WorldData(
                     gameRuleValueList,
                     nbt.getString("BiomeOverride"),
