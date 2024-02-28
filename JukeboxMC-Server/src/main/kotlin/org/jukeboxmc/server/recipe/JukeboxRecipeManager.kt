@@ -7,24 +7,24 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.NetworkRecipeData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.RecipeData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipeData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ComplexAliasDescriptor
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor
-import org.jukeboxmc.api.Server
 import org.jukeboxmc.api.extensions.fromJson
-import org.jukeboxmc.server.JukeboxServer
+import org.jukeboxmc.api.recipe.Recipe
+import org.jukeboxmc.api.recipe.RecipeManager
+import org.jukeboxmc.api.recipe.ShapedRecipe
+import org.jukeboxmc.api.recipe.ShapelessRecipe
 import org.jukeboxmc.server.block.RuntimeBlockDefinition
+import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.util.ItemPalette
 import org.jukeboxmc.server.util.PaletteUtil
 import java.util.*
 
 
-class RecipeManager {
+class JukeboxRecipeManager : RecipeManager {
 
     private val craftingData: MutableList<RecipeData> = mutableListOf()
     private val containerMixData: MutableList<ContainerMixData> = mutableListOf()
@@ -81,7 +81,7 @@ class RecipeManager {
                                 .build()
                         )
                     }
-                    /*
+
                     this.craftingData.add(
                         ShapelessRecipeData.shapeless(
                             id,
@@ -93,7 +93,7 @@ class RecipeManager {
                             netId
                         )
                     )
-                     */
+
                 } else if (type == CraftingDataType.SHAPED) {
                     val identifier = jsonObject["id"].asString
                     val block = jsonObject["block"].asString
@@ -145,9 +145,9 @@ class RecipeManager {
                     for (y in 0 until height) {
                         for (x in 0 until width) {
                             val value = jsonObject["shape"].asJsonArray[y].asString[x]
-                            if (charMap.containsKey(value)){
+                            if (charMap.containsKey(value)) {
                                 inputItems.add(charMap[value]!!)
-                            }else{
+                            } else {
                                 inputItems.add(ItemDescriptorWithCount.fromItem(ItemData.AIR))
                             }
                         }
@@ -178,7 +178,7 @@ class RecipeManager {
                         priority,
                         netId
                     )
-                    //this.craftingData.add(shaped)
+                    this.craftingData.add(shaped)
                 } else if (type == CraftingDataType.SMITHING_TRANSFORM) {
                     val id = jsonObject["id"].asString
                     val block = jsonObject["block"].asString
@@ -226,38 +226,80 @@ class RecipeManager {
                         .count(resultObject["count"].asInt)
                         .build()
 
-                    //this.craftingData.add(SmithingTransformRecipeData.of(id, baseDescriptor, additionDescriptor, templateDescriptor, resultDescriptor, block, netId))
+                    this.craftingData.add(
+                        SmithingTransformRecipeData.of(
+                            id,
+                            baseDescriptor,
+                            additionDescriptor,
+                            templateDescriptor,
+                            resultDescriptor,
+                            block,
+                            netId
+                        )
+                    )
                 } else if (type == CraftingDataType.SMITHING_TRIM) {
                     val id = jsonObject["id"].asString
                     val block = jsonObject["block"].asString
                     val netId = jsonObject["netId"].asInt
 
                     val baseObject = jsonObject["base"].asJsonObject
-                    val baseDescriptor = ItemDescriptorWithCount(ItemTagDescriptor(baseObject["itemTag"].asString), baseObject["count"].asInt)
+                    val baseDescriptor = ItemDescriptorWithCount(
+                        ItemTagDescriptor(baseObject["itemTag"].asString),
+                        baseObject["count"].asInt
+                    )
 
                     val additionObject = jsonObject["addition"].asJsonObject
-                    val additionDescriptor = ItemDescriptorWithCount(ItemTagDescriptor(additionObject["itemTag"].asString), additionObject["count"].asInt)
+                    val additionDescriptor = ItemDescriptorWithCount(
+                        ItemTagDescriptor(additionObject["itemTag"].asString),
+                        additionObject["count"].asInt
+                    )
 
                     val templateObject = jsonObject["template"].asJsonObject
-                    val templateDescriptor = ItemDescriptorWithCount(ItemTagDescriptor(templateObject["itemTag"].asString), templateObject["count"].asInt)
+                    val templateDescriptor = ItemDescriptorWithCount(
+                        ItemTagDescriptor(templateObject["itemTag"].asString),
+                        templateObject["count"].asInt
+                    )
 
-                    //this.craftingData.add(SmithingTrimRecipeData.of(id, baseDescriptor, additionDescriptor, templateDescriptor, block, netId))
+                    this.craftingData.add(
+                        SmithingTrimRecipeData.of(
+                            id,
+                            baseDescriptor,
+                            additionDescriptor,
+                            templateDescriptor,
+                            block,
+                            netId
+                        )
+                    )
                 } else if (type == CraftingDataType.MULTI) {
-                    //this.craftingData.add(MultiRecipeData.of(UUID.fromString(jsonObject["uuid"].asString), jsonObject["netId"].asInt))
+                    this.craftingData.add(
+                        MultiRecipeData.of(
+                            UUID.fromString(jsonObject["uuid"].asString),
+                            jsonObject["netId"].asInt
+                        )
+                    )
                 } else if (type == CraftingDataType.FURNACE_DATA) {
                     val block = jsonObject["block"].asString
                     val inputObject = jsonObject["input"].asJsonObject
                     val outputObject = jsonObject["output"].asJsonObject
-                    /*
-                    this.craftingData.add(FurnaceRecipeData.of(
-                        ItemPalette.getRuntimeId(inputObject["id"].asString),
-                        ItemData.builder()
-                            .definition(SimpleItemDefinition(outputObject["id"].asString, ItemPalette.getRuntimeId(outputObject["id"].asString), false))
-                            .damage(0)
-                            .count(outputObject["count"].asInt)
-                            .build(),
-                        block))
-                     */
+
+                    this.craftingData.add(
+                        FurnaceRecipeData.of(
+                            ItemPalette.getRuntimeId(inputObject["id"].asString),
+                            ItemData.builder()
+                                .definition(
+                                    SimpleItemDefinition(
+                                        outputObject["id"].asString,
+                                        ItemPalette.getRuntimeId(outputObject["id"].asString),
+                                        false
+                                    )
+                                )
+                                .damage(0)
+                                .count(outputObject["count"].asInt)
+                                .build(),
+                            block
+                        )
+                    )
+
                 }
             }
 
@@ -284,16 +326,8 @@ class RecipeManager {
         }
     }
 
-    fun registerRecipe(recipeId: String, recipe: Recipe) {
-        try {
-            craftingData.add(recipe.doRegister(this, recipeId))
-        } catch (e: java.lang.RuntimeException) {
-            JukeboxServer.getInstance().getLogger().error("Could not register recipe $recipeId!")
-        }
-    }
-
     fun getResultItem(recipeNetworkId: Int): List<JukeboxItem> {
-        val collect = craftingData.stream()
+        val collect = this.craftingData.stream()
             .filter { recipeData: RecipeData? -> recipeData is NetworkRecipeData }
             .map { recipeData: RecipeData -> recipeData as NetworkRecipeData }.toList()
         val optional = collect.stream()
@@ -319,7 +353,7 @@ class RecipeManager {
     }
 
     fun getHighestNetworkId(): Int {
-        return craftingData.stream()
+        return this.craftingData.stream()
             .filter { recipeData: RecipeData? -> recipeData is NetworkRecipeData }
             .map { recipeData: RecipeData -> recipeData as NetworkRecipeData }
             .max(Comparator.comparing { obj: NetworkRecipeData -> obj.netId })
@@ -331,4 +365,54 @@ class RecipeManager {
     fun getContainerMixData(): MutableList<ContainerMixData> = this.containerMixData
 
     fun getPotionMixData(): MutableList<PotionMixData> = this.potionMixData
+
+    override fun registerRecipe(recipeId: String, recipe: Recipe) {
+        if (recipe is ShapelessRecipe) {
+            this.craftingData.add(recipe.doRegister(this, recipeId))
+        } else if (recipe is ShapedRecipe) {
+            this.craftingData.add(recipe.doRegister(this, recipeId))
+        }
+    }
+
+    fun ShapelessRecipe.doRegister(recipeManager: JukeboxRecipeManager, recipeId: String): RecipeData {
+        return ShapelessRecipeData.shapeless(
+            recipeId,
+            this.getIngredients().map { ItemDescriptorWithCount.fromItem(it.toJukeboxItem().toItemData()) }
+                .toMutableList(),
+            this.getOutputs().map { it.toJukeboxItem().toItemData() }.toMutableList(),
+            UUID.randomUUID(),
+            "crafting_table",
+            1,
+            recipeManager.getHighestNetworkId() + 1
+        )
+    }
+
+    fun ShapedRecipe.doRegister(recipeManager: JukeboxRecipeManager, recipeId: String): RecipeData {
+        val ingredients: MutableList<ItemDescriptorWithCount> = mutableListOf()
+        for (s in this.getPattern()!!) {
+            val chars = s.toCharArray()
+            for (c in chars) {
+                if (c == ' ') {
+                    ingredients.add(ItemDescriptorWithCount.EMPTY)
+                    continue
+                }
+                ingredients.add(
+                    ItemDescriptorWithCount.fromItem(
+                        this.getIngredients()[c]!!.toJukeboxItem().toItemData()
+                    )
+                )
+            }
+        }
+        return ShapedRecipeData.shaped(
+            recipeId,
+            this.getPattern()!![0].length,
+            this.getPattern()!!.size,
+            ingredients,
+            this.getOutputs().map { it.toJukeboxItem().toItemData() }.toMutableList(),
+            UUID.randomUUID(),
+            "crafting_table",
+            1,
+            recipeManager.getHighestNetworkId() + 1
+        )
+    }
 }

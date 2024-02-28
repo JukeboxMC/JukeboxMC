@@ -48,8 +48,7 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.network.BedrockServer
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.plugin.JukeboxPluginManager
-import org.jukeboxmc.server.recipe.RecipeManager
-import org.jukeboxmc.server.recipe.ShapelessRecipe
+import org.jukeboxmc.server.recipe.JukeboxRecipeManager
 import org.jukeboxmc.server.resourcepack.JukeboxResourcePackManager
 import org.jukeboxmc.server.scheduler.JukeboxScheduler
 import org.jukeboxmc.server.util.ServerKiller
@@ -93,7 +92,7 @@ class JukeboxServer : Server {
     private var operators: JukeboxOperators
     private var commandManager: JukeboxCommandManager
     private var consoleSender: ConsoleSender
-    private var recipeManager: RecipeManager
+    private var jukeboxRecipeManager: JukeboxRecipeManager
 
     private lateinit var serverConfig: Config
 
@@ -140,8 +139,7 @@ class JukeboxServer : Server {
         }
 
         this.commandManager = JukeboxCommandManager()
-        this.recipeManager = RecipeManager()
-        this.recipeManager.registerRecipe("minecraft:stick", ShapelessRecipe().addIngredient(Item.create(ItemType.STICK)).addOutput(Item.create(ItemType.STONE_SWORD)))
+        this.jukeboxRecipeManager = JukeboxRecipeManager()
 
         this.pluginManager = JukeboxPluginManager(this)
         this.pluginManager.enableAllPlugins(PluginLoadOrder.STARTUP)
@@ -384,8 +382,8 @@ class JukeboxServer : Server {
         return this.consoleSender
     }
 
-    fun getRecipeManager(): RecipeManager {
-        return this.recipeManager
+    override fun getRecipeManager(): JukeboxRecipeManager {
+        return this.jukeboxRecipeManager
     }
 
     override fun dispatchCommand(commandSender: CommandSender, command: String) {

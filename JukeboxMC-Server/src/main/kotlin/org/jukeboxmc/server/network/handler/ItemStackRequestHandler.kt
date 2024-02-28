@@ -36,7 +36,6 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         for (request in packet.requests) {
             val itemEntryMap: MutableMap<Int, MutableList<ItemStackResponseSlot>> = mutableMapOf()
             for (action in request.actions) {
-                println(action.type)
                 when (action.type) {
                     ItemStackRequestActionType.CONSUME -> {
                         val itemEntry: ItemStackResponseSlot = handleConsumeAction(player, action as ConsumeAction)[0]
