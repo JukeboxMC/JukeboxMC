@@ -162,6 +162,14 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 val creativeContentPacket = CreativeContentPacket()
                 creativeContentPacket.contents = PaletteUtil.getCreativeItems().toTypedArray()
                 player.sendPacket(creativeContentPacket)
+
+                val craftingDataPacket = CraftingDataPacket()
+                craftingDataPacket.craftingData.addAll(server.getRecipeManager().getCraftingData())
+                craftingDataPacket.containerMixData.addAll(server.getRecipeManager().getContainerMixData())
+                craftingDataPacket.potionMixData.addAll(server.getRecipeManager().getPotionMixData())
+                craftingDataPacket.isCleanRecipes = true
+                println(craftingDataPacket)
+                player.sendPacket(craftingDataPacket)
             }
 
             else -> {}
