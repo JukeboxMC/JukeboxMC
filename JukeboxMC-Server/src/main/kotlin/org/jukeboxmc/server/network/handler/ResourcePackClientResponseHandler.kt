@@ -169,40 +169,7 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 creativeContentPacket.contents = PaletteUtil.getCreativeItems().toTypedArray()
                 player.sendPacket(creativeContentPacket)
 
-
-                //[ItemDescriptorWithCount(descriptor=DefaultDescriptor(itemId=SimpleItemDefinition(identifier=minecraft:stick, runtimeId=323, componentBased=false), auxValue=32767), count=1)]
-                val input: MutableList<ItemDescriptorWithCount> = LinkedList()
-                input.add(
-                    ItemDescriptorWithCount.fromItem(
-                        ItemData.builder()
-                            .definition(SimpleItemDefinition("minecraft:stick", 323, false))
-                            .damage(0)
-                            .count(1)
-                            .build()
-                    )
-                )
-
-                val output: MutableList<ItemData> = LinkedList()
-                output.add(
-                    ItemData.builder()
-                        .definition(SimpleItemDefinition("minecraft:stone_sword", 315, false))
-                        .damage(0)
-                        .count(1)
-                        .build()
-                )
-
-                val shapeless = ShapelessRecipeData.shapeless(
-                    "jukeboxmc:sword",
-                    input,
-                    output,
-                    UUID.randomUUID(),
-                    "crafting_table",
-                    1,
-                    1
-                )
-
                 val craftingDataPacket = CraftingDataPacket()
-                //craftingDataPacket.craftingData.add(shapeless)
                 craftingDataPacket.craftingData.addAll(server.getRecipeManager().getCraftingData())
                 craftingDataPacket.containerMixData.addAll(server.getRecipeManager().getContainerMixData())
                 craftingDataPacket.potionMixData.addAll(server.getRecipeManager().getPotionMixData())
