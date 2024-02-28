@@ -143,13 +143,15 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.gamerules.addAll(worldData.gameRuleData.map { it.toNetwork() }.toList())
                 player.sendPacket(startGamePacket)
 
-                player.getSession().peer.codecHelper.itemDefinitions = SimpleDefinitionRegistry.builder<ItemDefinition>()
-                    .addAll(startGamePacket.itemDefinitions)
-                    .build()
+                player.getSession().peer.codecHelper.itemDefinitions =
+                    SimpleDefinitionRegistry.builder<ItemDefinition>()
+                        .addAll(startGamePacket.itemDefinitions)
+                        .build()
 
-                player.getSession().peer.codecHelper.blockDefinitions = SimpleDefinitionRegistry.builder<BlockDefinition>()
-                    .addAll(BlockPalette.getBlockDefinitions())
-                    .build()
+                player.getSession().peer.codecHelper.blockDefinitions =
+                    SimpleDefinitionRegistry.builder<BlockDefinition>()
+                        .addAll(BlockPalette.getBlockDefinitions())
+                        .build()
 
                 val availableEntityIdentifiersPacket = AvailableEntityIdentifiersPacket()
                 availableEntityIdentifiersPacket.identifiers = PaletteUtil.getEntityIdentifiers()
