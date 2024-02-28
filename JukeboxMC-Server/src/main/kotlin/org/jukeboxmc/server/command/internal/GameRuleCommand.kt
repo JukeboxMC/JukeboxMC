@@ -18,7 +18,7 @@ import org.jukeboxmc.api.world.gamerule.GameRule
             "dotiledrops", "doweathercycle", "drowningdamage", "falldamage", "firedamage", "keepinventory",
             "maxcommandchainlength", "mobgriefing", "naturalregeneration", "pvp", "randomtickspeed", "sendcommandfeedback",
             "showcoordinates", "showdeathmessages", "spawnradius", "tntexplodes", "showtags", "freezedamage",
-            "respawnblocksexplode", "showbordereffect", "functioncommandlimit", "recipesunlock", "dolimitedcrafting",
+            "respawnblocksexplode", "showbordereffect", "functioncommandlimit", "dolimitedcrafting",
             "playerssleepingpercentage",
     ), optional = false),
     Parameter("value", enumValues = arrayOf("true", "false"), optional = false)
@@ -30,7 +30,7 @@ import org.jukeboxmc.api.world.gamerule.GameRule
             "dotiledrops", "doweathercycle", "drowningdamage", "falldamage", "firedamage", "keepinventory",
             "maxcommandchainlength", "mobgriefing", "naturalregeneration", "pvp", "randomtickspeed", "sendcommandfeedback",
             "showcoordinates", "showdeathmessages", "spawnradius", "tntexplodes", "showtags", "freezedamage",
-            "respawnblocksexplode", "showbordereffect", "functioncommandlimit", "recipesunlock", "dolimitedcrafting",
+            "respawnblocksexplode", "showbordereffect", "functioncommandlimit", "dolimitedcrafting",
             "playerssleepingpercentage",
     ), optional = false),
     Parameter("value", ParameterType.INT, optional = false)

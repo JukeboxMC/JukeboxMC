@@ -16,6 +16,7 @@ import org.jukeboxmc.api.logger.Logger
 import org.jukeboxmc.api.player.GameMode
 import org.jukeboxmc.api.player.Player
 import org.jukeboxmc.api.plugin.PluginManager
+import org.jukeboxmc.api.recipe.RecipeManager
 import org.jukeboxmc.api.resourcepack.ResourcePackManager
 import org.jukeboxmc.api.scheduler.Scheduler
 import org.jukeboxmc.api.world.Dimension
@@ -109,6 +110,8 @@ interface Server {
     fun getPluginManager(): PluginManager
 
     fun getCommandManager(): CommandManager
+
+    fun getRecipeManager(): RecipeManager
 
     fun registerGenerator(name: String, clazz: Class<out Generator>, vararg dimension: Dimension)
 

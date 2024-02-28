@@ -36,8 +36,8 @@ enum class GameRule(
     RESPAWN_BLOCKS_EXPLODE("respawnblocksexplode", true, Type.BOOLEAN),
     SHOW_BORDER_EFFECT("showbordereffect", true, Type.BOOLEAN),
     FUNCTION_COMMAND_LIMIT("functioncommandlimit", 10000, Type.INT),
-    RECIPESUNLOCK("recipesunlock", true, Type.BOOLEAN),
-    DO_LIMITED_CRAFTING("dolimitedcrafting", true, Type.BOOLEAN),
+    //RECIPESUNLOCK("recipesunlock", true, Type.BOOLEAN),
+    DO_LIMITED_CRAFTING("dolimitedcrafting", false, Type.BOOLEAN),
     PLAYERS_SLEEPING_PERCENTAGE("playerssleepingpercentage", 100, Type.INT);
 
     enum class Type {
@@ -49,19 +49,5 @@ enum class GameRule(
         fun fromIdentifier(identifier: String): GameRule? {
             return entries.find { it.identifier.equals(identifier, ignoreCase = true) }
         }
-
-        fun parseByteToBoolean(value: Byte): Boolean {
-            return value == 1.toByte()
-        }
-
-        val gameRuleIdentifier = arrayOf(
-                "commandblocksenabled", "commandblockoutput", "dodaylightcycle",
-                "doentitydrops", "dofiretick", "doinsomnia", "doimmediaterespawn", "domobloot", "domobspawning",
-                "dotiledrops", "doweathercycle", "drowningdamage", "falldamage", "firedamage", "keepinventory",
-                "maxcommandchainlength", "mobgriefing", "naturalregeneration", "pvp", "randomtickspeed", "sendcommandfeedback",
-                "showcoordinates", "showdeathmessages", "spawnradius", "tntexplodes", "showtags", "freezedamage",
-                "respawnblocksexplode", "showbordereffect", "functioncommandlimit", "recipesunlock", "dolimitedcrafting",
-                "playerssleepingpercentage",
-        )
     }
 }

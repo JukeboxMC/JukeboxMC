@@ -21,11 +21,13 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.item.JukeboxEntityItem
 import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.inventory.ContainerInventory
+import org.jukeboxmc.server.inventory.CraftingGridInventory
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.PaletteUtil
 import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
 
@@ -70,7 +72,22 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                         this.handleCraftCreativeAction(player, action as CraftCreativeAction)
                     }
 
-                    ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {}
+                    ItemStackRequestActionType.CRAFT_RECIPE -> {
+                        this.handleCraftRecipeAction(player, (action as CraftRecipeAction), request)
+                    }
+
+                    ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL -> {
+                        responses.addAll(
+                            handleCraftRecipeOptionalAction(
+                                player,
+                                (action as CraftRecipeOptionalAction),
+                                request
+                            )
+                        )
+                    }
+
+                    ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
+                    }
                     else -> {
                         server.getLogger()
                             .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
@@ -98,6 +115,50 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             player.sendPacket(itemStackResponsePacket)
         }
     }
+
+    private fun handleCraftResult(
+        player: JukeboxPlayer,
+        action: CraftResultsDeprecatedAction,
+        request: ItemStackRequest
+    ): Collection<ItemStackResponse?> {
+        val craftingGridInventory: CraftingGridInventory = player.getCraftingGridInventory()
+        val itemEntries: MutableList<ItemStackResponseSlot> = LinkedList()
+        for (slot in craftingGridInventory.getOffset() until craftingGridInventory.getSize() + craftingGridInventory.getOffset()) {
+            val item: Item = craftingGridInventory.getItem(slot)
+            itemEntries.add(
+                ItemStackResponseSlot(
+                    slot.toByte().toInt(),
+                    slot.toByte().toInt(),
+                    item.getAmount().toByte().toInt(),
+                    item.getStackNetworkId(),
+                    item.getDisplayName(),
+                    item.getDurability()
+                )
+            )
+        }
+        val containerEntryList: MutableList<ItemStackResponseContainer> = LinkedList()
+        containerEntryList.add(ItemStackResponseContainer(ContainerSlotType.CRAFTING_INPUT, itemEntries))
+        return listOf(ItemStackResponse(ItemStackResponseStatus.OK, request.requestId, containerEntryList))
+    }
+
+    private fun handleCraftRecipeOptionalAction(
+        player: JukeboxPlayer,
+        action: CraftRecipeOptionalAction,
+        request: ItemStackRequest
+    ): Collection<ItemStackResponse> {
+        return emptyList<ItemStackResponse>()
+    }
+
+    private fun handleCraftRecipeAction(
+        player: JukeboxPlayer,
+        action: CraftRecipeAction,
+        request: ItemStackRequest
+    ): List<ItemStackResponse> {
+        val resultItem: List<JukeboxItem> = JukeboxServer.getInstance().getRecipeManager().getResultItem(action.recipeNetworkId)
+        player.getCreativeCacheInventory().setItem(0, resultItem[0])
+        return emptyList()
+    }
+
 
     private fun handleConsumeAction(
         player: JukeboxPlayer,
@@ -355,7 +416,10 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 destinationInventory, player, sourceItem, destinationItem, source.slot
             )
             JukeboxServer.getInstance().getPluginManager().callEvent(inventoryClickEvent)
-            if (inventoryClickEvent.isCancelled() || sourceInventory.getType() == InventoryType.ARMOR && sourceItem.hasEnchantment(EnchantmentType.CURSE_OF_BINDING)) {
+            if (inventoryClickEvent.isCancelled() || sourceInventory.getType() == InventoryType.ARMOR && sourceItem.hasEnchantment(
+                    EnchantmentType.CURSE_OF_BINDING
+                )
+            ) {
                 sourceInventory.setItem(source.slot, sourceItem)
                 return listOf(
                     ItemStackResponse(ItemStackResponseStatus.ERROR, itemStackRequest.requestId, emptyList())
@@ -641,9 +705,11 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             ContainerSlotType.CURSOR -> {
                 player.getCursorInventory().setCursorItem(item)
             }
+
             ContainerSlotType.OFFHAND -> {
                 player.getOffHandInventory().setOffHandItem(item)
             }
+
             else -> (this.getInventory(player, containerSlotType) as ContainerInventory).setItem(
                 slot,
                 item,
