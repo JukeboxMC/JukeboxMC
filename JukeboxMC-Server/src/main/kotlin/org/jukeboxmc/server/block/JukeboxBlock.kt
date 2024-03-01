@@ -425,7 +425,8 @@ open class JukeboxBlock(
                 location!!.getBlockY(),
                 location!!.getBlockZ(),
                 layer,
-                this)
+                this
+            )
             loadedChunk.setChanged(true)
         }
         return this as B
@@ -501,7 +502,7 @@ open class JukeboxBlock(
     }
 
     private fun correctTool0(blockToolType: ToolType, item: JukeboxItem, blockType: BlockType): Boolean {
-        return if ((blockType == BlockType.LEAVES && item.getToolType() == ToolType.HOE) || (blockType == BlockType.LEAVES2 && item.getToolType() == ToolType.HOE)) {
+        return if (blockType.isLeaves() && item.getToolType() == ToolType.HOE) {
             blockToolType == ToolType.SHEARS && item.getToolType() == ToolType.HOE
         } else if (blockType == BlockType.BAMBOO && item.getToolType() == ToolType.SWORD) {
             blockToolType == ToolType.AXE && item.getToolType() == ToolType.SWORD
@@ -517,7 +518,7 @@ open class JukeboxBlock(
     }
 
     private fun toolType0(item: JukeboxItem, blockType: BlockType): ToolType {
-        if ((blockType == BlockType.LEAVES && item.getToolType() == ToolType.HOE) || (blockType == BlockType.LEAVES2 && item.getToolType() == ToolType.HOE)) return ToolType.SHEARS
+        if (blockType.isLeaves() && item.getToolType() == ToolType.HOE) return ToolType.SHEARS
         if (item.getToolType() == ToolType.SWORD) return ToolType.SWORD
         if (item.getToolType() == ToolType.SHOVEL) return ToolType.SHOVEL
         if (item.getToolType() == ToolType.PICKAXE) return ToolType.PICKAXE
@@ -537,7 +538,7 @@ open class JukeboxBlock(
             } else 1.0
         }
         if (toolType == ToolType.SHEARS) {
-            if (blockType.isWool() || blockType == BlockType.LEAVES || blockType == BlockType.LEAVES2) {
+            if (blockType.isWool() || blockType.isLeaves()) {
                 return 5.0
             } else if (blockType == BlockType.WEB) {
                 return 15.0

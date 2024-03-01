@@ -32,7 +32,7 @@ class BlockBigDripleaf(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
 
         if (!blockDown.getType().isOneOf(
                 BlockType.BIG_DRIPLEAF,
-                BlockType.GRASS,
+                BlockType.GRASS_BLOCK,
                 BlockType.DIRT,
                 BlockType.DIRT_WITH_ROOTS,
                 BlockType.MYCELIUM,

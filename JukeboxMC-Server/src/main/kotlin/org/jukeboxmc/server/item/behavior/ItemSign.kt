@@ -10,7 +10,7 @@ class ItemSign(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemTy
     override fun toBlock(): Block {
         var blockType: BlockType = BlockType.AIR
         when(this.getType()) {
-            ItemType.OAK_SIGN -> blockType = BlockType.OAK_STANDING_SIGN
+            ItemType.OAK_SIGN -> blockType = BlockType.STANDING_SIGN
             ItemType.SPRUCE_SIGN -> blockType = BlockType.SPRUCE_STANDING_SIGN
             ItemType.BIRCH_SIGN -> blockType = BlockType.BIRCH_STANDING_SIGN
             ItemType.JUNGLE_SIGN -> blockType = BlockType.JUNGLE_STANDING_SIGN

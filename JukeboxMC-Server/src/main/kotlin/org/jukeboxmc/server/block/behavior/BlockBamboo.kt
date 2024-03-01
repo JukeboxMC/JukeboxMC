@@ -38,7 +38,7 @@ class BlockBamboo(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
 
         if (!blockDownType.isOneOf(BlockType.BAMBOO, BlockType.BAMBOO_SAPLING)) {
             if (!blockDownType.isOneOf(
-                    BlockType.GRASS,
+                    BlockType.GRASS_BLOCK,
                     BlockType.DIRT,
                     BlockType.SAND,
                     BlockType.GRAVEL,
@@ -122,7 +122,7 @@ class BlockBamboo(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
             }
         } else if (!blockDownType.isOneOf(
                 BlockType.BAMBOO,
-                BlockType.GRASS,
+                BlockType.GRASS_BLOCK,
                 BlockType.DIRT,
                 BlockType.SAND,
                 BlockType.GRAVEL,
@@ -147,7 +147,7 @@ class BlockBamboo(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
             if (!blockDown.getType().isOneOf(
                     BlockType.BAMBOO,
                     BlockType.BAMBOO_SAPLING,
-                    BlockType.GRASS,
+                    BlockType.GRASS_BLOCK,
                     BlockType.DIRT,
                     BlockType.SAND,
                     BlockType.GRAVEL

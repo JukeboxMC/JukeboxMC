@@ -30,7 +30,7 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         val blockAbove = world.getBlock(placePosition.add(0F, 1F, 0F))
         val blockDown = world.getBlock(placePosition.subtract(0F, 1F, 0F))
 
-        if (blockAbove.getType() == BlockType.AIR && (blockDown.getType() == BlockType.GRASS || blockDown.getType() == BlockType.DIRT)) {
+        if (blockAbove.getType() == BlockType.AIR && (blockDown.getType() == BlockType.GRASS_BLOCK || blockDown.getType() == BlockType.DIRT)) {
             if (!this.isUpperBlock()) {
                 val blockDoublePlant = Block.create(BlockType.DOUBLE_PLANT) as BlockDoublePlant
                 blockDoublePlant.setLocation(Location(world, placePosition.add(0F, 1F, 0F)))

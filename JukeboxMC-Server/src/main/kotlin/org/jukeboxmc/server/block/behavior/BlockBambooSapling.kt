@@ -40,10 +40,10 @@ class BlockBambooSapling(identifier: Identifier, blockStates: NbtMap?) : Jukebox
     ): Boolean {
         val blockDown = this.getRelative(BlockFace.DOWN)
         if (!blockDown.getType().isOneOf(
-                BlockType.GRASS,
+                BlockType.GRASS_BLOCK,
                 BlockType.DIRT,
                 BlockType.SAND,
-                BlockType.GRASS,
+                BlockType.GRASS_BLOCK,
                 BlockType.PODZOL
             )
         ) {
@@ -79,7 +79,7 @@ class BlockBambooSapling(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         if (updateReason == UpdateReason.NORMAL) {
             val blockDown = this.getRelative(BlockFace.DOWN)
             if (!blockDown.getType().isOneOf(
-                    BlockType.GRASS,
+                    BlockType.GRASS_BLOCK,
                     BlockType.DIRT,
                     BlockType.SAND,
                     BlockType.GRAVEL,

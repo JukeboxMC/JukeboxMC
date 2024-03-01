@@ -27,7 +27,7 @@ class BlockPinkPetals(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
     ): Boolean {
         val blockDown = world.getBlock(placePosition).getRelative(BlockFace.DOWN)
         if (!blockDown.getType().isOneOf(
-                BlockType.GRASS,
+                BlockType.GRASS_BLOCK,
                 BlockType.DIRT,
                 BlockType.FARMLAND,
                 BlockType.PODZOL,

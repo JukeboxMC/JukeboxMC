@@ -3,7 +3,7 @@
     "toolType": "PICKAXE",
     "tierType": "WOODEN"
   },
-  "minecraft:grass": {
+  "minecraft:grass_block": {
     "toolType": "SHOVEL",
     "tierType": "NONE"
   },
@@ -11,7 +11,27 @@
     "toolType": "SHOVEL",
     "tierType": "NONE"
   },
-  "minecraft:planks": {
+  "minecraft:oak_planks": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:spruce_planks": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_planks": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_planks": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_planks": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_planks": {
     "toolType": "AXE",
     "tierType": "NONE"
   },
@@ -19,11 +39,51 @@
     "toolType": "SHOVEL",
     "tierType": "NONE"
   },
-  "minecraft:log": {
+  "minecraft:oak_log": {
     "toolType": "AXE",
     "tierType": "NONE"
   },
-  "minecraft:leaves": {
+  "minecraft:spruce_log": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_log": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_log": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_log": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_log": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:oak_leaves": {
+    "toolType": "HOE",
+    "tierType": "NONE"
+  },
+  "minecraft:spruce_leaves": {
+    "toolType": "HOE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_leaves": {
+    "toolType": "HOE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_leaves": {
+    "toolType": "HOE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_leaves": {
+    "toolType": "HOE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_leaves": {
     "toolType": "HOE",
     "tierType": "NONE"
   },
@@ -279,25 +339,57 @@
     "toolType": "PICKAXE",
     "tierType": "WOODEN"
   },
-  "minecraft:double_wooden_slab": {
+  "minecraft:oak_double_slab": {
     "toolType": "AXE",
     "tierType": "NONE"
   },
-  "minecraft:wooden_slab": {
+  "minecraft:spruce_double_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_double_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_double_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_double_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_double_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:oak_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:spruce_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_slab": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_slab": {
     "toolType": "AXE",
     "tierType": "NONE"
   },
   "minecraft:stained_hardened_clay": {
     "toolType": "PICKAXE",
     "tierType": "WOODEN"
-  },
-  "minecraft:leaves2": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:log2": {
-    "toolType": "AXE",
-    "tierType": "NONE"
   },
   "minecraft:acacia_stairs": {
     "toolType": "AXE",
@@ -763,7 +855,27 @@
     "toolType": "PICKAXE",
     "tierType": "WOODEN"
   },
-  "minecraft:wood": {
+  "minecraft:oak_wood": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:spruce_wood": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:birch_wood": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:jungle_wood": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:acacia_wood": {
+    "toolType": "AXE",
+    "tierType": "NONE"
+  },
+  "minecraft:dark_oak_wood": {
     "toolType": "AXE",
     "tierType": "NONE"
   },

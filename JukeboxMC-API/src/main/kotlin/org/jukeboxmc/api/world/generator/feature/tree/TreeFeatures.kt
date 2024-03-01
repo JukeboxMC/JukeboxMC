@@ -11,13 +11,13 @@ import org.jukeboxmc.api.world.generator.populator.TreePopulator
 object TreeFeatures {
 
     // TODO update leaf type if necessary
-    fun createOak(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.OAK_LOG), Block.create(BlockType.LEAVES), 4, 2, 0, 2))
+    fun createOak(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.OAK_LOG), Block.create(BlockType.OAK_LEAVES), 4, 2, 0, 2))
 
-    fun createBirch(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.BIRCH_LOG), Block.create(BlockType.LEAVES), 5, 2, 0, 2))
+    fun createBirch(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.BIRCH_LOG), Block.create(BlockType.BIRCH_LEAVES), 5, 2, 0, 2))
 
-    fun createSuperBirch(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.BIRCH_LOG), Block.create(BlockType.LEAVES), 5, 2, 6, 2))
+    fun createSuperBirch(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.BIRCH_LOG), Block.create(BlockType.BIRCH_LEAVES), 5, 2, 6, 2))
 
-    fun createJungle(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.JUNGLE_LOG), Block.create(BlockType.LEAVES), 4, 8, 0, 2))
+    fun createJungle(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.JUNGLE_LOG), Block.create(BlockType.JUNGLE_LEAVES), 4, 8, 0, 2))
 
-    fun createSwampOak(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.OAK_LOG), Block.create(BlockType.LEAVES), 5, 3, 0, 3))
+    fun createSwampOak(): TreePopulator = TreePopulator(StraightBlobTree(Block.create(BlockType.OAK_LOG), Block.create(BlockType.OAK_LEAVES), 5, 3, 0, 3))
 }

@@ -21,7 +21,7 @@ abstract class Populator {
         for (y in chunk.getMaxY() downTo chunk.getMinY()) {
             val block = manager.getBlock(x, y, z, 0)
 
-            if (block.getType() != BlockType.AIR && block.getType() != BlockType.LEAVES && block.getType() != BlockType.LEAVES2 && block.getType() != BlockType.AZALEA_LEAVES && block.getType() != BlockType.AZALEA_LEAVES_FLOWERED && block.getType() != BlockType.MANGROVE_LEAVES && block.getType() != BlockType.SNOW_LAYER) {
+            if (block.getType() != BlockType.AIR && !block.getType().isLeaves() && block.getType() != BlockType.AZALEA_LEAVES && block.getType() != BlockType.AZALEA_LEAVES_FLOWERED && block.getType() != BlockType.MANGROVE_LEAVES && block.getType() != BlockType.SNOW_LAYER) {
                 break
             }
 

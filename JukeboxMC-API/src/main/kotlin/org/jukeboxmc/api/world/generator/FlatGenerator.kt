@@ -8,7 +8,7 @@ import org.jukeboxmc.api.world.chunk.Chunk
 
 class FlatGenerator : Generator() {
 
-    private val blockGrass: Block = Block.create(BlockType.GRASS)
+    private val blockGrass: Block = Block.create(BlockType.GRASS_BLOCK)
     private val blockDirt: Block = Block.create(BlockType.DIRT)
     private val blockBedrock: Block = Block.create(BlockType.BEDROCK)
 
