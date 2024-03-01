@@ -17,10 +17,14 @@ class JukeboxSmallCraftingGridInventory(inventoryHolder: InventoryHolder) : Craf
     }
 
     override fun getItem(slot: Int): Item {
-        return super.getItem(slot - 28)
+        return super.getItem(slot - this.getOffset())
     }
 
     override fun setItem(slot: Int, item: Item, sendContents: Boolean) {
-        super.setItem(slot - 28, item, sendContents)
+        super.setItem(slot - this.getOffset(), item, sendContents)
+    }
+
+    override fun getOffset(): Int {
+        return 28
     }
 }

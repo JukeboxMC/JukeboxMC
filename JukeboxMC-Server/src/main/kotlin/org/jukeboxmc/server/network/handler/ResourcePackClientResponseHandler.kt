@@ -5,6 +5,10 @@ import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.*
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.common.SimpleDefinitionRegistry
 import org.cloudburstmc.protocol.common.util.OptionalBoolean
@@ -143,13 +147,15 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.gamerules.addAll(worldData.gameRuleData.map { it.toNetwork() }.toList())
                 player.sendPacket(startGamePacket)
 
-                player.getSession().peer.codecHelper.itemDefinitions = SimpleDefinitionRegistry.builder<ItemDefinition>()
-                    .addAll(startGamePacket.itemDefinitions)
-                    .build()
+                player.getSession().peer.codecHelper.itemDefinitions =
+                    SimpleDefinitionRegistry.builder<ItemDefinition>()
+                        .addAll(startGamePacket.itemDefinitions)
+                        .build()
 
-                player.getSession().peer.codecHelper.blockDefinitions = SimpleDefinitionRegistry.builder<BlockDefinition>()
-                    .addAll(BlockPalette.getBlockDefinitions())
-                    .build()
+                player.getSession().peer.codecHelper.blockDefinitions =
+                    SimpleDefinitionRegistry.builder<BlockDefinition>()
+                        .addAll(BlockPalette.getBlockDefinitions())
+                        .build()
 
                 val availableEntityIdentifiersPacket = AvailableEntityIdentifiersPacket()
                 availableEntityIdentifiersPacket.identifiers = PaletteUtil.getEntityIdentifiers()
@@ -162,6 +168,13 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 val creativeContentPacket = CreativeContentPacket()
                 creativeContentPacket.contents = PaletteUtil.getCreativeItems().toTypedArray()
                 player.sendPacket(creativeContentPacket)
+
+                val craftingDataPacket = CraftingDataPacket()
+                craftingDataPacket.craftingData.addAll(server.getRecipeManager().getCraftingData())
+                craftingDataPacket.containerMixData.addAll(server.getRecipeManager().getContainerMixData())
+                craftingDataPacket.potionMixData.addAll(server.getRecipeManager().getPotionMixData())
+                craftingDataPacket.isCleanRecipes = true
+                player.sendPacket(craftingDataPacket)
             }
 
             else -> {}
