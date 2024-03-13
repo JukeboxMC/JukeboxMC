@@ -9,15 +9,16 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataTyp
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ComplexAliasDescriptor
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor
+import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.extensions.fromJson
-import org.jukeboxmc.api.recipe.Recipe
-import org.jukeboxmc.api.recipe.RecipeManager
-import org.jukeboxmc.api.recipe.ShapedRecipe
-import org.jukeboxmc.api.recipe.ShapelessRecipe
+import org.jukeboxmc.api.item.ItemType
+import org.jukeboxmc.api.recipe.*
 import org.jukeboxmc.server.block.RuntimeBlockDefinition
 import org.jukeboxmc.server.extensions.toJukeboxItem
+import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.util.ItemPalette
 import org.jukeboxmc.server.util.PaletteUtil
@@ -30,13 +31,17 @@ class JukeboxRecipeManager : RecipeManager {
     private val containerMixData: MutableList<ContainerMixData> = mutableListOf()
     private val potionMixData: MutableList<PotionMixData> = mutableListOf()
 
+    private val shapelessRecipes: MutableList<ShapelessRecipe> = mutableListOf()
+    private val shapedRecipes: MutableList<ShapedRecipe> = mutableListOf()
+    private val smeltingRecipes: MutableList<SmeltingRecipe> = mutableListOf()
+
     init {
         val stream = ItemPalette::class.java.classLoader.getResourceAsStream("recipes.json")
             ?: throw RuntimeException("The item palette was not found")
         val gson = Gson()
 
-        stream.reader().use {
-            val fromJosn = gson.fromJson<JsonObject>(it)
+        stream.reader().use { inputStreamReader ->
+            val fromJosn = gson.fromJson<JsonObject>(inputStreamReader)
             val recipes = fromJosn.getAsJsonArray("recipes")
             for (element in recipes) {
                 val jsonObject = element.asJsonObject
@@ -94,6 +99,11 @@ class JukeboxRecipeManager : RecipeManager {
                         )
                     )
 
+                    this.shapelessRecipes.add(ShapelessRecipe().apply {
+                        this.getIngredients().addAll(inputItems.map { JukeboxItem(it.toItem(), false) }.toList())
+                        this.getOutputs().addAll(outputItems.map { JukeboxItem(it, false) }.toList())
+                    })
+
                 } else if (type == CraftingDataType.SHAPED) {
                     val identifier = jsonObject["id"].asString
                     val block = jsonObject["block"].asString
@@ -140,15 +150,13 @@ class JukeboxRecipeManager : RecipeManager {
                         }
                     }
 
-                    //Thread.sleep(1000* 5)
-
                     for (y in 0 until height) {
                         for (x in 0 until width) {
                             val value = jsonObject["shape"].asJsonArray[y].asString[x]
                             if (charMap.containsKey(value)) {
                                 inputItems.add(charMap[value]!!)
                             } else {
-                                inputItems.add(ItemDescriptorWithCount.fromItem(ItemData.AIR))
+                                inputItems.add(ItemDescriptorWithCount.EMPTY)
                             }
                         }
                     }
@@ -167,7 +175,7 @@ class JukeboxRecipeManager : RecipeManager {
                                 .build()
                         )
                     }
-                    val shaped = ShapedRecipeData.shaped(
+                    this.craftingData.add(ShapedRecipeData.shaped(
                         identifier,
                         width,
                         height,
@@ -177,8 +185,30 @@ class JukeboxRecipeManager : RecipeManager {
                         block,
                         priority,
                         netId
-                    )
-                    this.craftingData.add(shaped)
+                    ))
+
+                    val shaped: MutableList<String> = mutableListOf()
+                    for (shapeElement in jsonObject["shape"].asJsonArray) {
+                        shaped.add(shapeElement.asString)
+                    }
+
+                    this.shapedRecipes.add(ShapedRecipe().apply {
+                        this.getIngredients().putAll(charMap.mapValues { (_, value) ->
+                            if (value.descriptor is DefaultDescriptor) {
+                                val itemData = value.toItem()
+                                if (ItemRegistry.getItemTypeFromIdentifier().containsKey(Identifier.fromString(itemData.definition.identifier))) {
+                                    JukeboxItem(itemData, false)
+                                } else {
+                                    JukeboxItem(ItemType.AIR, false)
+                                }
+                            } else {
+                                JukeboxItem(ItemType.AIR, false)
+                            }
+                        }.toMutableMap())
+
+                        this.getOutputs().addAll(outputItems.map { JukeboxItem(it, false) }.toList())
+                        this.shape(*shaped.toTypedArray())
+                    })
                 } else if (type == CraftingDataType.SMITHING_TRANSFORM) {
                     val id = jsonObject["id"].asString
                     val block = jsonObject["block"].asString
@@ -282,24 +312,37 @@ class JukeboxRecipeManager : RecipeManager {
                     val inputObject = jsonObject["input"].asJsonObject
                     val outputObject = jsonObject["output"].asJsonObject
 
+                    val inputItemId = ItemPalette.getRuntimeId(inputObject["id"].asString)
+                    val outputItemData = ItemData.builder()
+                        .definition(
+                            SimpleItemDefinition(
+                                outputObject["id"].asString,
+                                ItemPalette.getRuntimeId(outputObject["id"].asString),
+                                false
+                            )
+                        )
+                        .damage(0)
+                        .count(outputObject["count"].asInt)
+                        .build()
+
                     this.craftingData.add(
                         FurnaceRecipeData.of(
-                            ItemPalette.getRuntimeId(inputObject["id"].asString),
-                            ItemData.builder()
-                                .definition(
-                                    SimpleItemDefinition(
-                                        outputObject["id"].asString,
-                                        ItemPalette.getRuntimeId(outputObject["id"].asString),
-                                        false
-                                    )
-                                )
-                                .damage(0)
-                                .count(outputObject["count"].asInt)
-                                .build(),
+                            inputItemId,
+                            outputItemData,
                             block
                         )
                     )
-
+                    val identifier = ItemPalette.getIdentifier(inputItemId)
+                    val itemType = ItemRegistry.getItemType(identifier)
+                    val inputItem = JukeboxItem(itemType, false)
+                    val outputItem = JukeboxItem(outputItemData, false)
+                    this.smeltingRecipes.add(
+                        SmeltingRecipe(
+                            inputItem,
+                            outputItem,
+                            SmeltingRecipe.Type.valueOf(block.uppercase())
+                        )
+                    )
                 }
             }
 
@@ -374,6 +417,22 @@ class JukeboxRecipeManager : RecipeManager {
         }
     }
 
+    override fun registerRecipe(recipe: SmeltingRecipe) {
+        this.craftingData.add(recipe.doRegister())
+    }
+
+    override fun getShapelessRecipes(): List<ShapelessRecipe> {
+        return this.shapelessRecipes.toList()
+    }
+
+    override fun getShapedRecipes(): List<ShapedRecipe> {
+        return this.shapedRecipes.toList()
+    }
+
+    override fun getSmeltingRecipes(): List<SmeltingRecipe> {
+        return this.smeltingRecipes.toList()
+    }
+
     fun ShapelessRecipe.doRegister(recipeManager: JukeboxRecipeManager, recipeId: String): RecipeData {
         return ShapelessRecipeData.shapeless(
             recipeId,
@@ -413,6 +472,14 @@ class JukeboxRecipeManager : RecipeManager {
             "crafting_table",
             1,
             recipeManager.getHighestNetworkId() + 1
+        )
+    }
+
+    fun SmeltingRecipe.doRegister(): RecipeData {
+        return FurnaceRecipeData.of(
+            this.getInput().getNetworkId(),
+            this.getOutput().toJukeboxItem().toItemData(),
+            this.getType().name.lowercase()
         )
     }
 }
