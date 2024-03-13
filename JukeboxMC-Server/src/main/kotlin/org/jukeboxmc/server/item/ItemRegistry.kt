@@ -1606,6 +1606,8 @@ class ItemRegistry {
         fun getBlockClass(itemType: ItemType): Class<out JukeboxItem?>? {
             return itemClassFromItemType[itemType]!!
         }
+
+        fun getItemTypeFromIdentifier() : MutableMap<Identifier, ItemType> = this.itemTypeFromIdentifier
     }
 
 }
