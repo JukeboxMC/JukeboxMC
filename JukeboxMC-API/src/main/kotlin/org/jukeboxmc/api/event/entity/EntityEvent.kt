@@ -7,7 +7,7 @@ open class EntityEvent(
     private val entity: Entity
 ) : Event() {
 
-    fun getEntity(): Entity {
+    open fun getEntity(): Entity {
         return this.entity
     }
 }

@@ -26,10 +26,7 @@ import org.jukeboxmc.api.world.chunk.Chunk
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.block.behavior.BlockLava
 import org.jukeboxmc.server.block.behavior.BlockWater
-import org.jukeboxmc.server.extensions.toJukeboxChunk
-import org.jukeboxmc.server.extensions.toJukeboxPlayer
-import org.jukeboxmc.server.extensions.toJukeboxWorld
-import org.jukeboxmc.server.extensions.toVector3f
+import org.jukeboxmc.server.extensions.*
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 import java.util.*
@@ -104,13 +101,17 @@ open class JukeboxEntity(
 
     }
 
+    open fun getGravity(): Float {
+        return 0F
+    }
+
     private fun getMetaData(): Metadata {
         return this.metadata
     }
 
-    private fun recalculateBoundingBox() {
+    fun recalculateBoundingBox() {
         val height = this.getHeight() * this.getScale()
-        val radius = this.getWidth() * this.getScale() / 2
+        val radius = (this.getWidth() * this.getScale()) / 2
         this.boundingBox.setBounds(
             this.location.getX() - radius,
             this.location.getY(),
@@ -274,7 +275,7 @@ open class JukeboxEntity(
     }
 
     override fun isClosed(): Boolean {
-        return false
+        return this.removed
     }
 
     override fun isOnGround(): Boolean {
@@ -295,6 +296,10 @@ open class JukeboxEntity(
 
     override fun getAge(): Long {
         return this.age
+    }
+
+    override fun setAge(age: Long) {
+        this.age = age
     }
 
     override fun getDirection(): Direction {
@@ -374,12 +379,12 @@ open class JukeboxEntity(
     }
 
     override fun isNameTagAlwaysVisible(): Boolean {
-        return this.metadata.getFlag(EntityFlag.ALWAYS_SHOW_NAME)
+        return this.metadata.getByte(EntityDataTypes.NAMETAG_ALWAYS_SHOW).toBoolean()
     }
 
     override fun setNameTagAlwaysVisible(value: Boolean) {
         if (value != this.isNameTagAlwaysVisible()) {
-            this.updateMetadata(this.metadata.setFlag(EntityFlag.ALWAYS_SHOW_NAME, value))
+            this.updateMetadata(this.metadata.setByte(EntityDataTypes.NAMETAG_ALWAYS_SHOW, if (value) 1 else 0))
         }
     }
 
@@ -494,13 +499,13 @@ open class JukeboxEntity(
 
     override fun remove() {
         if (this is JukeboxPlayer && !this.isSpawned()) return
-
-        this.despawn()
+        this.removed = true
 
         this.getWorld().removeEntity(this)
 
+        this.despawn()
+
         this.dead = true
-        this.removed = true
 
         val chunk = this.getLoadedChunk() ?: return
         chunk.toJukeboxChunk().removeEntity(this)
@@ -566,7 +571,7 @@ open class JukeboxEntity(
         }
         JukeboxServer.getInstance().getPluginManager().callEvent(event)
         if (!event.isCancelled() && event is EntityDamageByEntityEvent) {
-            val damager = event.getDamager()
+            val damager = event.getDamager() ?: return false
             val farAway = damager.getLocation().distanceSquared(this.getLocation()) > (200 * 200)
             var dx: Float = if (farAway) ((Math.random() - Math.random()).toFloat()) else damager.getX() - this.getX()
             var dz: Float = if (farAway) ((Math.random() - Math.random()).toFloat()) else (damager.getZ() - this.getZ())
@@ -659,8 +664,8 @@ open class JukeboxEntity(
         }
 
         this.isCollidedVertically = movY != velocity.getY()
-        this.isCollidedHorizontally = movX != velocity.getX() || movZ != velocity.getZ()
-        this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically
+        this.isCollidedHorizontally = (movX != velocity.getX() || movZ != velocity.getZ())
+        this.isCollided = (this.isCollidedHorizontally || this.isCollidedVertically)
         this.onGround = movY != velocity.getY() && movY < 0
 
         if (movX != velocity.getX()) {
@@ -676,6 +681,17 @@ open class JukeboxEntity(
         }
     }
 
+    fun isCollided(): Boolean {
+        return this.isCollided
+    }
+
+    fun isCollidedVertically(): Boolean {
+        return this.isCollidedVertically
+    }
+
+    fun isCollidedHorizontally(): Boolean {
+        return this.isCollidedHorizontally
+    }
 
     fun checkObstruction(x: Float, y: Float, z: Float) {
         if (location.getWorld().getCollisionCubes(this.boundingBox, this).isEmpty()) {

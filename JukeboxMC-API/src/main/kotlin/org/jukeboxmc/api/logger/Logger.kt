@@ -12,11 +12,11 @@ class Logger(private val logManager: org.apache.logging.log4j.Logger = LogManage
     }
 
     fun error(message: String?) {
-        logManager.info(message)
+        logManager.error(message)
     }
 
     fun warn(message: String?) {
-        logManager.info(message)
+        logManager.warn(message)
     }
 }
 

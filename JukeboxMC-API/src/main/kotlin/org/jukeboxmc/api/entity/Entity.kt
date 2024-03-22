@@ -95,6 +95,8 @@ interface Entity {
 
     fun getAge(): Long
 
+    fun setAge(age: Long)
+
     fun getDirection(): Direction
 
     fun getMaxAirSupply(): Short

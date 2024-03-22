@@ -82,5 +82,8 @@ enum class EntityType {
     ELDER_GUARDIAN,
     ENDER_DRAGON,
     WITHER,
-    ITEM
+    ITEM,
+    ARROW,
+    SNOWBALL,
+    EGG
 }

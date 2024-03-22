@@ -171,7 +171,10 @@ open class Vector : Cloneable {
     }
 
     fun distanceSquared(vector: Vector): Float {
-        return (FastMath.pow((x - vector.x).toDouble(), 2) + FastMath.pow((y - vector.y).toDouble(), 2) + FastMath.pow((z - vector.z).toDouble(), 2)).toFloat()
+        return (FastMath.pow((x - vector.x).toDouble(), 2) + FastMath.pow(
+            (y - vector.y).toDouble(),
+            2
+        ) + FastMath.pow((z - vector.z).toDouble(), 2)).toFloat()
     }
 
     fun squaredLength(): Float {
@@ -196,6 +199,54 @@ open class Vector : Cloneable {
         clone.y = y
         clone.z = z
         return clone
+    }
+
+    fun getIntermediateWithXValue(var1: Vector, x: Float): Vector? {
+        val var4: Float = var1.getX() - this.getX()
+        val var6: Float = var1.getY() - this.getY()
+        val var8: Float = var1.getZ() - this.getZ()
+        return if (var4 * var4 < 1.0000000116860974E-7) {
+            null
+        } else {
+            val var10: Float = (x - this.getX()) / var4
+            if (!(var10 < 0.0) && !(var10 > 1.0)) Vector(
+                this.getX() + var4 * var10,
+                this.getY() + var6 * var10,
+                this.getZ() + var8 * var10
+            ) else null
+        }
+    }
+
+    fun getIntermediateWithYValue(var1: Vector, y: Float): Vector? {
+        val var4: Float = var1.getX() - this.getX()
+        val var6: Float = var1.getY() - this.getY()
+        val var8: Float = var1.getZ() - this.getZ()
+        return if (var6 * var6 < 1.0000000116860974E-7) {
+            null
+        } else {
+            val var10: Float = (y - this.getY()) / var6
+            if (!(var10 < 0.0) && !(var10 > 1.0)) Vector(
+                this.getX() + var4 * var10,
+                this.getY() + var6 * var10,
+                this.getZ() + var8 * var10
+            ) else null
+        }
+    }
+
+    fun getIntermediateWithZValue(var1: Vector, z: Float): Vector? {
+        val var4: Float = var1.getX() - this.getX()
+        val var6: Float = var1.getY() - this.getY()
+        val var8: Float = var1.getZ() - this.getZ()
+        return if (var8 * var8 < 1.0000000116860974E-7) {
+            null
+        } else {
+            val var10: Float = (z - this.getZ()) / var8
+            if (!(var10 < 0.0) && !(var10 > 1.0)) Vector(
+                this.getX() + var4 * var10,
+                this.getY() + var6 * var10,
+                this.getZ() + var8 * var10
+            ) else null
+        }
     }
 
     override fun toString(): String {

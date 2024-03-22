@@ -22,6 +22,7 @@ import org.jukeboxmc.server.extensions.fromVector3i
 import org.jukeboxmc.server.extensions.toJukeboxBlock
 import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.item.JukeboxItem
+import org.jukeboxmc.server.item.behavior.ItemBow
 import org.jukeboxmc.server.player.JukeboxPlayer
 import java.util.concurrent.TimeUnit
 
@@ -120,6 +121,11 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
                 }
             }
         } else if (packet.transactionType == InventoryTransactionType.ITEM_RELEASE) {
+            if (packet.actionType == 0) {
+                if (player.getInventory().getItemInHand().getType() == ItemType.BOW) {
+                    (player.getInventory().getItemInHand() as ItemBow).shoot(player)
+                }
+            }
             player.setAction(false)
         } else {
             player.setAction(false)

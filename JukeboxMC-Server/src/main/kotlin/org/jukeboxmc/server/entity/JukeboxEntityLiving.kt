@@ -56,7 +56,7 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
             if (this.inAirTicks > 0) {
                 this.inAirTicks = 0
             }
-            this.fallDistance = this.highestPosition - this.getLocation().getY()
+            this.fallDistance = (this.highestPosition - this.getLocation().getY())
             if (this.fallDistance > 0) {
                 this.handleFall()
                 this.highestPosition = this.getLocation().getY()
@@ -387,7 +387,7 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
                 this.setAbsorption(absorption - (oldDamage - damageToBeDealt))
             }
         }
-        if (damageToBeDealt < 0) damageToBeDealt = 0F
+      //  if (damageToBeDealt < 0) damageToBeDealt = 0F
 
         val health = this.getHealth() - damageToBeDealt
         if (health > 0) {

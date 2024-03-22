@@ -9,4 +9,8 @@ class BlockAir(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(iden
     override fun canBeReplaced(block: JukeboxBlock): Boolean {
         return true
     }
+
+    override fun canPassThrough(): Boolean {
+        return true
+    }
 }

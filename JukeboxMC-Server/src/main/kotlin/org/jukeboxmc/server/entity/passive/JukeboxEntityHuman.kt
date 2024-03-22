@@ -51,6 +51,9 @@ open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
 
     init {
         this.initInventory()
+        this.getMetadata().setFlag(EntityFlag.CAN_SHOW_NAME, true)
+        this.getMetadata().setByte(EntityDataTypes.NAMETAG_ALWAYS_SHOW, 1)
+        this.setOnGround(true)
 
         this.addAttribute(Attribute.PLAYER_HUNGER)
         this.addAttribute(Attribute.PLAYER_SATURATION)

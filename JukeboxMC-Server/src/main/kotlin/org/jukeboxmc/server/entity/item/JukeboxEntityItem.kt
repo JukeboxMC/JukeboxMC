@@ -7,6 +7,7 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.entity.EntityType
 import org.jukeboxmc.api.entity.item.EntityItem
 import org.jukeboxmc.api.entity.passive.EntityHuman
+import org.jukeboxmc.api.event.entity.ItemDespawnEvent
 import org.jukeboxmc.api.event.player.PlayerPickupItemEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
@@ -52,6 +53,13 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
 
         this.setMotion(velocity)
         this.updateMovement()
+
+        if (this.getAge() >= TimeUnit.MINUTES.toMillis(5) / 50) {
+            val itemDespawnEvent = ItemDespawnEvent(this)
+            JukeboxServer.getInstance().getPluginManager().callEvent(itemDespawnEvent)
+            if (itemDespawnEvent.isCancelled()) return
+            this.remove()
+        }
     }
 
     override fun getName(): String {

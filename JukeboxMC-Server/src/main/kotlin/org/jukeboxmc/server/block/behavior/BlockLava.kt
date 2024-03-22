@@ -18,4 +18,11 @@ class BlockLava(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
    override fun setLiquidDepth(value: Int): Lava {
        return this.setState("liquid_depth", value)
    }
+
+    override fun canCollideCheck(block: JukeboxBlock, value: Boolean): Boolean {
+        if (block is BlockLava) {
+            return value && block.getLiquidDepth() == 0
+        }
+        return false
+    }
 }

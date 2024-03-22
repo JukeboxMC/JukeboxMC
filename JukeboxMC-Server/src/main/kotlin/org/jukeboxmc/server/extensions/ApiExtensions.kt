@@ -218,4 +218,7 @@ fun GameRuleValue.toNetwork(): GameRuleData<Any> {
 fun Boolean.toByte(): Byte {
     return if (this) 1 else 0
 }
+fun Byte.toBoolean(): Boolean {
+    return this.toInt() == 1
+}
 

@@ -18,4 +18,11 @@ class BlockFlowingWater(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
    override fun setLiquidDepth(value: Int): FlowingWater {
        return this.setState("liquid_depth", value)
    }
+
+    override fun canCollideCheck(block: JukeboxBlock, value: Boolean): Boolean {
+        if (block is BlockFlowingWater) {
+            return value && block.getLiquidDepth() == 0
+        }
+        return false
+    }
 }

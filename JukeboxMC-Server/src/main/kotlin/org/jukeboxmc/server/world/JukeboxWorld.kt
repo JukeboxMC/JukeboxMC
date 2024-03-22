@@ -46,7 +46,7 @@ class JukeboxWorld(
     val server: JukeboxServer = JukeboxServer.getInstance()
 ) : World {
 
-    private val entities: MutableMap<Long, JukeboxEntity> = mutableMapOf()
+    private val entities: MutableMap<Long, JukeboxEntity> = Collections.synchronizedMap(mutableMapOf())
     private val chunkManagers: MutableMap<Dimension, ChunkManager> = mutableMapOf()
     private val dimensionGenerator: MutableMap<Dimension, ThreadLocal<Generator>> = mutableMapOf()
     private var levelDBStorage: LevelDBStorage
@@ -100,13 +100,13 @@ class JukeboxWorld(
             this.nextTimeSendTick = currentTick + 12 * 20
         }
 
-        if (this.entities.isNotEmpty()) {
-            for (entity in this.entities.values) {
+        val entitiesCopy = ArrayList<JukeboxEntity>(this.entities.values)
+        if (entitiesCopy.isNotEmpty()) {
+            for (entity in entitiesCopy) {
                 entity.tick(currentTick)
             }
         }
 
-        /*
         while (!this.blockUpdateNormals.isEmpty()) {
             val updateNormal = this.blockUpdateNormals.poll()
             updateNormal.getBlock().toJukeboxBlock().onUpdate(UpdateReason.NORMAL)
@@ -120,7 +120,6 @@ class JukeboxWorld(
                 this.blockUpdateList.addElement(nextTime, block)
             }
         }
-         */
     }
 
     override fun getWorldData(): WorldData {
@@ -650,5 +649,141 @@ class JukeboxWorld(
     fun scheduleBlockUpdate(block: Block, delay: Long) {
         this.blockUpdateList.addElement(this.server.getCurrentTick() + delay, block)
     }
+
+    fun rayTrace(vec3d: Vector, vec3d1: Vector, flag: Boolean, flag1: Boolean, flag2: Boolean): MovingObjectPosition? {
+        var vec3 = vec3d
+        if (!vec3.getX().isNaN() && !vec3.getY().isNaN() && !vec3.getZ().isNaN()) {
+            if (!vec3d1.getX().isNaN() && !vec3d1.getY().isNaN() && !vec3d1.getZ().isNaN()) {
+                val i = vec3d1.getX().toInt()
+                val j = vec3d1.getY().toInt()
+                val k = vec3d1.getZ().toInt()
+                var l = vec3.getX().toInt()
+                var i1 = vec3.getY().toInt()
+                var j1 = vec3.getZ().toInt()
+                val blockposition = Vector(l, i1, j1)
+                val block = getBlock(blockposition).toJukeboxBlock()
+
+                if (!flag1) {
+                    val movingobjectposition = block.collisionRayTrace(blockposition, vec3, vec3d1)
+
+                    if (movingobjectposition != null) {
+                        return movingobjectposition
+                    }
+                }
+
+                var movingobjectposition1: MovingObjectPosition? = null
+                var k1 = 200
+
+                while (k1-- >= 0) {
+                    if (vec3.getX().isNaN() || vec3.getY().isNaN() || vec3.getZ().isNaN()) {
+                        return null
+                    }
+                    if (l == i && i1 == j && j1 == k) {
+                        return if (flag2) movingobjectposition1 else null
+                    }
+
+                    var flag3 = true
+                    var flag4 = true
+                    var flag5 = true
+                    var d0 = 999.0F
+                    var d1 = 999.0F
+                    var d2 = 999.0F
+
+                    if (i > l) {
+                        d0 = l + 1.0F
+                    } else if (i < l) {
+                        d0 = l + 0.0F
+                    } else {
+                        flag3 = false
+                    }
+
+                    if (j > i1) {
+                        d1 = i1 + 1.0F
+                    } else if (j < i1) {
+                        d1 = i1 + 0.0F
+                    } else {
+                        flag4 = false
+                    }
+
+                    if (k > j1) {
+                        d2 = j1 + 1.0F
+                    } else if (k < j1) {
+                        d2 = j1 + 0.0F
+                    } else {
+                        flag5 = false
+                    }
+
+                    var d3 = 999.0F
+                    var d4 = 999.0F
+                    var d5 = 999.0F
+                    val d6 = vec3d1.getX() - vec3d.getX()
+                    val d7 = vec3d1.getY() - vec3d.getY()
+                    val d8 = vec3d1.getZ() - vec3d.getZ()
+
+                    if (flag3) {
+                        d3 = (d0 - vec3d.getX()) / d6
+                    }
+
+                    if (flag4) {
+                        d4 = (d1 - vec3d.getY()) / d7
+                    }
+
+                    if (flag5) {
+                        d5 = (d2 - vec3d.getZ()) / d8
+                    }
+
+                    if (d3 == -0.0F) {
+                        d3 = -1.0E-4F
+                    }
+
+                    if (d4 == -0.0F) {
+                        d4 = -1.0E-4F
+                    }
+
+                    if (d5 == -0.0F) {
+                        d5 = -1.0E-4F
+                    }
+
+                    val enumdirection: BlockFace
+
+                    if (d3 < d4 && d3 < d5) {
+                        enumdirection = if (i > l) BlockFace.WEST else BlockFace.EAST
+                        vec3 = Vector(d0, vec3d.getY() + d7 * d3, vec3d.getZ() + d8 * d3)
+                    } else if (d4 < d5) {
+                        enumdirection = if (j > i1) BlockFace.DOWN else BlockFace.UP
+                        vec3 = Vector(vec3d.getX() + d6 * d4, d1, vec3d.getZ() + d8 * d4)
+                    } else {
+                        enumdirection = if (k > j1) BlockFace.NORTH else BlockFace.SOUTH
+                        vec3 = Vector(vec3d.getX() + d6 * d5, vec3d.getY() + d7 * d5, d2)
+                    }
+
+                    l = vec3d.getBlockX() - if (enumdirection == BlockFace.EAST) 1 else 0
+                    i1 = vec3d.getBlockY() - if (enumdirection == BlockFace.UP) 1 else 0
+                    j1 = vec3d.getBlockZ() - if (enumdirection == BlockFace.SOUTH) 1 else 0
+                    val blockposition1 = Vector(l, i1, j1)
+                    val block1 = getBlock(blockposition1).toJukeboxBlock()
+
+                    if (!flag1) {
+                        if (block1.canCollideCheck(block1, flag)) {
+                            val movingobjectposition2 = block1.collisionRayTrace(blockposition1, vec3d, vec3d1)
+
+                            if (movingobjectposition2 != null) {
+                                return movingobjectposition2
+                            }
+                        } else {
+                            movingobjectposition1 = MovingObjectPosition(MovingObjectPosition.EnumMovingObjectType.MISS, vec3d, enumdirection, blockposition1)
+                        }
+                    }
+                }
+
+                return if (flag2) movingobjectposition1 else null
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
+    }
+
 
 }

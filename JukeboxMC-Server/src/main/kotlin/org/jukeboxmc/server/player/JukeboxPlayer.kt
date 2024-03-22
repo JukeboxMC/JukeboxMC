@@ -893,7 +893,7 @@ class JukeboxPlayer(
             this.server.getPluginManager().callEvent(playerDeathEvent)
             if (playerDeathEvent.dropInventory()) {
                 for (drop in playerDeathEvent.getDrops()) {
-                    //TODO this.getWorld().dropItem(drop, location, null).spawn()
+                    this.getWorld().dropItemNaturally(this.getLocation(), drop)
                 }
                 this.getInventory().clear()
                 this.getCursorInventory().clear()

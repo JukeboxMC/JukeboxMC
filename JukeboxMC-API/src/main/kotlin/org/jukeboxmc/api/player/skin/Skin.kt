@@ -32,7 +32,7 @@ class Skin {
     private var isPremium = false
     private var isPersona = false
     private var isCapeOnClassic = false
-    private var isTrusted = false
+    private var isTrusted = true
     private var isPrimaryUser = true
 
     private var skinAnimations: MutableList<SkinAnimation> = ArrayList()

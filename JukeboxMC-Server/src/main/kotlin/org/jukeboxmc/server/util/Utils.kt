@@ -46,6 +46,15 @@ class Utils {
             return array
         }
 
+        fun ceilOrRound(value: Float): Int {
+            val var2 = value.toInt()
+            return if (value > var2.toDouble()) {
+                var2 + 1
+            } else {
+                var2
+            }
+        }
+
         fun getKey(chunk: JukeboxChunk, encoded: Byte): ByteArray {
             val chunkX = chunk.getX()
             val chunkZ = chunk.getZ()

@@ -1682,6 +1682,7 @@ enum class ItemType {
             TNT_MINECART,
             HOPPER_MINECART,
             BANNER_PATTERN,
+            BOW,
             -> 1
 
             SNOWBALL,

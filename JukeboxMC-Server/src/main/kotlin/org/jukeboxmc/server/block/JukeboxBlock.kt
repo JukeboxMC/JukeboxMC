@@ -23,6 +23,7 @@ import org.jukeboxmc.api.math.AxisAlignedBB
 import org.jukeboxmc.api.math.Location
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.api.player.GameMode
+import org.jukeboxmc.api.world.MovingObjectPosition
 import org.jukeboxmc.api.world.Particle
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.UpdateReason
@@ -556,6 +557,119 @@ open class JukeboxBlock(
         }
     }
 
+
+    fun collisionRayTrace(blockposition: Vector, vec3d: Vector, vec3d1: Vector): MovingObjectPosition? {
+        val vec3dTemp = vec3d.add(-blockposition.getX(), -blockposition.getY(), -blockposition.getZ())
+        val vec3dTemp1 = vec3d1.add(-blockposition.getX(), -blockposition.getY(), -blockposition.getZ())
+        var vec3d2 = vec3dTemp.getIntermediateWithXValue(vec3dTemp1, this.boundingBox!!.getMinX())
+        var vec3d3 = vec3dTemp.getIntermediateWithXValue(vec3dTemp1, this.boundingBox!!.getMaxX())
+        var vec3d4 = vec3dTemp.getIntermediateWithYValue(vec3dTemp1, this.boundingBox!!.getMinY())
+        var vec3d5 = vec3dTemp.getIntermediateWithYValue(vec3dTemp1, this.boundingBox!!.getMaxY())
+        var vec3d6 = vec3dTemp.getIntermediateWithZValue(vec3dTemp1, this.boundingBox!!.getMinZ())
+        var vec3d7 = vec3dTemp.getIntermediateWithZValue(vec3dTemp1, this.boundingBox!!.getMaxZ())
+
+        if (!isVecInsideYZBounds(vec3d2)) {
+            vec3d2 = null
+        }
+
+        if (!isVecInsideYZBounds(vec3d3)) {
+            vec3d3 = null
+        }
+
+        if (!isVecInsideXZBounds(vec3d4)) {
+            vec3d4 = null
+        }
+
+        if (!isVecInsideXZBounds(vec3d5)) {
+            vec3d5 = null
+        }
+
+        if (!isVecInsideXYBounds(vec3d6)) {
+            vec3d6 = null
+        }
+
+        if (!isVecInsideXYBounds(vec3d7)) {
+            vec3d7 = null
+        }
+
+        var vec3d8: Vector? = null
+        if (vec3d2 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d2) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d2
+        }
+        if (vec3d3 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d3) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d3
+        }
+        if (vec3d4 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d4) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d4
+        }
+
+        if (vec3d5 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d5) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d5
+        }
+        if (vec3d6 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d6) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d6
+        }
+        if (vec3d7 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d7) < vec3d.distanceSquared(vec3d8))) {
+            vec3d8 = vec3d7
+        }
+        if (vec3d8 == null) {
+            return null
+        } else {
+            var enumdirection: BlockFace? = null
+
+            if (vec3d8 == vec3d2) {
+                enumdirection = BlockFace.WEST
+            }
+
+            if (vec3d8 == vec3d3) {
+                enumdirection = BlockFace.EAST
+            }
+
+            if (vec3d8 == vec3d4) {
+                enumdirection = BlockFace.DOWN
+            }
+
+            if (vec3d8 == vec3d5) {
+                enumdirection = BlockFace.UP
+            }
+
+            if (vec3d8 == vec3d6) {
+                enumdirection = BlockFace.NORTH
+            }
+
+            if (vec3d8 == vec3d7) {
+                enumdirection = BlockFace.SOUTH
+            }
+
+            return MovingObjectPosition(vec3d8.add(blockposition.getX(), blockposition.getY(), blockposition.getZ()), enumdirection, blockposition)
+        }
+    }
+
+    private fun isVecInsideYZBounds(point: Vector?): Boolean {
+        return point?.let {
+            it.getY() >= this.boundingBox!!.getMinY() && it.getY() <= this.boundingBox!!.getMaxY() && it.getZ() >= this.boundingBox!!.getMinZ() && it.getZ() <= this.boundingBox!!.getMaxZ()
+        } ?: false
+    }
+
+    private fun isVecInsideXZBounds(point: Vector?): Boolean {
+        return point?.let {
+            it.getX() >= this.boundingBox!!.getMinX() && it.getX() <= this.boundingBox!!.getMaxX() && it.getZ() >= this.boundingBox!!.getMinZ() && it.getZ() <= this.boundingBox!!.getMaxZ()
+        } ?: false
+    }
+
+    private fun isVecInsideXYBounds(point: Vector?): Boolean {
+        return point?.let {
+            it.getX() >= this.boundingBox!!.getMinX() && it.getX() <= this.boundingBox!!.getMaxX() && it.getY() >= this.boundingBox!!.getMinY() && it.getY() <= this.boundingBox!!.getMaxY()
+        } ?: false
+    }
+
+    open fun canCollideCheck(block: JukeboxBlock, value: Boolean): Boolean {
+        return this.isCollidable()
+    }
+
+    open fun isCollidable(): Boolean {
+        return true
+    }
 
     override fun clone(): JukeboxBlock {
         val block = super.clone() as JukeboxBlock

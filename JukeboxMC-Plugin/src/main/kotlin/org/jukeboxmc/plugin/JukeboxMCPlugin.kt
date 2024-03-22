@@ -26,7 +26,14 @@ class JukeboxMCPlugin : Plugin(), Listener {
         armorInventory.setLeggings(Item.create(ItemType.NETHERITE_LEGGINGS))
         armorInventory.setBoots(Item.create(ItemType.NETHERITE_BOOTS))
 
-        inventory.addItem(Item.create(ItemType.WOODEN_SWORD))
+        inventory.addItem(
+            Item.create(ItemType.WOODEN_SWORD),
+            Item.create(ItemType.BOW),
+            Item.create(ItemType.ARROW, 64),
+            Item.create(ItemType.SNOWBALL, 64),
+            Item.create(ItemType.EGG,64),
+            Item.create(ItemType.FISHING_ROD),
+        )
     }
 
     @EventHandler
