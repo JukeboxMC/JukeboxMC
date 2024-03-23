@@ -5,10 +5,6 @@ import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.*
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition
-import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.common.SimpleDefinitionRegistry
 import org.cloudburstmc.protocol.common.util.OptionalBoolean
@@ -16,7 +12,6 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.extensions.toNetwork
 import org.jukeboxmc.server.extensions.toVector3f
 import org.jukeboxmc.server.extensions.toVector3i
-import org.jukeboxmc.server.network.BedrockServer
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
@@ -64,7 +59,8 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
 
                 resourcePackStackPacket.resourcePacks.addAll(entries)
                 resourcePackStackPacket.gameVersion = "*"
-                resourcePackStackPacket.isExperimentsPreviouslyToggled = false
+                resourcePackStackPacket.experiments.add(ExperimentData("updateAnnouncedLive2023", true))
+                resourcePackStackPacket.isExperimentsPreviouslyToggled = true
 
                 player.sendPacket(resourcePackStackPacket)
             }
@@ -75,6 +71,8 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 val worldData = world.getWorldData()
 
                 val startGamePacket = StartGamePacket()
+                startGamePacket.experiments.add(ExperimentData("updateAnnouncedLive2023", true))
+                startGamePacket.isExperimentsPreviouslyToggled = true
                 startGamePacket.uniqueEntityId = player.getEntityId()
                 startGamePacket.runtimeEntityId = player.getEntityId()
                 startGamePacket.playerGameType = GameType.valueOf(server.getDefaultGameMode().name)
@@ -102,7 +100,6 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.platformBroadcastMode = GamePublishSetting.PUBLIC
                 startGamePacket.isCommandsEnabled = true
                 startGamePacket.isTexturePacksRequired = server.isForceResourcePacks()
-                startGamePacket.isExperimentsPreviouslyToggled = false
                 startGamePacket.isBonusChestEnabled = worldData.bonusChestEnabled
                 startGamePacket.isStartingWithMap = worldData.startWithMapEnabled
                 startGamePacket.defaultPlayerPermission = PlayerPermission.MEMBER
