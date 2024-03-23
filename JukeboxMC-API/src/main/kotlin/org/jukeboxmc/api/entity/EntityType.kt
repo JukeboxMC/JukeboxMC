@@ -85,5 +85,6 @@ enum class EntityType {
     ITEM,
     ARROW,
     SNOWBALL,
-    EGG
+    EGG,
+    FISHING_HOOK
 }

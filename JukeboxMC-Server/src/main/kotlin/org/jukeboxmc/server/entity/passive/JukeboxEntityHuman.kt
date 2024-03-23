@@ -25,7 +25,9 @@ import org.jukeboxmc.api.world.Difficulty
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.Attribute
 import org.jukeboxmc.server.entity.JukeboxAttribute
+import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.entity.JukeboxEntityLiving
+import org.jukeboxmc.server.entity.projectile.JukeboxEntityFishingHook
 import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.extensions.toJukeboxPlayer
 import org.jukeboxmc.server.extensions.toVector3f
@@ -44,6 +46,7 @@ open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
     private var actionStart: Long = -1
     private var gameMode: GameMode = JukeboxServer.getInstance().getDefaultGameMode()
     private val deviceInfo: DeviceInfo = DeviceInfo("", "", Random().nextLong(), Device.UNKNOWN, UIProfile.CLASSIC)
+    private var entityFishingHook: JukeboxEntityFishingHook? = null
 
     private lateinit var playerInventory: JukeboxPlayerInventory
     private lateinit var armorInventory: JukeboxArmorInventory
@@ -433,5 +436,13 @@ open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
         emotePacket.platformId = ""
         emotePacket.emoteId = emote.getUUID().toString()
         this.getWorld().sendChunkPacket(this.getChunkX(), this.getChunkZ(), emotePacket)
+    }
+
+    fun getEntityFishingHook(): JukeboxEntityFishingHook? {
+        return this.entityFishingHook
+    }
+
+    fun setEntityFishingHook(entityFishingHook: JukeboxEntityFishingHook?) {
+        this.entityFishingHook = entityFishingHook
     }
 }
