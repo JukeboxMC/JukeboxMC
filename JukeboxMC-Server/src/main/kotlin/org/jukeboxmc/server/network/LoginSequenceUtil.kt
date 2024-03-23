@@ -31,7 +31,7 @@ class LoginSequenceUtil {
                         false
                     ))
             }
-            resourcePacksInfoPacket.isForcedToAccept = false
+            resourcePacksInfoPacket.isForcedToAccept = server.isForceResourcePacks()
             resourcePacksInfoPacket.isForcingServerPacksEnabled = false
             resourcePacksInfoPacket.isScriptingEnabled = false
             player.sendPacket(resourcePacksInfoPacket)

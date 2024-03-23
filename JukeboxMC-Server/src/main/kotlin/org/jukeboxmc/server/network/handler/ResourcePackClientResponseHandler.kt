@@ -46,6 +46,7 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                     resourcePackDataInfoPacket.chunkCount = resourcePack.getSize() / maxChunkSize
                     resourcePackDataInfoPacket.compressedPackSize = resourcePack.getSize()
                     resourcePackDataInfoPacket.hash = resourcePack.getHash()
+                    resourcePackDataInfoPacket.type = ResourcePackType.RESOURCES
 
                     player.sendPacket(resourcePackDataInfoPacket)
                 }
@@ -62,7 +63,7 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 }
 
                 resourcePackStackPacket.resourcePacks.addAll(entries)
-                resourcePackStackPacket.gameVersion = BedrockServer.BEDROCK_CODEC.minecraftVersion
+                resourcePackStackPacket.gameVersion = "*"
                 resourcePackStackPacket.isExperimentsPreviouslyToggled = false
 
                 player.sendPacket(resourcePackStackPacket)
@@ -113,7 +114,7 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.isFromWorldTemplate = false
                 startGamePacket.isWorldTemplateOptionLocked = false
                 startGamePacket.isOnlySpawningV1Villagers = false
-                startGamePacket.vanillaVersion = BedrockServer.BEDROCK_CODEC.minecraftVersion
+                startGamePacket.vanillaVersion = "*"
                 startGamePacket.limitedWorldWidth = worldData.limitedWorldWidth
                 startGamePacket.limitedWorldHeight = worldData.limitedWorldDepth
                 startGamePacket.isNetherType = false
