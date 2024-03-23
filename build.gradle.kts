@@ -22,6 +22,10 @@ allprojects {
             name = "opencollab-snapshots"
             url = uri("https://repo.opencollab.dev/maven-snapshots/")
         }
+        maven {
+            name = "jukeboxmc-snapshots"
+            url = uri("https://repo.jukeboxmc.eu/snapshots")
+        }
     }
 }
 
