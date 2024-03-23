@@ -18,7 +18,7 @@ class ItemFishingRod(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(
         if (player.getEntityFishingHook() == null) {
             val force = 1.1f
             val entityFishingHook = JukeboxEntityFishingHook()
-            entityFishingHook.setLocation(player.getLocation().add(0.5f, player.getEyeHeight(), 0.5f))
+            entityFishingHook.setLocation(player.getLocation().add(0f, (player.getEyeHeight() - 0.5f), 0f))
             entityFishingHook.setMotion(Vector(
                 (-sin(Math.toRadians(player.getYaw().toDouble())) * cos(Math.toRadians(player.getPitch().toDouble())) * force * force).toFloat(),
                     (-sin(Math.toRadians(player.getPitch().toDouble())) * force * force + 0.4f).toFloat(),
