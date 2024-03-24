@@ -10,6 +10,8 @@ import org.jukeboxmc.api.command.CommandSender
 import org.jukeboxmc.api.command.ConsoleSender
 import org.jukeboxmc.api.effect.Effect
 import org.jukeboxmc.api.effect.EffectType
+import org.jukeboxmc.api.entity.Entity
+import org.jukeboxmc.api.entity.EntityType
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.logger.Logger
@@ -104,6 +106,8 @@ interface Server {
     fun <T: Item> createItem(itemType: ItemType, amount: Int, meta: Int): T
 
     fun <T: BlockEntity> createBlockEntity(blockEntityType: BlockEntityType, block: Block): T?
+
+    fun <T: Entity> createEntity(entityType: EntityType): T?
 
     fun createEffect(effectType: EffectType): Effect
 

@@ -528,6 +528,8 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         val source = dropStackRequestActionData.source
         val sourceInventory = getInventory(player, source.container)
         var sourceItem = getItem(player, source.container, source.slot)!!
+        sourceItem.setAmount(amount)
+
         val playerDropItemEvent = PlayerDropItemEvent(player, sourceItem)
         JukeboxServer.getInstance().getPluginManager().callEvent(playerDropItemEvent)
         if (playerDropItemEvent.isCancelled() || sourceInventory!!.getType() == InventoryType.ARMOR && sourceItem.getEnchantment(
@@ -539,9 +541,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 ItemStackResponse(ItemStackResponseStatus.ERROR, itemStackRequest.requestId, emptyList())
             )
         }
-        sourceItem.setAmount(sourceItem.getAmount() - amount)
-        val dropItem = sourceItem.clone()
-        dropItem.setAmount(amount)
+        sourceItem.setAmount(sourceItem.getAmount())
         if (sourceItem.getAmount() <= 0) {
             sourceItem = Item.create(ItemType.AIR)
         }
@@ -708,6 +708,10 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
 
             ContainerSlotType.OFFHAND -> {
                 player.getOffHandInventory().setOffHandItem(item)
+            }
+
+            ContainerSlotType.CREATED_OUTPUT -> {
+                 player.getCreativeCacheInventory().setItem(slot, item)
             }
 
             else -> (this.getInventory(player, containerSlotType) as ContainerInventory).setItem(
