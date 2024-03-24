@@ -15,6 +15,8 @@ class EntityRegistry {
         init {
             //Hostile
             register(EntityType.BLAZE, JukeboxEntityBlaze::class.java)
+            register(EntityType.BOGGED, JukeboxEntityBogged::class.java)
+            register(EntityType.BREEZE, JukeboxEntityBreeze::class.java)
             register(EntityType.CREEPER, JukeboxEntityCreeper::class.java)
             register(EntityType.ELDER_GUARDIAN, JukeboxEntityElderGuardian::class.java)
             register(EntityType.ENDER_DRAGON, JukeboxEntityEnderDragon::class.java)
@@ -67,6 +69,7 @@ class EntityRegistry {
 
             //Passive
             register(EntityType.ALLAY, JukeboxEntityAllay::class.java)
+            register(EntityType.ARMADILLO, JukeboxEntityArmadillo::class.java)
             register(EntityType.AXOLOTL, JukeboxEntityAxolotl::class.java)
             register(EntityType.BAT, JukeboxEntityBat::class.java)
             register(EntityType.CAMEL, JukeboxEntityCamel::class.java)
