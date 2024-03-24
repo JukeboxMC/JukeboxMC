@@ -20,6 +20,8 @@ import org.jukeboxmc.api.config.Config
 import org.jukeboxmc.api.config.ConfigType
 import org.jukeboxmc.api.effect.Effect
 import org.jukeboxmc.api.effect.EffectType
+import org.jukeboxmc.api.entity.Entity
+import org.jukeboxmc.api.entity.EntityType
 import org.jukeboxmc.api.event.server.TpsChangeEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
@@ -42,6 +44,8 @@ import org.jukeboxmc.server.blockentity.BlockEntityRegistry
 import org.jukeboxmc.server.command.JukeboxCommandManager
 import org.jukeboxmc.server.console.TerminalConsole
 import org.jukeboxmc.server.effect.EffectRegistry
+import org.jukeboxmc.server.entity.EntityRegistry
+import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.extensions.toNetwork
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
@@ -53,7 +57,9 @@ import org.jukeboxmc.server.resourcepack.JukeboxResourcePackManager
 import org.jukeboxmc.server.scheduler.JukeboxScheduler
 import org.jukeboxmc.server.util.ServerKiller
 import org.jukeboxmc.server.world.JukeboxWorld
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.net.InetSocketAddress
@@ -199,19 +205,18 @@ class JukeboxServer : Server {
             this.scheduler.onTick(this.currentTick)
 
             synchronized(this) {
-                players.removeIf { target: JukeboxPlayer ->
+                this.players.removeIf { target: JukeboxPlayer ->
                     target.isClosed()
                 }
-                players.forEach {
+                this.players.forEach {
                     if (it.isClosed()) {
                         return
                     }
                     it.tick(this.currentTick)
                 }
-            }
-
-            for (value in worlds.values) {
-                value.tick(this.currentTick)
+                for (value in worlds.values) {
+                    value.tick(this.currentTick)
+                }
             }
 
             if (!this.running) {
@@ -641,6 +646,15 @@ class JukeboxServer : Server {
                 )
             constructor.isAccessible = true
             return constructor.newInstance(blockEntityType, block) as T?
+        }
+        return null
+    }
+
+    override fun <T : Entity> createEntity(entityType: EntityType): T? {
+        if (EntityRegistry.entityClassExists(entityType)) {
+            val constructor = EntityRegistry.getEntityClass(entityType).getConstructor()
+            constructor.isAccessible = true
+            return constructor.newInstance() as T
         }
         return null
     }

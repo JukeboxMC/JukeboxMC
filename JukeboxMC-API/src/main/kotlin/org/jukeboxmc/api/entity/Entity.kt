@@ -1,6 +1,7 @@
 package org.jukeboxmc.api.entity
 
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.JukeboxMC
 import org.jukeboxmc.api.block.data.Direction
 import org.jukeboxmc.api.event.entity.EntityDamageEvent
 import org.jukeboxmc.api.math.AxisAlignedBB
@@ -18,6 +19,16 @@ import java.util.concurrent.TimeUnit
  */
 interface Entity {
 
+    companion object {
+        fun create(entityType: EntityType): Entity? {
+            return JukeboxMC.getServer().createEntity(entityType)
+        }
+
+        fun <T> create(entityType: EntityType): T? {
+            return JukeboxMC.getServer().createEntity(entityType)
+        }
+    }
+
     /**
      * Returns the exact display name of the entity
      *
@@ -25,7 +36,7 @@ interface Entity {
      */
     fun getName(): String
 
-    fun getEntityId() : Long
+    fun getEntityId(): Long
 
     fun getIdentifier(): Identifier
 

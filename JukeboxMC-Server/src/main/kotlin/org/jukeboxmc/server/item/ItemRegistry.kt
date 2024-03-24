@@ -634,7 +634,7 @@ class ItemRegistry {
             register(ItemType.FIRE_CORAL, Identifier.fromString("minecraft:fire_coral"))
             register(ItemType.FIREWORK_ROCKET, Identifier.fromString("minecraft:firework_rocket"))
             register(ItemType.FIREWORK_STAR, Identifier.fromString("minecraft:firework_star"))
-            register(ItemType.FISHING_ROD, Identifier.fromString("minecraft:fishing_rod"))
+            register(ItemType.FISHING_ROD, Identifier.fromString("minecraft:fishing_rod"), ItemFishingRod::class.java)
             register(ItemType.FLETCHING_TABLE, Identifier.fromString("minecraft:fletching_table"))
             register(ItemType.FLINT, Identifier.fromString("minecraft:flint"))
             register(ItemType.FLINT_AND_STEEL, Identifier.fromString("minecraft:flint_and_steel"))

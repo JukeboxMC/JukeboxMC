@@ -28,8 +28,8 @@ open class JukeboxEntityProjectile : JukeboxEntity(), EntityProjectile {
         super.tick(currentTick)
         var location = this.getLocation()
         if (!this.isDead()) {
-            if (hitEntity != null) {
-                location = hitEntity!!.getLocation().add(0f, hitEntity!!.getEyeHeight() + getHeight(), 0f)
+            if (this.hitEntity != null) {
+                location = this.hitEntity!!.getLocation().add(0f, this.hitEntity!!.getEyeHeight() + getHeight(), 0f)
                 this.setLocation(location)
             } else {
                 val velocity = this.getVelocity()
@@ -49,7 +49,7 @@ open class JukeboxEntityProjectile : JukeboxEntity(), EntityProjectile {
                 var nearDistance = Int.MAX_VALUE.toFloat()
                 var hitEntity: Entity? = null
                 for (entity in nearbyEntities) {
-                    if (entity === shooter && this.getAge() < 20) {
+                    if (entity === this.shooter && this.getAge() < 20) {
                         continue
                     }
                     val axisAlignedBB = entity.getBoundingBox().grow(0.3f, 0.3f, 0.3f)
