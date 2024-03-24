@@ -11,6 +11,7 @@ import org.jukeboxmc.api.event.entity.ItemDespawnEvent
 import org.jukeboxmc.api.event.player.PlayerPickupItemEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
+import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.api.player.Player
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.JukeboxEntity
@@ -19,6 +20,7 @@ import org.jukeboxmc.server.extensions.toJukeboxPlayer
 import org.jukeboxmc.server.extensions.toVector3f
 import org.jukeboxmc.server.inventory.ContainerInventory
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 import kotlin.math.floor
 
 class JukeboxEntityItem : JukeboxEntity(), EntityItem {
@@ -26,6 +28,7 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
     private var item: Item = Item.create(ItemType.AIR)
     private var pickupDelay: Long = 0
     private var thrower: EntityHuman? = null
+    private var reset: Boolean = false
 
     override fun tick(currentTick: Long) {
         super.tick(currentTick)
@@ -39,7 +42,7 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
         this.move(velocity)
 
         var friction = 0.98f
-        if (this.isOnGround()) {
+        if (this.isOnGround() && (abs(velocity.getX()) > 0.00001 || abs(velocity.getZ()) > 0.00001)) {
             friction = this.getWorld().getBlock(this.getBlockX(), floor(this.getBoundingBox().getMinY()).toInt() - 1, this.getBlockZ()).getFriction() * 0.96F
         }
 
@@ -53,6 +56,11 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
 
         this.setMotion(velocity)
         this.updateMovement()
+
+        if (this.isCollided() && !this.reset && velocity.squaredLength() < 0.01f) {
+            this.setVelocity(Vector.zero())
+            this.reset = true
+        }
 
         if (this.getAge() >= TimeUnit.MINUTES.toMillis(5) / 50) {
             val itemDespawnEvent = ItemDespawnEvent(this)
