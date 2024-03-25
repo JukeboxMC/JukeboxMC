@@ -59,12 +59,15 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 val entries = arrayListOf<ResourcePackStackPacket.Entry>()
 
                 for (resourcePack in server.getResourcePackManager().getResourcePacks()) {
-                    entries.add(ResourcePackStackPacket.Entry(resourcePack.getName(), resourcePack.getVersion(), ""))
+                    entries.add(ResourcePackStackPacket.Entry(
+                        resourcePack.getUuid().toString(),
+                        resourcePack.getVersion(),
+                        "")
+                    )
                 }
 
                 resourcePackStackPacket.resourcePacks.addAll(entries)
                 resourcePackStackPacket.gameVersion = "*"
-                resourcePackStackPacket.isExperimentsPreviouslyToggled = false
 
                 player.sendPacket(resourcePackStackPacket)
             }
