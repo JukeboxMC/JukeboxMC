@@ -1668,7 +1668,7 @@ class ItemRegistry {
             register(ItemType.WIND_CHARGE, Identifier.fromString("minecraft:wind_charge"))
             register(ItemType.BREEZE_ROD, Identifier.fromString("minecraft:breeze_rod"))
             register(ItemType.HEAVY_CORE, Identifier.fromString("minecraft:heavy_core"))
-            register(ItemType.MACE, Identifier.fromString("minecraft:mace"))
+            register(ItemType.MACE, Identifier.fromString("minecraft:mace"), ItemMace::class.java)
             register(ItemType.SCRAPE_POTTERY_SHERD, Identifier.fromString("minecraft:scrape_pottery_sherd"))
             register(ItemType.FLOW_POTTERY_SHERD, Identifier.fromString("minecraft:flow_pottery_sherd"))
             register(ItemType.GUSTER_POTTERY_SHERD, Identifier.fromString("minecraft:guster_pottery_sherd"))

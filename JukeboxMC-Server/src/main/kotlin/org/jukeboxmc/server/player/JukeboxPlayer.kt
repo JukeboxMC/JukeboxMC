@@ -50,6 +50,7 @@ import org.jukeboxmc.server.event.PacketReceiveEvent
 import org.jukeboxmc.server.event.PacketSendEvent
 import org.jukeboxmc.server.extensions.*
 import org.jukeboxmc.server.inventory.*
+import org.jukeboxmc.server.item.behavior.ItemMace
 import org.jukeboxmc.server.network.handler.HandlerRegistry
 import org.jukeboxmc.server.network.handler.PacketHandler
 import org.jukeboxmc.server.util.Utils
@@ -977,6 +978,9 @@ class JukeboxPlayer(
                     this.getFallingDistance() > 0 && !this.isOnGround() && !this.isOnLadder() && !this.isInWater()
                 if (crit && damage > 0.0f) {
                     damage *= 1.5.toFloat()
+                }
+                if (this.getInventory().getItemInHand().getType() == ItemType.MACE) {
+                    damage = (this.getInventory().getItemInHand() as ItemMace).attack(this, target, damage)
                 }
                 target.damage(
                     EntityDamageByEntityEvent(

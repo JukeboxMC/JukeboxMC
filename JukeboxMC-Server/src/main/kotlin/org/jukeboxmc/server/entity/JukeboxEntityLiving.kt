@@ -1,10 +1,12 @@
 package org.jukeboxmc.server.entity
 
 import org.apache.commons.math3.util.FastMath
+import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType
 import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket
+import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
@@ -14,8 +16,10 @@ import org.jukeboxmc.api.entity.Entity
 import org.jukeboxmc.api.entity.EntityLiving
 import org.jukeboxmc.api.event.entity.*
 import org.jukeboxmc.api.event.player.PlayerInteractEvent
+import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.effect.JukeboxEffect
+import org.jukeboxmc.server.extensions.toVector3f
 import org.jukeboxmc.server.player.JukeboxPlayer
 import kotlin.math.max
 
@@ -484,4 +488,17 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
         }
     }
 
+    fun setMovement(vector: Vector) {
+        super.move(vector)
+
+        this.setLocation(this.getLocation().add(vector.getX(), vector.getY(), vector.getZ()))
+
+        val packet = MoveEntityAbsolutePacket()
+        packet.runtimeEntityId = this.getEntityId()
+        packet.position = this.getLocation().toVector3f()
+        packet.rotation = Vector3f.from(this.getPitch(), this.getYaw(), this.getYaw())
+        packet.isOnGround = this.isOnGround()
+
+        JukeboxServer.getInstance().broadcastPacket(packet)
+    }
 }
