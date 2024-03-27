@@ -61,7 +61,7 @@ class ItemMace(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemTy
 
     private fun distanceXZ(origin: Entity, entity: Entity): Float {
         val dx = entity.getX() - origin.getX()
-        val dz = entity.getX() - origin.getZ()
+        val dz = entity.getZ() - origin.getZ()
         return sqrt(dx * dx + dz * dz)
     }
 }
