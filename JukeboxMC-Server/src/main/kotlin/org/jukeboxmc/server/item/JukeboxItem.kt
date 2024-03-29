@@ -335,7 +335,6 @@ open class JukeboxItem : Item, Cloneable {
         val nbtBuilder = if (this.nbtMap == null) NbtMap.builder() else this.nbtMap!!.toBuilder()
 
         if (identifier) nbtBuilder.putString("Name", this.identifier.getFullName())
-        nbtBuilder.putByte("Count", this.amount.toByte())
         if (this.durability > 0) {
             nbtBuilder.putInt("Damage", this.durability)
         }

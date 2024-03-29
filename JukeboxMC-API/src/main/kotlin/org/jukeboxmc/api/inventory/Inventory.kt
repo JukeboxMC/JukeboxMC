@@ -24,6 +24,8 @@ interface Inventory {
 
     fun removeItem(item: Item, amount: Int)
 
+    fun removeItem(slot: Int, item: Item, amount: Int)
+
     fun firstEmpty(): Int
 
     fun firstPartial(item: Item): Int
