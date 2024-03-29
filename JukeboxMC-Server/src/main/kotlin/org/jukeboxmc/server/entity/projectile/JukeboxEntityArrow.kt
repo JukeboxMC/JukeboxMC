@@ -145,11 +145,4 @@ class JukeboxEntityArrow : JukeboxEntityProjectile(), EntityArrow {
             }
         }
     }
-
-    override fun onCollidedWithEntity(entity: Entity?) {
-        if (entity == null) return
-        if (entity !is EntityLiving) return
-        if (this.flameModifier <= 0) return
-        entity.setOnFire(5, TimeUnit.SECONDS)
-    }
 }
