@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.blockentity.BlockEntity
 import org.jukeboxmc.api.entity.Entity
@@ -100,7 +101,7 @@ class JukeboxWorld(
             this.nextTimeSendTick = currentTick + 12 * 20
         }
 
-        val entitiesCopy = ArrayList<JukeboxEntity>(this.entities.values)
+        val entitiesCopy = ArrayList(this.entities.values)
         if (entitiesCopy.isNotEmpty()) {
             for (entity in entitiesCopy) {
                 entity.tick(currentTick)
@@ -201,6 +202,19 @@ class JukeboxWorld(
         return this.getBlock(location, 0, Dimension.OVERWORLD)
     }
 
+    override fun getHighestBlockYAt(x: Int, z: Int, dimension: Dimension): Int {
+        for (y in dimension.getMaxY() downTo dimension.getMinY()) {
+            if (this.getBlock(x, y, z).getType() != BlockType.AIR) {
+                return y
+            }
+        }
+        return dimension.getMinY()
+    }
+
+    override fun getHighestBlockYAt(x: Int, z: Int): Int  {
+        return this.getHighestBlockYAt(x, z, Dimension.OVERWORLD)
+    }
+
     override fun setBlock(x: Int, y: Int, z: Int, layer: Int, dimension: Dimension, block: Block, update: Boolean) {
         val jukeboxBlock = block.toJukeboxBlock()
         val chunk: JukeboxChunk? = getLoadedChunk(x shr 4, z shr 4, dimension)?.toJukeboxChunk()
@@ -220,17 +234,15 @@ class JukeboxWorld(
             this.sendChunkPacket(chunk.getX(), chunk.getZ(), updateBlockPacket)
         }
 
-        if (false) {
-            jukeboxBlock.onUpdate(UpdateReason.NORMAL)
-            this.getBlock(x, y, z, layer, dimension).toJukeboxBlock().onUpdate(UpdateReason.NORMAL)
-            this.updateBlockAround(x, y, z)
+        jukeboxBlock.onUpdate(UpdateReason.NORMAL)
+        this.getBlock(x, y, z, layer, dimension).toJukeboxBlock().onUpdate(UpdateReason.NORMAL)
+        this.updateBlockAround(x, y, z)
 
-            for (blockFace: BlockFace in BlockFace.entries) {
-                val blockSide = block.getRelative(blockFace).toJukeboxBlock()
-                val next = blockSide.onUpdate(UpdateReason.NEIGHBORS)
-                if (next > this.server.getCurrentTick()) {
-                    this.scheduleBlockUpdate(blockSide, next)
-                }
+        for (blockFace: BlockFace in BlockFace.entries) {
+            val blockSide = block.getRelative(blockFace).toJukeboxBlock()
+            val next = blockSide.onUpdate(UpdateReason.NEIGHBORS)
+            if (next > this.server.getCurrentTick()) {
+                this.scheduleBlockUpdate(blockSide, next)
             }
         }
     }
