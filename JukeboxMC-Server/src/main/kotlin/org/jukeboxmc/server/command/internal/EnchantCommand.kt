@@ -15,17 +15,23 @@ import java.util.*
 @Name("enchant")
 @Description("Adds an enchantment to a player's selected item.")
 @Permission("jukeboxmc.command.enchant")
-@Parameters(parameter = [
-    Parameter("player", ParameterType.TARGET, optional = false),
-    Parameter("enchantment", enumValues = arrayOf("aqua_affinity", "bane_of_arthropods",
-            "blast_protection", "channeling", "curse_of_binding", "curse_of_vanishing",
-            "depth_strider", "efficiency", "feather_falling", "fire_aspect", "fire_protection",
-            "flame", "fortune", "impaling", "infinity", "knockback", "looting", "loyalty",
-            "luck_of_the_sea", "lure", "mending", "multishot", "piercing", "power", "projectile_protection",
-            "protection", "punch", "quick_charge", "respiration", "riptide", "sharpness", "silk_touch",
-            "smite", "soul_speed", "thorns", "unbreaking", "swift_sneak"
-    ), optional = false)
-])
+@Parameters(
+    parameter = [
+        Parameter("player", ParameterType.TARGET, optional = false),
+        Parameter(
+            "enchantment", enumValues = arrayOf(
+                "aqua_affinity", "bane_of_arthropods",
+                "blast_protection", "channeling", "curse_of_binding", "curse_of_vanishing",
+                "depth_strider", "efficiency", "feather_falling", "fire_aspect", "fire_protection",
+                "flame", "fortune", "impaling", "infinity", "knockback", "looting", "loyalty",
+                "luck_of_the_sea", "lure", "mending", "multishot", "piercing", "power", "projectile_protection",
+                "protection", "punch", "quick_charge", "respiration", "riptide", "sharpness", "silk_touch",
+                "smite", "soul_speed", "thorns", "unbreaking", "swift_sneak"
+            ), optional = false
+        ),
+        Parameter("level", ParameterType.INT, optional = false)
+    ]
+)
 class EnchantCommand : Command {
 
     override fun execute(commandSender: CommandSender, command: String, args: Array<String>) {

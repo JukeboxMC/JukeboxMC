@@ -567,7 +567,6 @@ open class JukeboxEntity(
     }
 
     override fun damage(event: EntityDamageEvent): Boolean {
-        println("DAMAGE")
         if (this.isDead()) return false
         if (event is EntityDamageByEntityEvent) {
             val damager = event.getDamager()
