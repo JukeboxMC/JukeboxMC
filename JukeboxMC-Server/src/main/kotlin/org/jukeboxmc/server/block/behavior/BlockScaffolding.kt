@@ -7,12 +7,14 @@ import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Scaffolding
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.math.Vector
+import org.jukeboxmc.server.UpdateReason
+import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.extensions.toByte
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : FallableBlock(identifier, blockStates), Scaffolding {
+class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Scaffolding {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -63,6 +65,17 @@ class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : FallableB
         world.setBlock(vector, Block.create(BlockType.SCAFFOLDING))
         this.playPlaceSound(vector)
         return true
+    }
+
+    override fun onUpdate(updateReason: UpdateReason): Long {
+        val blockDown = this.getRelative(BlockFace.DOWN)
+        if (updateReason == UpdateReason.NORMAL) {
+            if (blockDown.getType() == BlockType.AIR || blockDown.getType() == BlockType.FIRE) { //TODO Add liquid check
+                this.getWorld().setBlock(this.getLocation(), AIR)
+                this.getWorld().dropItemNaturally(this.getLocation(), this.toItem())
+            }
+        }
+        return -1
     }
 
    override fun getStability(): Int {
