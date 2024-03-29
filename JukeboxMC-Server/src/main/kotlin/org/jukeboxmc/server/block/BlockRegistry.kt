@@ -208,7 +208,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:black_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.BLACK_CARPET, Identifier.fromString("minecraft:black_carpet"))
+            register(BlockType.BLACK_CARPET, Identifier.fromString("minecraft:black_carpet"), BlockCarpet::class.java)
             register(BlockType.BLACK_CONCRETE, Identifier.fromString("minecraft:black_concrete"))
             register(BlockType.BLACK_CONCRETE_POWDER, Identifier.fromString("minecraft:black_concrete_powder"))
             register(
@@ -257,7 +257,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:blue_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.BLUE_CARPET, Identifier.fromString("minecraft:blue_carpet"))
+            register(BlockType.BLUE_CARPET, Identifier.fromString("minecraft:blue_carpet"), BlockCarpet::class.java)
             register(BlockType.BLUE_CONCRETE, Identifier.fromString("minecraft:blue_concrete"))
             register(BlockType.BLUE_CONCRETE_POWDER, Identifier.fromString("minecraft:blue_concrete_powder"))
             register(
@@ -292,7 +292,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:brown_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.BROWN_CARPET, Identifier.fromString("minecraft:brown_carpet"))
+            register(BlockType.BROWN_CARPET, Identifier.fromString("minecraft:brown_carpet"), BlockCarpet::class.java)
             register(BlockType.BROWN_CONCRETE, Identifier.fromString("minecraft:brown_concrete"))
             register(BlockType.BROWN_CONCRETE_POWDER, Identifier.fromString("minecraft:brown_concrete_powder"))
             register(
@@ -608,7 +608,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:cyan_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.CYAN_CARPET, Identifier.fromString("minecraft:cyan_carpet"))
+            register(BlockType.CYAN_CARPET, Identifier.fromString("minecraft:cyan_carpet"), BlockCarpet::class.java)
             register(BlockType.CYAN_CONCRETE, Identifier.fromString("minecraft:cyan_concrete"))
             register(BlockType.CYAN_CONCRETE_POWDER, Identifier.fromString("minecraft:cyan_concrete_powder"))
             register(
@@ -1053,7 +1053,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:gray_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.GRAY_CARPET, Identifier.fromString("minecraft:gray_carpet"))
+            register(BlockType.GRAY_CARPET, Identifier.fromString("minecraft:gray_carpet"), BlockCarpet::class.java)
             register(BlockType.GRAY_CONCRETE, Identifier.fromString("minecraft:gray_concrete"))
             register(BlockType.GRAY_CONCRETE_POWDER, Identifier.fromString("minecraft:gray_concrete_powder"))
             register(
@@ -1076,7 +1076,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:green_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.GREEN_CARPET, Identifier.fromString("minecraft:green_carpet"))
+            register(BlockType.GREEN_CARPET, Identifier.fromString("minecraft:green_carpet"), BlockCarpet::class.java)
             register(BlockType.GREEN_CONCRETE, Identifier.fromString("minecraft:green_concrete"))
             register(BlockType.GREEN_CONCRETE_POWDER, Identifier.fromString("minecraft:green_concrete_powder"))
             register(
@@ -1322,7 +1322,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:light_blue_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.LIGHT_BLUE_CARPET, Identifier.fromString("minecraft:light_blue_carpet"))
+            register(BlockType.LIGHT_BLUE_CARPET, Identifier.fromString("minecraft:light_blue_carpet"), BlockCarpet::class.java)
             register(BlockType.LIGHT_BLUE_CONCRETE, Identifier.fromString("minecraft:light_blue_concrete"))
             register(
                 BlockType.LIGHT_BLUE_CONCRETE_POWDER,
@@ -1355,7 +1355,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:light_gray_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.LIGHT_GRAY_CARPET, Identifier.fromString("minecraft:light_gray_carpet"))
+            register(BlockType.LIGHT_GRAY_CARPET, Identifier.fromString("minecraft:light_gray_carpet"), BlockCarpet::class.java)
             register(BlockType.LIGHT_GRAY_CONCRETE, Identifier.fromString("minecraft:light_gray_concrete"))
             register(
                 BlockType.LIGHT_GRAY_CONCRETE_POWDER,
@@ -1389,7 +1389,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:lime_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.LIME_CARPET, Identifier.fromString("minecraft:lime_carpet"))
+            register(BlockType.LIME_CARPET, Identifier.fromString("minecraft:lime_carpet"), BlockCarpet::class.java)
             register(BlockType.LIME_CONCRETE, Identifier.fromString("minecraft:lime_concrete"))
             register(BlockType.LIME_CONCRETE_POWDER, Identifier.fromString("minecraft:lime_concrete_powder"))
             register(
@@ -1432,7 +1432,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:magenta_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.MAGENTA_CARPET, Identifier.fromString("minecraft:magenta_carpet"))
+            register(BlockType.MAGENTA_CARPET, Identifier.fromString("minecraft:magenta_carpet"), BlockCarpet::class.java)
             register(BlockType.MAGENTA_CONCRETE, Identifier.fromString("minecraft:magenta_concrete"))
             register(BlockType.MAGENTA_CONCRETE_POWDER, Identifier.fromString("minecraft:magenta_concrete_powder"))
             register(
@@ -1529,7 +1529,7 @@ class BlockRegistry {
             register(BlockType.MOB_SPAWNER, Identifier.fromString("minecraft:mob_spawner"), BlockMobSpawner::class.java)
             register(BlockType.MONSTER_EGG, Identifier.fromString("minecraft:monster_egg"), BlockMonsterEgg::class.java)
             register(BlockType.MOSS_BLOCK, Identifier.fromString("minecraft:moss_block"))
-            register(BlockType.MOSS_CARPET, Identifier.fromString("minecraft:moss_carpet"))
+            register(BlockType.MOSS_CARPET, Identifier.fromString("minecraft:moss_carpet"), BlockCarpet::class.java)
             register(BlockType.MOSSY_COBBLESTONE, Identifier.fromString("minecraft:mossy_cobblestone"))
             register(
                 BlockType.MOSSY_COBBLESTONE_STAIRS,
@@ -1604,7 +1604,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:orange_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.ORANGE_CARPET, Identifier.fromString("minecraft:orange_carpet"))
+            register(BlockType.ORANGE_CARPET, Identifier.fromString("minecraft:orange_carpet"), BlockCarpet::class.java)
             register(BlockType.ORANGE_CONCRETE, Identifier.fromString("minecraft:orange_concrete"))
             register(BlockType.ORANGE_CONCRETE_POWDER, Identifier.fromString("minecraft:orange_concrete_powder"))
             register(
@@ -1668,7 +1668,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:pink_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.PINK_CARPET, Identifier.fromString("minecraft:pink_carpet"))
+            register(BlockType.PINK_CARPET, Identifier.fromString("minecraft:pink_carpet"), BlockCarpet::class.java)
             register(BlockType.PINK_CONCRETE, Identifier.fromString("minecraft:pink_concrete"))
             register(BlockType.PINK_CONCRETE_POWDER, Identifier.fromString("minecraft:pink_concrete_powder"))
             register(
@@ -1872,7 +1872,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:purple_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.PURPLE_CARPET, Identifier.fromString("minecraft:purple_carpet"))
+            register(BlockType.PURPLE_CARPET, Identifier.fromString("minecraft:purple_carpet"), BlockCarpet::class.java)
             register(BlockType.PURPLE_CONCRETE, Identifier.fromString("minecraft:purple_concrete"))
             register(BlockType.PURPLE_CONCRETE_POWDER, Identifier.fromString("minecraft:purple_concrete_powder"))
             register(
@@ -1913,7 +1913,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:red_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.RED_CARPET, Identifier.fromString("minecraft:red_carpet"))
+            register(BlockType.RED_CARPET, Identifier.fromString("minecraft:red_carpet"), BlockCarpet::class.java)
             register(BlockType.RED_CONCRETE, Identifier.fromString("minecraft:red_concrete"))
             register(BlockType.RED_CONCRETE_POWDER, Identifier.fromString("minecraft:red_concrete_powder"))
             register(BlockType.RED_FLOWER, Identifier.fromString("minecraft:red_flower"), BlockRedFlower::class.java)
@@ -2656,7 +2656,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:white_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.WHITE_CARPET, Identifier.fromString("minecraft:white_carpet"))
+            register(BlockType.WHITE_CARPET, Identifier.fromString("minecraft:white_carpet"), BlockCarpet::class.java)
             register(BlockType.WHITE_CONCRETE, Identifier.fromString("minecraft:white_concrete"))
             register(BlockType.WHITE_CONCRETE_POWDER, Identifier.fromString("minecraft:white_concrete_powder"))
             register(
@@ -2699,7 +2699,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:yellow_candle_cake"),
                 BlockCandleCake::class.java
             )
-            register(BlockType.YELLOW_CARPET, Identifier.fromString("minecraft:yellow_carpet"))
+            register(BlockType.YELLOW_CARPET, Identifier.fromString("minecraft:yellow_carpet"), BlockCarpet::class.java)
             register(BlockType.YELLOW_CONCRETE, Identifier.fromString("minecraft:yellow_concrete"))
             register(BlockType.YELLOW_CONCRETE_POWDER, Identifier.fromString("minecraft:yellow_concrete_powder"))
             register(BlockType.YELLOW_FLOWER, Identifier.fromString("minecraft:yellow_flower"), BlockYellowFlower::class.java)

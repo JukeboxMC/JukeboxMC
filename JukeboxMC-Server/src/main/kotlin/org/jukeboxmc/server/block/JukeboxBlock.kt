@@ -273,6 +273,10 @@ open class JukeboxBlock(
         return false
     }
 
+    override fun canBeFlowedInto(): Boolean {
+        return false
+    }
+
     override fun getToolType(): ToolType {
         return this.blockProperties.getToolType()
     }

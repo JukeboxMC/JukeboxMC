@@ -100,6 +100,8 @@ interface Block {
 
     fun canPassThrough(): Boolean
 
+    fun canBeFlowedInto(): Boolean
+
     fun getToolType(): ToolType
 
     fun getTierType(): TierType
