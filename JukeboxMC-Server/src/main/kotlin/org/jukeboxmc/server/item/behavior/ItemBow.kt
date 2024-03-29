@@ -64,7 +64,7 @@ class ItemBow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemTyp
         JukeboxServer.getInstance().getPluginManager().callEvent(projectileLaunchEvent)
         if (projectileLaunchEvent.isCancelled()) return
 
-        val infinityEnchantment = this.hasEnchantment(EnchantmentType.INFINITY)
+        val infinityEnchantment = this.hasEnchantment(EnchantmentType.INFINITY) || player.getGameMode() == GameMode.CREATIVE
         entityArrow.setInfinityArrow(infinityEnchantment)
         if (!infinityEnchantment) {
             this.updateDurability(player, 1)

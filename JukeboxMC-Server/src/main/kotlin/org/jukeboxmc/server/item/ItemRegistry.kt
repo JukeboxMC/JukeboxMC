@@ -341,7 +341,7 @@ class ItemRegistry {
             register(ItemType.CRIMSON_STEM, Identifier.fromString("minecraft:crimson_stem"))
             register(ItemType.CRIMSON_TRAPDOOR, Identifier.fromString("minecraft:crimson_trapdoor"))
             register(ItemType.CRIMSON_WALL_SIGN, Identifier.fromString("minecraft:crimson_wall_sign"), ItemSign::class.java)
-            register(ItemType.CROSSBOW, Identifier.fromString("minecraft:crossbow"))
+            register(ItemType.CROSSBOW, Identifier.fromString("minecraft:crossbow"), ItemCrossbow::class.java)
             register(ItemType.CRYING_OBSIDIAN, Identifier.fromString("minecraft:crying_obsidian"))
             register(ItemType.CUT_COPPER, Identifier.fromString("minecraft:cut_copper"))
             register(ItemType.CUT_COPPER_SLAB, Identifier.fromString("minecraft:cut_copper_slab"))

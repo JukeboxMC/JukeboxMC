@@ -10,6 +10,7 @@ import org.jukeboxmc.api.entity.projectile.EntityArrow
 import org.jukeboxmc.api.event.player.PlayerPickupItemEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
+import org.jukeboxmc.api.player.GameMode
 import org.jukeboxmc.api.player.Player
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.extensions.toJukeboxWorld
@@ -108,7 +109,7 @@ class JukeboxEntityArrow : JukeboxEntityProjectile(), EntityArrow {
             if (pickupItemEvent.isCancelled()) return
             this.remove()
             player.getWorld().toJukeboxWorld().sendLevelEvent(player.getLocation(), LevelEvent.SOUND_INFINITY_ARROW_PICKUP)
-            if (!this.wasInfinityArrow) {
+            if (!this.wasInfinityArrow || player.getGameMode() == GameMode.CREATIVE) {
                 player.getInventory().addItem(arrow)
             }
         } else if (this.getHitEntity() != null) {
