@@ -593,12 +593,7 @@ class JukeboxServer : Server {
     }
 
     override fun <T : Block> createBlock(blockType: BlockType): T {
-        if (BlockRegistry.blockByBlockType.containsKey(blockType)) {
-            return BlockRegistry.blockByBlockType[blockType]?.clone() as T
-        }
-        val createBlock = this.createBlock<JukeboxBlock>(blockType, null)
-        BlockRegistry.blockByBlockType[blockType] = createBlock
-        return createBlock as T
+        return this.createBlock<JukeboxBlock>(blockType, null) as T
     }
 
     override fun <T : Block> createBlock(blockType: BlockType, blockStates: NbtMap?): T {
