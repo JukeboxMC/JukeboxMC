@@ -94,7 +94,7 @@ class BlockRegistry {
             register(
                 BlockType.BAMBOO_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:bamboo_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.BAMBOO_FENCE, Identifier.fromString("minecraft:bamboo_fence"))
             register(
@@ -111,12 +111,12 @@ class BlockRegistry {
             register(
                 BlockType.BAMBOO_MOSAIC_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:bamboo_mosaic_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(
                 BlockType.BAMBOO_MOSAIC_SLAB,
                 Identifier.fromString("minecraft:bamboo_mosaic_slab"),
-                BlockSlab::class.java
+                BlockWoodenSlab::class.java
             )
             register(
                 BlockType.BAMBOO_MOSAIC_STAIRS,
@@ -134,7 +134,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:bamboo_sapling"),
                 BlockBambooSapling::class.java
             )
-            register(BlockType.BAMBOO_SLAB, Identifier.fromString("minecraft:bamboo_slab"), BlockSlab::class.java)
+            register(BlockType.BAMBOO_SLAB, Identifier.fromString("minecraft:bamboo_slab"), BlockWoodenSlab::class.java)
             register(BlockType.BAMBOO_STAIRS, Identifier.fromString("minecraft:bamboo_stairs"), BlockStairs::class.java)
             register(
                 BlockType.BAMBOO_STANDING_SIGN,
@@ -366,7 +366,7 @@ class BlockRegistry {
             register(
                 BlockType.CHERRY_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:cherry_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.CHERRY_FENCE, Identifier.fromString("minecraft:cherry_fence"))
             register(
@@ -396,7 +396,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:cherry_sapling"),
                 BlockCherrySapling::class.java
             )
-            register(BlockType.CHERRY_SLAB, Identifier.fromString("minecraft:cherry_slab"), BlockSlab::class.java)
+            register(BlockType.CHERRY_SLAB, Identifier.fromString("minecraft:cherry_slab"), BlockWoodenSlab::class.java)
             register(BlockType.CHERRY_STAIRS, Identifier.fromString("minecraft:cherry_stairs"), BlockStairs::class.java)
             register(
                 BlockType.CHERRY_STANDING_SIGN,
@@ -537,7 +537,7 @@ class BlockRegistry {
             register(
                 BlockType.CRIMSON_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:crimson_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.CRIMSON_FENCE, Identifier.fromString("minecraft:crimson_fence"))
             register(
@@ -564,7 +564,7 @@ class BlockRegistry {
                 BlockPressurePlate::class.java
             )
             register(BlockType.CRIMSON_ROOTS, Identifier.fromString("minecraft:crimson_roots"))
-            register(BlockType.CRIMSON_SLAB, Identifier.fromString("minecraft:crimson_slab"), BlockSlab::class.java)
+            register(BlockType.CRIMSON_SLAB, Identifier.fromString("minecraft:crimson_slab"), BlockWoodenSlab::class.java)
             register(
                 BlockType.CRIMSON_STAIRS,
                 Identifier.fromString("minecraft:crimson_stairs"),
@@ -1462,7 +1462,7 @@ class BlockRegistry {
             register(
                 BlockType.MANGROVE_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:mangrove_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.MANGROVE_FENCE, Identifier.fromString("minecraft:mangrove_fence"))
             register(
@@ -1493,7 +1493,7 @@ class BlockRegistry {
                 BlockMangrovePropagule::class.java
             )
             register(BlockType.MANGROVE_ROOTS, Identifier.fromString("minecraft:mangrove_roots"))
-            register(BlockType.MANGROVE_SLAB, Identifier.fromString("minecraft:mangrove_slab"), BlockSlab::class.java)
+            register(BlockType.MANGROVE_SLAB, Identifier.fromString("minecraft:mangrove_slab"), BlockWoodenSlab::class.java)
             register(
                 BlockType.MANGROVE_STAIRS,
                 Identifier.fromString("minecraft:mangrove_stairs"),
@@ -2404,7 +2404,7 @@ class BlockRegistry {
             register(
                 BlockType.WARPED_DOUBLE_SLAB,
                 Identifier.fromString("minecraft:warped_double_slab"),
-                BlockDoubleSlab::class.java
+                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.WARPED_FENCE, Identifier.fromString("minecraft:warped_fence"))
             register(
@@ -2431,7 +2431,7 @@ class BlockRegistry {
                 BlockPressurePlate::class.java
             )
             register(BlockType.WARPED_ROOTS, Identifier.fromString("minecraft:warped_roots"))
-            register(BlockType.WARPED_SLAB, Identifier.fromString("minecraft:warped_slab"), BlockSlab::class.java)
+            register(BlockType.WARPED_SLAB, Identifier.fromString("minecraft:warped_slab"), BlockWoodenSlab::class.java)
             register(BlockType.WARPED_STAIRS, Identifier.fromString("minecraft:warped_stairs"), BlockStairs::class.java)
             register(
                 BlockType.WARPED_STANDING_SIGN,
@@ -2524,7 +2524,7 @@ class BlockRegistry {
             register(
                 BlockType.WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB,
                 Identifier.fromString("minecraft:waxed_exposed_double_cut_copper_slab"),
-                BlockSlab::class.java
+                BlockDoubleSlab::class.java
             )
             register(
                 BlockType.WAXED_OXIDIZED_CHISELED_COPPER,

@@ -27,10 +27,7 @@ import org.jukeboxmc.api.world.MovingObjectPosition
 import org.jukeboxmc.api.world.Particle
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.UpdateReason
-import org.jukeboxmc.server.extensions.toJukeboxBlock
-import org.jukeboxmc.server.extensions.toJukeboxChunk
-import org.jukeboxmc.server.extensions.toJukeboxWorld
-import org.jukeboxmc.server.extensions.toVector3i
+import org.jukeboxmc.server.extensions.*
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
@@ -98,6 +95,10 @@ open class JukeboxBlock(
 
     override fun getBlockStates(): NbtMap? {
         return this.blockStates
+    }
+
+    fun setBlockStates(blockStates: NbtMap?) {
+        this.blockStates = blockStates
     }
 
     override fun getBoundingBox(): AxisAlignedBB {
@@ -367,6 +368,9 @@ open class JukeboxBlock(
         val breakLocation = this.location
         if (breakLocation != null) {
             this.onBlockBreak(breakLocation)
+            for (dropItem in blockBreakEvent.getDrops()) {
+                this.location?.let { it.getWorld().dropItemNaturally(it.clone().add(0.5f, 1f, 0.5f), dropItem) }
+            }
             this.getWorld().spawnParticle(Particle.PARTICLE_DESTROY_BLOCK, breakLocation, this.networkId)
             this.onBlockBreakSound()
         }
@@ -499,11 +503,7 @@ open class JukeboxBlock(
     }
 
     private fun canBreakWithHand(item: JukeboxItem): Boolean {
-        return this.getTierType() == TierType.NONE || this.getToolType() == ToolType.NONE || this.correctTool0(
-            this.getToolType(),
-            item,
-            this.getType()
-        )
+        return this.getTierType() == TierType.NONE || this.getToolType() == ToolType.NONE || this.correctTool0(this.getToolType(), item, this.getType()) && item.getTierType().ordinal >= this.getTierType().ordinal
     }
 
     private fun correctTool0(blockToolType: ToolType, item: JukeboxItem, blockType: BlockType): Boolean {
@@ -674,6 +674,14 @@ open class JukeboxBlock(
     open fun isCollidable(): Boolean {
         return true
     }
+
+    fun createItemDrop(itemInHand: Item, vararg itemDrop: Item, toolType: ToolType = ToolType.NONE, tierType: TierType = TierType.NONE): MutableList<Item> {
+        if (this.canBreakWithHand(itemInHand.toJukeboxItem())) {
+            return itemDrop.toMutableList()
+        }
+        return mutableListOf()
+    }
+
 
     override fun clone(): JukeboxBlock {
         val block = super.clone() as JukeboxBlock

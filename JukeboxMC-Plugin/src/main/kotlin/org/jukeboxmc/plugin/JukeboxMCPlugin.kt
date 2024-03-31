@@ -26,6 +26,7 @@ class JukeboxMCPlugin : Plugin(), Listener {
         armorInventory.setLeggings(Item.create(ItemType.NETHERITE_LEGGINGS))
         armorInventory.setBoots(Item.create(ItemType.NETHERITE_BOOTS))
 
+        /*
         inventory.addItem(
             Item.create(ItemType.WOODEN_SWORD),
             Item.create(ItemType.BOW),
@@ -34,6 +35,7 @@ class JukeboxMCPlugin : Plugin(), Listener {
             Item.create(ItemType.EGG,64),
             Item.create(ItemType.FISHING_ROD),
         )
+         */
     }
 
     @EventHandler
@@ -49,7 +51,7 @@ class JukeboxMCPlugin : Plugin(), Listener {
         val itemInHand = player.getInventory().getItemInHand()
         builder.append("§7ItemInHand§8: §e").append(itemInHand.getType()).append(":")
             .append(itemInHand.getStackNetworkId()).append(" §7Meta§8: §e").append(itemInHand.getMeta()).append("\n")
-        builder.append("§7toBlock§8: §e" + itemInHand.toBlock().getType() + " ")
+        builder.append("§7ItemBlockId§8: §e" + itemInHand.getBlockNetworkId() + " ")
         builder.append("§7Durability§8: §e").append(itemInHand.getDurability()).append("\n")
         builder.append("§7Identiefer§8: §e").append(itemInHand.getIdentifier()).append("\n")
         builder.append("§7BlockType (0)§8: §e").append(player.getLocation().subtract(0f, 1f, 0f).getBlock().getType())

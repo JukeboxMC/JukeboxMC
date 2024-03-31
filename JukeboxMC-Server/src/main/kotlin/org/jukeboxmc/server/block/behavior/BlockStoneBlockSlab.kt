@@ -8,6 +8,8 @@ import org.jukeboxmc.api.block.StoneBlockSlab
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.StoneSlabType
 import org.jukeboxmc.api.block.data.VerticalHalf
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ToolType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.extensions.toJukeboxBlock
@@ -71,4 +73,8 @@ class BlockStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : Jukebo
    override fun setStoneSlabType(value: StoneSlabType): StoneBlockSlab {
        return this.setState("stone_slab_type", value.name.lowercase())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return this.createItemDrop(item, this.toItem(), toolType = ToolType.PICKAXE)
+    }
 }

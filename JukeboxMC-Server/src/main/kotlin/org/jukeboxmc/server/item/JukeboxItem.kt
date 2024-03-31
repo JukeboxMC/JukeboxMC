@@ -113,6 +113,10 @@ open class JukeboxItem : Item, Cloneable {
         return this.blockNetworkId
     }
 
+    open fun setBlockNetworkId(blockNetworkId: Int) {
+        this.blockNetworkId = blockNetworkId
+    }
+
     override fun getStackNetworkId(): Int {
         return this.stackNetworkId
     }
@@ -233,7 +237,12 @@ open class JukeboxItem : Item, Cloneable {
     }
 
     override fun isSimilar(item: Item): Boolean {
+        return this.isSimilarInternal(item, false)
+    }
+
+    fun isSimilarInternal(item: Item, ignoreBlockNetworkId: Boolean): Boolean {
         val identifier = item.getIdentifier() == this.getIdentifier()
+        val blockNetworkId = item.getBlockNetworkId() == this.getBlockNetworkId()
         val durability = item.getDurability() == this.getDurability()
         val meta = item.getMeta() == this.getMeta()
         val displayName = item.getDisplayName() == this.getDisplayName()
@@ -241,7 +250,10 @@ open class JukeboxItem : Item, Cloneable {
         val enchantments = if (item.getEnchantments().isEmpty() && this.getEnchantments().isEmpty()
         ) true else item.getEnchantments().contentEquals(this.getEnchantments())
         val unbreakable = item.isUnbreakable() == this.isUnbreakable()
-        return identifier && durability && meta && displayName && lore && enchantments && unbreakable
+        if (ignoreBlockNetworkId) {
+            return identifier && durability && meta && displayName && lore && enchantments && unbreakable
+        }
+        return identifier && blockNetworkId && durability && meta && displayName && lore && enchantments && unbreakable
     }
 
     override fun equals(other: Any?): Boolean {
