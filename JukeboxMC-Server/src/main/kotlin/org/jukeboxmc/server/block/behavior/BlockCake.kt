@@ -6,6 +6,8 @@ import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Cake
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.math.Vector
+import org.jukeboxmc.api.player.GameMode
+import org.jukeboxmc.api.world.Difficulty
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
@@ -27,11 +29,38 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun geteCounter(): Int {
-       return this.getIntState("bite_counter")
-   }
+    override fun interact(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        clickedPosition: Vector,
+        blockFace: BlockFace,
+        itemInHand: JukeboxItem
+    ): Boolean {
+        if (player.isHungry() || player.getGameMode() == GameMode.CREATIVE || player.getWorld().getDifficulty().equals(
+                Difficulty.PEACEFUL
+            )
+        ) {
+            var biteCounter: Int = this.getCounter()
+            if (biteCounter <= 6) {
+                this.setCounter(biteCounter + 1.also { biteCounter = it })
+            }
+            if (biteCounter > 6) {
+                player.getWorld().setBlock(this.getLocation(), AIR)
+            } else {
+                player.addHunger(2)
+                player.addSaturation(0.4f)
+            }
+            return true
+        }
+        return false
+    }
 
-   override fun seteCounter(value: Int): BlockCake {
-       return this.setState("bite_counter", value)
-   }
+    override fun getCounter(): Int {
+        return this.getIntState("bite_counter")
+    }
+
+    override fun setCounter(value: Int): BlockCake {
+        return this.setState("bite_counter", value)
+    }
 }

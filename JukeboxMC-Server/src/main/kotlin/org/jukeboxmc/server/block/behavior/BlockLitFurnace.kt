@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.LitFurnace
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -33,4 +35,8 @@ class BlockLitFurnace(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
    override fun setCardinalDirection(value: Direction): LitFurnace {
        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
    }
+
+    override fun toItem(): Item {
+        return Item.create(ItemType.FURNACE)
+    }
 }

@@ -10,6 +10,8 @@ import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.SignDirection
 import org.jukeboxmc.api.blockentity.BlockEntity
 import org.jukeboxmc.api.blockentity.BlockEntityType
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -50,4 +52,26 @@ class BlockStandingSign(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
    override fun setGroundSignDirection(value: SignDirection): StandingSign {
        return this.setState("ground_sign_direction", value.ordinal)
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return this.createItemDrop(item, this.toItem())
+    }
+
+    override fun toItem(): Item {
+        return when(this.getType()) {
+            BlockType.STANDING_SIGN -> Item.create(ItemType.OAK_SIGN)
+            BlockType.SPRUCE_STANDING_SIGN -> Item.create(ItemType.SPRUCE_SIGN)
+            BlockType.BIRCH_STANDING_SIGN -> Item.create(ItemType.BIRCH_SIGN)
+            BlockType.JUNGLE_STANDING_SIGN -> Item.create(ItemType.JUNGLE_SIGN)
+            BlockType.ACACIA_STANDING_SIGN -> Item.create(ItemType.ACACIA_SIGN)
+            BlockType.DARKOAK_STANDING_SIGN -> Item.create(ItemType.DARK_OAK_SIGN)
+            BlockType.MANGROVE_STANDING_SIGN -> Item.create(ItemType.MANGROVE_SIGN)
+            BlockType.CHERRY_STANDING_SIGN -> Item.create(ItemType.CHERRY_SIGN)
+            BlockType.BAMBOO_STANDING_SIGN -> Item.create(ItemType.BAMBOO_SIGN)
+            BlockType.CRIMSON_STANDING_SIGN -> Item.create(ItemType.CRIMSON_SIGN)
+            BlockType.WARPED_STANDING_SIGN -> Item.create(ItemType.WARPED_SIGN)
+            else -> JukeboxItem.AIR
+        }
+    }
+
 }

@@ -12,6 +12,7 @@ import org.jukeboxmc.api.math.AxisAlignedBB
 import org.jukeboxmc.api.math.Location
 import org.jukeboxmc.api.world.World
 import java.awt.Color
+import java.util.*
 
 interface Block {
 
@@ -105,6 +106,10 @@ interface Block {
     fun getToolType(): ToolType
 
     fun getTierType(): TierType
+
+    fun ignoreSilkTouch(): Boolean
+
+    fun getRandom(): Random
 
     fun clone(): Block
 

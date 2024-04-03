@@ -5,13 +5,16 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.UnlitRedstoneTorch
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.TorchFacing
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockUnlitRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), UnlitRedstoneTorch {
+class BlockUnlitRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    UnlitRedstoneTorch {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -37,11 +40,15 @@ class BlockUnlitRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : Ju
         return true
     }
 
-   override fun getTorchFacingDirection(): TorchFacing {
-       return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
-   }
+    override fun getTorchFacingDirection(): TorchFacing {
+        return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
+    }
 
-   override fun setTorchFacingDirection(value: TorchFacing): UnlitRedstoneTorch {
-       return this.setState("torch_facing_direction", value.name.lowercase())
-   }
+    override fun setTorchFacingDirection(value: TorchFacing): UnlitRedstoneTorch {
+        return this.setState("torch_facing_direction", value.name.lowercase())
+    }
+
+    override fun toItem(): Item {
+        return Item.create(ItemType.REDSTONE_TORCH)
+    }
 }

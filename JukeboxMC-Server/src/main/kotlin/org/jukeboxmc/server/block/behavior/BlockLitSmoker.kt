@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.LitSmoker
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -33,4 +35,8 @@ class BlockLitSmoker(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
    override fun setCardinalDirection(value: Direction): LitSmoker {
        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return this.createItemDrop(item, Item.create(ItemType.SMOKER))
+    }
 }

@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.SoulCampfire
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.extensions.toByte
@@ -42,4 +44,8 @@ class BlockSoulCampfire(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
    override fun setExtinguished(value: Boolean): SoulCampfire {
        return this.setState("extinguished", value.toByte())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return mutableListOf(Item.create(ItemType.SOUL_SOIL))
+    }
 }

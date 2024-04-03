@@ -8,7 +8,6 @@ import org.jukeboxmc.api.block.Slab
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.VerticalHalf
 import org.jukeboxmc.api.item.Item
-import org.jukeboxmc.api.item.ToolType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.extensions.toJukeboxBlock
@@ -86,7 +85,7 @@ open class BlockSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
     }
 
     override fun getDrops(item: Item): MutableList<Item> {
-        return this.createItemDrop(item, this.toItem(), toolType = ToolType.PICKAXE)
+        return this.createItemDrop(item, this.toItem())
     }
 
     private fun getStoneSlabType(type: BlockType): String {

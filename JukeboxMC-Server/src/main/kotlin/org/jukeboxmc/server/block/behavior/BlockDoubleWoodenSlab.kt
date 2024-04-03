@@ -26,7 +26,7 @@ class BlockDoubleWoodenSlab(identifier: Identifier, blockStates: NbtMap?) : Juke
             BlockType.JUNGLE_DOUBLE_SLAB, BlockType.ACACIA_DOUBLE_SLAB, BlockType.DARK_OAK_DOUBLE_SLAB,
             BlockType.MANGROVE_DOUBLE_SLAB, BlockType.CHERRY_DOUBLE_SLAB, BlockType.BAMBOO_DOUBLE_SLAB,
             BlockType.BAMBOO_MOSAIC_DOUBLE_SLAB, BlockType.CRIMSON_DOUBLE_SLAB, BlockType.WARPED_DOUBLE_SLAB -> {
-                this.createItemDrop(item, Item.create(ItemType.valueOf(this.getType().name.replace("_DOUBLE", ""))).apply { this.setAmount(2) })
+                this.createItemDrop(item, Item.create(ItemType.valueOf(this.getType().name.replace("_DOUBLE", "")), 2))
             }
             else -> mutableListOf()
         }

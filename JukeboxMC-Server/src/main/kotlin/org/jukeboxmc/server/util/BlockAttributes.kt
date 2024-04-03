@@ -55,8 +55,7 @@ class BlockAttributes {
             }
 
             for (blockDefinition in BlockPalette.getBlockDefinitions()) {
-                val inputStream = BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json") ?: throw RuntimeException("The block properties were not found")
-                inputStream.reader().use {
+                BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json")?.reader().use {
                     val states = blockDefinition.state
                     val identifier = Identifier.fromString(blockDefinition.identifier)
                     val stateless = statelessProperties[identifier.getFullName()]!!

@@ -8,6 +8,8 @@ import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
 import org.jukeboxmc.api.blockentity.BlockEntity
 import org.jukeboxmc.api.blockentity.BlockEntityType
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.extensions.toByte
@@ -48,4 +50,8 @@ class BlockCampfire(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
    override fun setExtinguished(value: Boolean): BlockCampfire {
        return this.setState("extinguished", value.toByte())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return mutableListOf(Item.create(ItemType.CHARCOAL, 4))
+    }
 }

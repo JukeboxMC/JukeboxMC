@@ -5,13 +5,16 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.UnpoweredRepeater
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockUnpoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), UnpoweredRepeater {
+class BlockUnpoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    UnpoweredRepeater {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -26,19 +29,23 @@ class BlockUnpoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : Juk
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): UnpoweredRepeater {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): UnpoweredRepeater {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
-   override fun getRepeaterDelay(): Int {
-       return this.getIntState("repeater_delay")
-   }
+    override fun getRepeaterDelay(): Int {
+        return this.getIntState("repeater_delay")
+    }
 
-   override fun setRepeaterDelay(value: Int): UnpoweredRepeater {
-       return this.setState("repeater_delay", value)
-   }
+    override fun setRepeaterDelay(value: Int): UnpoweredRepeater {
+        return this.setState("repeater_delay", value)
+    }
+
+    override fun toItem(): Item {
+        return Item.create(ItemType.REPEATER)
+    }
 }

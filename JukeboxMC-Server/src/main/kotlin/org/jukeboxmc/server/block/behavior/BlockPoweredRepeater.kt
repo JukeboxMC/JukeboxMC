@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.PoweredRepeater
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -41,4 +43,8 @@ class BlockPoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : Jukeb
    override fun setRepeaterDelay(value: Int): PoweredRepeater {
        return this.setState("repeater_delay", value)
    }
+
+    override fun toItem(): Item {
+        return Item.create(ItemType.REPEATER)
+    }
 }

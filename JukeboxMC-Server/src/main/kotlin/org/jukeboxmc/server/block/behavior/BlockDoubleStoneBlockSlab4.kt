@@ -8,7 +8,6 @@ import org.jukeboxmc.api.block.data.StoneSlabType4
 import org.jukeboxmc.api.block.data.VerticalHalf
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
-import org.jukeboxmc.api.item.ToolType
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.behavior.ItemStoneBlockSlab4
 
@@ -37,7 +36,7 @@ class BlockDoubleStoneBlockSlab4(identifier: Identifier, blockStates: NbtMap?) :
                 this.createItemDrop(item, Item.create<ItemStoneBlockSlab4>(ItemType.STONE_BLOCK_SLAB4).apply {
                     this.setAmount(2)
                     this.setStoneSlabType4(this@BlockDoubleStoneBlockSlab4.getStoneSlabType4())
-                }, toolType = ToolType.PICKAXE)
+                })
             }
             else -> mutableListOf()
         }

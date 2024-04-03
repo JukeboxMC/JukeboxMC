@@ -57,6 +57,8 @@ interface EntityHuman : EntityLiving, InventoryHolder {
 
     fun setSaturation(value: Float)
 
+    fun addSaturation(value: Float)
+
     fun getExhaustion(): Float
 
     fun setExhaustion(value: Float)

@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Deepslate
 import org.jukeboxmc.api.block.data.Axis
 import org.jukeboxmc.api.block.data.BlockFace
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -34,4 +36,8 @@ class BlockDeepslate(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
    override fun setPillarAxis(value: Axis): BlockDeepslate {
        return this.setState("pillar_axis", value.name.lowercase())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return this.createItemDrop(item, Item.create(ItemType.COBBLED_DEEPSLATE))
+    }
 }
