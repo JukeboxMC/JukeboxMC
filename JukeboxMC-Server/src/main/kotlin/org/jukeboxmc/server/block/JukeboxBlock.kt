@@ -2,6 +2,7 @@
 
 package org.jukeboxmc.server.block
 
+import com.fasterxml.jackson.databind.jsontype.SubtypeResolver
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
@@ -339,7 +340,7 @@ open class JukeboxBlock(
             BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
             BlockType.SMALL_AMETHYST_BUD, BlockType.MEDIUM_AMETHYST_BUD, BlockType.LARGE_AMETHYST_BUD, BlockType.PACKED_ICE,
             BlockType.SCULK, BlockType.SCULK_CATALYST, BlockType.SCULK_SENSOR, BlockType.SCULK_SHRIEKER, BlockType.SCULK_VEIN,
-            BlockType.TURTLE_EGG -> true
+            BlockType.TURTLE_EGG, BlockType.TALLGRASS -> true
             else -> false
         }
     }
@@ -430,8 +431,10 @@ open class JukeboxBlock(
         val breakLocation = this.location
         if (breakLocation != null) {
             this.onBlockBreak(breakLocation)
-            for (dropItem in blockBreakEvent.getDrops()) {
-                this.location?.let { it.getWorld().dropItemNaturally(it.clone().add(0.5f, 1f, 0.5f), dropItem) }
+            if (player.getGameMode() == GameMode.SURVIVAL) {
+                for (dropItem in blockBreakEvent.getDrops()) {
+                    this.location?.let { it.getWorld().dropItemNaturally(it.clone().add(0.5f, 1f, 0.5f), dropItem) }
+                }
             }
             this.getWorld().spawnParticle(Particle.PARTICLE_DESTROY_BLOCK, breakLocation, this.networkId)
             this.onBlockBreakSound()

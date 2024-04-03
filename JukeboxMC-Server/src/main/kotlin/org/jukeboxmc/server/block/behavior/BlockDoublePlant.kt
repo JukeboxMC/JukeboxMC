@@ -7,6 +7,8 @@ import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.DoublePlant
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.PlantType
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Location
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
@@ -79,4 +81,15 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
    override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
        return this.setState("double_plant_type", value.name.lowercase())
    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        val doublePlantType = this.getDoublePlantType()
+        if (doublePlantType == PlantType.SUNFLOWER || doublePlantType == PlantType.ROSE ) {
+            return mutableListOf(this.toItem())
+        }
+        if (this.getRandom().nextFloat() <= 0.125f) {
+            return mutableListOf(Item.create(ItemType.WHEAT_SEEDS))
+        }
+        return mutableListOf()
+    }
 }

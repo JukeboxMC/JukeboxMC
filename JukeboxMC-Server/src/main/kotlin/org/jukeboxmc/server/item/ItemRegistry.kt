@@ -183,7 +183,7 @@ class ItemRegistry {
             register(ItemType.BUDDING_AMETHYST, Identifier.fromString("minecraft:budding_amethyst"))
             register(ItemType.BURN_POTTERY_SHERD, Identifier.fromString("minecraft:burn_pottery_sherd"))
             register(ItemType.CACTUS, Identifier.fromString("minecraft:cactus"))
-            register(ItemType.CAKE, Identifier.fromString("minecraft:cake"))
+            register(ItemType.CAKE, Identifier.fromString("minecraft:cake"), ItemCake::class.java  )
             register(ItemType.CALCITE, Identifier.fromString("minecraft:calcite"))
             register(ItemType.CALIBRATED_SCULK_SENSOR, Identifier.fromString("minecraft:calibrated_sculk_sensor"))
             register(ItemType.CAMEL_SPAWN_EGG, Identifier.fromString("minecraft:camel_spawn_egg"), ItemSpawnEgg::class.java)

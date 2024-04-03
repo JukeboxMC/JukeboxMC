@@ -25,7 +25,9 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
-        if (this.getRelative(BlockFace.DOWN).getType() == BlockType.AIR) return false
+        if (this.getRelative(BlockFace.DOWN).getType() == BlockType.AIR)  {
+            return false
+        }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
@@ -37,15 +39,13 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         blockFace: BlockFace,
         itemInHand: JukeboxItem
     ): Boolean {
-        if (player.isHungry() || player.getGameMode() == GameMode.CREATIVE || player.getWorld().getDifficulty().equals(
-                Difficulty.PEACEFUL
-            )
+        if (player.isHungry() || player.getGameMode() == GameMode.CREATIVE || player.getWorld().getDifficulty() == Difficulty.PEACEFUL
         ) {
             var biteCounter: Int = this.getCounter()
-            if (biteCounter <= 6) {
+            if (biteCounter < 6) {
                 this.setCounter(biteCounter + 1.also { biteCounter = it })
             }
-            if (biteCounter > 6) {
+            if (biteCounter >= 6) {
                 player.getWorld().setBlock(this.getLocation(), AIR)
             } else {
                 player.addHunger(2)
