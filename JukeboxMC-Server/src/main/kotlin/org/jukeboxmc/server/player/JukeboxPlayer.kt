@@ -734,6 +734,12 @@ class JukeboxPlayer(
         }
     }
 
+    override fun sendToast(content: String) {
+        this.sendPacket(ToastRequestPacket().apply {
+            this.content = content
+        })
+    }
+
     fun parseGUIResponse(formId: Int, json: String) {
         val form = this.forms[formId]
         if (form != null) {

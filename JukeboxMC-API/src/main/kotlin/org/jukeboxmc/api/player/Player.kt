@@ -146,4 +146,6 @@ interface Player : EntityHuman, CommandSender {
     fun <R : Any> setSettingsForm(form: Form<R>): FormListener<R>
 
     fun removeSettingsForm()
+
+    fun sendToast(content: String)
 }
