@@ -1044,7 +1044,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:granite_stairs"),
                 BlockStairs::class.java
             )
-            register(BlockType.GRASS_BLOCK, Identifier.fromString("minecraft:grass_block"))
+            register(BlockType.GRASS_BLOCK, Identifier.fromString("minecraft:grass_block"),BlockGrass::class.java)
             register(BlockType.GRASS_PATH, Identifier.fromString("minecraft:grass_path"))
             register(BlockType.GRAVEL, Identifier.fromString("minecraft:gravel"))
             register(BlockType.GRAY_CANDLE, Identifier.fromString("minecraft:gray_candle"), BlockCandle::class.java)

@@ -103,6 +103,12 @@ interface Block {
 
     fun canBeFlowedInto(): Boolean
 
+    fun canWaterloggingFlowInto(): Boolean
+
+    fun getWaterLoggingLevel(): Int
+
+    fun isWaterBlocking(): Boolean
+
     fun getToolType(): ToolType
 
     fun getTierType(): TierType

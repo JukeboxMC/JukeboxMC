@@ -3,6 +3,8 @@ package org.jukeboxmc.server.util
 import io.netty.buffer.ByteBuf
 import org.jukeboxmc.api.world.Dimension
 import org.jukeboxmc.server.world.chunk.JukeboxChunk
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -16,6 +18,16 @@ class Utils {
 
         fun fromHashZ(hash: Long): Int {
             return hash.toInt()
+        }
+
+        fun blockHash(x: Int, y: Int, z: Int, dimension: Dimension): Long {
+            if (y >= dimension.getMinY() && y <= dimension.getMaxY()) {
+                return x.toLong() and 134217727L shl 37 or ((max(
+                    min(y, dimension.getMaxY()),
+                    dimension.getMinY()
+                ).toLong() + 64) shl 28) or (z.toLong() and 0xFFFFFFFL)
+            }
+            return -1
         }
 
         fun ceil(value: Float): Int {

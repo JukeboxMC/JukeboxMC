@@ -496,4 +496,8 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
         }
     }
 
+    fun resetFallDistance() {
+        this.fallDistance = 0F
+    }
+
 }

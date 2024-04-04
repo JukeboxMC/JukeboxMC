@@ -2,7 +2,6 @@
 
 package org.jukeboxmc.server.block
 
-import com.fasterxml.jackson.databind.jsontype.SubtypeResolver
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
@@ -291,6 +290,18 @@ open class JukeboxBlock(
         return false
     }
 
+    override fun canWaterloggingFlowInto(): Boolean {
+        return this.canBeFlowedInto() || this.getWaterLoggingLevel() > 1
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 0
+    }
+
+    override fun isWaterBlocking(): Boolean {
+        return this.blockProperties.isWaterBlocking()
+    }
+
     override fun getToolType(): ToolType {
         return this.blockProperties.getToolType()
     }
@@ -353,7 +364,7 @@ open class JukeboxBlock(
         this.location?.getWorld()?.setBlock(breakLocation, 0, breakLocation.getDimension(), AIR)
     }
 
-    fun onBlockBreakSound() {
+    fun playBreakSound() {
         this.getWorld().playLevelSound(this.getLocation(), SoundEvent.BREAK, this.networkId)
     }
 
@@ -437,7 +448,7 @@ open class JukeboxBlock(
                 }
             }
             this.getWorld().spawnParticle(Particle.PARTICLE_DESTROY_BLOCK, breakLocation, this.networkId)
-            this.onBlockBreakSound()
+            this.playBreakSound()
         }
 
         if (player.getGameMode() == GameMode.SURVIVAL) {

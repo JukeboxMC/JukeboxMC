@@ -45,7 +45,6 @@ import org.jukeboxmc.server.command.JukeboxCommandManager
 import org.jukeboxmc.server.console.TerminalConsole
 import org.jukeboxmc.server.effect.EffectRegistry
 import org.jukeboxmc.server.entity.EntityRegistry
-import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.extensions.toNetwork
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
@@ -57,9 +56,7 @@ import org.jukeboxmc.server.resourcepack.JukeboxResourcePackManager
 import org.jukeboxmc.server.scheduler.JukeboxScheduler
 import org.jukeboxmc.server.util.ServerKiller
 import org.jukeboxmc.server.world.JukeboxWorld
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.net.InetSocketAddress
@@ -78,6 +75,7 @@ class JukeboxServer : Server {
     private val worlds = mutableMapOf<String, JukeboxWorld>()
     private val generators: MutableMap<Dimension, Object2ObjectMap<String, Class<out Generator>>> = mutableMapOf()
     private val playerListEntry: Object2ObjectMap<UUID, PlayerListPacket.Entry> = Object2ObjectOpenHashMap()
+    private var blockCache: MutableMap<BlockType, Block> = mutableMapOf()
     private val keyPair: KeyPair
 
     private var running: Boolean = false

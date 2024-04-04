@@ -5,7 +5,7 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.FlowingWater
 import org.jukeboxmc.server.block.JukeboxBlock
 
-class BlockFlowingWater(identifier: Identifier, blockStates: NbtMap?) : BlockLiquid(identifier, blockStates), FlowingWater {
+class BlockFlowingWater(identifier: Identifier, blockStates: NbtMap?) : BlockWater(identifier, blockStates), FlowingWater {
 
     override fun canCollideCheck(block: JukeboxBlock, value: Boolean): Boolean {
         if (block is BlockFlowingWater) {
