@@ -73,6 +73,7 @@ abstract class BlockLiquid(identifier: Identifier, blockStates: NbtMap?) : Jukeb
     override fun onUpdate(updateReason: UpdateReason): Long {
         val world = this.getWorld()
         if (updateReason == UpdateReason.NORMAL) {
+            this.checkForHarden()
             if (this.useWaterLogging() && this.getLayer() > 0) {
                 val location = this.getLocation()
                 val block = world.getBlock(location)
