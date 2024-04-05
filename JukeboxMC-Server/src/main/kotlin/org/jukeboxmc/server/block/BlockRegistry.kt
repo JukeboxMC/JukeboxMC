@@ -2451,7 +2451,7 @@ class BlockRegistry {
             )
             register(BlockType.WARPED_WART_BLOCK, Identifier.fromString("minecraft:warped_wart_block"))
             register(BlockType.WATER, Identifier.fromString("minecraft:water"), BlockWater::class.java)
-            register(BlockType.WATERLILY, Identifier.fromString("minecraft:waterlily"))
+            register(BlockType.WATERLILY, Identifier.fromString("minecraft:waterlily"), BlockWaterlily::class.java)
             register(BlockType.WAXED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_chiseled_copper"))
             register(BlockType.WAXED_COPPER, Identifier.fromString("minecraft:waxed_copper"))
             register(
