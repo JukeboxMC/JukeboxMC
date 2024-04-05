@@ -13,7 +13,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockPoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), PoweredRepeater {
+class BlockPoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    PoweredRepeater {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -24,27 +25,35 @@ class BlockPoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setCardinalDirection(player.getDirection().opposite())
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): PoweredRepeater {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): PoweredRepeater {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
-   override fun getRepeaterDelay(): Int {
-       return this.getIntState("repeater_delay")
-   }
+    override fun getRepeaterDelay(): Int {
+        return this.getIntState("repeater_delay")
+    }
 
-   override fun setRepeaterDelay(value: Int): PoweredRepeater {
-       return this.setState("repeater_delay", value)
-   }
+    override fun setRepeaterDelay(value: Int): PoweredRepeater {
+        return this.setState("repeater_delay", value)
+    }
 
     override fun toItem(): Item {
         return Item.create(ItemType.REPEATER)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

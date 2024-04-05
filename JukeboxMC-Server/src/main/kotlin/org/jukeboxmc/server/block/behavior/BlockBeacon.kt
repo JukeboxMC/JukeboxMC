@@ -2,6 +2,8 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.blockentity.BlockEntity
 import org.jukeboxmc.api.blockentity.BlockEntityBeacon
@@ -24,6 +26,10 @@ class BlockBeacon(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         world.setBlock(placePosition, this)
         BlockEntity.create<BlockEntityBeacon>(BlockEntityType.BEACON, this)?.spawn()
         return true
@@ -42,4 +48,7 @@ class BlockBeacon(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return super.interact(player, world, blockPosition, clickedPosition, blockFace, itemInHand)
     }
 
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

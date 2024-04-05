@@ -72,6 +72,10 @@ interface World {
 
     fun setBlock(location: Vector, layer: Int, block: Block)
 
+    fun setBlock(location: Vector, block: Block, layer: Int)
+
+    fun setBlock(location: Vector, block: Block, layer: Int, update: Boolean)
+
     fun setBlock(location: Vector, block: Block)
 
     fun getBiome(x: Int, y: Int, z: Int, dimension: Dimension): Biome

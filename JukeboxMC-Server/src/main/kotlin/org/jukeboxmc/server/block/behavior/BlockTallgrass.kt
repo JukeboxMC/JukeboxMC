@@ -14,13 +14,13 @@ class BlockTallgrass(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         return true
     }
 
-   override fun getTallGrassType(): TallGrassType {
-       return TallGrassType.valueOf(this.getStringState("tall_grass_type"))
-   }
+    override fun getTallGrassType(): TallGrassType {
+        return TallGrassType.valueOf(this.getStringState("tall_grass_type"))
+    }
 
-   override fun setTallGrassType(value: TallGrassType): Tallgrass {
-       return this.setState("tall_grass_type", value.name.lowercase())
-   }
+    override fun setTallGrassType(value: TallGrassType): Tallgrass {
+        return this.setState("tall_grass_type", value.name.lowercase())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         if (this.getRandom().nextFloat() <= 0.125f) {

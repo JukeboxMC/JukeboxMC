@@ -25,6 +25,10 @@ class BlockSkull(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setFacingDirection(blockFace)
         world.setBlock(placePosition, this)
         BlockEntity.create<BlockEntitySkull>(BlockEntityType.SKULL, this)?.let {
@@ -37,11 +41,15 @@ class BlockSkull(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         return true
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): Skull {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): Skull {
+        return this.setState("facing_direction", value.ordinal)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

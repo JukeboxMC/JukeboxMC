@@ -78,9 +78,25 @@ abstract class BlockLiquid(identifier: Identifier, blockStates: NbtMap?) : Jukeb
                 val location = this.getLocation()
                 val block = world.getBlock(location)
                 if (block.getType() == BlockType.AIR) {
-                    world.setBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ(), 1, location.getDimension(), AIR, false)
-                    world.setBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ(), 0, location.getDimension(), AIR, false)
-                } else if(block.getWaterLoggingLevel() <= 0 || block.getWaterLoggingLevel() == 1 && this.getLiquidDepth() > 0) {
+                    world.setBlock(
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ(),
+                        1,
+                        location.getDimension(),
+                        AIR,
+                        false
+                    )
+                    world.setBlock(
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ(),
+                        0,
+                        location.getDimension(),
+                        AIR,
+                        false
+                    )
+                } else if (block.getWaterLoggingLevel() <= 0 || block.getWaterLoggingLevel() == 1 && this.getLiquidDepth() > 0) {
                     world.setBlock(location, AIR)
                 }
             }
@@ -249,7 +265,11 @@ abstract class BlockLiquid(identifier: Identifier, blockStates: NbtMap?) : Jukeb
                         world.dropItemNaturally(blockValue.getLocation(), drops[0])
                     }
                 }
-                world.setBlock(blockValue.getLocation(), blockValue.getLayer(), this.getLiquidWithNewDepth(newFlowDecay))
+                world.setBlock(
+                    blockValue.getLocation(),
+                    blockValue.getLayer(),
+                    this.getLiquidWithNewDepth(newFlowDecay)
+                )
                 world.scheduleBlockUpdate(blockValue, this.tickRate())
             }
         }

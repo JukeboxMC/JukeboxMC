@@ -29,19 +29,19 @@ class BlockCommandBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): BlockCommandBlock {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): BlockCommandBlock {
+        return this.setState("facing_direction", value.ordinal)
+    }
 
-   override fun isConditional(): Boolean {
-       return this.getBooleanState("conditional_bit")
-   }
+    override fun isConditional(): Boolean {
+        return this.getBooleanState("conditional_bit")
+    }
 
-   override fun setConditional(value: Boolean): BlockCommandBlock {
-       return this.setState("conditional_bit", value.toByte())
-   }
+    override fun setConditional(value: Boolean): BlockCommandBlock {
+        return this.setState("conditional_bit", value.toByte())
+    }
 }

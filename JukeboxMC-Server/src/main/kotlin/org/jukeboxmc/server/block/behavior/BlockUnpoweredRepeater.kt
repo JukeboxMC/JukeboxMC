@@ -25,6 +25,10 @@ class BlockUnpoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : Juk
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setCardinalDirection(player.getDirection().opposite())
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -47,5 +51,9 @@ class BlockUnpoweredRepeater(identifier: Identifier, blockStates: NbtMap?) : Juk
 
     override fun toItem(): Item {
         return Item.create(ItemType.REPEATER)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

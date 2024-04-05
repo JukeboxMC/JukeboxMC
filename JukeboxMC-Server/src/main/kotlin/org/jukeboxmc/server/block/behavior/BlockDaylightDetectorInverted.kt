@@ -2,6 +2,8 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.DaylightDetectorInverted
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.blockentity.BlockEntity
@@ -12,7 +14,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockDaylightDetectorInverted(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+class BlockDaylightDetectorInverted(identifier: Identifier, blockStates: NbtMap?) :
+    JukeboxBlock(identifier, blockStates),
     DaylightDetectorInverted {
 
     override fun placeBlock(
@@ -24,15 +27,23 @@ class BlockDaylightDetectorInverted(identifier: Identifier, blockStates: NbtMap?
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         BlockEntity.create(BlockEntityType.DAYLIGHTDETECTOR, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getRedstoneSignal(): Int {
-       return this.getIntState("redstone_signal")
-   }
+    override fun getRedstoneSignal(): Int {
+        return this.getIntState("redstone_signal")
+    }
 
-   override fun setRedstoneSignal(value: Int): BlockDaylightDetectorInverted {
-       return this.setState("redstone_signal", value)
-   }
+    override fun setRedstoneSignal(value: Int): BlockDaylightDetectorInverted {
+        return this.setState("redstone_signal", value)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

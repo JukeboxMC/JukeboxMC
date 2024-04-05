@@ -12,7 +12,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockQuartzBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), QuartzBlock {
+class BlockQuartzBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    QuartzBlock {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -27,19 +28,19 @@ class BlockQuartzBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): QuartzBlock {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): QuartzBlock {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 
-   override fun getChiselType(): ChiselType {
-       return ChiselType.valueOf(this.getStringState("chisel_type"))
-   }
+    override fun getChiselType(): ChiselType {
+        return ChiselType.valueOf(this.getStringState("chisel_type"))
+    }
 
-   override fun setChiselType(value: ChiselType): QuartzBlock {
-       return this.setState("chisel_type", value.name.lowercase())
-   }
+    override fun setChiselType(value: ChiselType): QuartzBlock {
+        return this.setState("chisel_type", value.name.lowercase())
+    }
 }

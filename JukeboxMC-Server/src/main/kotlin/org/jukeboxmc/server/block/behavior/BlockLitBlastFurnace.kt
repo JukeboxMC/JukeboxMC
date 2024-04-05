@@ -13,7 +13,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockLitBlastFurnace(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), LitBlastFurnace {
+class BlockLitBlastFurnace(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    LitBlastFurnace {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -28,13 +29,13 @@ class BlockLitBlastFurnace(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): LitBlastFurnace {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): LitBlastFurnace {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
     override fun toItem(): Item {
         return Item.create(ItemType.BLAST_FURNACE)

@@ -16,7 +16,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockStoneBlockSlab2(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), StoneBlockSlab2 {
+class BlockStoneBlockSlab2(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    StoneBlockSlab2 {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -30,50 +31,82 @@ class BlockStoneBlockSlab2(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         val targetBlock = world.getBlock(blockPosition)
         val block = world.getBlock(placePosition)
 
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
+
         if (blockFace === BlockFace.DOWN) {
             if (targetBlock is BlockStoneBlockSlab2 && targetBlock.getVerticalHalf() == VerticalHalf.TOP && targetBlock.getStoneSlabType2() == this.getStoneSlabType2()) {
-                world.setBlock(blockPosition, Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2).setStoneSlabType2(this.getStoneSlabType2()))
+                world.setBlock(
+                    blockPosition,
+                    Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2)
+                        .setStoneSlabType2(this.getStoneSlabType2())
+                )
                 return true
             } else if (block is BlockStoneBlockSlab2 && block.getStoneSlabType2() == this.getStoneSlabType2()) {
-                world.setBlock(placePosition, Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2).setStoneSlabType2(this.getStoneSlabType2()))
+                world.setBlock(
+                    placePosition,
+                    Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2)
+                        .setStoneSlabType2(this.getStoneSlabType2())
+                )
                 return true
             }
         } else if (blockFace === BlockFace.UP) {
             if (targetBlock is BlockStoneBlockSlab2 && targetBlock.getVerticalHalf() != VerticalHalf.TOP && targetBlock.getStoneSlabType2() == this.getStoneSlabType2()) {
-                world.setBlock(blockPosition, Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2).setStoneSlabType2(this.getStoneSlabType2()))
+                world.setBlock(
+                    blockPosition,
+                    Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2)
+                        .setStoneSlabType2(this.getStoneSlabType2())
+                )
                 return true
             } else if (block is BlockStoneBlockSlab2 && block.getStoneSlabType2() == this.getStoneSlabType2()) {
-                world.setBlock(placePosition, Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2).setStoneSlabType2(this.getStoneSlabType2()))
+                world.setBlock(
+                    placePosition,
+                    Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2)
+                        .setStoneSlabType2(this.getStoneSlabType2())
+                )
                 return true
             }
         } else {
             if (block is BlockStoneBlockSlab2 && block.getStoneSlabType2() == this.getStoneSlabType2()) {
-                world.setBlock(placePosition, Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2).setStoneSlabType2(this.getStoneSlabType2()))
+                world.setBlock(
+                    placePosition,
+                    Block.create<BlockDoubleStoneBlockSlab2>(BlockType.DOUBLE_STONE_BLOCK_SLAB2)
+                        .setStoneSlabType2(this.getStoneSlabType2())
+                )
                 return true
             } else {
-                this.setVerticalHalf(if (clickedPosition.getY() > 0.5 && !world.getBlock(blockPosition).toJukeboxBlock().canBeReplaced(this)) VerticalHalf.TOP else VerticalHalf.BOTTOM )
+                this.setVerticalHalf(
+                    if (clickedPosition.getY() > 0.5 && !world.getBlock(blockPosition).toJukeboxBlock()
+                            .canBeReplaced(this)
+                    ) VerticalHalf.TOP else VerticalHalf.BOTTOM
+                )
             }
         }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getVerticalHalf(): VerticalHalf {
-       return VerticalHalf.valueOf(this.getStringState("minecraft:vertical_half"))
-   }
+    override fun getVerticalHalf(): VerticalHalf {
+        return VerticalHalf.valueOf(this.getStringState("minecraft:vertical_half"))
+    }
 
-   override fun setVerticalHalf(value: VerticalHalf): StoneBlockSlab2 {
-       return this.setState("minecraft:vertical_half", value.name.lowercase())
-   }
+    override fun setVerticalHalf(value: VerticalHalf): StoneBlockSlab2 {
+        return this.setState("minecraft:vertical_half", value.name.lowercase())
+    }
 
-   override fun getStoneSlabType2(): StoneSlabType2 {
-       return StoneSlabType2.valueOf(this.getStringState("stone_slab_type_2"))
-   }
+    override fun getStoneSlabType2(): StoneSlabType2 {
+        return StoneSlabType2.valueOf(this.getStringState("stone_slab_type_2"))
+    }
 
-   override fun setStoneSlabType2(value: StoneSlabType2): StoneBlockSlab2 {
-       return this.setState("stone_slab_type_2", value.name.lowercase())
-   }
+    override fun setStoneSlabType2(value: StoneSlabType2): StoneBlockSlab2 {
+        return this.setState("stone_slab_type_2", value.name.lowercase())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemDrop(item, this.toItem())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

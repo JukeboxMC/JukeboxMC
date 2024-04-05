@@ -14,27 +14,27 @@ class BlockCoralFanHang2(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         return true
     }
 
-   override fun getCoralDirection(): Direction {
-       return Direction.entries[this.getIntState("coral_direction")]
-   }
+    override fun getCoralDirection(): Direction {
+        return Direction.entries[this.getIntState("coral_direction")]
+    }
 
-   override fun setCoralDirection(value: Direction): BlockCoralFanHang2 {
-       return this.setState("coral_direction", value.ordinal)
-   }
+    override fun setCoralDirection(value: Direction): BlockCoralFanHang2 {
+        return this.setState("coral_direction", value.ordinal)
+    }
 
-   override fun isCoralHangType(): Boolean {
-       return this.getBooleanState("coral_hang_type_bit")
-   }
+    override fun isCoralHangType(): Boolean {
+        return this.getBooleanState("coral_hang_type_bit")
+    }
 
-   override fun setCoralHangType(value: Boolean): BlockCoralFanHang2 {
-       return this.setState("coral_hang_type_bit", value.toByte())
-   }
+    override fun setCoralHangType(value: Boolean): BlockCoralFanHang2 {
+        return this.setState("coral_hang_type_bit", value.toByte())
+    }
 
-   override fun isDead(): Boolean {
-       return this.getBooleanState("dead_bit")
-   }
+    override fun isDead(): Boolean {
+        return this.getBooleanState("dead_bit")
+    }
 
-   override fun setDead(value: Boolean): BlockCoralFanHang2 {
-       return this.setState("dead_bit", value.toByte())
-   }
+    override fun setDead(value: Boolean): BlockCoralFanHang2 {
+        return this.setState("dead_bit", value.toByte())
+    }
 }

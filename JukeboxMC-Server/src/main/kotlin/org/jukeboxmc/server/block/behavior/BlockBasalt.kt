@@ -27,11 +27,11 @@ class BlockBasalt(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): BlockBasalt {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): BlockBasalt {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 }

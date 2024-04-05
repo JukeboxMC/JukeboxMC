@@ -49,6 +49,10 @@ open class BlockSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
             else -> BlockType.AIR
         }
 
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
+
         if (blockFace === BlockFace.DOWN) {
             if (targetBlock is BlockSlab && targetBlock.getVerticalHalf() == VerticalHalf.TOP && this.getStoneSlabType(targetBlock.getType()) == this.getStoneSlabType(this.getType())) {
                 world.setBlock(blockPosition, Block.create<BlockDoubleSlab>(doubleSlabType))
@@ -86,6 +90,10 @@ open class BlockSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemDrop(item, this.toItem())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 
     private fun getStoneSlabType(type: BlockType): String {

@@ -58,6 +58,12 @@ class BlockDoor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
 
         world.setBlock(upperLocation, blockAbove)
         world.setBlock(placePosition, this)
+
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition.add(0f, 1f, 0f), block, 1, false)
+            world.setBlock(placePosition, block, 1, false)
+        }
         return true
     }
 
@@ -155,5 +161,9 @@ class BlockDoor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
             Direction.WEST -> this.setState("direction", 2)
             else -> this.setState("direction", 3)
         }
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

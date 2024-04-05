@@ -12,11 +12,11 @@ class BlockRedFlower(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         return true
     }
 
-   override fun getFlowerType(): FlowerType {
-       return FlowerType.valueOf(this.getStringState("flower_type"))
-   }
+    override fun getFlowerType(): FlowerType {
+        return FlowerType.valueOf(this.getStringState("flower_type"))
+    }
 
-   override fun setFlowerType(value: FlowerType): RedFlower {
-       return this.setState("flower_type", value.name.lowercase())
-   }
+    override fun setFlowerType(value: FlowerType): RedFlower {
+        return this.setState("flower_type", value.name.lowercase())
+    }
 }

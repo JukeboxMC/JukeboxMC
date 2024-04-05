@@ -12,7 +12,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockLoom(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Loom, InventoryHolder {
+class BlockLoom(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Loom,
+    InventoryHolder {
 
     override fun placeBlock(
         player: JukeboxPlayer,

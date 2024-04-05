@@ -40,4 +40,8 @@ class BlockWallSign(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
             else -> JukeboxItem.AIR
         }
     }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), RedstoneTorch {
+class BlockRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    RedstoneTorch {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -37,11 +38,11 @@ class BlockRedstoneTorch(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         return true
     }
 
-   override fun getTorchFacingDirection(): TorchFacing {
-       return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
-   }
+    override fun getTorchFacingDirection(): TorchFacing {
+        return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
+    }
 
-   override fun setTorchFacingDirection(value: TorchFacing): RedstoneTorch {
-       return this.setState("torch_facing_direction", value.name.lowercase())
-   }
+    override fun setTorchFacingDirection(value: TorchFacing): RedstoneTorch {
+        return this.setState("torch_facing_direction", value.name.lowercase())
+    }
 }

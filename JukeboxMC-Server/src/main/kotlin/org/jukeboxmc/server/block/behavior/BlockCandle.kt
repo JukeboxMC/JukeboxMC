@@ -45,7 +45,15 @@ class BlockCandle(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
             if (this.getIdentifier() == itemInHand.getIdentifier()) {
                 val block = world.getBlock(placePosition)
                 if (block.getType() == BlockType.AIR) {
-                    return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
+                    return super.placeBlock(
+                        player,
+                        world,
+                        blockPosition,
+                        placePosition,
+                        clickedPosition,
+                        itemInHand,
+                        blockFace
+                    )
                 }
                 block as BlockCandle
                 val candles = block.getCandles()

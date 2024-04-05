@@ -30,6 +30,10 @@ class BlockCandleCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         blockFace: BlockFace
     ): Boolean {
         if (this.getRelative(BlockFace.DOWN).getType() == BlockType.AIR) return false
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
@@ -64,6 +68,10 @@ class BlockCandleCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
 
     override fun setLit(value: Boolean): BlockCandleCake {
         return this.setState("lit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 
     override fun getDrops(item: Item): MutableList<Item> {

@@ -12,7 +12,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockMangroveWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), MangroveWood {
+class BlockMangroveWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    MangroveWood {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -27,19 +28,19 @@ class BlockMangroveWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): MangroveWood {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): MangroveWood {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 
-   override fun isStripped(): Boolean {
-       return this.getBooleanState("stripped_bit")
-   }
+    override fun isStripped(): Boolean {
+        return this.getBooleanState("stripped_bit")
+    }
 
-   override fun setStripped(value: Boolean): MangroveWood {
-       return this.setState("stripped_bit", value.toByte())
-   }
+    override fun setStripped(value: Boolean): MangroveWood {
+        return this.setState("stripped_bit", value.toByte())
+    }
 }

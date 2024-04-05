@@ -16,18 +16,22 @@ class BlockPotatoes(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
         return true
     }
 
-   override fun getGrowth(): Int {
-       return this.getIntState("growth")
-   }
+    override fun getGrowth(): Int {
+        return this.getIntState("growth")
+    }
 
-   override fun setGrowth(value: Int): Potatoes {
-       return this.setState("growth", value)
-   }
+    override fun setGrowth(value: Int): Potatoes {
+        return this.setState("growth", value)
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         if (this.getGrowth() != 7) return mutableListOf()
         var amount = 2 + Random.nextInt(4)
-        val attempts = 3 + min(0, if (item.hasEnchantment(EnchantmentType.FORTUNE)) item.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() else 0)
+        val attempts = 3 + min(
+            0,
+            if (item.hasEnchantment(EnchantmentType.FORTUNE)) item.getEnchantment(EnchantmentType.FORTUNE)!!
+                .getLevel() else 0
+        )
         for (i in 0..<attempts) {
             if (Random.nextDouble() <= 0.5714286) {
                 amount++

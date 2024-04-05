@@ -28,6 +28,10 @@ class BlockUnpoweredComparator(identifier: Identifier, blockStates: NbtMap?) : J
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setCardinalDirection(player.getDirection().opposite())
         BlockEntity.create(BlockEntityType.COMPARATOR, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
@@ -61,4 +65,7 @@ class BlockUnpoweredComparator(identifier: Identifier, blockStates: NbtMap?) : J
         return Item.create(ItemType.COMPARATOR)
     }
 
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

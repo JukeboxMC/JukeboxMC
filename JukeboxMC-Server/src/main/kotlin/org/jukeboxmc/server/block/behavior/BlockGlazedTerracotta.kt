@@ -10,7 +10,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockGlazedTerracotta(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), GlazedTerracotta {
+class BlockGlazedTerracotta(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    GlazedTerracotta {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -25,11 +26,11 @@ class BlockGlazedTerracotta(identifier: Identifier, blockStates: NbtMap?) : Juke
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): GlazedTerracotta {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): GlazedTerracotta {
+        return this.setState("facing_direction", value.ordinal)
+    }
 }

@@ -306,7 +306,7 @@ class ItemRegistry {
             register(ItemType.COPPER_ORE, Identifier.fromString("minecraft:copper_ore"))
             register(ItemType.CORAL, Identifier.fromString("minecraft:coral"))
             register(ItemType.CORAL_BLOCK, Identifier.fromString("minecraft:coral_block"))
-            register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"))
+            register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"), ItemCoralFan::class.java)
             register(ItemType.CORAL_FAN_DEAD, Identifier.fromString("minecraft:coral_fan_dead"))
             register(ItemType.CORAL_FAN_HANG, Identifier.fromString("minecraft:coral_fan_hang"))
             register(ItemType.CORAL_FAN_HANG2, Identifier.fromString("minecraft:coral_fan_hang2"))

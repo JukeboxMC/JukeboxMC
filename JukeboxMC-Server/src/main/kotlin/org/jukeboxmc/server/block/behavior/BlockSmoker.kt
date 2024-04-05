@@ -29,11 +29,11 @@ class BlockSmoker(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): Smoker {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): Smoker {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 }

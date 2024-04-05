@@ -33,19 +33,19 @@ open class BlockStairs(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return true
     }
 
-   override fun isUpsideDown(): Boolean {
-       return this.getBooleanState("upside_down_bit")
-   }
+    override fun isUpsideDown(): Boolean {
+        return this.getBooleanState("upside_down_bit")
+    }
 
-   override fun setUpsideDown(value: Boolean): Stairs {
-       return this.setState("upside_down_bit", value.toByte())
-   }
+    override fun setUpsideDown(value: Boolean): Stairs {
+        return this.setState("upside_down_bit", value.toByte())
+    }
 
-   override fun getWeirdoDirection(): WeirdoDirection {
-       return WeirdoDirection.entries[this.getIntState("weirdo_direction")]
-   }
+    override fun getWeirdoDirection(): WeirdoDirection {
+        return WeirdoDirection.entries[this.getIntState("weirdo_direction")]
+    }
 
-   override fun setWeirdoDirection(value: WeirdoDirection): Stairs {
-       return this.setState("weirdo_direction", value.ordinal)
-   }
+    override fun setWeirdoDirection(value: WeirdoDirection): Stairs {
+        return this.setState("weirdo_direction", value.ordinal)
+    }
 }

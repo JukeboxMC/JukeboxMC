@@ -66,25 +66,25 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return true
     }
 
-   override fun isUpperBlock(): Boolean {
-       return this.getBooleanState("upper_block_bit")
-   }
+    override fun isUpperBlock(): Boolean {
+        return this.getBooleanState("upper_block_bit")
+    }
 
-   override fun setUpperBlock(value: Boolean): BlockDoublePlant {
-       return this.setState("upper_block_bit", value.toByte())
-   }
+    override fun setUpperBlock(value: Boolean): BlockDoublePlant {
+        return this.setState("upper_block_bit", value.toByte())
+    }
 
-   override fun getDoublePlantType(): PlantType {
-       return PlantType.valueOf(this.getStringState("double_plant_type"))
-   }
+    override fun getDoublePlantType(): PlantType {
+        return PlantType.valueOf(this.getStringState("double_plant_type"))
+    }
 
-   override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
-       return this.setState("double_plant_type", value.name.lowercase())
-   }
+    override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
+        return this.setState("double_plant_type", value.name.lowercase())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         val doublePlantType = this.getDoublePlantType()
-        if (doublePlantType == PlantType.SUNFLOWER || doublePlantType == PlantType.ROSE ) {
+        if (doublePlantType == PlantType.SUNFLOWER || doublePlantType == PlantType.ROSE) {
             return mutableListOf(this.toItem())
         }
         if (this.getRandom().nextFloat() <= 0.125f) {

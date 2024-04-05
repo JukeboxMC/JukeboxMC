@@ -8,11 +8,11 @@ import org.jukeboxmc.server.block.JukeboxBlock
 class BlockChorusFlower(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     ChorusFlower {
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): BlockChorusFlower {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): BlockChorusFlower {
+        return this.setState("age", value)
+    }
 }

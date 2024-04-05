@@ -23,6 +23,10 @@ class BlockLadder(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
     ): Boolean {
         val targetBlock = world.getBlock(blockPosition)
         if (!targetBlock.isTransparent() && blockFace !== BlockFace.UP && blockFace !== BlockFace.DOWN) {
+            val block = world.getBlock(placePosition)
+            if (block is BlockWater && block.getLiquidDepth() == 0) {
+                world.setBlock(placePosition, block, 1, false)
+            }
             this.setFacingDirection(blockFace)
             world.setBlock(placePosition, this)
             return true
@@ -30,11 +34,15 @@ class BlockLadder(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return false
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): Ladder {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): Ladder {
+        return this.setState("facing_direction", value.ordinal)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

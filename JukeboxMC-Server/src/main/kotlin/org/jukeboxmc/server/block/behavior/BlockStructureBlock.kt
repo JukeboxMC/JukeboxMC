@@ -13,7 +13,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockStructureBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), StructureBlock {
+class BlockStructureBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    StructureBlock {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -28,11 +29,11 @@ class BlockStructureBlock(identifier: Identifier, blockStates: NbtMap?) : Jukebo
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getStructureBlockType(): StructureBlockType {
-       return StructureBlockType.valueOf(this.getStringState("structure_block_type"))
-   }
+    override fun getStructureBlockType(): StructureBlockType {
+        return StructureBlockType.valueOf(this.getStringState("structure_block_type"))
+    }
 
-   override fun setStructureBlockType(value: StructureBlockType): StructureBlock {
-       return this.setState("structure_block_type", value.name.lowercase())
-   }
+    override fun setStructureBlockType(value: StructureBlockType): StructureBlock {
+        return this.setState("structure_block_type", value.name.lowercase())
+    }
 }

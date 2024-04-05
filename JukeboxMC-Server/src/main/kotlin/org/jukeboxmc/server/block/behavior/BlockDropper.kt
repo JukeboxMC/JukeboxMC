@@ -44,19 +44,19 @@ class BlockDropper(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         return true
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): BlockDropper {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): BlockDropper {
+        return this.setState("facing_direction", value.ordinal)
+    }
 
-   override fun isTriggered(): Boolean {
-       return this.getBooleanState("triggered_bit")
-   }
+    override fun isTriggered(): Boolean {
+        return this.getBooleanState("triggered_bit")
+    }
 
-   override fun setTriggered(value: Boolean): BlockDropper {
-       return this.setState("triggered_bit", value.toByte())
-   }
+    override fun setTriggered(value: Boolean): BlockDropper {
+        return this.setState("triggered_bit", value.toByte())
+    }
 }

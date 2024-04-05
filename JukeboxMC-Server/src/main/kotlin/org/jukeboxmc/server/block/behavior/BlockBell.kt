@@ -3,6 +3,8 @@ package org.jukeboxmc.server.block.behavior
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Bell
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.Attachment
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
@@ -27,20 +29,25 @@ class BlockBell(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
-        setDirection(player.getDirection().opposite())
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
+
+        this.setDirection(player.getDirection().opposite())
         if (blockFace === BlockFace.UP) {
-            setAttachment(Attachment.STANDING)
+            this.setAttachment(Attachment.STANDING)
         } else if (blockFace === BlockFace.DOWN) {
-            setAttachment(Attachment.HANGING)
+            this.setAttachment(Attachment.HANGING)
         } else {
             this.setDirection(blockFace.toDirection())
             if (world.getBlock(placePosition).getRelative(blockFace).isSolid() && world.getBlock(placePosition)
                     .getRelative(blockFace.opposite()).isSolid()
             ) {
-                setAttachment(Attachment.MULTIPLE)
+                this.setAttachment(Attachment.MULTIPLE)
             } else {
                 if (world.getBlock(blockPosition).isSolid()) {
-                    setAttachment(Attachment.SIDE)
+                    this.setAttachment(Attachment.SIDE)
                 } else {
                     return false
                 }
@@ -82,5 +89,9 @@ class BlockBell(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
 
     override fun setAttachment(value: Attachment): BlockBell {
         return this.setState("attachment", value.name.lowercase())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

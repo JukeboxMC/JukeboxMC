@@ -34,14 +34,22 @@ class BlockPiston(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         } else {
             this.setFacingDirection(player.getDirection().toBlockFace())
         }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): Piston {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): Piston {
+        return this.setState("facing_direction", value.ordinal)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

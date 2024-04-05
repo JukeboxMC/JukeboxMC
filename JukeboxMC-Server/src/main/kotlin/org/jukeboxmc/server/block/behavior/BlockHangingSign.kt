@@ -16,7 +16,8 @@ import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 import kotlin.math.floor
 
-class BlockHangingSign(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), HangingSign {
+class BlockHangingSign(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    HangingSign {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -38,8 +39,9 @@ class BlockHangingSign(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         }
         if (face == BlockFace.DOWN) {
             this.setHanging(true)
-            val signDirection = SignDirection.entries[floor(((player.getYaw() + 180) * 16 / 360) + 0.5).toInt() and 0x0F]
-            if (player.isSneaking() || block.getType() == BlockType.CHAIN || block is BlockHangingSign ) {
+            val signDirection =
+                SignDirection.entries[floor(((player.getYaw() + 180) * 16 / 360) + 0.5).toInt() and 0x0F]
+            if (player.isSneaking() || block.getType() == BlockType.CHAIN || block is BlockHangingSign) {
                 this.setAttached(true)
                 this.setGroundSignDirection(signDirection)
             } else {

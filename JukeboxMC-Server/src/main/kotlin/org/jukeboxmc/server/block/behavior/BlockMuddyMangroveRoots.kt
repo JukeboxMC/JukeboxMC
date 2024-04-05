@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockMuddyMangroveRoots(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), MuddyMangroveRoots {
+class BlockMuddyMangroveRoots(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    MuddyMangroveRoots {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -26,11 +27,11 @@ class BlockMuddyMangroveRoots(identifier: Identifier, blockStates: NbtMap?) : Ju
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): MuddyMangroveRoots {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): MuddyMangroveRoots {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 }

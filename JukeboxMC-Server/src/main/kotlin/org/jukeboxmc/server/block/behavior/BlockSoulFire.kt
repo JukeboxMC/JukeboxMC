@@ -11,11 +11,11 @@ class BlockSoulFire(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
         return true
     }
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): SoulFire {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): SoulFire {
+        return this.setState("age", value)
+    }
 }

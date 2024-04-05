@@ -7,11 +7,11 @@ import org.jukeboxmc.server.block.JukeboxBlock
 
 class BlockSculkVein(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), SculkVein {
 
-   override fun getMultiFaceDirections(): Int {
-       return this.getIntState("multi_face_direction_bits")
-   }
+    override fun getMultiFaceDirections(): Int {
+        return this.getIntState("multi_face_direction_bits")
+    }
 
-   override fun setMultiFaceDirections(value: Int): SculkVein {
-       return this.setState("multi_face_direction_bits", value)
-   }
+    override fun setMultiFaceDirections(value: Int): SculkVein {
+        return this.setState("multi_face_direction_bits", value)
+    }
 }

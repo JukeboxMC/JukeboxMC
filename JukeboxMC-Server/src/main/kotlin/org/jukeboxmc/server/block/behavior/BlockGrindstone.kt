@@ -34,10 +34,21 @@ class BlockGrindstone(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
             this.setAttachment(Attachment.SIDE)
             this.setDirection(blockFace.toDirection())
         }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-    override fun interact(player: JukeboxPlayer, world: JukeboxWorld, blockPosition: Vector, clickedPosition: Vector, blockFace: BlockFace, itemInHand: JukeboxItem): Boolean {
+    override fun interact(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        clickedPosition: Vector,
+        blockFace: BlockFace,
+        itemInHand: JukeboxItem
+    ): Boolean {
         player.openInventory(player.getGrindstoneInventory(), blockPosition)
         return true
     }
@@ -66,5 +77,9 @@ class BlockGrindstone(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
 
     override fun setAttachment(value: Attachment): Grindstone {
         return this.setState("attachment", value.name.lowercase())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

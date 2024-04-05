@@ -9,19 +9,20 @@ import org.jukeboxmc.api.item.enchantment.EnchantmentType
 import org.jukeboxmc.server.block.JukeboxBlock
 import kotlin.random.Random
 
-class BlockNetherWart(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), NetherWart {
+class BlockNetherWart(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    NetherWart {
 
     override fun canPassThrough(): Boolean {
         return true
     }
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): NetherWart {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): NetherWart {
+        return this.setState("age", value)
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         if (this.getAge() < 3) {

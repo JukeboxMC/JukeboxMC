@@ -37,11 +37,11 @@ class BlockSoulTorch(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         return true
     }
 
-   override fun getTorchFacingDirection(): TorchFacing {
-       return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
-   }
+    override fun getTorchFacingDirection(): TorchFacing {
+        return TorchFacing.valueOf(this.getStringState("torch_facing_direction"))
+    }
 
-   override fun setTorchFacingDirection(value: TorchFacing): SoulTorch {
-       return this.setState("torch_facing_direction", value.name.lowercase())
-   }
+    override fun setTorchFacingDirection(value: TorchFacing): SoulTorch {
+        return this.setState("torch_facing_direction", value.name.lowercase())
+    }
 }

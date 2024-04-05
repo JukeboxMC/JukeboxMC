@@ -11,11 +11,11 @@ class BlockReeds(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         return true
     }
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): Reeds {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): Reeds {
+        return this.setState("age", value)
+    }
 }

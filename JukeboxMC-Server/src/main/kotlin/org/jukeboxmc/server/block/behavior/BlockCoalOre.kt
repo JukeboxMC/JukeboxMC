@@ -15,7 +15,7 @@ class BlockCoalOre(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         if (this.canBreakWithHand(item.toJukeboxItem())) {
             if (item.hasEnchantment(EnchantmentType.FORTUNE)) {
                 val enchantment = item.getEnchantment(EnchantmentType.FORTUNE)!!
-                val amount = when(enchantment.getLevel()) {
+                val amount = when (enchantment.getLevel()) {
                     1 -> Random.nextInt(3)
                     2 -> Random.nextInt(4)
                     3 -> Random.nextInt(5)

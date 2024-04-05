@@ -9,19 +9,19 @@ import org.jukeboxmc.server.block.JukeboxBlock
 
 class BlockTurtleEgg(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), TurtleEgg {
 
-   override fun getCrackedState(): CrackedState {
-       return CrackedState.valueOf(this.getStringState("cracked_state"))
-   }
+    override fun getCrackedState(): CrackedState {
+        return CrackedState.valueOf(this.getStringState("cracked_state"))
+    }
 
-   override fun setCrackedState(value: CrackedState): TurtleEgg {
-       return this.setState("cracked_state", value.name.lowercase())
-   }
+    override fun setCrackedState(value: CrackedState): TurtleEgg {
+        return this.setState("cracked_state", value.name.lowercase())
+    }
 
-   override fun getTurtleEggCount(): TurtleEggCount {
-       return TurtleEggCount.valueOf(this.getStringState("turtle_egg_count"))
-   }
+    override fun getTurtleEggCount(): TurtleEggCount {
+        return TurtleEggCount.valueOf(this.getStringState("turtle_egg_count"))
+    }
 
-   override fun setTurtleEggCount(value: TurtleEggCount): TurtleEgg {
-       return this.setState("turtle_egg_count", value.name.lowercase())
-   }
+    override fun setTurtleEggCount(value: TurtleEggCount): TurtleEgg {
+        return this.setState("turtle_egg_count", value.name.lowercase())
+    }
 }

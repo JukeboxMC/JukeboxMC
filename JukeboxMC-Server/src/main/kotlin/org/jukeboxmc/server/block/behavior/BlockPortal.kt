@@ -12,11 +12,11 @@ class BlockPortal(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return true
     }
 
-   override fun getPortalAxis(): PortalAxis {
-       return PortalAxis.valueOf(this.getStringState("portal_axis"))
-   }
+    override fun getPortalAxis(): PortalAxis {
+        return PortalAxis.valueOf(this.getStringState("portal_axis"))
+    }
 
-   override fun setPortalAxis(value: PortalAxis): Portal {
-       return this.setState("portal_axis", value.name.lowercase())
-   }
+    override fun setPortalAxis(value: PortalAxis): Portal {
+        return this.setState("portal_axis", value.name.lowercase())
+    }
 }

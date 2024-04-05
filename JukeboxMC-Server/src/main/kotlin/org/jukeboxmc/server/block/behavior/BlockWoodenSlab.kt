@@ -45,6 +45,10 @@ class BlockWoodenSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
             else -> BlockType.AIR
         }
 
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
+
         if (blockFace === BlockFace.DOWN) {
             if (targetBlock is BlockWoodenSlab && targetBlock.getVerticalHalf() == VerticalHalf.TOP && this.getWoodType(targetBlock.getType()) == this.getWoodType(this.getType())) {
                 world.setBlock(blockPosition, Block.create<BlockDoubleWoodenSlab>(doubleWoodenType))
@@ -82,6 +86,10 @@ class BlockWoodenSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemDrop(item, this.toItem())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 
     private fun getWoodType(type: BlockType): String {

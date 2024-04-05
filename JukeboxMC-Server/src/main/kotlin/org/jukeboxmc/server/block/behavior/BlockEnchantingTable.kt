@@ -23,6 +23,10 @@ class BlockEnchantingTable(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         BlockEntity.create(BlockEntityType.ENCHANTINGTABLE, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -38,5 +42,9 @@ class BlockEnchantingTable(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         world.getBlockEntity(this.getLocation())?.toJukeboxBlockEntity()
             ?.interact(player, blockPosition, clickedPosition, blockFace, itemInHand)
         return true
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

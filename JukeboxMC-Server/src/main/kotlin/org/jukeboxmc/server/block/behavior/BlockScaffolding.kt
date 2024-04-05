@@ -14,7 +14,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Scaffolding {
+class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    Scaffolding {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -28,7 +29,7 @@ class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         val block = world.getBlock(blockPosition)
         val placeBlock = world.getBlock(placePosition)
         val blockDown = this.getRelative(BlockFace.DOWN)
-        if(block is BlockLava || block is BlockFlowingLava) {
+        if (block is BlockLava || block is BlockFlowingLava) {
             return false
         }
         if (placeBlock.getType() != BlockType.SCAFFOLDING && blockDown.getType() != BlockType.SCAFFOLDING && blockDown.getType() != BlockType.AIR && !blockDown.isSolid()) {
@@ -43,6 +44,10 @@ class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
                 }
             }
             if (!value) return false
+        }
+        val targetBlock = world.getBlock(placePosition)
+        if (targetBlock is BlockWater && targetBlock.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, targetBlock, 1, false)
         }
         world.setBlock(placePosition, this)
         return true
@@ -60,7 +65,8 @@ class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         if (block.getType() != BlockType.SCAFFOLDING) return false
         if (blockFace != BlockFace.UP) return false
         val vector = blockPosition.clone()
-        val yAt = world.getHighestBlockYAt(blockPosition.getBlockX(), blockPosition.getBlockZ(), blockPosition.getDimension())
+        val yAt =
+            world.getHighestBlockYAt(blockPosition.getBlockX(), blockPosition.getBlockZ(), blockPosition.getDimension())
         vector.setY(yAt.toFloat() + 1)
         world.setBlock(vector, Block.create(BlockType.SCAFFOLDING))
         this.playPlaceSound(vector)
@@ -78,19 +84,19 @@ class BlockScaffolding(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return -1
     }
 
-   override fun getStability(): Int {
-       return this.getIntState("stability")
-   }
+    override fun getStability(): Int {
+        return this.getIntState("stability")
+    }
 
-   override fun setStability(value: Int): Scaffolding {
-       return this.setState("stability", value)
-   }
+    override fun setStability(value: Int): Scaffolding {
+        return this.setState("stability", value)
+    }
 
-   override fun isStabilityCheck(): Boolean {
-       return this.getBooleanState("stability_check")
-   }
+    override fun isStabilityCheck(): Boolean {
+        return this.getBooleanState("stability_check")
+    }
 
-   override fun setStabilityCheck(value: Boolean): Scaffolding {
-       return this.setState("stability_check", value.toByte())
-   }
+    override fun setStabilityCheck(value: Boolean): Scaffolding {
+        return this.setState("stability_check", value.toByte())
+    }
 }

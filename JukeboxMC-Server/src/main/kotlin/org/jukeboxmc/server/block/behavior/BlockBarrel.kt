@@ -58,19 +58,19 @@ class BlockBarrel(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return true
     }
 
-   override fun isOpen(): Boolean {
-       return this.getBooleanState("open_bit")
-   }
+    override fun isOpen(): Boolean {
+        return this.getBooleanState("open_bit")
+    }
 
-   override fun setOpen(value: Boolean): BlockBarrel {
-       return this.setState("open_bit", value.toByte())
-   }
+    override fun setOpen(value: Boolean): BlockBarrel {
+        return this.setState("open_bit", value.toByte())
+    }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): BlockBarrel {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): BlockBarrel {
+        return this.setState("facing_direction", value.ordinal)
+    }
 }

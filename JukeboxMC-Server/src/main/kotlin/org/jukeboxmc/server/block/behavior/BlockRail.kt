@@ -12,11 +12,11 @@ class BlockRail(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         return true
     }
 
-   override fun getRailDirection(): RailDirection {
-       return RailDirection.entries[this.getIntState("rail_direction")]
-   }
+    override fun getRailDirection(): RailDirection {
+        return RailDirection.entries[this.getIntState("rail_direction")]
+    }
 
-   override fun setRailDirection(value: RailDirection): Rail {
-       return this.setState("rail_direction", value.ordinal)
-   }
+    override fun setRailDirection(value: RailDirection): Rail {
+        return this.setState("rail_direction", value.ordinal)
+    }
 }

@@ -23,9 +23,14 @@ class BlockLantern(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
-        val hanging = blockFace != BlockFace.UP && this.isBlockAboveValid() && (this.isBlockUnderValid() || blockFace == BlockFace.DOWN)
+        val hanging =
+            blockFace != BlockFace.UP && this.isBlockAboveValid() && (this.isBlockUnderValid() || blockFace == BlockFace.DOWN)
         if (this.isBlockUnderValid() && !hanging) {
             return false
+        }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
         }
         this.setHanging(hanging)
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
@@ -57,11 +62,11 @@ class BlockLantern(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         } else !down.isSolid()
     }
 
-   override fun isHanging(): Boolean {
-       return this.getBooleanState("hanging")
-   }
+    override fun isHanging(): Boolean {
+        return this.getBooleanState("hanging")
+    }
 
-   override fun setHanging(value: Boolean): Lantern {
-       return this.setState("hanging", value.toByte())
-   }
+    override fun setHanging(value: Boolean): Lantern {
+        return this.setState("hanging", value.toByte())
+    }
 }

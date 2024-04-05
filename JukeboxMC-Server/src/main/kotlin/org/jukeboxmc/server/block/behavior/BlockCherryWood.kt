@@ -28,19 +28,19 @@ class BlockCherryWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): BlockCherryWood {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): BlockCherryWood {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 
-   override fun isStripped(): Boolean {
-       return this.getBooleanState("stripped_bit")
-   }
+    override fun isStripped(): Boolean {
+        return this.getBooleanState("stripped_bit")
+    }
 
-   override fun setStripped(value: Boolean): BlockCherryWood {
-       return this.setState("stripped_bit", value.toByte())
-   }
+    override fun setStripped(value: Boolean): BlockCherryWood {
+        return this.setState("stripped_bit", value.toByte())
+    }
 }

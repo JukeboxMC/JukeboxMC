@@ -14,7 +14,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockSoulCampfire(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), SoulCampfire {
+class BlockSoulCampfire(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    SoulCampfire {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -29,21 +30,21 @@ class BlockSoulCampfire(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): SoulCampfire {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): SoulCampfire {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
-   override fun isExtinguished(): Boolean {
-       return this.getBooleanState("extinguished")
-   }
+    override fun isExtinguished(): Boolean {
+        return this.getBooleanState("extinguished")
+    }
 
-   override fun setExtinguished(value: Boolean): SoulCampfire {
-       return this.setState("extinguished", value.toByte())
-   }
+    override fun setExtinguished(value: Boolean): SoulCampfire {
+        return this.setState("extinguished", value.toByte())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return mutableListOf(Item.create(ItemType.SOUL_SOIL))

@@ -24,19 +24,22 @@ class BlockGildedBlackstone(identifier: Identifier, blockStates: NbtMap?) : Juke
             0 -> {
                 10.0f
             }
+
             1 -> {
                 14.29f
             }
+
             2 -> {
                 25.0f
             }
+
             else -> {
                 100.0f
             }
         }
         return mutableListOf(
             if (this.random.nextFloat(100.0f) <= probability)
-                 Item.create(ItemType.GOLD_NUGGET, this.random.nextInt(1, 5) + 1)
+                Item.create(ItemType.GOLD_NUGGET, this.random.nextInt(1, 5) + 1)
             else
                 this.toItem()
         )

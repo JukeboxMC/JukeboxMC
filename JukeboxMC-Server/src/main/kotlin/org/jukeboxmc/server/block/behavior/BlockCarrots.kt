@@ -17,13 +17,13 @@ class BlockCarrots(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         return true
     }
 
-   override fun getGrowth(): Int {
-       return this.getIntState("growth")
-   }
+    override fun getGrowth(): Int {
+        return this.getIntState("growth")
+    }
 
-   override fun setGrowth(value: Int): BlockCarrots {
-       return this.setState("growth", value)
-   }
+    override fun setGrowth(value: Int): BlockCarrots {
+        return this.setState("growth", value)
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return if (this.getGrowth() != 7) {

@@ -38,19 +38,19 @@ class BlockObserver(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun isPowered(): Boolean {
-       return this.getBooleanState("powered_bit")
-   }
+    override fun isPowered(): Boolean {
+        return this.getBooleanState("powered_bit")
+    }
 
-   override fun setPowered(value: Boolean): Observer {
-       return this.setState("powered_bit", value.toByte())
-   }
+    override fun setPowered(value: Boolean): Observer {
+        return this.setState("powered_bit", value.toByte())
+    }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.valueOf(this.getStringState("minecraft:facing_direction"))
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.valueOf(this.getStringState("minecraft:facing_direction"))
+    }
 
-   override fun setFacingDirection(value: BlockFace): Observer {
-       return this.setState("minecraft:facing_direction", value.name.lowercase())
-   }
+    override fun setFacingDirection(value: BlockFace): Observer {
+        return this.setState("minecraft:facing_direction", value.name.lowercase())
+    }
 }

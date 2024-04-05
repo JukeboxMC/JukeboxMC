@@ -10,10 +10,10 @@ class BlockBedrock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
     Bedrock {
 
     override fun isInfiniburn(): Boolean {
-       return this.getBooleanState("infiniburn_bit")
-   }
+        return this.getBooleanState("infiniburn_bit")
+    }
 
-   override fun setInfiniburn(value: Boolean): BlockBedrock {
-       return this.setState("infiniburn_bit", value.toByte())
-   }
+    override fun setInfiniburn(value: Boolean): BlockBedrock {
+        return this.setState("infiniburn_bit", value.toByte())
+    }
 }

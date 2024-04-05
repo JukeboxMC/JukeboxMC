@@ -26,9 +26,9 @@ class BlockMelonStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         return this.getIntState("growth")
     }
 
-   override fun setGrowth(value: Int): MelonStem {
-       return this.setState("growth", value)
-   }
+    override fun setGrowth(value: Int): MelonStem {
+        return this.setState("growth", value)
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemStemDrop(Item.create(ItemType.MELON_SEEDS), this.getGrowth())

@@ -2,6 +2,7 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Cake
 import org.jukeboxmc.api.block.data.BlockFace
@@ -25,8 +26,12 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
-        if (this.getRelative(BlockFace.DOWN).getType() == BlockType.AIR)  {
+        if (this.getRelative(BlockFace.DOWN).getType() == BlockType.AIR) {
             return false
+        }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
         }
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -39,7 +44,8 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         blockFace: BlockFace,
         itemInHand: JukeboxItem
     ): Boolean {
-        if (player.isHungry() || player.getGameMode() == GameMode.CREATIVE || player.getWorld().getDifficulty() == Difficulty.PEACEFUL
+        if (player.isHungry() || player.getGameMode() == GameMode.CREATIVE || player.getWorld()
+                .getDifficulty() == Difficulty.PEACEFUL
         ) {
             var biteCounter: Int = this.getCounter()
             if (biteCounter < 6) {
@@ -62,5 +68,9 @@ class BlockCake(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
 
     override fun setCounter(value: Int): BlockCake {
         return this.setState("bite_counter", value)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

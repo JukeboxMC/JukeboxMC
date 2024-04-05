@@ -2,6 +2,7 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Cactus
 import org.jukeboxmc.api.block.data.BlockFace
@@ -33,6 +34,10 @@ class BlockCactus(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         val blockWest = this.getRelative(Direction.WEST)
 
         if (blockNorth.canBeFlowedInto() && blockEast.canBeFlowedInto() && blockSouth.canBeFlowedInto() && blockWest.canBeFlowedInto()) {
+            val block = world.getBlock(placePosition)
+            if (block is BlockWater && block.getLiquidDepth() == 0) {
+                world.setBlock(placePosition, block, 1, false)
+            }
             world.setBlock(placePosition, this)
             return true
         }
@@ -50,11 +55,15 @@ class BlockCactus(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return -1
     }
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): BlockCactus {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): BlockCactus {
+        return this.setState("age", value)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

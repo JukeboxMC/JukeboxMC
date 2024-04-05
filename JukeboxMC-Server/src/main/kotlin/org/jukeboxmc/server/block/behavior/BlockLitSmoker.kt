@@ -28,13 +28,13 @@ class BlockLitSmoker(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): LitSmoker {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): LitSmoker {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemDrop(item, Item.create(ItemType.SMOKER))

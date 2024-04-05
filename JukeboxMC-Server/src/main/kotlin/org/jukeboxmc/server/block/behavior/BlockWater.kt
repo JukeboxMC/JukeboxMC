@@ -22,7 +22,15 @@ open class BlockWater(identifier: Identifier, blockStates: NbtMap?) : BlockLiqui
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
-        world.setBlock(placePosition.getBlockX(), placePosition.getBlockY(), placePosition.getBlockZ(), 0, placePosition.getDimension(), this, true)
+        world.setBlock(
+            placePosition.getBlockX(),
+            placePosition.getBlockY(),
+            placePosition.getBlockZ(),
+            0,
+            placePosition.getDimension(),
+            this,
+            true
+        )
         return true
     }
 

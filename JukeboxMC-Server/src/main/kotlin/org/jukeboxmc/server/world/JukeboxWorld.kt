@@ -219,6 +219,8 @@ class JukeboxWorld(
         val jukeboxBlock = block.toJukeboxBlock()
         val chunk: JukeboxChunk? = getLoadedChunk(x shr 4, z shr 4, dimension)?.toJukeboxChunk()
 
+        println("SET BLOCK AT " + x + ";" + y + ";" + z + " Layer: " + layer + " Block; " + block.getType())
+
         chunk?.setBlock(x, y, z, layer, jukeboxBlock)
         chunk?.setDirty(true)
 
@@ -271,6 +273,14 @@ class JukeboxWorld(
 
     override fun setBlock(location: Vector, layer: Int, block: Block) {
         this.setBlock(location, layer, Dimension.OVERWORLD, block, true)
+    }
+
+    override fun setBlock(location: Vector, block: Block, layer: Int) {
+        this.setBlock(location, layer, Dimension.OVERWORLD, block, true)
+    }
+
+    override fun setBlock(location: Vector, block: Block, layer: Int, update: Boolean) {
+        this.setBlock(location, layer, Dimension.OVERWORLD, block, update)
     }
 
     override fun setBlock(location: Vector, block: Block) {

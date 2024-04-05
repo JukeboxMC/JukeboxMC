@@ -14,30 +14,31 @@ import org.jukeboxmc.server.item.behavior.ItemStoneBlockSlab3
 class BlockDoubleStoneBlockSlab3(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     DoubleStoneBlockSlab3 {
 
-   override fun getVerticalHalf(): VerticalHalf {
-       return VerticalHalf.valueOf(this.getStringState("minecraft:vertical_half"))
-   }
+    override fun getVerticalHalf(): VerticalHalf {
+        return VerticalHalf.valueOf(this.getStringState("minecraft:vertical_half"))
+    }
 
-   override fun setVerticalHalf(value: VerticalHalf): BlockDoubleStoneBlockSlab3 {
-       return this.setState("minecraft:vertical_half", value.name.lowercase())
-   }
+    override fun setVerticalHalf(value: VerticalHalf): BlockDoubleStoneBlockSlab3 {
+        return this.setState("minecraft:vertical_half", value.name.lowercase())
+    }
 
-   override fun getStoneSlabType3(): StoneSlabType3 {
-       return StoneSlabType3.valueOf(this.getStringState("stone_slab_type_3"))
-   }
+    override fun getStoneSlabType3(): StoneSlabType3 {
+        return StoneSlabType3.valueOf(this.getStringState("stone_slab_type_3"))
+    }
 
-   override fun setStoneSlabType3(value: StoneSlabType3): BlockDoubleStoneBlockSlab3 {
-       return this.setState("stone_slab_type_3", value.name.lowercase())
-   }
+    override fun setStoneSlabType3(value: StoneSlabType3): BlockDoubleStoneBlockSlab3 {
+        return this.setState("stone_slab_type_3", value.name.lowercase())
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return when (this.getType()) {
-            BlockType.DOUBLE_STONE_BLOCK_SLAB3-> {
+            BlockType.DOUBLE_STONE_BLOCK_SLAB3 -> {
                 this.createItemDrop(item, Item.create<ItemStoneBlockSlab3>(ItemType.STONE_BLOCK_SLAB3).apply {
                     this.setAmount(2)
                     this.setStoneSlabType3(this@BlockDoubleStoneBlockSlab3.getStoneSlabType3())
                 })
             }
+
             else -> mutableListOf()
         }
     }
@@ -46,5 +47,9 @@ class BlockDoubleStoneBlockSlab3(identifier: Identifier, blockStates: NbtMap?) :
         return Item.create<ItemStoneBlockSlab3>(ItemType.STONE_BLOCK_SLAB3).apply {
             this.setStoneSlabType3(this@BlockDoubleStoneBlockSlab3.getStoneSlabType3())
         }
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

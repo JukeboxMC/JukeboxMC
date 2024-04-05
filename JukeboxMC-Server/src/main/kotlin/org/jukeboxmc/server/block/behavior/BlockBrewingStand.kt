@@ -2,6 +2,8 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.BrewingStand
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.blockentity.BlockEntity
@@ -26,6 +28,10 @@ class BlockBrewingStand(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         BlockEntity.create(BlockEntityType.BREWINGSTAND, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -43,27 +49,31 @@ class BlockBrewingStand(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         return true
     }
 
-   override fun isBrewingStandSlotC(): Boolean {
-       return this.getBooleanState("brewing_stand_slot_c_bit")
-   }
+    override fun isBrewingStandSlotC(): Boolean {
+        return this.getBooleanState("brewing_stand_slot_c_bit")
+    }
 
-   override fun setBrewingStandSlotC(value: Boolean): BlockBrewingStand {
-       return this.setState("brewing_stand_slot_c_bit", value.toByte())
-   }
+    override fun setBrewingStandSlotC(value: Boolean): BlockBrewingStand {
+        return this.setState("brewing_stand_slot_c_bit", value.toByte())
+    }
 
-   override fun isBrewingStandSlotA(): Boolean {
-       return this.getBooleanState("brewing_stand_slot_a_bit")
-   }
+    override fun isBrewingStandSlotA(): Boolean {
+        return this.getBooleanState("brewing_stand_slot_a_bit")
+    }
 
-   override fun setBrewingStandSlotA(value: Boolean): BlockBrewingStand {
-       return this.setState("brewing_stand_slot_a_bit", value.toByte())
-   }
+    override fun setBrewingStandSlotA(value: Boolean): BlockBrewingStand {
+        return this.setState("brewing_stand_slot_a_bit", value.toByte())
+    }
 
-   override fun isBrewingStandSlotB(): Boolean {
-       return this.getBooleanState("brewing_stand_slot_b_bit")
-   }
+    override fun isBrewingStandSlotB(): Boolean {
+        return this.getBooleanState("brewing_stand_slot_b_bit")
+    }
 
-   override fun setBrewingStandSlotB(value: Boolean): BlockBrewingStand {
-       return this.setState("brewing_stand_slot_b_bit", value.toByte())
-   }
+    override fun setBrewingStandSlotB(value: Boolean): BlockBrewingStand {
+        return this.setState("brewing_stand_slot_b_bit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

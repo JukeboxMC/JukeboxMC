@@ -28,11 +28,16 @@ class BlockDoubleWoodenSlab(identifier: Identifier, blockStates: NbtMap?) : Juke
             BlockType.BAMBOO_MOSAIC_DOUBLE_SLAB, BlockType.CRIMSON_DOUBLE_SLAB, BlockType.WARPED_DOUBLE_SLAB -> {
                 this.createItemDrop(item, Item.create(ItemType.valueOf(this.getType().name.replace("_DOUBLE", "")), 2))
             }
+
             else -> mutableListOf()
         }
     }
 
     override fun toItem(): Item {
         return Item.create(ItemType.valueOf(this.getType().name.replace("_DOUBLE", "")))
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

@@ -3,6 +3,8 @@ package org.jukeboxmc.server.block.behavior
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.AmethystCluster
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
@@ -30,6 +32,10 @@ class BlockAmethystCluster(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         if (!this.getRelative(BlockFace.DOWN).isSolid()) {
             return false
         }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setBlockFace(blockFace)
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -42,12 +48,19 @@ class BlockAmethystCluster(identifier: Identifier, blockStates: NbtMap?) : Jukeb
         return this.setState("minecraft:block_face", value.name.lowercase())
     }
 
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
+
     override fun getDrops(item: Item): MutableList<Item> {
         var amount = 2
         if (item.getToolType() == ToolType.PICKAXE) {
             amount = 4
             if (item.hasEnchantment(EnchantmentType.FORTUNE) && item.getEnchantment(EnchantmentType.FORTUNE) != null) {
-                amount = Random.nextInt(amount, amount + item.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() * amount) + 1
+                amount = Random.nextInt(
+                    amount,
+                    amount + item.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() * amount
+                ) + 1
             }
         }
         return mutableListOf(Item.create(ItemType.AMETHYST_SHARD, amount))

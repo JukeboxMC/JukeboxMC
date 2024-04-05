@@ -8,11 +8,11 @@ import org.jukeboxmc.server.block.JukeboxBlock
 
 class BlockSponge(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Sponge {
 
-   override fun getSpongeType(): SpongeType {
-       return SpongeType.valueOf(this.getStringState("sponge_type"))
-   }
+    override fun getSpongeType(): SpongeType {
+        return SpongeType.valueOf(this.getStringState("sponge_type"))
+    }
 
-   override fun setSpongeType(value: SpongeType): Sponge {
-       return this.setState("sponge_type", value.name.lowercase())
-   }
+    override fun setSpongeType(value: SpongeType): Sponge {
+        return this.setState("sponge_type", value.name.lowercase())
+    }
 }

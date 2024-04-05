@@ -11,15 +11,20 @@ import kotlin.random.Random
 class BlockBrownMushroomBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     BrownMushroomBlock {
 
-   override fun getHugeMushrooms(): Int {
-       return this.getIntState("huge_mushroom_bits")
-   }
+    override fun getHugeMushrooms(): Int {
+        return this.getIntState("huge_mushroom_bits")
+    }
 
-   override fun setHugeMushrooms(value: Int): BlockBrownMushroomBlock {
-       return this.setState("huge_mushroom_bits", value)
-   }
+    override fun setHugeMushrooms(value: Int): BlockBrownMushroomBlock {
+        return this.setState("huge_mushroom_bits", value)
+    }
 
     override fun getDrops(item: Item): MutableList<Item> {
-        return mutableListOf(Item.create(ItemType.valueOf(this.getType().name.replace("_BLOCK", "")), Random.nextInt(2) + 1))
+        return mutableListOf(
+            Item.create(
+                ItemType.valueOf(this.getType().name.replace("_BLOCK", "")),
+                Random.nextInt(2) + 1
+            )
+        )
     }
 }

@@ -25,6 +25,10 @@ class BlockCocoa(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setDirection(player.getDirection().opposite())
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -53,6 +57,10 @@ class BlockCocoa(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
 
     override fun setAge(value: Int): BlockCocoa {
         return this.setState("age", value)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 
     override fun getDrops(item: Item): MutableList<Item> {

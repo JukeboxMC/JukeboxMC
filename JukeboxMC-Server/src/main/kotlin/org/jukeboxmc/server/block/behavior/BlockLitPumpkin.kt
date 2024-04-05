@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockLitPumpkin(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), LitPumpkin {
+class BlockLitPumpkin(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    LitPumpkin {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -26,11 +27,11 @@ class BlockLitPumpkin(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): LitPumpkin {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): LitPumpkin {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 }

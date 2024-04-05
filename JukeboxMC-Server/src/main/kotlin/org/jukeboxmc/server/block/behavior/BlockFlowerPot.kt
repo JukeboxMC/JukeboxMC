@@ -24,15 +24,23 @@ class BlockFlowerPot(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         BlockEntity.create(BlockEntityType.FLOWERPOT, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun isUpdate(): Boolean {
-       return this.getBooleanState("update_bit")
-   }
+    override fun isUpdate(): Boolean {
+        return this.getBooleanState("update_bit")
+    }
 
-   override fun setUpdate(value: Boolean): FlowerPot {
-       return this.setState("update_bit", value.toByte())
-   }
+    override fun setUpdate(value: Boolean): FlowerPot {
+        return this.setState("update_bit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

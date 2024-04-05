@@ -10,10 +10,10 @@ class BlockDirt(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
     Dirt {
 
     override fun getDirtType(): DirtType {
-       return DirtType.valueOf(this.getStringState("dirt_type"))
-   }
+        return DirtType.valueOf(this.getStringState("dirt_type"))
+    }
 
-   override fun setDirtType(value: DirtType): BlockDirt {
-       return this.setState("dirt_type", value.name.lowercase())
-   }
+    override fun setDirtType(value: DirtType): BlockDirt {
+        return this.setState("dirt_type", value.name.lowercase())
+    }
 }

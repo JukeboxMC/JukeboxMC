@@ -11,7 +11,14 @@ import org.jukeboxmc.server.world.JukeboxWorld
 
 class BlockCraftingTable(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates) {
 
-    override fun interact(player: JukeboxPlayer, world: JukeboxWorld, blockPosition: Vector, clickedPosition: Vector, blockFace: BlockFace, itemInHand: JukeboxItem): Boolean {
+    override fun interact(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        clickedPosition: Vector,
+        blockFace: BlockFace,
+        itemInHand: JukeboxItem
+    ): Boolean {
         player.openInventory(player.getCraftingTableInventory(), blockPosition)
         return true
     }

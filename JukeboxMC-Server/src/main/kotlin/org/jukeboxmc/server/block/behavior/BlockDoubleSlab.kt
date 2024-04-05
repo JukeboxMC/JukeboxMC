@@ -28,8 +28,10 @@ class BlockDoubleSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
             BlockType.WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB, BlockType.WAXED_WEATHERED_DOUBLE_CUT_COPPER_SLAB,
             BlockType.WAXED_OXIDIZED_DOUBLE_CUT_COPPER_SLAB, BlockType.COBBLED_DEEPSLATE_DOUBLE_SLAB, BlockType.POLISHED_DEEPSLATE_DOUBLE_SLAB,
             BlockType.DEEPSLATE_TILE_DOUBLE_SLAB, BlockType.DEEPSLATE_BRICK_DOUBLE_SLAB, BlockType.MUD_BRICK_DOUBLE_SLAB -> {
-                this.createItemDrop(item,
-                    Item.create(ItemType.valueOf(this.getType().name.replace("DOUBLE_", ""))))
+                this.createItemDrop(
+                    item,
+                    Item.create(ItemType.valueOf(this.getType().name.replace("DOUBLE_", "")))
+                )
             }
 
             else -> mutableListOf()
@@ -38,6 +40,10 @@ class BlockDoubleSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
 
     override fun toItem(): Item {
         return Item.create(ItemType.valueOf(this.getType().name.replace("DOUBLE_", "")), 2)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 
 }

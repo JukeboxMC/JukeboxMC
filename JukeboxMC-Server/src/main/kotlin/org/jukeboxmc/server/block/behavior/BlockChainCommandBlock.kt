@@ -10,19 +10,19 @@ import org.jukeboxmc.server.extensions.toByte
 class BlockChainCommandBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     ChainCommandBlock {
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): BlockChainCommandBlock {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): BlockChainCommandBlock {
+        return this.setState("facing_direction", value.ordinal)
+    }
 
-   override fun isConditional(): Boolean {
-       return this.getBooleanState("conditional_bit")
-   }
+    override fun isConditional(): Boolean {
+        return this.getBooleanState("conditional_bit")
+    }
 
-   override fun setConditional(value: Boolean): BlockChainCommandBlock {
-       return this.setState("conditional_bit", value.toByte())
-   }
+    override fun setConditional(value: Boolean): BlockChainCommandBlock {
+        return this.setState("conditional_bit", value.toByte())
+    }
 }
