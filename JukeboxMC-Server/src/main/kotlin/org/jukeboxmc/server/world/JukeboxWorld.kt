@@ -219,8 +219,6 @@ class JukeboxWorld(
         val jukeboxBlock = block.toJukeboxBlock()
         val chunk: JukeboxChunk? = getLoadedChunk(x shr 4, z shr 4, dimension)?.toJukeboxChunk()
 
-        println("SET BLOCK AT " + x + ";" + y + ";" + z + " Layer: " + layer + " Block; " + block.getType())
-
         chunk?.setBlock(x, y, z, layer, jukeboxBlock)
         chunk?.setDirty(true)
 
