@@ -43,7 +43,8 @@ class LevelDBStorage(
     options: Options = Options()
         .createIfMissing(true)
         .compressionType(CompressionType.ZLIB_RAW)
-        .blockSize(2000 * 1024)
+        .cacheSize(1024 * 1024 * 80)
+        .blockSize(64 * 1024)
 ) {
 
     private var db: DB
@@ -475,7 +476,7 @@ class LevelDBStorage(
                     val x = nbtMap.getInt("x", 0)
                     val y = nbtMap.getInt("y", 0)
                     val z = nbtMap.getInt("z", 0)
-                    val block= chunk.getBlock(x, y, z, 0)
+                    val block = chunk.getBlock(x, y, z, 0)
 
                     if (EnumUtils.isValidEnum(BlockEntityType::class.java, nbtMap.getString("id").uppercase())) {
                         val blockEntityType = BlockEntityType.valueOf(nbtMap.getString("id").uppercase())
@@ -500,6 +501,10 @@ class LevelDBStorage(
             if (!chunk.isChanged()) return@supplyAsync null
             this.db.createWriteBatch().use { writeBatch ->
                 val minY = chunk.getMinY() shr 4
+
+                val chunkVersion = Utils.getKey(chunk, ','.code.toByte())
+                writeBatch.put(chunkVersion, ByteArray(JukeboxChunk.CHUNK_VERSION))
+
                 for (subY in 0 until chunk.getAvailableSubChunks()) {
                     if (chunk.getSubChunk(subY) == null) {
                         continue
@@ -507,12 +512,7 @@ class LevelDBStorage(
                     val subChunkIndex = subY + minY
                     val blockPalettes = chunk.getSubChunk(subY)!!.getBlockPalette()
 
-                    val chunkVersion = Utils.getKey(chunk, ','.code.toByte())
-                    writeBatch.put(chunkVersion, ByteArray(JukeboxChunk.CHUNK_VERSION))
-
                     val subChunkBuffer = Unpooled.buffer()
-                    val biomeAndHeightBuffer = Unpooled.buffer()
-                    val blockEntityBuffer = Unpooled.buffer()
                     try {
                         subChunkBuffer.writeByte(JukeboxSubChunk.SUBCHUNK_VERSION)
                         subChunkBuffer.writeByte(blockPalettes.size)
@@ -523,38 +523,47 @@ class LevelDBStorage(
                         }
                         val subChunkKey = Utils.getSubChunkKey(chunk, '/'.code.toByte(), subChunkIndex.toByte())
                         writeBatch.put(subChunkKey, Utils.array(subChunkBuffer))
-
-                        for (height in chunk.getHeight()) {
-                            biomeAndHeightBuffer.writeShortLE(height.toInt())
-                        }
-                        var last: Palette<Biome>? = null
-                        var biomePalette: Palette<Biome>
-                        for (y in chunk.getMinY() shr 4 until (chunk.getMaxY() + 1 shr 4)) {
-                            biomePalette = chunk.getOrCreateSubChunk(chunk.getSubChunkIndex(y shl 4)).getBiomePalette()
-                            biomePalette.writeToStorageRuntime(biomeAndHeightBuffer, BiomeIdSerializer(), last)
-                            last = biomePalette
-                        }
-                        val biomeAndHeightKey = Utils.getKey(chunk, '+'.code.toByte())
-                        writeBatch.put(biomeAndHeightKey, Utils.array(biomeAndHeightBuffer))
-
-                        val blockEntities = chunk.getBlockEntities()
-                        if (blockEntities.isNotEmpty()) {
-                            NbtUtils.createWriterLE(ByteBufOutputStream(blockEntityBuffer)).use {
-                                for (blockEntity in blockEntities) {
-                                    it.writeTag(blockEntity.toJukeboxBlockEntity().toCompound().build())
-                                }
-                            }
-                            if (blockEntityBuffer.readableBytes() > 0) {
-                                val blockEntityKey = Utils.getKey(chunk, '1'.code.toByte())
-                                writeBatch.put(blockEntityKey, Utils.array(blockEntityBuffer))
-                            }
-                        }
-                        this.db.write(writeBatch)
                     } finally {
                         subChunkBuffer.release()
-                        biomeAndHeightBuffer.release()
-                        blockEntityBuffer.release()
                     }
+                }
+
+                val biomeAndHeightBuffer = Unpooled.buffer()
+                val blockEntityBuffer = Unpooled.buffer()
+
+                try {
+                    for (height in chunk.getHeight()) {
+                        biomeAndHeightBuffer.writeShortLE(height.toInt())
+                    }
+                    var last: Palette<Biome>? = null
+                    var biomePalette: Palette<Biome>
+                    for (y in chunk.getMinY() shr 4 until (chunk.getMaxY() + 1 shr 4)) {
+                        biomePalette = chunk.getOrCreateSubChunk(chunk.getSubChunkIndex(y shl 4)).getBiomePalette()
+                        biomePalette.writeToStorageRuntime(biomeAndHeightBuffer, BiomeIdSerializer(), last)
+                        last = biomePalette
+                    }
+                    val biomeAndHeightKey = Utils.getKey(chunk, '+'.code.toByte())
+                    writeBatch.put(biomeAndHeightKey, Utils.array(biomeAndHeightBuffer))
+
+                    val blockEntities = chunk.getBlockEntities()
+                    if (blockEntities.isNotEmpty()) {
+                        NbtUtils.createWriterLE(ByteBufOutputStream(blockEntityBuffer)).use {
+                            for (blockEntity in blockEntities) {
+                                it.writeTag(blockEntity.toJukeboxBlockEntity().toCompound().build())
+                            }
+                        }
+                        if (blockEntityBuffer.readableBytes() > 0) {
+                            val blockEntityKey = Utils.getKey(chunk, '1'.code.toByte())
+                            writeBatch.put(blockEntityKey, Utils.array(blockEntityBuffer))
+                        }
+                    }
+
+                    this.db.write(writeBatch)
+                } finally {
+                    biomeAndHeightBuffer.release()
+                    blockEntityBuffer.release()
+
+                    chunk.setChanged(false)
                 }
             }
             return@supplyAsync null
