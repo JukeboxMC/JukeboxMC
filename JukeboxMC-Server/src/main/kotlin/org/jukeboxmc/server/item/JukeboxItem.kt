@@ -1,7 +1,10 @@
 package org.jukeboxmc.server.item
 
+import io.netty.buffer.ByteBufOutputStream
+import io.netty.buffer.Unpooled
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtType
+import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.jukeboxmc.api.Identifier
@@ -25,6 +28,7 @@ import org.jukeboxmc.server.item.enchantment.JukeboxEnchantment
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
+import org.jukeboxmc.server.util.Utils
 import java.util.*
 
 open class JukeboxItem : Item, Cloneable {
@@ -238,6 +242,26 @@ open class JukeboxItem : Item, Cloneable {
 
     override fun isSimilar(item: Item): Boolean {
         return this.isSimilarInternal(item, false)
+    }
+
+    override fun toBase64(): String {
+        val compound = NbtMap.builder()
+            .putString("Name", this.identifier.getFullName())
+            .putInt("Meta", this.meta)
+            .putInt("Amount", this.amount)
+            .putBoolean("Unbreakable", this.unbreakable)
+            .putCompound("BlockState", this.toBlock().getBlockStates())
+            .putCompound("Tag", if (this.toNbt() != null) this.toNbt() else NbtMap.EMPTY)
+            .build()
+        val buffer = Unpooled.buffer()
+        try {
+            NbtUtils.createWriterLE(ByteBufOutputStream(buffer)).use {
+                it.writeTag(compound)
+            }
+        } catch (e : Exception) {
+            e.printStackTrace()
+        }
+        return Base64.getMimeEncoder().encodeToString(Utils.array(buffer))
     }
 
     fun isSimilarInternal(item: Item, ignoreBlockNetworkId: Boolean): Boolean {

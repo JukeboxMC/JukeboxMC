@@ -3,9 +3,14 @@
 package org.jukeboxmc.server
 
 import com.nimbusds.jose.jwk.Curve
+import io.netty.buffer.ByteBufInputStream
+import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import org.cloudburstmc.blockstateupdater.BlockStateUpdater
+import org.cloudburstmc.blockstateupdater.BlockStateUpdaters
 import org.cloudburstmc.nbt.NbtMap
+import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket
@@ -45,6 +50,7 @@ import org.jukeboxmc.server.command.JukeboxCommandManager
 import org.jukeboxmc.server.console.TerminalConsole
 import org.jukeboxmc.server.effect.EffectRegistry
 import org.jukeboxmc.server.entity.EntityRegistry
+import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.extensions.toNetwork
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
@@ -54,6 +60,7 @@ import org.jukeboxmc.server.plugin.JukeboxPluginManager
 import org.jukeboxmc.server.recipe.JukeboxRecipeManager
 import org.jukeboxmc.server.resourcepack.JukeboxResourcePackManager
 import org.jukeboxmc.server.scheduler.JukeboxScheduler
+import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ServerKiller
 import org.jukeboxmc.server.world.JukeboxWorld
 import java.io.File
@@ -348,7 +355,7 @@ class JukeboxServer : Server {
         }
     }
 
-    fun getStartTime() : Long {
+    fun getStartTime(): Long {
         return this.startTime
     }
 
@@ -628,6 +635,41 @@ class JukeboxServer : Server {
         val item: Item = this.createItem(itemType, amount)
         item.setMeta(meta)
         return item as T
+    }
+
+    override fun <T : Item> fromBase64(base64: String): T? {
+        val decoded = Base64.getMimeDecoder().decode(base64)
+
+        try {
+            NbtUtils.createReaderLE(ByteBufInputStream(Unpooled.wrappedBuffer(decoded))).use { nbtInputStream ->
+                val compound = nbtInputStream.readTag() as NbtMap
+                val identifier = Identifier.fromString(compound.getString("Name"))
+                val itemType = ItemRegistry.getItemType(identifier)
+                val meta = compound.getInt("Meta")
+                val amount = compound.getInt("Amount")
+                val unbreakable = compound.getBoolean("Unbreakable")
+                val blockStates = compound.getCompound("BlockState")
+                val itemTag = compound.getCompound("Tag")
+
+                var blockNetworkId = 0
+                for (blockNbt in BlockPalette.searchBlocks { it.getString("name").equals(identifier.getFullName()) }) {
+                    if (blockNbt.getCompound("states").equals(BlockStateUpdaters.updateBlockState(blockStates, 0))) {
+                        blockNetworkId = BlockPalette.getNetworkId(blockNbt)
+                    }
+                }
+                return Item.create(itemType).toJukeboxItem().apply {
+                    this.setMeta(meta)
+                    this.setAmount(amount)
+                    this.setUnbreakable(unbreakable)
+                    this.setBlockNetworkId(blockNetworkId)
+                    if (itemTag.isNotEmpty()) {
+                        this.setNbt(itemTag)
+                    }
+                } as T
+            }
+        } catch (e: Exception) {
+            return null
+        }
     }
 
     override fun <T : BlockEntity> createBlockEntity(blockEntityType: BlockEntityType, block: Block): T? {
