@@ -8,6 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioDatagramChannel
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption
+import org.cloudburstmc.netty.handler.codec.raknet.server.RakServerRateLimiter
 import org.cloudburstmc.protocol.bedrock.BedrockPong
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec
@@ -55,6 +56,7 @@ class BedrockServer(private val bindAddress: InetSocketAddress, private val serv
             .syncUninterruptibly().channel()
         this.server.getLogger()
             .info("Server started successfully at " + bindAddress.hostString + ":" + bindAddress.port + "!")
+        this.channel.pipeline().remove(RakServerRateLimiter.NAME)
     }
 
     fun updateBedrockPong() {

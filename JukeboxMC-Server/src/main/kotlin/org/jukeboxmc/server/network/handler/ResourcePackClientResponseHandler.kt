@@ -5,10 +5,6 @@ import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.*
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition
-import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.common.SimpleDefinitionRegistry
 import org.cloudburstmc.protocol.common.util.OptionalBoolean
@@ -16,7 +12,6 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.extensions.toNetwork
 import org.jukeboxmc.server.extensions.toVector3f
 import org.jukeboxmc.server.extensions.toVector3i
-import org.jukeboxmc.server.network.BedrockServer
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
@@ -130,8 +125,9 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.levelName = worldData.levelName
                 startGamePacket.premiumWorldTemplateId = ""
                 startGamePacket.isTrial = false
-                startGamePacket.authoritativeMovementMode = AuthoritativeMovementMode.CLIENT
-                startGamePacket.isServerAuthoritativeBlockBreaking = false
+                startGamePacket.authoritativeMovementMode = AuthoritativeMovementMode.SERVER_WITH_REWIND
+                startGamePacket.rewindHistorySize = 40
+                startGamePacket.isServerAuthoritativeBlockBreaking = true
                 startGamePacket.currentTick = server.getCurrentTick()
                 startGamePacket.itemDefinitions = ItemPalette.getItemDefinitions()
                 startGamePacket.multiplayerCorrelationId = ""

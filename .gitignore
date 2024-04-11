@@ -52,3 +52,5 @@ bin/
 .DS_Store
 
 gradle.properties
+
+anticheat.json

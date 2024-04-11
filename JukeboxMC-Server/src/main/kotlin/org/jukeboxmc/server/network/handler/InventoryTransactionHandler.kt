@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTra
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
+import org.jukeboxmc.api.event.anticheat.CheatDetectedEvent
 import org.jukeboxmc.api.event.block.BlockPlaceEvent
 import org.jukeboxmc.api.event.player.PlayerDropItemEvent
 import org.jukeboxmc.api.event.player.PlayerInteractEvent
@@ -15,6 +16,8 @@ import org.jukeboxmc.api.math.Location
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.api.player.GameMode
 import org.jukeboxmc.server.JukeboxServer
+import org.jukeboxmc.server.anticheat.AntiCheatHelper
+import org.jukeboxmc.server.anticheat.module.combat.AntiCheatCombatModule
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.entity.item.JukeboxEntityItem
 import org.jukeboxmc.server.extensions.fromVector3f
@@ -71,12 +74,6 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
                         player.getInventory().sendContents(player)
                     }
                 }
-            } else if (packet.actionType == 2) {
-                val block =
-                    player.getWorld().getBlock(Vector().fromVector3i(packet.blockPosition, player.getDimension()))
-                        .toJukeboxBlock()
-                if (block.getType() == BlockType.AIR) return
-                block.breakBlockHandling(player, itemInHand.toJukeboxItem())
             }
         } else if (packet.transactionType == InventoryTransactionType.NORMAL) {
             for (action in packet.actions) {
@@ -103,8 +100,13 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
                 }
             }
         } else if (packet.transactionType == InventoryTransactionType.ITEM_USE_ON_ENTITY) {
-            if(packet.actionType == 1) {
+            if (packet.actionType == 1) {
                 player.getWorld().getEntityById(packet.runtimeEntityId)?.let {
+                    val canAttack = server.getAntiCheatRegistry().getModule(AntiCheatCombatModule::class.java).isPlayerAllowedToHitEntity(player, it)
+                    if (!canAttack) {
+                        AntiCheatHelper.INSTANCE.callEvent(player, CheatDetectedEvent.CheatType.COMBAT, player.getName() + " failed CombatCheat")
+                        return
+                    }
                     if (player.attackWithItemInHand(it)) {
                         player.getInventory().getItemInHand().toJukeboxItem().updateDurability(player, 1)
                     }
@@ -178,7 +180,7 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
             }
 
             val boundingBox: AxisAlignedBB = player.getBoundingBox()
-            if(!placedBlock.canPassThrough()) {
+            if (!placedBlock.canPassThrough()) {
                 if (placedBlock.getBoundingBox().intersectsWith(boundingBox)) {
                     return false
                 }

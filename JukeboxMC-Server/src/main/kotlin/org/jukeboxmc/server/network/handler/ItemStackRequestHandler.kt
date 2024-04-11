@@ -14,6 +14,7 @@ import org.jukeboxmc.api.event.inventory.InventoryClickEvent
 import org.jukeboxmc.api.event.player.PlayerDropItemEvent
 import org.jukeboxmc.api.inventory.Inventory
 import org.jukeboxmc.api.inventory.InventoryType
+import org.jukeboxmc.api.item.Durability
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.item.enchantment.EnchantmentType
@@ -34,86 +35,91 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
     override fun handle(packet: ItemStackRequestPacket, server: JukeboxServer, player: JukeboxPlayer) {
         val responses: MutableList<ItemStackResponse> = mutableListOf()
         for (request in packet.requests) {
-            val itemEntryMap: MutableMap<Int, MutableList<ItemStackResponseSlot>> = mutableMapOf()
-            for (action in request.actions) {
-                when (action.type) {
-                    ItemStackRequestActionType.CONSUME -> {
-                        val itemEntry: ItemStackResponseSlot = handleConsumeAction(player, action as ConsumeAction)[0]
-                        if (!itemEntryMap.containsKey(request.requestId)) {
-                            itemEntryMap[request.requestId] = LinkedList<ItemStackResponseSlot>().apply {
-                                add(itemEntry)
-                            }
-                        } else {
-                            itemEntryMap[request.requestId]?.add(itemEntry)
+            this.handleItemStackRequest(request, player, responses)
+        }
+    }
+
+    fun handleItemStackRequest(request: ItemStackRequest, player: JukeboxPlayer, responses: MutableList<ItemStackResponse>) {
+        val itemEntryMap: MutableMap<Int, MutableList<ItemStackResponseSlot>> = mutableMapOf()
+        for (action in request.actions) {
+            when (action.type) {
+                ItemStackRequestActionType.CONSUME -> {
+                    val itemEntry: ItemStackResponseSlot = handleConsumeAction(player, action as ConsumeAction)[0]
+                    if (!itemEntryMap.containsKey(request.requestId)) {
+                        itemEntryMap[request.requestId] = LinkedList<ItemStackResponseSlot>().apply {
+                            add(itemEntry)
                         }
+                    } else {
+                        itemEntryMap[request.requestId]?.add(itemEntry)
                     }
+                }
 
-                    ItemStackRequestActionType.TAKE -> {
-                        responses.addAll(this.handleTakeRequestAction(player, action as TakeAction, request))
-                    }
+                ItemStackRequestActionType.TAKE -> {
+                    responses.addAll(this.handleTakeRequestAction(player, action as TakeAction, request))
+                }
 
-                    ItemStackRequestActionType.PLACE -> {
-                        responses.addAll(this.handlePlaceAction(player, action as PlaceAction, request))
-                    }
+                ItemStackRequestActionType.PLACE -> {
+                    responses.addAll(this.handlePlaceAction(player, action as PlaceAction, request))
+                }
 
-                    ItemStackRequestActionType.DESTROY -> {
-                        responses.addAll(this.handleDestroyAction(player, action as DestroyAction, request))
-                    }
+                ItemStackRequestActionType.DESTROY -> {
+                    responses.addAll(this.handleDestroyAction(player, action as DestroyAction, request))
+                }
 
-                    ItemStackRequestActionType.SWAP -> {
-                        responses.addAll(this.handleSwapAction(player, action as SwapAction, request))
-                    }
+                ItemStackRequestActionType.SWAP -> {
+                    responses.addAll(this.handleSwapAction(player, action as SwapAction, request))
+                }
 
-                    ItemStackRequestActionType.DROP -> {
-                        responses.addAll(this.handleDropItemAction(player, action as DropAction, request))
-                    }
+                ItemStackRequestActionType.DROP -> {
+                    responses.addAll(this.handleDropItemAction(player, action as DropAction, request))
+                }
 
-                    ItemStackRequestActionType.CRAFT_CREATIVE -> {
-                        this.handleCraftCreativeAction(player, action as CraftCreativeAction)
-                    }
+                ItemStackRequestActionType.CRAFT_CREATIVE -> {
+                    this.handleCraftCreativeAction(player, action as CraftCreativeAction)
+                }
 
-                    ItemStackRequestActionType.CRAFT_RECIPE -> {
-                        this.handleCraftRecipeAction(player, (action as CraftRecipeAction), request)
-                    }
+                ItemStackRequestActionType.CRAFT_RECIPE -> {
+                    this.handleCraftRecipeAction(player, (action as CraftRecipeAction), request)
+                }
 
-                    ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL -> {
-                        responses.addAll(
-                            handleCraftRecipeOptionalAction(
-                                player,
-                                (action as CraftRecipeOptionalAction),
-                                request
-                            )
+                ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL -> {
+                    responses.addAll(
+                        handleCraftRecipeOptionalAction(
+                            player,
+                            (action as CraftRecipeOptionalAction),
+                            request
                         )
-                    }
-
-                    ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
-                    }
-                    else -> {
-                        server.getLogger()
-                            .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
-                    }
-                }
-            }
-            val itemStackResponsePacket = ItemStackResponsePacket()
-            val containerEntryMap: MutableMap<Int, MutableList<ItemStackResponseContainer>> = HashMap()
-            if (itemEntryMap.isNotEmpty()) {
-                for (respons in responses) {
-                    containerEntryMap[respons.requestId] = respons.containers
-                }
-                if (containerEntryMap.containsKey(request.requestId)) {
-                    containerEntryMap[request.requestId]?.add(
-                        0,
-                        ItemStackResponseContainer(ContainerSlotType.CRAFTING_INPUT, itemEntryMap[request.requestId])
                     )
                 }
-                for ((key, value) in containerEntryMap) {
-                    itemStackResponsePacket.entries.add(ItemStackResponse(ItemStackResponseStatus.OK, key, value))
+
+                ItemStackRequestActionType.MINE_BLOCK -> {
+                    responses.addAll(this.handleMineBlockAction(player, (action as MineBlockAction), request))
                 }
-            } else {
-                itemStackResponsePacket.entries.addAll(responses)
+
+                else -> {
+                    JukeboxServer.getInstance().getLogger().info("Unhandled Action: " + action.javaClass.simpleName + " : " + action.type)
+                }
             }
-            player.sendPacket(itemStackResponsePacket)
         }
+        val itemStackResponsePacket = ItemStackResponsePacket()
+        val containerEntryMap: MutableMap<Int, MutableList<ItemStackResponseContainer>> = HashMap()
+        if (itemEntryMap.isNotEmpty()) {
+            for (respons in responses) {
+                containerEntryMap[respons.requestId] = respons.containers
+            }
+            if (containerEntryMap.containsKey(request.requestId)) {
+                containerEntryMap[request.requestId]?.add(
+                    0,
+                    ItemStackResponseContainer(ContainerSlotType.CRAFTING_INPUT, itemEntryMap[request.requestId])
+                )
+            }
+            for ((key, value) in containerEntryMap) {
+                itemStackResponsePacket.entries.add(ItemStackResponse(ItemStackResponseStatus.OK, key, value))
+            }
+        } else {
+            itemStackResponsePacket.entries.addAll(responses)
+        }
+        player.sendPacket(itemStackResponsePacket)
     }
 
     private fun handleCraftResult(
@@ -639,6 +645,36 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         }
     }
 
+    private fun handleMineBlockAction(player: JukeboxPlayer, actionData: MineBlockAction, itemStackRequest: ItemStackRequest): List<ItemStackResponse> {
+        val hotBarSlot = actionData.hotbarSlot
+        var item = player.getInventory().getItem(actionData.hotbarSlot)
+
+        if (item.getStackNetworkId() != actionData.stackNetworkId) {
+            player.getInventory().setItem(hotBarSlot, item)
+            return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, itemStackRequest.requestId, emptyList()))
+        }
+
+        if (item is Durability && item.getDurability() != actionData.predictedDurability) {
+            if (item.getDurability() >= (item as Durability).getMaxDurability() && !item.isUnbreakable()) {
+                item = Item.create(ItemType.AIR)
+            }
+            player.getInventory().setItem(hotBarSlot, item)
+        }
+
+        return listOf(
+            ItemStackResponse(
+                ItemStackResponseStatus.OK,
+                itemStackRequest.requestId,
+                listOf(
+                    ItemStackResponseContainer(
+                        ContainerSlotType.HOTBAR,
+                        listOf(ItemStackResponseSlot(hotBarSlot, hotBarSlot, item.getAmount(), item.getStackNetworkId(), item.getDisplayName(), item.getDurability()))
+                    )
+                )
+            )
+        )
+    }
+
     private fun getInventory(player: JukeboxPlayer, containerSlotType: ContainerSlotType): Inventory? {
         return when (containerSlotType) {
             ContainerSlotType.CREATED_OUTPUT -> player.getCreativeCacheInventory()
@@ -711,7 +747,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             }
 
             ContainerSlotType.CREATED_OUTPUT -> {
-                 player.getCreativeCacheInventory().setItem(slot, item)
+                player.getCreativeCacheInventory().setItem(slot, item)
             }
 
             else -> (this.getInventory(player, containerSlotType) as ContainerInventory).setItem(

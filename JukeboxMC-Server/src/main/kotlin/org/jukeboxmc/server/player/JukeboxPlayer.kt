@@ -5,6 +5,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
+import org.cloudburstmc.protocol.bedrock.data.ClientPlayMode
+import org.cloudburstmc.protocol.bedrock.data.InputInteractionModel
+import org.cloudburstmc.protocol.bedrock.data.InputMode
+import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData
 import org.cloudburstmc.protocol.bedrock.data.command.CommandData
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType
@@ -41,6 +45,7 @@ import org.jukeboxmc.api.world.Dimension
 import org.jukeboxmc.api.world.Sound
 import org.jukeboxmc.api.world.chunk.Chunk
 import org.jukeboxmc.server.JukeboxServer
+import org.jukeboxmc.server.anticheat.module.combat.AntiCheatCombatModule
 import org.jukeboxmc.server.blockentity.JukeboxBlockEntitySign
 import org.jukeboxmc.server.entity.Attribute
 import org.jukeboxmc.server.entity.JukeboxEntity
@@ -98,6 +103,12 @@ class JukeboxPlayer(
     private val formListeners: Int2ObjectMap<FormListener<out Any>> = Int2ObjectOpenHashMap()
 
     private val printDebugMessage: Boolean = false
+
+    private var lastBlockAction: PlayerBlockActionData? = null
+
+    private var inputMode: InputMode = InputMode.UNDEFINED
+    private var playMode: ClientPlayMode = ClientPlayMode.NORMAL
+    private var inputInteractionModel: InputInteractionModel = InputInteractionModel.TOUCH
 
     init {
         session.packetHandler = object : BedrockPacketHandler {
@@ -281,6 +292,9 @@ class JukeboxPlayer(
                 this.server.broadcastMessage(it)
             }
         }
+
+        this.server.getAntiCheatRegistry().getModule(AntiCheatCombatModule::class.java).cleanUp(this)
+
         this.server.getLogger()
             .info(this.getName() + " logged out reason: " + (this.disconnectMessage ?: "Disconnected"))
     }
@@ -1126,7 +1140,7 @@ class JukeboxPlayer(
         this.lastBreakTime = lastBreakTime
     }
 
-    fun getLasBreakPosition(): Vector {
+    fun getLastBreakPosition(): Vector {
         return this.lastBreakPosition
     }
 
@@ -1207,4 +1221,28 @@ class JukeboxPlayer(
             this.currentChunk!!.addEntity(this)
         }
     }
+
+    fun setLastBlockAction(actionData: PlayerBlockActionData) {
+        this.lastBlockAction = actionData
+    }
+
+    fun getLastBlockAction() = this.lastBlockAction
+
+    fun setInputMode(inputMode: InputMode) {
+        this.inputMode = inputMode
+    }
+
+    fun getInputMode() = this.inputMode
+
+    fun setPlayMode(playMode: ClientPlayMode) {
+        this.playMode = playMode
+    }
+
+    fun getPlayMode() = this.playMode
+
+    fun setInputInteractionModel(interactionModel: InputInteractionModel) {
+        this.inputInteractionModel = interactionModel
+    }
+
+    fun getInputInteractionModel() = this.inputInteractionModel
 }

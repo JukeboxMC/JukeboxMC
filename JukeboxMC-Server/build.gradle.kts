@@ -19,7 +19,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
     implementation("org.ow2.asm:asm:9.4")
-    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta1-SNAPSHOT") {
+    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta1-JukeboxMC-SNAPSHOT") {
         exclude(group = "io.netty", module = "netty-common")
     }
     implementation("org.cloudburstmc:nbt:3.0.0.Final")
