@@ -184,7 +184,8 @@ class JukeboxRecipeManager : RecipeManager {
                         uuid,
                         block,
                         priority,
-                        netId
+                        netId,
+                        false
                     ))
 
                     val shaped: MutableList<String> = mutableListOf()
@@ -471,7 +472,8 @@ class JukeboxRecipeManager : RecipeManager {
             UUID.randomUUID(),
             "crafting_table",
             1,
-            recipeManager.getHighestNetworkId() + 1
+            recipeManager.getHighestNetworkId() + 1,
+            false
         )
     }
 
