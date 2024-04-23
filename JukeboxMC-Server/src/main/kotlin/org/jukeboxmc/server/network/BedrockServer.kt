@@ -2,13 +2,10 @@ package org.jukeboxmc.server.network
 
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.Channel
-import io.netty.channel.ChannelHandlerContext
-import io.netty.channel.ChannelInitializer
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioDatagramChannel
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption
-import org.cloudburstmc.netty.handler.codec.raknet.server.RakServerRateLimiter
 import org.cloudburstmc.protocol.bedrock.BedrockPong
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec
@@ -17,7 +14,6 @@ import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitiali
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.player.JukeboxPlayer
 import java.net.InetSocketAddress
-import java.nio.channels.SocketChannel
 
 class BedrockServer(private val bindAddress: InetSocketAddress, private val server: JukeboxServer) {
 
@@ -56,7 +52,6 @@ class BedrockServer(private val bindAddress: InetSocketAddress, private val serv
             .syncUninterruptibly().channel()
         this.server.getLogger()
             .info("Server started successfully at " + bindAddress.hostString + ":" + bindAddress.port + "!")
-        this.channel.pipeline().remove(RakServerRateLimiter.NAME)
     }
 
     fun updateBedrockPong() {
