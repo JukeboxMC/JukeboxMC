@@ -105,6 +105,8 @@ interface Server {
 
     fun <T: Item> createItem(itemType: ItemType, amount: Int, meta: Int): T
 
+    fun <T: Item> fromBase64(base64: String): T?
+
     fun <T: BlockEntity> createBlockEntity(blockEntityType: BlockEntityType, block: Block): T?
 
     fun <T: Entity> createEntity(entityType: EntityType): T?

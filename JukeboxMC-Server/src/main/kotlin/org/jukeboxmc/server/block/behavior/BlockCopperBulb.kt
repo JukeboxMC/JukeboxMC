@@ -9,19 +9,19 @@ import org.jukeboxmc.server.extensions.toByte
 class BlockCopperBulb(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     CopperBulb {
 
-   override fun isLit(): Boolean {
-       return this.getBooleanState("lit")
-   }
+    override fun isLit(): Boolean {
+        return this.getBooleanState("lit")
+    }
 
-   override fun setLit(value: Boolean): BlockCopperBulb {
-       return this.setState("lit", value.toByte())
-   }
+    override fun setLit(value: Boolean): BlockCopperBulb {
+        return this.setState("lit", value.toByte())
+    }
 
-   override fun isPowered(): Boolean {
-       return this.getBooleanState("powered_bit")
-   }
+    override fun isPowered(): Boolean {
+        return this.getBooleanState("powered_bit")
+    }
 
-   override fun setPowered(value: Boolean): BlockCopperBulb {
-       return this.setState("powered_bit", value.toByte())
-   }
+    override fun setPowered(value: Boolean): BlockCopperBulb {
+        return this.setState("powered_bit", value.toByte())
+    }
 }

@@ -25,6 +25,10 @@ class BlockHopper(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setFacingDirection(if (blockFace === BlockFace.UP) BlockFace.DOWN else blockFace.opposite())
         this.setToggle(false)
         BlockEntity.create(BlockEntityType.HOPPER, this)?.spawn()
@@ -44,19 +48,23 @@ class BlockHopper(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
         return true
     }
 
-   override fun getFacingDirection(): BlockFace {
-       return BlockFace.entries[this.getIntState("facing_direction")]
-   }
+    override fun getFacingDirection(): BlockFace {
+        return BlockFace.entries[this.getIntState("facing_direction")]
+    }
 
-   override fun setFacingDirection(value: BlockFace): Hopper {
-       return this.setState("facing_direction", value.ordinal)
-   }
+    override fun setFacingDirection(value: BlockFace): Hopper {
+        return this.setState("facing_direction", value.ordinal)
+    }
 
-   override fun isToggle(): Boolean {
-       return this.getBooleanState("toggle_bit")
-   }
+    override fun isToggle(): Boolean {
+        return this.getBooleanState("toggle_bit")
+    }
 
-   override fun setToggle(value: Boolean): Hopper {
-       return this.setState("toggle_bit", value.toByte())
-   }
+    override fun setToggle(value: Boolean): Hopper {
+        return this.setState("toggle_bit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

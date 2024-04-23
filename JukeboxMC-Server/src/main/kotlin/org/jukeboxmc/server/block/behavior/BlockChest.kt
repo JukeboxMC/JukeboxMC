@@ -2,6 +2,8 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
+import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Chest
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
@@ -26,6 +28,10 @@ class BlockChest(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setCardinalDirection(player.getDirection().opposite())
         BlockEntity.create(BlockEntityType.CHEST, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
@@ -44,11 +50,15 @@ class BlockChest(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         return true
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.entries[this.getIntState("minecraft:cardinal_direction")]
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.entries[this.getIntState("minecraft:cardinal_direction")]
+    }
 
-   override fun setCardinalDirection(value: Direction): BlockChest {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): BlockChest {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

@@ -6,6 +6,7 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.Candle
 import org.jukeboxmc.api.block.data.BlockFace
+import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
@@ -44,7 +45,15 @@ class BlockCandle(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
             if (this.getIdentifier() == itemInHand.getIdentifier()) {
                 val block = world.getBlock(placePosition)
                 if (block.getType() == BlockType.AIR) {
-                    return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
+                    return super.placeBlock(
+                        player,
+                        world,
+                        blockPosition,
+                        placePosition,
+                        clickedPosition,
+                        itemInHand,
+                        blockFace
+                    )
                 }
                 block as BlockCandle
                 val candles = block.getCandles()
@@ -103,5 +112,9 @@ class BlockCandle(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
 
     override fun setCandles(value: Int): BlockCandle {
         return this.setState("candles", value)
+    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return mutableListOf(this.toItem().apply { this.setAmount(getCandles()) })
     }
 }

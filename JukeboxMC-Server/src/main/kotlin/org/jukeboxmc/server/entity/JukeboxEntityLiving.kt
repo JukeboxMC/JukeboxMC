@@ -87,6 +87,18 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
             this.fallDistance = 0F
         }
 
+        if (this.getFireTicks() > 0) {
+            if (this.getFireTicks() % 20 == 0L) {
+                if (!this.hasEffect(EffectType.FIRE_RESISTANCE)) {
+                    this.damage(EntityDamageEvent(this, 1f, EntityDamageEvent.DamageSource.ON_FIRE))
+                }
+            }
+            this.setFireTick(this.getFireTicks() - 1)
+            if (this.getFireTicks() == 0L) {
+                this.setOnFire(false)
+            }
+        }
+
         if (this.effects.isNotEmpty()) {
             for (effect in this.effects.values) {
                 effect.update(currentTick)
@@ -482,6 +494,10 @@ open class JukeboxEntityLiving : JukeboxEntity(), EntityLiving {
                 }
             }
         }
+    }
+
+    fun resetFallDistance() {
+        this.fallDistance = 0F
     }
 
 }

@@ -5,13 +5,14 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.FrostedIce
 import org.jukeboxmc.server.block.JukeboxBlock
 
-class BlockFrostedIce(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), FrostedIce {
+class BlockFrostedIce(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    FrostedIce {
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): FrostedIce {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): FrostedIce {
+        return this.setState("age", value)
+    }
 }

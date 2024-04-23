@@ -54,6 +54,10 @@ interface World {
 
     fun getBlock(location: Vector): Block
 
+    fun getHighestBlockYAt(x: Int, z: Int, dimension: Dimension): Int
+
+    fun getHighestBlockYAt(x: Int, z: Int): Int
+
     fun setBlock(x: Int, y: Int, z: Int, layer: Int, dimension: Dimension, block: Block, update: Boolean)
 
     fun setBlock(x: Int, y: Int, z: Int, layer: Int, dimension: Dimension, block: Block)
@@ -67,6 +71,10 @@ interface World {
     fun setBlock(location: Vector, layer: Int, dimension: Dimension, block: Block)
 
     fun setBlock(location: Vector, layer: Int, block: Block)
+
+    fun setBlock(location: Vector, block: Block, layer: Int)
+
+    fun setBlock(location: Vector, block: Block, layer: Int, update: Boolean)
 
     fun setBlock(location: Vector, block: Block)
 

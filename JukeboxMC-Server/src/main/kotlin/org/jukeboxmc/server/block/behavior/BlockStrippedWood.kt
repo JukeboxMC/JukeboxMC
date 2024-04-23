@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockStrippedWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), StrippedWood {
+class BlockStrippedWood(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    StrippedWood {
 
     override fun placeBlock(
         player: JukeboxPlayer,

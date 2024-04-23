@@ -24,6 +24,10 @@ class BlockFenceGate(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setDirection(player.getDirection())
         this.setOpen(false)
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
@@ -95,5 +99,9 @@ class BlockFenceGate(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
 
     override fun setInWall(value: Boolean): FenceGate {
         return this.setState("in_wall_bit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

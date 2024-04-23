@@ -82,6 +82,7 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
             for (action in packet.actions) {
                 if (action.source.type == InventorySource.Type.WORLD_INTERACTION) {
                     if (action.source.flag == InventorySource.Flag.DROP_ITEM) {
+                        val slot = player.getInventory().getItemInHandSlot()
                         val playerDropItemEvent = PlayerDropItemEvent(player, JukeboxItem(action.toItem, true))
                         server.getPluginManager().callEvent(playerDropItemEvent)
 
@@ -96,19 +97,8 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
                         entityItem.setThrower(player)
                         entityItem.setPickupDelay(1, TimeUnit.SECONDS)
                         entityItem.spawn()
-                    }
-                } else if (action.source.type == InventorySource.Type.CONTAINER) {
-                    val containerId = action.source.containerId
-                    if (containerId == 0) {
-                        val check = player.getInventory().getItem(action.slot).toJukeboxItem()
-                        val sourceItem = JukeboxItem(action.fromItem, false)
-                        val targetItem = JukeboxItem(action.toItem, false)
-                        if (check == sourceItem) {
-                            check.removeFromHand(player)
-                            player.getInventory().setItem(action.slot, targetItem, false)
-                        } else {
-                            player.getInventory().sendContents(action.slot, player)
-                        }
+
+                        player.getInventory().removeItem(slot, playerDropItemEvent.getItem(), 1)
                     }
                 }
             }

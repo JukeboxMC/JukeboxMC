@@ -39,7 +39,13 @@ class BlockTrapdoor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
     ): Boolean {
         val open = this.isOpen()
         this.toggleOpen(!open)
-        player.playSound(this.getLocation(), if (open) Sound.CLOSE_WOODEN_TRAPDOOR else Sound.OPEN_WOODEN_TRAPDOOR, 1F, 1F, true)
+        player.playSound(
+            this.getLocation(),
+            if (open) Sound.CLOSE_WOODEN_TRAPDOOR else Sound.OPEN_WOODEN_TRAPDOOR,
+            1F,
+            1F,
+            true
+        )
         return true
     }
 

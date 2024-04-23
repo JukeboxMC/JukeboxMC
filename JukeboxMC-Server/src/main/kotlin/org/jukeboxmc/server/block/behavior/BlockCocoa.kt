@@ -5,6 +5,8 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Cocoa
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -23,6 +25,10 @@ class BlockCocoa(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setDirection(player.getDirection().opposite())
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -51,5 +57,17 @@ class BlockCocoa(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
 
     override fun setAge(value: Int): BlockCocoa {
         return this.setState("age", value)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return if (this.getAge() != 3) {
+            mutableListOf()
+        } else {
+            mutableListOf(Item.create(ItemType.COCOA_BEANS, 3))
+        }
     }
 }

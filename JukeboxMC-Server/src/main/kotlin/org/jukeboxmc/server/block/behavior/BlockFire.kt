@@ -11,13 +11,13 @@ class BlockFire(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         return true
     }
 
-   override fun getAge(): Int {
-       return this.getIntState("age")
-   }
+    override fun getAge(): Int {
+        return this.getIntState("age")
+    }
 
-   override fun setAge(value: Int): Fire {
-       return this.setState("age", value)
-   }
+    override fun setAge(value: Int): Fire {
+        return this.setState("age", value)
+    }
 
     override fun isCollidable(): Boolean {
         return false

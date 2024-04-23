@@ -17,7 +17,7 @@ class MobEquipmentHandler : PacketHandler<MobEquipmentPacket> {
         val inventory = getInventory(player, windowId)
         if (inventory != null) {
             val item = inventory.getItem(packet.hotbarSlot).toJukeboxItem()
-            if (item != JukeboxItem(packet.item, false)) {
+            if (!equalsCheck(item, JukeboxItem(packet.item, false))) {
                 (inventory as JukeboxInventory).sendContents(player)
                 return
             }
@@ -26,6 +26,11 @@ class MobEquipmentHandler : PacketHandler<MobEquipmentPacket> {
                 player.setAction(false)
             }
         }
+    }
+
+    private fun equalsCheck(first: JukeboxItem, second: JukeboxItem): Boolean {
+        val amount = first.getAmount() == second.getAmount()
+        return amount && first.isSimilarInternal(second, true)
     }
 
     private fun getInventory(player: JukeboxPlayer, windowId: WindowId): Inventory? {

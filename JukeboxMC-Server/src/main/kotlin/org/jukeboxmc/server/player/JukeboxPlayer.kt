@@ -97,6 +97,8 @@ class JukeboxPlayer(
     private val forms: Int2ObjectMap<Form<out Any>> = Int2ObjectOpenHashMap()
     private val formListeners: Int2ObjectMap<FormListener<out Any>> = Int2ObjectOpenHashMap()
 
+    private val printDebugMessage: Boolean = false
+
     init {
         session.packetHandler = object : BedrockPacketHandler {
             override fun handlePacket(packet: BedrockPacket): PacketSignal {
@@ -113,8 +115,10 @@ class JukeboxPlayer(
                                 .handle(packetReceiveEvent.getBedrockPacket(), server, this@JukeboxPlayer)
                         }
                     } else {
-                        server.getLogger()
-                            .info("Handler missing for packet: " + packetReceiveEvent.getBedrockPacket().javaClass.simpleName)
+                        if (printDebugMessage) {
+                            server.getLogger()
+                                .info("Handler missing for packet: " + packetReceiveEvent.getBedrockPacket().javaClass.simpleName)
+                        }
                     }
                 }
                 return PacketSignal.HANDLED
@@ -728,6 +732,12 @@ class JukeboxPlayer(
             this.formListeners.remove(this.serverSettingsForm)
             this.serverSettingsForm = -1
         }
+    }
+
+    override fun sendToast(content: String) {
+        this.sendPacket(ToastRequestPacket().apply {
+            this.content = content
+        })
     }
 
     fun parseGUIResponse(formId: Int, json: String) {

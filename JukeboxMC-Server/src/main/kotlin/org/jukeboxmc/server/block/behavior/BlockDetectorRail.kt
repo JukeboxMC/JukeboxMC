@@ -14,19 +14,19 @@ class BlockDetectorRail(identifier: Identifier, blockStates: NbtMap?) : JukeboxB
         return true
     }
 
-   override fun getRailDirection(): RailDirection {
-       return RailDirection.entries[this.getIntState("rail_direction")]
-   }
+    override fun getRailDirection(): RailDirection {
+        return RailDirection.entries[this.getIntState("rail_direction")]
+    }
 
-   override fun setRailDirection(value: RailDirection): BlockDetectorRail {
-       return this.setState("rail_direction", value.ordinal)
-   }
+    override fun setRailDirection(value: RailDirection): BlockDetectorRail {
+        return this.setState("rail_direction", value.ordinal)
+    }
 
-   override fun isRailData(): Boolean {
-       return this.getBooleanState("rail_data_bit")
-   }
+    override fun isRailData(): Boolean {
+        return this.getBooleanState("rail_data_bit")
+    }
 
-   override fun setRailData(value: Boolean): BlockDetectorRail {
-       return this.setState("rail_data_bit", value.toByte())
-   }
+    override fun setRailData(value: Boolean): BlockDetectorRail {
+        return this.setState("rail_data_bit", value.toByte())
+    }
 }

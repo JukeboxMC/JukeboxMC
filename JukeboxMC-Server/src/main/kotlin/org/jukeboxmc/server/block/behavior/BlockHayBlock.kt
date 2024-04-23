@@ -26,19 +26,19 @@ class BlockHayBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): HayBlock {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): HayBlock {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 
-   override fun getDeprecated(): Int {
-       return this.getIntState("deprecated")
-   }
+    override fun getDeprecated(): Int {
+        return this.getIntState("deprecated")
+    }
 
-   override fun setDeprecated(value: Int): HayBlock {
-       return this.setState("deprecated", value)
-   }
+    override fun setDeprecated(value: Int): HayBlock {
+        return this.setState("deprecated", value)
+    }
 }

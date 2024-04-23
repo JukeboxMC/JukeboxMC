@@ -33,11 +33,11 @@ class BlockVine(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         return true
     }
 
-   override fun getVineDirection(): Int {
-       return this.getIntState("vine_direction_bits")
-   }
+    override fun getVineDirection(): Int {
+        return this.getIntState("vine_direction_bits")
+    }
 
-   override fun setVineDirection(value: Int): Vine {
-       return this.setState("vine_direction_bits", value)
-   }
+    override fun setVineDirection(value: Int): Vine {
+        return this.setState("vine_direction_bits", value)
+    }
 }

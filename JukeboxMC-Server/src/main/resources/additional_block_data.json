@@ -1,1402 +1,4206 @@
 {
-  "minecraft:stone": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:grass_block": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:dirt": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:oak_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_planks": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:sand": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:oak_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:oak_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:sponge": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:dispenser": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:sandstone": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:golden_rail": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:detector_rail": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:web": {
-    "toolType": "SWORD",
-    "tierType": "NONE"
-  },
-  "minecraft:tallgrass": {
-    "toolType": "SHEARS",
-    "tierType": "NONE"
-  },
-  "minecraft:wool": {
-    "toolType": "SHEARS",
-    "tierType": "NONE"
-  },
-  "minecraft:brown_mushroom": {
-    "toolType": "AXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:red_mushroom": {
-    "toolType": "AXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:double_stone_block_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stone_block_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:bookshelf": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:oak_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:chest": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:farmland": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:furnace": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:lit_furnace": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:wooden_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:ladder": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:rail": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stone_pressure_plate": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:iron_door": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:wooden_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stone_button": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:snow_layer": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:fence": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:pumpkin": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:lit_pumpkin": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stonebrick": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:brown_mushroom_block": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:red_mushroom_block": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:vine": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stone_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:nether_brick_fence": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:nether_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:brewing_stand": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:cauldron": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:dropper": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:activator_rail": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:cocoa": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:sandstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:ender_chest": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:spruce_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:cobblestone_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
   "minecraft:wooden_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:skull": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:anvil": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:trapped_chest": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:light_weighted_pressure_plate": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:heavy_weighted_pressure_plate": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:redstone_block": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:hopper": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:quartz_block": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:quartz_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:oak_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:oak_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stained_hardened_clay": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:acacia_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:iron_trapdoor": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:prismarine": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:hay_block": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:hardened_clay": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:standing_banner": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:wall_banner": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:red_sandstone": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:red_sandstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:double_stone_block_slab2": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stone_block_slab2": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:spruce_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:chorus_flower": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:purpur_block": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:purpur_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:end_rod": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:border_block": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:bone_block": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:shulker_box": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:purple_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:white_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:orange_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:magenta_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:light_blue_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:yellow_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:lime_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:pink_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:gray_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:silver_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:cyan_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:blue_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:brown_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:green_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:red_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:black_glazed_terracotta": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:concrete": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:concrete_powder": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:podzol": {
-    "toolType": "SHOVEL",
-    "tierType": "NONE"
-  },
-  "minecraft:observer": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:prismarine_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:dark_prismarine_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:prismarine_bricks_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stripped_spruce_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_birch_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_jungle_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_acacia_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_dark_oak_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_oak_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:seagrass": {
-    "toolType": "SHEARS",
-    "tierType": "NONE"
-  },
-  "minecraft:coral_block": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stone_block_slab3": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:bamboo": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stone_block_slab4": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:double_stone_block_slab3": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:double_stone_block_slab4": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:granite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:diorite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:andesite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_granite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_diorite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_andesite_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:mossy_stone_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:smooth_red_sandstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:smooth_sandstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:end_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:mossy_cobblestone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:normal_stone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:spruce_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:red_nether_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:smooth_quartz_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:birch_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:darkoak_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:darkoak_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:lectern": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:grindstone": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:blast_furnace": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stonecutter_block": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:smoker": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:lit_smoker": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:barrel": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:loom": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:bell": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:lantern": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:campfire": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:lava_cauldron": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:oak_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:spruce_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:birch_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:jungle_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:acacia_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:dark_oak_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:composter": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:lit_blast_furnace": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:bee_nest": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:beehive": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_stem": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_stem": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:basalt": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_basalt": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:stripped_crimson_stem": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_warped_stem": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_fence": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_fence": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:warped_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
   "minecraft:warped_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:soul_lantern": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:beetroot": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:respawn_anchor": {
-    "toolType": "PICKAXE",
-    "tierType": "DIAMOND"
+  "minecraft:exposed_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:polished_blackstone_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
+  "minecraft:crimson_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:blackstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
+  "minecraft:fire": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:blackstone_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:purple_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:polished_blackstone_brick_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:deepslate_tiles": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:blackstone_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
+  "minecraft:monster_egg": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:blackstone_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_brick_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_brick_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:soul_campfire": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:polished_blackstone_pressure_plate": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_blackstone_button": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_blackstone_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:warped_hyphae": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:crimson_hyphae": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_crimson_hyphae": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:stripped_warped_hyphae": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:pointed_dripstone": {
-    "toolType": "PICKAXE",
-    "tierType": "NONE"
-  },
-  "minecraft:azalea_leaves": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:azalea_leaves_flowered": {
-    "toolType": "HOE",
-    "tierType": "NONE"
-  },
-  "minecraft:cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:exposed_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:weathered_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:oxidized_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_exposed_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_weathered_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:exposed_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:weathered_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:oxidized_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_exposed_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_weathered_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:exposed_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:weathered_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:oxidized_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_exposed_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_weathered_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:cobbled_deepslate_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:cobbled_deepslate_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_deepslate_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_deepslate_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:polished_deepslate_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:deepslate_tile_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:wooden_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
   "minecraft:deepslate_tile_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:deepslate_tile_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:deadbush": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:deepslate_brick_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:blackstone_stairs": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
   },
-  "minecraft:deepslate_brick_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:observer": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:deepslate_brick_wall": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:warped_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:polished_deepslate_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:polished_blackstone_brick_stairs": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
   },
-  "minecraft:deepslate_tile_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
+  "minecraft:pink_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
   },
-  "minecraft:deepslate_brick_double_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:waxed_oxidized_cut_copper_stairs": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_oxidized_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:waxed_oxidized_double_cut_copper_slab": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:raw_iron_block": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:raw_copper_block": {
-    "toolType": "PICKAXE",
-    "tierType": "STONE"
-  },
-  "minecraft:raw_gold_block": {
-    "toolType": "PICKAXE",
-    "tierType": "IRON"
-  },
-  "minecraft:infested_deepslate": {
-    "toolType": "PICKAXE",
-    "tierType": "WOODEN"
-  },
-  "minecraft:mangrove_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:mangrove_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:mangrove_stairs": {
-    "toolType": "AXE",
-    "tierType": "NONE"
-  },
-  "minecraft:mangrove_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:light_gray_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
   },
   "minecraft:mangrove_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:unpowered_repeater": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_118": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sculk": {
+    "tierType": "WOODEN",
+    "toolType": "HOE"
+  },
+  "minecraft:orange_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_112": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_113": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
   "minecraft:mangrove_fence": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:mangrove_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_110": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:mangrove_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_111": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:mangrove_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_116": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:mangrove_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_117": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:mangrove_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:granite_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:mangrove_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_114": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:bamboo_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:element_115": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:bamboo_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:blue_ice": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cherry_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:light_blue_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deny": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_99": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:loom": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_96": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_95": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_98": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_97": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_92": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:beacon": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_91": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_crimson_stem": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_94": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_93": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:powered_comparator": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dead_brain_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:diorite_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_90": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:allow": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_mangrove_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:yellow_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:calibrated_sculk_sensor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_89": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_88": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oak_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_85": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_84": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_87": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_acacia_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_86": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_81": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_80": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_83": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_82": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:silver_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:exposed_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lit_redstone_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lever": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:tnt": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_oxidized_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:black_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:white_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:birch_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:air": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:warped_nylium": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_sandstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:crimson_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_oxidized_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_copper_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
   },
   "minecraft:bamboo_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:bamboo_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:bubble_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:bamboo_mosaic_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:light_weighted_pressure_plate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:chiseled_bookshelf": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:orange_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:bamboo_block": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:mangrove_leaves": {
+    "tierType": "NONE",
+    "toolType": "HOE"
   },
-  "minecraft:stripped_bamboo_block": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:suspicious_gravel": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:cherry_button": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:end_portal_frame": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:cherry_door": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:invisible_bedrock": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:cherry_fence": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:tuff": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:cherry_fence_gate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:purpur_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
-  "minecraft:stripped_cherry_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:waxed_oxidized_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
   },
-  "minecraft:cherry_log": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:wall_banner": {
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:cherry_pressure_plate": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:waxed_oxidized_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
   },
-  "minecraft:cherry_slab": {
-    "toolType": "AXE",
-    "tierType": "WOODEN"
+  "minecraft:crimson_fungus": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:cherry_double_slab": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:repeating_command_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   },
-  "minecraft:cherry_standing_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:dirt": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
   },
-  "minecraft:cherry_trapdoor": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:stripped_dark_oak_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:oxidized_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pink_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:exposed_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:suspicious_sand": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oak_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:torchflower_crop": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:black_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:hardened_clay": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:end_stone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:birch_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:yellow_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mud_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dirt_with_roots": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:mangrove_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_sandstone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pink_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dead_bubble_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:carved_pumpkin": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:oak_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:redstone_torch": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mud": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:waxed_oxidized_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_38": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_37": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_39": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_34": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:soul_torch": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_33": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mossy_cobblestone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_36": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:calcite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_35": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_30": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_32": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:magenta_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_31": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lit_deepslate_redstone_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
   },
   "minecraft:cherry_wall_sign": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
   },
-  "minecraft:stripped_cherry_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+  "minecraft:coral_fan_dead": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:birch_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:barrier": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_27": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_26": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_29": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_28": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_23": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:weathered_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_22": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:acacia_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_25": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:exposed_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:crimson_roots": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_24": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:magenta_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:acacia_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_21": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:ladder": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_20": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:basalt": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lapis_block": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:prismarine": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_exposed_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_19": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:iron_block": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_16": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_15": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_18": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:reinforced_deepslate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bell": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_17": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_12": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_11": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_14": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_13": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gravel": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:light_gray_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_10": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_gray_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:lit_smoker": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dark_prismarine_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:orange_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pink_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:glow_lichen": {
+    "tierType": "WOODEN",
+    "toolType": "AXE"
+  },
+  "minecraft:copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:black_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brown_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:conduit": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:black_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:light_gray_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:tuff_brick_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:potatoes": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:brown_mushroom": {
+    "tierType": "WOODEN",
+    "toolType": "AXE"
+  },
+  "minecraft:cyan_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lit_furnace": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_warped_stem": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_oxidized_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:black_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_flower": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_exposed_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bamboo_block": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:crimson_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:dark_oak_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:light_blue_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lime_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_78": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_oxidized_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_77": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_79": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:magenta_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:mangrove_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_74": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_73": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_76": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_75": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:water": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_70": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:netherite_block": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_72": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_71": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:darkoak_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:smooth_red_sandstone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_andesite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:acacia_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:flower_pot": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:shroomlight": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:smooth_quartz_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_67": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_66": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_69": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:weeping_vines": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_68": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_63": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_62": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_65": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_64": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_spruce_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_61": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_60": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sandstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pointed_dripstone": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:warped_hyphae": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:scaffolding": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cartography_table": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:large_amethyst_bud": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:crimson_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_59": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:white_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stonecutter_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_56": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_55": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:element_58": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:birch_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_57": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_52": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_51": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_54": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_53": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_50": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pink_petals": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_oak_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_49": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_48": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:purple_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_45": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_44": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_47": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_46": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_41": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_40": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_43": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brown_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_42": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:kelp": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:weathered_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:soul_fire": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_exposed_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:smooth_stone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:quartz_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:golden_rail": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_diorite_stairs": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:black_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:chain_command_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oak_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:white_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:warped_wart_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:moss_block": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:acacia_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_blackstone_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:tube_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:birch_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:light_gray_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:weathered_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:chiseled_tuff_bricks": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cave_vines": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:sand": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:orange_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:warped_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:warped_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cyan_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:decorated_pot": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mud_brick_double_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:fletching_table": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stonebrick": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_granite_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:composter": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lime_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cyan_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:acacia_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_weathered_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chorus_flower": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:pink_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_exposed_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:acacia_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_blackstone_brick_double_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:standing_banner": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:end_portal": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:magenta_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lectern": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:powered_repeater": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oxidized_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dark_oak_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:campfire": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:frosted_ice": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:powder_snow": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:azalea": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_gray_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:end_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:warped_stem": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:chiseled_tuff": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_tuff_wall": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jigsaw": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:podzol": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:white_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:lightning_rod": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:birch_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:orange_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_crimson_hyphae": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:tuff_stairs": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cyan_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:brown_mushroom_block": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_deepslate_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:purple_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:waxed_exposed_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_nether_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chemistry_table": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:double_stone_block_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mossy_stone_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:diamond_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:diorite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:flowing_water": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_andesite_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:iron_door": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:prismarine_bricks_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:crafter": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:noteblock": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_tuff": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_basalt": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:black_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:ender_chest": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:frame": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:dark_oak_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:black_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:weathered_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:infested_deepslate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mud_brick_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_slab": {
+    "tierType": "WOODEN",
+    "toolType": "AXE"
+  },
+  "minecraft:oxidized_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:black_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:slime": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:underwater_torch": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:exposed_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pitcher_plant": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:respawn_anchor": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mangrove_roots": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cactus": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:purple_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pink_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:crimson_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:twisting_vines": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:weathered_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blue_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:wooden_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:sandstone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:white_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:smoker": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:magenta_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:purple_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:nether_brick_fence": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_exposed_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:birch_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:brown_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:soul_soil": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:acacia_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:sticky_piston": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:snow": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:cyan_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:skull": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sculk_sensor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_nylium": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:diamond_block": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:acacia_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:farmland": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:bedrock": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cherry_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lit_redstone_lamp": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:purple_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:activator_rail": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:nether_brick": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:azalea_leaves_flowered": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:glowstone": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:coral_fan_hang2": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:coral_fan_hang3": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:normal_stone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:purple_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:tripwire_hook": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:black_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:waxed_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:spruce_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cracked_deepslate_tiles": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stone_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:gold_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lava": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_blue_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:birch_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blue_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:tinted_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_brick_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:daylight_detector": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:pink_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_oxidized_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:weathered_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_deepslate_double_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:quartz_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:fire_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:double_stone_block_slab2": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_deepslate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:coal_ore": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:double_stone_block_slab3": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:double_stone_block_slab4": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:jungle_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_iron_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blue_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:info_update2": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_deepslate_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:spruce_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cobblestone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:exposed_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:command_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bamboo_mosaic": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:honeycomb_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:lit_pumpkin": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blast_furnace": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:horn_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:beehive": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_flower": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:frog_spawn": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pink_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lapis_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:moss_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:anvil": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brown_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:obsidian": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:purple_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:tuff_brick_wall": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cobbled_deepslate_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blue_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:chiseled_deepslate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:clay": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:soul_campfire": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:gray_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:warped_roots": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:yellow_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:lit_blast_furnace": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:hanging_roots": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_deepslate_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_tuff_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_double_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dead_tube_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brown_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:acacia_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:pearlescent_froglight": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:ochre_froglight": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:enchanting_table": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:jungle_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lantern": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:white_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:redstone_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:seagrass": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:amethyst_block": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:turtle_egg": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:big_dripleaf": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_weathered_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:birch_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:oxidized_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:trip_wire": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oxidized_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:ancient_debris": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:white_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_cherry_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bed": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:piston_arm_collision": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sea_lantern": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:white_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:colored_torch_bp": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:blue_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_emerald_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:purple_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:small_amethyst_bud": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_blue_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_brick_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:end_rod": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:smooth_basalt": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:magenta_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:brown_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mud_brick_stairs": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crafting_table": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:warped_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:green_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:sculk_catalyst": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dried_kelp_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:red_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bamboo_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:brick_block": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:warped_fungus": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pumpkin": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:barrel": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blue_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bookshelf": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:light_gray_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_blackstone_button": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:reeds": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mob_spawner": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:torchflower": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:orange_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sea_pickle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:copper_block": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:weathered_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brown_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:exposed_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_exposed_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_sapling": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cyan_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:tuff_wall": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:blackstone_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:orange_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:green_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_pressure_plate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:unlit_redstone_torch": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone_brick_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:piston": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_2": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_3": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_0": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_1": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_6": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_7": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_4": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_5": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_8": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:magenta_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_9": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:iron_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:sapling": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:smooth_sandstone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:exposed_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:gilded_blackstone": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:netherrack": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:glow_frame": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:coral_fan": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:purple_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:blue_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:coral_fan_hang": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bee_nest": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:furnace": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:smithing_table": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:iron_trapdoor": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:grindstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mangrove_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lime_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:white_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brewing_stand": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:spruce_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_exposed_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:pink_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_bamboo_block": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cracked_polished_blackstone_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:melon_block": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:unpowered_comparator": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jungle_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:chain": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:flowing_lava": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jungle_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:rail": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cobbled_deepslate_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:purple_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:end_gateway": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:prismarine_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
   },
   "minecraft:cherry_wood": {
-    "toolType": "AXE",
-    "tierType": "NONE"
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:sculk_vein": {
+    "tierType": "WOODEN",
+    "toolType": "AXE"
+  },
+  "minecraft:vine": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_mushroom_block": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:flowering_azalea": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sweet_berry_bush": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_blue_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:sticky_piston_arm_collision": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_gray_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:web": {
+    "tierType": "NONE",
+    "toolType": "SWORD"
+  },
+  "minecraft:weathered_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:trapped_chest": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:tuff_double_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dropper": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chest": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:spruce_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blackstone_double_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mud_brick_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cauldron": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:oxidized_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_tile_double_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:portal": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_granite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dispenser": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pink_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_blackstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:light_gray_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:info_update": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_redstone_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:warped_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cobbled_deepslate_double_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:warped_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:yellow_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:azalea_leaves": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:warped_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:heavy_weighted_pressure_plate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:redstone_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cracked_deepslate_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_lapis_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sponge": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:warped_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:unknown": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blue_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:warped_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cyan_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jungle_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_mushroom": {
+    "tierType": "WOODEN",
+    "toolType": "AXE"
+  },
+  "minecraft:gray_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:andesite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:magenta_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:birch_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:crimson_hyphae": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:camera": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oxidized_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:raw_iron_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:crying_obsidian": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_brick_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brown_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cyan_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:daylight_detector_inverted": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:hard_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stone_pressure_plate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:wither_rose": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_brick_double_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:dripstone_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_exposed_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:raw_gold_block": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_oxidized_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cyan_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:darkoak_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:lime_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:magma": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:orange_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:structure_void": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stonecutter": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cyan_candle_cake": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:green_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_gray_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mangrove_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:moving_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:granite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:netherreactor": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cobblestone_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:white_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:carrots": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:polished_diorite": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:orange_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:waxed_copper_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:white_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chiseled_polished_blackstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:nether_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:hay_block": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cherry_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:wheat": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:dark_oak_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:verdant_froglight": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mossy_cobblestone_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:reserved6": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jukebox": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_jungle_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cave_vines_head_with_berries": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:ice": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waterlily": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:tuff_bricks": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:muddy_mangrove_roots": {
+    "tierType": "GOLD",
+    "toolType": "NONE"
+  },
+  "minecraft:red_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:birch_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:crimson_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:grass_path": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:pumpkin_stem": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:blue_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:structure_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spore_blossom": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:budding_amethyst": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oxidized_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:colored_torch_rg": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:acacia_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:magenta_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brown_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:hard_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:warped_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:nether_gold_ore": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brown_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:lodestone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:yellow_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:waxed_oxidized_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:chiseled_bookshelf": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:acacia_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:target": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:deepslate_diamond_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:exposed_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:soul_lantern": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:pitcher_crop": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:honey_block": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bubble_column": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:tuff_brick_stairs": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cracked_nether_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:gray_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:deepslate_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_blackstone_stairs": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blue_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_coal_ore": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:warped_standing_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:magenta_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:redstone_wire": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stone_button": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:double_plant": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:red_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:nether_sprouts": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gold_block": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:amethyst_cluster": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_weathered_cut_copper_stairs": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:detector_rail": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:packed_mud": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_tile_slab": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:snow_layer": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:waxed_weathered_copper_grate": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cocoa": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:red_nether_brick": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:acacia_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bone_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:black_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:pink_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cobbled_deepslate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chemical_heat": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:red_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:yellow_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:end_brick_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blackstone": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mangrove_propagule": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:hopper": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:waxed_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:green_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:orange_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:orange_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chiseled_nether_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:brain_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:redstone_lamp": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:quartz_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:chorus_plant": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:dragon_egg": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:waxed_weathered_double_cut_copper_slab": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:polished_tuff_double_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:weathered_copper_bulb": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cyan_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:weathered_chiseled_copper": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_fence_gate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:tallgrass": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:small_dripleaf_block": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:cherry_leaves": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:coral_block": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:blackstone_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:tuff_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:sculk_shrieker": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:spruce_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:magenta_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mangrove_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:nether_wart": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dead_fire_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:light_blue_concrete_powder": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:soul_sand": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:cave_vines_body_with_berries": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_gold_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:nether_wart_block": {
+    "tierType": "NONE",
+    "toolType": "HOE"
+  },
+  "minecraft:green_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:lime_glazed_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:deepslate_tile_wall": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:birch_button": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:border_block": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:jungle_wall_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:waxed_exposed_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:polished_tuff_stairs": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:cherry_hanging_sign": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:warped_door": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_mosaic_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:cherry_sapling": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:deepslate_bricks": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:purpur_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:oxidized_cut_copper": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:glowingobsidian": {
+    "tierType": "DIAMOND",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_birch_log": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:torch": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:crimson_stem": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:blue_wool": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:andesite_stairs": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:tuff_brick_double_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:quartz_ore": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:melon_stem": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dead_horn_coral": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oxidized_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:coal_block": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:exposed_copper_door": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:yellow_concrete": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:mangrove_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:packed_ice": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:red_terracotta": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_warped_hyphae": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:emerald_block": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_cherry_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:iron_bars": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:raw_copper_block": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:bamboo": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:element_109": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:mycelium": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:element_107": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_108": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:gray_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:gray_carpet": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_101": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_102": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_100": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_105": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_106": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:element_103": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:medium_amethyst_bud": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:element_104": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:lime_candle": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:brown_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cherry_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:oak_fence": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_stairs": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_planks": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:deepslate": {
+    "tierType": "WOODEN",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:copper_ore": {
+    "tierType": "STONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:mangrove_trapdoor": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:sniffer_egg": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:stripped_mangrove_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:emerald_ore": {
+    "tierType": "IRON",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:cobbled_deepslate_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:bamboo_mosaic_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_mosaic_stairs": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_pressure_plate": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:bamboo_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:oak_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:spruce_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:birch_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:acacia_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:dark_oak_double_slab": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:grass_block": {
+    "tierType": "NONE",
+    "toolType": "SHOVEL"
+  },
+  "minecraft:hard_black_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_blue_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_brown_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_cyan_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_gray_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_green_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_light_blue_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_light_gray_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_lime_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_magenta_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_orange_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_pink_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_purple_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_red_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_white_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_yellow_stained_glass": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_black_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_blue_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_brown_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_cyan_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_gray_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_green_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_light_blue_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_light_gray_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_lime_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_magenta_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_orange_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_pink_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_purple_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_red_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_white_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:hard_yellow_stained_glass_pane": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oak_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:spruce_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:birch_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:jungle_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:acacia_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:dark_oak_leaves": {
+    "tierType": "NONE",
+    "toolType": "SHEARS"
+  },
+  "minecraft:stone_block_slab": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stone_block_slab2": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stone_block_slab3": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stone_block_slab4": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:stripped_oak_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_spruce_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_birch_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_jungle_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_acacia_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:stripped_dark_oak_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:undyed_shulker_box": {
+    "tierType": "NONE",
+    "toolType": "PICKAXE"
+  },
+  "minecraft:oak_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:spruce_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:birch_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:jungle_wood": {
+    "tierType": "NONE",
+    "toolType": "AXE"
+  },
+  "minecraft:acacia_wood": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_wood": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:oak_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:spruce_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:birch_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:jungle_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:acacia_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
+  },
+  "minecraft:dark_oak_slab": {
+    "tierType": "NONE",
+    "toolType": "NONE"
   }
 }

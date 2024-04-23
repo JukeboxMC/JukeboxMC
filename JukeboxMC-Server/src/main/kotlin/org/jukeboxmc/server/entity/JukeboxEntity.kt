@@ -10,6 +10,7 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.effect.EffectType
 import org.jukeboxmc.api.entity.Entity
 import org.jukeboxmc.api.entity.EntityType
 import org.jukeboxmc.api.entity.passive.EntityHuman
@@ -427,14 +428,18 @@ open class JukeboxEntity(
     }
 
     override fun setOnFire(value: Long, timeUnit: TimeUnit) {
-        val newFireTicks = (timeUnit.toMillis(value) / 50).toInt()
+        val newFireTicks = (timeUnit.toMillis(value) / 50)
         if (newFireTicks > this.fireTicks) {
-            this.fireTicks = newFireTicks.toLong()
+            this.fireTicks = newFireTicks
             this.setOnFire(true)
-        } else if (newFireTicks == 0) {
+        } else if (newFireTicks == 0L) {
             this.fireTicks = 0
             this.setOnFire(false)
         }
+    }
+
+    fun setFireTick(fireTicks: Long) {
+        this.fireTicks = fireTicks
     }
 
     override fun hasNoAI(): Boolean {

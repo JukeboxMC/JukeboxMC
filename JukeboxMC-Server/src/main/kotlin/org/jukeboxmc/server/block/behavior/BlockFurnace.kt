@@ -43,11 +43,11 @@ class BlockFurnace(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         return true
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): Furnace {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): Furnace {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 }

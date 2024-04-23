@@ -12,7 +12,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockSculkSensor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), SculkSensor {
+class BlockSculkSensor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    SculkSensor {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -27,11 +28,11 @@ class BlockSculkSensor(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getSculkSensorPhase(): Int {
-       return this.getIntState("sculk_sensor_phase")
-   }
+    override fun getSculkSensorPhase(): Int {
+        return this.getIntState("sculk_sensor_phase")
+    }
 
-   override fun setSculkSensorPhase(value: Int): SculkSensor {
-       return this.setState("sculk_sensor_phase", value)
-   }
+    override fun setSculkSensorPhase(value: Int): SculkSensor {
+        return this.setState("sculk_sensor_phase", value)
+    }
 }

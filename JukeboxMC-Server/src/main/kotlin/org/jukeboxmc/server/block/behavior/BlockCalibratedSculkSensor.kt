@@ -27,19 +27,19 @@ class BlockCalibratedSculkSensor(identifier: Identifier, blockStates: NbtMap?) :
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
     override fun setCardinalDirection(value: Direction): BlockCalibratedSculkSensor {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
-   override fun getSculkSensorPhase(): Int {
-       return this.getIntState("sculk_sensor_phase")
-   }
+    override fun getSculkSensorPhase(): Int {
+        return this.getIntState("sculk_sensor_phase")
+    }
 
-   override fun setSculkSensorPhase(value: Int): BlockCalibratedSculkSensor {
-       return this.setState("sculk_sensor_phase", value)
-   }
+    override fun setSculkSensorPhase(value: Int): BlockCalibratedSculkSensor {
+        return this.setState("sculk_sensor_phase", value)
+    }
 }

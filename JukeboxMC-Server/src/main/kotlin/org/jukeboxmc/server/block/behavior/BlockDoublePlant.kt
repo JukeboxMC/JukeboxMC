@@ -7,6 +7,8 @@ import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.DoublePlant
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.PlantType
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Location
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
@@ -64,19 +66,30 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return true
     }
 
-   override fun isUpperBlock(): Boolean {
-       return this.getBooleanState("upper_block_bit")
-   }
+    override fun isUpperBlock(): Boolean {
+        return this.getBooleanState("upper_block_bit")
+    }
 
-   override fun setUpperBlock(value: Boolean): BlockDoublePlant {
-       return this.setState("upper_block_bit", value.toByte())
-   }
+    override fun setUpperBlock(value: Boolean): BlockDoublePlant {
+        return this.setState("upper_block_bit", value.toByte())
+    }
 
-   override fun getDoublePlantType(): PlantType {
-       return PlantType.valueOf(this.getStringState("double_plant_type"))
-   }
+    override fun getDoublePlantType(): PlantType {
+        return PlantType.valueOf(this.getStringState("double_plant_type"))
+    }
 
-   override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
-       return this.setState("double_plant_type", value.name.lowercase())
-   }
+    override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
+        return this.setState("double_plant_type", value.name.lowercase())
+    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        val doublePlantType = this.getDoublePlantType()
+        if (doublePlantType == PlantType.SUNFLOWER || doublePlantType == PlantType.ROSE) {
+            return mutableListOf(this.toItem())
+        }
+        if (this.getRandom().nextFloat() <= 0.125f) {
+            return mutableListOf(Item.create(ItemType.WHEAT_SEEDS))
+        }
+        return mutableListOf()
+    }
 }

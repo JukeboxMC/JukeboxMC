@@ -4,6 +4,7 @@ import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Bed
 import org.jukeboxmc.api.block.Block
+import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Color
 import org.jukeboxmc.api.block.data.Direction
@@ -39,6 +40,15 @@ class BlockBed(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(iden
         if (blockDirection.canBeReplaced(this) && blockDirection.isTransparent() && !this.getRelative(BlockFace.DOWN)
                 .isTransparent() && !directionLocation.getBlock().getRelative(BlockFace.DOWN).isTransparent()
         ) {
+            val placeBlock = world.getBlock(placePosition)
+            val directionBlock = world.getBlock(directionLocation)
+            if (placeBlock is BlockWater && placeBlock.getLiquidDepth() == 0 &&
+                directionBlock is BlockWater && directionBlock.getLiquidDepth() == 0
+            ) {
+                world.setBlock(placePosition, placeBlock, 1, false)
+                world.setBlock(directionLocation, directionBlock, 1, false)
+            }
+
             this.setDirection(direction)
 
             val blockBed: BlockBed = this.clone() as BlockBed
@@ -107,5 +117,9 @@ class BlockBed(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(iden
 
     override fun setOccupied(value: Boolean): BlockBed {
         return this.setState("occupied_bit", value.toByte())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

@@ -4,6 +4,8 @@ import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.PumpkinStem
 import org.jukeboxmc.api.block.data.BlockFace
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.server.block.JukeboxBlock
 
 class BlockPumpkinStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
@@ -27,5 +29,9 @@ class BlockPumpkinStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
 
     override fun setGrowth(value: Int): PumpkinStem {
         return this.setState("growth", value)
+    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return this.createItemStemDrop(Item.create(ItemType.PUMPKIN_SEEDS), this.getGrowth())
     }
 }

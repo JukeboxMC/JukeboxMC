@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockStonecutterBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), StonecutterBlock {
+class BlockStonecutterBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    StonecutterBlock {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -26,16 +27,23 @@ class BlockStonecutterBlock(identifier: Identifier, blockStates: NbtMap?) : Juke
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-    override fun interact(player: JukeboxPlayer, world: JukeboxWorld, blockPosition: Vector, clickedPosition: Vector, blockFace: BlockFace, itemInHand: JukeboxItem): Boolean {
+    override fun interact(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        clickedPosition: Vector,
+        blockFace: BlockFace,
+        itemInHand: JukeboxItem
+    ): Boolean {
         player.openInventory(player.getStoneCutterInventory(), blockPosition)
         return true
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): StonecutterBlock {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): StonecutterBlock {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 }

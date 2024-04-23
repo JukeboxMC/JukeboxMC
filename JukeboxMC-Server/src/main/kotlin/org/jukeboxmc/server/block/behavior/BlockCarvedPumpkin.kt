@@ -27,11 +27,11 @@ class BlockCarvedPumpkin(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.entries[this.getIntState("minecraft:cardinal_direction")]
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.entries[this.getIntState("minecraft:cardinal_direction")]
+    }
 
-   override fun setCardinalDirection(value: Direction): BlockCarvedPumpkin {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): BlockCarvedPumpkin {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 }

@@ -13,7 +13,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockSculkShrieker(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), SculkShrieker {
+class BlockSculkShrieker(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    SculkShrieker {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -28,19 +29,19 @@ class BlockSculkShrieker(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun isActive(): Boolean {
-       return this.getBooleanState("active")
-   }
+    override fun isActive(): Boolean {
+        return this.getBooleanState("active")
+    }
 
-   override fun setActive(value: Boolean): SculkShrieker {
-       return this.setState("active", value.toByte())
-   }
+    override fun setActive(value: Boolean): SculkShrieker {
+        return this.setState("active", value.toByte())
+    }
 
-   override fun isCanSummon(): Boolean {
-       return this.getBooleanState("can_summon")
-   }
+    override fun isCanSummon(): Boolean {
+        return this.getBooleanState("can_summon")
+    }
 
-   override fun setCanSummon(value: Boolean): SculkShrieker {
-       return this.setState("can_summon", value.toByte())
-   }
+    override fun setCanSummon(value: Boolean): SculkShrieker {
+        return this.setState("can_summon", value.toByte())
+    }
 }

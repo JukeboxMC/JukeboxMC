@@ -186,6 +186,20 @@ abstract class JukeboxInventory(
         }
     }
 
+    override fun removeItem(slot: Int, item: Item, amount: Int) {
+        val content = getItem(slot)
+        if (content.getType() !== ItemType.AIR) {
+            if (content.getType() == item.getType() && content.getMeta() == item.getMeta()) {
+                content.setAmount(content.getAmount() - amount)
+                if (content.getAmount() <= 0) {
+                    this.setItem(slot, Item.create(ItemType.AIR))
+                } else {
+                    this.setItem(slot, content)
+                }
+            }
+        }
+    }
+
     override fun firstEmpty(): Int {
         val inventory: Array<Item> = getContents()
         for (i in inventory.indices) {

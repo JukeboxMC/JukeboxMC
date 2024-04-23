@@ -14,19 +14,19 @@ class BlockCoralBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         return true
     }
 
-   override fun getCoralColor(): CoralColor {
-       return CoralColor.valueOf(this.getStringState("coral_color"))
-   }
+    override fun getCoralColor(): CoralColor {
+        return CoralColor.valueOf(this.getStringState("coral_color"))
+    }
 
-   override fun setCoralColor(value: CoralColor): BlockCoralBlock {
-       return this.setState("coral_color", value.name.lowercase())
-   }
+    override fun setCoralColor(value: CoralColor): BlockCoralBlock {
+        return this.setState("coral_color", value.name.lowercase())
+    }
 
-   override fun isDead(): Boolean {
-       return this.getBooleanState("dead_bit")
-   }
+    override fun isDead(): Boolean {
+        return this.getBooleanState("dead_bit")
+    }
 
-   override fun setDead(value: Boolean): BlockCoralBlock {
-       return this.setState("dead_bit", value.toByte())
-   }
+    override fun setDead(value: Boolean): BlockCoralBlock {
+        return this.setState("dead_bit", value.toByte())
+    }
 }

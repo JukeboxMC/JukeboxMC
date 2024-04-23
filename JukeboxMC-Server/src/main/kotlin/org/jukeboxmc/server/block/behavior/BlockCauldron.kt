@@ -29,19 +29,19 @@ class BlockCauldron(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getFillLevel(): Int {
-       return this.getIntState("fill_level")
-   }
+    override fun getFillLevel(): Int {
+        return this.getIntState("fill_level")
+    }
 
-   override fun setFillLevel(value: Int): BlockCauldron {
-       return this.setState("fill_level", value)
-   }
+    override fun setFillLevel(value: Int): BlockCauldron {
+        return this.setState("fill_level", value)
+    }
 
-   override fun getCauldronLiquid(): LiquidType {
-       return LiquidType.valueOf(this.getStringState("cauldron_liquid"))
-   }
+    override fun getCauldronLiquid(): LiquidType {
+        return LiquidType.valueOf(this.getStringState("cauldron_liquid"))
+    }
 
-   override fun setCauldronLiquid(value: LiquidType): BlockCauldron {
-       return this.setState("cauldron_liquid", value.name.lowercase())
-   }
+    override fun setCauldronLiquid(value: LiquidType): BlockCauldron {
+        return this.setState("cauldron_liquid", value.name.lowercase())
+    }
 }

@@ -25,6 +25,10 @@ class BlockLever(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
     ): Boolean {
         val block = world.getBlock(blockPosition)
         if (block.isTransparent()) return false
+        val blockTarget = world.getBlock(placePosition)
+        if (blockTarget is BlockWater && blockTarget.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, blockTarget, 1, false)
+        }
         this.setLeverDirection(LeverDirection.forDirection(blockFace, player.getDirection().opposite()))
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
@@ -33,19 +37,19 @@ class BlockLever(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(id
         return true
     }
 
-   override fun isOpen(): Boolean {
-       return this.getBooleanState("open_bit")
-   }
+    override fun isOpen(): Boolean {
+        return this.getBooleanState("open_bit")
+    }
 
-   override fun setOpen(value: Boolean): Lever {
-       return this.setState("open_bit", value.toByte())
-   }
+    override fun setOpen(value: Boolean): Lever {
+        return this.setState("open_bit", value.toByte())
+    }
 
-   override fun getLeverDirection(): LeverDirection {
-       return LeverDirection.valueOf(this.getStringState("lever_direction"))
-   }
+    override fun getLeverDirection(): LeverDirection {
+        return LeverDirection.valueOf(this.getStringState("lever_direction"))
+    }
 
-   override fun setLeverDirection(value: LeverDirection): Lever {
-       return this.setState("lever_direction", value.name.lowercase())
-   }
+    override fun setLeverDirection(value: LeverDirection): Lever {
+        return this.setState("lever_direction", value.name.lowercase())
+    }
 }

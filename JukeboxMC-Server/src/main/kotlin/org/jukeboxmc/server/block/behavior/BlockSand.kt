@@ -8,11 +8,11 @@ import org.jukeboxmc.server.block.JukeboxBlock
 
 class BlockSand(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), Sand {
 
-   override fun getSandType(): SandType {
-       return SandType.valueOf(this.getStringState("sand_type"))
-   }
+    override fun getSandType(): SandType {
+        return SandType.valueOf(this.getStringState("sand_type"))
+    }
 
-   override fun setSandType(value: SandType): Sand {
-       return this.setState("sand_type", value.name.lowercase())
-   }
+    override fun setSandType(value: SandType): Sand {
+        return this.setState("sand_type", value.name.lowercase())
+    }
 }

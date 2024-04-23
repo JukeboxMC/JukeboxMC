@@ -22,7 +22,15 @@ class BlockConduit(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         BlockEntity.create(BlockEntityType.CONDUIT, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
     }
 }

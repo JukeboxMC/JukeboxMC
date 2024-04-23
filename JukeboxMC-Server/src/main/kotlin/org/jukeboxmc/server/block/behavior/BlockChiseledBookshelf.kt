@@ -7,6 +7,8 @@ import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
 import org.jukeboxmc.api.blockentity.BlockEntity
 import org.jukeboxmc.api.blockentity.BlockEntityType
+import org.jukeboxmc.api.item.Item
+import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -54,5 +56,9 @@ class BlockChiseledBookshelf(identifier: Identifier, blockStates: NbtMap?) : Juk
 
     override fun setBooksStored(value: Int): BlockChiseledBookshelf {
         return this.setState("books_stored", value)
+    }
+
+    override fun getDrops(item: Item): MutableList<Item> {
+        return mutableListOf(Item.create(ItemType.BOOK, this.getBooksStored()))
     }
 }

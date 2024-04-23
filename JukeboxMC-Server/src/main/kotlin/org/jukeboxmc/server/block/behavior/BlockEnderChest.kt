@@ -26,6 +26,10 @@ class BlockEnderChest(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         itemInHand: JukeboxItem,
         blockFace: BlockFace
     ): Boolean {
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
         this.setCardinalDirection(player.getDirection().opposite())
         BlockEntity.create(BlockEntityType.ENDERCHEST, this)?.spawn()
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
@@ -44,11 +48,15 @@ class BlockEnderChest(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         return true
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): BlockEnderChest {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): BlockEnderChest {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

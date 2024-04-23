@@ -25,7 +25,6 @@ import org.jukeboxmc.api.world.Difficulty
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.Attribute
 import org.jukeboxmc.server.entity.JukeboxAttribute
-import org.jukeboxmc.server.entity.JukeboxEntity
 import org.jukeboxmc.server.entity.JukeboxEntityLiving
 import org.jukeboxmc.server.entity.projectile.JukeboxEntityFishingHook
 import org.jukeboxmc.server.extensions.toJukeboxItem
@@ -354,6 +353,10 @@ open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
     override fun setSaturation(value: Float) {
         val attribute = getAttribute(Attribute.PLAYER_SATURATION)
         this.setAttributes(Attribute.PLAYER_SATURATION, Utils.clamp(value.toInt(), attribute.getMinValue().toInt(), attribute.getMaxValue().toInt()).toFloat())
+    }
+
+    override fun addSaturation(value: Float) {
+        this.setSaturation(this.getSaturation() + value)
     }
 
     override fun getExhaustion(): Float {

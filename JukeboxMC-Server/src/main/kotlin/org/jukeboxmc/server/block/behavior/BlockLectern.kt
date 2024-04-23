@@ -30,19 +30,19 @@ class BlockLectern(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getCardinalDirection(): Direction {
-       return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
-   }
+    override fun getCardinalDirection(): Direction {
+        return Direction.valueOf(this.getStringState("minecraft:cardinal_direction"))
+    }
 
-   override fun setCardinalDirection(value: Direction): Lectern {
-       return this.setState("minecraft:cardinal_direction", value.name.lowercase())
-   }
+    override fun setCardinalDirection(value: Direction): Lectern {
+        return this.setState("minecraft:cardinal_direction", value.name.lowercase())
+    }
 
-   override fun isPowered(): Boolean {
-       return this.getBooleanState("powered_bit")
-   }
+    override fun isPowered(): Boolean {
+        return this.getBooleanState("powered_bit")
+    }
 
-   override fun setPowered(value: Boolean): Lectern {
-       return this.setState("powered_bit", value.toByte())
-   }
+    override fun setPowered(value: Boolean): Lectern {
+        return this.setState("powered_bit", value.toByte())
+    }
 }

@@ -18,12 +18,14 @@ class BlockAttributes {
 
         init {
             val gson = Gson()
-            val blockDataStream = ItemPalette::class.java.classLoader.getResourceAsStream("additional_block_data.json") ?: throw RuntimeException("additional_block_data.json was not found")
+            val blockDataStream = ItemPalette::class.java.classLoader.getResourceAsStream("additional_block_data.json")
+                ?: throw RuntimeException("additional_block_data.json was not found")
             val statelessProperties = hashMapOf<String, BlockPropertiesWithoutStates>()
             blockDataStream.reader().use {
                 additionalBlockData = gson.fromJson<MutableMap<String, MutableMap<String, String>>>(it)
             }
-            val inputStream = BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json") ?: throw RuntimeException("The block properties were not found")
+            val inputStream = BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json")
+                ?: throw RuntimeException("The block properties were not found")
             inputStream.reader().use {
                 val mutableMap = gson.fromJson<MutableMap<String, MutableMap<String, Any>>>(it)
 
@@ -47,6 +49,7 @@ class BlockAttributes {
                         entry.value["hardness"].toString().toFloat(),
                         identifier,
                         entry.value["has_collision"].toString().toBoolean(),
+                        entry.value["is_water_blocking"].toString().toBoolean(),
                         toolType,
                         tierType
                     )
@@ -55,8 +58,7 @@ class BlockAttributes {
             }
 
             for (blockDefinition in BlockPalette.getBlockDefinitions()) {
-                val inputStream = BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json") ?: throw RuntimeException("The block properties were not found")
-                inputStream.reader().use {
+                BlockAttributes::class.java.classLoader.getResourceAsStream("block_properties.json")?.reader().use {
                     val states = blockDefinition.state
                     val identifier = Identifier.fromString(blockDefinition.identifier)
                     val stateless = statelessProperties[identifier.getFullName()]!!
@@ -73,6 +75,7 @@ class BlockAttributes {
                         stateless.getHardness(),
                         identifier,
                         stateless.hasCollision(),
+                        stateless.isWaterBlocking(),
                         stateless.getToolType(),
                         stateless.getTierType()
                     )
@@ -114,6 +117,7 @@ class BlockAttributes {
             private val hardness: Float,
             private val identifier: Identifier,
             private val hasCollision: Boolean,
+            private val isWaterBlocking: Boolean,
             private var toolType: ToolType = ToolType.NONE,
             private var tierType: TierType = TierType.NONE
         ) {
@@ -128,6 +132,7 @@ class BlockAttributes {
             fun getHardness() = this.hardness
             fun getIdentifier() = this.identifier
             fun hasCollision() = this.hasCollision
+            fun isWaterBlocking() = this.isWaterBlocking
             fun getToolType() = this.toolType
             fun getTierType() = this.tierType
         }

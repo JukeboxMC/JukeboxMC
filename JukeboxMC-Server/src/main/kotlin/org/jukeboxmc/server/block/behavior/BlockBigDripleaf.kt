@@ -43,13 +43,17 @@ class BlockBigDripleaf(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         ) {
             return false
         }
+        val block = world.getBlock(placePosition)
+        if (block is BlockWater && block.getLiquidDepth() == 0) {
+            world.setBlock(placePosition, block, 1, false)
+        }
 
         if (blockDown is BlockBigDripleaf) {
-            val block = Block.create(BlockType.BIG_DRIPLEAF) as BlockBigDripleaf
+            val blockBigDripleaf = Block.create(BlockType.BIG_DRIPLEAF) as BlockBigDripleaf
             val direction = blockDown.getCardinalDirection()
-            block.setCardinalDirection(direction)
-            block.setBigDripleafHead(true)
-            world.setBlock(placePosition, 0, player.getDimension(), block, false)
+            blockBigDripleaf.setCardinalDirection(direction)
+            blockBigDripleaf.setBigDripleafHead(true)
+            world.setBlock(placePosition, 0, player.getDimension(), blockBigDripleaf, false)
             this.setCardinalDirection(direction)
             this.setBigDripleafHead(true)
         } else {
@@ -83,4 +87,7 @@ class BlockBigDripleaf(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return this.setState("minecraft:cardinal_direction", value.name.lowercase())
     }
 
+    override fun getWaterLoggingLevel(): Int {
+        return 2
+    }
 }

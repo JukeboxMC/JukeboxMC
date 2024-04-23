@@ -11,7 +11,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockWarpedStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), WarpedStem {
+class BlockWarpedStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    WarpedStem {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -26,11 +27,11 @@ class BlockWarpedStem(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun getPillarAxis(): Axis {
-       return Axis.valueOf(this.getStringState("pillar_axis"))
-   }
+    override fun getPillarAxis(): Axis {
+        return Axis.valueOf(this.getStringState("pillar_axis"))
+    }
 
-   override fun setPillarAxis(value: Axis): WarpedStem {
-       return this.setState("pillar_axis", value.name.lowercase())
-   }
+    override fun setPillarAxis(value: Axis): WarpedStem {
+        return this.setState("pillar_axis", value.name.lowercase())
+    }
 }

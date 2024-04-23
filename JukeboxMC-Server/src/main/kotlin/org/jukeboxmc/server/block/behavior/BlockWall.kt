@@ -49,11 +49,17 @@ open class BlockWall(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         }
 
         if (getWallConnectionType(Direction.NORTH) === WallConnectionType.SHORT && getWallConnectionType(Direction.SOUTH) === WallConnectionType.SHORT) {
-            this.setWallPost(getWallConnectionType(Direction.WEST) !== WallConnectionType.NONE || getWallConnectionType(
-                Direction.EAST) !== WallConnectionType.NONE)
+            this.setWallPost(
+                getWallConnectionType(Direction.WEST) !== WallConnectionType.NONE || getWallConnectionType(
+                    Direction.EAST
+                ) !== WallConnectionType.NONE
+            )
         } else if (getWallConnectionType(Direction.WEST) === WallConnectionType.SHORT && getWallConnectionType(Direction.EAST) === WallConnectionType.SHORT) {
-            this.setWallPost(getWallConnectionType(Direction.SOUTH) !== WallConnectionType.NONE || getWallConnectionType(
-                Direction.NORTH) !== WallConnectionType.NONE)
+            this.setWallPost(
+                getWallConnectionType(Direction.SOUTH) !== WallConnectionType.NONE || getWallConnectionType(
+                    Direction.NORTH
+                ) !== WallConnectionType.NONE
+            )
         }
 
         if (this.getRelative(BlockFace.UP).isSolid()) {
@@ -88,43 +94,43 @@ open class BlockWall(identifier: Identifier, blockStates: NbtMap?) : JukeboxBloc
         }
     }
 
-   override fun getWallConnectionTypeEast(): WallConnectionType {
-       return WallConnectionType.valueOf(this.getStringState("wall_connection_type_east"))
-   }
+    override fun getWallConnectionTypeEast(): WallConnectionType {
+        return WallConnectionType.valueOf(this.getStringState("wall_connection_type_east"))
+    }
 
-   override fun setWallConnectionTypeEast(value: WallConnectionType): Wall {
-       return this.setState("wall_connection_type_east", value.name.lowercase())
-   }
+    override fun setWallConnectionTypeEast(value: WallConnectionType): Wall {
+        return this.setState("wall_connection_type_east", value.name.lowercase())
+    }
 
-   override fun isWallPost(): Boolean {
-       return this.getBooleanState("wall_post_bit")
-   }
+    override fun isWallPost(): Boolean {
+        return this.getBooleanState("wall_post_bit")
+    }
 
-   override fun setWallPost(value: Boolean): Wall {
-       return this.setState("wall_post_bit", value.toByte())
-   }
+    override fun setWallPost(value: Boolean): Wall {
+        return this.setState("wall_post_bit", value.toByte())
+    }
 
-   override fun getWallConnectionTypeSouth(): WallConnectionType {
-       return WallConnectionType.valueOf(this.getStringState("wall_connection_type_south"))
-   }
+    override fun getWallConnectionTypeSouth(): WallConnectionType {
+        return WallConnectionType.valueOf(this.getStringState("wall_connection_type_south"))
+    }
 
-   override fun setWallConnectionTypeSouth(value: WallConnectionType): Wall {
-       return this.setState("wall_connection_type_south", value.name.lowercase())
-   }
+    override fun setWallConnectionTypeSouth(value: WallConnectionType): Wall {
+        return this.setState("wall_connection_type_south", value.name.lowercase())
+    }
 
-   override fun getWallConnectionTypeWest(): WallConnectionType {
-       return WallConnectionType.valueOf(this.getStringState("wall_connection_type_west"))
-   }
+    override fun getWallConnectionTypeWest(): WallConnectionType {
+        return WallConnectionType.valueOf(this.getStringState("wall_connection_type_west"))
+    }
 
-   override fun setWallConnectionTypeWest(value: WallConnectionType): Wall {
-       return this.setState("wall_connection_type_west", value.name.lowercase())
-   }
+    override fun setWallConnectionTypeWest(value: WallConnectionType): Wall {
+        return this.setState("wall_connection_type_west", value.name.lowercase())
+    }
 
-   override fun getWallConnectionTypeNorth(): WallConnectionType {
-       return WallConnectionType.valueOf(this.getStringState("wall_connection_type_north"))
-   }
+    override fun getWallConnectionTypeNorth(): WallConnectionType {
+        return WallConnectionType.valueOf(this.getStringState("wall_connection_type_north"))
+    }
 
-   override fun setWallConnectionTypeNorth(value: WallConnectionType): Wall {
-       return this.setState("wall_connection_type_north", value.name.lowercase())
-   }
+    override fun setWallConnectionTypeNorth(value: WallConnectionType): Wall {
+        return this.setState("wall_connection_type_north", value.name.lowercase())
+    }
 }

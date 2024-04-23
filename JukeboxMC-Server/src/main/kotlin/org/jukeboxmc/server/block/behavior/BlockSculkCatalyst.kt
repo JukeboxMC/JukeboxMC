@@ -13,7 +13,8 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockSculkCatalyst(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates), SculkCatalyst {
+class BlockSculkCatalyst(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
+    SculkCatalyst {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -28,11 +29,11 @@ class BlockSculkCatalyst(identifier: Identifier, blockStates: NbtMap?) : Jukebox
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
     }
 
-   override fun isBloom(): Boolean {
-       return this.getBooleanState("bloom")
-   }
+    override fun isBloom(): Boolean {
+        return this.getBooleanState("bloom")
+    }
 
-   override fun setBloom(value: Boolean): SculkCatalyst {
-       return this.setState("bloom", value.toByte())
-   }
+    override fun setBloom(value: Boolean): SculkCatalyst {
+        return this.setState("bloom", value.toByte())
+    }
 }

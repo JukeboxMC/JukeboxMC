@@ -20,6 +20,7 @@ class BlockProperties(
         private val hardness: Float,
         private val identifier: Identifier,
         private val hasCollision: Boolean,
+        private val isWaterBlocking: Boolean,
         private var toolType: ToolType = ToolType.NONE,
         private var tierType: TierType = TierType.NONE
 ) {
@@ -70,6 +71,10 @@ class BlockProperties(
 
     fun hasCollision(): Boolean {
         return this.hasCollision
+    }
+
+    fun isWaterBlocking(): Boolean {
+        return this.isWaterBlocking
     }
 
     fun getToolType(): ToolType {

@@ -9,4 +9,8 @@ class BlockAzalea(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(i
     override fun canPassThrough(): Boolean {
         return true
     }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 1
+    }
 }

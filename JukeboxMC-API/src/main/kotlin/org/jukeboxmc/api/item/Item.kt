@@ -6,6 +6,7 @@ import org.jukeboxmc.api.JukeboxMC
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.item.enchantment.Enchantment
 import org.jukeboxmc.api.item.enchantment.EnchantmentType
+import java.util.Base64
 
 interface Item {
 
@@ -32,6 +33,10 @@ interface Item {
 
         fun <T> create(itemType: ItemType, amount: Int, meta: Int): T {
             return JukeboxMC.getServer().createItem(itemType, amount, meta)
+        }
+
+        fun fromBase64(base64: String): Item? {
+            return JukeboxMC.getServer().fromBase64(base64)
         }
     }
 
@@ -94,6 +99,8 @@ interface Item {
     fun toBlock(): Block
 
     fun isSimilar(item: Item) : Boolean
+
+    fun toBase64(): String
 
     override fun equals(other: Any?): Boolean
 

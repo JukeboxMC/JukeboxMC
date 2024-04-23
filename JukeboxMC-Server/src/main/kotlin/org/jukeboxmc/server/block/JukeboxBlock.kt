@@ -2,6 +2,7 @@
 
 package org.jukeboxmc.server.block
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import org.cloudburstmc.nbt.NbtMap
@@ -27,10 +28,7 @@ import org.jukeboxmc.api.world.MovingObjectPosition
 import org.jukeboxmc.api.world.Particle
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.UpdateReason
-import org.jukeboxmc.server.extensions.toJukeboxBlock
-import org.jukeboxmc.server.extensions.toJukeboxChunk
-import org.jukeboxmc.server.extensions.toJukeboxWorld
-import org.jukeboxmc.server.extensions.toVector3i
+import org.jukeboxmc.server.extensions.*
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
@@ -40,6 +38,7 @@ import org.jukeboxmc.server.world.JukeboxWorld
 import java.awt.Color
 import java.util.*
 import java.util.function.Predicate
+import kotlin.random.Random
 
 open class JukeboxBlock(
     private var identifier: Identifier,
@@ -54,6 +53,7 @@ open class JukeboxBlock(
     private var layer: Int = 0
     private var blockProperties: BlockProperties
     private var boundingBox: AxisAlignedBB? = null
+    private var random: java.util.Random = java.util.Random()
 
     init {
         this.blockType = BlockRegistry.getBlockType(this.identifier)
@@ -98,6 +98,10 @@ open class JukeboxBlock(
 
     override fun getBlockStates(): NbtMap? {
         return this.blockStates
+    }
+
+    fun setBlockStates(blockStates: NbtMap?) {
+        this.blockStates = blockStates
     }
 
     override fun getBoundingBox(): AxisAlignedBB {
@@ -266,11 +270,36 @@ open class JukeboxBlock(
     }
 
     override fun getDrops(item: Item): MutableList<Item> {
-        return emptyArray<Item>().toMutableList()
+        if (this.canBreakWithHand(item.toJukeboxItem())) {
+            if (this.withoutItemDropsOnlyWithSilkTouch()) {
+                if (item.hasEnchantment(EnchantmentType.SILK_TOUCH)) {
+                    return mutableListOf(this.toItem())
+                }
+            } else {
+                return mutableListOf(this.toItem())
+            }
+        }
+        return mutableListOf()
     }
 
     override fun canPassThrough(): Boolean {
         return false
+    }
+
+    override fun canBeFlowedInto(): Boolean {
+        return false
+    }
+
+    override fun canWaterloggingFlowInto(): Boolean {
+        return this.canBeFlowedInto() || this.getWaterLoggingLevel() > 1
+    }
+
+    override fun getWaterLoggingLevel(): Int {
+        return 0
+    }
+
+    override fun isWaterBlocking(): Boolean {
+        return this.blockProperties.isWaterBlocking()
     }
 
     override fun getToolType(): ToolType {
@@ -281,11 +310,61 @@ open class JukeboxBlock(
         return this.blockProperties.getTierType()
     }
 
+    override fun ignoreSilkTouch(): Boolean {
+        return when (this.blockType) {
+            BlockType.OAK_DOUBLE_SLAB, BlockType.SPRUCE_DOUBLE_SLAB, BlockType.BIRCH_DOUBLE_SLAB,
+            BlockType.JUNGLE_DOUBLE_SLAB, BlockType.ACACIA_DOUBLE_SLAB, BlockType.DARK_OAK_DOUBLE_SLAB,
+            BlockType.MANGROVE_DOUBLE_SLAB, BlockType.CHERRY_DOUBLE_SLAB, BlockType.BAMBOO_DOUBLE_SLAB,
+            BlockType.BAMBOO_MOSAIC_DOUBLE_SLAB, BlockType.CRIMSON_DOUBLE_SLAB, BlockType.WARPED_DOUBLE_SLAB,
+            BlockType.DOUBLE_STONE_BLOCK_SLAB, BlockType.DOUBLE_STONE_BLOCK_SLAB2, BlockType.DOUBLE_STONE_BLOCK_SLAB3,
+            BlockType.DOUBLE_STONE_BLOCK_SLAB4, BlockType.BLACKSTONE_DOUBLE_SLAB, BlockType.POLISHED_BLACKSTONE_DOUBLE_SLAB,
+            BlockType.POLISHED_BLACKSTONE_BRICK_DOUBLE_SLAB, BlockType.DOUBLE_CUT_COPPER_SLAB, BlockType.EXPOSED_DOUBLE_CUT_COPPER_SLAB,
+            BlockType.WEATHERED_DOUBLE_CUT_COPPER_SLAB, BlockType.OXIDIZED_DOUBLE_CUT_COPPER_SLAB, BlockType.WAXED_DOUBLE_CUT_COPPER_SLAB,
+            BlockType.WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB, BlockType.WAXED_WEATHERED_DOUBLE_CUT_COPPER_SLAB,
+            BlockType.WAXED_OXIDIZED_DOUBLE_CUT_COPPER_SLAB, BlockType.COBBLED_DEEPSLATE_DOUBLE_SLAB, BlockType.POLISHED_DEEPSLATE_DOUBLE_SLAB,
+            BlockType.DEEPSLATE_TILE_DOUBLE_SLAB, BlockType.DEEPSLATE_BRICK_DOUBLE_SLAB, BlockType.MUD_BRICK_DOUBLE_SLAB,
+            BlockType.FARMLAND, BlockType.AIR, BlockType.ALLOW, BlockType.BARRIER, BlockType.BEDROCK, BlockType.CAKE, BlockType.BORDER_BLOCK, BlockType.BUDDING_AMETHYST,
+            BlockType.CAMERA, BlockType.CAVE_VINES, BlockType.CAVE_VINES_HEAD_WITH_BERRIES, BlockType.CAVE_VINES_BODY_WITH_BERRIES,
+            BlockType.COMMAND_BLOCK, BlockType.CHAIN_COMMAND_BLOCK, BlockType.REPEATING_COMMAND_BLOCK, BlockType.CLIENT_REQUEST_PLACEHOLDER_BLOCK,
+            BlockType.DENY, BlockType.END_GATEWAY, BlockType.END_PORTAL, BlockType.END_PORTAL_FRAME, BlockType.FIRE, BlockType.FROG_SPAWN,
+            BlockType.FROSTED_ICE, BlockType.INFO_UPDATE, BlockType.INFO_UPDATE2, BlockType.INVISIBLE_BEDROCK, BlockType.JIGSAW, BlockType.MOVING_BLOCK,
+            BlockType.NETHERREACTOR, BlockType.PORTAL, BlockType.POWDER_SNOW, BlockType.REINFORCED_DEEPSLATE, BlockType.RESERVED6,
+            BlockType.STRUCTURE_BLOCK, BlockType.STRUCTURE_VOID, -> true
+            else -> false
+        }
+    }
+
+    fun withoutItemDropsOnlyWithSilkTouch(): Boolean {
+        return when(this.getType()) {
+            BlockType.BEE_NEST, BlockType.BEEHIVE, BlockType.BLACK_STAINED_GLASS, BlockType.BLUE_STAINED_GLASS,
+            BlockType.BROWN_STAINED_GLASS, BlockType.CYAN_STAINED_GLASS, BlockType.GRAY_STAINED_GLASS, BlockType.GREEN_STAINED_GLASS,
+            BlockType.LIGHT_BLUE_STAINED_GLASS, BlockType.LIGHT_GRAY_STAINED_GLASS, BlockType.LIME_STAINED_GLASS, BlockType.MAGENTA_STAINED_GLASS,
+            BlockType.ORANGE_STAINED_GLASS, BlockType.PINK_STAINED_GLASS, BlockType.PURPLE_STAINED_GLASS,
+            BlockType.RED_STAINED_GLASS, BlockType.WHITE_STAINED_GLASS, BlockType.YELLOW_STAINED_GLASS, BlockType.BLUE_STAINED_GLASS_PANE,
+            BlockType.BROWN_STAINED_GLASS_PANE, BlockType.CYAN_STAINED_GLASS_PANE, BlockType.GRAY_STAINED_GLASS_PANE, BlockType.GREEN_STAINED_GLASS_PANE,
+            BlockType.LIGHT_BLUE_STAINED_GLASS_PANE, BlockType.LIGHT_GRAY_STAINED_GLASS_PANE, BlockType.LIME_STAINED_GLASS_PANE, BlockType.MAGENTA_STAINED_GLASS_PANE,
+            BlockType.ORANGE_STAINED_GLASS_PANE, BlockType.PINK_STAINED_GLASS_PANE, BlockType.PURPLE_STAINED_GLASS_PANE,
+            BlockType.RED_STAINED_GLASS_PANE, BlockType.WHITE_STAINED_GLASS_PANE, BlockType.YELLOW_STAINED_GLASS_PANE, BlockType.GLASS, BlockType.GLASS_PANE,
+            BlockType.BLUE_ICE, BlockType.TUBE_CORAL, BlockType.BRAIN_CORAL, BlockType.BUBBLE_CORAL, BlockType.FIRE_CORAL, BlockType.HORN_CORAL,
+            BlockType.CALIBRATED_SCULK_SENSOR, BlockType.DEAD_BRAIN_CORAL, BlockType.DEAD_BUBBLE_CORAL, BlockType.DEAD_FIRE_CORAL,
+            BlockType.DEAD_HORN_CORAL, BlockType.DEAD_TUBE_CORAL, BlockType.CORAL_FAN, BlockType.CORAL_FAN_DEAD, BlockType.CORAL_FAN_HANG,
+            BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
+            BlockType.SMALL_AMETHYST_BUD, BlockType.MEDIUM_AMETHYST_BUD, BlockType.LARGE_AMETHYST_BUD, BlockType.PACKED_ICE,
+            BlockType.SCULK, BlockType.SCULK_CATALYST, BlockType.SCULK_SENSOR, BlockType.SCULK_SHRIEKER, BlockType.SCULK_VEIN,
+            BlockType.TURTLE_EGG, BlockType.TALLGRASS -> true
+            else -> false
+        }
+    }
+
+    override fun getRandom(): java.util.Random {
+        return this.random
+    }
+
     open fun onBlockBreak(breakLocation: Vector) {
         this.location?.getWorld()?.setBlock(breakLocation, 0, breakLocation.getDimension(), AIR)
     }
 
-    fun onBlockBreakSound() {
+    fun playBreakSound() {
         this.getWorld().playLevelSound(this.getLocation(), SoundEvent.BREAK, this.networkId)
     }
 
@@ -363,8 +442,13 @@ open class JukeboxBlock(
         val breakLocation = this.location
         if (breakLocation != null) {
             this.onBlockBreak(breakLocation)
+            if (player.getGameMode() == GameMode.SURVIVAL) {
+                for (dropItem in blockBreakEvent.getDrops()) {
+                    this.location?.let { it.getWorld().dropItemNaturally(it.clone().add(0.5f, 1f, 0.5f), dropItem) }
+                }
+            }
             this.getWorld().spawnParticle(Particle.PARTICLE_DESTROY_BLOCK, breakLocation, this.networkId)
-            this.onBlockBreakSound()
+            this.playBreakSound()
         }
 
         if (player.getGameMode() == GameMode.SURVIVAL) {
@@ -494,12 +578,12 @@ open class JukeboxBlock(
         return seconds
     }
 
-    private fun canBreakWithHand(item: JukeboxItem): Boolean {
+    fun canBreakWithHand(item: JukeboxItem): Boolean {
         return this.getTierType() == TierType.NONE || this.getToolType() == ToolType.NONE || this.correctTool0(
             this.getToolType(),
             item,
             this.getType()
-        )
+        ) && item.getTierType().ordinal >= this.getTierType().ordinal
     }
 
     private fun correctTool0(blockToolType: ToolType, item: JukeboxItem, blockType: BlockType): Boolean {
@@ -641,7 +725,11 @@ open class JukeboxBlock(
                 enumdirection = BlockFace.SOUTH
             }
 
-            return MovingObjectPosition(vec3d8.add(blockposition.getX(), blockposition.getY(), blockposition.getZ()), enumdirection, blockposition)
+            return MovingObjectPosition(
+                vec3d8.add(blockposition.getX(), blockposition.getY(), blockposition.getZ()),
+                enumdirection,
+                blockposition
+            )
         }
     }
 
@@ -670,6 +758,88 @@ open class JukeboxBlock(
     open fun isCollidable(): Boolean {
         return true
     }
+
+    fun createItemDrop(
+        itemInHand: Item,
+        vararg itemDrop: Item,
+    ): MutableList<Item> {
+        if (this.canBreakWithHand(itemInHand.toJukeboxItem())) {
+            return itemDrop.toMutableList()
+        }
+        return mutableListOf()
+    }
+
+    fun createItemOreDrop(itemInHand: Item, itemDrop: Item, startAmount: Int): MutableList<Item> {
+        if (this.canBreakWithHand(itemInHand.toJukeboxItem())) {
+            var amount = startAmount
+            if (itemInHand.hasEnchantment(EnchantmentType.FORTUNE) && itemInHand.getEnchantment(EnchantmentType.FORTUNE) != null) {
+                amount = Random.nextInt(amount, amount + itemInHand.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() * amount) + 1
+            }
+            return mutableListOf(itemDrop.apply { this.setAmount(amount) })
+        }
+        return mutableListOf()
+    }
+
+    fun createItemStemDrop(item: Item, growth: Int): MutableList<Item> {
+        val dropProbabilities = Int2ObjectArrayMap<List<ProbabilityAmountHolder>>()
+        dropProbabilities[0] = listOf(
+            ProbabilityAmountHolder(0, 81.3f),
+            ProbabilityAmountHolder(1, 17.43f),
+            ProbabilityAmountHolder(2, 1.24f),
+            ProbabilityAmountHolder(3, 0.03f)
+        )
+        dropProbabilities[1] = listOf(
+            ProbabilityAmountHolder(0, 65.1f),
+            ProbabilityAmountHolder(1, 30.04f),
+            ProbabilityAmountHolder(2, 4.62f),
+            ProbabilityAmountHolder(3, 0.24f)
+        )
+        dropProbabilities[2] = listOf(
+            ProbabilityAmountHolder(0, 51.2f),
+            ProbabilityAmountHolder(1, 38.4f),
+            ProbabilityAmountHolder(2, 9.6f),
+            ProbabilityAmountHolder(3, 0.8f)
+        )
+        dropProbabilities[3] = listOf(
+            ProbabilityAmountHolder(0, 39.44f),
+            ProbabilityAmountHolder(1, 43.02f),
+            ProbabilityAmountHolder(2, 15.64f),
+            ProbabilityAmountHolder(3, 1.9f)
+        )
+        dropProbabilities[4] = listOf(
+            ProbabilityAmountHolder(0, 29.13f),
+            ProbabilityAmountHolder(1, 44.44f),
+            ProbabilityAmountHolder(2, 22.22f),
+            ProbabilityAmountHolder(3, 3.7f)
+        )
+        dropProbabilities[5] = listOf(
+            ProbabilityAmountHolder(0, 21.6f),
+            ProbabilityAmountHolder(1, 43.2f),
+            ProbabilityAmountHolder(2, 28.8f),
+            ProbabilityAmountHolder(3, 6.4f)
+        )
+        dropProbabilities[6] = listOf(
+            ProbabilityAmountHolder(0, 15.17f),
+            ProbabilityAmountHolder(1, 39.82f),
+            ProbabilityAmountHolder(2, 34.84f),
+            ProbabilityAmountHolder(3, 10.16f)
+        )
+        dropProbabilities[7] = listOf(
+            ProbabilityAmountHolder(0, 10.16f),
+            ProbabilityAmountHolder(1, 34.84f),
+            ProbabilityAmountHolder(2, 39.82f),
+            ProbabilityAmountHolder(3, 15.17f)
+        )
+        val probability = this.random.nextFloat(100.0f)
+        for (probabilityAmountHolder in dropProbabilities[growth]) {
+            if (probabilityAmountHolder.probability <= probability) {
+                return mutableListOf(item.apply { this.setAmount(probabilityAmountHolder.amount) })
+            }
+        }
+        return mutableListOf()
+    }
+
+    data class ProbabilityAmountHolder(val amount: Int, val probability: Float)
 
     override fun clone(): JukeboxBlock {
         val block = super.clone() as JukeboxBlock

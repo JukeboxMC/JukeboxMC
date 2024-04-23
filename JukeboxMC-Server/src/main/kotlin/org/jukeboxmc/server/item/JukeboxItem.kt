@@ -1,7 +1,10 @@
 package org.jukeboxmc.server.item
 
+import io.netty.buffer.ByteBufOutputStream
+import io.netty.buffer.Unpooled
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtType
+import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.jukeboxmc.api.Identifier
@@ -25,6 +28,7 @@ import org.jukeboxmc.server.item.enchantment.JukeboxEnchantment
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
+import org.jukeboxmc.server.util.Utils
 import java.util.*
 
 open class JukeboxItem : Item, Cloneable {
@@ -111,6 +115,10 @@ open class JukeboxItem : Item, Cloneable {
 
     override fun getBlockNetworkId(): Int {
         return this.blockNetworkId
+    }
+
+    open fun setBlockNetworkId(blockNetworkId: Int) {
+        this.blockNetworkId = blockNetworkId
     }
 
     override fun getStackNetworkId(): Int {
@@ -233,7 +241,32 @@ open class JukeboxItem : Item, Cloneable {
     }
 
     override fun isSimilar(item: Item): Boolean {
+        return this.isSimilarInternal(item, false)
+    }
+
+    override fun toBase64(): String {
+        val compound = NbtMap.builder()
+            .putString("Name", this.identifier.getFullName())
+            .putInt("Meta", this.meta)
+            .putInt("Amount", this.amount)
+            .putBoolean("Unbreakable", this.unbreakable)
+            .putCompound("BlockState", this.toBlock().getBlockStates())
+            .putCompound("Tag", if (this.toNbt() != null) this.toNbt() else NbtMap.EMPTY)
+            .build()
+        val buffer = Unpooled.buffer()
+        try {
+            NbtUtils.createWriterLE(ByteBufOutputStream(buffer)).use {
+                it.writeTag(compound)
+            }
+        } catch (e : Exception) {
+            e.printStackTrace()
+        }
+        return Base64.getMimeEncoder().encodeToString(Utils.array(buffer))
+    }
+
+    fun isSimilarInternal(item: Item, ignoreBlockNetworkId: Boolean): Boolean {
         val identifier = item.getIdentifier() == this.getIdentifier()
+        val blockNetworkId = item.getBlockNetworkId() == this.getBlockNetworkId()
         val durability = item.getDurability() == this.getDurability()
         val meta = item.getMeta() == this.getMeta()
         val displayName = item.getDisplayName() == this.getDisplayName()
@@ -241,7 +274,10 @@ open class JukeboxItem : Item, Cloneable {
         val enchantments = if (item.getEnchantments().isEmpty() && this.getEnchantments().isEmpty()
         ) true else item.getEnchantments().contentEquals(this.getEnchantments())
         val unbreakable = item.isUnbreakable() == this.isUnbreakable()
-        return identifier && durability && meta && displayName && lore && enchantments && unbreakable
+        if (ignoreBlockNetworkId) {
+            return identifier && durability && meta && displayName && lore && enchantments && unbreakable
+        }
+        return identifier && blockNetworkId && durability && meta && displayName && lore && enchantments && unbreakable
     }
 
     override fun equals(other: Any?): Boolean {
@@ -331,8 +367,10 @@ open class JukeboxItem : Item, Cloneable {
         }
     }
 
-    fun toNbt(): NbtMap? {
+    fun toNbt(identifier: Boolean = false): NbtMap? {
         val nbtBuilder = if (this.nbtMap == null) NbtMap.builder() else this.nbtMap!!.toBuilder()
+
+        if (identifier) nbtBuilder.putString("Name", this.identifier.getFullName())
         if (this.durability > 0) {
             nbtBuilder.putInt("Damage", this.durability)
         }
