@@ -317,7 +317,7 @@ class ItemRegistry {
             register(ItemType.DEAD_BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:dead_bubble_coral_fan"))
             register(ItemType.DEAD_TUBE_CORAL_FAN, Identifier.fromString("minecraft:dead_tube_coral_fan"))
             register(ItemType.DEAD_HORN_CORAL_FAN, Identifier.fromString("minecraft:dead_horn_coral_fan"))
-            register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"), ItemCoralFan::class.java)
+            register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"))
             register(ItemType.CORAL_FAN_DEAD, Identifier.fromString("minecraft:coral_fan_dead"))
             register(ItemType.CORAL_FAN_HANG, Identifier.fromString("minecraft:coral_fan_hang"))
             register(ItemType.CORAL_FAN_HANG2, Identifier.fromString("minecraft:coral_fan_hang2"))
