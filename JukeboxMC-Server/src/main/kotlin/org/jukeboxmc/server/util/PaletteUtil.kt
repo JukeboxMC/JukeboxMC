@@ -82,7 +82,7 @@ class PaletteUtil {
             val stream = PaletteUtil::class.java.classLoader.getResourceAsStream(fileName) ?: throw RuntimeException("Could not find $fileName")
 
             stream.use { inputStream ->
-                NbtUtils.createNetworkReader(inputStream).use {
+                NbtUtils.createGZIPReader(inputStream).use {
                     return it.readTag() as NbtMap
                 }
             }
