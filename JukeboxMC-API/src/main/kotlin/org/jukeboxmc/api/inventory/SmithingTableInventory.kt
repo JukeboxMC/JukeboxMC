@@ -1,3 +1,13 @@
 package org.jukeboxmc.api.inventory
 
-interface SmithingTableInventory : Inventory
+import org.jukeboxmc.api.item.Item
+
+interface SmithingTableInventory : Inventory {
+
+    fun getArmor(): Item
+
+    fun getMaterial(): Item
+
+    fun getTemplate(): Item
+
+}
