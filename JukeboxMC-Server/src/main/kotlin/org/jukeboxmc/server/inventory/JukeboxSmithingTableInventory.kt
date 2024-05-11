@@ -30,11 +30,11 @@ class JukeboxSmithingTableInventory(inventoryHolder: InventoryHolder) : Containe
         super.setItem(slot - 51, item, sendContents)
     }
 
-    override fun getArmor(): Item {
+    override fun getBase(): Item {
         return this.getItem(51)
     }
 
-    override fun getMaterial(): Item {
+    override fun getAddition(): Item {
         return this.getItem(52)
     }
 

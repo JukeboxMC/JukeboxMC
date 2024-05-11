@@ -6,7 +6,6 @@ import org.jukeboxmc.api.JukeboxMC
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.item.enchantment.Enchantment
 import org.jukeboxmc.api.item.enchantment.EnchantmentType
-import java.util.Base64
 
 interface Item {
 

@@ -4,9 +4,9 @@ import org.jukeboxmc.api.item.Item
 
 interface SmithingTableInventory : Inventory {
 
-    fun getArmor(): Item
+    fun getBase(): Item
 
-    fun getMaterial(): Item
+    fun getAddition(): Item
 
     fun getTemplate(): Item
 

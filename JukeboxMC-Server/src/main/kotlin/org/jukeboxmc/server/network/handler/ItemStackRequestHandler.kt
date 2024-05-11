@@ -2,8 +2,8 @@ package org.jukeboxmc.server.network.handler
 
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTransformRecipeData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTrimRecipeData
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*
@@ -24,7 +24,6 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.item.JukeboxEntityItem
 import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.inventory.ContainerInventory
-import org.jukeboxmc.server.inventory.CraftingGridInventory
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.PaletteUtil
@@ -106,7 +105,10 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 if (containerEntryMap.containsKey(request.requestId)) {
                     containerEntryMap[request.requestId]?.add(
                         0,
-                        ItemStackResponseContainer(itemEntryMap[request.requestId]!!.containerSlotType, itemEntryMap[request.requestId]!!.responseSlot)
+                        ItemStackResponseContainer(
+                            itemEntryMap[request.requestId]!!.containerSlotType,
+                            itemEntryMap[request.requestId]!!.responseSlot
+                        )
                     )
                 }
                 for ((key, value) in containerEntryMap) {
@@ -157,26 +159,62 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 )
             )
         } else {
-            val recipeDataList = recipeManager.getCraftingData().filterIsInstance<SmithingTrimRecipeData>()
-            if (recipeDataList.isNotEmpty() && recipeDataList[0].netId == action.recipeNetworkId) {
-                val smithingTableInventory = player.getSmithingTableInventory()
-                val armor = smithingTableInventory.getArmor()
-                val material = smithingTableInventory.getMaterial()
-                val trimTemplate = smithingTableInventory.getTemplate()
-                if (material.getType() != ItemType.AIR && trimTemplate.getType() != ItemType.AIR) {
-                    val pattern = TrimData.getPattern().find { it.itemName.equals(trimTemplate.getIdentifier().getFullName()) }
-                    val materialId = TrimData.getMaterial().find { it.itemName.equals(material.getIdentifier().getFullName()) }
-                    if (armor.getType() == ItemType.AIR || pattern == null || materialId == null) {
+            val smithingTrimRecipeData = recipeManager.getCraftingData().filterIsInstance<SmithingTrimRecipeData>()
+            val smithingTransformRecipeData =
+                recipeManager.getCraftingData().filterIsInstance<SmithingTransformRecipeData>()
+            val smithingTableInventory = player.getSmithingTableInventory()
+            val base = smithingTableInventory.getBase()
+            val addition = smithingTableInventory.getAddition()
+            val template = smithingTableInventory.getTemplate()
+
+            if (smithingTrimRecipeData.isNotEmpty() && smithingTrimRecipeData[0].netId == action.recipeNetworkId) {
+                val pattern =
+                    TrimData.getPattern().find { it.itemName.equals(template.getIdentifier().getFullName()) }
+                val materialId =
+                    TrimData.getMaterial().find { it.itemName.equals(addition.getIdentifier().getFullName()) }
+                if (base.getType() == ItemType.AIR || pattern == null || materialId == null) {
+                    return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
+                }
+                val armorItem = base.clone().toJukeboxItem()
+                val trimCompound = NbtMap.builder()
+                    .putString("Material", materialId.materialId)
+                    .putString("Pattern", pattern.patternId)
+                    .build()
+                val compound = if (armorItem.getNbt() != null) base.getNbt() else NbtMap.EMPTY
+                armorItem.setNbt(compound?.toBuilder()?.putCompound("Trim", trimCompound)?.build())
+                player.getCreativeCacheInventory().setItem(0, armorItem)
+                return listOf(
+                    ItemStackResponse(
+                        ItemStackResponseStatus.OK, request.requestId, listOf(
+                            ItemStackResponseContainer(
+                                ContainerSlotType.CREATED_OUTPUT,
+                                mutableListOf(
+                                    ItemStackResponseSlot(
+                                        0,
+                                        0,
+                                        armorItem.getAmount(),
+                                        armorItem.getStackNetworkId(),
+                                        armorItem.getDisplayName(),
+                                        armorItem.getDurability()
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            } else if (smithingTransformRecipeData.isNotEmpty()) {
+                val recipeData = smithingTransformRecipeData.find { it.netId == action.recipeNetworkId }
+                if (recipeData != null) {
+                    val baseItem = JukeboxItem(recipeData.base.toItem().toBuilder().damage(0).build(), false)
+                    val additionItem = JukeboxItem(recipeData.addition.toItem().toBuilder().damage(0).build(), false)
+                    val templateItem = JukeboxItem(recipeData.template.toItem().toBuilder().damage(0).build(), false)
+
+                    if (baseItem != base && additionItem != addition && templateItem != template) {
                         return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
                     }
-                    val armorItem = armor.clone().toJukeboxItem()
-                    val trimCompound = NbtMap.builder()
-                        .putString("Material", materialId.materialId)
-                        .putString("Pattern", pattern.patternId)
-                        .build()
-                    val compound = if (armorItem.getNbt() != null) armor.getNbt() else NbtMap.EMPTY
-                    armorItem.setNbt(compound?.toBuilder()?.putCompound("Trim", trimCompound)?.build())
-                    player.getCreativeCacheInventory().setItem(0, armorItem)
+
+                    val result = JukeboxItem(recipeData.result.toBuilder().build(), true)
+                    player.getCreativeCacheInventory().setItem(0, result)
                     return listOf(
                         ItemStackResponse(
                             ItemStackResponseStatus.OK, request.requestId, listOf(
@@ -186,10 +224,10 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                                         ItemStackResponseSlot(
                                             0,
                                             0,
-                                            armorItem.getAmount(),
-                                            armorItem.getStackNetworkId(),
-                                            armorItem.getDisplayName(),
-                                            armorItem.getDurability()
+                                            result.getAmount(),
+                                            result.getStackNetworkId(),
+                                            result.getDisplayName(),
+                                            result.getDurability()
                                         )
                                     )
                                 )
@@ -199,7 +237,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 }
             }
         }
-        return listOf(ItemStackResponse(ItemStackResponseStatus.OK, request.requestId, listOf()))
+        return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
     }
 
     private fun handleConsumeAction(
@@ -589,7 +627,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         if (sourceItem.getAmount() <= 0) {
             sourceItem = Item.create(ItemType.AIR)
         }
-        setItem(player, source.container, source.slot, sourceItem)
+        this.setItem(player, source.container, source.slot, sourceItem)
 
         val entityItem = JukeboxEntityItem()
         entityItem.setItem(playerDropItemEvent.getItem())
@@ -767,5 +805,8 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         }
     }
 
-    data class ConsumeActionData(val containerSlotType: ContainerSlotType, val responseSlot: MutableList<ItemStackResponseSlot>)
+    data class ConsumeActionData(
+        val containerSlotType: ContainerSlotType,
+        val responseSlot: MutableList<ItemStackResponseSlot>
+    )
 }
