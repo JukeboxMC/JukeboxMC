@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType
 import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.event.entity.ProjectileLaunchEvent
+import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.Durability
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
@@ -20,12 +21,13 @@ import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.item.ItemRegistry
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.math.cos
 import kotlin.math.sin
 
 
-class ItemCrossbow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability {
+class ItemCrossbow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability, Burnable {
 
     private var canShoot = false
 
@@ -131,5 +133,9 @@ class ItemCrossbow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(it
 
     override fun getMaxDurability(): Int {
         return 464
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(200)
     }
 }

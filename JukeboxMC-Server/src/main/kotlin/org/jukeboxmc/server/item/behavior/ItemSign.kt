@@ -2,10 +2,12 @@ package org.jukeboxmc.server.item.behavior
 
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
+import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.server.item.JukeboxItem
+import java.time.Duration
 
-class ItemSign(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId) {
+class ItemSign(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Burnable {
 
     override fun toBlock(): Block {
         var blockType: BlockType = BlockType.AIR
@@ -24,6 +26,10 @@ class ItemSign(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemTy
             else -> {}
         }
         return Block.create(blockType)
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(200)
     }
 
 }

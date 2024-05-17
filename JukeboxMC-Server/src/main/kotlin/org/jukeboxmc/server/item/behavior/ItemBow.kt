@@ -1,6 +1,7 @@
 package org.jukeboxmc.server.item.behavior
 
 import org.jukeboxmc.api.event.entity.ProjectileLaunchEvent
+import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.Durability
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
@@ -13,11 +14,12 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.projectile.JukeboxEntityArrow
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ItemBow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability {
+class ItemBow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability, Burnable {
 
     override fun useInAir(player: JukeboxPlayer, clickVector: Vector): Boolean {
         player.setAction(true)
@@ -82,6 +84,10 @@ class ItemBow(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemTyp
 
     override fun getMaxDurability(): Int {
         return 384
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(200)
     }
 
 }

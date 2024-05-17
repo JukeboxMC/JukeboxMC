@@ -167,7 +167,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             val addition = smithingTableInventory.getAddition()
             val template = smithingTableInventory.getTemplate()
 
-            if (smithingTrimRecipeData.isNotEmpty() && smithingTrimRecipeData[0].netId == action.recipeNetworkId) {
+            if (smithingTrimRecipeData.isNotEmpty() && smithingTrimRecipeData.first().netId == action.recipeNetworkId) {
                 val pattern =
                     TrimData.getPattern().find { it.itemName.equals(template.getIdentifier().getFullName()) }
                 val materialId =

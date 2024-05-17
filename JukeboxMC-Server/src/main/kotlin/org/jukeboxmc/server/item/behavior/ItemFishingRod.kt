@@ -2,6 +2,7 @@ package org.jukeboxmc.server.item.behavior
 
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent
 import org.jukeboxmc.api.event.entity.ProjectileLaunchEvent
+import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.Durability
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
@@ -9,10 +10,11 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.projectile.JukeboxEntityFishingHook
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
+import java.time.Duration
 import kotlin.math.cos
 import kotlin.math.sin
 
-class ItemFishingRod(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability {
+class ItemFishingRod(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability, Burnable {
 
     override fun useInAir(player: JukeboxPlayer, clickVector: Vector): Boolean {
         if (player.getEntityFishingHook() == null) {
@@ -43,6 +45,10 @@ class ItemFishingRod(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(
 
     override fun getMaxDurability(): Int {
         return 384
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(300)
     }
 
 }

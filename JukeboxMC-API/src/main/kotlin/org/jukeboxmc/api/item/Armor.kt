@@ -2,7 +2,7 @@ package org.jukeboxmc.api.item
 
 import org.jukeboxmc.api.world.Sound
 
-interface Armor {
+interface Armor : Item {
 
     fun getArmorTierType(): ArmorTierType
 

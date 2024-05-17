@@ -108,6 +108,13 @@ class JukeboxWorld(
             }
         }
 
+        for (dimension in Dimension.entries) {
+            for (blockEntity in this.getBlockEntities(dimension)) {
+                blockEntity.toJukeboxBlockEntity().update(currentTick)
+            }
+        }
+
+
         while (!this.blockUpdateNormals.isEmpty()) {
             val updateNormal = this.blockUpdateNormals.poll()
             updateNormal.getBlock().toJukeboxBlock().onUpdate(UpdateReason.NORMAL)
@@ -541,9 +548,9 @@ class JukeboxWorld(
         return collides
     }
 
-    override fun dropItem(location: Location, item: Item) {
+    override fun dropItem(location: Vector, item: Item) {
         val entityItem = JukeboxEntityItem()
-        entityItem.setLocation(location.clone())
+        entityItem.setLocation(Location(this, location.clone()))
         entityItem.setItem(item)
         entityItem.setVelocity(
             Vector(
@@ -556,18 +563,17 @@ class JukeboxWorld(
         entityItem.spawn()
     }
 
-    override fun dropItemNaturally(location: Location, item: Item) {
+    override fun dropItemNaturally(location: Vector, item: Item) {
         var loc = location
-        val world = loc.getWorld().toJukeboxWorld()
-        val xs: Float = world.random.nextFloat() * 0.7f - 0.35f
-        val ys: Float = world.random.nextFloat() * 0.7f - 0.35f
-        val zs: Float = world.random.nextFloat() * 0.7f - 0.35f
+        val xs: Float = this.random.nextFloat() * 0.7f - 0.35f
+        val ys: Float = this.random.nextFloat() * 0.7f - 0.35f
+        val zs: Float = this.random.nextFloat() * 0.7f - 0.35f
         loc = loc.clone()
         this.randomLocationWithinBlock(loc, xs, ys, zs)
         this.dropItem(loc, item)
     }
 
-    private fun randomLocationWithinBlock(loc: Location, xs: Float, ys: Float, zs: Float) {
+    private fun randomLocationWithinBlock(loc: Vector, xs: Float, ys: Float, zs: Float) {
         val prevX = loc.getX().toDouble()
         val prevY = loc.getY().toDouble()
         val prevZ = loc.getZ().toDouble()

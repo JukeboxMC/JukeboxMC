@@ -27,13 +27,9 @@ class JukeboxMCPlugin : Plugin(), Listener {
         armorInventory.setBoots(Item.create(ItemType.NETHERITE_BOOTS))
 
         inventory.addItem(
-            Item.create(ItemType.SMITHING_TABLE),
-            Item.create(ItemType.DIAMOND, 64),
-            Item.create(ItemType.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, 64),
-            Item.create(ItemType.DIAMOND_CHESTPLATE),
-            Item.create(ItemType.DIAMOND_PICKAXE),
-            Item.create(ItemType.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
-            Item.create(ItemType.NETHERITE_INGOT)
+            Item.create(ItemType.FURNACE),
+            Item.create(ItemType.COAL, 64),
+            Item.create(ItemType.IRON_ORE, 64),
         )
     }
 
