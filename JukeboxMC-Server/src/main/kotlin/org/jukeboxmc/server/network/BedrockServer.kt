@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.BedrockPong
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec
 import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.player.JukeboxPlayer
@@ -23,6 +24,14 @@ class BedrockServer(private val bindAddress: InetSocketAddress, private val serv
     companion object {
         val BEDROCK_CODEC: BedrockCodec = Bedrock_v671.CODEC
     }
+
+    private val encodingSettings = EncodingSettings.builder()
+        .maxListSize(Int.MAX_VALUE)
+        .maxByteArraySize(Int.MAX_VALUE)
+        .maxNetworkNBTSize(Int.MAX_VALUE)
+        .maxItemNBTSize(Int.MAX_VALUE)
+        .maxStringLength(Int.MAX_VALUE)
+        .build()
 
     init {
         this.bedrockPong.edition("MCPE")
@@ -45,6 +54,7 @@ class BedrockServer(private val bindAddress: InetSocketAddress, private val serv
             .childHandler(object : BedrockServerInitializer() {
                 override fun initSession(session: BedrockServerSession) {
                     session.codec = BEDROCK_CODEC
+                    session.peer.codecHelper.encodingSettings = encodingSettings
                     server.addJukeboxPlayer(JukeboxPlayer(server, session))
                 }
             })

@@ -1,6 +1,7 @@
 package org.jukeboxmc.server.network.handler
 
 import org.cloudburstmc.nbt.NbtMap
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTransformRecipeData
@@ -36,6 +37,13 @@ import java.util.concurrent.TimeUnit
 class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
 
     override fun handle(packet: ItemStackRequestPacket, server: JukeboxServer, player: JukeboxPlayer) {
+        player.getSession().peer.codecHelper.encodingSettings = EncodingSettings.builder()
+            .maxListSize(Int.MAX_VALUE)
+            .maxByteArraySize(Int.MAX_VALUE)
+            .maxNetworkNBTSize(Int.MAX_VALUE)
+            .maxItemNBTSize(Int.MAX_VALUE)
+            .maxStringLength(Int.MAX_VALUE)
+            .build()
         val responses: MutableList<ItemStackResponse> = mutableListOf()
         for (request in packet.requests) {
             this.handleItemStackRequest(request, player, responses)
@@ -43,18 +51,15 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
     }
 
     fun handleItemStackRequest(request: ItemStackRequest, player: JukeboxPlayer, responses: MutableList<ItemStackResponse>) {
-            val itemEntryMap: MutableMap<Int, ConsumeActionData> = mutableMapOf()
-            for (action in request.actions) {
-                when (action.type) {
-                    ItemStackRequestActionType.CONSUME -> {
-                        val consumeAction = handleConsumeAction(player, action as ConsumeAction)
-                        if (!itemEntryMap.containsKey(request.requestId)) {
-                            itemEntryMap[request.requestId] = consumeAction
-                        } else {
-                            itemEntryMap[request.requestId]?.responseSlot?.add(consumeAction.responseSlot[0])
-                        }
+        val itemEntryMap: MutableMap<Int, ConsumeActionData> = mutableMapOf()
+        for (action in request.actions) {
+            when (action.type) {
+                ItemStackRequestActionType.CONSUME -> {
+                    val consumeAction = handleConsumeAction(player, action as ConsumeAction)
+                    if (!itemEntryMap.containsKey(request.requestId)) {
+                        itemEntryMap[request.requestId] = consumeAction
                     } else {
-                        itemEntryMap[request.requestId]?.add(itemEntry)
+                        itemEntryMap[request.requestId]?.responseSlot?.add(consumeAction.responseSlot[0])
                     }
                 }
 
@@ -83,7 +88,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 }
 
                 ItemStackRequestActionType.CRAFT_RECIPE -> {
-                    this.handleCraftRecipeAction(player, (action as CraftRecipeAction), request)
+                    this.handleCraftRecipeAction(player, action as CraftRecipeAction, request)
                 }
 
                 ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL -> {
@@ -93,39 +98,19 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                             (action as CraftRecipeOptionalAction),
                             request
                         )
-                    }
-
-                    ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
-                    }
-
-                    else -> {
-                        server.getLogger()
-                            .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
-                    }
-                }
-            }
-            val itemStackResponsePacket = ItemStackResponsePacket()
-            val containerEntryMap: MutableMap<Int, MutableList<ItemStackResponseContainer>> = HashMap()
-            if (itemEntryMap.isNotEmpty()) {
-                for (respons in responses) {
-                    containerEntryMap[respons.requestId] = respons.containers
-                }
-                if (containerEntryMap.containsKey(request.requestId)) {
-                    containerEntryMap[request.requestId]?.add(
-                        0,
-                        ItemStackResponseContainer(
-                            itemEntryMap[request.requestId]!!.containerSlotType,
-                            itemEntryMap[request.requestId]!!.responseSlot
-                        )
                     )
                 }
 
+                ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
+                }
+
                 ItemStackRequestActionType.MINE_BLOCK -> {
-                    responses.addAll(this.handleMineBlockAction(player, (action as MineBlockAction), request))
+                    this.handleMineBlockAction(player, action as MineBlockAction, request)
                 }
 
                 else -> {
-                    JukeboxServer.getInstance().getLogger().info("Unhandled Action: " + action.javaClass.simpleName + " : " + action.type)
+                    JukeboxServer.getInstance().getLogger()
+                        .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
                 }
             }
         }
@@ -138,7 +123,10 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             if (containerEntryMap.containsKey(request.requestId)) {
                 containerEntryMap[request.requestId]?.add(
                     0,
-                    ItemStackResponseContainer(ContainerSlotType.CRAFTING_INPUT, itemEntryMap[request.requestId])
+                    ItemStackResponseContainer(
+                        itemEntryMap[request.requestId]!!.containerSlotType,
+                        itemEntryMap[request.requestId]!!.responseSlot
+                    )
                 )
             }
             for ((key, value) in containerEntryMap) {
@@ -148,6 +136,36 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             itemStackResponsePacket.entries.addAll(responses)
         }
         player.sendPacket(itemStackResponsePacket)
+    }
+
+    private fun handleMineBlockAction(player: JukeboxPlayer, actionData: MineBlockAction, itemStackRequest: ItemStackRequest): List<ItemStackResponse> {
+        val hotBarSlot = actionData.hotbarSlot
+        var item = player.getInventory().getItem(actionData.hotbarSlot)
+
+        if (item.getStackNetworkId() != actionData.stackNetworkId) {
+            player.getInventory().setItem(hotBarSlot, item)
+            return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, itemStackRequest.requestId, emptyList()))
+        }
+
+        if (item is Durability && item.getDurability() != actionData.predictedDurability) {
+            if (item.getDurability() >= item.getMaxDurability() && !item.isUnbreakable()) {
+                item = Item.create(ItemType.AIR)
+            }
+            player.getInventory().setItem(hotBarSlot, item)
+        }
+
+        return listOf(
+            ItemStackResponse(
+                ItemStackResponseStatus.OK,
+                itemStackRequest.requestId,
+                listOf(
+                    ItemStackResponseContainer(
+                        ContainerSlotType.HOTBAR,
+                        listOf(ItemStackResponseSlot(hotBarSlot, hotBarSlot, item.getAmount(), item.getStackNetworkId(), item.getDisplayName(), item.getDurability()))
+                    )
+                )
+            )
+        )
     }
 
     private fun handleCraftRecipeOptionalAction(
@@ -748,36 +766,6 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             player.sendMessage("§cThe item could not be created")
             JukeboxServer.getInstance().getLogger().error("The item could not be created: $itemData")
         }
-    }
-
-    private fun handleMineBlockAction(player: JukeboxPlayer, actionData: MineBlockAction, itemStackRequest: ItemStackRequest): List<ItemStackResponse> {
-        val hotBarSlot = actionData.hotbarSlot
-        var item = player.getInventory().getItem(actionData.hotbarSlot)
-
-        if (item.getStackNetworkId() != actionData.stackNetworkId) {
-            player.getInventory().setItem(hotBarSlot, item)
-            return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, itemStackRequest.requestId, emptyList()))
-        }
-
-        if (item is Durability && item.getDurability() != actionData.predictedDurability) {
-            if (item.getDurability() >= (item as Durability).getMaxDurability() && !item.isUnbreakable()) {
-                item = Item.create(ItemType.AIR)
-            }
-            player.getInventory().setItem(hotBarSlot, item)
-        }
-
-        return listOf(
-            ItemStackResponse(
-                ItemStackResponseStatus.OK,
-                itemStackRequest.requestId,
-                listOf(
-                    ItemStackResponseContainer(
-                        ContainerSlotType.HOTBAR,
-                        listOf(ItemStackResponseSlot(hotBarSlot, hotBarSlot, item.getAmount(), item.getStackNetworkId(), item.getDisplayName(), item.getDurability()))
-                    )
-                )
-            )
-        )
     }
 
     private fun getInventory(player: JukeboxPlayer, containerSlotType: ContainerSlotType): Inventory? {

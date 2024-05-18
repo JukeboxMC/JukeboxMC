@@ -1,5 +1,6 @@
 package org.jukeboxmc.server.network.handler
 
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackRequestPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.jukeboxmc.server.JukeboxServer
