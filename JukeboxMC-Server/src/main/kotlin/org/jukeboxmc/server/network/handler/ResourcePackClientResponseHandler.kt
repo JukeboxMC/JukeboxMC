@@ -126,8 +126,9 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.levelName = worldData.levelName
                 startGamePacket.premiumWorldTemplateId = ""
                 startGamePacket.isTrial = false
-                startGamePacket.authoritativeMovementMode = AuthoritativeMovementMode.CLIENT
-                startGamePacket.isServerAuthoritativeBlockBreaking = false
+                startGamePacket.authoritativeMovementMode = AuthoritativeMovementMode.SERVER_WITH_REWIND
+                startGamePacket.rewindHistorySize = 40
+                startGamePacket.isServerAuthoritativeBlockBreaking = true
                 startGamePacket.currentTick = server.getCurrentTick()
                 startGamePacket.itemDefinitions = ItemPalette.getItemDefinitions()
                 startGamePacket.multiplayerCorrelationId = ""

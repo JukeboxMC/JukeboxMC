@@ -32,6 +32,7 @@ class HandlerRegistry {
             packetHandlerMap[EntityEventPacket::class.java] = EntityEventHandler()
             packetHandlerMap[RespawnPacket::class.java] = RespawnHandler()
             packetHandlerMap[ModalFormResponsePacket::class.java] = ModalFormResponseHandler()
+            packetHandlerMap[PlayerAuthInputPacket::class.java] = PlayerAuthInputHandler()
         }
 
         fun getPacketHandler(clazz: Class<out BedrockPacket?>?): PacketHandler<out BedrockPacket>? {

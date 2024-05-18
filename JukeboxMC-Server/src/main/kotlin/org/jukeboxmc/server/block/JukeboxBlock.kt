@@ -13,6 +13,7 @@ import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.block.data.Direction
+import org.jukeboxmc.api.effect.EffectType
 import org.jukeboxmc.api.event.block.BlockBreakEvent
 import org.jukeboxmc.api.item.Durability
 import org.jukeboxmc.api.item.Item
@@ -555,6 +556,10 @@ open class JukeboxBlock(
                 .map(Enchantment::getLevel).map { l: Int -> l >= 1 }.orElse(false)
         var hasteEffectLevel = 0
         val miningFatigueLevel = 0
+
+        if (player.hasEffect(EffectType.HASTE)) {
+            hasteEffectLevel = player.getEffect(EffectType.HASTE)!!.getAmplifier()
+        }
 
         if (this.correctTool0(this.getToolType(), item, this.getType())) {
             speedMultiplier =

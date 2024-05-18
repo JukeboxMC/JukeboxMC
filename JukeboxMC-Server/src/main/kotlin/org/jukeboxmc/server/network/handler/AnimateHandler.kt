@@ -2,6 +2,7 @@ package org.jukeboxmc.server.network.handler
 
 import org.cloudburstmc.protocol.bedrock.packet.AnimatePacket
 import org.jukeboxmc.server.JukeboxServer
+import org.jukeboxmc.server.anticheat.module.combat.AntiCheatCombatModule
 import org.jukeboxmc.server.extensions.toJukeboxPlayer
 import org.jukeboxmc.server.player.JukeboxPlayer
 import java.util.stream.Collectors
@@ -16,6 +17,7 @@ class AnimateHandler : PacketHandler<AnimatePacket> {
                     it.sendPacket(packet)
                 }
             }
+            server.getAntiCheatRegistry().getModule(AntiCheatCombatModule::class.java).registerSwingArmTimestamp(player.getUUID())
         } else {
             server.getLogger().warn("Unhandled animation action: " + packet.action.name)
         }

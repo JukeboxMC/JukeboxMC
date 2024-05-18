@@ -7,7 +7,6 @@ import io.netty.buffer.ByteBufInputStream
 import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import org.cloudburstmc.blockstateupdater.BlockStateUpdater
 import org.cloudburstmc.blockstateupdater.BlockStateUpdaters
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtUtils
@@ -43,6 +42,7 @@ import org.jukeboxmc.api.world.World
 import org.jukeboxmc.api.world.generator.EmptyGenerator
 import org.jukeboxmc.api.world.generator.FlatGenerator
 import org.jukeboxmc.api.world.generator.Generator
+import org.jukeboxmc.server.anticheat.module.registry.AntiCheatRegistry
 import org.jukeboxmc.server.block.BlockRegistry
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.blockentity.BlockEntityRegistry
@@ -104,6 +104,7 @@ class JukeboxServer : Server {
     private var commandManager: JukeboxCommandManager
     private var consoleSender: ConsoleSender
     private var jukeboxRecipeManager: JukeboxRecipeManager
+    private var antiCheatRegistry: AntiCheatRegistry
 
     private lateinit var serverConfig: Config
 
@@ -154,6 +155,8 @@ class JukeboxServer : Server {
 
         this.pluginManager = JukeboxPluginManager(this)
         this.pluginManager.enableAllPlugins(PluginLoadOrder.STARTUP)
+
+        this.antiCheatRegistry = AntiCheatRegistry()
 
         this.registerGenerator("flat", FlatGenerator::class.java, Dimension.OVERWORLD)
         this.registerGenerator(
@@ -707,4 +710,6 @@ class JukeboxServer : Server {
     override fun getCommandManager(): JukeboxCommandManager {
         return this.commandManager
     }
+
+    fun getAntiCheatRegistry() = this.antiCheatRegistry
 }

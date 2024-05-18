@@ -18,6 +18,7 @@ dependencies {
         exclude(group = "io.netty", module = "netty-common")
     }
     implementation("org.cloudburstmc.protocol:bedrock-codec:3.0.0.Beta2-SNAPSHOT") {
+
         exclude(group = "io.netty", module = "netty-common")
     }
     implementation("org.cloudburstmc:nbt:3.0.0.Final")
