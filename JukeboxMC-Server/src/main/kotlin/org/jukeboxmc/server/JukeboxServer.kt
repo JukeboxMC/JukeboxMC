@@ -195,7 +195,11 @@ class JukeboxServer : Server {
                     Thread.sleep(5L.coerceAtLeast(nextTickTime - startTimeMillis - 25))
                 }
             }
-            this.tick()
+            try {
+                this.tick()
+            } catch (e : Exception) {
+                this.getLogger().info(e.stackTraceToString())
+            }
             nextTickTime += 50
         }
     }

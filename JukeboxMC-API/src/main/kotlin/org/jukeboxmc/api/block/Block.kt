@@ -49,6 +49,8 @@ interface Block {
 
     fun getLocation(): Location
 
+    fun isValid(): Boolean
+
     fun getX(): Float
 
     fun getY(): Float

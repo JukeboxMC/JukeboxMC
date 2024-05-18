@@ -39,8 +39,7 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
                 val clickPosition = Vector().fromVector3f(packet.clickPosition, player.getDimension())
                 val blockFace: BlockFace = BlockFace.fromId(packet.blockFace)!!
                 val relativeBlock = player.getWorld().getBlock(blockPosition).getRelative(blockFace)
-
-                val placeLocation = relativeBlock.getLocation()
+                val placeLocation = if (relativeBlock.isValid()) relativeBlock.getLocation() else return
                 if (player.hasAction()) player.setAction(false)
 
                 if (!this.useItemOn(player, blockPosition, placeLocation, clickPosition, blockFace)) {
@@ -141,7 +140,7 @@ class InventoryTransactionHandler : PacketHandler<InventoryTransactionPacket> {
         val placedBlock: JukeboxBlock = itemInHand.toBlock().toJukeboxBlock()
         val playerInteractEvent = PlayerInteractEvent(
             player,
-            if (clickedBlock.getType() == BlockType.AIR) PlayerInteractEvent.Action.RIGHT_CLICK_AIR else PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+            PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
             player.getInventory().getItemInHand(),
             clickedBlock
         )

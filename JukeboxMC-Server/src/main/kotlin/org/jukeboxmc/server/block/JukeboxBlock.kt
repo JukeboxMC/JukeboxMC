@@ -140,6 +140,10 @@ open class JukeboxBlock(
         return this.location!!
     }
 
+    override fun isValid(): Boolean {
+        return this.location != null
+    }
+
     fun setLocation(location: Location) {
         this.location = location
     }

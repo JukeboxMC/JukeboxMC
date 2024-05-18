@@ -2,6 +2,7 @@ package org.jukeboxmc.server.plugin
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
+import org.jukeboxmc.api.JukeboxMC
 import org.jukeboxmc.api.Server
 import org.jukeboxmc.api.event.*
 import org.jukeboxmc.api.extensions.asType
@@ -212,9 +213,9 @@ class JukeboxPluginManager(
                         try {
                             registeredListener.methode.invoke(registeredListener.listener, event)
                         } catch (e: IllegalAccessException) {
-                            e.printStackTrace()
+                            JukeboxServer.getInstance().getLogger().info(e.stackTraceToString())
                         } catch (e: InvocationTargetException) {
-                            e.printStackTrace()
+                            JukeboxServer.getInstance().getLogger().info(e.stackTraceToString())
                         }
                     }
                 }
