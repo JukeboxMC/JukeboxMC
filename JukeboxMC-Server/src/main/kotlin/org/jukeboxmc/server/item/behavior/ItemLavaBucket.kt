@@ -2,11 +2,17 @@ package org.jukeboxmc.server.item.behavior
 
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
+import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.ItemType
+import java.time.Duration
 
-class ItemLavaBucket(itemType: ItemType, countNetworkId: Boolean) : ItemBucket(itemType, countNetworkId) {
+class ItemLavaBucket(itemType: ItemType, countNetworkId: Boolean) : ItemBucket(itemType, countNetworkId), Burnable {
 
     override fun toBlock(): Block {
         return Block.create(BlockType.LAVA)
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(20000)
     }
 }

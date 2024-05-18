@@ -520,12 +520,16 @@ class BlockRegistry {
                 BlockTrapdoor::class.java
             )
             register(BlockType.CORAL_BLOCK, Identifier.fromString("minecraft:coral_block"), BlockCoralBlock::class.java)
-            register(BlockType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"), BlockCoralFan::class.java)
-            register(
-                BlockType.CORAL_FAN_DEAD,
-                Identifier.fromString("minecraft:coral_fan_dead"),
-                BlockCoralFanDead::class.java
-            )
+            register(BlockType.FIRE_CORAL_FAN, Identifier.fromString("minecraft:fire_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.BRAIN_CORAL_FAN, Identifier.fromString("minecraft:brain_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:bubble_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.TUBE_CORAL_FAN, Identifier.fromString("minecraft:tube_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.HORN_CORAL_FAN, Identifier.fromString("minecraft:horn_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.DEAD_FIRE_CORAL_FAN, Identifier.fromString("minecraft:dead_fire_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.DEAD_BRAIN_CORAL_FAN, Identifier.fromString("minecraft:dead_brain_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.DEAD_BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:dead_bubble_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.DEAD_TUBE_CORAL_FAN, Identifier.fromString("minecraft:dead_tube_coral_fan"), BlockCoralFan::class.java)
+            register(BlockType.DEAD_HORN_CORAL_FAN, Identifier.fromString("minecraft:dead_horn_coral_fan"), BlockCoralFan::class.java)
             register(
                 BlockType.CORAL_FAN_HANG,
                 Identifier.fromString("minecraft:coral_fan_hang"),
@@ -2070,7 +2074,17 @@ class BlockRegistry {
             register(BlockType.RED_CARPET, Identifier.fromString("minecraft:red_carpet"), BlockCarpet::class.java)
             register(BlockType.RED_CONCRETE, Identifier.fromString("minecraft:red_concrete"))
             register(BlockType.RED_CONCRETE_POWDER, Identifier.fromString("minecraft:red_concrete_powder"))
-            register(BlockType.RED_FLOWER, Identifier.fromString("minecraft:red_flower"), BlockRedFlower::class.java)
+            register(BlockType.POPPY, Identifier.fromString("minecraft:poppy"), BlockRedFlower::class.java)
+            register(BlockType.BLUE_ORCHID, Identifier.fromString("minecraft:blue_orchid"), BlockRedFlower::class.java)
+            register(BlockType.ALLIUM, Identifier.fromString("minecraft:allium"), BlockRedFlower::class.java)
+            register(BlockType.AZURE_BLUET, Identifier.fromString("minecraft:azure_bluet"), BlockRedFlower::class.java)
+            register(BlockType.RED_TULIP, Identifier.fromString("minecraft:red_tulip"), BlockRedFlower::class.java)
+            register(BlockType.ORANGE_TULIP, Identifier.fromString("minecraft:orange_tulip"), BlockRedFlower::class.java)
+            register(BlockType.WHITE_TULIP, Identifier.fromString("minecraft:white_tulip"), BlockRedFlower::class.java)
+            register(BlockType.PINK_TULIP, Identifier.fromString("minecraft:pink_tulip"), BlockRedFlower::class.java)
+            register(BlockType.OXEYE_DAISY, Identifier.fromString("minecraft:oxeye_daisy"), BlockRedFlower::class.java)
+            register(BlockType.CORNFLOWER, Identifier.fromString("minecraft:cornflower"), BlockRedFlower::class.java)
+            register(BlockType.LILY_OF_THE_VALLEY, Identifier.fromString("minecraft:lily_of_the_valley"), BlockRedFlower::class.java)
             register(
                 BlockType.RED_GLAZED_TERRACOTTA,
                 Identifier.fromString("minecraft:red_glazed_terracotta"),
@@ -2148,7 +2162,12 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:sandstone_stairs"),
                 BlockStairs::class.java
             )
-            register(BlockType.SAPLING, Identifier.fromString("minecraft:sapling"), BlockSapling::class.java)
+            register(BlockType.OAK_SAPLING, Identifier.fromString("minecraft:oak_sapling"), BlockSapling::class.java)
+            register(BlockType.SPRUCE_SAPLING, Identifier.fromString("minecraft:spruce_sapling"), BlockSapling::class.java)
+            register(BlockType.BIRCH_SAPLING, Identifier.fromString("minecraft:birch_sapling"), BlockSapling::class.java)
+            register(BlockType.JUNGLE_SAPLING, Identifier.fromString("minecraft:jungle_sapling"), BlockSapling::class.java)
+            register(BlockType.ACACIA_SAPLING, Identifier.fromString("minecraft:acacia_sapling"), BlockSapling::class.java)
+            register(BlockType.DARK_OAK_SAPLING, Identifier.fromString("minecraft:dark_oak_sapling"), BlockSapling::class.java)
             register(
                 BlockType.SCAFFOLDING,
                 Identifier.fromString("minecraft:scaffolding"),
@@ -2891,6 +2910,60 @@ class BlockRegistry {
             register(BlockType.YELLOW_STAINED_GLASS_PANE, Identifier.fromString("minecraft:yellow_stained_glass_pane"), BlockGlassPane::class.java)
             register(BlockType.YELLOW_TERRACOTTA, Identifier.fromString("minecraft:yellow_terracotta"))
             register(BlockType.YELLOW_WOOL, Identifier.fromString("minecraft:yellow_wool"))
+            register(BlockType.CRAFTER, Identifier.fromString("minecraft:crafter"))
+            register(BlockType.TRIAL_SPAWNER, Identifier.fromString("minecraft:trial_spawner"))
+            register(BlockType.VAULT, Identifier.fromString("minecraft:vault"))
+            register(BlockType.POLISHED_TUFF, Identifier.fromString("minecraft:polished_tuff"))
+            register(BlockType.CHISELED_TUFF, Identifier.fromString("minecraft:chiseled_tuff"))
+            register(BlockType.CHISELED_TUFF_BRICKS, Identifier.fromString("minecraft:chisled_tuff_bricks"))
+            register(BlockType.TUFF_WALL, Identifier.fromString("minecraft:tuff_wall"))
+            register(BlockType.TUFF_SLAB, Identifier.fromString("minecraft:tuff_slab"))
+            register(BlockType.POLISHED_TUFF_WALL, Identifier.fromString("minecraft:polished_tuff_wall"))
+            register(BlockType.POLISHED_TUFF_STAIRS, Identifier.fromString("minecraft:polished_tuff_stairs"))
+            register(BlockType.POLISHED_TUFF_SLAB, Identifier.fromString("minecraft:polished_tuff_slab"))
+            register(BlockType.TUFF_BRICK_WALL, Identifier.fromString("minecraft:tuff_brick_wall"))
+            register(BlockType.TUFF_BRICK_STAIRS, Identifier.fromString("minecraft:tuff_brick_stairs"))
+            register(BlockType.TUFF_BRICK_SLAB, Identifier.fromString("minecraft:tuff_brick_slab"))
+            register(BlockType.COPPER_DOOR, Identifier.fromString("minecraft:copper_door"))
+            register(BlockType.EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:exposed_copper_door"))
+            register(BlockType.WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:weathered_copper_door"))
+            register(BlockType.OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:oxidized_copper_door"))
+            register(BlockType.WAXED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_copper_door"))
+            register(BlockType.WAXED_EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_exposed_copper_door"))
+            register(BlockType.WAXED_WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_weathered_copper_door"))
+            register(BlockType.WAXED_OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_door"))
+            register(BlockType.CHISELED_COPPER, Identifier.fromString("minecraft:chiseled_copper"))
+            register(BlockType.EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:exposed_chiseled_copper"))
+            register(BlockType.WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:weathered_chiseled_copper"))
+            register(BlockType.OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:oxidized_chiseled_copper"))
+            register(BlockType.WAXED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_chiseled_copper"))
+            register(BlockType.WAXED_EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_exposed_chiseled_copper"))
+            register(BlockType.WAXED_WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_weathered_chiseled_copper"))
+            register(BlockType.WAXED_OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_oxidized_chiseled_copper"))
+            register(BlockType.COPPER_GRATE, Identifier.fromString("minecraft:copper_grate"))
+            register(BlockType.EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:exposed_copper_grate"))
+            register(BlockType.WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:weathered_copper_grate"))
+            register(BlockType.OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:oxidized_copper_grate"))
+            register(BlockType.WAXED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_copper_grate"))
+            register(BlockType.WAXED_EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_exposed_copper_grate"))
+            register(BlockType.WAXED_WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_weathered_copper_grate"))
+            register(BlockType.WAXED_OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_oxidized_copper_grate"))
+            register(BlockType.COPPER_TRAPDOOR, Identifier.fromString("minecraft:copper_trapdoor"))
+            register(BlockType.EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:exposed_copper_trapdoor"))
+            register(BlockType.WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:weathered_copper_trapdoor"))
+            register(BlockType.OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:oxidized_copper_trapdoor"))
+            register(BlockType.WAXED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_copper_trapdoor"))
+            register(BlockType.WAXED_EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_exposed_copper_trapdoor"))
+            register(BlockType.WAXED_WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_weathered_copper_trapdoor"))
+            register(BlockType.WAXED_OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_trapdoor"))
+            register(BlockType.COPPER_BULB, Identifier.fromString("minecraft:copper_bulb"))
+            register(BlockType.EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:exposed_copper_bulb"))
+            register(BlockType.WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:weathered_copper_bulb"))
+            register(BlockType.OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:oxidized_copper_bulb"))
+            register(BlockType.WAXED_COPPER_BULB, Identifier.fromString("minecraft:waxed_copper_bulb"))
+            register(BlockType.WAXED_EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:waxed_exposed_copper_bulb"))
+            register(BlockType.WAXED_WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:waxed_weathered_copper_bulb"))
+            register(BlockType.WAXED_OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:waxed_oxidized_copper_bulb"))
         }
 
         private fun register(blockType: BlockType, identifier: Identifier) {

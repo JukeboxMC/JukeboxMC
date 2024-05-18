@@ -16,6 +16,7 @@ import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
 import org.jukeboxmc.server.util.PaletteUtil
+import org.jukeboxmc.server.util.TrimData
 import java.util.*
 
 /**
@@ -175,6 +176,11 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 craftingDataPacket.potionMixData.addAll(server.getRecipeManager().getPotionMixData())
                 craftingDataPacket.isCleanRecipes = true
                 player.sendPacket(craftingDataPacket)
+
+                val trimDataPacket = TrimDataPacket()
+                trimDataPacket.materials.addAll(TrimData.getMaterial())
+                trimDataPacket.patterns.addAll(TrimData.getPattern())
+                player.sendPacket(trimDataPacket)
             }
 
             else -> {}

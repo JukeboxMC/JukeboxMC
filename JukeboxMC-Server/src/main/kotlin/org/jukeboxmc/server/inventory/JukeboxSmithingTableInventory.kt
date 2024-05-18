@@ -7,7 +7,8 @@ import org.jukeboxmc.api.inventory.SmithingTableInventory
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.server.player.JukeboxPlayer
 
-        class JukeboxSmithingTableInventory(inventoryHolder: InventoryHolder) : ContainerInventory(inventoryHolder,4), SmithingTableInventory {
+class JukeboxSmithingTableInventory(inventoryHolder: InventoryHolder) : ContainerInventory(inventoryHolder, 3),
+    SmithingTableInventory {
 
     override fun getInventoryHolder(): JukeboxPlayer {
         return super.getInventoryHolder() as JukeboxPlayer
@@ -29,4 +30,15 @@ import org.jukeboxmc.server.player.JukeboxPlayer
         super.setItem(slot - 51, item, sendContents)
     }
 
+    override fun getBase(): Item {
+        return this.getItem(51)
+    }
+
+    override fun getAddition(): Item {
+        return this.getItem(52)
+    }
+
+    override fun getTemplate(): Item {
+        return this.getItem(53)
+    }
 }

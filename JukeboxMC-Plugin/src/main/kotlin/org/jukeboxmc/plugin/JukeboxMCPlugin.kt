@@ -26,16 +26,11 @@ class JukeboxMCPlugin : Plugin(), Listener {
         armorInventory.setLeggings(Item.create(ItemType.NETHERITE_LEGGINGS))
         armorInventory.setBoots(Item.create(ItemType.NETHERITE_BOOTS))
 
-        /*
         inventory.addItem(
-            Item.create(ItemType.WOODEN_SWORD),
-            Item.create(ItemType.BOW),
-            Item.create(ItemType.ARROW, 64),
-            Item.create(ItemType.SNOWBALL, 64),
-            Item.create(ItemType.EGG,64),
-            Item.create(ItemType.FISHING_ROD),
+            Item.create(ItemType.FURNACE),
+            Item.create(ItemType.COAL, 64),
+            Item.create(ItemType.IRON_ORE, 64),
         )
-         */
     }
 
     @EventHandler
@@ -46,8 +41,10 @@ class JukeboxMCPlugin : Plugin(), Listener {
 
         val builder = StringBuilder()
         builder.append("§7TPS§8: §e").append(JukeboxMC.getServer().getTps()).append("\n")
-        builder.append("§7ChunkX§8: §e").append(player.getLoadedChunk()!!.getX()).append(" §7ChunkZ§8: §e" + player.getLoadedChunk()!!.getZ()).append("\n")
-        builder.append("§7Herzen§8: §e").append(player.getHealth()).append(" §7Direction§8: §e" + player.getDirection().name).append("\n")
+        builder.append("§7ChunkX§8: §e").append(player.getLoadedChunk()!!.getX())
+            .append(" §7ChunkZ§8: §e" + player.getLoadedChunk()!!.getZ()).append("\n")
+        builder.append("§7Herzen§8: §e").append(player.getHealth())
+            .append(" §7Direction§8: §e" + player.getDirection().name).append("\n")
         val itemInHand = player.getInventory().getItemInHand()
         builder.append("§7ItemInHand§8: §e").append(itemInHand.getType()).append(":")
             .append(itemInHand.getStackNetworkId()).append(" §7Meta§8: §e").append(itemInHand.getMeta()).append("\n")

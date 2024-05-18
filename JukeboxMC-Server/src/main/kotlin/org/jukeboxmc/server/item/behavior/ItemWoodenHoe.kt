@@ -1,14 +1,12 @@
 package org.jukeboxmc.server.item.behavior
 
-import org.jukeboxmc.api.item.Durability
-import org.jukeboxmc.api.item.ItemType
-import org.jukeboxmc.api.item.TierType
-import org.jukeboxmc.api.item.ToolType
+import org.jukeboxmc.api.item.*
 import org.jukeboxmc.server.entity.Attribute
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
+import java.time.Duration
 
-class ItemWoodenHoe(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability {
+class ItemWoodenHoe(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(itemType, countNetworkId), Durability, Burnable {
 
     override fun addToHand(player: JukeboxPlayer) {
         player.getAttribute(Attribute.ATTACK_DAMAGE).apply { this.setCurrentValue(2F) }
@@ -18,6 +16,10 @@ class ItemWoodenHoe(itemType: ItemType, countNetworkId: Boolean) : JukeboxItem(i
         player.getAttribute(Attribute.ATTACK_DAMAGE).apply {
             this.setCurrentValue(this.getMinValue())
         }
+    }
+
+    override fun getBurnTime(): Duration {
+        return Duration.ofMillis(200)
     }
 
     override fun getToolType(): ToolType {

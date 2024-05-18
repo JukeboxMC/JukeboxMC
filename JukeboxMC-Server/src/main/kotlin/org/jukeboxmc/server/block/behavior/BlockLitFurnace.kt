@@ -9,6 +9,8 @@ import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
+import org.jukeboxmc.server.blockentity.JukeboxBlockEntityFurnace
+import org.jukeboxmc.server.extensions.toJukeboxBlockEntity
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
@@ -27,6 +29,32 @@ class BlockLitFurnace(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
     ): Boolean {
         this.setCardinalDirection(player.getDirection().opposite())
         return super.placeBlock(player, world, blockPosition, placePosition, clickedPosition, itemInHand, blockFace)
+    }
+
+    override fun interact(
+        player: JukeboxPlayer,
+        world: JukeboxWorld,
+        blockPosition: Vector,
+        clickedPosition: Vector,
+        blockFace: BlockFace,
+        itemInHand: JukeboxItem
+    ): Boolean {
+        world.getBlockEntity(this.getLocation())?.toJukeboxBlockEntity()
+            ?.interact(player, blockPosition, clickedPosition, blockFace, itemInHand)
+        return true
+    }
+
+    override fun onBlockBreak(breakLocation: Vector) {
+        this.getWorld().getBlockEntity(breakLocation)?.let {
+            it as JukeboxBlockEntityFurnace
+            val inventory = it.getFurnaceInventory()
+            for (item in inventory.getContents()) {
+                if (item.getType() == ItemType.AIR) continue
+                this.getWorld().dropItemNaturally(breakLocation, item)
+            }
+            inventory.clear()
+        }
+        super.onBlockBreak(breakLocation)
     }
 
     override fun getCardinalDirection(): Direction {

@@ -26,6 +26,9 @@ class ItemSpawnEgg(private val itemType: ItemType, countNetworkId: Boolean) : Ju
 
         when (this.itemType) {
             ItemType.ALLAY_SPAWN_EGG -> entity = JukeboxEntityAllay()
+            ItemType.ARMADILLO_SPAWN_EGG -> entity = JukeboxEntityArmadillo()
+            ItemType.BOGGED_SPAWN_EGG -> entity = JukeboxEntityBogged()
+            ItemType.BREEZE_SPAWN_EGG -> entity = JukeboxEntityBreeze()
             ItemType.AXOLOTL_SPAWN_EGG -> entity = JukeboxEntityAxolotl()
             ItemType.BAT_SPAWN_EGG -> entity = JukeboxEntityBat()
             ItemType.CAMEL_SPAWN_EGG -> entity = JukeboxEntityCamel()

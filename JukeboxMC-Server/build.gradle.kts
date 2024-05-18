@@ -9,21 +9,20 @@ plugins {
 group = rootProject.group
 version = rootProject.version
 
-repositories {
-    mavenLocal()
-}
-
-
 dependencies {
     api(project(":JukeboxMC-API"))
     implementation(kotlin("stdlib"))
     implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
     implementation("org.ow2.asm:asm:9.4")
-    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta1-JukeboxMC-SNAPSHOT") {
+    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta2-SNAPSHOT") {
+        exclude(group = "io.netty", module = "netty-common")
+    }
+    implementation("org.cloudburstmc.protocol:bedrock-codec:3.0.0.Beta2-SNAPSHOT") {
+
         exclude(group = "io.netty", module = "netty-common")
     }
     implementation("org.cloudburstmc:nbt:3.0.0.Final")
-    implementation("org.cloudburstmc:block-state-updater:1.20.70-SNAPSHOT")
+    implementation("org.cloudburstmc:block-state-updater:1.20.80-SNAPSHOT")
     implementation("io.netty:netty-common:4.1.96.Final")
     implementation("net.daporkchop:leveldb-mcpe-jni:0.0.10-SNAPSHOT") {
         exclude(group = "io.netty", module = "netty-buffer")

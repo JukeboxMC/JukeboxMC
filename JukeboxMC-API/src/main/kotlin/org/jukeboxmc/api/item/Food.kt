@@ -1,6 +1,7 @@
 package org.jukeboxmc.api.item
 
-interface Food {
+interface Food : Item {
+
     fun getSaturation(): Float
 
     fun getHunger(): Int

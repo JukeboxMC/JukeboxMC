@@ -24,7 +24,7 @@ import org.jukeboxmc.server.entity.passive.*
     parameter = [
         Parameter(
             "entityType", enumValues = arrayOf(
-                "allay", "axolotl", "bat", "camel", "cat", "chicken", "cod", "cow", "donkey", "frog", "glow_squid", "horse", "mooshroom", "mule", "ocelot", "parrot", "pig", "pufferfish", "rabbit", "salmon",
+                "allay", "armadillo", "axolotl", "bat", "bogged", "breeze", "camel", "cat", "chicken", "cod", "cow", "donkey", "frog", "glow_squid", "horse", "mooshroom", "mule", "ocelot", "parrot", "pig", "pufferfish", "rabbit", "salmon",
                 "sheep", "skeleton_horse", "sniffer", "snow_golem", "squid", "strider", "tadpole", "tropical_fish", "turtle", "villager", "wandering_trader", "zombie_horse", "bee", "cave_spider", "dolphin", "drowned", "enderman", "fox", "goat",
                 "iron_golem", "llama", "panda", "piglin", "polar_bear", "spider", "trader_llama", "wolf", "zombified_piglin", "blaze", "creeper", "endermite", "evoker", "ghast", "guardian", "hoglin", "husk", "magma_cube", "phantom", "piglin_brute",
                 "pillager", "ravager", "shulker", "silverfish", "skeleton", "slime", "stray", "vex", "vindicator", "warden", "witch", "wither_skeleton", "zoglin", "zombie", "zombie_villager", "elder_guardian", "ender_dragon", "wither"
@@ -72,8 +72,11 @@ class SummonCommand : Command {
     private fun entityByType(type: EntityType): Entity? {
         return when (type) {
             EntityType.ALLAY -> JukeboxEntityAllay()
+            EntityType.ARMADILLO -> JukeboxEntityArmadillo()
             EntityType.AXOLOTL -> JukeboxEntityAxolotl()
             EntityType.BAT -> JukeboxEntityBat()
+            EntityType.BOGGED -> JukeboxEntityBogged()
+            EntityType.BREEZE -> JukeboxEntityBreeze()
             EntityType.CAMEL -> JukeboxEntityCamel()
             EntityType.CAT -> JukeboxEntityCat()
             EntityType.CHICKEN -> JukeboxEntityChicken()

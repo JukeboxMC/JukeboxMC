@@ -20,7 +20,7 @@ import org.jukeboxmc.server.player.JukeboxPlayer
 
 open class JukeboxBlockEntity(
     private val blockEntityType: BlockEntityType,
-    private val block: JukeboxBlock
+    private var block: JukeboxBlock
 ) : BlockEntity {
 
     private var spawned = false
@@ -102,6 +102,10 @@ open class JukeboxBlockEntity(
 
     override fun getBlock(): Block {
         return this.block
+    }
+
+    fun setBlock(block: JukeboxBlock) {
+        this.block = block
     }
 
     override fun isSpawned(): Boolean {

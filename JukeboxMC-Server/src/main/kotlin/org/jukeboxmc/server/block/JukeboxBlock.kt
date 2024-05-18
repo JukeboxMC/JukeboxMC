@@ -330,13 +330,15 @@ open class JukeboxBlock(
             BlockType.DENY, BlockType.END_GATEWAY, BlockType.END_PORTAL, BlockType.END_PORTAL_FRAME, BlockType.FIRE, BlockType.FROG_SPAWN,
             BlockType.FROSTED_ICE, BlockType.INFO_UPDATE, BlockType.INFO_UPDATE2, BlockType.INVISIBLE_BEDROCK, BlockType.JIGSAW, BlockType.MOVING_BLOCK,
             BlockType.NETHERREACTOR, BlockType.PORTAL, BlockType.POWDER_SNOW, BlockType.REINFORCED_DEEPSLATE, BlockType.RESERVED6,
-            BlockType.STRUCTURE_BLOCK, BlockType.STRUCTURE_VOID, -> true
+            BlockType.STRUCTURE_BLOCK, BlockType.STRUCTURE_VOID,
+            -> true
+
             else -> false
         }
     }
 
     fun withoutItemDropsOnlyWithSilkTouch(): Boolean {
-        return when(this.getType()) {
+        return when (this.getType()) {
             BlockType.BEE_NEST, BlockType.BEEHIVE, BlockType.BLACK_STAINED_GLASS, BlockType.BLUE_STAINED_GLASS,
             BlockType.BROWN_STAINED_GLASS, BlockType.CYAN_STAINED_GLASS, BlockType.GRAY_STAINED_GLASS, BlockType.GREEN_STAINED_GLASS,
             BlockType.LIGHT_BLUE_STAINED_GLASS, BlockType.LIGHT_GRAY_STAINED_GLASS, BlockType.LIME_STAINED_GLASS, BlockType.MAGENTA_STAINED_GLASS,
@@ -348,11 +350,13 @@ open class JukeboxBlock(
             BlockType.RED_STAINED_GLASS_PANE, BlockType.WHITE_STAINED_GLASS_PANE, BlockType.YELLOW_STAINED_GLASS_PANE, BlockType.GLASS, BlockType.GLASS_PANE,
             BlockType.BLUE_ICE, BlockType.TUBE_CORAL, BlockType.BRAIN_CORAL, BlockType.BUBBLE_CORAL, BlockType.FIRE_CORAL, BlockType.HORN_CORAL,
             BlockType.CALIBRATED_SCULK_SENSOR, BlockType.DEAD_BRAIN_CORAL, BlockType.DEAD_BUBBLE_CORAL, BlockType.DEAD_FIRE_CORAL,
-            BlockType.DEAD_HORN_CORAL, BlockType.DEAD_TUBE_CORAL, BlockType.CORAL_FAN, BlockType.CORAL_FAN_DEAD, BlockType.CORAL_FAN_HANG,
-            BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
+            BlockType.DEAD_HORN_CORAL, BlockType.DEAD_TUBE_CORAL, BlockType.BUBBLE_CORAL_FAN, BlockType.FIRE_CORAL_FAN, BlockType.HORN_CORAL_FAN,
+            BlockType.BRAIN_CORAL_FAN, BlockType.TUBE_CORAL_FAN, BlockType.DEAD_BUBBLE_CORAL_FAN, BlockType.DEAD_FIRE_CORAL_FAN, BlockType.DEAD_HORN_CORAL_FAN,
+            BlockType.DEAD_BRAIN_CORAL_FAN, BlockType.DEAD_TUBE_CORAL_FAN, BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
             BlockType.SMALL_AMETHYST_BUD, BlockType.MEDIUM_AMETHYST_BUD, BlockType.LARGE_AMETHYST_BUD, BlockType.PACKED_ICE,
             BlockType.SCULK, BlockType.SCULK_CATALYST, BlockType.SCULK_SENSOR, BlockType.SCULK_SHRIEKER, BlockType.SCULK_VEIN,
             BlockType.TURTLE_EGG, BlockType.TALLGRASS -> true
+
             else -> false
         }
     }

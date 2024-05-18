@@ -1,7 +1,10 @@
 package org.jukeboxmc.server.network.handler
 
+import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTransformRecipeData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTrimRecipeData
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -22,10 +25,10 @@ import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.entity.item.JukeboxEntityItem
 import org.jukeboxmc.server.extensions.toJukeboxItem
 import org.jukeboxmc.server.inventory.ContainerInventory
-import org.jukeboxmc.server.inventory.CraftingGridInventory
 import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.PaletteUtil
+import org.jukeboxmc.server.util.TrimData
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -40,14 +43,15 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
     }
 
     fun handleItemStackRequest(request: ItemStackRequest, player: JukeboxPlayer, responses: MutableList<ItemStackResponse>) {
-        val itemEntryMap: MutableMap<Int, MutableList<ItemStackResponseSlot>> = mutableMapOf()
-        for (action in request.actions) {
-            when (action.type) {
-                ItemStackRequestActionType.CONSUME -> {
-                    val itemEntry: ItemStackResponseSlot = handleConsumeAction(player, action as ConsumeAction)[0]
-                    if (!itemEntryMap.containsKey(request.requestId)) {
-                        itemEntryMap[request.requestId] = LinkedList<ItemStackResponseSlot>().apply {
-                            add(itemEntry)
+            val itemEntryMap: MutableMap<Int, ConsumeActionData> = mutableMapOf()
+            for (action in request.actions) {
+                when (action.type) {
+                    ItemStackRequestActionType.CONSUME -> {
+                        val consumeAction = handleConsumeAction(player, action as ConsumeAction)
+                        if (!itemEntryMap.containsKey(request.requestId)) {
+                            itemEntryMap[request.requestId] = consumeAction
+                        } else {
+                            itemEntryMap[request.requestId]?.responseSlot?.add(consumeAction.responseSlot[0])
                         }
                     } else {
                         itemEntryMap[request.requestId]?.add(itemEntry)
@@ -89,6 +93,30 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                             (action as CraftRecipeOptionalAction),
                             request
                         )
+                    }
+
+                    ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
+                    }
+
+                    else -> {
+                        server.getLogger()
+                            .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
+                    }
+                }
+            }
+            val itemStackResponsePacket = ItemStackResponsePacket()
+            val containerEntryMap: MutableMap<Int, MutableList<ItemStackResponseContainer>> = HashMap()
+            if (itemEntryMap.isNotEmpty()) {
+                for (respons in responses) {
+                    containerEntryMap[respons.requestId] = respons.containers
+                }
+                if (containerEntryMap.containsKey(request.requestId)) {
+                    containerEntryMap[request.requestId]?.add(
+                        0,
+                        ItemStackResponseContainer(
+                            itemEntryMap[request.requestId]!!.containerSlotType,
+                            itemEntryMap[request.requestId]!!.responseSlot
+                        )
                     )
                 }
 
@@ -122,37 +150,12 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         player.sendPacket(itemStackResponsePacket)
     }
 
-    private fun handleCraftResult(
-        player: JukeboxPlayer,
-        action: CraftResultsDeprecatedAction,
-        request: ItemStackRequest
-    ): Collection<ItemStackResponse?> {
-        val craftingGridInventory: CraftingGridInventory = player.getCraftingGridInventory()
-        val itemEntries: MutableList<ItemStackResponseSlot> = LinkedList()
-        for (slot in craftingGridInventory.getOffset() until craftingGridInventory.getSize() + craftingGridInventory.getOffset()) {
-            val item: Item = craftingGridInventory.getItem(slot)
-            itemEntries.add(
-                ItemStackResponseSlot(
-                    slot.toByte().toInt(),
-                    slot.toByte().toInt(),
-                    item.getAmount().toByte().toInt(),
-                    item.getStackNetworkId(),
-                    item.getDisplayName(),
-                    item.getDurability()
-                )
-            )
-        }
-        val containerEntryList: MutableList<ItemStackResponseContainer> = LinkedList()
-        containerEntryList.add(ItemStackResponseContainer(ContainerSlotType.CRAFTING_INPUT, itemEntries))
-        return listOf(ItemStackResponse(ItemStackResponseStatus.OK, request.requestId, containerEntryList))
-    }
-
     private fun handleCraftRecipeOptionalAction(
         player: JukeboxPlayer,
         action: CraftRecipeOptionalAction,
         request: ItemStackRequest
     ): Collection<ItemStackResponse> {
-        return emptyList<ItemStackResponse>()
+        return emptyList()
     }
 
     private fun handleCraftRecipeAction(
@@ -160,16 +163,116 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         action: CraftRecipeAction,
         request: ItemStackRequest
     ): List<ItemStackResponse> {
-        val resultItem: List<JukeboxItem> = JukeboxServer.getInstance().getRecipeManager().getResultItem(action.recipeNetworkId)
-        player.getCreativeCacheInventory().setItem(0, resultItem[0])
-        return emptyList()
-    }
+        val recipeManager = JukeboxServer.getInstance().getRecipeManager()
+        val resultItem: List<JukeboxItem> = recipeManager.getResultItem(action.recipeNetworkId)
+        if (resultItem.isNotEmpty()) {
+            val jukeboxItem = resultItem[0]
+            player.getCreativeCacheInventory().setItem(0, jukeboxItem)
+            return listOf(
+                ItemStackResponse(
+                    ItemStackResponseStatus.OK, request.requestId, listOf(
+                        ItemStackResponseContainer(
+                            ContainerSlotType.CREATED_OUTPUT,
+                            mutableListOf(
+                                ItemStackResponseSlot(
+                                    0,
+                                    0,
+                                    jukeboxItem.getAmount(),
+                                    jukeboxItem.getStackNetworkId(),
+                                    jukeboxItem.getDisplayName(),
+                                    jukeboxItem.getDurability()
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        } else {
+            val smithingTrimRecipeData = recipeManager.getCraftingData().filterIsInstance<SmithingTrimRecipeData>()
+            val smithingTransformRecipeData =
+                recipeManager.getCraftingData().filterIsInstance<SmithingTransformRecipeData>()
+            val smithingTableInventory = player.getSmithingTableInventory()
+            val base = smithingTableInventory.getBase()
+            val addition = smithingTableInventory.getAddition()
+            val template = smithingTableInventory.getTemplate()
 
+            if (smithingTrimRecipeData.isNotEmpty() && smithingTrimRecipeData.first().netId == action.recipeNetworkId) {
+                val pattern =
+                    TrimData.getPattern().find { it.itemName.equals(template.getIdentifier().getFullName()) }
+                val materialId =
+                    TrimData.getMaterial().find { it.itemName.equals(addition.getIdentifier().getFullName()) }
+                if (base.getType() == ItemType.AIR || pattern == null || materialId == null) {
+                    return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
+                }
+                val armorItem = base.clone().toJukeboxItem()
+                val trimCompound = NbtMap.builder()
+                    .putString("Material", materialId.materialId)
+                    .putString("Pattern", pattern.patternId)
+                    .build()
+                val compound = if (armorItem.getNbt() != null) base.getNbt() else NbtMap.EMPTY
+                armorItem.setNbt(compound?.toBuilder()?.putCompound("Trim", trimCompound)?.build())
+                player.getCreativeCacheInventory().setItem(0, armorItem)
+                return listOf(
+                    ItemStackResponse(
+                        ItemStackResponseStatus.OK, request.requestId, listOf(
+                            ItemStackResponseContainer(
+                                ContainerSlotType.CREATED_OUTPUT,
+                                mutableListOf(
+                                    ItemStackResponseSlot(
+                                        0,
+                                        0,
+                                        armorItem.getAmount(),
+                                        armorItem.getStackNetworkId(),
+                                        armorItem.getDisplayName(),
+                                        armorItem.getDurability()
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            } else if (smithingTransformRecipeData.isNotEmpty()) {
+                val recipeData = smithingTransformRecipeData.find { it.netId == action.recipeNetworkId }
+                if (recipeData != null) {
+                    val baseItem = JukeboxItem(recipeData.base.toItem().toBuilder().damage(0).build(), false)
+                    val additionItem = JukeboxItem(recipeData.addition.toItem().toBuilder().damage(0).build(), false)
+                    val templateItem = JukeboxItem(recipeData.template.toItem().toBuilder().damage(0).build(), false)
+
+                    if (baseItem != base && additionItem != addition && templateItem != template) {
+                        return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
+                    }
+
+                    val result = JukeboxItem(recipeData.result.toBuilder().build(), true)
+                    player.getCreativeCacheInventory().setItem(0, result)
+                    return listOf(
+                        ItemStackResponse(
+                            ItemStackResponseStatus.OK, request.requestId, listOf(
+                                ItemStackResponseContainer(
+                                    ContainerSlotType.CREATED_OUTPUT,
+                                    mutableListOf(
+                                        ItemStackResponseSlot(
+                                            0,
+                                            0,
+                                            result.getAmount(),
+                                            result.getStackNetworkId(),
+                                            result.getDisplayName(),
+                                            result.getDurability()
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                }
+            }
+        }
+        return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
+    }
 
     private fun handleConsumeAction(
         player: JukeboxPlayer,
         action: ConsumeAction
-    ): List<ItemStackResponseSlot> {
+    ): ConsumeActionData {
         val amount = action.count
         val source = action.source
         var sourceItem: Item = this.getItem(player, source.container, source.slot)!!
@@ -177,18 +280,20 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         if (sourceItem.getAmount() <= 0) {
             sourceItem = Item.create(ItemType.AIR)
         }
+
         this.setItem(player, source.container, source.slot, sourceItem)
         val containerEntryList: MutableList<ItemStackResponseSlot> = LinkedList()
         containerEntryList.add(
             ItemStackResponseSlot(
                 source.slot,
-                source.slot, sourceItem.getAmount(),
+                source.slot,
+                sourceItem.getAmount(),
                 sourceItem.getStackNetworkId(),
                 sourceItem.getDisplayName(),
                 sourceItem.getDurability()
             )
         )
-        return containerEntryList
+        return ConsumeActionData(source.container, containerEntryList)
     }
 
     private fun handleTakeRequestAction(
@@ -551,7 +656,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         if (sourceItem.getAmount() <= 0) {
             sourceItem = Item.create(ItemType.AIR)
         }
-        setItem(player, source.container, source.slot, sourceItem)
+        this.setItem(player, source.container, source.slot, sourceItem)
 
         val entityItem = JukeboxEntityItem()
         entityItem.setItem(playerDropItemEvent.getItem())
@@ -570,7 +675,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                             ItemStackResponseSlot(
                                 source.slot,
                                 source.slot,
-                                finalSourceItem.getAmount().toByte().toInt(),
+                                finalSourceItem.getAmount(),
                                 finalSourceItem.getStackNetworkId(),
                                 finalSourceItem.getDisplayName(),
                                 finalSourceItem.getDurability()
@@ -691,6 +796,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
 
             ContainerSlotType.SMITHING_TABLE_INPUT,
             ContainerSlotType.SMITHING_TABLE_RESULT,
+            ContainerSlotType.SMITHING_TABLE_TEMPLATE,
             ContainerSlotType.SMITHING_TABLE_MATERIAL -> player.getSmithingTableInventory()
 
             ContainerSlotType.ANVIL_INPUT,
@@ -757,4 +863,9 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             )
         }
     }
+
+    data class ConsumeActionData(
+        val containerSlotType: ContainerSlotType,
+        val responseSlot: MutableList<ItemStackResponseSlot>
+    )
 }

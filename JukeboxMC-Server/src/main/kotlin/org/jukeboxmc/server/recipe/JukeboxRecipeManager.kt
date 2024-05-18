@@ -260,9 +260,9 @@ class JukeboxRecipeManager : RecipeManager {
                     this.craftingData.add(
                         SmithingTransformRecipeData.of(
                             id,
+                            templateDescriptor,
                             baseDescriptor,
                             additionDescriptor,
-                            templateDescriptor,
                             resultDescriptor,
                             block,
                             netId

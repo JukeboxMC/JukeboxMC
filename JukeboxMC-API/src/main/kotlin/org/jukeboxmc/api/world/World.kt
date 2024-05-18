@@ -140,9 +140,9 @@ interface World {
 
     fun getCollisionCubes(boundingBox: AxisAlignedBB, entity: Entity): Collection<AxisAlignedBB>
 
-    fun dropItem(location: Location, item: Item)
+    fun dropItem(location: Vector, item: Item)
 
-    fun dropItemNaturally(location: Location, item: Item)
+    fun dropItemNaturally(location: Vector, item: Item)
 
     fun save()
 
