@@ -27,12 +27,11 @@ class JukeboxMCPlugin : Plugin(), Listener {
         armorInventory.setBoots(Item.create(ItemType.NETHERITE_BOOTS))
 
         inventory.addItem(
-            Item.create(ItemType.BANNER, 64),
-            Item.create(ItemType.BLUE_DYE, 64),
-            Item.create(ItemType.GREEN_DYE, 64),
-            Item.create(ItemType.RED_DYE, 64),
-            Item.create(ItemType.YELLOW_DYE, 64),
-            Item.create(ItemType.LOOM, 1),
+            Item.create(ItemType.GRINDSTONE, 1),
+            Item.create(ItemType.WOODEN_SHOVEL, 1),
+            Item.create(ItemType.WOODEN_SHOVEL, 1),
+            Item.create(ItemType.STONE_SHOVEL, 1),
+            Item.create(ItemType.STONE_SHOVEL, 1),
         )
     }
 

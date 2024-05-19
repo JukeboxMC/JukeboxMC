@@ -1,3 +1,11 @@
 package org.jukeboxmc.api.inventory
 
-interface GrindstoneInventory : Inventory
+import org.jukeboxmc.api.item.Item
+
+interface GrindstoneInventory : Inventory {
+
+    fun getInput(): Item
+
+    fun getAdditional(): Item
+
+}

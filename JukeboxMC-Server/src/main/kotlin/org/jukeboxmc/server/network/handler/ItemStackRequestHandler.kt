@@ -58,6 +58,8 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
     ) {
         val itemEntryMap: MutableMap<Int, ConsumeActionData> = mutableMapOf()
         for (action in request.actions) {
+            println(action)
+
             when (action.type) {
                 ItemStackRequestActionType.CONSUME -> {
                     val consumeAction = handleConsumeAction(player, action as ConsumeAction)
@@ -93,12 +95,12 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 }
 
                 ItemStackRequestActionType.CRAFT_RECIPE -> {
-                    this.handleCraftRecipeAction(player, action as CraftRecipeAction, request)
+                    responses.addAll(this.handleCraftRecipeAction(player, action as CraftRecipeAction, request))
                 }
 
                 ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL -> {
                     responses.addAll(
-                        handleCraftRecipeOptionalAction(
+                        this.handleCraftRecipeOptionalAction(
                             player,
                             (action as CraftRecipeOptionalAction),
                             request
@@ -107,11 +109,15 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 }
 
                 ItemStackRequestActionType.MINE_BLOCK -> {
-                    this.handleMineBlockAction(player, action as MineBlockAction, request)
+                    responses.addAll(this.handleMineBlockAction(player, action as MineBlockAction, request))
                 }
 
                 ItemStackRequestActionType.CRAFT_LOOM -> {
-                    this.handleCraftLoom(player, action as CraftLoomAction, request)
+                    responses.addAll(this.handleCraftLoom(player, action as CraftLoomAction, request))
+                }
+
+                ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT -> {
+                    this.handleCraftGrindstoneAction(player, action as CraftGrindstoneAction, request)
                 }
 
                 ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
@@ -195,6 +201,20 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         action: CraftRecipeOptionalAction,
         request: ItemStackRequest
     ): Collection<ItemStackResponse> {
+        return emptyList()
+    }
+
+    private fun handleCraftGrindstoneAction(
+        player: JukeboxPlayer,
+        action: CraftGrindstoneAction,
+        request: ItemStackRequest
+    ): List<ItemStackResponse> {
+        val grindstoneInventory = player.getGrindstoneInventory()
+        if (grindstoneInventory.getInput().getType() != ItemType.AIR && grindstoneInventory.getAdditional().getType() == ItemType.AIR) {
+
+        } else if (grindstoneInventory.getInput().getType() != ItemType.AIR && grindstoneInventory.getAdditional().getType() != ItemType.AIR) {
+
+        }
         return emptyList()
     }
 

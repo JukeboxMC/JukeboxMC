@@ -103,7 +103,7 @@ class JukeboxPlayer(
     private val forms: Int2ObjectMap<Form<out Any>> = Int2ObjectOpenHashMap()
     private val formListeners: Int2ObjectMap<FormListener<out Any>> = Int2ObjectOpenHashMap()
 
-    private val printDebugMessage: Boolean = false
+    private val printDebugMessage: Boolean = true
 
     private var lastBlockAction: PlayerBlockActionData? = null
 
