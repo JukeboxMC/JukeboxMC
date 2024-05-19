@@ -95,6 +95,7 @@ class JukeboxPlayer(
     private val smithingTableInventory = JukeboxSmithingTableInventory(this)
     private val anvilInventory = JukeboxAnvilInventory(this)
     private val stoneCutterInventory = JukeboxStoneCutterInventory(this)
+    private val loomInventory = JukeboxLoomInventory(this)
 
     private var hasOpenForm = false
     private var formId = 0
@@ -574,6 +575,10 @@ class JukeboxPlayer(
 
     fun getStoneCutterInventory(): JukeboxStoneCutterInventory {
         return this.stoneCutterInventory
+    }
+
+    fun getLoomInventory(): JukeboxLoomInventory {
+        return this.loomInventory
     }
 
     override fun hasPermission(permission: String): Boolean {

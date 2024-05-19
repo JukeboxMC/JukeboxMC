@@ -119,7 +119,7 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
     }
 
     override fun getItem(): Item {
-        return this.item.clone();
+        return this.item.clone()
     }
 
     override fun setItem(item: Item) {
@@ -131,7 +131,7 @@ class JukeboxEntityItem : JukeboxEntity(), EntityItem {
     }
 
     override fun setPickupDelay(pickupDelay: Long, timeUnit: TimeUnit) {
-        this.pickupDelay = JukeboxServer.getInstance().getCurrentTick() + timeUnit.toMillis(pickupDelay) / 50;
+        this.pickupDelay = JukeboxServer.getInstance().getCurrentTick() + timeUnit.toMillis(pickupDelay) / 50
     }
 
     override fun getThrower(): EntityHuman? {

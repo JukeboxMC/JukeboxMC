@@ -76,6 +76,9 @@ abstract class JukeboxInventory(
         if (item.getAmount() <= 0 || item.getType() == ItemType.AIR) {
             this.contents[slot] = Item.create(ItemType.AIR)
         } else {
+            if (item.getAmount() > item.getMaxStackSize()) {
+                item.setAmount(item.getMaxStackSize())
+            }
             this.contents[slot] = item
         }
 

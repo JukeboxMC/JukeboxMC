@@ -12,16 +12,16 @@ class JukeboxBlockEntityBanner(blockEntityType: BlockEntityType, block: JukeboxB
 
     private var baseColor: Int = 0
     private var type: Int = 0
-    private val patterns: MutableMap<String, Int> = mutableMapOf()
+    private val patterns: MutableList<NbtMap> = mutableListOf()
 
     override fun fromCompound(compound: NbtMap) {
         super.fromCompound(compound)
         this.baseColor = compound.getInt("Base", 0)
         this.type = compound.getInt("Type", 0)
 
-        val patterns = compound.getList("blocks", NbtType.COMPOUND)
+        val patterns = compound.getList("Patterns", NbtType.COMPOUND)
         for (pattern in patterns) {
-            this.patterns[pattern.getString("Pattern", "ss")] = pattern.getInt("Color", 0)
+            this.patterns.add(pattern)
         }
     }
 
@@ -30,14 +30,7 @@ class JukeboxBlockEntityBanner(blockEntityType: BlockEntityType, block: JukeboxB
         compound.putInt("Base", this.baseColor)
         compound.putInt("Type", this.type)
         if (this.patterns.isNotEmpty()) {
-            val pattern: MutableList<NbtMap> = ArrayList()
-            for ((key, value) in patterns) {
-                val patternBuilder = NbtMap.builder()
-                patternBuilder.putString("Pattern", key)
-                patternBuilder.putInt("Color", value)
-                pattern.add(patternBuilder.build())
-            }
-            compound.putList("Patterns", NbtType.COMPOUND, pattern)
+            compound.putList("Patterns", NbtType.COMPOUND, this.patterns)
         }
         return compound
     }
@@ -56,5 +49,9 @@ class JukeboxBlockEntityBanner(blockEntityType: BlockEntityType, block: JukeboxB
 
     override fun setType(type: Int) {
         this.type = type
+    }
+
+    override fun getPattern(): MutableList<NbtMap> {
+        return this.patterns
     }
 }

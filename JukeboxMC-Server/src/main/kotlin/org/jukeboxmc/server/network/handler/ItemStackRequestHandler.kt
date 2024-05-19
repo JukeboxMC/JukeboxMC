@@ -1,6 +1,7 @@
 package org.jukeboxmc.server.network.handler
 
 import org.cloudburstmc.nbt.NbtMap
+import org.cloudburstmc.nbt.NbtType
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
@@ -50,7 +51,11 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         }
     }
 
-    fun handleItemStackRequest(request: ItemStackRequest, player: JukeboxPlayer, responses: MutableList<ItemStackResponse>) {
+    fun handleItemStackRequest(
+        request: ItemStackRequest,
+        player: JukeboxPlayer,
+        responses: MutableList<ItemStackResponse>
+    ) {
         val itemEntryMap: MutableMap<Int, ConsumeActionData> = mutableMapOf()
         for (action in request.actions) {
             when (action.type) {
@@ -101,11 +106,15 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                     )
                 }
 
-                ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
-                }
-
                 ItemStackRequestActionType.MINE_BLOCK -> {
                     this.handleMineBlockAction(player, action as MineBlockAction, request)
+                }
+
+                ItemStackRequestActionType.CRAFT_LOOM -> {
+                    this.handleCraftLoom(player, action as CraftLoomAction, request)
+                }
+
+                ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED -> {
                 }
 
                 else -> {
@@ -138,7 +147,11 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         player.sendPacket(itemStackResponsePacket)
     }
 
-    private fun handleMineBlockAction(player: JukeboxPlayer, actionData: MineBlockAction, itemStackRequest: ItemStackRequest): List<ItemStackResponse> {
+    private fun handleMineBlockAction(
+        player: JukeboxPlayer,
+        actionData: MineBlockAction,
+        itemStackRequest: ItemStackRequest
+    ): List<ItemStackResponse> {
         val hotBarSlot = actionData.hotbarSlot
         var item = player.getInventory().getItem(actionData.hotbarSlot)
 
@@ -161,7 +174,16 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                 listOf(
                     ItemStackResponseContainer(
                         ContainerSlotType.HOTBAR,
-                        listOf(ItemStackResponseSlot(hotBarSlot, hotBarSlot, item.getAmount(), item.getStackNetworkId(), item.getDisplayName(), item.getDurability()))
+                        listOf(
+                            ItemStackResponseSlot(
+                                hotBarSlot,
+                                hotBarSlot,
+                                item.getAmount(),
+                                item.getStackNetworkId(),
+                                item.getDisplayName(),
+                                item.getDurability()
+                            )
+                        )
                     )
                 )
             )
@@ -174,6 +196,63 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
         request: ItemStackRequest
     ): Collection<ItemStackResponse> {
         return emptyList()
+    }
+
+    private fun handleCraftLoom(
+        player: JukeboxPlayer,
+        action: CraftLoomAction,
+        request: ItemStackRequest
+    ): List<ItemStackResponse> {
+        val loomInventory = player.getLoomInventory()
+        val banner = loomInventory.getBanner()
+        val material = loomInventory.getMaterial()
+        if (banner.getType() != ItemType.AIR && material.getType() != ItemType.AIR) {
+            val resultItem = banner.clone().toJukeboxItem()
+            val dyeColor = material.getDyeColor()
+            val patternCompound = NbtMap.builder()
+                .putInt("Color", dyeColor)
+                .putString("Pattern", action.patternId)
+                .build()
+
+            val compound = if (resultItem.getNbt() != null) banner.getNbt()!! else NbtMap.EMPTY
+            if (compound.containsKey("Patterns", NbtType.LIST)) {
+                val compoundMap: MutableList<NbtMap> = mutableListOf()
+                for (nbtMap in compound.getList("Patterns", NbtType.COMPOUND)) {
+                    compoundMap.add(nbtMap)
+                }
+                compoundMap.add(patternCompound)
+                resultItem.setNbt(compound?.toBuilder()
+                    ?.putList("Patterns", NbtType.COMPOUND, compoundMap)
+                    ?.build()
+                )
+            } else {
+                resultItem.setNbt(compound?.toBuilder()
+                    ?.putList("Patterns", NbtType.COMPOUND, patternCompound)
+                    ?.build()
+                )
+            }
+            player.getCreativeCacheInventory().setItem(0, resultItem)
+            return listOf(
+                ItemStackResponse(
+                    ItemStackResponseStatus.OK, request.requestId, listOf(
+                        ItemStackResponseContainer(
+                            ContainerSlotType.CREATED_OUTPUT,
+                            mutableListOf(
+                                ItemStackResponseSlot(
+                                    0,
+                                    0,
+                                    resultItem.getAmount(),
+                                    resultItem.getStackNetworkId(),
+                                    resultItem.getDisplayName(),
+                                    resultItem.getDurability()
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        }
+        return listOf(ItemStackResponse(ItemStackResponseStatus.ERROR, request.requestId, listOf()))
     }
 
     private fun handleCraftRecipeAction(
@@ -800,6 +879,11 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
 
             ContainerSlotType.CRAFTING_INPUT -> player.getCraftingGridInventory()
 
+            ContainerSlotType.LOOM_DYE,
+            ContainerSlotType.LOOM_INPUT,
+            ContainerSlotType.LOOM_MATERIAL,
+            ContainerSlotType.LOOM_RESULT -> player.getLoomInventory()
+
             ContainerSlotType.BARREL,
             ContainerSlotType.BREWING_FUEL,
             ContainerSlotType.BREWING_INPUT,
@@ -851,6 +935,52 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             )
         }
     }
+
+    fun Item.getDyeColor(): Int {
+        return when(this.getType()) {
+            ItemType.WHITE_DYE -> 15
+            ItemType.ORANGE_DYE -> 14
+            ItemType.MAGENTA_DYE -> 13
+            ItemType.LIGHT_BLUE_DYE -> 12
+            ItemType.YELLOW_DYE -> 11
+            ItemType.LIME_DYE -> 10
+            ItemType.PINK_DYE -> 9
+            ItemType.GRAY_DYE -> 8
+            ItemType.LIGHT_GRAY_DYE -> 7
+            ItemType.CYAN_DYE -> 6
+            ItemType.PURPLE_DYE -> 5
+            ItemType.BLUE_DYE -> 4
+            ItemType.BROWN_DYE -> 3
+            ItemType.GREEN_DYE -> 2
+            ItemType.RED_DYE -> 1
+            ItemType.BLACK_DYE -> 0
+            else -> 0
+        }
+    }
+
+    /*
+        fun Item.getDyeColor(): Int {
+        return when(this.getType()) {
+            ItemType.WHITE_DYE -> 0
+            ItemType.ORANGE_DYE -> 1
+            ItemType.MAGENTA_DYE -> 2
+            ItemType.LIGHT_BLUE_DYE -> 3
+            ItemType.YELLOW_DYE -> 4
+            ItemType.LIME_DYE -> 5
+            ItemType.PINK_DYE -> 6
+            ItemType.GRAY_DYE -> 7
+            ItemType.LIGHT_GRAY_DYE -> 8
+            ItemType.CYAN_DYE -> 9
+            ItemType.PURPLE_DYE -> 10
+            ItemType.BLUE_DYE -> 11
+            ItemType.BROWN_DYE -> 12
+            ItemType.GREEN_DYE -> 13
+            ItemType.RED_DYE -> 14
+            ItemType.BLACK_DYE -> 15
+            else -> 0
+        }
+    }
+     */
 
     data class ConsumeActionData(
         val containerSlotType: ContainerSlotType,

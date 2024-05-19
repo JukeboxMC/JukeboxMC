@@ -10,9 +10,9 @@ import kotlin.math.sqrt
 
 open class Vector : Cloneable {
 
-    private var x: Float = 0F;
-    private var y: Float = 0F;
-    private var z: Float = 0F;
+    private var x: Float = 0F
+    private var y: Float = 0F
+    private var z: Float = 0F
     private var dimension: Dimension = Dimension.OVERWORLD
 
     constructor()

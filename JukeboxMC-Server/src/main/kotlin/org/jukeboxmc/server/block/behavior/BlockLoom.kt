@@ -36,7 +36,7 @@ class BlockLoom(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(ide
         blockFace: BlockFace,
         itemInHand: JukeboxItem
     ): Boolean {
-        //player.openInventory(this.loomInventory, blockPosition)
+        player.openInventory(player.getLoomInventory(), blockPosition)
         return true
     }
 

@@ -2,6 +2,7 @@ package org.jukeboxmc.server.block.behavior
 
 import org.apache.commons.math3.util.FastMath
 import org.cloudburstmc.nbt.NbtMap
+import org.cloudburstmc.nbt.NbtType
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
@@ -43,10 +44,14 @@ class BlockStandingBanner(identifier: Identifier, blockStates: NbtMap?) : Jukebo
             world.setBlock(placePosition, blockWallBanner)
         }
         val type = if (itemInHand.getNbt() != null) itemInHand.getNbt()!!.getInt("Type", 0) else 0
+        val pattern = if (itemInHand.getNbt() != null) itemInHand.getNbt()!!.getList("Patterns", NbtType.COMPOUND) else mutableListOf()
         BlockEntity.create<BlockEntityBanner>(BlockEntityType.BANNER, world.getBlock(placePosition))?.let {
             it.apply {
                 it.setColor(Color.entries[itemInHand.getMeta()])
                 it.setType(type)
+                if (pattern.isNotEmpty()) {
+                    it.getPattern().addAll(pattern)
+                }
                 it.spawn()
             }
         }

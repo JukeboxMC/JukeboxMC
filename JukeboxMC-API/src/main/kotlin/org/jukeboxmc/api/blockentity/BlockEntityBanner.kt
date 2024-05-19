@@ -1,5 +1,6 @@
 package org.jukeboxmc.api.blockentity
 
+import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.block.data.Color
 
 interface BlockEntityBanner : BlockEntity {
@@ -11,5 +12,7 @@ interface BlockEntityBanner : BlockEntity {
     fun getType(): Int
 
     fun setType(type: Int)
+
+    fun getPattern(): MutableList<NbtMap>
 
 }
