@@ -39,10 +39,12 @@ class AntiCheatBlockBreakingModule : AntiCheatModule {
             val blockPosition = Vector().fromVector3i(playerAction.blockPosition)
             val lastBlockAction = player.getLastBlockAction()
 
+     /*
             if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() && player.getWorld().getBlock(blockPosition).getType() == BlockType.AIR) {
                 this.updateBlocksAndCallEvent(player, packet)
                 return
             }
+      */
 
             if (player.getLastBlockAction() != null && player.getLastBlockAction()!!.action == PlayerActionType.BLOCK_PREDICT_DESTROY &&
                 playerAction.action == PlayerActionType.BLOCK_CONTINUE_DESTROY

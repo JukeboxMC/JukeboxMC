@@ -14,7 +14,7 @@ enum class WindowId(private val id: Int) {
     OFFHAND(33),
     CURSOR(58),
     CREATED_OUTPUT(59),
-    OPEN_CONTAINER(60),
+    OPEN_CONTAINER(61),
     OFFHAND_DEPRECATED(119),
     ARMOR_DEPRECATED(120),
     CURSOR_DEPRECATED(124);

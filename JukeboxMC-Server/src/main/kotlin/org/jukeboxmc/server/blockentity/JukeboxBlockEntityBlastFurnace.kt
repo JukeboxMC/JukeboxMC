@@ -39,24 +39,26 @@ class JukeboxBlockEntityBlastFurnace(blockEntityType: BlockEntityType, block: Ju
     private var burnTime = 0
     private var burnDuration = 0
 
+    private var input = Item.create(ItemType.AIR)
     private var result = Item.create(ItemType.AIR)
 
     override fun update(currentTick: Long) {
         val input = this.blastFurnaceInventory.getItem(0)
-        val fuelItem = this.blastFurnaceInventory.getItem(1)
         val outputItem = this.blastFurnaceInventory.getItem(2)
 
-        if (input.getType() != ItemType.AIR && fuelItem.getType() != ItemType.AIR && outputItem.getAmount() < 64) {
-            this.result = Item.create(ItemType.AIR)
+        if (input.getType() == ItemType.AIR) this.input = JukeboxItem.AIR
 
+        if (this.input.getType() != input.getType()) {
             JukeboxServer.getInstance().getRecipeManager().getSmeltingRecipes().find { it.getInput().getType() == input.getType() }?.let {
                 this.result = it.getOutput()
-                setBurning(true)
+                this.setBurning(true)
             }
+            this.input = input
         }
+
         if (this.result.getType() != ItemType.AIR && input.getType() != ItemType.AIR && outputItem.getAmount() < 64 && this.burnTime > 0) {
             this.cookTime++
-            if (this.cookTime >= 100) {
+            if (this.cookTime >= 200) {
                 val itemStack = this.blastFurnaceInventory.getItem(2)
                 if (itemStack.getType() != this.result.getType()) {
                     this.blastFurnaceInventory.setItem(2, this.result.apply { this.setAmount(1) })
@@ -67,7 +69,7 @@ class JukeboxBlockEntityBlastFurnace(blockEntityType: BlockEntityType, block: Ju
                 this.blastFurnaceInventory.setItem(0, input.apply { this.setAmount(this.getAmount() - 1) })
                 this.cookTime = 0
                 this.broadcastCookTime()
-            } else if (cookTime % 20 == 0) {
+            } else if (this.cookTime % 20 == 0) {
                 this.broadcastCookTime()
             }
         } else {
@@ -106,6 +108,7 @@ class JukeboxBlockEntityBlastFurnace(blockEntityType: BlockEntityType, block: Ju
         itemInHand: JukeboxItem
     ): Boolean {
         player.openInventory(this.blastFurnaceInventory, blockPosition)
+        this.sendDataProperties(player)
         return true
     }
 

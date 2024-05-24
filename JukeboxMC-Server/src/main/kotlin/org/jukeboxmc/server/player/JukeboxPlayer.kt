@@ -61,6 +61,8 @@ import org.jukeboxmc.server.util.Utils
 import org.jukeboxmc.server.world.chunk.ChunkLoader
 import org.jukeboxmc.server.world.chunk.JukeboxChunk
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class JukeboxPlayer(
     private val server: JukeboxServer,
@@ -103,7 +105,7 @@ class JukeboxPlayer(
     private val forms: Int2ObjectMap<Form<out Any>> = Int2ObjectOpenHashMap()
     private val formListeners: Int2ObjectMap<FormListener<out Any>> = Int2ObjectOpenHashMap()
 
-    private val printDebugMessage: Boolean = true
+    private val printDebugMessage: Boolean = false
 
     private var lastBlockAction: PlayerBlockActionData? = null
 
@@ -482,6 +484,38 @@ class JukeboxPlayer(
         super.setSkin(skin)
     }
 
+    override fun setExperience(value: Float) {
+        val playerExperienceChangeEvent = PlayerExperienceChangeEvent(
+            this,
+            this.getExperience(),
+            this.getLevel(),
+            value,
+            0
+        )
+        if (playerExperienceChangeEvent.isCancelled()) return
+        if (playerExperienceChangeEvent.getNewLevel() > 0) {
+            this.setLevel(playerExperienceChangeEvent.getNewLevel())
+        }
+        var percent = value / this.calculateRequireExperience(this.getLevel())
+        percent = max(0f, min(1f, percent))
+        super.setExperience(percent)
+    }
+
+    override fun setLevel(value: Int) {
+        val playerExperienceChangeEvent = PlayerExperienceChangeEvent(
+            this,
+            this.getExperience(),
+            this.getLevel(),
+            0.0f,
+            value
+        )
+        if (playerExperienceChangeEvent.isCancelled()) return
+        if (playerExperienceChangeEvent.getNewExperience() > 0) {
+            this.setExperience(playerExperienceChangeEvent.getNewExperience())
+        }
+        super.setLevel(value)
+    }
+
     fun openInventory(inventory: Inventory, location: Vector) {
         if (this.currentInventory != null) return
 
@@ -508,6 +542,10 @@ class JukeboxPlayer(
         this.currentInventory = null
     }
 
+    override fun closeInventory() {
+        this.currentInventory?.let { this.closeInventory(it) }
+    }
+
     fun closeInventory(windowId: Byte, serverInitiated: Boolean) {
         if (currentInventory != null) {
             val containerClosePacket = ContainerClosePacket()
@@ -516,7 +554,7 @@ class JukeboxPlayer(
             this.sendPacket(containerClosePacket)
             (currentInventory as ContainerInventory).removeViewer(this)
             this.server.getPluginManager().callEvent(InventoryCloseEvent(currentInventory!!, this))
-            currentInventory = null
+            this.currentInventory = null
         } else {
             val containerClosePacket = ContainerClosePacket()
             containerClosePacket.id = windowId

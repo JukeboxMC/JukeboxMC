@@ -99,6 +99,8 @@ interface Player : EntityHuman, CommandSender {
 
     fun closeInventory(inventory: Inventory)
 
+    fun closeInventory()
+
     fun getCurrentInventory(): Inventory?
 
     fun getCursorInventory(): CursorInventory

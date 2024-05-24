@@ -89,6 +89,8 @@ interface Item {
 
     fun getEnchantments(): Collection<Enchantment>
 
+    fun removeEnchantments()
+
     fun getToolType(): ToolType
 
     fun getTierType(): TierType

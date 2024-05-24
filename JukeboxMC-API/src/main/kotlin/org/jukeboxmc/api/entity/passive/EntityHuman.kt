@@ -63,9 +63,11 @@ interface EntityHuman : EntityLiving, InventoryHolder {
 
     fun setExhaustion(value: Float)
 
-    fun getExperience(): Int
+    fun getExperience(): Float
 
-    fun setExperience(value: Int)
+    fun setExperience(value: Float)
+
+    fun addExperience(value: Float)
 
     fun getLevel(): Int
 

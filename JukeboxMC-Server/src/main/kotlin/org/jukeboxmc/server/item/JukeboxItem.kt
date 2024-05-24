@@ -219,6 +219,10 @@ open class JukeboxItem : Item, Cloneable {
         return this.enchantments.values
     }
 
+    override fun removeEnchantments() {
+        this.enchantments.clear()
+    }
+
     override fun getToolType(): ToolType {
         return ToolType.NONE
     }
@@ -388,8 +392,10 @@ open class JukeboxItem : Item, Cloneable {
             val enchantmentNBT: MutableList<NbtMap> = ArrayList()
             for (enchantment in this.enchantments.values) {
                 enchantmentNBT.add(
-                    NbtMap.builder().putShort("id", enchantment.getId().toShort())
-                        .putShort("lvl", enchantment.getLevel().toShort()).build()
+                    NbtMap.builder()
+                        .putShort("id", enchantment.getId().toShort())
+                        .putShort("lvl", enchantment.getLevel().toShort())
+                        .build()
                 )
             }
             nbtBuilder.putList("ench", NbtType.COMPOUND, enchantmentNBT)
