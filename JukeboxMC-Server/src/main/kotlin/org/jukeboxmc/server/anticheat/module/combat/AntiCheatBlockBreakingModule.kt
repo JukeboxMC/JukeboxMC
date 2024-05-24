@@ -39,12 +39,13 @@ class AntiCheatBlockBreakingModule : AntiCheatModule {
             val blockPosition = Vector().fromVector3i(playerAction.blockPosition)
             val lastBlockAction = player.getLastBlockAction()
 
-     /*
+            /*
             if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() && player.getWorld().getBlock(blockPosition).getType() == BlockType.AIR) {
                 this.updateBlocksAndCallEvent(player, packet)
                 return
             }
-      */
+             */
+
 
             if (player.getLastBlockAction() != null && player.getLastBlockAction()!!.action == PlayerActionType.BLOCK_PREDICT_DESTROY &&
                 playerAction.action == PlayerActionType.BLOCK_CONTINUE_DESTROY
@@ -52,10 +53,11 @@ class AntiCheatBlockBreakingModule : AntiCheatModule {
                 this.handleStartBreak(player, server, blockPosition)
             }
 
-            if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() && (((lastBlockAction == null && playerAction.action != PlayerActionType.START_BREAK) ||
-                        (lastBlockAction != null && !player.isBreakingBlock() && lastBlockAction.action == this.endActionForGameMode[player.getGameMode()] && playerAction.action != PlayerActionType.START_BREAK)) || ((player.getGameMode() == GameMode.CREATIVE && playerAction.action == PlayerActionType.ABORT_BREAK)) || (playerAction.action.equals(
-                    PlayerActionType.BLOCK_CONTINUE_DESTROY
-                ) && lastBlockAction != null && lastBlockAction.action == PlayerActionType.START_BREAK &&
+            if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() &&
+                (((lastBlockAction == null && playerAction.action != PlayerActionType.START_BREAK) || (lastBlockAction != null &&
+                        !player.isBreakingBlock() && lastBlockAction.action == this.endActionForGameMode[player.getGameMode()] &&
+                        playerAction.action != PlayerActionType.START_BREAK)) || ((player.getGameMode() == GameMode.CREATIVE && playerAction.action == PlayerActionType.ABORT_BREAK)) ||
+                        (playerAction.action.equals(PlayerActionType.BLOCK_CONTINUE_DESTROY) && lastBlockAction != null && lastBlockAction.action == PlayerActionType.START_BREAK &&
                         ((player.getGameMode() == GameMode.SURVIVAL && playerAction.action != PlayerActionType.BLOCK_CONTINUE_DESTROY) ||
                                 (player.getGameMode() == GameMode.CREATIVE && playerAction.action != PlayerActionType.BLOCK_PREDICT_DESTROY))) || (playerAction.action.equals(PlayerActionType.BLOCK_CONTINUE_DESTROY) && lastBlockAction != null && lastBlockAction.blockPosition.equals(
                     blockPosition
