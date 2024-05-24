@@ -13,7 +13,7 @@ class SmeltingRecipe(
     }
 
     fun getOutput(): Item {
-        return this.output
+        return this.output.clone()
     }
 
     fun getType(): Type {

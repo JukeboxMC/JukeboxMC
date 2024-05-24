@@ -370,6 +370,9 @@ open class JukeboxBlock(
     }
 
     open fun onBlockBreak(breakLocation: Vector) {
+        if (this.location?.getWorld()?.getBlockEntity(breakLocation) != null) {
+            this.location?.getWorld()?.removeBlockEntity(breakLocation)
+        }
         this.location?.getWorld()?.setBlock(breakLocation, 0, breakLocation.getDimension(), AIR)
     }
 

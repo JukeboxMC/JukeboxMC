@@ -39,21 +39,23 @@ class JukeboxBlockEntityFurnace(blockEntityType: BlockEntityType, block: Jukebox
     private var burnTime = 0
     private var burnDuration = 0
 
+    private var input = Item.create(ItemType.AIR)
     private var result = Item.create(ItemType.AIR)
 
     override fun update(currentTick: Long) {
         val input = this.furnaceInventory.getItem(0)
-        val fuelItem = this.furnaceInventory.getItem(1)
         val outputItem = this.furnaceInventory.getItem(2)
 
-        if (input.getType() != ItemType.AIR && fuelItem.getType() != ItemType.AIR && outputItem.getAmount() < 64) {
-            this.result = Item.create(ItemType.AIR)
+        if (input.getType() == ItemType.AIR) this.input = JukeboxItem.AIR
 
+        if (this.input.getType() != input.getType()) {
             JukeboxServer.getInstance().getRecipeManager().getSmeltingRecipes().find { it.getInput().getType() == input.getType() }?.let {
                 this.result = it.getOutput()
-                setBurning(true)
+                this.setBurning(true)
             }
+            this.input = input
         }
+
         if (this.result.getType() != ItemType.AIR && input.getType() != ItemType.AIR && outputItem.getAmount() < 64 && this.burnTime > 0) {
             this.cookTime++
             if (this.cookTime >= 200) {
@@ -67,7 +69,7 @@ class JukeboxBlockEntityFurnace(blockEntityType: BlockEntityType, block: Jukebox
                 this.furnaceInventory.setItem(0, input.apply { this.setAmount(this.getAmount() - 1) })
                 this.cookTime = 0
                 this.broadcastCookTime()
-            } else if (cookTime % 20 == 0) {
+            } else if (this.cookTime % 20 == 0) {
                 this.broadcastCookTime()
             }
         } else {
@@ -206,8 +208,10 @@ class JukeboxBlockEntityFurnace(blockEntityType: BlockEntityType, block: Jukebox
         }
         val itemStack = this.furnaceInventory.getItem(2)
         return if (itemStack.getType() == this.result.getType()) {
-            itemStack.getAmount() <= itemStack.getMaxStackSize()
-        } else true
+            itemStack.getAmount() < itemStack.getMaxStackSize()
+        } else {
+            true
+        }
     }
 
     private fun sendTickProgress(player: JukeboxPlayer) {

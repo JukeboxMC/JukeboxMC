@@ -1,6 +1,8 @@
 package org.jukeboxmc.server.item.enchantment
 
-class EnchantmentFortune : JukeboxEnchantment() {
+import org.jukeboxmc.api.item.enchantment.Rarity
+
+class EnchantmentFortune : JukeboxEnchantmentLoot() {
 
     override fun getId(): Int {
         return 18
@@ -8,6 +10,10 @@ class EnchantmentFortune : JukeboxEnchantment() {
 
     override fun getMaxLevel(): Int {
         return 3
+    }
+
+    override fun getRarity(): Rarity {
+        return Rarity.RARE
     }
 
 }

@@ -2,6 +2,7 @@ package org.jukeboxmc.server.entity.passive
 
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.GameType
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket
@@ -36,6 +37,7 @@ import org.jukeboxmc.server.inventory.JukeboxPlayerInventory
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.Utils
 import java.util.*
+import kotlin.math.min
 
 open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
 
@@ -396,12 +398,41 @@ open class JukeboxEntityHuman : JukeboxEntityLiving(), EntityHuman {
         this.setExhaustion(exhaustion)
     }
 
-    override fun getExperience(): Int {
-        return this.getAttributeValue(Attribute.PLAYER_EXPERIENCE).toInt()
+    override fun getExperience(): Float {
+        return this.getAttributeValue(Attribute.PLAYER_EXPERIENCE)
     }
 
-    override fun setExperience(value: Int) {
-        this.setAttributes(Attribute.PLAYER_EXPERIENCE, value.toFloat())
+    override fun setExperience(value: Float) {
+        this.setAttributes(Attribute.PLAYER_EXPERIENCE, value)
+    }
+
+    override fun addExperience(value: Float) {
+        if (value == 0.0f) return
+        val now = this.getExperience()
+        var added = now + value
+        var level = this.getLevel()
+        var most = this.calculateRequireExperience(level)
+        while (added >= most) {
+            added -= most
+            level++
+            most = this.calculateRequireExperience(level)
+        }
+        val levelBefore = this.getLevel()
+        this.setExperience(added)
+        this.setLevel(level)
+        if (level != 0 && levelBefore < this.getLevel() && level / 5 != level) {
+            this.getWorld().playLevelSound(this.getLocation(), SoundEvent.LEVELUP, min(7, level / 5) shl 28)
+        }
+    }
+
+    fun calculateRequireExperience(level: Int): Int {
+        return if (level >= 30) {
+            112 + (level - 30) * 9
+        } else if (level >= 15) {
+            37 + (level - 15) * 5
+        } else {
+            7 + level * 2
+        }
     }
 
     override fun getLevel(): Int {

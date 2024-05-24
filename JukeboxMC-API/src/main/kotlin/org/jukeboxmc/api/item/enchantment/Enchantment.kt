@@ -8,6 +8,14 @@ interface Enchantment {
 
     fun getMaxLevel(): Int
 
+    fun getMinCost(level: Int): Int
+
+    fun getMaxCost(level: Int): Int
+
+    fun checkCompatibility(enchantment: Enchantment): Boolean
+
+    fun getRarity(): Rarity
+
     override fun equals(other: Any?): Boolean
 
 }

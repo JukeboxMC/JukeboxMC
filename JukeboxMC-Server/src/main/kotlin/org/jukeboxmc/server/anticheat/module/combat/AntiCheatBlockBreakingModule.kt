@@ -46,6 +46,7 @@ class AntiCheatBlockBreakingModule : AntiCheatModule {
             }
              */
 
+
             if (player.getLastBlockAction() != null && player.getLastBlockAction()!!.action == PlayerActionType.BLOCK_PREDICT_DESTROY &&
                 playerAction.action == PlayerActionType.BLOCK_CONTINUE_DESTROY
             ) {

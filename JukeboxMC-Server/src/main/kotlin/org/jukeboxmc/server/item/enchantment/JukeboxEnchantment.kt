@@ -5,6 +5,12 @@ import org.jukeboxmc.api.item.enchantment.EnchantmentType
 
 abstract class JukeboxEnchantment : Enchantment {
 
+    companion object {
+        fun create(enchantmentType: EnchantmentType): Enchantment {
+            return EnchantmentRegistry.getEnchantmentClass(enchantmentType).getConstructor().newInstance()
+        }
+    }
+
     private var level: Int = 1
 
     override fun getLevel(): Int {
@@ -15,10 +21,16 @@ abstract class JukeboxEnchantment : Enchantment {
         this.level = level
     }
 
-    companion object {
-        fun create(enchantmentType: EnchantmentType): Enchantment {
-            return EnchantmentRegistry.getEnchantmentClass(enchantmentType).getConstructor().newInstance()
-        }
+    override fun getMinCost(level: Int): Int {
+        return 1 + level * 10
+    }
+
+    override fun getMaxCost(level: Int): Int {
+        return this.getMinCost(level) + 5
+    }
+
+    override fun checkCompatibility(enchantment: Enchantment): Boolean {
+        return this != enchantment
     }
 
     override fun equals(other: Any?): Boolean {
