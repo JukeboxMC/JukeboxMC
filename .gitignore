@@ -22,10 +22,10 @@ out/
 /logs/
 /plugins/
 /resource_packs/
+/TEST/
 properties.json
 operators.json
 whitelist.json
-TEST
 
 ### Eclipse ###
 .apt_generated
