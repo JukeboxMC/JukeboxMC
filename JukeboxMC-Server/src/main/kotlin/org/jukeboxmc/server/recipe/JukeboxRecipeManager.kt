@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.extensions.fromJson
+import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.recipe.*
 import org.jukeboxmc.server.block.RuntimeBlockDefinition
@@ -175,18 +176,20 @@ class JukeboxRecipeManager : RecipeManager {
                                 .build()
                         )
                     }
-                    this.craftingData.add(ShapedRecipeData.shaped(
-                        identifier,
-                        width,
-                        height,
-                        inputItems,
-                        outputItems,
-                        uuid,
-                        block,
-                        priority,
-                        netId,
-                        false
-                    ))
+                    this.craftingData.add(
+                        ShapedRecipeData.shaped(
+                            identifier,
+                            width,
+                            height,
+                            inputItems,
+                            outputItems,
+                            uuid,
+                            block,
+                            priority,
+                            netId,
+                            false
+                        )
+                    )
 
                     val shaped: MutableList<String> = mutableListOf()
                     for (shapeElement in jsonObject["shape"].asJsonArray) {
@@ -197,7 +200,9 @@ class JukeboxRecipeManager : RecipeManager {
                         this.getIngredients().putAll(charMap.mapValues { (_, value) ->
                             if (value.descriptor is DefaultDescriptor) {
                                 val itemData = value.toItem()
-                                if (ItemRegistry.getItemTypeFromIdentifier().containsKey(Identifier.fromString(itemData.definition.identifier))) {
+                                if (ItemRegistry.getItemTypeFromIdentifier()
+                                        .containsKey(Identifier.fromString(itemData.definition.identifier))
+                                ) {
                                     JukeboxItem(itemData, false)
                                 } else {
                                     JukeboxItem(ItemType.AIR, false)
@@ -394,6 +399,10 @@ class JukeboxRecipeManager : RecipeManager {
             }
         }
         return emptyList()
+    }
+
+    fun getSmeltingRecipe(input: Item, type: SmeltingRecipe.Type): SmeltingRecipe? {
+        return this.smeltingRecipes.firstOrNull { it.getInput().getType() == input.getType() && it.getType() == type }
     }
 
     fun getHighestNetworkId(): Int {

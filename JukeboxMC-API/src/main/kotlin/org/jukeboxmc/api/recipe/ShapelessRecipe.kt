@@ -33,4 +33,8 @@ open class ShapelessRecipe : Recipe {
         return this.outputs
     }
 
+    override fun toString(): String {
+        return "ShapelessRecipe(ingredients=$ingredients, outputs=$outputs)"
+    }
+
 }

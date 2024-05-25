@@ -15,6 +15,7 @@ import org.jukeboxmc.api.item.Burnable
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Vector
+import org.jukeboxmc.api.recipe.SmeltingRecipe
 import org.jukeboxmc.server.JukeboxServer
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.block.behavior.BlockBlastFurnace
@@ -44,19 +45,31 @@ class JukeboxBlockEntityBlastFurnace(blockEntityType: BlockEntityType, block: Ju
 
     override fun update(currentTick: Long) {
         val input = this.blastFurnaceInventory.getItem(0)
+        val fuelItem = this.blastFurnaceInventory.getItem(1)
         val outputItem = this.blastFurnaceInventory.getItem(2)
 
         if (input.getType() == ItemType.AIR) this.input = JukeboxItem.AIR
 
-        if (this.input.getType() != input.getType()) {
+        val smeltingRecipe =
+            JukeboxServer.getInstance().getRecipeManager().getSmeltingRecipe(input, SmeltingRecipe.Type.BLAST_FURNACE)
+
+        if (this.input.getType() != input.getType() && smeltingRecipe != null) {
             JukeboxServer.getInstance().getRecipeManager().getSmeltingRecipes().find { it.getInput().getType() == input.getType() }?.let {
                 this.result = it.getOutput()
-                this.setBurning(true)
             }
             this.input = input
         }
 
-        if (this.result.getType() != ItemType.AIR && input.getType() != ItemType.AIR && outputItem.getAmount() < 64 && this.burnTime > 0) {
+        if (this.input.getType() != ItemType.AIR && fuelItem.getType() != ItemType.AIR) {
+            this.setBurning(true)
+        }
+
+        if (smeltingRecipe != null &&
+            this.result.getType() != ItemType.AIR &&
+            input.getType() != ItemType.AIR &&
+            outputItem.getAmount() < 64 &&
+            this.burnTime > 0
+            ) {
             this.cookTime++
             if (this.cookTime >= 200) {
                 val itemStack = this.blastFurnaceInventory.getItem(2)
@@ -69,9 +82,8 @@ class JukeboxBlockEntityBlastFurnace(blockEntityType: BlockEntityType, block: Ju
                 this.blastFurnaceInventory.setItem(0, input.apply { this.setAmount(this.getAmount() - 1) })
                 this.cookTime = 0
                 this.broadcastCookTime()
-            } else if (this.cookTime % 20 == 0) {
-                this.broadcastCookTime()
             }
+            this.broadcastCookTime()
         } else {
             if (this.cookTime > 0) {
                 this.cookTime = 0

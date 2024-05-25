@@ -170,6 +170,8 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
             ContainerSlotType.LOOM_MATERIAL,
             ContainerSlotType.LOOM_RESULT -> player.getLoomInventory()
 
+            ContainerSlotType.LEVEL_ENTITY,
+            ContainerSlotType.SMOKER_INGREDIENT,
             ContainerSlotType.BARREL,
             ContainerSlotType.BREWING_FUEL,
             ContainerSlotType.BREWING_INPUT,

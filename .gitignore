@@ -25,6 +25,7 @@ out/
 properties.json
 operators.json
 whitelist.json
+TEST
 
 ### Eclipse ###
 .apt_generated

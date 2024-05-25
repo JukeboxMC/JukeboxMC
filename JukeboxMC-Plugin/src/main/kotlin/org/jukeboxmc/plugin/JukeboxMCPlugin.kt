@@ -1,13 +1,17 @@
 package org.jukeboxmc.plugin
 
+import org.cloudburstmc.protocol.bedrock.packet.SetTitlePacket
 import org.jukeboxmc.api.JukeboxMC
 import org.jukeboxmc.api.event.EventHandler
 import org.jukeboxmc.api.event.Listener
 import org.jukeboxmc.api.event.player.PlayerJoinEvent
 import org.jukeboxmc.api.event.player.PlayerMoveEvent
+import org.jukeboxmc.api.event.player.PlayerToggleSneakEvent
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.plugin.Plugin
+import org.jukeboxmc.server.event.PacketSendEvent
+import org.jukeboxmc.server.extensions.toJukeboxPlayer
 
 class JukeboxMCPlugin : Plugin(), Listener {
 
@@ -35,6 +39,17 @@ class JukeboxMCPlugin : Plugin(), Listener {
             Item.create(ItemType.IRON_ORE, 64),
         )
 
+
+        val packet = SetTitlePacket()
+        packet.type = SetTitlePacket.Type.TITLE
+        packet.text = "!&??Hello world"
+        packet.fadeInTime = 10
+        packet.stayTime = 70
+        packet.fadeOutTime = 20
+        packet.xuid = player.getXuid()
+        packet.platformOnlineId = ""
+        //player.toJukeboxPlayer().sendPacket(packet)
+
        /*
         inventory.addItem(
             Item.create(ItemType.GRINDSTONE, 1),
@@ -44,6 +59,21 @@ class JukeboxMCPlugin : Plugin(), Listener {
             Item.create(ItemType.STONE_SHOVEL, 1),
         )
         */
+    }
+
+    @EventHandler
+    fun onPlayerSneak(event: PlayerToggleSneakEvent) {
+        if (event.isSneaking()) {
+            val packet = SetTitlePacket()
+            packet.type = SetTitlePacket.Type.TITLE
+            packet.text = "!&??Hello world"
+            packet.fadeInTime = 10
+            packet.stayTime = 70
+            packet.fadeOutTime = 20
+            packet.xuid = ""
+            packet.platformOnlineId = ""
+            //event.getPlayer().toJukeboxPlayer().sendPacket(packet)
+        }
     }
 
     @EventHandler

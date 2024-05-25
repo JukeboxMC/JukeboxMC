@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URI
 
 plugins {
     id("java")
@@ -9,12 +10,17 @@ version = rootProject.version
 
 repositories {
     mavenCentral()
+    maven {
+        name = "jukeboxmcSnapshots"
+        url = URI("https://repo.jukeboxmc.eu/snapshots")
+    }
 }
 
 dependencies {
-    api(project(":JukeboxMC-API"))
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    compileOnly("org.jukeboxmc:JukeboxMC-API:1.0.0-SNAPSHOT")
+    compileOnly("org.jukeboxmc:JukeboxMC-Server:1.0.0-SNAPSHOT")
 }
 
 tasks.withType<KotlinCompile> {

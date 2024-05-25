@@ -52,4 +52,9 @@ open class ShapedRecipe : Recipe {
         return this.pattern
     }
 
+    override fun toString(): String {
+        return "ShapedRecipe(ingredients=$ingredients, outputs=$outputs, pattern=${pattern?.contentToString()})"
+    }
+
+
 }

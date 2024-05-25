@@ -20,6 +20,10 @@ class SmeltingRecipe(
         return this.type
     }
 
+    override fun toString(): String {
+        return "SmeltingRecipe(input=$input, output=$output, type=$type)"
+    }
+
     enum class Type {
         FURNACE,
         BLAST_FURNACE,
