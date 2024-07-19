@@ -3,6 +3,7 @@ package org.jukeboxmc.server.item
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.server.item.behavior.*
+import java.io.FileOutputStream
 
 class ItemRegistry {
 
@@ -1678,6 +1679,15 @@ class ItemRegistry {
             register(ItemType.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Identifier.fromString("minecraft:flow_armor_trim_smithing_template"))
             register(ItemType.GUSTER_BANNER_PATTERN, Identifier.fromString("minecraft:guster_banner_pattern"))
             register(ItemType.FLOW_BANNER_PATTERN, Identifier.fromString("minecraft:flow_banner_pattern"))
+
+            FileOutputStream("item_registry.csv").use {
+                val stringBuilder = StringBuilder()
+                for (mutableEntry in itemClassFromItemType) {
+                    stringBuilder.append("minecraft:" + mutableEntry.key.name.lowercase()).append(",")
+                        .append(mutableEntry.value.simpleName).append("\n")
+                }
+                it.write(stringBuilder.toString().toByteArray())
+            }
         }
 
         private fun register(itemType: ItemType, identifier: Identifier) {
