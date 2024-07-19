@@ -3,7 +3,6 @@ package org.jukeboxmc.server.block
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.server.block.behavior.*
-import java.io.FileOutputStream
 
 class BlockRegistry {
 
@@ -2965,15 +2964,6 @@ class BlockRegistry {
             register(BlockType.WAXED_EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:waxed_exposed_copper_bulb"))
             register(BlockType.WAXED_WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:waxed_weathered_copper_bulb"))
             register(BlockType.WAXED_OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:waxed_oxidized_copper_bulb"))
-
-            FileOutputStream("block_registry.csv").use {
-                val stringBuilder = StringBuilder()
-                for (mutableEntry in blockClassFromBlockType) {
-                    stringBuilder.append("minecraft:" + mutableEntry.key.name.lowercase()).append(",")
-                        .append(mutableEntry.value.simpleName).append("\n")
-                }
-                it.write(stringBuilder.toString().toByteArray())
-            }
         }
 
         private fun register(blockType: BlockType, identifier: Identifier) {
