@@ -150,4 +150,6 @@ interface Player : EntityHuman, CommandSender {
     fun removeSettingsForm()
 
     fun sendToast(content: String)
+
+    fun closeForm()
 }

@@ -9,7 +9,7 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption
 import org.cloudburstmc.protocol.bedrock.BedrockPong
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec
-import org.cloudburstmc.protocol.bedrock.codec.v685.Bedrock_v685
+import org.cloudburstmc.protocol.bedrock.codec.v686.Bedrock_v686
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer
 import org.jukeboxmc.server.JukeboxServer
@@ -22,7 +22,7 @@ class BedrockServer(private val bindAddress: InetSocketAddress, private val serv
     private lateinit var channel: Channel
 
     companion object {
-        val BEDROCK_CODEC: BedrockCodec = Bedrock_v685.CODEC
+        val BEDROCK_CODEC: BedrockCodec = Bedrock_v686.CODEC
     }
 
     private val encodingSettings = EncodingSettings.builder()

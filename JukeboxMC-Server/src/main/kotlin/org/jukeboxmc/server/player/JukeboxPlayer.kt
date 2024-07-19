@@ -801,6 +801,10 @@ class JukeboxPlayer(
         })
     }
 
+    override fun closeForm() {
+        this.sendPacket(ClientboundCloseFormPacket())
+    }
+
     fun parseGUIResponse(formId: Int, json: String) {
         val form = this.forms[formId]
         if (form != null) {
