@@ -6,7 +6,6 @@ import org.jukeboxmc.api.block.Block
 import org.jukeboxmc.api.block.BlockType
 import org.jukeboxmc.api.block.DoublePlant
 import org.jukeboxmc.api.block.data.BlockFace
-import org.jukeboxmc.api.block.data.PlantType
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.api.math.Location
@@ -34,16 +33,14 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
 
         if (blockAbove.getType() == BlockType.AIR && (blockDown.getType() == BlockType.GRASS_BLOCK || blockDown.getType() == BlockType.DIRT)) {
             if (!this.isUpperBlock()) {
-                val blockDoublePlant = Block.create(BlockType.DOUBLE_PLANT) as BlockDoublePlant
+                val blockDoublePlant = Block.create(this.getType()) as BlockDoublePlant
                 blockDoublePlant.setLocation(Location(world, placePosition.add(0F, 1F, 0F)))
-                blockDoublePlant.setDoublePlantType(this.getDoublePlantType())
                 blockDoublePlant.setUpperBlock(true)
                 world.setBlock(placePosition.add(0F, 1F, 0F), blockDoublePlant)
                 world.setBlock(placePosition, this)
             } else {
-                val blockDoublePlant = Block.create(BlockType.DOUBLE_PLANT) as BlockDoublePlant
+                val blockDoublePlant = Block.create(this.getType()) as BlockDoublePlant
                 blockDoublePlant.setLocation(Location(world, placePosition))
-                blockDoublePlant.setDoublePlantType(this.getDoublePlantType())
                 blockDoublePlant.setUpperBlock(false)
                 world.setBlock(placePosition, blockDoublePlant)
                 world.setBlock(placePosition.add(0F, 1F, 0F), this)
@@ -74,17 +71,8 @@ class BlockDoublePlant(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
         return this.setState("upper_block_bit", value.toByte())
     }
 
-    override fun getDoublePlantType(): PlantType {
-        return PlantType.valueOf(this.getStringState("double_plant_type"))
-    }
-
-    override fun setDoublePlantType(value: PlantType): BlockDoublePlant {
-        return this.setState("double_plant_type", value.name.lowercase())
-    }
-
     override fun getDrops(item: Item): MutableList<Item> {
-        val doublePlantType = this.getDoublePlantType()
-        if (doublePlantType == PlantType.SUNFLOWER || doublePlantType == PlantType.ROSE) {
+        if (this.getType() == BlockType.SUNFLOWER || this.getType() == BlockType.ROSE_BUSH) {
             return mutableListOf(this.toItem())
         }
         if (this.getRandom().nextFloat() <= 0.125f) {

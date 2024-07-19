@@ -7,11 +7,10 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement.UnlockingContext
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ComplexAliasDescriptor
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemTagDescriptor
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*
 import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.extensions.fromJson
 import org.jukeboxmc.api.item.Item
@@ -38,7 +37,7 @@ class JukeboxRecipeManager : RecipeManager {
 
     init {
         val stream = ItemPalette::class.java.classLoader.getResourceAsStream("recipes.json")
-            ?: throw RuntimeException("The item palette was not found")
+            ?: throw RuntimeException("The recipes palette was not found")
         val gson = Gson()
 
         stream.reader().use { inputStreamReader ->
@@ -66,7 +65,13 @@ class JukeboxRecipeManager : RecipeManager {
                         inputItems.add(
                             ItemDescriptorWithCount.fromItem(
                                 ItemData.builder()
-                                    .definition(SimpleItemDefinition(identifier, runtimeId, false))
+                                    .definition(
+                                        SimpleItemDefinition(
+                                            identifier,
+                                            runtimeId,
+                                           false
+                                        )
+                                    )
                                     .damage(auxValue)
                                     .count(count)
                                     .build()
@@ -81,7 +86,13 @@ class JukeboxRecipeManager : RecipeManager {
                         val runtimeId = ItemPalette.getRuntimeId(identifier)
                         outputItems.add(
                             ItemData.builder()
-                                .definition(SimpleItemDefinition(identifier, runtimeId, false))
+                                .definition(
+                                    SimpleItemDefinition(
+                                        identifier,
+                                        runtimeId,
+                                        false
+                                    )
+                                )
                                 .blockDefinition(RuntimeBlockDefinition(PaletteUtil.identifierToBlockRuntimeId[identifier]!!))
                                 .count(count)
                                 .build()
@@ -96,7 +107,8 @@ class JukeboxRecipeManager : RecipeManager {
                             uuid,
                             block,
                             priority,
-                            netId
+                            netId,
+                            this.readRequirement(jsonObject)
                         )
                     )
 
@@ -128,7 +140,13 @@ class JukeboxRecipeManager : RecipeManager {
                                 val runtimeId = ItemPalette.getRuntimeId(id)
                                 charMap[entry.key[0]] = ItemDescriptorWithCount.fromItem(
                                     ItemData.builder()
-                                        .definition(SimpleItemDefinition(id, runtimeId, false))
+                                        .definition(
+                                            SimpleItemDefinition(
+                                                id,
+                                                runtimeId,
+                                                false
+                                            )
+                                        )
                                         .damage(entryJsonObject["auxValue"].asInt)
                                         .count(entryJsonObject["count"].asInt)
                                         .build()
@@ -187,7 +205,8 @@ class JukeboxRecipeManager : RecipeManager {
                             block,
                             priority,
                             netId,
-                            false
+                            false,
+                            this.readRequirement(jsonObject)
                         )
                     )
 
@@ -225,7 +244,13 @@ class JukeboxRecipeManager : RecipeManager {
                     val baseRuntimeId = ItemPalette.getRuntimeId(baseItemId)
                     val baseDescriptor: ItemDescriptorWithCount = ItemDescriptorWithCount.fromItem(
                         ItemData.builder()
-                            .definition(SimpleItemDefinition(baseItemId, baseRuntimeId, false))
+                            .definition(
+                                SimpleItemDefinition(
+                                    baseItemId,
+                                    baseRuntimeId,
+                                   false
+                                )
+                            )
                             .damage(baseObject["auxValue"].asInt)
                             .count(baseObject["count"].asInt)
                             .build()
@@ -236,7 +261,13 @@ class JukeboxRecipeManager : RecipeManager {
                     val additionRuntimeId = ItemPalette.getRuntimeId(additionItemId)
                     val additionDescriptor: ItemDescriptorWithCount = ItemDescriptorWithCount.fromItem(
                         ItemData.builder()
-                            .definition(SimpleItemDefinition(additionItemId, additionRuntimeId, false))
+                            .definition(
+                                SimpleItemDefinition(
+                                    additionItemId,
+                                    additionRuntimeId,
+                                   false
+                                )
+                            )
                             .damage(additionObject["auxValue"].asInt)
                             .count(additionObject["count"].asInt)
                             .build()
@@ -247,7 +278,13 @@ class JukeboxRecipeManager : RecipeManager {
                     val templateRuntimeId = ItemPalette.getRuntimeId(templateItemId)
                     val templateDescriptor: ItemDescriptorWithCount = ItemDescriptorWithCount.fromItem(
                         ItemData.builder()
-                            .definition(SimpleItemDefinition(templateItemId, templateRuntimeId, false))
+                            .definition(
+                                SimpleItemDefinition(
+                                    templateItemId,
+                                    templateRuntimeId,
+                                   false
+                                )
+                            )
                             .damage(templateObject["auxValue"].asInt)
                             .count(templateObject["count"].asInt)
                             .build()
@@ -257,7 +294,13 @@ class JukeboxRecipeManager : RecipeManager {
                     val resultId = resultObject["id"].asString
                     val resultRuntimeId = ItemPalette.getRuntimeId(resultId)
                     val resultDescriptor: ItemData = ItemData.builder()
-                        .definition(SimpleItemDefinition(resultId, resultRuntimeId, false))
+                        .definition(
+                            SimpleItemDefinition(
+                                resultId,
+                                resultRuntimeId,
+                             false
+                            )
+                        )
                         .damage(0)
                         .count(resultObject["count"].asInt)
                         .build()
@@ -319,12 +362,13 @@ class JukeboxRecipeManager : RecipeManager {
                     val outputObject = jsonObject["output"].asJsonObject
 
                     val inputItemId = ItemPalette.getRuntimeId(inputObject["id"].asString)
+                    val outputIdentifier = outputObject["id"].asString
                     val outputItemData = ItemData.builder()
                         .definition(
                             SimpleItemDefinition(
-                                outputObject["id"].asString,
+                                outputIdentifier,
                                 ItemPalette.getRuntimeId(outputObject["id"].asString),
-                                false
+                               false
                             )
                         )
                         .damage(0)
@@ -452,7 +496,8 @@ class JukeboxRecipeManager : RecipeManager {
             UUID.randomUUID(),
             "crafting_table",
             1,
-            recipeManager.getHighestNetworkId() + 1
+            recipeManager.getHighestNetworkId() + 1,
+            RecipeUnlockingRequirement.INVALID
         )
     }
 
@@ -482,7 +527,8 @@ class JukeboxRecipeManager : RecipeManager {
             "crafting_table",
             1,
             recipeManager.getHighestNetworkId() + 1,
-            false
+            false,
+            RecipeUnlockingRequirement.INVALID
         )
     }
 
@@ -492,5 +538,59 @@ class JukeboxRecipeManager : RecipeManager {
             this.getOutput().toJukeboxItem().toItemData(),
             this.getType().name.lowercase()
         )
+    }
+
+    private fun readItemDescriptor(jsonObject: JsonObject): ItemDescriptorWithCount {
+        val itemType = jsonObject["type"].asString
+        var descriptor = ItemDescriptorWithCount(InvalidDescriptor.INSTANCE, 0)
+        when (itemType) {
+            "default" -> {
+                val identifier = jsonObject["itemId"].asString
+                descriptor = ItemDescriptorWithCount.fromItem(
+                    ItemData.builder()
+                        .definition(
+                            SimpleItemDefinition(
+                                identifier,
+                                ItemPalette.getRuntimeId(identifier),
+                                false
+                            )
+                        )
+                        .damage(jsonObject["auxValue"].asInt)
+                        .count(jsonObject["count"].asInt)
+                        .build()
+                )
+            }
+
+            "item_tag" -> {
+                descriptor = ItemDescriptorWithCount(
+                    ItemTagDescriptor(jsonObject["itemTag"].asString),
+                    jsonObject["count"].asInt
+                )
+            }
+
+            "complex_alias" -> {
+                descriptor = ItemDescriptorWithCount(
+                    ComplexAliasDescriptor(jsonObject["name"].asString),
+                    jsonObject["count"].asInt
+                )
+            }
+        }
+        return descriptor
+    }
+
+    private fun readRequirement(jsonObject: JsonObject): RecipeUnlockingRequirement {
+        if(!jsonObject.has("unlockingRequirements")){
+            return RecipeUnlockingRequirement.INVALID
+        }
+        val requirementObj = jsonObject["unlockingRequirements"].asJsonObject
+        val context = UnlockingContext.from(requirementObj["context"].asInt)
+        val items = requirementObj["items"].asJsonArray
+        val descriptors = mutableListOf<ItemDescriptorWithCount>()
+        for (item in items) {
+            descriptors.add(this.readItemDescriptor(item.asJsonObject))
+        }
+        val requirement = RecipeUnlockingRequirement(context)
+        requirement.ingredients.addAll(descriptors)
+        return requirement
     }
 }

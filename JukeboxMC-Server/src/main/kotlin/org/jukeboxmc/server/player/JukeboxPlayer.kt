@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData
 import org.cloudburstmc.protocol.bedrock.data.command.CommandData
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.common.PacketSignal
 import org.jukeboxmc.api.Server
@@ -533,6 +534,7 @@ class JukeboxPlayer(
 
         val containerClosePacket = ContainerClosePacket()
         containerClosePacket.id = WindowId.OPEN_CONTAINER.getId().toByte()
+        containerClosePacket.type = (inventory as ContainerInventory).getContainerType()
         this.sendPacket(containerClosePacket)
 
         (this.currentInventory as ContainerInventory).removeViewer(this)
@@ -551,6 +553,7 @@ class JukeboxPlayer(
             val containerClosePacket = ContainerClosePacket()
             containerClosePacket.id = windowId
             containerClosePacket.isServerInitiated = serverInitiated
+            containerClosePacket.type = (currentInventory as ContainerInventory).getContainerType()
             this.sendPacket(containerClosePacket)
             (currentInventory as ContainerInventory).removeViewer(this)
             this.server.getPluginManager().callEvent(InventoryCloseEvent(currentInventory!!, this))
@@ -559,6 +562,7 @@ class JukeboxPlayer(
             val containerClosePacket = ContainerClosePacket()
             containerClosePacket.id = windowId
             containerClosePacket.isServerInitiated = serverInitiated
+            containerClosePacket.type = ContainerType.CONTAINER
             this.sendPacket(containerClosePacket)
         }
     }

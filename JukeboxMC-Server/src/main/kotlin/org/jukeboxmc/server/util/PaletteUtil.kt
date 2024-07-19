@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
+import org.cloudburstmc.protocol.bedrock.data.inventory.ComponentItemData
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.jukeboxmc.api.extensions.fromJson
 import org.jukeboxmc.server.block.RuntimeBlockDefinition
@@ -20,6 +21,8 @@ class PaletteUtil {
     companion object {
         private val biomeDefinitions: NbtMap
         private val entityIdentifiers: NbtMap
+        private val itemComponents: NbtMap
+        private val componentItems = mutableListOf<ComponentItemData>()
         private val creativeItems = mutableListOf<ItemData>()
         private val gson = Gson()
 
@@ -28,8 +31,14 @@ class PaletteUtil {
         init {
             this.biomeDefinitions = this.readNbt("biome_definitions.dat")
             this.entityIdentifiers = this.readNbt("entity_identifiers.dat")
+            this.itemComponents = this.readNbt("item_components.nbt")
 
-            val stream = PaletteUtil::class.java.classLoader.getResourceAsStream("creative_items.json") ?: throw RuntimeException("Could not find creative items")
+            for (key in this.itemComponents.keys) {
+                this.componentItems.add(ComponentItemData(key, this.itemComponents.getCompound(key)))
+            }
+
+            val stream = PaletteUtil::class.java.classLoader.getResourceAsStream("creative_items.json")
+                ?: throw RuntimeException("Could not find creative items")
 
             stream.reader().use {
                 val itemEntries = this.gson.fromJson<Map<String, List<Map<String, Any>>>>(it)
@@ -44,7 +53,12 @@ class PaletteUtil {
                     }
 
                     val itemBuilder = ItemData.builder()
-                        .definition(SimpleItemDefinition(identifier, ItemPalette.getRuntimeId(identifier), false))
+                        .definition(
+                            SimpleItemDefinition(
+                                identifier, ItemPalette.getRuntimeId(identifier),
+                                false
+                            )
+                        )
                         .blockDefinition(RuntimeBlockDefinition(blockRuntimeId))
                         .count(1)
 
@@ -78,8 +92,13 @@ class PaletteUtil {
 
         fun getCreativeItems(): MutableList<ItemData> = this.creativeItems
 
+        fun isComponentBased(identifier: String): Boolean = this.itemComponents.keys.contains(identifier)
+
+        fun getComponentItems(): MutableList<ComponentItemData> = this.componentItems
+
         private fun readNbt(fileName: String): NbtMap {
-            val stream = PaletteUtil::class.java.classLoader.getResourceAsStream(fileName) ?: throw RuntimeException("Could not find $fileName")
+            val stream = PaletteUtil::class.java.classLoader.getResourceAsStream(fileName)
+                ?: throw RuntimeException("Could not find $fileName")
 
             stream.use { inputStream ->
                 NbtUtils.createGZIPReader(inputStream).use {
@@ -95,7 +114,10 @@ class PaletteUtil {
                 NbtUtils.createReaderLE(it).use { stream ->
                     val nbtMap = stream.readTag() as NbtMap
                     for (blockDefinition in BlockPalette.getBlockDefinitions()) {
-                        if (blockDefinition.identifier == nbtMap.getString("name") && blockDefinition.state.equals(nbtMap.getCompound("states"))) {
+                        if (blockDefinition.identifier == nbtMap.getString("name") && blockDefinition.state.equals(
+                                nbtMap.getCompound("states")
+                            )
+                        ) {
                             return blockDefinition.runtimeId
                         }
                     }

@@ -15,6 +15,11 @@ class BlockRegistry {
         init {
             register(BlockType.ACACIA_BUTTON, Identifier.fromString("minecraft:acacia_button"), BlockButton::class.java)
             register(BlockType.ACACIA_DOOR, Identifier.fromString("minecraft:acacia_door"), BlockDoor::class.java)
+            register(
+                BlockType.ACACIA_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:acacia_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
             register(BlockType.ACACIA_FENCE, Identifier.fromString("minecraft:acacia_fence"), BlockFence::class.java)
             register(
                 BlockType.ACACIA_FENCE_GATE,
@@ -26,6 +31,11 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:acacia_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(
+                BlockType.ACACIA_LEAVES,
+                Identifier.fromString("minecraft:acacia_leaves"),
+                BlockLeaves2::class.java
+            )
             register(BlockType.ACACIA_LOG, Identifier.fromString("minecraft:acacia_log"), BlockLog::class.java)
             register(BlockType.ACACIA_PLANKS, Identifier.fromString("minecraft:acacia_planks"))
             register(
@@ -33,6 +43,12 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:acacia_pressure_plate"),
                 BlockPressurePlate::class.java
             )
+            register(
+                BlockType.ACACIA_SAPLING,
+                Identifier.fromString("minecraft:acacia_sapling"),
+                BlockSapling::class.java
+            )
+            register(BlockType.ACACIA_SLAB, Identifier.fromString("minecraft:acacia_slab"), BlockWoodenSlab::class.java)
             register(BlockType.ACACIA_STAIRS, Identifier.fromString("minecraft:acacia_stairs"), BlockStairs::class.java)
             register(
                 BlockType.ACACIA_STANDING_SIGN,
@@ -49,12 +65,14 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:acacia_wall_sign"),
                 BlockWallSign::class.java
             )
+            register(BlockType.ACACIA_WOOD, Identifier.fromString("minecraft:acacia_wood"), BlockWood::class.java)
             register(
                 BlockType.ACTIVATOR_RAIL,
                 Identifier.fromString("minecraft:activator_rail"),
                 BlockActivatorRail::class.java
             )
             register(BlockType.AIR, Identifier.fromString("minecraft:air"), BlockAir::class.java)
+            register(BlockType.ALLIUM, Identifier.fromString("minecraft:allium"), BlockRedFlower::class.java)
             register(BlockType.ALLOW, Identifier.fromString("minecraft:allow"))
             register(BlockType.AMETHYST_BLOCK, Identifier.fromString("minecraft:amethyst_block"))
             register(
@@ -85,6 +103,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:azalea_leaves_flowered"),
                 BlockAzaleaLeavesFlowered::class.java
             )
+            register(BlockType.AZURE_BLUET, Identifier.fromString("minecraft:azure_bluet"), BlockRedFlower::class.java)
             register(BlockType.BAMBOO, Identifier.fromString("minecraft:bamboo"), BlockBamboo::class.java)
             register(
                 BlockType.BAMBOO_BLOCK,
@@ -170,6 +189,11 @@ class BlockRegistry {
             )
             register(BlockType.BIRCH_BUTTON, Identifier.fromString("minecraft:birch_button"), BlockButton::class.java)
             register(BlockType.BIRCH_DOOR, Identifier.fromString("minecraft:birch_door"), BlockDoor::class.java)
+            register(
+                BlockType.BIRCH_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:birch_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
             register(BlockType.BIRCH_FENCE, Identifier.fromString("minecraft:birch_fence"), BlockFence::class.java)
             register(
                 BlockType.BIRCH_FENCE_GATE,
@@ -181,6 +205,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:birch_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(BlockType.BIRCH_LEAVES, Identifier.fromString("minecraft:birch_leaves"), BlockLeaves::class.java)
             register(BlockType.BIRCH_LOG, Identifier.fromString("minecraft:birch_log"), BlockLog::class.java)
             register(BlockType.BIRCH_PLANKS, Identifier.fromString("minecraft:birch_planks"))
             register(
@@ -188,6 +213,12 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:birch_pressure_plate"),
                 BlockPressurePlate::class.java
             )
+            register(
+                BlockType.BIRCH_SAPLING,
+                Identifier.fromString("minecraft:birch_sapling"),
+                BlockSapling::class.java
+            )
+            register(BlockType.BIRCH_SLAB, Identifier.fromString("minecraft:birch_slab"), BlockWoodenSlab::class.java)
             register(BlockType.BIRCH_STAIRS, Identifier.fromString("minecraft:birch_stairs"), BlockStairs::class.java)
             register(
                 BlockType.BIRCH_STANDING_SIGN,
@@ -204,6 +235,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:birch_wall_sign"),
                 BlockWallSign::class.java
             )
+            register(BlockType.BIRCH_WOOD, Identifier.fromString("minecraft:birch_wood"), BlockWood::class.java)
             register(BlockType.BLACK_CANDLE, Identifier.fromString("minecraft:black_candle"), BlockCandle::class.java)
             register(
                 BlockType.BLACK_CANDLE_CAKE,
@@ -272,6 +304,7 @@ class BlockRegistry {
                 BlockGlazedTerracotta::class.java
             )
             register(BlockType.BLUE_ICE, Identifier.fromString("minecraft:blue_ice"))
+            register(BlockType.BLUE_ORCHID, Identifier.fromString("minecraft:blue_orchid"), BlockRedFlower::class.java)
             register(
                 BlockType.BLUE_SHULKER_BOX,
                 Identifier.fromString("minecraft:blue_shulker_box"),
@@ -290,11 +323,26 @@ class BlockRegistry {
             register(BlockType.BORDER_BLOCK, Identifier.fromString("minecraft:border_block"), BorderBlock::class.java)
             register(BlockType.BRAIN_CORAL, Identifier.fromString("minecraft:brain_coral"), BlockCoral::class.java)
             register(
+                BlockType.BRAIN_CORAL_BLOCK,
+                Identifier.fromString("minecraft:brain_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.BRAIN_CORAL_FAN,
+                Identifier.fromString("minecraft:brain_coral_fan"),
+                BlockCoralFan::class.java
+            )
+            register(
                 BlockType.BREWING_STAND,
                 Identifier.fromString("minecraft:brewing_stand"),
                 BlockBrewingStand::class.java
             )
             register(BlockType.BRICK_BLOCK, Identifier.fromString("minecraft:brick_block"))
+            register(
+                BlockType.BRICK_SLAB,
+                Identifier.fromString("minecraft:brick_slab"),
+                BlockStoneBlockSlab::class.java
+            )
             register(BlockType.BRICK_STAIRS, Identifier.fromString("minecraft:brick_stairs"), BlockStairs::class.java)
             register(BlockType.BROWN_CANDLE, Identifier.fromString("minecraft:brown_candle"), BlockCandle::class.java)
             register(
@@ -335,6 +383,16 @@ class BlockRegistry {
                 BlockBubbleColumn::class.java
             )
             register(BlockType.BUBBLE_CORAL, Identifier.fromString("minecraft:bubble_coral"), BlockCoral::class.java)
+            register(
+                BlockType.BUBBLE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:bubble_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.BUBBLE_CORAL_FAN,
+                Identifier.fromString("minecraft:bubble_coral_fan"),
+                BlockCoralFan::class.java
+            )
             register(BlockType.BUDDING_AMETHYST, Identifier.fromString("minecraft:budding_amethyst"))
             register(BlockType.CACTUS, Identifier.fromString("minecraft:cactus"), BlockCactus::class.java)
             register(BlockType.CAKE, Identifier.fromString("minecraft:cake"), BlockCake::class.java)
@@ -487,6 +545,10 @@ class BlockRegistry {
             )
             register(BlockType.COBBLESTONE, Identifier.fromString("minecraft:cobblestone"))
             register(
+                BlockType.COBBLESTONE_SLAB, Identifier.fromString("minecraft:cobblestone_slab"),
+                BlockStoneBlockSlab::class.java
+            )
+            register(
                 BlockType.COBBLESTONE_WALL,
                 Identifier.fromString("minecraft:cobblestone_wall"),
                 BlockCobblestoneWall::class.java
@@ -519,17 +581,6 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:copper_trapdoor"),
                 BlockTrapdoor::class.java
             )
-            register(BlockType.CORAL_BLOCK, Identifier.fromString("minecraft:coral_block"), BlockCoralBlock::class.java)
-            register(BlockType.FIRE_CORAL_FAN, Identifier.fromString("minecraft:fire_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.BRAIN_CORAL_FAN, Identifier.fromString("minecraft:brain_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:bubble_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.TUBE_CORAL_FAN, Identifier.fromString("minecraft:tube_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.HORN_CORAL_FAN, Identifier.fromString("minecraft:horn_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.DEAD_FIRE_CORAL_FAN, Identifier.fromString("minecraft:dead_fire_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.DEAD_BRAIN_CORAL_FAN, Identifier.fromString("minecraft:dead_brain_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.DEAD_BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:dead_bubble_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.DEAD_TUBE_CORAL_FAN, Identifier.fromString("minecraft:dead_tube_coral_fan"), BlockCoralFan::class.java)
-            register(BlockType.DEAD_HORN_CORAL_FAN, Identifier.fromString("minecraft:dead_horn_coral_fan"), BlockCoralFan::class.java)
             register(
                 BlockType.CORAL_FAN_HANG,
                 Identifier.fromString("minecraft:coral_fan_hang"),
@@ -545,6 +596,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:coral_fan_hang3"),
                 BlockCoralFanHang3::class.java
             )
+            register(BlockType.CORNFLOWER, Identifier.fromString("minecraft:cornflower"), BlockRedFlower::class.java)
             register(BlockType.CRACKED_DEEPSLATE_BRICKS, Identifier.fromString("minecraft:cracked_deepslate_bricks"))
             register(BlockType.CRACKED_DEEPSLATE_TILES, Identifier.fromString("minecraft:cracked_deepslate_tiles"))
             register(BlockType.CRACKED_NETHER_BRICKS, Identifier.fromString("minecraft:cracked_nether_bricks"))
@@ -670,6 +722,11 @@ class BlockRegistry {
             )
             register(BlockType.DARK_OAK_DOOR, Identifier.fromString("minecraft:dark_oak_door"), BlockDoor::class.java)
             register(
+                BlockType.DARK_OAK_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:dark_oak_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
+            register(
                 BlockType.DARK_OAK_FENCE,
                 Identifier.fromString("minecraft:dark_oak_fence"),
                 BlockFence::class.java
@@ -684,12 +741,27 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:dark_oak_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(
+                BlockType.DARK_OAK_LEAVES,
+                Identifier.fromString("minecraft:dark_oak_leaves"),
+                BlockLeaves2::class.java
+            )
             register(BlockType.DARK_OAK_LOG, Identifier.fromString("minecraft:dark_oak_log"), BlockLog::class.java)
             register(BlockType.DARK_OAK_PLANKS, Identifier.fromString("minecraft:dark_oak_planks"))
             register(
                 BlockType.DARK_OAK_PRESSURE_PLATE,
                 Identifier.fromString("minecraft:dark_oak_pressure_plate"),
                 BlockPressurePlate::class.java
+            )
+            register(
+                BlockType.DARK_OAK_SAPLING,
+                Identifier.fromString("minecraft:dark_oak_sapling"),
+                BlockSapling::class.java
+            )
+            register(
+                BlockType.DARK_OAK_SLAB,
+                Identifier.fromString("minecraft:dark_oak_slab"),
+                BlockWoodenSlab::class.java
             )
             register(
                 BlockType.DARK_OAK_STAIRS,
@@ -701,6 +773,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:dark_oak_trapdoor"),
                 BlockTrapdoor::class.java
             )
+            register(BlockType.DARK_OAK_WOOD, Identifier.fromString("minecraft:dark_oak_wood"), BlockWood::class.java)
             register(
                 BlockType.DARK_PRISMARINE_STAIRS,
                 Identifier.fromString("minecraft:dark_prismarine_stairs"),
@@ -732,9 +805,29 @@ class BlockRegistry {
                 BlockCoral::class.java
             )
             register(
+                BlockType.DEAD_BRAIN_CORAL_BLOCK,
+                Identifier.fromString("minecraft:dead_brain_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.DEAD_BRAIN_CORAL_FAN,
+                Identifier.fromString("minecraft:dead_brain_coral_fan"),
+                BlockCoralFan::class.java
+            )
+            register(
                 BlockType.DEAD_BUBBLE_CORAL,
                 Identifier.fromString("minecraft:dead_bubble_coral"),
                 BlockCoral::class.java
+            )
+            register(
+                BlockType.DEAD_BUBBLE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:dead_bubble_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.DEAD_BUBBLE_CORAL_FAN,
+                Identifier.fromString("minecraft:dead_bubble_coral_fan"),
+                BlockCoralFan::class.java
             )
             register(
                 BlockType.DEAD_FIRE_CORAL,
@@ -742,14 +835,44 @@ class BlockRegistry {
                 BlockCoral::class.java
             )
             register(
+                BlockType.DEAD_FIRE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:dead_fire_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.DEAD_FIRE_CORAL_FAN,
+                Identifier.fromString("minecraft:dead_fire_coral_fan"),
+                BlockCoralFan::class.java
+            )
+            register(
                 BlockType.DEAD_HORN_CORAL,
                 Identifier.fromString("minecraft:dead_horn_coral"),
                 BlockCoral::class.java
             )
             register(
+                BlockType.DEAD_HORN_CORAL_BLOCK,
+                Identifier.fromString("minecraft:dead_horn_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.DEAD_HORN_CORAL_FAN,
+                Identifier.fromString("minecraft:dead_horn_coral_fan"),
+                BlockCoralFan::class.java
+            )
+            register(
                 BlockType.DEAD_TUBE_CORAL,
                 Identifier.fromString("minecraft:dead_tube_coral"),
                 BlockCoral::class.java
+            )
+            register(
+                BlockType.DEAD_TUBE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:dead_tube_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.DEAD_TUBE_CORAL_FAN,
+                Identifier.fromString("minecraft:dead_tube_coral_fan"),
+                BlockCoralFan::class.java
             )
             register(BlockType.DEADBUSH, Identifier.fromString("minecraft:deadbush"), BlockDeadBush::class.java)
             register(
@@ -863,11 +986,6 @@ class BlockRegistry {
                 BlockDoubleSlab::class.java
             )
             register(
-                BlockType.DOUBLE_PLANT,
-                Identifier.fromString("minecraft:double_plant"),
-                BlockDoublePlant::class.java
-            )
-            register(
                 BlockType.DOUBLE_STONE_BLOCK_SLAB,
                 Identifier.fromString("minecraft:double_stone_block_slab"),
                 BlockDoubleStoneBlockSlab::class.java
@@ -886,36 +1004,6 @@ class BlockRegistry {
                 BlockType.DOUBLE_STONE_BLOCK_SLAB4,
                 Identifier.fromString("minecraft:double_stone_block_slab4"),
                 BlockDoubleStoneBlockSlab4::class.java
-            )
-            register(
-                BlockType.OAK_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:oak_double_slab"),
-                BlockDoubleWoodenSlab::class.java
-            )
-            register(
-                BlockType.SPRUCE_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:spruce_double_slab"),
-                BlockDoubleWoodenSlab::class.java
-            )
-            register(
-                BlockType.BIRCH_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:birch_double_slab"),
-                BlockDoubleWoodenSlab::class.java
-            )
-            register(
-                BlockType.JUNGLE_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:jungle_double_slab"),
-                BlockDoubleWoodenSlab::class.java
-            )
-            register(
-                BlockType.ACACIA_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:acacia_double_slab"),
-                BlockDoubleWoodenSlab::class.java
-            )
-            register(
-                BlockType.DARK_OAK_DOUBLE_SLAB,
-                Identifier.fromString("minecraft:dark_oak_double_slab"),
-                BlockDoubleWoodenSlab::class.java
             )
             register(BlockType.DRAGON_EGG, Identifier.fromString("minecraft:dragon_egg"), BlockDragonEgg::class.java)
             register(BlockType.DRIED_KELP_BLOCK, Identifier.fromString("minecraft:dried_kelp_block"))
@@ -1098,13 +1186,20 @@ class BlockRegistry {
                 BlockSlab::class.java
             )
             register(BlockType.FARMLAND, Identifier.fromString("minecraft:farmland"), BlockFarmland::class.java)
-            register(
-                BlockType.FENCE_GATE,
-                Identifier.fromString("minecraft:fence_gate"),
-                BlockFenceGate::class.java
-            )
+            register(BlockType.FENCE_GATE, Identifier.fromString("minecraft:fence_gate"), BlockFenceGate::class.java)
+            register(BlockType.FERN, Identifier.fromString("minecraft:fern"), BlockTallgrass::class.java)
             register(BlockType.FIRE, Identifier.fromString("minecraft:fire"), BlockFire::class.java)
             register(BlockType.FIRE_CORAL, Identifier.fromString("minecraft:fire_coral"), BlockCoral::class.java)
+            register(
+                BlockType.FIRE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:fire_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.FIRE_CORAL_FAN,
+                Identifier.fromString("minecraft:fire_coral_fan"),
+                BlockCoralFan::class.java
+            )
             register(BlockType.FLETCHING_TABLE, Identifier.fromString("minecraft:fletching_table"))
             register(BlockType.FLOWER_POT, Identifier.fromString("minecraft:flower_pot"), BlockFlowerPot::class.java)
             register(BlockType.FLOWERING_AZALEA, Identifier.fromString("minecraft:flowering_azalea"))
@@ -1201,142 +1296,120 @@ class BlockRegistry {
             register(BlockType.GREEN_WOOL, Identifier.fromString("minecraft:green_wool"))
             register(BlockType.GRINDSTONE, Identifier.fromString("minecraft:grindstone"), BlockGrindstone::class.java)
             register(BlockType.HANGING_ROOTS, Identifier.fromString("minecraft:hanging_roots"))
+            register(BlockType.HARD_BLACK_STAINED_GLASS, Identifier.fromString("minecraft:hard_black_stained_glass"))
+            register(
+                BlockType.HARD_BLACK_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_black_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
+            register(BlockType.HARD_BLUE_STAINED_GLASS, Identifier.fromString("minecraft:hard_blue_stained_glass"))
+            register(
+                BlockType.HARD_BLUE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_blue_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
+            register(BlockType.HARD_BROWN_STAINED_GLASS, Identifier.fromString("minecraft:hard_brown_stained_glass"))
+            register(
+                BlockType.HARD_BROWN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_brown_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
+            register(BlockType.HARD_CYAN_STAINED_GLASS, Identifier.fromString("minecraft:hard_cyan_stained_glass"))
+            register(
+                BlockType.HARD_CYAN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_cyan_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.HARD_GLASS, Identifier.fromString("minecraft:hard_glass"))
             register(
                 BlockType.HARD_GLASS_PANE,
                 Identifier.fromString("minecraft:hard_glass_pane"),
                 BlockGlassPane::class.java
             )
+            register(BlockType.HARD_GRAY_STAINED_GLASS, Identifier.fromString("minecraft:hard_gray_stained_glass"))
             register(
-                BlockType.HARD_BLACK_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_black_stained_glass")
+                BlockType.HARD_GRAY_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_gray_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_GREEN_STAINED_GLASS, Identifier.fromString("minecraft:hard_green_stained_glass"))
             register(
-                BlockType.HARD_BLUE_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_blue_stained_glass")
-            )
-            register(
-                BlockType.HARD_BROWN_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_brown_stained_glass")
-            )
-            register(
-                BlockType.HARD_CYAN_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_cyan_stained_glass")
-            )
-            register(
-                BlockType.HARD_GRAY_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_gray_stained_glass")
-            )
-            register(
-                BlockType.HARD_GREEN_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_green_stained_glass")
+                BlockType.HARD_GREEN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_green_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(
                 BlockType.HARD_LIGHT_BLUE_STAINED_GLASS,
                 Identifier.fromString("minecraft:hard_light_blue_stained_glass")
             )
             register(
+                BlockType.HARD_LIGHT_BLUE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_light_blue_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
+            register(
                 BlockType.HARD_LIGHT_GRAY_STAINED_GLASS,
                 Identifier.fromString("minecraft:hard_light_gray_stained_glass")
             )
             register(
-                BlockType.HARD_LIME_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_lime_stained_glass")
+                BlockType.HARD_LIGHT_GRAY_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_light_gray_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
+            register(BlockType.HARD_LIME_STAINED_GLASS, Identifier.fromString("minecraft:hard_lime_stained_glass"))
+            register(
+                BlockType.HARD_LIME_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_lime_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(
                 BlockType.HARD_MAGENTA_STAINED_GLASS,
                 Identifier.fromString("minecraft:hard_magenta_stained_glass")
             )
             register(
-                BlockType.HARD_ORANGE_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_orange_stained_glass")
-            )
-            register(
-                BlockType.HARD_PINK_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_pink_stained_glass")
-            )
-            register(
-                BlockType.HARD_PURPLE_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_purple_stained_glass")
-            )
-            register(
-                BlockType.HARD_RED_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_red_stained_glass")
-            )
-            register(
-                BlockType.HARD_WHITE_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_white_stained_glass")
-            )
-            register(
-                BlockType.HARD_YELLOW_STAINED_GLASS,
-                Identifier.fromString("minecraft:hard_yellow_stained_glass")
-            )
-            register(
-                BlockType.HARD_BLACK_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_black_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_BLUE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_blue_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_BROWN_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_brown_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_CYAN_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_cyan_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_GRAY_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_gray_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_GREEN_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_green_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_LIGHT_BLUE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_light_blue_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_LIGHT_GRAY_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_light_gray_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
-                BlockType.HARD_LIME_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_lime_stained_glass_pane"), BlockGlassPane::class.java
-            )
-            register(
                 BlockType.HARD_MAGENTA_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_magenta_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_magenta_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_ORANGE_STAINED_GLASS, Identifier.fromString("minecraft:hard_orange_stained_glass"))
             register(
                 BlockType.HARD_ORANGE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_orange_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_orange_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_PINK_STAINED_GLASS, Identifier.fromString("minecraft:hard_pink_stained_glass"))
             register(
                 BlockType.HARD_PINK_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_pink_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_pink_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_PURPLE_STAINED_GLASS, Identifier.fromString("minecraft:hard_purple_stained_glass"))
             register(
                 BlockType.HARD_PURPLE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_purple_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_purple_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_RED_STAINED_GLASS, Identifier.fromString("minecraft:hard_red_stained_glass"))
             register(
                 BlockType.HARD_RED_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_red_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_red_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_WHITE_STAINED_GLASS, Identifier.fromString("minecraft:hard_white_stained_glass"))
             register(
                 BlockType.HARD_WHITE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_white_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_white_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
+            register(BlockType.HARD_YELLOW_STAINED_GLASS, Identifier.fromString("minecraft:hard_yellow_stained_glass"))
             register(
                 BlockType.HARD_YELLOW_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:hard_yellow_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:hard_yellow_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(BlockType.HARDENED_CLAY, Identifier.fromString("minecraft:hardened_clay"))
             register(BlockType.HAY_BLOCK, Identifier.fromString("minecraft:hay_block"), BlockHayBlock::class.java)
+            register(BlockType.HEAVY_CORE, Identifier.fromString("minecraft:heavy_core"))
             register(
                 BlockType.HEAVY_WEIGHTED_PRESSURE_PLATE,
                 Identifier.fromString("minecraft:heavy_weighted_pressure_plate"),
@@ -1346,6 +1419,16 @@ class BlockRegistry {
             register(BlockType.HONEYCOMB_BLOCK, Identifier.fromString("minecraft:honeycomb_block"))
             register(BlockType.HOPPER, Identifier.fromString("minecraft:hopper"), BlockHopper::class.java)
             register(BlockType.HORN_CORAL, Identifier.fromString("minecraft:horn_coral"), BlockCoral::class.java)
+            register(
+                BlockType.HORN_CORAL_BLOCK,
+                Identifier.fromString("minecraft:horn_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.HORN_CORAL_FAN,
+                Identifier.fromString("minecraft:horn_coral_fan"),
+                BlockCoralFan::class.java
+            )
             register(BlockType.ICE, Identifier.fromString("minecraft:ice"))
             register(
                 BlockType.INFESTED_DEEPSLATE,
@@ -1368,6 +1451,11 @@ class BlockRegistry {
             register(BlockType.JUKEBOX, Identifier.fromString("minecraft:jukebox"), BlockJukebox::class.java)
             register(BlockType.JUNGLE_BUTTON, Identifier.fromString("minecraft:jungle_button"), BlockButton::class.java)
             register(BlockType.JUNGLE_DOOR, Identifier.fromString("minecraft:jungle_door"), BlockDoor::class.java)
+            register(
+                BlockType.JUNGLE_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:jungle_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
             register(BlockType.JUNGLE_FENCE, Identifier.fromString("minecraft:jungle_fence"), BlockFence::class.java)
             register(
                 BlockType.JUNGLE_FENCE_GATE,
@@ -1379,6 +1467,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:jungle_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(BlockType.JUNGLE_LEAVES, Identifier.fromString("minecraft:jungle_leaves"), BlockLeaves::class.java)
             register(BlockType.JUNGLE_LOG, Identifier.fromString("minecraft:jungle_log"), BlockLog::class.java)
             register(BlockType.JUNGLE_PLANKS, Identifier.fromString("minecraft:jungle_planks"))
             register(
@@ -1386,6 +1475,12 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:jungle_pressure_plate"),
                 BlockPressurePlate::class.java
             )
+            register(
+                BlockType.JUNGLE_SAPLING,
+                Identifier.fromString("minecraft:jungle_sapling"),
+                BlockSapling::class.java
+            )
+            register(BlockType.JUNGLE_SLAB, Identifier.fromString("minecraft:jungle_slab"), BlockWoodenSlab::class.java)
             register(BlockType.JUNGLE_STAIRS, Identifier.fromString("minecraft:jungle_stairs"), BlockStairs::class.java)
             register(
                 BlockType.JUNGLE_STANDING_SIGN,
@@ -1402,6 +1497,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:jungle_wall_sign"),
                 BlockWallSign::class.java
             )
+            register(BlockType.JUNGLE_WOOD, Identifier.fromString("minecraft:jungle_wood"), BlockWood::class.java)
             register(BlockType.KELP, Identifier.fromString("minecraft:kelp"), BlockKelp::class.java)
             register(BlockType.LADDER, Identifier.fromString("minecraft:ladder"), BlockLadder::class.java)
             register(BlockType.LANTERN, Identifier.fromString("minecraft:lantern"), BlockLantern::class.java)
@@ -1412,21 +1508,8 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:large_amethyst_bud"),
                 BlockLargeAmethystBud::class.java
             )
+            register(BlockType.LARGE_FERN, Identifier.fromString("minecraft:large_fern"), BlockDoublePlant::class.java)
             register(BlockType.LAVA, Identifier.fromString("minecraft:lava"), BlockLava::class.java)
-            register(BlockType.OAK_LEAVES, Identifier.fromString("minecraft:oak_leaves"), BlockLeaves::class.java)
-            register(BlockType.SPRUCE_LEAVES, Identifier.fromString("minecraft:spruce_leaves"), BlockLeaves::class.java)
-            register(BlockType.BIRCH_LEAVES, Identifier.fromString("minecraft:birch_leaves"), BlockLeaves::class.java)
-            register(BlockType.JUNGLE_LEAVES, Identifier.fromString("minecraft:jungle_leaves"), BlockLeaves::class.java)
-            register(
-                BlockType.ACACIA_LEAVES,
-                Identifier.fromString("minecraft:acacia_leaves"),
-                BlockLeaves2::class.java
-            )
-            register(
-                BlockType.DARK_OAK_LEAVES,
-                Identifier.fromString("minecraft:dark_oak_leaves"),
-                BlockLeaves2::class.java
-            )
             register(BlockType.LECTERN, Identifier.fromString("minecraft:lectern"), BlockLectern::class.java)
             register(BlockType.LEVER, Identifier.fromString("minecraft:lever"), BlockLever::class.java)
             register(BlockType.LIGHT_BLOCK, Identifier.fromString("minecraft:light_block"), BlockLightBlock::class.java)
@@ -1463,7 +1546,8 @@ class BlockRegistry {
             register(BlockType.LIGHT_BLUE_STAINED_GLASS, Identifier.fromString("minecraft:light_blue_stained_glass"))
             register(
                 BlockType.LIGHT_BLUE_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:light_blue_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:light_blue_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(BlockType.LIGHT_BLUE_TERRACOTTA, Identifier.fromString("minecraft:light_blue_terracotta"))
             register(BlockType.LIGHT_BLUE_WOOL, Identifier.fromString("minecraft:light_blue_wool"))
@@ -1495,7 +1579,8 @@ class BlockRegistry {
             register(BlockType.LIGHT_GRAY_STAINED_GLASS, Identifier.fromString("minecraft:light_gray_stained_glass"))
             register(
                 BlockType.LIGHT_GRAY_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:light_gray_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:light_gray_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(BlockType.LIGHT_GRAY_TERRACOTTA, Identifier.fromString("minecraft:light_gray_terracotta"))
             register(BlockType.LIGHT_GRAY_WOOL, Identifier.fromString("minecraft:light_gray_wool"))
@@ -1508,6 +1593,12 @@ class BlockRegistry {
                 BlockType.LIGHTNING_ROD,
                 Identifier.fromString("minecraft:lightning_rod"),
                 BlockLightningRod::class.java
+            )
+            register(BlockType.LILAC, Identifier.fromString("minecraft:lilac"), BlockDoublePlant::class.java)
+            register(
+                BlockType.LILY_OF_THE_VALLEY,
+                Identifier.fromString("minecraft:lily_of_the_valley"),
+                BlockRedFlower::class.java
             )
             register(BlockType.LIME_CANDLE, Identifier.fromString("minecraft:lime_candle"), BlockCandle::class.java)
             register(
@@ -1529,7 +1620,11 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.LIME_STAINED_GLASS, Identifier.fromString("minecraft:lime_stained_glass"))
-            register(BlockType.LIME_STAINED_GLASS_PANE, Identifier.fromString("minecraft:lime_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.LIME_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:lime_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.LIME_TERRACOTTA, Identifier.fromString("minecraft:lime_terracotta"))
             register(BlockType.LIME_WOOL, Identifier.fromString("minecraft:lime_wool"))
             register(
@@ -1539,7 +1634,8 @@ class BlockRegistry {
             )
             register(
                 BlockType.LIT_DEEPSLATE_REDSTONE_ORE,
-                Identifier.fromString("minecraft:lit_deepslate_redstone_ore"), BlockRedstoneOre::class.java
+                Identifier.fromString("minecraft:lit_deepslate_redstone_ore"),
+                BlockRedstoneOre::class.java
             )
             register(BlockType.LIT_FURNACE, Identifier.fromString("minecraft:lit_furnace"), BlockLitFurnace::class.java)
             register(BlockType.LIT_PUMPKIN, Identifier.fromString("minecraft:lit_pumpkin"), BlockLitPumpkin::class.java)
@@ -1586,7 +1682,8 @@ class BlockRegistry {
             register(BlockType.MAGENTA_STAINED_GLASS, Identifier.fromString("minecraft:magenta_stained_glass"))
             register(
                 BlockType.MAGENTA_STAINED_GLASS_PANE,
-                Identifier.fromString("minecraft:magenta_stained_glass_pane"), BlockGlassPane::class.java
+                Identifier.fromString("minecraft:magenta_stained_glass_pane"),
+                BlockGlassPane::class.java
             )
             register(BlockType.MAGENTA_TERRACOTTA, Identifier.fromString("minecraft:magenta_terracotta"))
             register(BlockType.MAGENTA_WOOL, Identifier.fromString("minecraft:magenta_wool"))
@@ -1634,7 +1731,11 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:mangrove_propagule"),
                 BlockMangrovePropagule::class.java
             )
-            register(BlockType.MANGROVE_ROOTS, Identifier.fromString("minecraft:mangrove_roots"), BlockMangroveRoots::class.java)
+            register(
+                BlockType.MANGROVE_ROOTS,
+                Identifier.fromString("minecraft:mangrove_roots"),
+                BlockMangroveRoots::class.java
+            )
             register(
                 BlockType.MANGROVE_SLAB,
                 Identifier.fromString("minecraft:mangrove_slab"),
@@ -1719,6 +1820,11 @@ class BlockRegistry {
                 BlockFence::class.java
             )
             register(
+                BlockType.NETHER_BRICK_SLAB,
+                Identifier.fromString("minecraft:nether_brick_slab"),
+                BlockStoneBlockSlab::class.java
+            )
+            register(
                 BlockType.NETHER_BRICK_STAIRS,
                 Identifier.fromString("minecraft:nether_brick_stairs"),
                 BlockStairs::class.java
@@ -1740,15 +1846,24 @@ class BlockRegistry {
                 BlockStairs::class.java
             )
             register(BlockType.NOTEBLOCK, Identifier.fromString("minecraft:noteblock"))
+            register(
+                BlockType.OAK_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:oak_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
             register(BlockType.OAK_FENCE, Identifier.fromString("minecraft:oak_fence"), BlockFence::class.java)
             register(
                 BlockType.OAK_HANGING_SIGN,
                 Identifier.fromString("minecraft:oak_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(BlockType.OAK_LEAVES, Identifier.fromString("minecraft:oak_leaves"), BlockLeaves::class.java)
             register(BlockType.OAK_LOG, Identifier.fromString("minecraft:oak_log"), BlockLog::class.java)
             register(BlockType.OAK_PLANKS, Identifier.fromString("minecraft:oak_planks"))
+            register(BlockType.OAK_SAPLING, Identifier.fromString("minecraft:oak_sapling"), BlockSapling::class.java)
+            register(BlockType.OAK_SLAB, Identifier.fromString("minecraft:oak_slab"), BlockWoodenSlab::class.java)
             register(BlockType.OAK_STAIRS, Identifier.fromString("minecraft:oak_stairs"), BlockStairs::class.java)
+            register(BlockType.OAK_WOOD, Identifier.fromString("minecraft:oak_wood"), BlockWood::class.java)
             register(BlockType.OBSERVER, Identifier.fromString("minecraft:observer"), BlockObserver::class.java)
             register(BlockType.OBSIDIAN, Identifier.fromString("minecraft:obsidian"))
             register(
@@ -1776,9 +1891,19 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.ORANGE_STAINED_GLASS, Identifier.fromString("minecraft:orange_stained_glass"))
-            register(BlockType.ORANGE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:orange_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.ORANGE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:orange_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.ORANGE_TERRACOTTA, Identifier.fromString("minecraft:orange_terracotta"))
+            register(
+                BlockType.ORANGE_TULIP,
+                Identifier.fromString("minecraft:orange_tulip"),
+                BlockRedFlower::class.java
+            )
             register(BlockType.ORANGE_WOOL, Identifier.fromString("minecraft:orange_wool"))
+            register(BlockType.OXEYE_DAISY, Identifier.fromString("minecraft:oxeye_daisy"), BlockRedFlower::class.java)
             register(BlockType.OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:oxidized_chiseled_copper"))
             register(BlockType.OXIDIZED_COPPER, Identifier.fromString("minecraft:oxidized_copper"))
             register(
@@ -1820,6 +1945,8 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:pearlescent_froglight"),
                 BlockPearlescentFroglight::class.java
             )
+            register(BlockType.PEONY, Identifier.fromString("minecraft:peony"), BlockDoublePlant::class.java)
+            register(BlockType.PETRIFIED_OAK_SLAB, Identifier.fromString("minecraft:petrified_oak_slab"))
             register(BlockType.PINK_CANDLE, Identifier.fromString("minecraft:pink_candle"), BlockCandle::class.java)
             register(
                 BlockType.PINK_CANDLE_CAKE,
@@ -1841,17 +1968,14 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.PINK_STAINED_GLASS, Identifier.fromString("minecraft:pink_stained_glass"))
-            register(BlockType.PINK_STAINED_GLASS_PANE, Identifier.fromString("minecraft:pink_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.PINK_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:pink_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.PINK_TERRACOTTA, Identifier.fromString("minecraft:pink_terracotta"))
+            register(BlockType.PINK_TULIP, Identifier.fromString("minecraft:pink_tulip"), BlockRedFlower::class.java)
             register(BlockType.PINK_WOOL, Identifier.fromString("minecraft:pink_wool"))
-            register(BlockType.PISTON, Identifier.fromString("minecraft:piston"))
-            register(BlockType.PISTON_ARM_COLLISION, Identifier.fromString("minecraft:piston_arm_collision"))
-            register(BlockType.OAK_PLANKS, Identifier.fromString("minecraft:oak_planks"))
-            register(BlockType.SPRUCE_PLANKS, Identifier.fromString("minecraft:spruce_planks"))
-            register(BlockType.BIRCH_PLANKS, Identifier.fromString("minecraft:birch_planks"))
-            register(BlockType.JUNGLE_PLANKS, Identifier.fromString("minecraft:jungle_planks"))
-            register(BlockType.ACACIA_PLANKS, Identifier.fromString("minecraft:acacia_planks"))
-            register(BlockType.DARK_OAK_PLANKS, Identifier.fromString("minecraft:dark_oak_planks"))
             register(BlockType.PISTON, Identifier.fromString("minecraft:piston"), BlockPiston::class.java)
             register(
                 BlockType.PISTON_ARM_COLLISION,
@@ -1994,6 +2118,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:polished_tuff_wall"),
                 BlockWall::class.java
             )
+            register(BlockType.POPPY, Identifier.fromString("minecraft:poppy"), BlockRedFlower::class.java)
             register(BlockType.PORTAL, Identifier.fromString("minecraft:portal"), BlockPortal::class.java)
             register(BlockType.POTATOES, Identifier.fromString("minecraft:potatoes"), BlockPotatoes::class.java)
             register(BlockType.POWDER_SNOW, Identifier.fromString("minecraft:powder_snow"))
@@ -2044,7 +2169,11 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.PURPLE_STAINED_GLASS, Identifier.fromString("minecraft:purple_stained_glass"))
-            register(BlockType.PURPLE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:purple_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.PURPLE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:purple_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.PURPLE_TERRACOTTA, Identifier.fromString("minecraft:purple_terracotta"))
             register(BlockType.PURPLE_WOOL, Identifier.fromString("minecraft:purple_wool"))
             register(
@@ -2060,6 +2189,11 @@ class BlockRegistry {
             )
             register(BlockType.QUARTZ_BRICKS, Identifier.fromString("minecraft:quartz_bricks"))
             register(BlockType.QUARTZ_ORE, Identifier.fromString("minecraft:quartz_ore"), BlockQuartzOre::class.java)
+            register(
+                BlockType.QUARTZ_SLAB,
+                Identifier.fromString("minecraft:quartz_slab"),
+                BlockStoneBlockSlab::class.java
+            )
             register(BlockType.QUARTZ_STAIRS, Identifier.fromString("minecraft:quartz_stairs"), BlockStairs::class.java)
             register(BlockType.RAIL, Identifier.fromString("minecraft:rail"), BlockRail::class.java)
             register(BlockType.RAW_COPPER_BLOCK, Identifier.fromString("minecraft:raw_copper_block"))
@@ -2074,17 +2208,6 @@ class BlockRegistry {
             register(BlockType.RED_CARPET, Identifier.fromString("minecraft:red_carpet"), BlockCarpet::class.java)
             register(BlockType.RED_CONCRETE, Identifier.fromString("minecraft:red_concrete"))
             register(BlockType.RED_CONCRETE_POWDER, Identifier.fromString("minecraft:red_concrete_powder"))
-            register(BlockType.POPPY, Identifier.fromString("minecraft:poppy"), BlockRedFlower::class.java)
-            register(BlockType.BLUE_ORCHID, Identifier.fromString("minecraft:blue_orchid"), BlockRedFlower::class.java)
-            register(BlockType.ALLIUM, Identifier.fromString("minecraft:allium"), BlockRedFlower::class.java)
-            register(BlockType.AZURE_BLUET, Identifier.fromString("minecraft:azure_bluet"), BlockRedFlower::class.java)
-            register(BlockType.RED_TULIP, Identifier.fromString("minecraft:red_tulip"), BlockRedFlower::class.java)
-            register(BlockType.ORANGE_TULIP, Identifier.fromString("minecraft:orange_tulip"), BlockRedFlower::class.java)
-            register(BlockType.WHITE_TULIP, Identifier.fromString("minecraft:white_tulip"), BlockRedFlower::class.java)
-            register(BlockType.PINK_TULIP, Identifier.fromString("minecraft:pink_tulip"), BlockRedFlower::class.java)
-            register(BlockType.OXEYE_DAISY, Identifier.fromString("minecraft:oxeye_daisy"), BlockRedFlower::class.java)
-            register(BlockType.CORNFLOWER, Identifier.fromString("minecraft:cornflower"), BlockRedFlower::class.java)
-            register(BlockType.LILY_OF_THE_VALLEY, Identifier.fromString("minecraft:lily_of_the_valley"), BlockRedFlower::class.java)
             register(
                 BlockType.RED_GLAZED_TERRACOTTA,
                 Identifier.fromString("minecraft:red_glazed_terracotta"),
@@ -2122,8 +2245,13 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.RED_STAINED_GLASS, Identifier.fromString("minecraft:red_stained_glass"))
-            register(BlockType.RED_STAINED_GLASS_PANE, Identifier.fromString("minecraft:red_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.RED_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:red_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.RED_TERRACOTTA, Identifier.fromString("minecraft:red_terracotta"))
+            register(BlockType.RED_TULIP, Identifier.fromString("minecraft:red_tulip"), BlockRedFlower::class.java)
             register(BlockType.RED_WOOL, Identifier.fromString("minecraft:red_wool"))
             register(BlockType.REDSTONE_BLOCK, Identifier.fromString("minecraft:redstone_block"))
             register(BlockType.REDSTONE_LAMP, Identifier.fromString("minecraft:redstone_lamp"))
@@ -2155,19 +2283,19 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:respawn_anchor"),
                 BlockRespawnAnchor::class.java
             )
+            register(BlockType.ROSE_BUSH, Identifier.fromString("minecraft:rose_bush"), BlockDoublePlant::class.java)
             register(BlockType.SAND, Identifier.fromString("minecraft:sand"), BlockSand::class.java)
             register(BlockType.SANDSTONE, Identifier.fromString("minecraft:sandstone"), BlockSandstone::class.java)
+            register(
+                BlockType.SANDSTONE_SLAB,
+                Identifier.fromString("minecraft:sandstone_slab"),
+                BlockStoneBlockSlab::class.java
+            )
             register(
                 BlockType.SANDSTONE_STAIRS,
                 Identifier.fromString("minecraft:sandstone_stairs"),
                 BlockStairs::class.java
             )
-            register(BlockType.OAK_SAPLING, Identifier.fromString("minecraft:oak_sapling"), BlockSapling::class.java)
-            register(BlockType.SPRUCE_SAPLING, Identifier.fromString("minecraft:spruce_sapling"), BlockSapling::class.java)
-            register(BlockType.BIRCH_SAPLING, Identifier.fromString("minecraft:birch_sapling"), BlockSapling::class.java)
-            register(BlockType.JUNGLE_SAPLING, Identifier.fromString("minecraft:jungle_sapling"), BlockSapling::class.java)
-            register(BlockType.ACACIA_SAPLING, Identifier.fromString("minecraft:acacia_sapling"), BlockSapling::class.java)
-            register(BlockType.DARK_OAK_SAPLING, Identifier.fromString("minecraft:dark_oak_sapling"), BlockSapling::class.java)
             register(
                 BlockType.SCAFFOLDING,
                 Identifier.fromString("minecraft:scaffolding"),
@@ -2193,6 +2321,7 @@ class BlockRegistry {
             register(BlockType.SEA_LANTERN, Identifier.fromString("minecraft:sea_lantern"))
             register(BlockType.SEA_PICKLE, Identifier.fromString("minecraft:sea_pickle"), BlockSeaPickle::class.java)
             register(BlockType.SEAGRASS, Identifier.fromString("minecraft:seagrass"), BlockSeagrass::class.java)
+            register(BlockType.SHORT_GRASS, Identifier.fromString("minecraft:short_grass"), BlockTallgrass::class.java)
             register(BlockType.SHROOMLIGHT, Identifier.fromString("minecraft:shroomlight"))
             register(
                 BlockType.SILVER_GLAZED_TERRACOTTA,
@@ -2234,6 +2363,11 @@ class BlockRegistry {
                 BlockStairs::class.java
             )
             register(BlockType.SMOOTH_STONE, Identifier.fromString("minecraft:smooth_stone"))
+            register(
+                BlockType.SMOOTH_STONE_SLAB,
+                Identifier.fromString("minecraft:smooth_stone_slab"),
+                BlockStoneBlockSlab::class.java
+            )
             register(BlockType.SNIFFER_EGG, Identifier.fromString("minecraft:sniffer_egg"), BlockSnifferEgg::class.java)
             register(BlockType.SNOW, Identifier.fromString("minecraft:snow"))
             register(BlockType.SNOW_LAYER, Identifier.fromString("minecraft:snow_layer"), BlockSnowLayer::class.java)
@@ -2255,6 +2389,11 @@ class BlockRegistry {
             register(BlockType.SPORE_BLOSSOM, Identifier.fromString("minecraft:spore_blossom"))
             register(BlockType.SPRUCE_BUTTON, Identifier.fromString("minecraft:spruce_button"), BlockButton::class.java)
             register(BlockType.SPRUCE_DOOR, Identifier.fromString("minecraft:spruce_door"), BlockDoor::class.java)
+            register(
+                BlockType.SPRUCE_DOUBLE_SLAB,
+                Identifier.fromString("minecraft:spruce_double_slab"),
+                BlockDoubleWoodenSlab::class.java
+            )
             register(BlockType.SPRUCE_FENCE, Identifier.fromString("minecraft:spruce_fence"), BlockFence::class.java)
             register(
                 BlockType.SPRUCE_FENCE_GATE,
@@ -2266,6 +2405,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:spruce_hanging_sign"),
                 BlockHangingSign::class.java
             )
+            register(BlockType.SPRUCE_LEAVES, Identifier.fromString("minecraft:spruce_leaves"), BlockLeaves::class.java)
             register(BlockType.SPRUCE_LOG, Identifier.fromString("minecraft:spruce_log"), BlockLog::class.java)
             register(BlockType.SPRUCE_PLANKS, Identifier.fromString("minecraft:spruce_planks"))
             register(
@@ -2273,6 +2413,12 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:spruce_pressure_plate"),
                 BlockPressurePlate::class.java
             )
+            register(
+                BlockType.SPRUCE_SAPLING,
+                Identifier.fromString("minecraft:spruce_sapling"),
+                BlockSapling::class.java
+            )
+            register(BlockType.SPRUCE_SLAB, Identifier.fromString("minecraft:spruce_slab"), BlockWoodenSlab::class.java)
             register(BlockType.SPRUCE_STAIRS, Identifier.fromString("minecraft:spruce_stairs"), BlockStairs::class.java)
             register(
                 BlockType.SPRUCE_STANDING_SIGN,
@@ -2289,6 +2435,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:spruce_wall_sign"),
                 BlockWallSign::class.java
             )
+            register(BlockType.SPRUCE_WOOD, Identifier.fromString("minecraft:spruce_wood"), BlockWood::class.java)
             register(
                 BlockType.STANDING_BANNER,
                 Identifier.fromString("minecraft:standing_banner"),
@@ -2310,22 +2457,6 @@ class BlockRegistry {
                 BlockStickyPistonArmCollision::class.java
             )
             register(BlockType.STONE, Identifier.fromString("minecraft:stone"))
-            register(BlockType.GRANITE, Identifier.fromString("minecraft:granite"))
-            register(BlockType.POLISHED_ANDESITE, Identifier.fromString("minecraft:polished_granite"))
-            register(BlockType.DIORITE, Identifier.fromString("minecraft:diorite"))
-            register(BlockType.POLISHED_DIORITE, Identifier.fromString("minecraft:polished_diorite"))
-            register(BlockType.ANDESITE, Identifier.fromString("minecraft:andesite"))
-            register(BlockType.POLISHED_ANDESITE, Identifier.fromString("minecraft:polished_andesite"))
-            register(BlockType.STONE_BRICK_STAIRS, Identifier.fromString("minecraft:stone_brick_stairs"))
-            register(BlockType.STONE_BUTTON, Identifier.fromString("minecraft:stone_button"))
-            register(BlockType.STONE_PRESSURE_PLATE, Identifier.fromString("minecraft:stone_pressure_plate"))
-            register(BlockType.STONE_STAIRS, Identifier.fromString("minecraft:stone_stairs"))
-            register(BlockType.STONEBRICK, Identifier.fromString("minecraft:stonebrick"))
-            register(
-                BlockType.STONE_BLOCK_SLAB,
-                Identifier.fromString("minecraft:stone_block_slab"),
-                BlockStoneBlockSlab::class.java
-            )
             register(
                 BlockType.STONE_BLOCK_SLAB2,
                 Identifier.fromString("minecraft:stone_block_slab2"),
@@ -2340,6 +2471,11 @@ class BlockRegistry {
                 BlockType.STONE_BLOCK_SLAB4,
                 Identifier.fromString("minecraft:stone_block_slab4"),
                 BlockStoneBlockSlab4::class.java
+            )
+            register(
+                BlockType.STONE_BRICK_SLAB,
+                Identifier.fromString("minecraft:stone_brick_slab"),
+                BlockStoneBlockSlab::class.java
             )
             register(
                 BlockType.STONE_BRICK_STAIRS,
@@ -2366,6 +2502,11 @@ class BlockRegistry {
                 BlockLog::class.java
             )
             register(
+                BlockType.STRIPPED_ACACIA_WOOD,
+                Identifier.fromString("minecraft:stripped_acacia_wood"),
+                BlockStrippedWood::class.java
+            )
+            register(
                 BlockType.STRIPPED_BAMBOO_BLOCK,
                 Identifier.fromString("minecraft:stripped_bamboo_block"),
                 BlockStrippedWood::class.java
@@ -2374,6 +2515,11 @@ class BlockRegistry {
                 BlockType.STRIPPED_BIRCH_LOG,
                 Identifier.fromString("minecraft:stripped_birch_log"),
                 BlockLog::class.java
+            )
+            register(
+                BlockType.STRIPPED_BIRCH_WOOD,
+                Identifier.fromString("minecraft:stripped_birch_wood"),
+                BlockStrippedWood::class.java
             )
             register(
                 BlockType.STRIPPED_CHERRY_LOG,
@@ -2401,9 +2547,19 @@ class BlockRegistry {
                 BlockLog::class.java
             )
             register(
+                BlockType.STRIPPED_DARK_OAK_WOOD,
+                Identifier.fromString("minecraft:stripped_dark_oak_wood"),
+                BlockStrippedWood::class.java
+            )
+            register(
                 BlockType.STRIPPED_JUNGLE_LOG,
                 Identifier.fromString("minecraft:stripped_jungle_log"),
                 BlockLog::class.java
+            )
+            register(
+                BlockType.STRIPPED_JUNGLE_WOOD,
+                Identifier.fromString("minecraft:stripped_jungle_wood"),
+                BlockStrippedWood::class.java
             )
             register(
                 BlockType.STRIPPED_MANGROVE_LOG,
@@ -2421,9 +2577,19 @@ class BlockRegistry {
                 BlockLog::class.java
             )
             register(
+                BlockType.STRIPPED_OAK_WOOD,
+                Identifier.fromString("minecraft:stripped_oak_wood"),
+                BlockStrippedWood::class.java
+            )
+            register(
                 BlockType.STRIPPED_SPRUCE_LOG,
                 Identifier.fromString("minecraft:stripped_spruce_log"),
                 BlockLog::class.java
+            )
+            register(
+                BlockType.STRIPPED_SPRUCE_WOOD,
+                Identifier.fromString("minecraft:stripped_spruce_wood"),
+                BlockStrippedWood::class.java
             )
             register(
                 BlockType.STRIPPED_WARPED_HYPHAE,
@@ -2436,36 +2602,6 @@ class BlockRegistry {
                 BlockStrippedWood::class.java
             )
             register(
-                BlockType.STRIPPED_OAK_WOOD,
-                Identifier.fromString("minecraft:stripped_oak_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
-                BlockType.STRIPPED_SPRUCE_WOOD,
-                Identifier.fromString("minecraft:stripped_spruce_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
-                BlockType.STRIPPED_BIRCH_WOOD,
-                Identifier.fromString("minecraft:stripped_birch_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
-                BlockType.STRIPPED_JUNGLE_WOOD,
-                Identifier.fromString("minecraft:stripped_jungle_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
-                BlockType.STRIPPED_ACACIA_WOOD,
-                Identifier.fromString("minecraft:stripped_acacia_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
-                BlockType.STRIPPED_DARK_OAK_WOOD,
-                Identifier.fromString("minecraft:stripped_dark_oak_wood"),
-                BlockStrippedWood::class.java
-            )
-            register(
                 BlockType.STRUCTURE_BLOCK,
                 Identifier.fromString("minecraft:structure_block"),
                 BlockStructureBlock::class.java
@@ -2475,6 +2611,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:structure_void"),
                 BlockStructureVoid::class.java
             )
+            register(BlockType.SUNFLOWER, Identifier.fromString("minecraft:sunflower"), BlockDoublePlant::class.java)
             register(
                 BlockType.SUSPICIOUS_GRAVEL,
                 Identifier.fromString("minecraft:suspicious_gravel"),
@@ -2490,7 +2627,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:sweet_berry_bush"),
                 BlockSweetBerryBush::class.java
             )
-            register(BlockType.TALLGRASS, Identifier.fromString("minecraft:tallgrass"), BlockTallgrass::class.java)
+            register(BlockType.TALL_GRASS, Identifier.fromString("minecraft:tall_grass"), BlockDoublePlant::class.java)
             register(BlockType.TARGET, Identifier.fromString("minecraft:target"))
             register(BlockType.TINTED_GLASS, Identifier.fromString("minecraft:tinted_glass"))
             register(BlockType.TNT, Identifier.fromString("minecraft:tnt"), BlockTnt::class.java)
@@ -2507,6 +2644,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:trapped_chest"),
                 BlockTrappedChest::class.java
             )
+            register(BlockType.TRIAL_SPAWNER, Identifier.fromString("minecraft:trial_spawner"))
             register(BlockType.TRIP_WIRE, Identifier.fromString("minecraft:trip_wire"), BlockTripWire::class.java)
             register(
                 BlockType.TRIPWIRE_HOOK,
@@ -2514,6 +2652,16 @@ class BlockRegistry {
                 BlockTripwireHook::class.java
             )
             register(BlockType.TUBE_CORAL, Identifier.fromString("minecraft:tube_coral"), BlockCoral::class.java)
+            register(
+                BlockType.TUBE_CORAL_BLOCK,
+                Identifier.fromString("minecraft:tube_coral_block"),
+                BlockCoralBlock::class.java
+            )
+            register(
+                BlockType.TUBE_CORAL_FAN,
+                Identifier.fromString("minecraft:tube_coral_fan"),
+                BlockCoralFan::class.java
+            )
             register(BlockType.TUFF, Identifier.fromString("minecraft:tuff"))
             register(
                 BlockType.TUFF_BRICK_DOUBLE_SLAB,
@@ -2576,6 +2724,7 @@ class BlockRegistry {
                 Identifier.fromString("minecraft:unpowered_repeater"),
                 BlockUnpoweredRepeater::class.java
             )
+            register(BlockType.VAULT, Identifier.fromString("minecraft:vault"))
             register(
                 BlockType.VERDANT_FROGLIGHT,
                 Identifier.fromString("minecraft:verdant_froglight"),
@@ -2855,32 +3004,21 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.WHITE_STAINED_GLASS, Identifier.fromString("minecraft:white_stained_glass"))
-            register(BlockType.WHITE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:white_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.WHITE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:white_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.WHITE_TERRACOTTA, Identifier.fromString("minecraft:white_terracotta"))
+            register(BlockType.WHITE_TULIP, Identifier.fromString("minecraft:white_tulip"), BlockRedFlower::class.java)
             register(BlockType.WHITE_WOOL, Identifier.fromString("minecraft:white_wool"))
             register(BlockType.WITHER_ROSE, Identifier.fromString("minecraft:wither_rose"), BlockWitherRose::class.java)
-            register(BlockType.OAK_WOOD, Identifier.fromString("minecraft:oak_wood"), BlockWood::class.java)
-            register(BlockType.SPRUCE_WOOD, Identifier.fromString("minecraft:spruce_wood"), BlockWood::class.java)
-            register(BlockType.BIRCH_WOOD, Identifier.fromString("minecraft:birch_wood"), BlockWood::class.java)
-            register(BlockType.JUNGLE_WOOD, Identifier.fromString("minecraft:jungle_wood"), BlockWood::class.java)
-            register(BlockType.ACACIA_WOOD, Identifier.fromString("minecraft:acacia_wood"), BlockWood::class.java)
-            register(BlockType.DARK_OAK_WOOD, Identifier.fromString("minecraft:dark_oak_wood"), BlockWood::class.java)
             register(BlockType.WOODEN_BUTTON, Identifier.fromString("minecraft:wooden_button"), BlockButton::class.java)
             register(BlockType.WOODEN_DOOR, Identifier.fromString("minecraft:wooden_door"), BlockDoor::class.java)
             register(
                 BlockType.WOODEN_PRESSURE_PLATE,
                 Identifier.fromString("minecraft:wooden_pressure_plate"),
                 BlockPressurePlate::class.java
-            )
-            register(BlockType.OAK_SLAB, Identifier.fromString("minecraft:oak_slab"), BlockWoodenSlab::class.java)
-            register(BlockType.SPRUCE_SLAB, Identifier.fromString("minecraft:spruce_slab"), BlockWoodenSlab::class.java)
-            register(BlockType.BIRCH_SLAB, Identifier.fromString("minecraft:birch_slab"), BlockWoodenSlab::class.java)
-            register(BlockType.JUNGLE_SLAB, Identifier.fromString("minecraft:jungle_slab"), BlockWoodenSlab::class.java)
-            register(BlockType.ACACIA_SLAB, Identifier.fromString("minecraft:acacia_slab"), BlockWoodenSlab::class.java)
-            register(
-                BlockType.DARK_OAK_SLAB,
-                Identifier.fromString("minecraft:dark_oak_slab"),
-                BlockWoodenSlab::class.java
             )
             register(BlockType.YELLOW_CANDLE, Identifier.fromString("minecraft:yellow_candle"), BlockCandle::class.java)
             register(
@@ -2907,63 +3045,13 @@ class BlockRegistry {
                 BlockShulkerBox::class.java
             )
             register(BlockType.YELLOW_STAINED_GLASS, Identifier.fromString("minecraft:yellow_stained_glass"))
-            register(BlockType.YELLOW_STAINED_GLASS_PANE, Identifier.fromString("minecraft:yellow_stained_glass_pane"), BlockGlassPane::class.java)
+            register(
+                BlockType.YELLOW_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:yellow_stained_glass_pane"),
+                BlockGlassPane::class.java
+            )
             register(BlockType.YELLOW_TERRACOTTA, Identifier.fromString("minecraft:yellow_terracotta"))
             register(BlockType.YELLOW_WOOL, Identifier.fromString("minecraft:yellow_wool"))
-            register(BlockType.CRAFTER, Identifier.fromString("minecraft:crafter"))
-            register(BlockType.TRIAL_SPAWNER, Identifier.fromString("minecraft:trial_spawner"))
-            register(BlockType.VAULT, Identifier.fromString("minecraft:vault"))
-            register(BlockType.POLISHED_TUFF, Identifier.fromString("minecraft:polished_tuff"))
-            register(BlockType.CHISELED_TUFF, Identifier.fromString("minecraft:chiseled_tuff"))
-            register(BlockType.CHISELED_TUFF_BRICKS, Identifier.fromString("minecraft:chisled_tuff_bricks"))
-            register(BlockType.TUFF_WALL, Identifier.fromString("minecraft:tuff_wall"))
-            register(BlockType.TUFF_SLAB, Identifier.fromString("minecraft:tuff_slab"))
-            register(BlockType.POLISHED_TUFF_WALL, Identifier.fromString("minecraft:polished_tuff_wall"))
-            register(BlockType.POLISHED_TUFF_STAIRS, Identifier.fromString("minecraft:polished_tuff_stairs"))
-            register(BlockType.POLISHED_TUFF_SLAB, Identifier.fromString("minecraft:polished_tuff_slab"))
-            register(BlockType.TUFF_BRICK_WALL, Identifier.fromString("minecraft:tuff_brick_wall"))
-            register(BlockType.TUFF_BRICK_STAIRS, Identifier.fromString("minecraft:tuff_brick_stairs"))
-            register(BlockType.TUFF_BRICK_SLAB, Identifier.fromString("minecraft:tuff_brick_slab"))
-            register(BlockType.COPPER_DOOR, Identifier.fromString("minecraft:copper_door"))
-            register(BlockType.EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:exposed_copper_door"))
-            register(BlockType.WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:weathered_copper_door"))
-            register(BlockType.OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:oxidized_copper_door"))
-            register(BlockType.WAXED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_copper_door"))
-            register(BlockType.WAXED_EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_exposed_copper_door"))
-            register(BlockType.WAXED_WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_weathered_copper_door"))
-            register(BlockType.WAXED_OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_door"))
-            register(BlockType.CHISELED_COPPER, Identifier.fromString("minecraft:chiseled_copper"))
-            register(BlockType.EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:exposed_chiseled_copper"))
-            register(BlockType.WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:weathered_chiseled_copper"))
-            register(BlockType.OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:oxidized_chiseled_copper"))
-            register(BlockType.WAXED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_chiseled_copper"))
-            register(BlockType.WAXED_EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_exposed_chiseled_copper"))
-            register(BlockType.WAXED_WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_weathered_chiseled_copper"))
-            register(BlockType.WAXED_OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_oxidized_chiseled_copper"))
-            register(BlockType.COPPER_GRATE, Identifier.fromString("minecraft:copper_grate"))
-            register(BlockType.EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:exposed_copper_grate"))
-            register(BlockType.WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:weathered_copper_grate"))
-            register(BlockType.OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:oxidized_copper_grate"))
-            register(BlockType.WAXED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_copper_grate"))
-            register(BlockType.WAXED_EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_exposed_copper_grate"))
-            register(BlockType.WAXED_WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_weathered_copper_grate"))
-            register(BlockType.WAXED_OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_oxidized_copper_grate"))
-            register(BlockType.COPPER_TRAPDOOR, Identifier.fromString("minecraft:copper_trapdoor"))
-            register(BlockType.EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:exposed_copper_trapdoor"))
-            register(BlockType.WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:weathered_copper_trapdoor"))
-            register(BlockType.OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:oxidized_copper_trapdoor"))
-            register(BlockType.WAXED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_copper_trapdoor"))
-            register(BlockType.WAXED_EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_exposed_copper_trapdoor"))
-            register(BlockType.WAXED_WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_weathered_copper_trapdoor"))
-            register(BlockType.WAXED_OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_trapdoor"))
-            register(BlockType.COPPER_BULB, Identifier.fromString("minecraft:copper_bulb"))
-            register(BlockType.EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:exposed_copper_bulb"))
-            register(BlockType.WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:weathered_copper_bulb"))
-            register(BlockType.OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:oxidized_copper_bulb"))
-            register(BlockType.WAXED_COPPER_BULB, Identifier.fromString("minecraft:waxed_copper_bulb"))
-            register(BlockType.WAXED_EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:waxed_exposed_copper_bulb"))
-            register(BlockType.WAXED_WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:waxed_weathered_copper_bulb"))
-            register(BlockType.WAXED_OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:waxed_oxidized_copper_bulb"))
         }
 
         private fun register(blockType: BlockType, identifier: Identifier) {

@@ -14,66 +14,189 @@ class ItemRegistry {
 
         init {
             register(ItemType.ACACIA_BOAT, Identifier.fromString("minecraft:acacia_boat"), ItemBoat::class.java)
-            register(ItemType.ACACIA_BUTTON, Identifier.fromString("minecraft:acacia_button"), ItemWoodenButton::class.java)
-            register(ItemType.ACACIA_CHEST_BOAT, Identifier.fromString("minecraft:acacia_chest_boat"), ItemBoat::class.java)
+            register(
+                ItemType.ACACIA_BUTTON,
+                Identifier.fromString("minecraft:acacia_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.ACACIA_CHEST_BOAT,
+                Identifier.fromString("minecraft:acacia_chest_boat"),
+                ItemBoat::class.java
+            )
             register(ItemType.ACACIA_DOOR, Identifier.fromString("minecraft:acacia_door"), ItemWoodenDoor::class.java)
-            register(ItemType.ACACIA_FENCE, Identifier.fromString("minecraft:acacia_fence"), ItemWoodenFence::class.java)
-            register(ItemType.ACACIA_FENCE_GATE, Identifier.fromString("minecraft:acacia_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.ACACIA_HANGING_SIGN, Identifier.fromString("minecraft:acacia_hanging_sign"), ItemHangingSign::class.java)
+            register(ItemType.ACACIA_DOUBLE_SLAB, Identifier.fromString("minecraft:acacia_double_slab"))
+            register(
+                ItemType.ACACIA_FENCE,
+                Identifier.fromString("minecraft:acacia_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.ACACIA_FENCE_GATE,
+                Identifier.fromString("minecraft:acacia_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.ACACIA_HANGING_SIGN,
+                Identifier.fromString("minecraft:acacia_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.ACACIA_LEAVES, Identifier.fromString("minecraft:acacia_leaves"))
             register(ItemType.ACACIA_LOG, Identifier.fromString("minecraft:acacia_log"), ItemLog::class.java)
-            register(ItemType.ACACIA_PRESSURE_PLATE, Identifier.fromString("minecraft:acacia_pressure_plate"), ItemPressurePlate::class.java)
+            register(ItemType.ACACIA_PLANKS, Identifier.fromString("minecraft:acacia_planks"))
+            register(
+                ItemType.ACACIA_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:acacia_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.ACACIA_SAPLING,
+                Identifier.fromString("minecraft:acacia_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.ACACIA_SIGN, Identifier.fromString("minecraft:acacia_sign"), ItemSign::class.java)
-            register(ItemType.ACACIA_STAIRS, Identifier.fromString("minecraft:acacia_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.ACACIA_STANDING_SIGN, Identifier.fromString("minecraft:acacia_standing_sign"), ItemSign::class.java)
-            register(ItemType.ACACIA_TRAPDOOR, Identifier.fromString("minecraft:acacia_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.ACACIA_WALL_SIGN, Identifier.fromString("minecraft:acacia_wall_sign"), ItemSign::class.java)
+            register(ItemType.ACACIA_SLAB, Identifier.fromString("minecraft:acacia_slab"), ItemWoodenSlab::class.java)
+            register(
+                ItemType.ACACIA_STAIRS,
+                Identifier.fromString("minecraft:acacia_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.ACACIA_STANDING_SIGN,
+                Identifier.fromString("minecraft:acacia_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.ACACIA_TRAPDOOR,
+                Identifier.fromString("minecraft:acacia_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.ACACIA_WALL_SIGN,
+                Identifier.fromString("minecraft:acacia_wall_sign"),
+                ItemSign::class.java
+            )
+            register(ItemType.ACACIA_WOOD, Identifier.fromString("minecraft:acacia_wood"), ItemWood::class.java)
             register(ItemType.ACTIVATOR_RAIL, Identifier.fromString("minecraft:activator_rail"))
             register(ItemType.AGENT_SPAWN_EGG, Identifier.fromString("minecraft:agent_spawn_egg"))
             register(ItemType.AIR, Identifier.fromString("minecraft:air"))
-            register(ItemType.ALLAY_SPAWN_EGG, Identifier.fromString("minecraft:allay_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.ALLAY_SPAWN_EGG,
+                Identifier.fromString("minecraft:allay_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(ItemType.ALLIUM, Identifier.fromString("minecraft:allium"))
             register(ItemType.ALLOW, Identifier.fromString("minecraft:allow"))
             register(ItemType.AMETHYST_BLOCK, Identifier.fromString("minecraft:amethyst_block"))
             register(ItemType.AMETHYST_CLUSTER, Identifier.fromString("minecraft:amethyst_cluster"))
             register(ItemType.AMETHYST_SHARD, Identifier.fromString("minecraft:amethyst_shard"))
             register(ItemType.ANCIENT_DEBRIS, Identifier.fromString("minecraft:ancient_debris"))
+            register(ItemType.ANDESITE, Identifier.fromString("minecraft:andesite"))
             register(ItemType.ANDESITE_STAIRS, Identifier.fromString("minecraft:andesite_stairs"))
             register(ItemType.ANGLER_POTTERY_SHERD, Identifier.fromString("minecraft:angler_pottery_sherd"))
             register(ItemType.ANVIL, Identifier.fromString("minecraft:anvil"))
             register(ItemType.APPLE, Identifier.fromString("minecraft:apple"), ItemApple::class.java)
             register(ItemType.ARCHER_POTTERY_SHERD, Identifier.fromString("minecraft:archer_pottery_sherd"))
+            register(ItemType.ARMADILLO_SCUTE, Identifier.fromString("minecraft:armadillo_scute"))
+            register(ItemType.ARMADILLO_SPAWN_EGG, Identifier.fromString("minecraft:armadillo_spawn_egg"))
             register(ItemType.ARMOR_STAND, Identifier.fromString("minecraft:armor_stand"))
             register(ItemType.ARMS_UP_POTTERY_SHERD, Identifier.fromString("minecraft:arms_up_pottery_sherd"))
             register(ItemType.ARROW, Identifier.fromString("minecraft:arrow"))
             register(ItemType.AXOLOTL_BUCKET, Identifier.fromString("minecraft:axolotl_bucket"))
-            register(ItemType.AXOLOTL_SPAWN_EGG, Identifier.fromString("minecraft:axolotl_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.AXOLOTL_SPAWN_EGG,
+                Identifier.fromString("minecraft:axolotl_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.AZALEA, Identifier.fromString("minecraft:azalea"), ItemAzalea::class.java)
             register(ItemType.AZALEA_LEAVES, Identifier.fromString("minecraft:azalea_leaves"))
             register(ItemType.AZALEA_LEAVES_FLOWERED, Identifier.fromString("minecraft:azalea_leaves_flowered"))
-            register(ItemType.BAKED_POTATO, Identifier.fromString("minecraft:baked_potato"), ItemBakedPotato::class.java)
+            register(ItemType.AZURE_BLUET, Identifier.fromString("minecraft:azure_bluet"))
+            register(
+                ItemType.BAKED_POTATO,
+                Identifier.fromString("minecraft:baked_potato"),
+                ItemBakedPotato::class.java
+            )
             register(ItemType.BALLOON, Identifier.fromString("minecraft:balloon"))
             register(ItemType.BAMBOO, Identifier.fromString("minecraft:bamboo"), ItemBamboo::class.java)
-            register(ItemType.BAMBOO_BLOCK, Identifier.fromString("minecraft:bamboo_block"), ItemBambooBlock::class.java)
-            register(ItemType.BAMBOO_BUTTON, Identifier.fromString("minecraft:bamboo_button"), ItemWoodenButton::class.java)
+            register(
+                ItemType.BAMBOO_BLOCK,
+                Identifier.fromString("minecraft:bamboo_block"),
+                ItemBambooBlock::class.java
+            )
+            register(
+                ItemType.BAMBOO_BUTTON,
+                Identifier.fromString("minecraft:bamboo_button"),
+                ItemWoodenButton::class.java
+            )
             register(ItemType.BAMBOO_CHEST_RAFT, Identifier.fromString("minecraft:bamboo_chest_raft"))
             register(ItemType.BAMBOO_DOOR, Identifier.fromString("minecraft:bamboo_door"), ItemWoodenDoor::class.java)
             register(ItemType.BAMBOO_DOUBLE_SLAB, Identifier.fromString("minecraft:bamboo_double_slab"))
-            register(ItemType.BAMBOO_FENCE, Identifier.fromString("minecraft:bamboo_fence"), ItemWoodenFence::class.java)
-            register(ItemType.BAMBOO_FENCE_GATE, Identifier.fromString("minecraft:bamboo_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.BAMBOO_HANGING_SIGN, Identifier.fromString("minecraft:bamboo_hanging_sign"), ItemHangingSign::class.java)
-            register(ItemType.BAMBOO_MOSAIC, Identifier.fromString("minecraft:bamboo_mosaic"), ItemBambooMosaic::class.java)
+            register(
+                ItemType.BAMBOO_FENCE,
+                Identifier.fromString("minecraft:bamboo_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.BAMBOO_FENCE_GATE,
+                Identifier.fromString("minecraft:bamboo_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.BAMBOO_HANGING_SIGN,
+                Identifier.fromString("minecraft:bamboo_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(
+                ItemType.BAMBOO_MOSAIC,
+                Identifier.fromString("minecraft:bamboo_mosaic"),
+                ItemBambooMosaic::class.java
+            )
             register(ItemType.BAMBOO_MOSAIC_DOUBLE_SLAB, Identifier.fromString("minecraft:bamboo_mosaic_double_slab"))
-            register(ItemType.BAMBOO_MOSAIC_SLAB, Identifier.fromString("minecraft:bamboo_mosaic_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.BAMBOO_MOSAIC_STAIRS, Identifier.fromString("minecraft:bamboo_mosaic_stairs"), ItemWoodenStairs::class.java)
+            register(
+                ItemType.BAMBOO_MOSAIC_SLAB,
+                Identifier.fromString("minecraft:bamboo_mosaic_slab"),
+                ItemWoodenSlab::class.java
+            )
+            register(
+                ItemType.BAMBOO_MOSAIC_STAIRS,
+                Identifier.fromString("minecraft:bamboo_mosaic_stairs"),
+                ItemWoodenStairs::class.java
+            )
             register(ItemType.BAMBOO_PLANKS, Identifier.fromString("minecraft:bamboo_planks"), ItemPlanks::class.java)
-            register(ItemType.BAMBOO_PRESSURE_PLATE, Identifier.fromString("minecraft:bamboo_pressure_plate"), ItemPressurePlate::class.java)
+            register(
+                ItemType.BAMBOO_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:bamboo_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
             register(ItemType.BAMBOO_RAFT, Identifier.fromString("minecraft:bamboo_raft"))
-            register(ItemType.BAMBOO_SAPLING, Identifier.fromString("minecraft:bamboo_sapling"), ItemSapling::class.java)
+            register(
+                ItemType.BAMBOO_SAPLING,
+                Identifier.fromString("minecraft:bamboo_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.BAMBOO_SIGN, Identifier.fromString("minecraft:bamboo_sign"), ItemSign::class.java)
             register(ItemType.BAMBOO_SLAB, Identifier.fromString("minecraft:bamboo_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.BAMBOO_STAIRS, Identifier.fromString("minecraft:bamboo_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.BAMBOO_STANDING_SIGN, Identifier.fromString("minecraft:bamboo_standing_sign"), ItemSign::class.java)
-            register(ItemType.BAMBOO_TRAPDOOR, Identifier.fromString("minecraft:bamboo_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.BAMBOO_WALL_SIGN, Identifier.fromString("minecraft:bamboo_wall_sign"), ItemSign::class.java)
+            register(
+                ItemType.BAMBOO_STAIRS,
+                Identifier.fromString("minecraft:bamboo_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.BAMBOO_STANDING_SIGN,
+                Identifier.fromString("minecraft:bamboo_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.BAMBOO_TRAPDOOR,
+                Identifier.fromString("minecraft:bamboo_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.BAMBOO_WALL_SIGN,
+                Identifier.fromString("minecraft:bamboo_wall_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.BANNER, Identifier.fromString("minecraft:banner"), ItemBanner::class.java)
             register(ItemType.BANNER_PATTERN, Identifier.fromString("minecraft:banner_pattern"))
             register(ItemType.BARREL, Identifier.fromString("minecraft:barrel"), ItemBarrel::class.java)
@@ -89,23 +212,65 @@ class ItemRegistry {
             register(ItemType.BEEHIVE, Identifier.fromString("minecraft:beehive"), ItemBeeHive::class.java)
             register(ItemType.BEETROOT, Identifier.fromString("minecraft:beetroot"), ItemBeetroot::class.java)
             register(ItemType.BEETROOT_SEEDS, Identifier.fromString("minecraft:beetroot_seeds"))
-            register(ItemType.BEETROOT_SOUP, Identifier.fromString("minecraft:beetroot_soup"), ItemBeetrootSoup::class.java)
+            register(
+                ItemType.BEETROOT_SOUP,
+                Identifier.fromString("minecraft:beetroot_soup"),
+                ItemBeetrootSoup::class.java
+            )
             register(ItemType.BELL, Identifier.fromString("minecraft:bell"))
             register(ItemType.BIG_DRIPLEAF, Identifier.fromString("minecraft:big_dripleaf"))
             register(ItemType.BIRCH_BOAT, Identifier.fromString("minecraft:birch_boat"), ItemBoat::class.java)
-            register(ItemType.BIRCH_BUTTON, Identifier.fromString("minecraft:birch_button"), ItemWoodenButton::class.java)
-            register(ItemType.BIRCH_CHEST_BOAT, Identifier.fromString("minecraft:birch_chest_boat"), ItemBoat::class.java)
+            register(
+                ItemType.BIRCH_BUTTON,
+                Identifier.fromString("minecraft:birch_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.BIRCH_CHEST_BOAT,
+                Identifier.fromString("minecraft:birch_chest_boat"),
+                ItemBoat::class.java
+            )
             register(ItemType.BIRCH_DOOR, Identifier.fromString("minecraft:birch_door"), ItemWoodenDoor::class.java)
+            register(ItemType.BIRCH_DOUBLE_SLAB, Identifier.fromString("minecraft:birch_double_slab"))
             register(ItemType.BIRCH_FENCE, Identifier.fromString("minecraft:birch_fence"), ItemWoodenFence::class.java)
-            register(ItemType.BIRCH_FENCE_GATE, Identifier.fromString("minecraft:birch_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.BIRCH_HANGING_SIGN, Identifier.fromString("minecraft:birch_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.BIRCH_FENCE_GATE,
+                Identifier.fromString("minecraft:birch_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.BIRCH_HANGING_SIGN,
+                Identifier.fromString("minecraft:birch_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.BIRCH_LEAVES, Identifier.fromString("minecraft:birch_leaves"))
             register(ItemType.BIRCH_LOG, Identifier.fromString("minecraft:birch_log"), ItemLog::class.java)
-            register(ItemType.BIRCH_PRESSURE_PLATE, Identifier.fromString("minecraft:birch_pressure_plate"), ItemPressurePlate::class.java)
+            register(ItemType.BIRCH_PLANKS, Identifier.fromString("minecraft:birch_planks"))
+            register(
+                ItemType.BIRCH_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:birch_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(ItemType.BIRCH_SAPLING, Identifier.fromString("minecraft:birch_sapling"), ItemSapling::class.java)
             register(ItemType.BIRCH_SIGN, Identifier.fromString("minecraft:birch_sign"), ItemSign::class.java)
-            register(ItemType.BIRCH_STAIRS, Identifier.fromString("minecraft:birch_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.BIRCH_STANDING_SIGN, Identifier.fromString("minecraft:birch_standing_sign"), ItemSign::class.java)
-            register(ItemType.BIRCH_TRAPDOOR, Identifier.fromString("minecraft:birch_trapdoor"), ItemWoodenTrapdoor::class.java)
+            register(ItemType.BIRCH_SLAB, Identifier.fromString("minecraft:birch_slab"), ItemWoodenSlab::class.java)
+            register(
+                ItemType.BIRCH_STAIRS,
+                Identifier.fromString("minecraft:birch_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.BIRCH_STANDING_SIGN,
+                Identifier.fromString("minecraft:birch_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.BIRCH_TRAPDOOR,
+                Identifier.fromString("minecraft:birch_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
             register(ItemType.BIRCH_WALL_SIGN, Identifier.fromString("minecraft:birch_wall_sign"), ItemSign::class.java)
+            register(ItemType.BIRCH_WOOD, Identifier.fromString("minecraft:birch_wood"), ItemWood::class.java)
             register(ItemType.BLACK_CANDLE, Identifier.fromString("minecraft:black_candle"))
             register(ItemType.BLACK_CANDLE_CAKE, Identifier.fromString("minecraft:black_candle_cake"))
             register(ItemType.BLACK_CARPET, Identifier.fromString("minecraft:black_carpet"), ItemCarpet::class.java)
@@ -127,7 +292,11 @@ class ItemRegistry {
             register(ItemType.BLAST_FURNACE, Identifier.fromString("minecraft:blast_furnace"))
             register(ItemType.BLAZE_POWDER, Identifier.fromString("minecraft:blaze_powder"))
             register(ItemType.BLAZE_ROD, Identifier.fromString("minecraft:blaze_rod"), ItemBlazeRod::class.java)
-            register(ItemType.BLAZE_SPAWN_EGG, Identifier.fromString("minecraft:blaze_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.BLAZE_SPAWN_EGG,
+                Identifier.fromString("minecraft:blaze_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.BLEACH, Identifier.fromString("minecraft:bleach"))
             register(ItemType.BLUE_CANDLE, Identifier.fromString("minecraft:blue_candle"))
             register(ItemType.BLUE_CANDLE_CAKE, Identifier.fromString("minecraft:blue_candle_cake"))
@@ -137,12 +306,18 @@ class ItemRegistry {
             register(ItemType.BLUE_DYE, Identifier.fromString("minecraft:blue_dye"))
             register(ItemType.BLUE_GLAZED_TERRACOTTA, Identifier.fromString("minecraft:blue_glazed_terracotta"))
             register(ItemType.BLUE_ICE, Identifier.fromString("minecraft:blue_ice"))
+            register(ItemType.BLUE_ORCHID, Identifier.fromString("minecraft:blue_orchid"))
             register(ItemType.BLUE_SHULKER_BOX, Identifier.fromString("minecraft:blue_shulker_box"))
             register(ItemType.BLUE_STAINED_GLASS, Identifier.fromString("minecraft:blue_stained_glass"))
             register(ItemType.BLUE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:blue_stained_glass_pane"))
             register(ItemType.BLUE_TERRACOTTA, Identifier.fromString("minecraft:blue_terracotta"))
             register(ItemType.BLUE_WOOL, Identifier.fromString("minecraft:blue_wool"), ItemWool::class.java)
             register(ItemType.BOAT, Identifier.fromString("minecraft:boat"), ItemBoat::class.java)
+            register(ItemType.BOGGED_SPAWN_EGG, Identifier.fromString("minecraft:bogged_spawn_egg"))
+            register(
+                ItemType.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Identifier.fromString("minecraft:bolt_armor_trim_smithing_template")
+            )
             register(ItemType.BONE, Identifier.fromString("minecraft:bone"))
             register(ItemType.BONE_BLOCK, Identifier.fromString("minecraft:bone_block"))
             register(ItemType.BONE_MEAL, Identifier.fromString("minecraft:bone_meal"))
@@ -156,11 +331,16 @@ class ItemRegistry {
             register(ItemType.BOW, Identifier.fromString("minecraft:bow"), ItemBow::class.java)
             register(ItemType.BOWL, Identifier.fromString("minecraft:bowl"), ItemBowl::class.java)
             register(ItemType.BRAIN_CORAL, Identifier.fromString("minecraft:brain_coral"))
+            register(ItemType.BRAIN_CORAL_BLOCK, Identifier.fromString("minecraft:brain_coral_block"))
+            register(ItemType.BRAIN_CORAL_FAN, Identifier.fromString("minecraft:brain_coral_fan"))
             register(ItemType.BREAD, Identifier.fromString("minecraft:bread"), ItemBread::class.java)
+            register(ItemType.BREEZE_ROD, Identifier.fromString("minecraft:breeze_rod"))
+            register(ItemType.BREEZE_SPAWN_EGG, Identifier.fromString("minecraft:breeze_spawn_egg"))
             register(ItemType.BREWER_POTTERY_SHERD, Identifier.fromString("minecraft:brewer_pottery_sherd"))
             register(ItemType.BREWING_STAND, Identifier.fromString("minecraft:brewing_stand"))
             register(ItemType.BRICK, Identifier.fromString("minecraft:brick"))
             register(ItemType.BRICK_BLOCK, Identifier.fromString("minecraft:brick_block"))
+            register(ItemType.BRICK_SLAB, Identifier.fromString("minecraft:brick_slab"))
             register(ItemType.BRICK_STAIRS, Identifier.fromString("minecraft:brick_stairs"))
             register(ItemType.BROWN_CANDLE, Identifier.fromString("minecraft:brown_candle"))
             register(ItemType.BROWN_CANDLE_CAKE, Identifier.fromString("minecraft:brown_candle_cake"))
@@ -179,14 +359,20 @@ class ItemRegistry {
             register(ItemType.BRUSH, Identifier.fromString("minecraft:brush"))
             register(ItemType.BUBBLE_COLUMN, Identifier.fromString("minecraft:bubble_column"))
             register(ItemType.BUBBLE_CORAL, Identifier.fromString("minecraft:bubble_coral"))
+            register(ItemType.BUBBLE_CORAL_BLOCK, Identifier.fromString("minecraft:bubble_coral_block"))
+            register(ItemType.BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:bubble_coral_fan"))
             register(ItemType.BUCKET, Identifier.fromString("minecraft:bucket"), ItemBucket::class.java)
             register(ItemType.BUDDING_AMETHYST, Identifier.fromString("minecraft:budding_amethyst"))
             register(ItemType.BURN_POTTERY_SHERD, Identifier.fromString("minecraft:burn_pottery_sherd"))
             register(ItemType.CACTUS, Identifier.fromString("minecraft:cactus"))
-            register(ItemType.CAKE, Identifier.fromString("minecraft:cake"), ItemCake::class.java  )
+            register(ItemType.CAKE, Identifier.fromString("minecraft:cake"), ItemCake::class.java)
             register(ItemType.CALCITE, Identifier.fromString("minecraft:calcite"))
             register(ItemType.CALIBRATED_SCULK_SENSOR, Identifier.fromString("minecraft:calibrated_sculk_sensor"))
-            register(ItemType.CAMEL_SPAWN_EGG, Identifier.fromString("minecraft:camel_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.CAMEL_SPAWN_EGG,
+                Identifier.fromString("minecraft:camel_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.CAMERA, Identifier.fromString("minecraft:camera"))
             register(ItemType.CAMPFIRE, Identifier.fromString("minecraft:campfire"))
             register(ItemType.CANDLE, Identifier.fromString("minecraft:candle"))
@@ -195,11 +381,19 @@ class ItemRegistry {
             register(ItemType.CARROT, Identifier.fromString("minecraft:carrot"), ItemCarrot::class.java)
             register(ItemType.CARROT_ON_A_STICK, Identifier.fromString("minecraft:carrot_on_a_stick"))
             register(ItemType.CARROTS, Identifier.fromString("minecraft:carrots"))
-            register(ItemType.CARTOGRAPHY_TABLE, Identifier.fromString("minecraft:cartography_table"), ItemCartographyTable::class.java)
+            register(
+                ItemType.CARTOGRAPHY_TABLE,
+                Identifier.fromString("minecraft:cartography_table"),
+                ItemCartographyTable::class.java
+            )
             register(ItemType.CARVED_PUMPKIN, Identifier.fromString("minecraft:carved_pumpkin"))
             register(ItemType.CAT_SPAWN_EGG, Identifier.fromString("minecraft:cat_spawn_egg"), ItemSpawnEgg::class.java)
             register(ItemType.CAULDRON, Identifier.fromString("minecraft:cauldron"))
-            register(ItemType.CAVE_SPIDER_SPAWN_EGG, Identifier.fromString("minecraft:cave_spider_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.CAVE_SPIDER_SPAWN_EGG,
+                Identifier.fromString("minecraft:cave_spider_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.CAVE_VINES, Identifier.fromString("minecraft:cave_vines"))
             register(
                 ItemType.CAVE_VINES_BODY_WITH_BERRIES,
@@ -211,45 +405,116 @@ class ItemRegistry {
             )
             register(ItemType.CHAIN, Identifier.fromString("minecraft:chain"))
             register(ItemType.CHAIN_COMMAND_BLOCK, Identifier.fromString("minecraft:chain_command_block"))
-            register(ItemType.CHAINMAIL_BOOTS, Identifier.fromString("minecraft:chainmail_boots"), ItemChainBoots::class.java)
-            register(ItemType.CHAINMAIL_CHESTPLATE, Identifier.fromString("minecraft:chainmail_chestplate"), ItemChainChestplate::class.java)
-            register(ItemType.CHAINMAIL_HELMET, Identifier.fromString("minecraft:chainmail_helmet"), ItemChainHelmet::class.java)
-            register(ItemType.CHAINMAIL_LEGGINGS, Identifier.fromString("minecraft:chainmail_leggings"), ItemChainLeggings::class.java)
+            register(
+                ItemType.CHAINMAIL_BOOTS,
+                Identifier.fromString("minecraft:chainmail_boots"),
+                ItemChainBoots::class.java
+            )
+            register(
+                ItemType.CHAINMAIL_CHESTPLATE,
+                Identifier.fromString("minecraft:chainmail_chestplate"),
+                ItemChainChestplate::class.java
+            )
+            register(
+                ItemType.CHAINMAIL_HELMET,
+                Identifier.fromString("minecraft:chainmail_helmet"),
+                ItemChainHelmet::class.java
+            )
+            register(
+                ItemType.CHAINMAIL_LEGGINGS,
+                Identifier.fromString("minecraft:chainmail_leggings"),
+                ItemChainLeggings::class.java
+            )
             register(ItemType.CHARCOAL, Identifier.fromString("minecraft:charcoal"), ItemCharcoal::class.java)
             register(ItemType.CHEMICAL_HEAT, Identifier.fromString("minecraft:chemical_heat"))
             register(ItemType.CHEMISTRY_TABLE, Identifier.fromString("minecraft:chemistry_table"))
             register(ItemType.CHERRY_BOAT, Identifier.fromString("minecraft:cherry_boat"), ItemBoat::class.java)
-            register(ItemType.CHERRY_BUTTON, Identifier.fromString("minecraft:cherry_button"), ItemWoodenButton::class.java)
-            register(ItemType.CHERRY_CHEST_BOAT, Identifier.fromString("minecraft:cherry_chest_boat"), ItemBoat::class.java)
+            register(
+                ItemType.CHERRY_BUTTON,
+                Identifier.fromString("minecraft:cherry_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.CHERRY_CHEST_BOAT,
+                Identifier.fromString("minecraft:cherry_chest_boat"),
+                ItemBoat::class.java
+            )
             register(ItemType.CHERRY_DOOR, Identifier.fromString("minecraft:cherry_door"), ItemWoodenDoor::class.java)
             register(ItemType.CHERRY_DOUBLE_SLAB, Identifier.fromString("minecraft:cherry_double_slab"))
-            register(ItemType.CHERRY_FENCE, Identifier.fromString("minecraft:cherry_fence"), ItemWoodenFence::class.java)
-            register(ItemType.CHERRY_FENCE_GATE, Identifier.fromString("minecraft:cherry_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.CHERRY_HANGING_SIGN, Identifier.fromString("minecraft:cherry_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.CHERRY_FENCE,
+                Identifier.fromString("minecraft:cherry_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.CHERRY_FENCE_GATE,
+                Identifier.fromString("minecraft:cherry_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.CHERRY_HANGING_SIGN,
+                Identifier.fromString("minecraft:cherry_hanging_sign"),
+                ItemHangingSign::class.java
+            )
             register(ItemType.CHERRY_LEAVES, Identifier.fromString("minecraft:cherry_leaves"))
             register(ItemType.CHERRY_LOG, Identifier.fromString("minecraft:cherry_log"), ItemLog::class.java)
             register(ItemType.CHERRY_PLANKS, Identifier.fromString("minecraft:cherry_planks"))
-            register(ItemType.CHERRY_PRESSURE_PLATE, Identifier.fromString("minecraft:cherry_pressure_plate"), ItemPressurePlate::class.java)
-            register(ItemType.CHERRY_SAPLING, Identifier.fromString("minecraft:cherry_sapling"), ItemSapling::class.java)
+            register(
+                ItemType.CHERRY_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:cherry_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.CHERRY_SAPLING,
+                Identifier.fromString("minecraft:cherry_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.CHERRY_SIGN, Identifier.fromString("minecraft:cherry_sign"), ItemSign::class.java)
             register(ItemType.CHERRY_SLAB, Identifier.fromString("minecraft:cherry_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.CHERRY_STAIRS, Identifier.fromString("minecraft:cherry_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.CHERRY_STANDING_SIGN, Identifier.fromString("minecraft:cherry_standing_sign"), ItemSign::class.java)
-            register(ItemType.CHERRY_TRAPDOOR, Identifier.fromString("minecraft:cherry_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.CHERRY_WALL_SIGN, Identifier.fromString("minecraft:cherry_wall_sign"), ItemSign::class.java)
+            register(
+                ItemType.CHERRY_STAIRS,
+                Identifier.fromString("minecraft:cherry_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.CHERRY_STANDING_SIGN,
+                Identifier.fromString("minecraft:cherry_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.CHERRY_TRAPDOOR,
+                Identifier.fromString("minecraft:cherry_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.CHERRY_WALL_SIGN,
+                Identifier.fromString("minecraft:cherry_wall_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.CHERRY_WOOD, Identifier.fromString("minecraft:cherry_wood"), ItemWood::class.java)
             register(ItemType.CHEST, Identifier.fromString("minecraft:chest"), ItemChest::class.java)
             register(ItemType.CHEST_BOAT, Identifier.fromString("minecraft:chest_boat"), ItemBoat::class.java)
             register(ItemType.CHEST_MINECART, Identifier.fromString("minecraft:chest_minecart"))
             register(ItemType.CHICKEN, Identifier.fromString("minecraft:chicken"), ItemChicken::class.java)
-            register(ItemType.CHICKEN_SPAWN_EGG, Identifier.fromString("minecraft:chicken_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.CHISELED_BOOKSHELF, Identifier.fromString("minecraft:chiseled_bookshelf"), ItemChiseledBookshelf::class.java)
+            register(
+                ItemType.CHICKEN_SPAWN_EGG,
+                Identifier.fromString("minecraft:chicken_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.CHISELED_BOOKSHELF,
+                Identifier.fromString("minecraft:chiseled_bookshelf"),
+                ItemChiseledBookshelf::class.java
+            )
+            register(ItemType.CHISELED_COPPER, Identifier.fromString("minecraft:chiseled_copper"))
             register(ItemType.CHISELED_DEEPSLATE, Identifier.fromString("minecraft:chiseled_deepslate"))
             register(ItemType.CHISELED_NETHER_BRICKS, Identifier.fromString("minecraft:chiseled_nether_bricks"))
             register(
                 ItemType.CHISELED_POLISHED_BLACKSTONE,
                 Identifier.fromString("minecraft:chiseled_polished_blackstone")
             )
+            register(ItemType.CHISELED_TUFF, Identifier.fromString("minecraft:chiseled_tuff"))
+            register(ItemType.CHISELED_TUFF_BRICKS, Identifier.fromString("minecraft:chiseled_tuff_bricks"))
             register(ItemType.CHORUS_FLOWER, Identifier.fromString("minecraft:chorus_flower"))
             register(ItemType.CHORUS_FRUIT, Identifier.fromString("minecraft:chorus_fruit"))
             register(ItemType.CHORUS_PLANT, Identifier.fromString("minecraft:chorus_plant"))
@@ -276,6 +541,7 @@ class ItemRegistry {
             register(ItemType.COBBLED_DEEPSLATE_STAIRS, Identifier.fromString("minecraft:cobbled_deepslate_stairs"))
             register(ItemType.COBBLED_DEEPSLATE_WALL, Identifier.fromString("minecraft:cobbled_deepslate_wall"))
             register(ItemType.COBBLESTONE, Identifier.fromString("minecraft:cobblestone"))
+            register(ItemType.COBBLESTONE_SLAB, Identifier.fromString("minecraft:cobblestone_slab"))
             register(ItemType.COBBLESTONE_WALL, Identifier.fromString("minecraft:cobblestone_wall"))
             register(ItemType.COCOA, Identifier.fromString("minecraft:cocoa"))
             register(ItemType.COCOA_BEANS, Identifier.fromString("minecraft:cocoa_beans"), ItemCocoaBeans::class.java)
@@ -294,34 +560,48 @@ class ItemRegistry {
             register(ItemType.CONCRETE_POWDER, Identifier.fromString("minecraft:concrete_powder"))
             register(ItemType.CONDUIT, Identifier.fromString("minecraft:conduit"))
             register(ItemType.COOKED_BEEF, Identifier.fromString("minecraft:cooked_beef"), ItemCookedBeef::class.java)
-            register(ItemType.COOKED_CHICKEN, Identifier.fromString("minecraft:cooked_chicken"), ItemCookedChicken::class.java)
+            register(
+                ItemType.COOKED_CHICKEN,
+                Identifier.fromString("minecraft:cooked_chicken"),
+                ItemCookedChicken::class.java
+            )
             register(ItemType.COOKED_COD, Identifier.fromString("minecraft:cooked_cod"), ItemCookedCod::class.java)
-            register(ItemType.COOKED_MUTTON, Identifier.fromString("minecraft:cooked_mutton"), ItemCookedMutton::class.java)
-            register(ItemType.COOKED_PORKCHOP, Identifier.fromString("minecraft:cooked_porkchop"), ItemCookedPorkchop::class.java)
-            register(ItemType.COOKED_RABBIT, Identifier.fromString("minecraft:cooked_rabbit"), ItemCookedRabbit::class.java)
-            register(ItemType.COOKED_SALMON, Identifier.fromString("minecraft:cooked_salmon"), ItemCookedSalmon::class.java)
+            register(
+                ItemType.COOKED_MUTTON,
+                Identifier.fromString("minecraft:cooked_mutton"),
+                ItemCookedMutton::class.java
+            )
+            register(
+                ItemType.COOKED_PORKCHOP,
+                Identifier.fromString("minecraft:cooked_porkchop"),
+                ItemCookedPorkchop::class.java
+            )
+            register(
+                ItemType.COOKED_RABBIT,
+                Identifier.fromString("minecraft:cooked_rabbit"),
+                ItemCookedRabbit::class.java
+            )
+            register(
+                ItemType.COOKED_SALMON,
+                Identifier.fromString("minecraft:cooked_salmon"),
+                ItemCookedSalmon::class.java
+            )
             register(ItemType.COOKIE, Identifier.fromString("minecraft:cookie"), ItemCookie::class.java)
             register(ItemType.COPPER_BLOCK, Identifier.fromString("minecraft:copper_block"))
+            register(ItemType.COPPER_BULB, Identifier.fromString("minecraft:copper_bulb"))
+            register(ItemType.COPPER_DOOR, Identifier.fromString("minecraft:copper_door"))
+            register(ItemType.COPPER_GRATE, Identifier.fromString("minecraft:copper_grate"))
             register(ItemType.COPPER_INGOT, Identifier.fromString("minecraft:copper_ingot"))
             register(ItemType.COPPER_ORE, Identifier.fromString("minecraft:copper_ore"))
+            register(ItemType.COPPER_TRAPDOOR, Identifier.fromString("minecraft:copper_trapdoor"))
             register(ItemType.CORAL, Identifier.fromString("minecraft:coral"))
             register(ItemType.CORAL_BLOCK, Identifier.fromString("minecraft:coral_block"))
-            register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"))
-            register(ItemType.FIRE_CORAL_FAN, Identifier.fromString("minecraft:fire_coral_fan"))
-            register(ItemType.BRAIN_CORAL_FAN, Identifier.fromString("minecraft:brain_coral_fan"))
-            register(ItemType.BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:bubble_coral_fan"))
-            register(ItemType.TUBE_CORAL_FAN, Identifier.fromString("minecraft:tube_coral_fan"))
-            register(ItemType.HORN_CORAL_FAN, Identifier.fromString("minecraft:horn_coral_fan"))
-            register(ItemType.DEAD_FIRE_CORAL_FAN, Identifier.fromString("minecraft:dead_fire_coral_fan"))
-            register(ItemType.DEAD_BRAIN_CORAL_FAN, Identifier.fromString("minecraft:dead_brain_coral_fan"))
-            register(ItemType.DEAD_BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:dead_bubble_coral_fan"))
-            register(ItemType.DEAD_TUBE_CORAL_FAN, Identifier.fromString("minecraft:dead_tube_coral_fan"))
-            register(ItemType.DEAD_HORN_CORAL_FAN, Identifier.fromString("minecraft:dead_horn_coral_fan"))
             register(ItemType.CORAL_FAN, Identifier.fromString("minecraft:coral_fan"))
             register(ItemType.CORAL_FAN_DEAD, Identifier.fromString("minecraft:coral_fan_dead"))
             register(ItemType.CORAL_FAN_HANG, Identifier.fromString("minecraft:coral_fan_hang"))
             register(ItemType.CORAL_FAN_HANG2, Identifier.fromString("minecraft:coral_fan_hang2"))
             register(ItemType.CORAL_FAN_HANG3, Identifier.fromString("minecraft:coral_fan_hang3"))
+            register(ItemType.CORNFLOWER, Identifier.fromString("minecraft:cornflower"))
             register(ItemType.COW_SPAWN_EGG, Identifier.fromString("minecraft:cow_spawn_egg"), ItemSpawnEgg::class.java)
             register(ItemType.CRACKED_DEEPSLATE_BRICKS, Identifier.fromString("minecraft:cracked_deepslate_bricks"))
             register(ItemType.CRACKED_DEEPSLATE_TILES, Identifier.fromString("minecraft:cracked_deepslate_tiles"))
@@ -330,28 +610,73 @@ class ItemRegistry {
                 ItemType.CRACKED_POLISHED_BLACKSTONE_BRICKS,
                 Identifier.fromString("minecraft:cracked_polished_blackstone_bricks")
             )
-            register(ItemType.CRAFTING_TABLE, Identifier.fromString("minecraft:crafting_table"), ItemCraftingTable::class.java)
+            register(ItemType.CRAFTER, Identifier.fromString("minecraft:crafter"))
+            register(
+                ItemType.CRAFTING_TABLE,
+                Identifier.fromString("minecraft:crafting_table"),
+                ItemCraftingTable::class.java
+            )
             register(ItemType.CREEPER_BANNER_PATTERN, Identifier.fromString("minecraft:creeper_banner_pattern"))
-            register(ItemType.CREEPER_SPAWN_EGG, Identifier.fromString("minecraft:creeper_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.CRIMSON_BUTTON, Identifier.fromString("minecraft:crimson_button"), ItemWoodenButton::class.java)
+            register(
+                ItemType.CREEPER_SPAWN_EGG,
+                Identifier.fromString("minecraft:creeper_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.CRIMSON_BUTTON,
+                Identifier.fromString("minecraft:crimson_button"),
+                ItemWoodenButton::class.java
+            )
             register(ItemType.CRIMSON_DOOR, Identifier.fromString("minecraft:crimson_door"), ItemWoodenDoor::class.java)
             register(ItemType.CRIMSON_DOUBLE_SLAB, Identifier.fromString("minecraft:crimson_double_slab"))
-            register(ItemType.CRIMSON_FENCE, Identifier.fromString("minecraft:crimson_fence"), ItemWoodenFence::class.java)
-            register(ItemType.CRIMSON_FENCE_GATE, Identifier.fromString("minecraft:crimson_fence_gate"), ItemWoodenFenceGate::class.java)
+            register(
+                ItemType.CRIMSON_FENCE,
+                Identifier.fromString("minecraft:crimson_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.CRIMSON_FENCE_GATE,
+                Identifier.fromString("minecraft:crimson_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
             register(ItemType.CRIMSON_FUNGUS, Identifier.fromString("minecraft:crimson_fungus"))
-            register(ItemType.CRIMSON_HANGING_SIGN, Identifier.fromString("minecraft:crimson_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.CRIMSON_HANGING_SIGN,
+                Identifier.fromString("minecraft:crimson_hanging_sign"),
+                ItemHangingSign::class.java
+            )
             register(ItemType.CRIMSON_HYPHAE, Identifier.fromString("minecraft:crimson_hyphae"))
             register(ItemType.CRIMSON_NYLIUM, Identifier.fromString("minecraft:crimson_nylium"))
             register(ItemType.CRIMSON_PLANKS, Identifier.fromString("minecraft:crimson_planks"))
-            register(ItemType.CRIMSON_PRESSURE_PLATE, Identifier.fromString("minecraft:crimson_pressure_plate"), ItemPressurePlate::class.java)
+            register(
+                ItemType.CRIMSON_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:crimson_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
             register(ItemType.CRIMSON_ROOTS, Identifier.fromString("minecraft:crimson_roots"))
             register(ItemType.CRIMSON_SIGN, Identifier.fromString("minecraft:crimson_sign"), ItemSign::class.java)
             register(ItemType.CRIMSON_SLAB, Identifier.fromString("minecraft:crimson_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.CRIMSON_STAIRS, Identifier.fromString("minecraft:crimson_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.CRIMSON_STANDING_SIGN, Identifier.fromString("minecraft:crimson_standing_sign"), ItemSign::class.java)
+            register(
+                ItemType.CRIMSON_STAIRS,
+                Identifier.fromString("minecraft:crimson_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.CRIMSON_STANDING_SIGN,
+                Identifier.fromString("minecraft:crimson_standing_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.CRIMSON_STEM, Identifier.fromString("minecraft:crimson_stem"))
-            register(ItemType.CRIMSON_TRAPDOOR, Identifier.fromString("minecraft:crimson_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.CRIMSON_WALL_SIGN, Identifier.fromString("minecraft:crimson_wall_sign"), ItemSign::class.java)
+            register(
+                ItemType.CRIMSON_TRAPDOOR,
+                Identifier.fromString("minecraft:crimson_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.CRIMSON_WALL_SIGN,
+                Identifier.fromString("minecraft:crimson_wall_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.CROSSBOW, Identifier.fromString("minecraft:crossbow"), ItemCrossbow::class.java)
             register(ItemType.CRYING_OBSIDIAN, Identifier.fromString("minecraft:crying_obsidian"))
             register(ItemType.CUT_COPPER, Identifier.fromString("minecraft:cut_copper"))
@@ -371,27 +696,103 @@ class ItemRegistry {
             register(ItemType.CYAN_WOOL, Identifier.fromString("minecraft:cyan_wool"), ItemWool::class.java)
             register(ItemType.DANGER_POTTERY_SHERD, Identifier.fromString("minecraft:danger_pottery_sherd"))
             register(ItemType.DARK_OAK_BOAT, Identifier.fromString("minecraft:dark_oak_boat"), ItemBoat::class.java)
-            register(ItemType.DARK_OAK_BUTTON, Identifier.fromString("minecraft:dark_oak_button"), ItemWoodenButton::class.java)
-            register(ItemType.DARK_OAK_CHEST_BOAT, Identifier.fromString("minecraft:dark_oak_chest_boat"), ItemBoat::class.java)
-            register(ItemType.DARK_OAK_DOOR, Identifier.fromString("minecraft:dark_oak_door"), ItemWoodenDoor::class.java)
-            register(ItemType.DARK_OAK_FENCE, Identifier.fromString("minecraft:dark_oak_fence"), ItemWoodenFence::class.java)
-            register(ItemType.DARK_OAK_FENCE_GATE, Identifier.fromString("minecraft:dark_oak_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.DARK_OAK_HANGING_SIGN, Identifier.fromString("minecraft:dark_oak_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.DARK_OAK_BUTTON,
+                Identifier.fromString("minecraft:dark_oak_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.DARK_OAK_CHEST_BOAT,
+                Identifier.fromString("minecraft:dark_oak_chest_boat"),
+                ItemBoat::class.java
+            )
+            register(
+                ItemType.DARK_OAK_DOOR,
+                Identifier.fromString("minecraft:dark_oak_door"),
+                ItemWoodenDoor::class.java
+            )
+            register(ItemType.DARK_OAK_DOUBLE_SLAB, Identifier.fromString("minecraft:dark_oak_double_slab"))
+            register(
+                ItemType.DARK_OAK_FENCE,
+                Identifier.fromString("minecraft:dark_oak_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.DARK_OAK_FENCE_GATE,
+                Identifier.fromString("minecraft:dark_oak_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.DARK_OAK_HANGING_SIGN,
+                Identifier.fromString("minecraft:dark_oak_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.DARK_OAK_LEAVES, Identifier.fromString("minecraft:dark_oak_leaves"))
             register(ItemType.DARK_OAK_LOG, Identifier.fromString("minecraft:dark_oak_log"), ItemLog::class.java)
-            register(ItemType.DARK_OAK_PRESSURE_PLATE, Identifier.fromString("minecraft:dark_oak_pressure_plate"), ItemPressurePlate::class.java)
+            register(ItemType.DARK_OAK_PLANKS, Identifier.fromString("minecraft:dark_oak_planks"))
+            register(
+                ItemType.DARK_OAK_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:dark_oak_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.DARK_OAK_SAPLING,
+                Identifier.fromString("minecraft:dark_oak_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.DARK_OAK_SIGN, Identifier.fromString("minecraft:dark_oak_sign"), ItemSign::class.java)
-            register(ItemType.DARK_OAK_STAIRS, Identifier.fromString("minecraft:dark_oak_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.DARK_OAK_TRAPDOOR, Identifier.fromString("minecraft:dark_oak_trapdoor"), ItemWoodenTrapdoor::class.java)
+            register(
+                ItemType.DARK_OAK_SLAB,
+                Identifier.fromString("minecraft:dark_oak_slab"),
+                ItemWoodenSlab::class.java
+            )
+            register(
+                ItemType.DARK_OAK_STAIRS,
+                Identifier.fromString("minecraft:dark_oak_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.DARK_OAK_TRAPDOOR,
+                Identifier.fromString("minecraft:dark_oak_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(ItemType.DARK_OAK_WOOD, Identifier.fromString("minecraft:dark_oak_wood"), ItemWood::class.java)
             register(ItemType.DARK_PRISMARINE_STAIRS, Identifier.fromString("minecraft:dark_prismarine_stairs"))
-            register(ItemType.DARKOAK_STANDING_SIGN, Identifier.fromString("minecraft:darkoak_standing_sign"), ItemSign::class.java)
-            register(ItemType.DARKOAK_WALL_SIGN, Identifier.fromString("minecraft:darkoak_wall_sign"), ItemSign::class.java)
-            register(ItemType.DAYLIGHT_DETECTOR, Identifier.fromString("minecraft:daylight_detector"), ItemDaylightDetector::class.java)
-            register(ItemType.DAYLIGHT_DETECTOR_INVERTED, Identifier.fromString("minecraft:daylight_detector_inverted"), ItemDaylightDetector::class.java)
+            register(
+                ItemType.DARKOAK_STANDING_SIGN,
+                Identifier.fromString("minecraft:darkoak_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.DARKOAK_WALL_SIGN,
+                Identifier.fromString("minecraft:darkoak_wall_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.DAYLIGHT_DETECTOR,
+                Identifier.fromString("minecraft:daylight_detector"),
+                ItemDaylightDetector::class.java
+            )
+            register(
+                ItemType.DAYLIGHT_DETECTOR_INVERTED,
+                Identifier.fromString("minecraft:daylight_detector_inverted"),
+                ItemDaylightDetector::class.java
+            )
             register(ItemType.DEAD_BRAIN_CORAL, Identifier.fromString("minecraft:dead_brain_coral"))
+            register(ItemType.DEAD_BRAIN_CORAL_BLOCK, Identifier.fromString("minecraft:dead_brain_coral_block"))
+            register(ItemType.DEAD_BRAIN_CORAL_FAN, Identifier.fromString("minecraft:dead_brain_coral_fan"))
             register(ItemType.DEAD_BUBBLE_CORAL, Identifier.fromString("minecraft:dead_bubble_coral"))
+            register(ItemType.DEAD_BUBBLE_CORAL_BLOCK, Identifier.fromString("minecraft:dead_bubble_coral_block"))
+            register(ItemType.DEAD_BUBBLE_CORAL_FAN, Identifier.fromString("minecraft:dead_bubble_coral_fan"))
             register(ItemType.DEAD_FIRE_CORAL, Identifier.fromString("minecraft:dead_fire_coral"))
+            register(ItemType.DEAD_FIRE_CORAL_BLOCK, Identifier.fromString("minecraft:dead_fire_coral_block"))
+            register(ItemType.DEAD_FIRE_CORAL_FAN, Identifier.fromString("minecraft:dead_fire_coral_fan"))
             register(ItemType.DEAD_HORN_CORAL, Identifier.fromString("minecraft:dead_horn_coral"))
+            register(ItemType.DEAD_HORN_CORAL_BLOCK, Identifier.fromString("minecraft:dead_horn_coral_block"))
+            register(ItemType.DEAD_HORN_CORAL_FAN, Identifier.fromString("minecraft:dead_horn_coral_fan"))
             register(ItemType.DEAD_TUBE_CORAL, Identifier.fromString("minecraft:dead_tube_coral"))
+            register(ItemType.DEAD_TUBE_CORAL_BLOCK, Identifier.fromString("minecraft:dead_tube_coral_block"))
+            register(ItemType.DEAD_TUBE_CORAL_FAN, Identifier.fromString("minecraft:dead_tube_coral_fan"))
             register(ItemType.DEADBUSH, Identifier.fromString("minecraft:deadbush"), ItemDeadbush::class.java)
             register(ItemType.DECORATED_POT, Identifier.fromString("minecraft:decorated_pot"))
             register(ItemType.DEEPSLATE, Identifier.fromString("minecraft:deepslate"))
@@ -421,42 +822,81 @@ class ItemRegistry {
             register(ItemType.DIAMOND, Identifier.fromString("minecraft:diamond"))
             register(ItemType.DIAMOND_AXE, Identifier.fromString("minecraft:diamond_axe"), ItemDiamondAxe::class.java)
             register(ItemType.DIAMOND_BLOCK, Identifier.fromString("minecraft:diamond_block"))
-            register(ItemType.DIAMOND_BOOTS, Identifier.fromString("minecraft:diamond_boots"), ItemDiamondBoots::class.java                                                                            )
-            register(ItemType.DIAMOND_CHESTPLATE, Identifier.fromString("minecraft:diamond_chestplate"), ItemDiamondChestplate::class.java)
-            register(ItemType.DIAMOND_HELMET, Identifier.fromString("minecraft:diamond_helmet"), ItemDiamondHelmet::class.java)
+            register(
+                ItemType.DIAMOND_BOOTS,
+                Identifier.fromString("minecraft:diamond_boots"),
+                ItemDiamondBoots::class.java
+            )
+            register(
+                ItemType.DIAMOND_CHESTPLATE,
+                Identifier.fromString("minecraft:diamond_chestplate"),
+                ItemDiamondChestplate::class.java
+            )
+            register(
+                ItemType.DIAMOND_HELMET,
+                Identifier.fromString("minecraft:diamond_helmet"),
+                ItemDiamondHelmet::class.java
+            )
             register(ItemType.DIAMOND_HOE, Identifier.fromString("minecraft:diamond_hoe"), ItemDiamondHoe::class.java)
             register(ItemType.DIAMOND_HORSE_ARMOR, Identifier.fromString("minecraft:diamond_horse_armor"))
-            register(ItemType.DIAMOND_LEGGINGS, Identifier.fromString("minecraft:diamond_leggings"), ItemDiamondLeggings::class.java)
+            register(
+                ItemType.DIAMOND_LEGGINGS,
+                Identifier.fromString("minecraft:diamond_leggings"),
+                ItemDiamondLeggings::class.java
+            )
             register(ItemType.DIAMOND_ORE, Identifier.fromString("minecraft:diamond_ore"))
-            register(ItemType.DIAMOND_PICKAXE, Identifier.fromString("minecraft:diamond_pickaxe"), ItemDiamondPickaxe::class.java)
-            register(ItemType.DIAMOND_SHOVEL, Identifier.fromString("minecraft:diamond_shovel"), ItemDiamondShovel::class.java)
-            register(ItemType.DIAMOND_SWORD, Identifier.fromString("minecraft:diamond_sword"), ItemDiamondSword::class.java)
+            register(
+                ItemType.DIAMOND_PICKAXE,
+                Identifier.fromString("minecraft:diamond_pickaxe"),
+                ItemDiamondPickaxe::class.java
+            )
+            register(
+                ItemType.DIAMOND_SHOVEL,
+                Identifier.fromString("minecraft:diamond_shovel"),
+                ItemDiamondShovel::class.java
+            )
+            register(
+                ItemType.DIAMOND_SWORD,
+                Identifier.fromString("minecraft:diamond_sword"),
+                ItemDiamondSword::class.java
+            )
+            register(ItemType.DIORITE, Identifier.fromString("minecraft:diorite"))
             register(ItemType.DIORITE_STAIRS, Identifier.fromString("minecraft:diorite_stairs"))
             register(ItemType.DIRT, Identifier.fromString("minecraft:dirt"))
             register(ItemType.DIRT_WITH_ROOTS, Identifier.fromString("minecraft:dirt_with_roots"))
             register(ItemType.DISC_FRAGMENT_5, Identifier.fromString("minecraft:disc_fragment_5"))
             register(ItemType.DISPENSER, Identifier.fromString("minecraft:dispenser"))
-            register(ItemType.DOLPHIN_SPAWN_EGG, Identifier.fromString("minecraft:dolphin_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.DONKEY_SPAWN_EGG, Identifier.fromString("minecraft:donkey_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.DOLPHIN_SPAWN_EGG,
+                Identifier.fromString("minecraft:dolphin_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.DONKEY_SPAWN_EGG,
+                Identifier.fromString("minecraft:donkey_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.DOUBLE_CUT_COPPER_SLAB, Identifier.fromString("minecraft:double_cut_copper_slab"))
             register(ItemType.DOUBLE_PLANT, Identifier.fromString("minecraft:double_plant"))
             register(ItemType.DOUBLE_STONE_BLOCK_SLAB, Identifier.fromString("minecraft:double_stone_block_slab"))
             register(ItemType.DOUBLE_STONE_BLOCK_SLAB2, Identifier.fromString("minecraft:double_stone_block_slab2"))
             register(ItemType.DOUBLE_STONE_BLOCK_SLAB3, Identifier.fromString("minecraft:double_stone_block_slab3"))
             register(ItemType.DOUBLE_STONE_BLOCK_SLAB4, Identifier.fromString("minecraft:double_stone_block_slab4"))
-            register(ItemType.OAK_DOUBLE_SLAB, Identifier.fromString("minecraft:oak_double_slab"))
-            register(ItemType.SPRUCE_DOUBLE_SLAB, Identifier.fromString("minecraft:spruce_double_slab"))
-            register(ItemType.BIRCH_DOUBLE_SLAB, Identifier.fromString("minecraft:birch_double_slab"))
-            register(ItemType.JUNGLE_DOUBLE_SLAB, Identifier.fromString("minecraft:jungle_double_slab"))
-            register(ItemType.ACACIA_DOUBLE_SLAB, Identifier.fromString("minecraft:acacia_double_slab"))
-            register(ItemType.DARK_OAK_DOUBLE_SLAB, Identifier.fromString("minecraft:dark_oak_double_slab"))
             register(ItemType.DRAGON_BREATH, Identifier.fromString("minecraft:dragon_breath"))
             register(ItemType.DRAGON_EGG, Identifier.fromString("minecraft:dragon_egg"))
             register(ItemType.DRIED_KELP, Identifier.fromString("minecraft:dried_kelp"), ItemDriedKelp::class.java)
-            register(ItemType.DRIED_KELP_BLOCK, Identifier.fromString("minecraft:dried_kelp_block"), ItemDriedKelpBlock::class.java)
+            register(
+                ItemType.DRIED_KELP_BLOCK,
+                Identifier.fromString("minecraft:dried_kelp_block"),
+                ItemDriedKelpBlock::class.java
+            )
             register(ItemType.DRIPSTONE_BLOCK, Identifier.fromString("minecraft:dripstone_block"))
             register(ItemType.DROPPER, Identifier.fromString("minecraft:dropper"))
-            register(ItemType.DROWNED_SPAWN_EGG, Identifier.fromString("minecraft:drowned_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.DROWNED_SPAWN_EGG,
+                Identifier.fromString("minecraft:drowned_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(
                 ItemType.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:dune_armor_trim_smithing_template")
@@ -464,7 +904,11 @@ class ItemRegistry {
             register(ItemType.DYE, Identifier.fromString("minecraft:dye"))
             register(ItemType.ECHO_SHARD, Identifier.fromString("minecraft:echo_shard"))
             register(ItemType.EGG, Identifier.fromString("minecraft:egg"), ItemEgg::class.java)
-            register(ItemType.ELDER_GUARDIAN_SPAWN_EGG, Identifier.fromString("minecraft:elder_guardian_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.ELDER_GUARDIAN_SPAWN_EGG,
+                Identifier.fromString("minecraft:elder_guardian_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.ELEMENT_0, Identifier.fromString("minecraft:element_0"))
             register(ItemType.ELEMENT_1, Identifier.fromString("minecraft:element_1"))
             register(ItemType.ELEMENT_10, Identifier.fromString("minecraft:element_10"))
@@ -590,7 +1034,11 @@ class ItemRegistry {
             register(ItemType.EMERALD_ORE, Identifier.fromString("minecraft:emerald_ore"))
             register(ItemType.EMPTY_MAP, Identifier.fromString("minecraft:empty_map"))
             register(ItemType.ENCHANTED_BOOK, Identifier.fromString("minecraft:enchanted_book"))
-            register(ItemType.ENCHANTED_GOLDEN_APPLE, Identifier.fromString("minecraft:enchanted_golden_apple"), ItemEnchantedGoldenApple::class.java)
+            register(
+                ItemType.ENCHANTED_GOLDEN_APPLE,
+                Identifier.fromString("minecraft:enchanted_golden_apple"),
+                ItemEnchantedGoldenApple::class.java
+            )
             register(ItemType.ENCHANTING_TABLE, Identifier.fromString("minecraft:enchanting_table"))
             register(ItemType.END_BRICK_STAIRS, Identifier.fromString("minecraft:end_brick_stairs"))
             register(ItemType.END_BRICKS, Identifier.fromString("minecraft:end_bricks"))
@@ -601,15 +1049,36 @@ class ItemRegistry {
             register(ItemType.END_ROD, Identifier.fromString("minecraft:end_rod"))
             register(ItemType.END_STONE, Identifier.fromString("minecraft:end_stone"))
             register(ItemType.ENDER_CHEST, Identifier.fromString("minecraft:ender_chest"))
-            register(ItemType.ENDER_DRAGON_SPAWN_EGG, Identifier.fromString("minecraft:ender_dragon_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.ENDER_DRAGON_SPAWN_EGG,
+                Identifier.fromString("minecraft:ender_dragon_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.ENDER_EYE, Identifier.fromString("minecraft:ender_eye"))
             register(ItemType.ENDER_PEARL, Identifier.fromString("minecraft:ender_pearl"))
-            register(ItemType.ENDERMAN_SPAWN_EGG, Identifier.fromString("minecraft:enderman_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.ENDERMITE_SPAWN_EGG, Identifier.fromString("minecraft:endermite_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.EVOKER_SPAWN_EGG, Identifier.fromString("minecraft:evoker_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.ENDERMAN_SPAWN_EGG,
+                Identifier.fromString("minecraft:enderman_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.ENDERMITE_SPAWN_EGG,
+                Identifier.fromString("minecraft:endermite_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.EVOKER_SPAWN_EGG,
+                Identifier.fromString("minecraft:evoker_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.EXPERIENCE_BOTTLE, Identifier.fromString("minecraft:experience_bottle"))
             register(ItemType.EXPLORER_POTTERY_SHERD, Identifier.fromString("minecraft:explorer_pottery_sherd"))
+            register(ItemType.EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:exposed_chiseled_copper"))
             register(ItemType.EXPOSED_COPPER, Identifier.fromString("minecraft:exposed_copper"))
+            register(ItemType.EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:exposed_copper_bulb"))
+            register(ItemType.EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:exposed_copper_door"))
+            register(ItemType.EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:exposed_copper_grate"))
+            register(ItemType.EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:exposed_copper_trapdoor"))
             register(ItemType.EXPOSED_CUT_COPPER, Identifier.fromString("minecraft:exposed_cut_copper"))
             register(ItemType.EXPOSED_CUT_COPPER_SLAB, Identifier.fromString("minecraft:exposed_cut_copper_slab"))
             register(ItemType.EXPOSED_CUT_COPPER_STAIRS, Identifier.fromString("minecraft:exposed_cut_copper_stairs"))
@@ -624,8 +1093,13 @@ class ItemRegistry {
             register(ItemType.FARMLAND, Identifier.fromString("minecraft:farmland"))
             register(ItemType.FEATHER, Identifier.fromString("minecraft:feather"))
             register(ItemType.FENCE, Identifier.fromString("minecraft:fence"), ItemWoodenFence::class.java)
-            register(ItemType.FENCE_GATE, Identifier.fromString("minecraft:fence_gate"), ItemWoodenFenceGate::class.java)
+            register(
+                ItemType.FENCE_GATE,
+                Identifier.fromString("minecraft:fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
             register(ItemType.FERMENTED_SPIDER_EYE, Identifier.fromString("minecraft:fermented_spider_eye"))
+            register(ItemType.FERN, Identifier.fromString("minecraft:fern"))
             register(
                 ItemType.FIELD_MASONED_BANNER_PATTERN,
                 Identifier.fromString("minecraft:field_masoned_banner_pattern")
@@ -634,12 +1108,24 @@ class ItemRegistry {
             register(ItemType.FIRE, Identifier.fromString("minecraft:fire"))
             register(ItemType.FIRE_CHARGE, Identifier.fromString("minecraft:fire_charge"))
             register(ItemType.FIRE_CORAL, Identifier.fromString("minecraft:fire_coral"))
+            register(ItemType.FIRE_CORAL_BLOCK, Identifier.fromString("minecraft:fire_coral_block"))
+            register(ItemType.FIRE_CORAL_FAN, Identifier.fromString("minecraft:fire_coral_fan"))
             register(ItemType.FIREWORK_ROCKET, Identifier.fromString("minecraft:firework_rocket"))
             register(ItemType.FIREWORK_STAR, Identifier.fromString("minecraft:firework_star"))
             register(ItemType.FISHING_ROD, Identifier.fromString("minecraft:fishing_rod"), ItemFishingRod::class.java)
-            register(ItemType.FLETCHING_TABLE, Identifier.fromString("minecraft:fletching_table"), ItemFlechtingTable::class.java)
+            register(
+                ItemType.FLETCHING_TABLE,
+                Identifier.fromString("minecraft:fletching_table"),
+                ItemFlechtingTable::class.java
+            )
             register(ItemType.FLINT, Identifier.fromString("minecraft:flint"))
             register(ItemType.FLINT_AND_STEEL, Identifier.fromString("minecraft:flint_and_steel"))
+            register(
+                ItemType.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Identifier.fromString("minecraft:flow_armor_trim_smithing_template")
+            )
+            register(ItemType.FLOW_BANNER_PATTERN, Identifier.fromString("minecraft:flow_banner_pattern"))
+            register(ItemType.FLOW_POTTERY_SHERD, Identifier.fromString("minecraft:flow_pottery_sherd"))
             register(ItemType.FLOWER_BANNER_PATTERN, Identifier.fromString("minecraft:flower_banner_pattern"))
             register(ItemType.FLOWER_POT, Identifier.fromString("minecraft:flower_pot"))
             register(ItemType.FLOWERING_AZALEA, Identifier.fromString("minecraft:flowering_azalea"))
@@ -649,10 +1135,18 @@ class ItemRegistry {
             register(ItemType.FRAME, Identifier.fromString("minecraft:frame"))
             register(ItemType.FRIEND_POTTERY_SHERD, Identifier.fromString("minecraft:friend_pottery_sherd"))
             register(ItemType.FROG_SPAWN, Identifier.fromString("minecraft:frog_spawn"))
-            register(ItemType.FROG_SPAWN_EGG, Identifier.fromString("minecraft:frog_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.FROG_SPAWN_EGG,
+                Identifier.fromString("minecraft:frog_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.FROSTED_ICE, Identifier.fromString("minecraft:frosted_ice"))
             register(ItemType.FURNACE, Identifier.fromString("minecraft:furnace"))
-            register(ItemType.GHAST_SPAWN_EGG, Identifier.fromString("minecraft:ghast_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.GHAST_SPAWN_EGG,
+                Identifier.fromString("minecraft:ghast_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.GHAST_TEAR, Identifier.fromString("minecraft:ghast_tear"))
             register(ItemType.GILDED_BLACKSTONE, Identifier.fromString("minecraft:gilded_blackstone"))
             register(ItemType.GLASS, Identifier.fromString("minecraft:glass"))
@@ -660,34 +1154,83 @@ class ItemRegistry {
             register(ItemType.GLASS_PANE, Identifier.fromString("minecraft:glass_pane"))
             register(ItemType.GLISTERING_MELON_SLICE, Identifier.fromString("minecraft:glistering_melon_slice"))
             register(ItemType.GLOBE_BANNER_PATTERN, Identifier.fromString("minecraft:globe_banner_pattern"))
-            register(ItemType.GLOW_BERRIES, Identifier.fromString("minecraft:glow_berries"), ItemGlowBerries::class.java)
+            register(
+                ItemType.GLOW_BERRIES,
+                Identifier.fromString("minecraft:glow_berries"),
+                ItemGlowBerries::class.java
+            )
             register(ItemType.GLOW_FRAME, Identifier.fromString("minecraft:glow_frame"))
             register(ItemType.GLOW_INK_SAC, Identifier.fromString("minecraft:glow_ink_sac"))
             register(ItemType.GLOW_LICHEN, Identifier.fromString("minecraft:glow_lichen"))
-            register(ItemType.GLOW_SQUID_SPAWN_EGG, Identifier.fromString("minecraft:glow_squid_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.GLOW_SQUID_SPAWN_EGG,
+                Identifier.fromString("minecraft:glow_squid_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.GLOW_STICK, Identifier.fromString("minecraft:glow_stick"))
             register(ItemType.GLOWINGOBSIDIAN, Identifier.fromString("minecraft:glowingobsidian"))
             register(ItemType.GLOWSTONE, Identifier.fromString("minecraft:glowstone"))
             register(ItemType.GLOWSTONE_DUST, Identifier.fromString("minecraft:glowstone_dust"))
             register(ItemType.GOAT_HORN, Identifier.fromString("minecraft:goat_horn"))
-            register(ItemType.GOAT_SPAWN_EGG, Identifier.fromString("minecraft:goat_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.GOAT_SPAWN_EGG,
+                Identifier.fromString("minecraft:goat_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.GOLD_BLOCK, Identifier.fromString("minecraft:gold_block"))
             register(ItemType.GOLD_INGOT, Identifier.fromString("minecraft:gold_ingot"))
             register(ItemType.GOLD_NUGGET, Identifier.fromString("minecraft:gold_nugget"))
             register(ItemType.GOLD_ORE, Identifier.fromString("minecraft:gold_ore"))
-            register(ItemType.GOLDEN_APPLE, Identifier.fromString("minecraft:golden_apple"), ItemGoldenApple::class.java)
+            register(
+                ItemType.GOLDEN_APPLE,
+                Identifier.fromString("minecraft:golden_apple"),
+                ItemGoldenApple::class.java
+            )
             register(ItemType.GOLDEN_AXE, Identifier.fromString("minecraft:golden_axe"), ItemGoldenAxe::class.java)
-            register(ItemType.GOLDEN_BOOTS, Identifier.fromString("minecraft:golden_boots"), ItemGoldenBoots::class.java)
-            register(ItemType.GOLDEN_CARROT, Identifier.fromString("minecraft:golden_carrot"), ItemGoldenCarrot::class.java)
-            register(ItemType.GOLDEN_CHESTPLATE, Identifier.fromString("minecraft:golden_chestplate"), ItemGoldenChestplate::class.java)
-            register(ItemType.GOLDEN_HELMET, Identifier.fromString("minecraft:golden_helmet"), ItemGoldenHelmet::class.java)
+            register(
+                ItemType.GOLDEN_BOOTS,
+                Identifier.fromString("minecraft:golden_boots"),
+                ItemGoldenBoots::class.java
+            )
+            register(
+                ItemType.GOLDEN_CARROT,
+                Identifier.fromString("minecraft:golden_carrot"),
+                ItemGoldenCarrot::class.java
+            )
+            register(
+                ItemType.GOLDEN_CHESTPLATE,
+                Identifier.fromString("minecraft:golden_chestplate"),
+                ItemGoldenChestplate::class.java
+            )
+            register(
+                ItemType.GOLDEN_HELMET,
+                Identifier.fromString("minecraft:golden_helmet"),
+                ItemGoldenHelmet::class.java
+            )
             register(ItemType.GOLDEN_HOE, Identifier.fromString("minecraft:golden_hoe"), ItemGoldenHoe::class.java)
             register(ItemType.GOLDEN_HORSE_ARMOR, Identifier.fromString("minecraft:golden_horse_armor"))
-            register(ItemType.GOLDEN_LEGGINGS, Identifier.fromString("minecraft:golden_leggings"), ItemGoldenLeggings::class.java)
-            register(ItemType.GOLDEN_PICKAXE, Identifier.fromString("minecraft:golden_pickaxe"), ItemGoldenPickaxe::class.java)
+            register(
+                ItemType.GOLDEN_LEGGINGS,
+                Identifier.fromString("minecraft:golden_leggings"),
+                ItemGoldenLeggings::class.java
+            )
+            register(
+                ItemType.GOLDEN_PICKAXE,
+                Identifier.fromString("minecraft:golden_pickaxe"),
+                ItemGoldenPickaxe::class.java
+            )
             register(ItemType.GOLDEN_RAIL, Identifier.fromString("minecraft:golden_rail"))
-            register(ItemType.GOLDEN_SHOVEL, Identifier.fromString("minecraft:golden_shovel"), ItemGoldenShovel::class.java)
-            register(ItemType.GOLDEN_SWORD, Identifier.fromString("minecraft:golden_sword"), ItemGoldenSword::class.java)
+            register(
+                ItemType.GOLDEN_SHOVEL,
+                Identifier.fromString("minecraft:golden_shovel"),
+                ItemGoldenShovel::class.java
+            )
+            register(
+                ItemType.GOLDEN_SWORD,
+                Identifier.fromString("minecraft:golden_sword"),
+                ItemGoldenSword::class.java
+            )
+            register(ItemType.GRANITE, Identifier.fromString("minecraft:granite"))
             register(ItemType.GRANITE_STAIRS, Identifier.fromString("minecraft:granite_stairs"))
             register(ItemType.GRASS_BLOCK, Identifier.fromString("minecraft:grass_block"))
             register(ItemType.GRASS_PATH, Identifier.fromString("minecraft:grass_path"))
@@ -717,23 +1260,120 @@ class ItemRegistry {
             register(ItemType.GREEN_TERRACOTTA, Identifier.fromString("minecraft:green_terracotta"))
             register(ItemType.GREEN_WOOL, Identifier.fromString("minecraft:green_wool"), ItemWool::class.java)
             register(ItemType.GRINDSTONE, Identifier.fromString("minecraft:grindstone"))
-            register(ItemType.GUARDIAN_SPAWN_EGG, Identifier.fromString("minecraft:guardian_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.GUARDIAN_SPAWN_EGG,
+                Identifier.fromString("minecraft:guardian_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.GUNPOWDER, Identifier.fromString("minecraft:gunpowder"))
+            register(ItemType.GUSTER_BANNER_PATTERN, Identifier.fromString("minecraft:guster_banner_pattern"))
+            register(ItemType.GUSTER_POTTERY_SHERD, Identifier.fromString("minecraft:guster_pottery_sherd"))
             register(ItemType.HANGING_ROOTS, Identifier.fromString("minecraft:hanging_roots"))
+            register(ItemType.HARD_BLACK_STAINED_GLASS, Identifier.fromString("minecraft:hard_black_stained_glass"))
+            register(
+                ItemType.HARD_BLACK_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_black_stained_glass_pane")
+            )
+            register(ItemType.HARD_BLUE_STAINED_GLASS, Identifier.fromString("minecraft:hard_blue_stained_glass"))
+            register(
+                ItemType.HARD_BLUE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_blue_stained_glass_pane")
+            )
+            register(ItemType.HARD_BROWN_STAINED_GLASS, Identifier.fromString("minecraft:hard_brown_stained_glass"))
+            register(
+                ItemType.HARD_BROWN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_brown_stained_glass_pane")
+            )
+            register(ItemType.HARD_CYAN_STAINED_GLASS, Identifier.fromString("minecraft:hard_cyan_stained_glass"))
+            register(
+                ItemType.HARD_CYAN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_cyan_stained_glass_pane")
+            )
             register(ItemType.HARD_GLASS, Identifier.fromString("minecraft:hard_glass"))
             register(ItemType.HARD_GLASS_PANE, Identifier.fromString("minecraft:hard_glass_pane"))
+            register(ItemType.HARD_GRAY_STAINED_GLASS, Identifier.fromString("minecraft:hard_gray_stained_glass"))
+            register(
+                ItemType.HARD_GRAY_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_gray_stained_glass_pane")
+            )
+            register(ItemType.HARD_GREEN_STAINED_GLASS, Identifier.fromString("minecraft:hard_green_stained_glass"))
+            register(
+                ItemType.HARD_GREEN_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_green_stained_glass_pane")
+            )
+            register(
+                ItemType.HARD_LIGHT_BLUE_STAINED_GLASS,
+                Identifier.fromString("minecraft:hard_light_blue_stained_glass")
+            )
+            register(
+                ItemType.HARD_LIGHT_BLUE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_light_blue_stained_glass_pane")
+            )
+            register(
+                ItemType.HARD_LIGHT_GRAY_STAINED_GLASS,
+                Identifier.fromString("minecraft:hard_light_gray_stained_glass")
+            )
+            register(
+                ItemType.HARD_LIGHT_GRAY_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_light_gray_stained_glass_pane")
+            )
+            register(ItemType.HARD_LIME_STAINED_GLASS, Identifier.fromString("minecraft:hard_lime_stained_glass"))
+            register(
+                ItemType.HARD_LIME_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_lime_stained_glass_pane")
+            )
+            register(ItemType.HARD_MAGENTA_STAINED_GLASS, Identifier.fromString("minecraft:hard_magenta_stained_glass"))
+            register(
+                ItemType.HARD_MAGENTA_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_magenta_stained_glass_pane")
+            )
+            register(ItemType.HARD_ORANGE_STAINED_GLASS, Identifier.fromString("minecraft:hard_orange_stained_glass"))
+            register(
+                ItemType.HARD_ORANGE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_orange_stained_glass_pane")
+            )
+            register(ItemType.HARD_PINK_STAINED_GLASS, Identifier.fromString("minecraft:hard_pink_stained_glass"))
+            register(
+                ItemType.HARD_PINK_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_pink_stained_glass_pane")
+            )
+            register(ItemType.HARD_PURPLE_STAINED_GLASS, Identifier.fromString("minecraft:hard_purple_stained_glass"))
+            register(
+                ItemType.HARD_PURPLE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_purple_stained_glass_pane")
+            )
+            register(ItemType.HARD_RED_STAINED_GLASS, Identifier.fromString("minecraft:hard_red_stained_glass"))
+            register(
+                ItemType.HARD_RED_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_red_stained_glass_pane")
+            )
             register(ItemType.HARD_STAINED_GLASS, Identifier.fromString("minecraft:hard_stained_glass"))
             register(ItemType.HARD_STAINED_GLASS_PANE, Identifier.fromString("minecraft:hard_stained_glass_pane"))
+            register(ItemType.HARD_WHITE_STAINED_GLASS, Identifier.fromString("minecraft:hard_white_stained_glass"))
+            register(
+                ItemType.HARD_WHITE_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_white_stained_glass_pane")
+            )
+            register(ItemType.HARD_YELLOW_STAINED_GLASS, Identifier.fromString("minecraft:hard_yellow_stained_glass"))
+            register(
+                ItemType.HARD_YELLOW_STAINED_GLASS_PANE,
+                Identifier.fromString("minecraft:hard_yellow_stained_glass_pane")
+            )
             register(ItemType.HARDENED_CLAY, Identifier.fromString("minecraft:hardened_clay"))
             register(ItemType.HAY_BLOCK, Identifier.fromString("minecraft:hay_block"))
             register(ItemType.HEART_OF_THE_SEA, Identifier.fromString("minecraft:heart_of_the_sea"))
             register(ItemType.HEART_POTTERY_SHERD, Identifier.fromString("minecraft:heart_pottery_sherd"))
             register(ItemType.HEARTBREAK_POTTERY_SHERD, Identifier.fromString("minecraft:heartbreak_pottery_sherd"))
+            register(ItemType.HEAVY_CORE, Identifier.fromString("minecraft:heavy_core"))
             register(
                 ItemType.HEAVY_WEIGHTED_PRESSURE_PLATE,
                 Identifier.fromString("minecraft:heavy_weighted_pressure_plate")
             )
-            register(ItemType.HOGLIN_SPAWN_EGG, Identifier.fromString("minecraft:hoglin_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.HOGLIN_SPAWN_EGG,
+                Identifier.fromString("minecraft:hoglin_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.HONEY_BLOCK, Identifier.fromString("minecraft:honey_block"))
             register(ItemType.HONEY_BOTTLE, Identifier.fromString("minecraft:honey_bottle"))
             register(ItemType.HONEYCOMB, Identifier.fromString("minecraft:honeycomb"))
@@ -741,13 +1381,23 @@ class ItemRegistry {
             register(ItemType.HOPPER, Identifier.fromString("minecraft:hopper"))
             register(ItemType.HOPPER_MINECART, Identifier.fromString("minecraft:hopper_minecart"))
             register(ItemType.HORN_CORAL, Identifier.fromString("minecraft:horn_coral"))
-            register(ItemType.HORSE_SPAWN_EGG, Identifier.fromString("minecraft:horse_spawn_egg"), ItemSpawnEgg::class.java)
+            register(ItemType.HORN_CORAL_BLOCK, Identifier.fromString("minecraft:horn_coral_block"))
+            register(ItemType.HORN_CORAL_FAN, Identifier.fromString("minecraft:horn_coral_fan"))
+            register(
+                ItemType.HORSE_SPAWN_EGG,
+                Identifier.fromString("minecraft:horse_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(
                 ItemType.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:host_armor_trim_smithing_template")
             )
             register(ItemType.HOWL_POTTERY_SHERD, Identifier.fromString("minecraft:howl_pottery_sherd"))
-            register(ItemType.HUSK_SPAWN_EGG, Identifier.fromString("minecraft:husk_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.HUSK_SPAWN_EGG,
+                Identifier.fromString("minecraft:husk_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.ICE, Identifier.fromString("minecraft:ice"))
             register(ItemType.ICE_BOMB, Identifier.fromString("minecraft:ice_bomb"))
             register(ItemType.INFESTED_DEEPSLATE, Identifier.fromString("minecraft:infested_deepslate"))
@@ -759,36 +1409,102 @@ class ItemRegistry {
             register(ItemType.IRON_BARS, Identifier.fromString("minecraft:iron_bars"))
             register(ItemType.IRON_BLOCK, Identifier.fromString("minecraft:iron_block"))
             register(ItemType.IRON_BOOTS, Identifier.fromString("minecraft:iron_boots"), ItemIronBoots::class.java)
-            register(ItemType.IRON_CHESTPLATE, Identifier.fromString("minecraft:iron_chestplate"), ItemIronChestplate::class.java)
+            register(
+                ItemType.IRON_CHESTPLATE,
+                Identifier.fromString("minecraft:iron_chestplate"),
+                ItemIronChestplate::class.java
+            )
             register(ItemType.IRON_DOOR, Identifier.fromString("minecraft:iron_door"), ItemIronDoor::class.java)
-            register(ItemType.IRON_GOLEM_SPAWN_EGG, Identifier.fromString("minecraft:iron_golem_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.IRON_GOLEM_SPAWN_EGG,
+                Identifier.fromString("minecraft:iron_golem_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.IRON_HELMET, Identifier.fromString("minecraft:iron_helmet"), ItemIronHelmet::class.java)
             register(ItemType.IRON_HOE, Identifier.fromString("minecraft:iron_hoe"), ItemIronHoe::class.java)
             register(ItemType.IRON_HORSE_ARMOR, Identifier.fromString("minecraft:iron_horse_armor"))
             register(ItemType.IRON_INGOT, Identifier.fromString("minecraft:iron_ingot"))
-            register(ItemType.IRON_LEGGINGS, Identifier.fromString("minecraft:iron_leggings"), ItemIronLeggings::class.java)
+            register(
+                ItemType.IRON_LEGGINGS,
+                Identifier.fromString("minecraft:iron_leggings"),
+                ItemIronLeggings::class.java
+            )
             register(ItemType.IRON_NUGGET, Identifier.fromString("minecraft:iron_nugget"))
             register(ItemType.IRON_ORE, Identifier.fromString("minecraft:iron_ore"))
-            register(ItemType.IRON_PICKAXE, Identifier.fromString("minecraft:iron_pickaxe"), ItemIronPickaxe::class.java)
+            register(
+                ItemType.IRON_PICKAXE,
+                Identifier.fromString("minecraft:iron_pickaxe"),
+                ItemIronPickaxe::class.java
+            )
             register(ItemType.IRON_SHOVEL, Identifier.fromString("minecraft:iron_shovel"), ItemIronShovel::class.java)
             register(ItemType.IRON_SWORD, Identifier.fromString("minecraft:iron_sword"), ItemIronSword::class.java)
             register(ItemType.IRON_TRAPDOOR, Identifier.fromString("minecraft:iron_trapdoor"))
             register(ItemType.JIGSAW, Identifier.fromString("minecraft:jigsaw"))
             register(ItemType.JUKEBOX, Identifier.fromString("minecraft:jukebox"), ItemJukebox::class.java)
             register(ItemType.JUNGLE_BOAT, Identifier.fromString("minecraft:jungle_boat"), ItemBoat::class.java)
-            register(ItemType.JUNGLE_BUTTON, Identifier.fromString("minecraft:jungle_button"), ItemWoodenButton::class.java)
-            register(ItemType.JUNGLE_CHEST_BOAT, Identifier.fromString("minecraft:jungle_chest_boat"), ItemBoat::class.java)
+            register(
+                ItemType.JUNGLE_BUTTON,
+                Identifier.fromString("minecraft:jungle_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.JUNGLE_CHEST_BOAT,
+                Identifier.fromString("minecraft:jungle_chest_boat"),
+                ItemBoat::class.java
+            )
             register(ItemType.JUNGLE_DOOR, Identifier.fromString("minecraft:jungle_door"), ItemWoodenDoor::class.java)
-            register(ItemType.JUNGLE_FENCE, Identifier.fromString("minecraft:jungle_fence"), ItemWoodenFence::class.java)
-            register(ItemType.JUNGLE_FENCE_GATE, Identifier.fromString("minecraft:jungle_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.JUNGLE_HANGING_SIGN, Identifier.fromString("minecraft:jungle_hanging_sign"), ItemHangingSign::class.java)
+            register(ItemType.JUNGLE_DOUBLE_SLAB, Identifier.fromString("minecraft:jungle_double_slab"))
+            register(
+                ItemType.JUNGLE_FENCE,
+                Identifier.fromString("minecraft:jungle_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.JUNGLE_FENCE_GATE,
+                Identifier.fromString("minecraft:jungle_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.JUNGLE_HANGING_SIGN,
+                Identifier.fromString("minecraft:jungle_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.JUNGLE_LEAVES, Identifier.fromString("minecraft:jungle_leaves"))
             register(ItemType.JUNGLE_LOG, Identifier.fromString("minecraft:jungle_log"), ItemLog::class.java)
-            register(ItemType.JUNGLE_PRESSURE_PLATE, Identifier.fromString("minecraft:jungle_pressure_plate"), ItemPressurePlate::class.java)
+            register(ItemType.JUNGLE_PLANKS, Identifier.fromString("minecraft:jungle_planks"))
+            register(
+                ItemType.JUNGLE_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:jungle_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.JUNGLE_SAPLING,
+                Identifier.fromString("minecraft:jungle_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.JUNGLE_SIGN, Identifier.fromString("minecraft:jungle_sign"), ItemSign::class.java)
-            register(ItemType.JUNGLE_STAIRS, Identifier.fromString("minecraft:jungle_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.JUNGLE_STANDING_SIGN, Identifier.fromString("minecraft:jungle_standing_sign"), ItemSign::class.java)
-            register(ItemType.JUNGLE_TRAPDOOR, Identifier.fromString("minecraft:jungle_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.JUNGLE_WALL_SIGN, Identifier.fromString("minecraft:jungle_wall_sign"), ItemSign::class.java)
+            register(ItemType.JUNGLE_SLAB, Identifier.fromString("minecraft:jungle_slab"), ItemWoodenSlab::class.java)
+            register(
+                ItemType.JUNGLE_STAIRS,
+                Identifier.fromString("minecraft:jungle_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.JUNGLE_STANDING_SIGN,
+                Identifier.fromString("minecraft:jungle_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.JUNGLE_TRAPDOOR,
+                Identifier.fromString("minecraft:jungle_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.JUNGLE_WALL_SIGN,
+                Identifier.fromString("minecraft:jungle_wall_sign"),
+                ItemSign::class.java
+            )
+            register(ItemType.JUNGLE_WOOD, Identifier.fromString("minecraft:jungle_wood"), ItemWood::class.java)
             register(ItemType.KELP, Identifier.fromString("minecraft:kelp"))
             register(ItemType.LADDER, Identifier.fromString("minecraft:ladder"), ItemLadder::class.java)
             register(ItemType.LANTERN, Identifier.fromString("minecraft:lantern"))
@@ -796,28 +1512,44 @@ class ItemRegistry {
             register(ItemType.LAPIS_LAZULI, Identifier.fromString("minecraft:lapis_lazuli"))
             register(ItemType.LAPIS_ORE, Identifier.fromString("minecraft:lapis_ore"))
             register(ItemType.LARGE_AMETHYST_BUD, Identifier.fromString("minecraft:large_amethyst_bud"))
+            register(ItemType.LARGE_FERN, Identifier.fromString("minecraft:large_fern"))
             register(ItemType.LAVA, Identifier.fromString("minecraft:lava"))
             register(ItemType.LAVA_BUCKET, Identifier.fromString("minecraft:lava_bucket"), ItemLavaBucket::class.java)
             register(ItemType.LEAD, Identifier.fromString("minecraft:lead"))
             register(ItemType.LEATHER, Identifier.fromString("minecraft:leather"))
-            register(ItemType.LEATHER_BOOTS, Identifier.fromString("minecraft:leather_boots"), ItemLeatherBoots::class.java)
-            register(ItemType.LEATHER_CHESTPLATE, Identifier.fromString("minecraft:leather_chestplate"), ItemLeatherChestplate::class.java)
-            register(ItemType.LEATHER_HELMET, Identifier.fromString("minecraft:leather_helmet"), ItemLeatherHelmet::class.java)
+            register(
+                ItemType.LEATHER_BOOTS,
+                Identifier.fromString("minecraft:leather_boots"),
+                ItemLeatherBoots::class.java
+            )
+            register(
+                ItemType.LEATHER_CHESTPLATE,
+                Identifier.fromString("minecraft:leather_chestplate"),
+                ItemLeatherChestplate::class.java
+            )
+            register(
+                ItemType.LEATHER_HELMET,
+                Identifier.fromString("minecraft:leather_helmet"),
+                ItemLeatherHelmet::class.java
+            )
             register(ItemType.LEATHER_HORSE_ARMOR, Identifier.fromString("minecraft:leather_horse_armor"))
-            register(ItemType.LEATHER_LEGGINGS, Identifier.fromString("minecraft:leather_leggings"), ItemLeatherLeggings::class.java)
-            register(ItemType.OAK_LEAVES, Identifier.fromString("minecraft:oak_leaves"))
-            register(ItemType.SPRUCE_LEAVES, Identifier.fromString("minecraft:spruce_leaves"))
-            register(ItemType.BIRCH_LEAVES, Identifier.fromString("minecraft:birch_leaves"))
-            register(ItemType.JUNGLE_LEAVES, Identifier.fromString("minecraft:jungle_leaves"))
-            register(ItemType.ACACIA_LEAVES, Identifier.fromString("minecraft:acacia_leaves"))
-            register(ItemType.DARK_OAK_LEAVES, Identifier.fromString("minecraft:dark_oak_leaves"))
+            register(
+                ItemType.LEATHER_LEGGINGS,
+                Identifier.fromString("minecraft:leather_leggings"),
+                ItemLeatherLeggings::class.java
+            )
+            register(ItemType.LEAVES, Identifier.fromString("minecraft:leaves"))
             register(ItemType.LEAVES2, Identifier.fromString("minecraft:leaves2"))
             register(ItemType.LECTERN, Identifier.fromString("minecraft:lectern"), ItemLectern::class.java)
             register(ItemType.LEVER, Identifier.fromString("minecraft:lever"))
             register(ItemType.LIGHT_BLOCK, Identifier.fromString("minecraft:light_block"))
             register(ItemType.LIGHT_BLUE_CANDLE, Identifier.fromString("minecraft:light_blue_candle"))
             register(ItemType.LIGHT_BLUE_CANDLE_CAKE, Identifier.fromString("minecraft:light_blue_candle_cake"))
-            register(ItemType.LIGHT_BLUE_CARPET, Identifier.fromString("minecraft:light_blue_carpet"), ItemCarpet::class.java)
+            register(
+                ItemType.LIGHT_BLUE_CARPET,
+                Identifier.fromString("minecraft:light_blue_carpet"),
+                ItemCarpet::class.java
+            )
             register(ItemType.LIGHT_BLUE_CONCRETE, Identifier.fromString("minecraft:light_blue_concrete"))
             register(ItemType.LIGHT_BLUE_CONCRETE_POWDER, Identifier.fromString("minecraft:light_blue_concrete_powder"))
             register(ItemType.LIGHT_BLUE_DYE, Identifier.fromString("minecraft:light_blue_dye"))
@@ -835,7 +1567,11 @@ class ItemRegistry {
             register(ItemType.LIGHT_BLUE_WOOL, Identifier.fromString("minecraft:light_blue_wool"), ItemWool::class.java)
             register(ItemType.LIGHT_GRAY_CANDLE, Identifier.fromString("minecraft:light_gray_candle"))
             register(ItemType.LIGHT_GRAY_CANDLE_CAKE, Identifier.fromString("minecraft:light_gray_candle_cake"))
-            register(ItemType.LIGHT_GRAY_CARPET, Identifier.fromString("minecraft:light_gray_carpet"), ItemCarpet::class.java)
+            register(
+                ItemType.LIGHT_GRAY_CARPET,
+                Identifier.fromString("minecraft:light_gray_carpet"),
+                ItemCarpet::class.java
+            )
             register(ItemType.LIGHT_GRAY_CONCRETE, Identifier.fromString("minecraft:light_gray_concrete"))
             register(ItemType.LIGHT_GRAY_CONCRETE_POWDER, Identifier.fromString("minecraft:light_gray_concrete_powder"))
             register(ItemType.LIGHT_GRAY_DYE, Identifier.fromString("minecraft:light_gray_dye"))
@@ -852,6 +1588,8 @@ class ItemRegistry {
                 Identifier.fromString("minecraft:light_weighted_pressure_plate")
             )
             register(ItemType.LIGHTNING_ROD, Identifier.fromString("minecraft:lightning_rod"))
+            register(ItemType.LILAC, Identifier.fromString("minecraft:lilac"))
+            register(ItemType.LILY_OF_THE_VALLEY, Identifier.fromString("minecraft:lily_of_the_valley"))
             register(ItemType.LIME_CANDLE, Identifier.fromString("minecraft:lime_candle"))
             register(ItemType.LIME_CANDLE_CAKE, Identifier.fromString("minecraft:lime_candle_cake"))
             register(ItemType.LIME_CARPET, Identifier.fromString("minecraft:lime_carpet"), ItemCarpet::class.java)
@@ -872,12 +1610,17 @@ class ItemRegistry {
             register(ItemType.LIT_REDSTONE_LAMP, Identifier.fromString("minecraft:lit_redstone_lamp"))
             register(ItemType.LIT_REDSTONE_ORE, Identifier.fromString("minecraft:lit_redstone_ore"))
             register(ItemType.LIT_SMOKER, Identifier.fromString("minecraft:lit_smoker"))
-            register(ItemType.LLAMA_SPAWN_EGG, Identifier.fromString("minecraft:llama_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.LLAMA_SPAWN_EGG,
+                Identifier.fromString("minecraft:llama_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.LODESTONE, Identifier.fromString("minecraft:lodestone"))
             register(ItemType.LODESTONE_COMPASS, Identifier.fromString("minecraft:lodestone_compass"))
             register(ItemType.LOG, Identifier.fromString("minecraft:log"))
             register(ItemType.LOG2, Identifier.fromString("minecraft:log2"))
             register(ItemType.LOOM, Identifier.fromString("minecraft:loom"), ItemLoom::class.java)
+            register(ItemType.MACE, Identifier.fromString("minecraft:mace"))
             register(ItemType.MAGENTA_CANDLE, Identifier.fromString("minecraft:magenta_candle"))
             register(ItemType.MAGENTA_CANDLE_CAKE, Identifier.fromString("minecraft:magenta_candle_cake"))
             register(ItemType.MAGENTA_CARPET, Identifier.fromString("minecraft:magenta_carpet"), ItemCarpet::class.java)
@@ -892,27 +1635,83 @@ class ItemRegistry {
             register(ItemType.MAGENTA_WOOL, Identifier.fromString("minecraft:magenta_wool"), ItemWool::class.java)
             register(ItemType.MAGMA, Identifier.fromString("minecraft:magma"))
             register(ItemType.MAGMA_CREAM, Identifier.fromString("minecraft:magma_cream"))
-            register(ItemType.MAGMA_CUBE_SPAWN_EGG, Identifier.fromString("minecraft:magma_cube_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.MAGMA_CUBE_SPAWN_EGG,
+                Identifier.fromString("minecraft:magma_cube_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.MANGROVE_BOAT, Identifier.fromString("minecraft:mangrove_boat"), ItemBoat::class.java)
-            register(ItemType.MANGROVE_BUTTON, Identifier.fromString("minecraft:mangrove_button"), ItemWoodenButton::class.java)
-            register(ItemType.MANGROVE_CHEST_BOAT, Identifier.fromString("minecraft:mangrove_chest_boat"), ItemBoat::class.java)
-            register(ItemType.MANGROVE_DOOR, Identifier.fromString("minecraft:mangrove_door"), ItemWoodenDoor::class.java)
+            register(
+                ItemType.MANGROVE_BUTTON,
+                Identifier.fromString("minecraft:mangrove_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.MANGROVE_CHEST_BOAT,
+                Identifier.fromString("minecraft:mangrove_chest_boat"),
+                ItemBoat::class.java
+            )
+            register(
+                ItemType.MANGROVE_DOOR,
+                Identifier.fromString("minecraft:mangrove_door"),
+                ItemWoodenDoor::class.java
+            )
             register(ItemType.MANGROVE_DOUBLE_SLAB, Identifier.fromString("minecraft:mangrove_double_slab"))
-            register(ItemType.MANGROVE_FENCE, Identifier.fromString("minecraft:mangrove_fence"), ItemWoodenFence::class.java)
-            register(ItemType.MANGROVE_FENCE_GATE, Identifier.fromString("minecraft:mangrove_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.MANGROVE_HANGING_SIGN, Identifier.fromString("minecraft:mangrove_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.MANGROVE_FENCE,
+                Identifier.fromString("minecraft:mangrove_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.MANGROVE_FENCE_GATE,
+                Identifier.fromString("minecraft:mangrove_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.MANGROVE_HANGING_SIGN,
+                Identifier.fromString("minecraft:mangrove_hanging_sign"),
+                ItemHangingSign::class.java
+            )
             register(ItemType.MANGROVE_LEAVES, Identifier.fromString("minecraft:mangrove_leaves"))
             register(ItemType.MANGROVE_LOG, Identifier.fromString("minecraft:mangrove_log"), ItemLog::class.java)
             register(ItemType.MANGROVE_PLANKS, Identifier.fromString("minecraft:mangrove_planks"))
-            register(ItemType.MANGROVE_PRESSURE_PLATE, Identifier.fromString("minecraft:mangrove_pressure_plate"), ItemPressurePlate::class.java)
+            register(
+                ItemType.MANGROVE_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:mangrove_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
             register(ItemType.MANGROVE_PROPAGULE, Identifier.fromString("minecraft:mangrove_propagule"))
-            register(ItemType.MANGROVE_ROOTS, Identifier.fromString("minecraft:mangrove_roots"), ItemMangroveRoots::class.java)
+            register(
+                ItemType.MANGROVE_ROOTS,
+                Identifier.fromString("minecraft:mangrove_roots"),
+                ItemMangroveRoots::class.java
+            )
             register(ItemType.MANGROVE_SIGN, Identifier.fromString("minecraft:mangrove_sign"), ItemSign::class.java)
-            register(ItemType.MANGROVE_SLAB, Identifier.fromString("minecraft:mangrove_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.MANGROVE_STAIRS, Identifier.fromString("minecraft:mangrove_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.MANGROVE_STANDING_SIGN, Identifier.fromString("minecraft:mangrove_standing_sign"), ItemSign::class.java)
-            register(ItemType.MANGROVE_TRAPDOOR, Identifier.fromString("minecraft:mangrove_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.MANGROVE_WALL_SIGN, Identifier.fromString("minecraft:mangrove_wall_sign"), ItemSign::class.java)
+            register(
+                ItemType.MANGROVE_SLAB,
+                Identifier.fromString("minecraft:mangrove_slab"),
+                ItemWoodenSlab::class.java
+            )
+            register(
+                ItemType.MANGROVE_STAIRS,
+                Identifier.fromString("minecraft:mangrove_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.MANGROVE_STANDING_SIGN,
+                Identifier.fromString("minecraft:mangrove_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.MANGROVE_TRAPDOOR,
+                Identifier.fromString("minecraft:mangrove_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.MANGROVE_WALL_SIGN,
+                Identifier.fromString("minecraft:mangrove_wall_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.MANGROVE_WOOD, Identifier.fromString("minecraft:mangrove_wood"), ItemWood::class.java)
             register(ItemType.MEDICINE, Identifier.fromString("minecraft:medicine"))
             register(ItemType.MEDIUM_AMETHYST_BUD, Identifier.fromString("minecraft:medium_amethyst_bud"))
@@ -926,7 +1725,11 @@ class ItemRegistry {
             register(ItemType.MOB_SPAWNER, Identifier.fromString("minecraft:mob_spawner"))
             register(ItemType.MOJANG_BANNER_PATTERN, Identifier.fromString("minecraft:mojang_banner_pattern"))
             register(ItemType.MONSTER_EGG, Identifier.fromString("minecraft:monster_egg"))
-            register(ItemType.MOOSHROOM_SPAWN_EGG, Identifier.fromString("minecraft:mooshroom_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.MOOSHROOM_SPAWN_EGG,
+                Identifier.fromString("minecraft:mooshroom_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.MOSS_BLOCK, Identifier.fromString("minecraft:moss_block"))
             register(ItemType.MOSS_CARPET, Identifier.fromString("minecraft:moss_carpet"), ItemCarpet::class.java)
             register(ItemType.MOSSY_COBBLESTONE, Identifier.fromString("minecraft:mossy_cobblestone"))
@@ -941,19 +1744,33 @@ class ItemRegistry {
             register(ItemType.MUD_BRICK_WALL, Identifier.fromString("minecraft:mud_brick_wall"))
             register(ItemType.MUD_BRICKS, Identifier.fromString("minecraft:mud_bricks"))
             register(ItemType.MUDDY_MANGROVE_ROOTS, Identifier.fromString("minecraft:muddy_mangrove_roots"))
-            register(ItemType.MULE_SPAWN_EGG, Identifier.fromString("minecraft:mule_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.MUSHROOM_STEW, Identifier.fromString("minecraft:mushroom_stew"), ItemMushroomStew::class.java)
+            register(
+                ItemType.MULE_SPAWN_EGG,
+                Identifier.fromString("minecraft:mule_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.MUSHROOM_STEW,
+                Identifier.fromString("minecraft:mushroom_stew"),
+                ItemMushroomStew::class.java
+            )
             register(ItemType.MUSIC_DISC_11, Identifier.fromString("minecraft:music_disc_11"))
             register(ItemType.MUSIC_DISC_13, Identifier.fromString("minecraft:music_disc_13"))
             register(ItemType.MUSIC_DISC_5, Identifier.fromString("minecraft:music_disc_5"))
             register(ItemType.MUSIC_DISC_BLOCKS, Identifier.fromString("minecraft:music_disc_blocks"))
             register(ItemType.MUSIC_DISC_CAT, Identifier.fromString("minecraft:music_disc_cat"))
             register(ItemType.MUSIC_DISC_CHIRP, Identifier.fromString("minecraft:music_disc_chirp"))
+            register(ItemType.MUSIC_DISC_CREATOR, Identifier.fromString("minecraft:music_disc_creator"))
+            register(
+                ItemType.MUSIC_DISC_CREATOR_MUSIC_BOX,
+                Identifier.fromString("minecraft:music_disc_creator_music_box")
+            )
             register(ItemType.MUSIC_DISC_FAR, Identifier.fromString("minecraft:music_disc_far"))
             register(ItemType.MUSIC_DISC_MALL, Identifier.fromString("minecraft:music_disc_mall"))
             register(ItemType.MUSIC_DISC_MELLOHI, Identifier.fromString("minecraft:music_disc_mellohi"))
             register(ItemType.MUSIC_DISC_OTHERSIDE, Identifier.fromString("minecraft:music_disc_otherside"))
             register(ItemType.MUSIC_DISC_PIGSTEP, Identifier.fromString("minecraft:music_disc_pigstep"))
+            register(ItemType.MUSIC_DISC_PRECIPICE, Identifier.fromString("minecraft:music_disc_precipice"))
             register(ItemType.MUSIC_DISC_RELIC, Identifier.fromString("minecraft:music_disc_relic"))
             register(ItemType.MUSIC_DISC_STAL, Identifier.fromString("minecraft:music_disc_stal"))
             register(ItemType.MUSIC_DISC_STRAD, Identifier.fromString("minecraft:music_disc_strad"))
@@ -965,6 +1782,7 @@ class ItemRegistry {
             register(ItemType.NAUTILUS_SHELL, Identifier.fromString("minecraft:nautilus_shell"))
             register(ItemType.NETHER_BRICK, Identifier.fromString("minecraft:nether_brick"))
             register(ItemType.NETHER_BRICK_FENCE, Identifier.fromString("minecraft:nether_brick_fence"))
+            register(ItemType.NETHER_BRICK_SLAB, Identifier.fromString("minecraft:nether_brick_slab"))
             register(ItemType.NETHER_BRICK_STAIRS, Identifier.fromString("minecraft:nether_brick_stairs"))
             register(ItemType.NETHER_GOLD_ORE, Identifier.fromString("minecraft:nether_gold_ore"))
             register(ItemType.NETHER_SPROUTS, Identifier.fromString("minecraft:nether_sprouts"))
@@ -972,18 +1790,54 @@ class ItemRegistry {
             register(ItemType.NETHER_WART, Identifier.fromString("minecraft:nether_wart"))
             register(ItemType.NETHER_WART_BLOCK, Identifier.fromString("minecraft:nether_wart_block"))
             register(ItemType.NETHERBRICK, Identifier.fromString("minecraft:netherbrick"))
-            register(ItemType.NETHERITE_AXE, Identifier.fromString("minecraft:netherite_axe"), ItemNetheriteAxe::class.java)
+            register(
+                ItemType.NETHERITE_AXE,
+                Identifier.fromString("minecraft:netherite_axe"),
+                ItemNetheriteAxe::class.java
+            )
             register(ItemType.NETHERITE_BLOCK, Identifier.fromString("minecraft:netherite_block"))
-            register(ItemType.NETHERITE_BOOTS, Identifier.fromString("minecraft:netherite_boots"), ItemNetheriteBoots::class.java)
-            register(ItemType.NETHERITE_CHESTPLATE, Identifier.fromString("minecraft:netherite_chestplate"), ItemNetheriteChestplate::class.java)
-            register(ItemType.NETHERITE_HELMET, Identifier.fromString("minecraft:netherite_helmet"), ItemNetheriteHelmet::class.java)
-            register(ItemType.NETHERITE_HOE, Identifier.fromString("minecraft:netherite_hoe"), ItemNetheriteHoe::class.java)
+            register(
+                ItemType.NETHERITE_BOOTS,
+                Identifier.fromString("minecraft:netherite_boots"),
+                ItemNetheriteBoots::class.java
+            )
+            register(
+                ItemType.NETHERITE_CHESTPLATE,
+                Identifier.fromString("minecraft:netherite_chestplate"),
+                ItemNetheriteChestplate::class.java
+            )
+            register(
+                ItemType.NETHERITE_HELMET,
+                Identifier.fromString("minecraft:netherite_helmet"),
+                ItemNetheriteHelmet::class.java
+            )
+            register(
+                ItemType.NETHERITE_HOE,
+                Identifier.fromString("minecraft:netherite_hoe"),
+                ItemNetheriteHoe::class.java
+            )
             register(ItemType.NETHERITE_INGOT, Identifier.fromString("minecraft:netherite_ingot"))
-            register(ItemType.NETHERITE_LEGGINGS, Identifier.fromString("minecraft:netherite_leggings"), ItemNetheriteLeggings::class.java)
-            register(ItemType.NETHERITE_PICKAXE, Identifier.fromString("minecraft:netherite_pickaxe"), ItemNetheritePickaxe::class.java)
+            register(
+                ItemType.NETHERITE_LEGGINGS,
+                Identifier.fromString("minecraft:netherite_leggings"),
+                ItemNetheriteLeggings::class.java
+            )
+            register(
+                ItemType.NETHERITE_PICKAXE,
+                Identifier.fromString("minecraft:netherite_pickaxe"),
+                ItemNetheritePickaxe::class.java
+            )
             register(ItemType.NETHERITE_SCRAP, Identifier.fromString("minecraft:netherite_scrap"))
-            register(ItemType.NETHERITE_SHOVEL, Identifier.fromString("minecraft:netherite_shovel"), ItemNetheriteShovel::class.java)
-            register(ItemType.NETHERITE_SWORD, Identifier.fromString("minecraft:netherite_sword"), ItemNetheriteSword::class.java)
+            register(
+                ItemType.NETHERITE_SHOVEL,
+                Identifier.fromString("minecraft:netherite_shovel"),
+                ItemNetheriteShovel::class.java
+            )
+            register(
+                ItemType.NETHERITE_SWORD,
+                Identifier.fromString("minecraft:netherite_sword"),
+                ItemNetheriteSword::class.java
+            )
             register(
                 ItemType.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:netherite_upgrade_smithing_template")
@@ -995,15 +1849,31 @@ class ItemRegistry {
             register(ItemType.NPC_SPAWN_EGG, Identifier.fromString("minecraft:npc_spawn_egg"))
             register(ItemType.OAK_BOAT, Identifier.fromString("minecraft:oak_boat"), ItemBoat::class.java)
             register(ItemType.OAK_CHEST_BOAT, Identifier.fromString("minecraft:oak_chest_boat"), ItemBoat::class.java)
+            register(ItemType.OAK_DOUBLE_SLAB, Identifier.fromString("minecraft:oak_double_slab"))
             register(ItemType.OAK_FENCE, Identifier.fromString("minecraft:oak_fence"), ItemWoodenFence::class.java)
-            register(ItemType.OAK_HANGING_SIGN, Identifier.fromString("minecraft:oak_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.OAK_HANGING_SIGN,
+                Identifier.fromString("minecraft:oak_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.OAK_LEAVES, Identifier.fromString("minecraft:oak_leaves"))
             register(ItemType.OAK_LOG, Identifier.fromString("minecraft:oak_log"), ItemLog::class.java)
+            register(ItemType.OAK_PLANKS, Identifier.fromString("minecraft:oak_planks"))
+            register(ItemType.OAK_SAPLING, Identifier.fromString("minecraft:oak_sapling"), ItemSapling::class.java)
             register(ItemType.OAK_SIGN, Identifier.fromString("minecraft:oak_sign"), ItemSign::class.java)
+            register(ItemType.OAK_SLAB, Identifier.fromString("minecraft:oak_slab"), ItemWoodenSlab::class.java)
             register(ItemType.OAK_STAIRS, Identifier.fromString("minecraft:oak_stairs"), ItemWoodenStairs::class.java)
+            register(ItemType.OAK_WOOD, Identifier.fromString("minecraft:oak_wood"), ItemWood::class.java)
             register(ItemType.OBSERVER, Identifier.fromString("minecraft:observer"))
             register(ItemType.OBSIDIAN, Identifier.fromString("minecraft:obsidian"))
-            register(ItemType.OCELOT_SPAWN_EGG, Identifier.fromString("minecraft:ocelot_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.OCELOT_SPAWN_EGG,
+                Identifier.fromString("minecraft:ocelot_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.OCHRE_FROGLIGHT, Identifier.fromString("minecraft:ochre_froglight"))
+            register(ItemType.OMINOUS_BOTTLE, Identifier.fromString("minecraft:ominous_bottle"))
+            register(ItemType.OMINOUS_TRIAL_KEY, Identifier.fromString("minecraft:ominous_trial_key"))
             register(ItemType.ORANGE_CANDLE, Identifier.fromString("minecraft:orange_candle"))
             register(ItemType.ORANGE_CANDLE_CAKE, Identifier.fromString("minecraft:orange_candle_cake"))
             register(ItemType.ORANGE_CARPET, Identifier.fromString("minecraft:orange_carpet"), ItemCarpet::class.java)
@@ -1015,8 +1885,15 @@ class ItemRegistry {
             register(ItemType.ORANGE_STAINED_GLASS, Identifier.fromString("minecraft:orange_stained_glass"))
             register(ItemType.ORANGE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:orange_stained_glass_pane"))
             register(ItemType.ORANGE_TERRACOTTA, Identifier.fromString("minecraft:orange_terracotta"))
+            register(ItemType.ORANGE_TULIP, Identifier.fromString("minecraft:orange_tulip"))
             register(ItemType.ORANGE_WOOL, Identifier.fromString("minecraft:orange_wool"), ItemWool::class.java)
+            register(ItemType.OXEYE_DAISY, Identifier.fromString("minecraft:oxeye_daisy"))
+            register(ItemType.OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:oxidized_chiseled_copper"))
             register(ItemType.OXIDIZED_COPPER, Identifier.fromString("minecraft:oxidized_copper"))
+            register(ItemType.OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:oxidized_copper_bulb"))
+            register(ItemType.OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:oxidized_copper_door"))
+            register(ItemType.OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:oxidized_copper_grate"))
+            register(ItemType.OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:oxidized_copper_trapdoor"))
             register(ItemType.OXIDIZED_CUT_COPPER, Identifier.fromString("minecraft:oxidized_cut_copper"))
             register(ItemType.OXIDIZED_CUT_COPPER_SLAB, Identifier.fromString("minecraft:oxidized_cut_copper_slab"))
             register(ItemType.OXIDIZED_CUT_COPPER_STAIRS, Identifier.fromString("minecraft:oxidized_cut_copper_stairs"))
@@ -1027,17 +1904,43 @@ class ItemRegistry {
             register(ItemType.PACKED_ICE, Identifier.fromString("minecraft:packed_ice"))
             register(ItemType.PACKED_MUD, Identifier.fromString("minecraft:packed_mud"))
             register(ItemType.PAINTING, Identifier.fromString("minecraft:painting"))
-            register(ItemType.PANDA_SPAWN_EGG, Identifier.fromString("minecraft:panda_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.PANDA_SPAWN_EGG,
+                Identifier.fromString("minecraft:panda_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.PAPER, Identifier.fromString("minecraft:paper"))
-            register(ItemType.PARROT_SPAWN_EGG, Identifier.fromString("minecraft:parrot_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.PARROT_SPAWN_EGG,
+                Identifier.fromString("minecraft:parrot_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.PEARLESCENT_FROGLIGHT, Identifier.fromString("minecraft:pearlescent_froglight"))
+            register(ItemType.PEONY, Identifier.fromString("minecraft:peony"))
+            register(ItemType.PETRIFIED_OAK_SLAB, Identifier.fromString("minecraft:petrified_oak_slab"))
             register(ItemType.PHANTOM_MEMBRANE, Identifier.fromString("minecraft:phantom_membrane"))
-            register(ItemType.PHANTOM_SPAWN_EGG, Identifier.fromString("minecraft:phantom_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.PHANTOM_SPAWN_EGG,
+                Identifier.fromString("minecraft:phantom_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.PIG_SPAWN_EGG, Identifier.fromString("minecraft:pig_spawn_egg"), ItemSpawnEgg::class.java)
             register(ItemType.PIGLIN_BANNER_PATTERN, Identifier.fromString("minecraft:piglin_banner_pattern"))
-            register(ItemType.PIGLIN_BRUTE_SPAWN_EGG, Identifier.fromString("minecraft:piglin_brute_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.PIGLIN_SPAWN_EGG, Identifier.fromString("minecraft:piglin_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.PILLAGER_SPAWN_EGG, Identifier.fromString("minecraft:pillager_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.PIGLIN_BRUTE_SPAWN_EGG,
+                Identifier.fromString("minecraft:piglin_brute_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.PIGLIN_SPAWN_EGG,
+                Identifier.fromString("minecraft:piglin_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.PILLAGER_SPAWN_EGG,
+                Identifier.fromString("minecraft:pillager_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.PINK_CANDLE, Identifier.fromString("minecraft:pink_candle"))
             register(ItemType.PINK_CANDLE_CAKE, Identifier.fromString("minecraft:pink_candle_cake"))
             register(ItemType.PINK_CARPET, Identifier.fromString("minecraft:pink_carpet"), ItemCarpet::class.java)
@@ -1050,23 +1953,28 @@ class ItemRegistry {
             register(ItemType.PINK_STAINED_GLASS, Identifier.fromString("minecraft:pink_stained_glass"))
             register(ItemType.PINK_STAINED_GLASS_PANE, Identifier.fromString("minecraft:pink_stained_glass_pane"))
             register(ItemType.PINK_TERRACOTTA, Identifier.fromString("minecraft:pink_terracotta"))
+            register(ItemType.PINK_TULIP, Identifier.fromString("minecraft:pink_tulip"))
             register(ItemType.PINK_WOOL, Identifier.fromString("minecraft:pink_wool"), ItemWool::class.java)
             register(ItemType.PISTON, Identifier.fromString("minecraft:piston"))
             register(ItemType.PISTON_ARM_COLLISION, Identifier.fromString("minecraft:piston_arm_collision"))
             register(ItemType.PITCHER_CROP, Identifier.fromString("minecraft:pitcher_crop"))
             register(ItemType.PITCHER_PLANT, Identifier.fromString("minecraft:pitcher_plant"))
             register(ItemType.PITCHER_POD, Identifier.fromString("minecraft:pitcher_pod"))
-            register(ItemType.OAK_PLANKS, Identifier.fromString("minecraft:oak_planks"))
-            register(ItemType.SPRUCE_PLANKS, Identifier.fromString("minecraft:spruce_planks"))
-            register(ItemType.BIRCH_PLANKS, Identifier.fromString("minecraft:birch_planks"))
-            register(ItemType.JUNGLE_PLANKS, Identifier.fromString("minecraft:jungle_planks"))
-            register(ItemType.ACACIA_PLANKS, Identifier.fromString("minecraft:acacia_planks"))
-            register(ItemType.DARK_OAK_PLANKS, Identifier.fromString("minecraft:dark_oak_planks"))
+            register(ItemType.PLANKS, Identifier.fromString("minecraft:planks"))
             register(ItemType.PLENTY_POTTERY_SHERD, Identifier.fromString("minecraft:plenty_pottery_sherd"))
             register(ItemType.PODZOL, Identifier.fromString("minecraft:podzol"))
             register(ItemType.POINTED_DRIPSTONE, Identifier.fromString("minecraft:pointed_dripstone"))
-            register(ItemType.POISONOUS_POTATO, Identifier.fromString("minecraft:poisonous_potato"), ItemPoisonousPotato::class.java)
-            register(ItemType.POLAR_BEAR_SPAWN_EGG, Identifier.fromString("minecraft:polar_bear_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.POISONOUS_POTATO,
+                Identifier.fromString("minecraft:poisonous_potato"),
+                ItemPoisonousPotato::class.java
+            )
+            register(
+                ItemType.POLAR_BEAR_SPAWN_EGG,
+                Identifier.fromString("minecraft:polar_bear_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(ItemType.POLISHED_ANDESITE, Identifier.fromString("minecraft:polished_andesite"))
             register(ItemType.POLISHED_ANDESITE_STAIRS, Identifier.fromString("minecraft:polished_andesite_stairs"))
             register(ItemType.POLISHED_BASALT, Identifier.fromString("minecraft:polished_basalt"))
             register(ItemType.POLISHED_BLACKSTONE, Identifier.fromString("minecraft:polished_blackstone"))
@@ -1107,9 +2015,17 @@ class ItemRegistry {
             register(ItemType.POLISHED_DEEPSLATE_SLAB, Identifier.fromString("minecraft:polished_deepslate_slab"))
             register(ItemType.POLISHED_DEEPSLATE_STAIRS, Identifier.fromString("minecraft:polished_deepslate_stairs"))
             register(ItemType.POLISHED_DEEPSLATE_WALL, Identifier.fromString("minecraft:polished_deepslate_wall"))
+            register(ItemType.POLISHED_DIORITE, Identifier.fromString("minecraft:polished_diorite"))
             register(ItemType.POLISHED_DIORITE_STAIRS, Identifier.fromString("minecraft:polished_diorite_stairs"))
+            register(ItemType.POLISHED_GRANITE, Identifier.fromString("minecraft:polished_granite"))
             register(ItemType.POLISHED_GRANITE_STAIRS, Identifier.fromString("minecraft:polished_granite_stairs"))
+            register(ItemType.POLISHED_TUFF, Identifier.fromString("minecraft:polished_tuff"))
+            register(ItemType.POLISHED_TUFF_DOUBLE_SLAB, Identifier.fromString("minecraft:polished_tuff_double_slab"))
+            register(ItemType.POLISHED_TUFF_SLAB, Identifier.fromString("minecraft:polished_tuff_slab"))
+            register(ItemType.POLISHED_TUFF_STAIRS, Identifier.fromString("minecraft:polished_tuff_stairs"))
+            register(ItemType.POLISHED_TUFF_WALL, Identifier.fromString("minecraft:polished_tuff_wall"))
             register(ItemType.POPPED_CHORUS_FRUIT, Identifier.fromString("minecraft:popped_chorus_fruit"))
+            register(ItemType.POPPY, Identifier.fromString("minecraft:poppy"))
             register(ItemType.PORKCHOP, Identifier.fromString("minecraft:porkchop"), ItemPorkchop::class.java)
             register(ItemType.PORTAL, Identifier.fromString("minecraft:portal"))
             register(ItemType.POTATO, Identifier.fromString("minecraft:potato"), ItemPotato::class.java)
@@ -1127,7 +2043,11 @@ class ItemRegistry {
             register(ItemType.PRIZE_POTTERY_SHERD, Identifier.fromString("minecraft:prize_pottery_sherd"))
             register(ItemType.PUFFERFISH, Identifier.fromString("minecraft:pufferfish"), ItemPufferfish::class.java)
             register(ItemType.PUFFERFISH_BUCKET, Identifier.fromString("minecraft:pufferfish_bucket"))
-            register(ItemType.PUFFERFISH_SPAWN_EGG, Identifier.fromString("minecraft:pufferfish_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.PUFFERFISH_SPAWN_EGG,
+                Identifier.fromString("minecraft:pufferfish_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.PUMPKIN, Identifier.fromString("minecraft:pumpkin"))
             register(ItemType.PUMPKIN_PIE, Identifier.fromString("minecraft:pumpkin_pie"), ItemPumpkinPie::class.java)
             register(ItemType.PUMPKIN_SEEDS, Identifier.fromString("minecraft:pumpkin_seeds"))
@@ -1150,11 +2070,16 @@ class ItemRegistry {
             register(ItemType.QUARTZ_BLOCK, Identifier.fromString("minecraft:quartz_block"))
             register(ItemType.QUARTZ_BRICKS, Identifier.fromString("minecraft:quartz_bricks"))
             register(ItemType.QUARTZ_ORE, Identifier.fromString("minecraft:quartz_ore"))
+            register(ItemType.QUARTZ_SLAB, Identifier.fromString("minecraft:quartz_slab"))
             register(ItemType.QUARTZ_STAIRS, Identifier.fromString("minecraft:quartz_stairs"))
             register(ItemType.RABBIT, Identifier.fromString("minecraft:rabbit"), ItemRabbit::class.java)
             register(ItemType.RABBIT_FOOT, Identifier.fromString("minecraft:rabbit_foot"))
             register(ItemType.RABBIT_HIDE, Identifier.fromString("minecraft:rabbit_hide"))
-            register(ItemType.RABBIT_SPAWN_EGG, Identifier.fromString("minecraft:rabbit_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.RABBIT_SPAWN_EGG,
+                Identifier.fromString("minecraft:rabbit_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.RABBIT_STEW, Identifier.fromString("minecraft:rabbit_stew"), ItemRabbitStew::class.java)
             register(ItemType.RAIL, Identifier.fromString("minecraft:rail"))
             register(
@@ -1162,7 +2087,11 @@ class ItemRegistry {
                 Identifier.fromString("minecraft:raiser_armor_trim_smithing_template")
             )
             register(ItemType.RAPID_FERTILIZER, Identifier.fromString("minecraft:rapid_fertilizer"))
-            register(ItemType.RAVAGER_SPAWN_EGG, Identifier.fromString("minecraft:ravager_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.RAVAGER_SPAWN_EGG,
+                Identifier.fromString("minecraft:ravager_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.RAW_COPPER, Identifier.fromString("minecraft:raw_copper"))
             register(ItemType.RAW_COPPER_BLOCK, Identifier.fromString("minecraft:raw_copper_block"))
             register(ItemType.RAW_GOLD, Identifier.fromString("minecraft:raw_gold"))
@@ -1177,17 +2106,6 @@ class ItemRegistry {
             register(ItemType.RED_CONCRETE_POWDER, Identifier.fromString("minecraft:red_concrete_powder"))
             register(ItemType.RED_DYE, Identifier.fromString("minecraft:red_dye"))
             register(ItemType.RED_FLOWER, Identifier.fromString("minecraft:red_flower"))
-            register(ItemType.POPPY, Identifier.fromString("minecraft:poppy"))
-            register(ItemType.BLUE_ORCHID, Identifier.fromString("minecraft:blue_orchid"))
-            register(ItemType.ALLIUM, Identifier.fromString("minecraft:allium"))
-            register(ItemType.AZURE_BLUET, Identifier.fromString("minecraft:azure_bluet"))
-            register(ItemType.RED_TULIP, Identifier.fromString("minecraft:red_tulip"))
-            register(ItemType.ORANGE_TULIP, Identifier.fromString("minecraft:orange_tulip"))
-            register(ItemType.WHITE_TULIP, Identifier.fromString("minecraft:white_tulip"))
-            register(ItemType.PINK_TULIP, Identifier.fromString("minecraft:pink_tulip"))
-            register(ItemType.OXEYE_DAISY, Identifier.fromString("minecraft:oxeye_daisy"))
-            register(ItemType.CORNFLOWER, Identifier.fromString("minecraft:cornflower"))
-            register(ItemType.LILY_OF_THE_VALLEY, Identifier.fromString("minecraft:lily_of_the_valley"))
             register(ItemType.RED_GLAZED_TERRACOTTA, Identifier.fromString("minecraft:red_glazed_terracotta"))
             register(ItemType.RED_MUSHROOM, Identifier.fromString("minecraft:red_mushroom"))
             register(ItemType.RED_MUSHROOM_BLOCK, Identifier.fromString("minecraft:red_mushroom_block"))
@@ -1199,6 +2117,7 @@ class ItemRegistry {
             register(ItemType.RED_STAINED_GLASS, Identifier.fromString("minecraft:red_stained_glass"))
             register(ItemType.RED_STAINED_GLASS_PANE, Identifier.fromString("minecraft:red_stained_glass_pane"))
             register(ItemType.RED_TERRACOTTA, Identifier.fromString("minecraft:red_terracotta"))
+            register(ItemType.RED_TULIP, Identifier.fromString("minecraft:red_tulip"))
             register(ItemType.RED_WOOL, Identifier.fromString("minecraft:red_wool"), ItemWool::class.java)
             register(ItemType.REDSTONE, Identifier.fromString("minecraft:redstone"))
             register(ItemType.REDSTONE_BLOCK, Identifier.fromString("minecraft:redstone_block"))
@@ -1215,28 +2134,28 @@ class ItemRegistry {
                 ItemType.RIB_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:rib_armor_trim_smithing_template")
             )
+            register(ItemType.ROSE_BUSH, Identifier.fromString("minecraft:rose_bush"))
             register(ItemType.ROTTEN_FLESH, Identifier.fromString("minecraft:rotten_flesh"))
             register(ItemType.SADDLE, Identifier.fromString("minecraft:saddle"))
             register(ItemType.SALMON, Identifier.fromString("minecraft:salmon"), ItemSalmon::class.java)
             register(ItemType.SALMON_BUCKET, Identifier.fromString("minecraft:salmon_bucket"))
-            register(ItemType.SALMON_SPAWN_EGG, Identifier.fromString("minecraft:salmon_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SALMON_SPAWN_EGG,
+                Identifier.fromString("minecraft:salmon_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SAND, Identifier.fromString("minecraft:sand"))
             register(ItemType.SANDSTONE, Identifier.fromString("minecraft:sandstone"))
+            register(ItemType.SANDSTONE_SLAB, Identifier.fromString("minecraft:sandstone_slab"))
             register(ItemType.SANDSTONE_STAIRS, Identifier.fromString("minecraft:sandstone_stairs"))
             register(ItemType.SAPLING, Identifier.fromString("minecraft:sapling"), ItemSapling::class.java)
-            register(ItemType.OAK_SAPLING, Identifier.fromString("minecraft:oak_sapling"), ItemSapling::class.java)
-            register(ItemType.SPRUCE_SAPLING, Identifier.fromString("minecraft:spruce_sapling"), ItemSapling::class.java)
-            register(ItemType.BIRCH_SAPLING, Identifier.fromString("minecraft:birch_sapling"), ItemSapling::class.java)
-            register(ItemType.JUNGLE_SAPLING, Identifier.fromString("minecraft:jungle_sapling"), ItemSapling::class.java)
-            register(ItemType.ACACIA_SAPLING, Identifier.fromString("minecraft:acacia_sapling"), ItemSapling::class.java)
-            register(ItemType.DARK_OAK_SAPLING, Identifier.fromString("minecraft:dark_oak_sapling"), ItemSapling::class.java)
             register(ItemType.SCAFFOLDING, Identifier.fromString("minecraft:scaffolding"), ItemScaffolding::class.java)
+            register(ItemType.SCRAPE_POTTERY_SHERD, Identifier.fromString("minecraft:scrape_pottery_sherd"))
             register(ItemType.SCULK, Identifier.fromString("minecraft:sculk"))
             register(ItemType.SCULK_CATALYST, Identifier.fromString("minecraft:sculk_catalyst"))
             register(ItemType.SCULK_SENSOR, Identifier.fromString("minecraft:sculk_sensor"))
             register(ItemType.SCULK_SHRIEKER, Identifier.fromString("minecraft:sculk_shrieker"))
             register(ItemType.SCULK_VEIN, Identifier.fromString("minecraft:sculk_vein"))
-            register(ItemType.TURTLE_SCUTE, Identifier.fromString("minecraft:turtle_scute"))
             register(ItemType.SEA_LANTERN, Identifier.fromString("minecraft:sea_lantern"))
             register(ItemType.SEA_PICKLE, Identifier.fromString("minecraft:sea_pickle"))
             register(ItemType.SEAGRASS, Identifier.fromString("minecraft:seagrass"))
@@ -1250,30 +2169,59 @@ class ItemRegistry {
             )
             register(ItemType.SHEAF_POTTERY_SHERD, Identifier.fromString("minecraft:sheaf_pottery_sherd"))
             register(ItemType.SHEARS, Identifier.fromString("minecraft:shears"))
-            register(ItemType.SHEEP_SPAWN_EGG, Identifier.fromString("minecraft:sheep_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SHEEP_SPAWN_EGG,
+                Identifier.fromString("minecraft:sheep_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SHELTER_POTTERY_SHERD, Identifier.fromString("minecraft:shelter_pottery_sherd"))
             register(ItemType.SHIELD, Identifier.fromString("minecraft:shield"))
+            register(ItemType.SHORT_GRASS, Identifier.fromString("minecraft:short_grass"))
             register(ItemType.SHROOMLIGHT, Identifier.fromString("minecraft:shroomlight"))
             register(ItemType.SHULKER_BOX, Identifier.fromString("minecraft:shulker_box"))
             register(ItemType.SHULKER_SHELL, Identifier.fromString("minecraft:shulker_shell"))
-            register(ItemType.SHULKER_SPAWN_EGG, Identifier.fromString("minecraft:shulker_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SHULKER_SPAWN_EGG,
+                Identifier.fromString("minecraft:shulker_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(
                 ItemType.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:silence_armor_trim_smithing_template")
             )
             register(ItemType.SILVER_GLAZED_TERRACOTTA, Identifier.fromString("minecraft:silver_glazed_terracotta"))
-            register(ItemType.SILVERFISH_SPAWN_EGG, Identifier.fromString("minecraft:silverfish_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.SKELETON_HORSE_SPAWN_EGG, Identifier.fromString("minecraft:skeleton_horse_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.SKELETON_SPAWN_EGG, Identifier.fromString("minecraft:skeleton_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SILVERFISH_SPAWN_EGG,
+                Identifier.fromString("minecraft:silverfish_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.SKELETON_HORSE_SPAWN_EGG,
+                Identifier.fromString("minecraft:skeleton_horse_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.SKELETON_SPAWN_EGG,
+                Identifier.fromString("minecraft:skeleton_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SKULL, Identifier.fromString("minecraft:skull"))
             register(ItemType.SKULL_BANNER_PATTERN, Identifier.fromString("minecraft:skull_banner_pattern"))
             register(ItemType.SKULL_POTTERY_SHERD, Identifier.fromString("minecraft:skull_pottery_sherd"))
             register(ItemType.SLIME, Identifier.fromString("minecraft:slime"))
             register(ItemType.SLIME_BALL, Identifier.fromString("minecraft:slime_ball"))
-            register(ItemType.SLIME_SPAWN_EGG, Identifier.fromString("minecraft:slime_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SLIME_SPAWN_EGG,
+                Identifier.fromString("minecraft:slime_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SMALL_AMETHYST_BUD, Identifier.fromString("minecraft:small_amethyst_bud"))
             register(ItemType.SMALL_DRIPLEAF_BLOCK, Identifier.fromString("minecraft:small_dripleaf_block"))
-            register(ItemType.SMITHING_TABLE, Identifier.fromString("minecraft:smithing_table"), ItemSmithingTable::class.java)
+            register(
+                ItemType.SMITHING_TABLE,
+                Identifier.fromString("minecraft:smithing_table"),
+                ItemSmithingTable::class.java
+            )
             register(ItemType.SMOKER, Identifier.fromString("minecraft:smoker"))
             register(ItemType.SMOOTH_BASALT, Identifier.fromString("minecraft:smooth_basalt"))
             register(ItemType.SMOOTH_QUARTZ_STAIRS, Identifier.fromString("minecraft:smooth_quartz_stairs"))
@@ -1283,15 +2231,24 @@ class ItemRegistry {
             )
             register(ItemType.SMOOTH_SANDSTONE_STAIRS, Identifier.fromString("minecraft:smooth_sandstone_stairs"))
             register(ItemType.SMOOTH_STONE, Identifier.fromString("minecraft:smooth_stone"))
+            register(ItemType.SMOOTH_STONE_SLAB, Identifier.fromString("minecraft:smooth_stone_slab"))
             register(ItemType.SNIFFER_EGG, Identifier.fromString("minecraft:sniffer_egg"))
-            register(ItemType.SNIFFER_SPAWN_EGG, Identifier.fromString("minecraft:sniffer_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SNIFFER_SPAWN_EGG,
+                Identifier.fromString("minecraft:sniffer_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SNORT_POTTERY_SHERD, Identifier.fromString("minecraft:snort_pottery_sherd"))
             register(
                 ItemType.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:snout_armor_trim_smithing_template")
             )
             register(ItemType.SNOW, Identifier.fromString("minecraft:snow"))
-            register(ItemType.SNOW_GOLEM_SPAWN_EGG, Identifier.fromString("minecraft:snow_golem_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SNOW_GOLEM_SPAWN_EGG,
+                Identifier.fromString("minecraft:snow_golem_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.SNOW_LAYER, Identifier.fromString("minecraft:snow_layer"))
             register(ItemType.SNOWBALL, Identifier.fromString("minecraft:snowball"), ItemSnowball::class.java)
             register(ItemType.SOUL_CAMPFIRE, Identifier.fromString("minecraft:soul_campfire"))
@@ -1303,7 +2260,11 @@ class ItemRegistry {
             register(ItemType.SPARKLER, Identifier.fromString("minecraft:sparkler"))
             register(ItemType.SPAWN_EGG, Identifier.fromString("minecraft:spawn_egg"))
             register(ItemType.SPIDER_EYE, Identifier.fromString("minecraft:spider_eye"))
-            register(ItemType.SPIDER_SPAWN_EGG, Identifier.fromString("minecraft:spider_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SPIDER_SPAWN_EGG,
+                Identifier.fromString("minecraft:spider_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(
                 ItemType.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:spire_armor_trim_smithing_template")
@@ -1312,21 +2273,75 @@ class ItemRegistry {
             register(ItemType.SPONGE, Identifier.fromString("minecraft:sponge"))
             register(ItemType.SPORE_BLOSSOM, Identifier.fromString("minecraft:spore_blossom"))
             register(ItemType.SPRUCE_BOAT, Identifier.fromString("minecraft:spruce_boat"), ItemBoat::class.java)
-            register(ItemType.SPRUCE_BUTTON, Identifier.fromString("minecraft:spruce_button"), ItemWoodenButton::class.java)
-            register(ItemType.SPRUCE_CHEST_BOAT, Identifier.fromString("minecraft:spruce_chest_boat"), ItemBoat::class.java)
+            register(
+                ItemType.SPRUCE_BUTTON,
+                Identifier.fromString("minecraft:spruce_button"),
+                ItemWoodenButton::class.java
+            )
+            register(
+                ItemType.SPRUCE_CHEST_BOAT,
+                Identifier.fromString("minecraft:spruce_chest_boat"),
+                ItemBoat::class.java
+            )
             register(ItemType.SPRUCE_DOOR, Identifier.fromString("minecraft:spruce_door"), ItemWoodenDoor::class.java)
-            register(ItemType.SPRUCE_FENCE, Identifier.fromString("minecraft:spruce_fence"), ItemWoodenFence::class.java)
-            register(ItemType.SPRUCE_FENCE_GATE, Identifier.fromString("minecraft:spruce_fence_gate"), ItemWoodenFenceGate::class.java)
-            register(ItemType.SPRUCE_HANGING_SIGN, Identifier.fromString("minecraft:spruce_hanging_sign"), ItemHangingSign::class.java)
+            register(ItemType.SPRUCE_DOUBLE_SLAB, Identifier.fromString("minecraft:spruce_double_slab"))
+            register(
+                ItemType.SPRUCE_FENCE,
+                Identifier.fromString("minecraft:spruce_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.SPRUCE_FENCE_GATE,
+                Identifier.fromString("minecraft:spruce_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
+            register(
+                ItemType.SPRUCE_HANGING_SIGN,
+                Identifier.fromString("minecraft:spruce_hanging_sign"),
+                ItemHangingSign::class.java
+            )
+            register(ItemType.SPRUCE_LEAVES, Identifier.fromString("minecraft:spruce_leaves"))
             register(ItemType.SPRUCE_LOG, Identifier.fromString("minecraft:spruce_log"), ItemLog::class.java)
-            register(ItemType.SPRUCE_PRESSURE_PLATE, Identifier.fromString("minecraft:spruce_pressure_plate"), ItemPressurePlate::class.java)
+            register(ItemType.SPRUCE_PLANKS, Identifier.fromString("minecraft:spruce_planks"))
+            register(
+                ItemType.SPRUCE_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:spruce_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.SPRUCE_SAPLING,
+                Identifier.fromString("minecraft:spruce_sapling"),
+                ItemSapling::class.java
+            )
             register(ItemType.SPRUCE_SIGN, Identifier.fromString("minecraft:spruce_sign"), ItemSign::class.java)
-            register(ItemType.SPRUCE_STAIRS, Identifier.fromString("minecraft:spruce_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.SPRUCE_STANDING_SIGN, Identifier.fromString("minecraft:spruce_standing_sign"), ItemSign::class.java)
-            register(ItemType.SPRUCE_TRAPDOOR, Identifier.fromString("minecraft:spruce_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.SPRUCE_WALL_SIGN, Identifier.fromString("minecraft:spruce_wall_sign"), ItemSign::class.java)
+            register(ItemType.SPRUCE_SLAB, Identifier.fromString("minecraft:spruce_slab"), ItemWoodenSlab::class.java)
+            register(
+                ItemType.SPRUCE_STAIRS,
+                Identifier.fromString("minecraft:spruce_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.SPRUCE_STANDING_SIGN,
+                Identifier.fromString("minecraft:spruce_standing_sign"),
+                ItemSign::class.java
+            )
+            register(
+                ItemType.SPRUCE_TRAPDOOR,
+                Identifier.fromString("minecraft:spruce_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.SPRUCE_WALL_SIGN,
+                Identifier.fromString("minecraft:spruce_wall_sign"),
+                ItemSign::class.java
+            )
+            register(ItemType.SPRUCE_WOOD, Identifier.fromString("minecraft:spruce_wood"), ItemWood::class.java)
             register(ItemType.SPYGLASS, Identifier.fromString("minecraft:spyglass"))
-            register(ItemType.SQUID_SPAWN_EGG, Identifier.fromString("minecraft:squid_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.SQUID_SPAWN_EGG,
+                Identifier.fromString("minecraft:squid_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.STAINED_GLASS, Identifier.fromString("minecraft:stained_glass"))
             register(ItemType.STAINED_GLASS_PANE, Identifier.fromString("minecraft:stained_glass_pane"))
             register(ItemType.STAINED_HARDENED_CLAY, Identifier.fromString("minecraft:stained_hardened_clay"))
@@ -1339,63 +2354,164 @@ class ItemRegistry {
                 Identifier.fromString("minecraft:sticky_piston_arm_collision")
             )
             register(ItemType.STONE, Identifier.fromString("minecraft:stone"))
-            register(ItemType.GRANITE, Identifier.fromString("minecraft:granite"))
-            register(ItemType.POLISHED_ANDESITE, Identifier.fromString("minecraft:polished_granite"))
-            register(ItemType.DIORITE, Identifier.fromString("minecraft:diorite"))
-            register(ItemType.POLISHED_DIORITE, Identifier.fromString("minecraft:polished_diorite"))
-            register(ItemType.ANDESITE, Identifier.fromString("minecraft:andesite"))
-            register(ItemType.POLISHED_ANDESITE, Identifier.fromString("minecraft:polished_andesite"))
             register(ItemType.STONE_AXE, Identifier.fromString("minecraft:stone_axe"), ItemStoneAxe::class.java)
-            register(ItemType.STONE_BLOCK_SLAB, Identifier.fromString("minecraft:stone_block_slab"), ItemStoneBlockSlab::class.java)
-            register(ItemType.STONE_BLOCK_SLAB2, Identifier.fromString("minecraft:stone_block_slab2"), ItemStoneBlockSlab2::class.java)
-            register(ItemType.STONE_BLOCK_SLAB3, Identifier.fromString("minecraft:stone_block_slab3"), ItemStoneBlockSlab3::class.java)
-            register(ItemType.STONE_BLOCK_SLAB4, Identifier.fromString("minecraft:stone_block_slab4"), ItemStoneBlockSlab4::class.java)
+            register(ItemType.STONE_BLOCK_SLAB, Identifier.fromString("minecraft:stone_block_slab"))
+            register(
+                ItemType.STONE_BLOCK_SLAB2,
+                Identifier.fromString("minecraft:stone_block_slab2"),
+                ItemStoneBlockSlab2::class.java
+            )
+            register(
+                ItemType.STONE_BLOCK_SLAB3,
+                Identifier.fromString("minecraft:stone_block_slab3"),
+                ItemStoneBlockSlab3::class.java
+            )
+            register(
+                ItemType.STONE_BLOCK_SLAB4,
+                Identifier.fromString("minecraft:stone_block_slab4"),
+                ItemStoneBlockSlab4::class.java
+            )
+            register(ItemType.STONE_BRICK_SLAB, Identifier.fromString("minecraft:stone_brick_slab"))
             register(ItemType.STONE_BRICK_STAIRS, Identifier.fromString("minecraft:stone_brick_stairs"))
             register(ItemType.STONE_BUTTON, Identifier.fromString("minecraft:stone_button"))
             register(ItemType.STONE_HOE, Identifier.fromString("minecraft:stone_hoe"), ItemStoneHoe::class.java)
-            register(ItemType.STONE_PICKAXE, Identifier.fromString("minecraft:stone_pickaxe"), ItemStonePickaxe::class.java)
+            register(
+                ItemType.STONE_PICKAXE,
+                Identifier.fromString("minecraft:stone_pickaxe"),
+                ItemStonePickaxe::class.java
+            )
             register(ItemType.STONE_PRESSURE_PLATE, Identifier.fromString("minecraft:stone_pressure_plate"))
-            register(ItemType.STONE_SHOVEL, Identifier.fromString("minecraft:stone_shovel"), ItemStoneShovel::class.java)
+            register(
+                ItemType.STONE_SHOVEL,
+                Identifier.fromString("minecraft:stone_shovel"),
+                ItemStoneShovel::class.java
+            )
             register(ItemType.STONE_STAIRS, Identifier.fromString("minecraft:stone_stairs"))
             register(ItemType.STONE_SWORD, Identifier.fromString("minecraft:stone_sword"), ItemStoneSword::class.java)
             register(ItemType.STONEBRICK, Identifier.fromString("minecraft:stonebrick"))
             register(ItemType.STONECUTTER, Identifier.fromString("minecraft:stonecutter"))
             register(ItemType.STONECUTTER_BLOCK, Identifier.fromString("minecraft:stonecutter_block"))
-            register(ItemType.STRAY_SPAWN_EGG, Identifier.fromString("minecraft:stray_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.STRIDER_SPAWN_EGG, Identifier.fromString("minecraft:strider_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.STRAY_SPAWN_EGG,
+                Identifier.fromString("minecraft:stray_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.STRIDER_SPAWN_EGG,
+                Identifier.fromString("minecraft:strider_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.STRING, Identifier.fromString("minecraft:string"))
-            register(ItemType.STRIPPED_ACACIA_LOG, Identifier.fromString("minecraft:stripped_acacia_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_BAMBOO_BLOCK, Identifier.fromString("minecraft:stripped_bamboo_block"), ItemBambooBlock::class.java)
-            register(ItemType.STRIPPED_BIRCH_LOG, Identifier.fromString("minecraft:stripped_birch_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_CHERRY_LOG, Identifier.fromString("minecraft:stripped_cherry_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_CHERRY_WOOD, Identifier.fromString("minecraft:stripped_cherry_wood"), ItemWood::class.java)
+            register(
+                ItemType.STRIPPED_ACACIA_LOG,
+                Identifier.fromString("minecraft:stripped_acacia_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_ACACIA_WOOD,
+                Identifier.fromString("minecraft:stripped_acacia_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_BAMBOO_BLOCK,
+                Identifier.fromString("minecraft:stripped_bamboo_block"),
+                ItemBambooBlock::class.java
+            )
+            register(
+                ItemType.STRIPPED_BIRCH_LOG,
+                Identifier.fromString("minecraft:stripped_birch_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_BIRCH_WOOD,
+                Identifier.fromString("minecraft:stripped_birch_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_CHERRY_LOG,
+                Identifier.fromString("minecraft:stripped_cherry_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_CHERRY_WOOD,
+                Identifier.fromString("minecraft:stripped_cherry_wood"),
+                ItemWood::class.java
+            )
             register(ItemType.STRIPPED_CRIMSON_HYPHAE, Identifier.fromString("minecraft:stripped_crimson_hyphae"))
             register(ItemType.STRIPPED_CRIMSON_STEM, Identifier.fromString("minecraft:stripped_crimson_stem"))
-            register(ItemType.STRIPPED_DARK_OAK_LOG, Identifier.fromString("minecraft:stripped_dark_oak_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_JUNGLE_LOG, Identifier.fromString("minecraft:stripped_jungle_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_MANGROVE_LOG, Identifier.fromString("minecraft:stripped_mangrove_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_MANGROVE_WOOD, Identifier.fromString("minecraft:stripped_mangrove_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_OAK_LOG, Identifier.fromString("minecraft:stripped_oak_log"), ItemLog::class.java)
-            register(ItemType.STRIPPED_SPRUCE_LOG, Identifier.fromString("minecraft:stripped_spruce_log"), ItemLog::class.java)
+            register(
+                ItemType.STRIPPED_DARK_OAK_LOG,
+                Identifier.fromString("minecraft:stripped_dark_oak_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_DARK_OAK_WOOD,
+                Identifier.fromString("minecraft:stripped_dark_oak_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_JUNGLE_LOG,
+                Identifier.fromString("minecraft:stripped_jungle_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_JUNGLE_WOOD,
+                Identifier.fromString("minecraft:stripped_jungle_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_MANGROVE_LOG,
+                Identifier.fromString("minecraft:stripped_mangrove_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_MANGROVE_WOOD,
+                Identifier.fromString("minecraft:stripped_mangrove_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_OAK_LOG,
+                Identifier.fromString("minecraft:stripped_oak_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_OAK_WOOD,
+                Identifier.fromString("minecraft:stripped_oak_wood"),
+                ItemWood::class.java
+            )
+            register(
+                ItemType.STRIPPED_SPRUCE_LOG,
+                Identifier.fromString("minecraft:stripped_spruce_log"),
+                ItemLog::class.java
+            )
+            register(
+                ItemType.STRIPPED_SPRUCE_WOOD,
+                Identifier.fromString("minecraft:stripped_spruce_wood"),
+                ItemWood::class.java
+            )
             register(ItemType.STRIPPED_WARPED_HYPHAE, Identifier.fromString("minecraft:stripped_warped_hyphae"))
             register(ItemType.STRIPPED_WARPED_STEM, Identifier.fromString("minecraft:stripped_warped_stem"))
-            register(ItemType.STRIPPED_OAK_WOOD, Identifier.fromString("minecraft:stripped_oak_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_SPRUCE_WOOD, Identifier.fromString("minecraft:stripped_spruce_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_BIRCH_WOOD, Identifier.fromString("minecraft:stripped_birch_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_JUNGLE_WOOD, Identifier.fromString("minecraft:stripped_jungle_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_ACACIA_WOOD, Identifier.fromString("minecraft:stripped_acacia_wood"), ItemWood::class.java)
-            register(ItemType.STRIPPED_DARK_OAK_WOOD, Identifier.fromString("minecraft:stripped_dark_oak_wood"), ItemWood::class.java)
             register(ItemType.STRUCTURE_BLOCK, Identifier.fromString("minecraft:structure_block"))
             register(ItemType.STRUCTURE_VOID, Identifier.fromString("minecraft:structure_void"))
             register(ItemType.SUGAR, Identifier.fromString("minecraft:sugar"))
             register(ItemType.SUGAR_CANE, Identifier.fromString("minecraft:sugar_cane"))
+            register(ItemType.SUNFLOWER, Identifier.fromString("minecraft:sunflower"))
             register(ItemType.SUSPICIOUS_GRAVEL, Identifier.fromString("minecraft:suspicious_gravel"))
             register(ItemType.SUSPICIOUS_SAND, Identifier.fromString("minecraft:suspicious_sand"))
             register(ItemType.SUSPICIOUS_STEW, Identifier.fromString("minecraft:suspicious_stew"))
-            register(ItemType.SWEET_BERRIES, Identifier.fromString("minecraft:sweet_berries"), ItemSweetBerries::class.java)
+            register(
+                ItemType.SWEET_BERRIES,
+                Identifier.fromString("minecraft:sweet_berries"),
+                ItemSweetBerries::class.java
+            )
             register(ItemType.SWEET_BERRY_BUSH, Identifier.fromString("minecraft:sweet_berry_bush"))
             register(ItemType.TADPOLE_BUCKET, Identifier.fromString("minecraft:tadpole_bucket"))
-            register(ItemType.TADPOLE_SPAWN_EGG, Identifier.fromString("minecraft:tadpole_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.TADPOLE_SPAWN_EGG,
+                Identifier.fromString("minecraft:tadpole_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(ItemType.TALL_GRASS, Identifier.fromString("minecraft:tall_grass"))
             register(ItemType.TALLGRASS, Identifier.fromString("minecraft:tallgrass"))
             register(ItemType.TARGET, Identifier.fromString("minecraft:target"))
             register(
@@ -1410,20 +2526,54 @@ class ItemRegistry {
             register(ItemType.TORCHFLOWER_CROP, Identifier.fromString("minecraft:torchflower_crop"))
             register(ItemType.TORCHFLOWER_SEEDS, Identifier.fromString("minecraft:torchflower_seeds"))
             register(ItemType.TOTEM_OF_UNDYING, Identifier.fromString("minecraft:totem_of_undying"))
-            register(ItemType.TRADER_LLAMA_SPAWN_EGG, Identifier.fromString("minecraft:trader_llama_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.TRADER_LLAMA_SPAWN_EGG,
+                Identifier.fromString("minecraft:trader_llama_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.TRAPDOOR, Identifier.fromString("minecraft:trapdoor"), ItemWoodenTrapdoor::class.java)
             register(ItemType.TRAPPED_CHEST, Identifier.fromString("minecraft:trapped_chest"), ItemChest::class.java)
+            register(ItemType.TRIAL_KEY, Identifier.fromString("minecraft:trial_key"))
+            register(ItemType.TRIAL_SPAWNER, Identifier.fromString("minecraft:trial_spawner"))
             register(ItemType.TRIDENT, Identifier.fromString("minecraft:trident"))
             register(ItemType.TRIP_WIRE, Identifier.fromString("minecraft:trip_wire"))
             register(ItemType.TRIPWIRE_HOOK, Identifier.fromString("minecraft:tripwire_hook"))
-            register(ItemType.TROPICAL_FISH, Identifier.fromString("minecraft:tropical_fish"), ItemTropicalFish::class.java)
+            register(
+                ItemType.TROPICAL_FISH,
+                Identifier.fromString("minecraft:tropical_fish"),
+                ItemTropicalFish::class.java
+            )
             register(ItemType.TROPICAL_FISH_BUCKET, Identifier.fromString("minecraft:tropical_fish_bucket"))
-            register(ItemType.TROPICAL_FISH_SPAWN_EGG, Identifier.fromString("minecraft:tropical_fish_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.TROPICAL_FISH_SPAWN_EGG,
+                Identifier.fromString("minecraft:tropical_fish_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.TUBE_CORAL, Identifier.fromString("minecraft:tube_coral"))
+            register(ItemType.TUBE_CORAL_BLOCK, Identifier.fromString("minecraft:tube_coral_block"))
+            register(ItemType.TUBE_CORAL_FAN, Identifier.fromString("minecraft:tube_coral_fan"))
             register(ItemType.TUFF, Identifier.fromString("minecraft:tuff"))
+            register(ItemType.TUFF_BRICK_DOUBLE_SLAB, Identifier.fromString("minecraft:tuff_brick_double_slab"))
+            register(ItemType.TUFF_BRICK_SLAB, Identifier.fromString("minecraft:tuff_brick_slab"))
+            register(ItemType.TUFF_BRICK_STAIRS, Identifier.fromString("minecraft:tuff_brick_stairs"))
+            register(ItemType.TUFF_BRICK_WALL, Identifier.fromString("minecraft:tuff_brick_wall"))
+            register(ItemType.TUFF_BRICKS, Identifier.fromString("minecraft:tuff_bricks"))
+            register(ItemType.TUFF_DOUBLE_SLAB, Identifier.fromString("minecraft:tuff_double_slab"))
+            register(ItemType.TUFF_SLAB, Identifier.fromString("minecraft:tuff_slab"))
+            register(ItemType.TUFF_STAIRS, Identifier.fromString("minecraft:tuff_stairs"))
+            register(ItemType.TUFF_WALL, Identifier.fromString("minecraft:tuff_wall"))
             register(ItemType.TURTLE_EGG, Identifier.fromString("minecraft:turtle_egg"))
-            register(ItemType.TURTLE_HELMET, Identifier.fromString("minecraft:turtle_helmet"), ItemTurtleHelmet::class.java)
-            register(ItemType.TURTLE_SPAWN_EGG, Identifier.fromString("minecraft:turtle_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.TURTLE_HELMET,
+                Identifier.fromString("minecraft:turtle_helmet"),
+                ItemTurtleHelmet::class.java
+            )
+            register(ItemType.TURTLE_SCUTE, Identifier.fromString("minecraft:turtle_scute"))
+            register(
+                ItemType.TURTLE_SPAWN_EGG,
+                Identifier.fromString("minecraft:turtle_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.TWISTING_VINES, Identifier.fromString("minecraft:twisting_vines"))
             register(ItemType.UNDERWATER_TORCH, Identifier.fromString("minecraft:underwater_torch"))
             register(ItemType.UNDYED_SHULKER_BOX, Identifier.fromString("minecraft:undyed_shulker_box"))
@@ -1431,48 +2581,110 @@ class ItemRegistry {
             register(ItemType.UNLIT_REDSTONE_TORCH, Identifier.fromString("minecraft:unlit_redstone_torch"))
             register(ItemType.UNPOWERED_COMPARATOR, Identifier.fromString("minecraft:unpowered_comparator"))
             register(ItemType.UNPOWERED_REPEATER, Identifier.fromString("minecraft:unpowered_repeater"))
+            register(ItemType.VAULT, Identifier.fromString("minecraft:vault"))
             register(ItemType.VERDANT_FROGLIGHT, Identifier.fromString("minecraft:verdant_froglight"))
             register(
                 ItemType.VEX_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:vex_armor_trim_smithing_template")
             )
             register(ItemType.VEX_SPAWN_EGG, Identifier.fromString("minecraft:vex_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.VILLAGER_SPAWN_EGG, Identifier.fromString("minecraft:villager_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.VINDICATOR_SPAWN_EGG, Identifier.fromString("minecraft:vindicator_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.VILLAGER_SPAWN_EGG,
+                Identifier.fromString("minecraft:villager_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.VINDICATOR_SPAWN_EGG,
+                Identifier.fromString("minecraft:vindicator_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.VINE, Identifier.fromString("minecraft:vine"))
             register(ItemType.WALL_BANNER, Identifier.fromString("minecraft:wall_banner"))
             register(ItemType.WALL_SIGN, Identifier.fromString("minecraft:wall_sign"), ItemSign::class.java)
-            register(ItemType.WANDERING_TRADER_SPAWN_EGG, Identifier.fromString("minecraft:wandering_trader_spawn_egg"), ItemSpawnEgg::class.java)
+            register(
+                ItemType.WANDERING_TRADER_SPAWN_EGG,
+                Identifier.fromString("minecraft:wandering_trader_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(
                 ItemType.WARD_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:ward_armor_trim_smithing_template")
             )
-            register(ItemType.WARDEN_SPAWN_EGG, Identifier.fromString("minecraft:warden_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.WARPED_BUTTON, Identifier.fromString("minecraft:warped_button"), ItemWoodenButton::class.java)
+            register(
+                ItemType.WARDEN_SPAWN_EGG,
+                Identifier.fromString("minecraft:warden_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.WARPED_BUTTON,
+                Identifier.fromString("minecraft:warped_button"),
+                ItemWoodenButton::class.java
+            )
             register(ItemType.WARPED_DOOR, Identifier.fromString("minecraft:warped_door"), ItemWoodenDoor::class.java)
             register(ItemType.WARPED_DOUBLE_SLAB, Identifier.fromString("minecraft:warped_double_slab"))
-            register(ItemType.WARPED_FENCE, Identifier.fromString("minecraft:warped_fence"), ItemWoodenFence::class.java)
-            register(ItemType.WARPED_FENCE_GATE, Identifier.fromString("minecraft:warped_fence_gate"), ItemWoodenFenceGate::class.java)
+            register(
+                ItemType.WARPED_FENCE,
+                Identifier.fromString("minecraft:warped_fence"),
+                ItemWoodenFence::class.java
+            )
+            register(
+                ItemType.WARPED_FENCE_GATE,
+                Identifier.fromString("minecraft:warped_fence_gate"),
+                ItemWoodenFenceGate::class.java
+            )
             register(ItemType.WARPED_FUNGUS, Identifier.fromString("minecraft:warped_fungus"))
             register(ItemType.WARPED_FUNGUS_ON_A_STICK, Identifier.fromString("minecraft:warped_fungus_on_a_stick"))
-            register(ItemType.WARPED_HANGING_SIGN, Identifier.fromString("minecraft:warped_hanging_sign"), ItemHangingSign::class.java)
+            register(
+                ItemType.WARPED_HANGING_SIGN,
+                Identifier.fromString("minecraft:warped_hanging_sign"),
+                ItemHangingSign::class.java
+            )
             register(ItemType.WARPED_HYPHAE, Identifier.fromString("minecraft:warped_hyphae"))
             register(ItemType.WARPED_NYLIUM, Identifier.fromString("minecraft:warped_nylium"))
             register(ItemType.WARPED_PLANKS, Identifier.fromString("minecraft:warped_planks"))
-            register(ItemType.WARPED_PRESSURE_PLATE, Identifier.fromString("minecraft:warped_pressure_plate"), ItemPressurePlate::class.java)
+            register(
+                ItemType.WARPED_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:warped_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
             register(ItemType.WARPED_ROOTS, Identifier.fromString("minecraft:warped_roots"))
             register(ItemType.WARPED_SIGN, Identifier.fromString("minecraft:warped_sign"), ItemSign::class.java)
             register(ItemType.WARPED_SLAB, Identifier.fromString("minecraft:warped_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.WARPED_STAIRS, Identifier.fromString("minecraft:warped_stairs"), ItemWoodenStairs::class.java)
-            register(ItemType.WARPED_STANDING_SIGN, Identifier.fromString("minecraft:warped_standing_sign"), ItemSign::class.java)
+            register(
+                ItemType.WARPED_STAIRS,
+                Identifier.fromString("minecraft:warped_stairs"),
+                ItemWoodenStairs::class.java
+            )
+            register(
+                ItemType.WARPED_STANDING_SIGN,
+                Identifier.fromString("minecraft:warped_standing_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.WARPED_STEM, Identifier.fromString("minecraft:warped_stem"))
-            register(ItemType.WARPED_TRAPDOOR, Identifier.fromString("minecraft:warped_trapdoor"), ItemWoodenTrapdoor::class.java)
-            register(ItemType.WARPED_WALL_SIGN, Identifier.fromString("minecraft:warped_wall_sign"), ItemSign::class.java)
+            register(
+                ItemType.WARPED_TRAPDOOR,
+                Identifier.fromString("minecraft:warped_trapdoor"),
+                ItemWoodenTrapdoor::class.java
+            )
+            register(
+                ItemType.WARPED_WALL_SIGN,
+                Identifier.fromString("minecraft:warped_wall_sign"),
+                ItemSign::class.java
+            )
             register(ItemType.WARPED_WART_BLOCK, Identifier.fromString("minecraft:warped_wart_block"))
             register(ItemType.WATER, Identifier.fromString("minecraft:water"))
-            register(ItemType.WATER_BUCKET, Identifier.fromString("minecraft:water_bucket"), ItemWaterBucket::class.java)
+            register(
+                ItemType.WATER_BUCKET,
+                Identifier.fromString("minecraft:water_bucket"),
+                ItemWaterBucket::class.java
+            )
             register(ItemType.WATERLILY, Identifier.fromString("minecraft:waterlily"))
+            register(ItemType.WAXED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_chiseled_copper"))
             register(ItemType.WAXED_COPPER, Identifier.fromString("minecraft:waxed_copper"))
+            register(ItemType.WAXED_COPPER_BULB, Identifier.fromString("minecraft:waxed_copper_bulb"))
+            register(ItemType.WAXED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_copper_door"))
+            register(ItemType.WAXED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_copper_grate"))
+            register(ItemType.WAXED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_copper_trapdoor"))
             register(ItemType.WAXED_CUT_COPPER, Identifier.fromString("minecraft:waxed_cut_copper"))
             register(ItemType.WAXED_CUT_COPPER_SLAB, Identifier.fromString("minecraft:waxed_cut_copper_slab"))
             register(ItemType.WAXED_CUT_COPPER_STAIRS, Identifier.fromString("minecraft:waxed_cut_copper_stairs"))
@@ -1480,7 +2692,18 @@ class ItemRegistry {
                 ItemType.WAXED_DOUBLE_CUT_COPPER_SLAB,
                 Identifier.fromString("minecraft:waxed_double_cut_copper_slab")
             )
+            register(
+                ItemType.WAXED_EXPOSED_CHISELED_COPPER,
+                Identifier.fromString("minecraft:waxed_exposed_chiseled_copper")
+            )
             register(ItemType.WAXED_EXPOSED_COPPER, Identifier.fromString("minecraft:waxed_exposed_copper"))
+            register(ItemType.WAXED_EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:waxed_exposed_copper_bulb"))
+            register(ItemType.WAXED_EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_exposed_copper_door"))
+            register(ItemType.WAXED_EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_exposed_copper_grate"))
+            register(
+                ItemType.WAXED_EXPOSED_COPPER_TRAPDOOR,
+                Identifier.fromString("minecraft:waxed_exposed_copper_trapdoor")
+            )
             register(ItemType.WAXED_EXPOSED_CUT_COPPER, Identifier.fromString("minecraft:waxed_exposed_cut_copper"))
             register(
                 ItemType.WAXED_EXPOSED_CUT_COPPER_SLAB,
@@ -1494,7 +2717,21 @@ class ItemRegistry {
                 ItemType.WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB,
                 Identifier.fromString("minecraft:waxed_exposed_double_cut_copper_slab")
             )
+            register(
+                ItemType.WAXED_OXIDIZED_CHISELED_COPPER,
+                Identifier.fromString("minecraft:waxed_oxidized_chiseled_copper")
+            )
             register(ItemType.WAXED_OXIDIZED_COPPER, Identifier.fromString("minecraft:waxed_oxidized_copper"))
+            register(ItemType.WAXED_OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:waxed_oxidized_copper_bulb"))
+            register(ItemType.WAXED_OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_door"))
+            register(
+                ItemType.WAXED_OXIDIZED_COPPER_GRATE,
+                Identifier.fromString("minecraft:waxed_oxidized_copper_grate")
+            )
+            register(
+                ItemType.WAXED_OXIDIZED_COPPER_TRAPDOOR,
+                Identifier.fromString("minecraft:waxed_oxidized_copper_trapdoor")
+            )
             register(ItemType.WAXED_OXIDIZED_CUT_COPPER, Identifier.fromString("minecraft:waxed_oxidized_cut_copper"))
             register(
                 ItemType.WAXED_OXIDIZED_CUT_COPPER_SLAB,
@@ -1508,7 +2745,27 @@ class ItemRegistry {
                 ItemType.WAXED_OXIDIZED_DOUBLE_CUT_COPPER_SLAB,
                 Identifier.fromString("minecraft:waxed_oxidized_double_cut_copper_slab")
             )
+            register(
+                ItemType.WAXED_WEATHERED_CHISELED_COPPER,
+                Identifier.fromString("minecraft:waxed_weathered_chiseled_copper")
+            )
             register(ItemType.WAXED_WEATHERED_COPPER, Identifier.fromString("minecraft:waxed_weathered_copper"))
+            register(
+                ItemType.WAXED_WEATHERED_COPPER_BULB,
+                Identifier.fromString("minecraft:waxed_weathered_copper_bulb")
+            )
+            register(
+                ItemType.WAXED_WEATHERED_COPPER_DOOR,
+                Identifier.fromString("minecraft:waxed_weathered_copper_door")
+            )
+            register(
+                ItemType.WAXED_WEATHERED_COPPER_GRATE,
+                Identifier.fromString("minecraft:waxed_weathered_copper_grate")
+            )
+            register(
+                ItemType.WAXED_WEATHERED_COPPER_TRAPDOOR,
+                Identifier.fromString("minecraft:waxed_weathered_copper_trapdoor")
+            )
             register(ItemType.WAXED_WEATHERED_CUT_COPPER, Identifier.fromString("minecraft:waxed_weathered_cut_copper"))
             register(
                 ItemType.WAXED_WEATHERED_CUT_COPPER_SLAB,
@@ -1526,7 +2783,12 @@ class ItemRegistry {
                 ItemType.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:wayfinder_armor_trim_smithing_template")
             )
+            register(ItemType.WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:weathered_chiseled_copper"))
             register(ItemType.WEATHERED_COPPER, Identifier.fromString("minecraft:weathered_copper"))
+            register(ItemType.WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:weathered_copper_bulb"))
+            register(ItemType.WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:weathered_copper_door"))
+            register(ItemType.WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:weathered_copper_grate"))
+            register(ItemType.WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:weathered_copper_trapdoor"))
             register(ItemType.WEATHERED_CUT_COPPER, Identifier.fromString("minecraft:weathered_cut_copper"))
             register(ItemType.WEATHERED_CUT_COPPER_SLAB, Identifier.fromString("minecraft:weathered_cut_copper_slab"))
             register(
@@ -1552,38 +2814,65 @@ class ItemRegistry {
             register(ItemType.WHITE_STAINED_GLASS, Identifier.fromString("minecraft:white_stained_glass"))
             register(ItemType.WHITE_STAINED_GLASS_PANE, Identifier.fromString("minecraft:white_stained_glass_pane"))
             register(ItemType.WHITE_TERRACOTTA, Identifier.fromString("minecraft:white_terracotta"))
+            register(ItemType.WHITE_TULIP, Identifier.fromString("minecraft:white_tulip"))
             register(ItemType.WHITE_WOOL, Identifier.fromString("minecraft:white_wool"), ItemWool::class.java)
             register(
                 ItemType.WILD_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Identifier.fromString("minecraft:wild_armor_trim_smithing_template")
             )
-            register(ItemType.WITCH_SPAWN_EGG, Identifier.fromString("minecraft:witch_spawn_egg"), ItemSpawnEgg::class.java)
+            register(ItemType.WIND_CHARGE, Identifier.fromString("minecraft:wind_charge"))
+            register(
+                ItemType.WITCH_SPAWN_EGG,
+                Identifier.fromString("minecraft:witch_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.WITHER_ROSE, Identifier.fromString("minecraft:wither_rose"))
-            register(ItemType.WITHER_SKELETON_SPAWN_EGG, Identifier.fromString("minecraft:wither_skeleton_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.WITHER_SPAWN_EGG, Identifier.fromString("minecraft:wither_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.WOLF_SPAWN_EGG, Identifier.fromString("minecraft:wolf_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.OAK_WOOD, Identifier.fromString("minecraft:oak_wood"), ItemWood::class.java)
-            register(ItemType.SPRUCE_WOOD, Identifier.fromString("minecraft:spruce_wood"), ItemWood::class.java)
-            register(ItemType.BIRCH_WOOD, Identifier.fromString("minecraft:birch_wood"), ItemWood::class.java)
-            register(ItemType.JUNGLE_WOOD, Identifier.fromString("minecraft:jungle_wood"), ItemWood::class.java)
-            register(ItemType.ACACIA_WOOD, Identifier.fromString("minecraft:acacia_wood"), ItemWood::class.java)
-            register(ItemType.DARK_OAK_WOOD, Identifier.fromString("minecraft:dark_oak_wood"), ItemWood::class.java)
+            register(
+                ItemType.WITHER_SKELETON_SPAWN_EGG,
+                Identifier.fromString("minecraft:wither_skeleton_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.WITHER_SPAWN_EGG,
+                Identifier.fromString("minecraft:wither_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(ItemType.WOLF_ARMOR, Identifier.fromString("minecraft:wolf_armor"))
+            register(
+                ItemType.WOLF_SPAWN_EGG,
+                Identifier.fromString("minecraft:wolf_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
             register(ItemType.WOOD, Identifier.fromString("minecraft:wood"))
             register(ItemType.WOODEN_AXE, Identifier.fromString("minecraft:wooden_axe"), ItemWoodenAxe::class.java)
-            register(ItemType.WOODEN_BUTTON, Identifier.fromString("minecraft:wooden_button"), ItemWoodenButton::class.java)
+            register(
+                ItemType.WOODEN_BUTTON,
+                Identifier.fromString("minecraft:wooden_button"),
+                ItemWoodenButton::class.java
+            )
             register(ItemType.WOODEN_DOOR, Identifier.fromString("minecraft:wooden_door"), ItemWoodenDoor::class.java)
             register(ItemType.WOODEN_HOE, Identifier.fromString("minecraft:wooden_hoe"), ItemWoodenHoe::class.java)
-            register(ItemType.WOODEN_PICKAXE, Identifier.fromString("minecraft:wooden_pickaxe"), ItemWoodenPickaxe::class.java)
-            register(ItemType.WOODEN_PRESSURE_PLATE, Identifier.fromString("minecraft:wooden_pressure_plate"), ItemPressurePlate::class.java)
-            register(ItemType.WOODEN_SHOVEL, Identifier.fromString("minecraft:wooden_shovel"), ItemWoodenShovel::class.java)
-            register(ItemType.OAK_SLAB, Identifier.fromString("minecraft:oak_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.SPRUCE_SLAB, Identifier.fromString("minecraft:spruce_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.BIRCH_SLAB, Identifier.fromString("minecraft:birch_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.JUNGLE_SLAB, Identifier.fromString("minecraft:jungle_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.ACACIA_SLAB, Identifier.fromString("minecraft:acacia_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.DARK_OAK_SLAB, Identifier.fromString("minecraft:dark_oak_slab"), ItemWoodenSlab::class.java)
+            register(
+                ItemType.WOODEN_PICKAXE,
+                Identifier.fromString("minecraft:wooden_pickaxe"),
+                ItemWoodenPickaxe::class.java
+            )
+            register(
+                ItemType.WOODEN_PRESSURE_PLATE,
+                Identifier.fromString("minecraft:wooden_pressure_plate"),
+                ItemPressurePlate::class.java
+            )
+            register(
+                ItemType.WOODEN_SHOVEL,
+                Identifier.fromString("minecraft:wooden_shovel"),
+                ItemWoodenShovel::class.java
+            )
             register(ItemType.WOODEN_SLAB, Identifier.fromString("minecraft:wooden_slab"), ItemWoodenSlab::class.java)
-            register(ItemType.WOODEN_SWORD, Identifier.fromString("minecraft:wooden_sword"), ItemWoodenSword::class.java)
+            register(
+                ItemType.WOODEN_SWORD,
+                Identifier.fromString("minecraft:wooden_sword"),
+                ItemWoodenSword::class.java
+            )
             register(ItemType.WOOL, Identifier.fromString("minecraft:wool"), ItemWool::class.java)
             register(ItemType.WRITABLE_BOOK, Identifier.fromString("minecraft:writable_book"))
             register(ItemType.WRITTEN_BOOK, Identifier.fromString("minecraft:written_book"))
@@ -1600,84 +2889,31 @@ class ItemRegistry {
             register(ItemType.YELLOW_STAINED_GLASS_PANE, Identifier.fromString("minecraft:yellow_stained_glass_pane"))
             register(ItemType.YELLOW_TERRACOTTA, Identifier.fromString("minecraft:yellow_terracotta"))
             register(ItemType.YELLOW_WOOL, Identifier.fromString("minecraft:yellow_wool"), ItemWool::class.java)
-            register(ItemType.ZOGLIN_SPAWN_EGG, Identifier.fromString("minecraft:zoglin_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.ZOMBIE_HORSE_SPAWN_EGG, Identifier.fromString("minecraft:zombie_horse_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.ZOMBIE_PIGMAN_SPAWN_EGG, Identifier.fromString("minecraft:zombie_pigman_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.ZOMBIE_SPAWN_EGG, Identifier.fromString("minecraft:zombie_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.ZOMBIE_VILLAGER_SPAWN_EGG, Identifier.fromString("minecraft:zombie_villager_spawn_egg"), ItemSpawnEgg::class.java)
-            register(ItemType.WOLF_ARMOR, Identifier.fromString("minecraft:wolf_armor"))
-            register(ItemType.CRAFTER, Identifier.fromString("minecraft:crafter"))
-            register(ItemType.TRIAL_SPAWNER, Identifier.fromString("minecraft:trial_spawner"))
-            register(ItemType.VAULT, Identifier.fromString("minecraft:vault"))
-            register(ItemType.POLISHED_TUFF, Identifier.fromString("minecraft:polished_tuff"))
-            register(ItemType.CHISELED_TUFF, Identifier.fromString("minecraft:chiseled_tuff"))
-            register(ItemType.CHISELED_TUFF_BRICKS, Identifier.fromString("minecraft:chiseled_tuff_bricks"))
-            register(ItemType.TUFF_SLAB, Identifier.fromString("minecraft:tuff_slab"))
-            register(ItemType.TUFF_STAIRS, Identifier.fromString("minecraft:tuff_stairs"))
-            register(ItemType.TUFF_WALL, Identifier.fromString("minecraft:tuff_wall"))
-            register(ItemType.POLISHED_TUFF_WALL, Identifier.fromString("minecraft:polished_tuff_wall"))
-            register(ItemType.POLISHED_TUFF_STAIRS, Identifier.fromString("minecraft:polished_tuff_stairs"))
-            register(ItemType.POLISHED_TUFF_SLAB, Identifier.fromString("minecraft:polished_tuff_slab"))
-            register(ItemType.TUFF_BRICK_WALL, Identifier.fromString("minecraft:tuff_brick_wall"))
-            register(ItemType.TUFF_BRICKS, Identifier.fromString("minecraft:tuff_bricks"))
-            register(ItemType.TUFF_BRICK_STAIRS, Identifier.fromString("minecraft:tuff_brick_stairs"))
-            register(ItemType.TUFF_BRICK_SLAB, Identifier.fromString("minecraft:tuff_brick_slab"))
-            register(ItemType.COPPER_DOOR, Identifier.fromString("minecraft:copper_door"))
-            register(ItemType.EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:exposed_copper_door"))
-            register(ItemType.WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:weathered_copper_door"))
-            register(ItemType.OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:oxidized_copper_door"))
-            register(ItemType.WAXED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_copper_door"))
-            register(ItemType.WAXED_EXPOSED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_exposed_copper_door"))
-            register(ItemType.WAXED_WEATHERED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_weathered_copper_door"))
-            register(ItemType.WAXED_OXIDIZED_COPPER_DOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_door"))
-            register(ItemType.CHISELED_COPPER, Identifier.fromString("minecraft:chiseled_copper"))
-            register(ItemType.EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:exposed_chiseled_copper"))
-            register(ItemType.WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:weathered_chiseled_copper"))
-            register(ItemType.OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:oxidized_chiseled_copper"))
-            register(ItemType.WAXED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_chiseled_copper"))
-            register(ItemType.WAXED_EXPOSED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_exposed_chiseled_copper"))
-            register(ItemType.WAXED_WEATHERED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_weathered_chiseled_copper"))
-            register(ItemType.WAXED_OXIDIZED_CHISELED_COPPER, Identifier.fromString("minecraft:waxed_oxidized_chiseled_copper"))
-            register(ItemType.COPPER_GRATE, Identifier.fromString("minecraft:copper_grate"))
-            register(ItemType.EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:exposed_copper_grate"))
-            register(ItemType.WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:weathered_copper_grate"))
-            register(ItemType.OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:oxidized_copper_grate"))
-            register(ItemType.WAXED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_copper_grate"))
-            register(ItemType.WAXED_EXPOSED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_exposed_copper_grate"))
-            register(ItemType.WAXED_WEATHERED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_weathered_copper_grate"))
-            register(ItemType.WAXED_OXIDIZED_COPPER_GRATE, Identifier.fromString("minecraft:waxed_oxidized_copper_grate"))
-            register(ItemType.COPPER_TRAPDOOR, Identifier.fromString("minecraft:copper_trapdoor"))
-            register(ItemType.EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:exposed_copper_trapdoor"))
-            register(ItemType.WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:weathered_copper_trapdoor"))
-            register(ItemType.OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:oxidized_copper_trapdoor"))
-            register(ItemType.WAXED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_copper_trapdoor"))
-            register(ItemType.WAXED_EXPOSED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_exposed_copper_trapdoor"))
-            register(ItemType.WAXED_WEATHERED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_weathered_copper_trapdoor"))
-            register(ItemType.WAXED_OXIDIZED_COPPER_TRAPDOOR, Identifier.fromString("minecraft:waxed_oxidized_copper_trapdoor"))
-            register(ItemType.COPPER_BULB, Identifier.fromString("minecraft:copper_bulb"))
-            register(ItemType.EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:exposed_copper_bulb"))
-            register(ItemType.WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:weathered_copper_bulb"))
-            register(ItemType.OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:oxidized_copper_bulb"))
-            register(ItemType.WAXED_COPPER_BULB, Identifier.fromString("minecraft:waxed_copper_bulb"))
-            register(ItemType.WAXED_EXPOSED_COPPER_BULB, Identifier.fromString("minecraft:waxed_exposed_copper_bulb"))
-            register(ItemType.WAXED_WEATHERED_COPPER_BULB, Identifier.fromString("minecraft:waxed_weathered_copper_bulb"))
-            register(ItemType.WAXED_OXIDIZED_COPPER_BULB, Identifier.fromString("minecraft:waxed_oxidized_copper_bulb"))
-            register(ItemType.BREEZE_SPAWN_EGG, Identifier.fromString("minecraft:breeze_spawn_egg"))
-            register(ItemType.BOGGED_SPAWN_EGG, Identifier.fromString("minecraft:bogged_spawn_egg"))
-            register(ItemType.ARMADILLO_SPAWN_EGG, Identifier.fromString("minecraft:armadillo_spawn_egg"))
-            register(ItemType.ARMADILLO_SCUTE, Identifier.fromString("minecraft:armadillo_scute"))
-            register(ItemType.TRIAL_KEY, Identifier.fromString("minecraft:trial_key"))
-            register(ItemType.WIND_CHARGE, Identifier.fromString("minecraft:wind_charge"))
-            register(ItemType.BREEZE_ROD, Identifier.fromString("minecraft:breeze_rod"))
-            register(ItemType.HEAVY_CORE, Identifier.fromString("minecraft:heavy_core"))
-            register(ItemType.MACE, Identifier.fromString("minecraft:mace"))
-            register(ItemType.SCRAPE_POTTERY_SHERD, Identifier.fromString("minecraft:scrape_pottery_sherd"))
-            register(ItemType.FLOW_POTTERY_SHERD, Identifier.fromString("minecraft:flow_pottery_sherd"))
-            register(ItemType.GUSTER_POTTERY_SHERD, Identifier.fromString("minecraft:guster_pottery_sherd"))
-            register(ItemType.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, Identifier.fromString("minecraft:bolt_armor_trim_smithing_template"))
-            register(ItemType.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Identifier.fromString("minecraft:flow_armor_trim_smithing_template"))
-            register(ItemType.GUSTER_BANNER_PATTERN, Identifier.fromString("minecraft:guster_banner_pattern"))
-            register(ItemType.FLOW_BANNER_PATTERN, Identifier.fromString("minecraft:flow_banner_pattern"))
+            register(
+                ItemType.ZOGLIN_SPAWN_EGG,
+                Identifier.fromString("minecraft:zoglin_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.ZOMBIE_HORSE_SPAWN_EGG,
+                Identifier.fromString("minecraft:zombie_horse_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.ZOMBIE_PIGMAN_SPAWN_EGG,
+                Identifier.fromString("minecraft:zombie_pigman_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.ZOMBIE_SPAWN_EGG,
+                Identifier.fromString("minecraft:zombie_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
+            register(
+                ItemType.ZOMBIE_VILLAGER_SPAWN_EGG,
+                Identifier.fromString("minecraft:zombie_villager_spawn_egg"),
+                ItemSpawnEgg::class.java
+            )
         }
 
         private fun register(itemType: ItemType, identifier: Identifier) {
@@ -1708,7 +2944,7 @@ class ItemRegistry {
             return itemClassFromItemType[itemType]!!
         }
 
-        fun getItemTypeFromIdentifier() : MutableMap<Identifier, ItemType> = this.itemTypeFromIdentifier
+        fun getItemTypeFromIdentifier(): MutableMap<Identifier, ItemType> = this.itemTypeFromIdentifier
     }
 
 }

@@ -9,7 +9,6 @@ import org.jukeboxmc.api.block.data.VerticalHalf
 import org.jukeboxmc.api.item.Item
 import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.server.block.JukeboxBlock
-import org.jukeboxmc.server.item.behavior.ItemStoneBlockSlab
 
 class BlockDoubleStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
     DoubleStoneBlockSlab {
@@ -33,9 +32,8 @@ class BlockDoubleStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : 
     override fun getDrops(item: Item): MutableList<Item> {
         return when (this.getType()) {
             BlockType.DOUBLE_STONE_BLOCK_SLAB -> {
-                this.createItemDrop(item, Item.create<ItemStoneBlockSlab>(ItemType.STONE_BLOCK_SLAB).apply {
+                this.createItemDrop(item, Item.create(this.toType()).apply {
                     this.setAmount(2)
-                    this.setStoneSlabType(this@BlockDoubleStoneBlockSlab.getStoneSlabType())
                 })
             }
 
@@ -44,12 +42,23 @@ class BlockDoubleStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : 
     }
 
     override fun toItem(): Item {
-        return Item.create<ItemStoneBlockSlab>(ItemType.STONE_BLOCK_SLAB).apply {
-            this.setStoneSlabType(this@BlockDoubleStoneBlockSlab.getStoneSlabType())
-        }
+        return Item.create(this.toType())
     }
 
     override fun getWaterLoggingLevel(): Int {
         return 1
+    }
+
+    private fun toType(): ItemType {
+        return when (this.getStoneSlabType()) {
+            StoneSlabType.SMOOTH_STONE -> ItemType.SMOOTH_STONE_SLAB
+            StoneSlabType.SANDSTONE -> ItemType.SANDSTONE_SLAB
+            StoneSlabType.WOOD -> ItemType.OAK_SLAB
+            StoneSlabType.COBBLESTONE -> ItemType.COBBLESTONE_SLAB
+            StoneSlabType.BRICK -> ItemType.BRICK_SLAB
+            StoneSlabType.STONE_BRICK -> ItemType.STONE_BRICK_SLAB
+            StoneSlabType.QUARTZ -> ItemType.QUARTZ_SLAB
+            else -> ItemType.NETHER_BRICK_SLAB
+        }
     }
 }

@@ -36,14 +36,14 @@ class BlockStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : Jukebo
         }
 
         if (blockFace === BlockFace.DOWN) {
-            if (targetBlock is BlockStoneBlockSlab && targetBlock.getVerticalHalf() == VerticalHalf.TOP && targetBlock.getStoneSlabType() == this.getStoneSlabType()) {
+            if (targetBlock is BlockStoneBlockSlab && targetBlock.getVerticalHalf() == VerticalHalf.TOP && targetBlock.getType() == this.getType()) {
                 world.setBlock(
                     blockPosition,
                     Block.create<BlockDoubleStoneBlockSlab>(BlockType.DOUBLE_STONE_BLOCK_SLAB)
                         .setStoneSlabType(this.getStoneSlabType())
                 )
                 return true
-            } else if (block is BlockStoneBlockSlab && block.getStoneSlabType() == this.getStoneSlabType()) {
+            } else if (block is BlockStoneBlockSlab && block.getType() == this.getType()) {
                 world.setBlock(
                     placePosition,
                     Block.create<BlockDoubleStoneBlockSlab>(BlockType.DOUBLE_STONE_BLOCK_SLAB)
@@ -52,14 +52,14 @@ class BlockStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : Jukebo
                 return true
             }
         } else if (blockFace === BlockFace.UP) {
-            if (targetBlock is BlockStoneBlockSlab && targetBlock.getVerticalHalf() != VerticalHalf.TOP && targetBlock.getStoneSlabType() == this.getStoneSlabType()) {
+            if (targetBlock is BlockStoneBlockSlab && targetBlock.getVerticalHalf() != VerticalHalf.TOP && targetBlock.getType() == this.getType()) {
                 world.setBlock(
                     blockPosition,
                     Block.create<BlockDoubleStoneBlockSlab>(BlockType.DOUBLE_STONE_BLOCK_SLAB)
                         .setStoneSlabType(this.getStoneSlabType())
                 )
                 return true
-            } else if (block is BlockStoneBlockSlab && block.getStoneSlabType() == this.getStoneSlabType()) {
+            } else if (block is BlockStoneBlockSlab && block.getType() == this.getType()) {
                 world.setBlock(
                     placePosition,
                     Block.create<BlockDoubleStoneBlockSlab>(BlockType.DOUBLE_STONE_BLOCK_SLAB)
@@ -68,7 +68,7 @@ class BlockStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : Jukebo
                 return true
             }
         } else {
-            if (block is BlockStoneBlockSlab && block.getStoneSlabType() == this.getStoneSlabType()) {
+            if (block is BlockStoneBlockSlab && block.getType() == this.getType()) {
                 world.setBlock(
                     placePosition,
                     Block.create<BlockDoubleStoneBlockSlab>(BlockType.DOUBLE_STONE_BLOCK_SLAB)
@@ -94,19 +94,24 @@ class BlockStoneBlockSlab(identifier: Identifier, blockStates: NbtMap?) : Jukebo
         return this.setState("minecraft:vertical_half", value.name.lowercase())
     }
 
-    override fun getStoneSlabType(): StoneSlabType {
-        return StoneSlabType.valueOf(this.getStringState("stone_slab_type"))
-    }
-
-    override fun setStoneSlabType(value: StoneSlabType): StoneBlockSlab {
-        return this.setState("stone_slab_type", value.name.lowercase())
-    }
-
     override fun getWaterLoggingLevel(): Int {
         return 1
     }
 
     override fun getDrops(item: Item): MutableList<Item> {
         return this.createItemDrop(item, this.toItem())
+    }
+
+    private fun getStoneSlabType(): StoneSlabType {
+        return when (this.getType()) {
+            BlockType.SMOOTH_STONE_SLAB -> StoneSlabType.SMOOTH_STONE
+            BlockType.SANDSTONE_SLAB -> StoneSlabType.SANDSTONE
+            BlockType.OAK_SLAB -> StoneSlabType.WOOD
+            BlockType.COBBLESTONE_SLAB -> StoneSlabType.COBBLESTONE
+            BlockType.BRICK_SLAB -> StoneSlabType.BRICK
+            BlockType.STONE_BRICK_SLAB -> StoneSlabType.STONE_BRICK
+            BlockType.QUARTZ_SLAB -> StoneSlabType.QUARTZ
+            else -> StoneSlabType.NETHER_BRICK
+        }
     }
 }

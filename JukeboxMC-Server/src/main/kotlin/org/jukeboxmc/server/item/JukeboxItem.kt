@@ -28,6 +28,7 @@ import org.jukeboxmc.server.item.enchantment.JukeboxEnchantment
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.util.BlockPalette
 import org.jukeboxmc.server.util.ItemPalette
+import org.jukeboxmc.server.util.PaletteUtil
 import org.jukeboxmc.server.util.Utils
 import java.util.*
 
@@ -262,7 +263,7 @@ open class JukeboxItem : Item, Cloneable {
             NbtUtils.createWriterLE(ByteBufOutputStream(buffer)).use {
                 it.writeTag(compound)
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return Base64.getMimeEncoder().encodeToString(Utils.array(buffer))
@@ -413,7 +414,13 @@ open class JukeboxItem : Item, Cloneable {
         return ItemData.builder()
             .netId(this.stackNetworkId)
             .usingNetId(this.stackNetworkId > 0)
-            .definition(SimpleItemDefinition(this.identifier.getFullName(), this.networkId, false))
+            .definition(
+                SimpleItemDefinition(
+                    this.identifier.getFullName(),
+                    this.networkId,
+                   false
+                )
+            )
             .blockDefinition(RuntimeBlockDefinition(this.blockNetworkId))
             .damage(this.meta)
             .count(this.amount)

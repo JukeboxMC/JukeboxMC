@@ -359,7 +359,7 @@ open class JukeboxBlock(
             BlockType.DEAD_BRAIN_CORAL_FAN, BlockType.DEAD_TUBE_CORAL_FAN, BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
             BlockType.SMALL_AMETHYST_BUD, BlockType.MEDIUM_AMETHYST_BUD, BlockType.LARGE_AMETHYST_BUD, BlockType.PACKED_ICE,
             BlockType.SCULK, BlockType.SCULK_CATALYST, BlockType.SCULK_SENSOR, BlockType.SCULK_SHRIEKER, BlockType.SCULK_VEIN,
-            BlockType.TURTLE_EGG, BlockType.TALLGRASS -> true
+            BlockType.TURTLE_EGG, BlockType.TALL_GRASS -> true
 
             else -> false
         }

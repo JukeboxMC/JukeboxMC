@@ -14,10 +14,10 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
     implementation("org.ow2.asm:asm:9.4")
-    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta2-Jukebox-Beta-SNAPSHOT") {
+    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta2-SNAPSHOT") {
         exclude(group = "io.netty", module = "netty-common")
     }
-    implementation("org.cloudburstmc.protocol:bedrock-codec:3.0.0.Beta2-Jukebox-Beta-SNAPSHOT") {
+    implementation("org.cloudburstmc.protocol:bedrock-codec:3.0.0.Beta2-SNAPSHOT") {
 
         exclude(group = "io.netty", module = "netty-common")
     }

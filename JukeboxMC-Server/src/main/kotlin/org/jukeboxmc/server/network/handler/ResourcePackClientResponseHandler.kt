@@ -146,6 +146,9 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 startGamePacket.generatorId = worldData.generator
                 startGamePacket.serverChunkTickRange = server.getSimulationDistance().coerceAtMost(12)
                 startGamePacket.gamerules.addAll(worldData.gameRuleData.map { it.toNetwork() }.toList())
+                startGamePacket.serverId = ""
+                startGamePacket.worldId = ""
+                startGamePacket.scenarioId = ""
                 player.sendPacket(startGamePacket)
 
                 player.getSession().peer.codecHelper.itemDefinitions =
@@ -181,6 +184,10 @@ class ResourcePackClientResponseHandler : PacketHandler<ResourcePackClientRespon
                 trimDataPacket.materials.addAll(TrimData.getMaterial())
                 trimDataPacket.patterns.addAll(TrimData.getPattern())
                 player.sendPacket(trimDataPacket)
+
+                val itemComponentPacket = ItemComponentPacket()
+                itemComponentPacket.items.addAll(PaletteUtil.getComponentItems())
+                player.sendPacket(itemComponentPacket)
             }
 
             else -> {}
