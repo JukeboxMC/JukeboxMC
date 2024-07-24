@@ -1,5 +1,6 @@
 package org.jukeboxmc.server.network.stackaction
 
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.DropAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -72,7 +73,8 @@ class DropStackAction : StackAction<DropAction> {
                                 finalSourceItem.getDisplayName(),
                                 finalSourceItem.getDurability()
                             )
-                        )
+                        ),
+                        FullContainerName(source.container, 0)
                     )
                 )
             )

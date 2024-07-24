@@ -2,6 +2,7 @@ package org.jukeboxmc.server.network.handler
 
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ConsumeAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction
@@ -63,7 +64,7 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                     if (responseList.isNotEmpty()) {
                         responses.addAll(responseList)
                     }
-                } else if (action.type != ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED){
+                } else if (action.type != ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
                     JukeboxServer.getInstance().getLogger()
                         .info("Unhandelt Action: " + action.javaClass.simpleName + " : " + action.type)
                 }
@@ -80,7 +81,8 @@ class ItemStackRequestHandler : PacketHandler<ItemStackRequestPacket> {
                     0,
                     ItemStackResponseContainer(
                         itemEntryMap[request.requestId]!!.containerSlotType,
-                        itemEntryMap[request.requestId]!!.responseSlot
+                        itemEntryMap[request.requestId]!!.responseSlot,
+                        FullContainerName(itemEntryMap[request.requestId]!!.containerSlotType, 0)
                     )
                 )
             }

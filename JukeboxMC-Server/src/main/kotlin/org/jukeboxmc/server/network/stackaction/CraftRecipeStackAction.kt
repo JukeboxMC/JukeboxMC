@@ -2,6 +2,7 @@ package org.jukeboxmc.server.network.stackaction
 
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTransformRecipeData
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.SmithingTrimRecipeData
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
@@ -43,9 +44,10 @@ class CraftRecipeStackAction : StackAction<CraftRecipeAction> {
                                     jukeboxItem.getAmount(),
                                     jukeboxItem.getStackNetworkId(),
                                     jukeboxItem.getDisplayName(),
-                                    jukeboxItem.getDurability()
+                                    jukeboxItem.getDurability(),
                                 )
-                            )
+                            ),
+                            FullContainerName(ContainerSlotType.CREATED_OUTPUT, 0)
                         )
                     )
                 )
@@ -89,7 +91,8 @@ class CraftRecipeStackAction : StackAction<CraftRecipeAction> {
                                         armorItem.getDisplayName(),
                                         armorItem.getDurability()
                                     )
-                                )
+                                ),
+                                FullContainerName(ContainerSlotType.CREATED_OUTPUT, 0)
                             )
                         )
                     )
@@ -121,7 +124,8 @@ class CraftRecipeStackAction : StackAction<CraftRecipeAction> {
                                             result.getDisplayName(),
                                             result.getDurability()
                                         )
-                                    )
+                                    ),
+                                    FullContainerName(ContainerSlotType.CREATED_OUTPUT, 0)
                                 )
                             )
                         )

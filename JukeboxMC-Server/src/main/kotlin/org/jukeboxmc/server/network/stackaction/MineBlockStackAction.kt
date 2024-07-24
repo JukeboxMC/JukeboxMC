@@ -1,6 +1,7 @@
 package org.jukeboxmc.server.network.stackaction
 
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.MineBlockAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -13,7 +14,7 @@ import org.jukeboxmc.api.item.ItemType
 import org.jukeboxmc.server.network.handler.ItemStackRequestHandler
 import org.jukeboxmc.server.player.JukeboxPlayer
 
-class MineBlockStackAction : StackAction<MineBlockAction>{
+class MineBlockStackAction : StackAction<MineBlockAction> {
 
     override fun handle(
         action: MineBlockAction,
@@ -52,7 +53,8 @@ class MineBlockStackAction : StackAction<MineBlockAction>{
                                 item.getDisplayName(),
                                 item.getDurability()
                             )
-                        )
+                        ),
+                        FullContainerName(ContainerSlotType.HOTBAR, 0)
                     )
                 )
             )

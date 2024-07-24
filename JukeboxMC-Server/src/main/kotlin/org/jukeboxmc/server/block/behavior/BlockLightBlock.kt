@@ -2,7 +2,6 @@ package org.jukeboxmc.server.block.behavior
 
 import org.cloudburstmc.nbt.NbtMap
 import org.jukeboxmc.api.Identifier
-import org.jukeboxmc.api.block.LightBlock
 import org.jukeboxmc.api.block.data.BlockFace
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
@@ -10,8 +9,7 @@ import org.jukeboxmc.server.item.JukeboxItem
 import org.jukeboxmc.server.player.JukeboxPlayer
 import org.jukeboxmc.server.world.JukeboxWorld
 
-class BlockLightBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates),
-    LightBlock {
+class BlockLightBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlock(identifier, blockStates) {
 
     override fun placeBlock(
         player: JukeboxPlayer,
@@ -31,14 +29,6 @@ class BlockLightBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBlo
 
     override fun canPassThrough(): Boolean {
         return true
-    }
-
-    override fun getBlockLightLevel(): Int {
-        return this.getIntState("block_light_level")
-    }
-
-    override fun setBlockLightLevel(value: Int): LightBlock {
-        return this.setState("block_light_level", value)
     }
 
     override fun getWaterLoggingLevel(): Int {

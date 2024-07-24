@@ -3,6 +3,7 @@ package org.jukeboxmc.server.network.stackaction
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftLoomAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -68,7 +69,8 @@ class LoomStackAction : StackAction<CraftLoomAction> {
                                     resultItem.getDisplayName(),
                                     resultItem.getDurability()
                                 )
-                            )
+                            ),
+                            FullContainerName(ContainerSlotType.CREATED_OUTPUT, 0)
                         )
                     )
                 )

@@ -1,5 +1,6 @@
 package org.jukeboxmc.server.network.stackaction
 
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.SwapAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -43,7 +44,8 @@ class SwapStackAction : StackAction<SwapAction> {
                         sourceItem.getDisplayName(),
                         sourceItem.getDurability()
                     )
-                )
+                ),
+                FullContainerName(destination.container, 0)
             )
         )
         containerEntryList.add(
@@ -57,7 +59,8 @@ class SwapStackAction : StackAction<SwapAction> {
                         destinationItem.getDisplayName(),
                         destinationItem.getDurability()
                     )
-                )
+                ),
+                FullContainerName(source.container, 0)
             )
         )
         return listOf(ItemStackResponse(ItemStackResponseStatus.OK, request.requestId, containerEntryList))

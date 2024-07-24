@@ -1,6 +1,7 @@
 package org.jukeboxmc.server.network.stackaction
 
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.PlaceAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -78,7 +79,8 @@ class PlaceStackAction: StackAction<PlaceAction> {
                             sourceItem.getDisplayName(),
                             sourceItem.getDurability()
                         )
-                    )
+                    ),
+                    FullContainerName(destination.container, 0)
                 )
             )
             return listOf(
@@ -145,7 +147,8 @@ class PlaceStackAction: StackAction<PlaceAction> {
                             finalSourceItem.getDisplayName(),
                             finalSourceItem.getDurability()
                         )
-                    )
+                    ),
+                    FullContainerName(source.container, 0)
                 )
             )
             val finalDestinationItem = destinationItem
@@ -160,7 +163,8 @@ class PlaceStackAction: StackAction<PlaceAction> {
                             finalDestinationItem.getDisplayName(),
                             finalDestinationItem.getDurability()
                         )
-                    )
+                    ),
+                    FullContainerName(destination.container, 0)
                 )
             )
             return listOf(

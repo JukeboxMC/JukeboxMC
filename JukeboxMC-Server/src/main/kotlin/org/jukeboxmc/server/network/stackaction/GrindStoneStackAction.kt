@@ -3,6 +3,7 @@ package org.jukeboxmc.server.network.stackaction
 import it.unimi.dsi.fastutil.Pair
 import it.unimi.dsi.fastutil.objects.ObjectIntMutablePair
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftGrindstoneAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -66,7 +67,8 @@ class GrindStoneStackAction : StackAction<CraftGrindstoneAction> {
                                 resultItem.getDisplayName(),
                                 resultItem.getDurability()
                             )
-                        )
+                        ),
+                        FullContainerName(ContainerSlotType.CREATED_OUTPUT, 0)
                     )
                 )
             )

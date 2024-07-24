@@ -321,8 +321,16 @@ open class JukeboxBlock(
             BlockType.JUNGLE_DOUBLE_SLAB, BlockType.ACACIA_DOUBLE_SLAB, BlockType.DARK_OAK_DOUBLE_SLAB,
             BlockType.MANGROVE_DOUBLE_SLAB, BlockType.CHERRY_DOUBLE_SLAB, BlockType.BAMBOO_DOUBLE_SLAB,
             BlockType.BAMBOO_MOSAIC_DOUBLE_SLAB, BlockType.CRIMSON_DOUBLE_SLAB, BlockType.WARPED_DOUBLE_SLAB,
-            BlockType.DOUBLE_STONE_BLOCK_SLAB, BlockType.DOUBLE_STONE_BLOCK_SLAB2, BlockType.DOUBLE_STONE_BLOCK_SLAB3,
-            BlockType.DOUBLE_STONE_BLOCK_SLAB4, BlockType.BLACKSTONE_DOUBLE_SLAB, BlockType.POLISHED_BLACKSTONE_DOUBLE_SLAB,
+            BlockType.SMOOTH_STONE_DOUBLE_SLAB,BlockType.SANDSTONE_DOUBLE_SLAB,BlockType.OAK_DOUBLE_SLAB,
+            BlockType.COBBLESTONE_DOUBLE_SLAB,BlockType.BRICK_DOUBLE_SLAB,BlockType.STONE_BRICK_DOUBLE_SLAB,
+            BlockType.QUARTZ_DOUBLE_SLAB,BlockType.NETHER_BRICK_DOUBLE_SLAB,BlockType.END_STONE_BRICK_DOUBLE_SLAB,
+            BlockType.SMOOTH_RED_SANDSTONE_DOUBLE_SLAB,BlockType.POLISHED_ANDESITE_DOUBLE_SLAB,BlockType.ANDESITE_DOUBLE_SLAB,
+            BlockType.DIORITE_DOUBLE_SLAB,BlockType.POLISHED_DIORITE_DOUBLE_SLAB,BlockType.GRANITE_DOUBLE_SLAB,
+            BlockType.POLISHED_GRANITE_DOUBLE_SLAB,BlockType.RED_SANDSTONE_DOUBLE_SLAB,BlockType.PURPUR_DOUBLE_SLAB,
+            BlockType.PRISMARINE_DOUBLE_SLAB,BlockType.DARK_PRISMARINE_DOUBLE_SLAB,BlockType.PRISMARINE_BRICK_DOUBLE_SLAB,
+            BlockType.SMOOTH_SANDSTONE_DOUBLE_SLAB,BlockType.RED_NETHER_BRICK_DOUBLE_SLAB,BlockType.MOSSY_COBBLESTONE_DOUBLE_SLAB,
+            BlockType.SMOOTH_QUARTZ_DOUBLE_SLAB,BlockType.NORMAL_STONE_DOUBLE_SLAB,BlockType.CUT_SANDSTONE_DOUBLE_SLAB,
+            BlockType.CUT_RED_SANDSTONE_DOUBLE_SLAB, BlockType.BLACKSTONE_DOUBLE_SLAB, BlockType.POLISHED_BLACKSTONE_DOUBLE_SLAB,
             BlockType.POLISHED_BLACKSTONE_BRICK_DOUBLE_SLAB, BlockType.DOUBLE_CUT_COPPER_SLAB, BlockType.EXPOSED_DOUBLE_CUT_COPPER_SLAB,
             BlockType.WEATHERED_DOUBLE_CUT_COPPER_SLAB, BlockType.OXIDIZED_DOUBLE_CUT_COPPER_SLAB, BlockType.WAXED_DOUBLE_CUT_COPPER_SLAB,
             BlockType.WAXED_EXPOSED_DOUBLE_CUT_COPPER_SLAB, BlockType.WAXED_WEATHERED_DOUBLE_CUT_COPPER_SLAB,
@@ -356,7 +364,9 @@ open class JukeboxBlock(
             BlockType.CALIBRATED_SCULK_SENSOR, BlockType.DEAD_BRAIN_CORAL, BlockType.DEAD_BUBBLE_CORAL, BlockType.DEAD_FIRE_CORAL,
             BlockType.DEAD_HORN_CORAL, BlockType.DEAD_TUBE_CORAL, BlockType.BUBBLE_CORAL_FAN, BlockType.FIRE_CORAL_FAN, BlockType.HORN_CORAL_FAN,
             BlockType.BRAIN_CORAL_FAN, BlockType.TUBE_CORAL_FAN, BlockType.DEAD_BUBBLE_CORAL_FAN, BlockType.DEAD_FIRE_CORAL_FAN, BlockType.DEAD_HORN_CORAL_FAN,
-            BlockType.DEAD_BRAIN_CORAL_FAN, BlockType.DEAD_TUBE_CORAL_FAN, BlockType.CORAL_FAN_HANG2, BlockType.CORAL_FAN_HANG3, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
+            BlockType.DEAD_BRAIN_CORAL_FAN, BlockType.DEAD_TUBE_CORAL_FAN, BlockType.TUBE_CORAL_WALL_FAN, BlockType.BRAIN_CORAL_WALL_FAN, BlockType.BUBBLE_CORAL_WALL_FAN,
+            BlockType.FIRE_CORAL_WALL_FAN, BlockType.HORN_CORAL_WALL_FAN, BlockType.DEAD_TUBE_CORAL_WALL_FAN, BlockType.DEAD_BRAIN_CORAL_WALL_FAN,
+            BlockType.DEAD_BUBBLE_CORAL_WALL_FAN, BlockType.DEAD_FIRE_CORAL_WALL_FAN, BlockType.DEAD_HORN_CORAL_WALL_FAN, BlockType.ICE, BlockType.INFESTED_DEEPSLATE,
             BlockType.SMALL_AMETHYST_BUD, BlockType.MEDIUM_AMETHYST_BUD, BlockType.LARGE_AMETHYST_BUD, BlockType.PACKED_ICE,
             BlockType.SCULK, BlockType.SCULK_CATALYST, BlockType.SCULK_SENSOR, BlockType.SCULK_SHRIEKER, BlockType.SCULK_VEIN,
             BlockType.TURTLE_EGG, BlockType.TALL_GRASS -> true
@@ -789,7 +799,10 @@ open class JukeboxBlock(
         if (this.canBreakWithHand(itemInHand.toJukeboxItem())) {
             var amount = startAmount
             if (itemInHand.hasEnchantment(EnchantmentType.FORTUNE) && itemInHand.getEnchantment(EnchantmentType.FORTUNE) != null) {
-                amount = Random.nextInt(amount, amount + itemInHand.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() * amount) + 1
+                amount = Random.nextInt(
+                    amount,
+                    amount + itemInHand.getEnchantment(EnchantmentType.FORTUNE)!!.getLevel() * amount
+                ) + 1
             }
             return mutableListOf(itemDrop.apply { this.setAmount(amount) })
         }

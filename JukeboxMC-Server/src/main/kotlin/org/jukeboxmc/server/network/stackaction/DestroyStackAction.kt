@@ -1,5 +1,6 @@
 package org.jukeboxmc.server.network.stackaction
 
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.DestroyAction
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse
@@ -44,7 +45,8 @@ class DestroyStackAction : StackAction<DestroyAction> {
                                 finalSourceItem.getDisplayName(),
                                 finalSourceItem.getDurability()
                             )
-                        )
+                        ),
+                        FullContainerName(source.container, 0)
                     )
                 )
             )

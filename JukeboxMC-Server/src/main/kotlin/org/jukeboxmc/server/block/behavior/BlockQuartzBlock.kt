@@ -5,7 +5,6 @@ import org.jukeboxmc.api.Identifier
 import org.jukeboxmc.api.block.QuartzBlock
 import org.jukeboxmc.api.block.data.Axis
 import org.jukeboxmc.api.block.data.BlockFace
-import org.jukeboxmc.api.block.data.ChiselType
 import org.jukeboxmc.api.math.Vector
 import org.jukeboxmc.server.block.JukeboxBlock
 import org.jukeboxmc.server.item.JukeboxItem
@@ -34,13 +33,5 @@ class BlockQuartzBlock(identifier: Identifier, blockStates: NbtMap?) : JukeboxBl
 
     override fun setPillarAxis(value: Axis): QuartzBlock {
         return this.setState("pillar_axis", value.name.lowercase())
-    }
-
-    override fun getChiselType(): ChiselType {
-        return ChiselType.valueOf(this.getStringState("chisel_type"))
-    }
-
-    override fun setChiselType(value: ChiselType): QuartzBlock {
-        return this.setState("chisel_type", value.name.lowercase())
     }
 }
