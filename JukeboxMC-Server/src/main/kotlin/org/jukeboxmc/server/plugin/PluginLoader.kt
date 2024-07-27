@@ -55,25 +55,25 @@ open class PluginLoader(
     fun loadPluginData(file: File, yaml: Yaml): PluginYAML? {
         try {
             JarFile(file).use { pluginJar ->
-                val configEntry = pluginJar.getJarEntry("plugin.yml")
-                if (configEntry == null) {
-                    val pluginYAML = PluginYAML()
-                    if (pluginYAML.name != null && pluginYAML.version != null && pluginYAML.author != null && pluginYAML.main != null) {
-                        return pluginYAML
+                val configEntries = listOf("jukebox.yml", "plugin.yml")
+
+                for (entryName in configEntries) {
+                    val configEntry = pluginJar.getJarEntry(entryName)
+                    if (configEntry != null) {
+                        pluginJar.getInputStream(configEntry).use { fileStream ->
+                            val pluginYAML = yaml.loadAs(fileStream, PluginYAML::class.java)
+                            if (pluginYAML.name != null && pluginYAML.version != null && pluginYAML.author != null && pluginYAML.main != null) {
+                                return pluginYAML
+                            }
+                            this.logger.warn("Invalid $entryName for " + file.name + ": main and/or name property missing")
+                        }
+                    } else {
+                        this.logger.warn("JAR file ${file.name} does not contain $entryName")
                     }
-                    this.logger.warn("Jar file " + file.name + " doesnt contain a plugin.yml!")
-                    return null
                 }
-                pluginJar.getInputStream(configEntry).use { fileStream ->
-                    val pluginConfig: PluginYAML = yaml.loadAs(fileStream, PluginYAML::class.java)
-                    if (pluginConfig.main != null && pluginConfig.name != null) {
-                        return pluginConfig
-                    }
-                }
-                this.logger.warn("Invalid plugin.yml for " + file.name + ": main and/or name property missing")
             }
         } catch (e: IOException) {
-            this. logger.error("Error while reading plugin directory$e")
+            this.logger.error("Error while reading plugin directory$e")
         }
         return null
     }
