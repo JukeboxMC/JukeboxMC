@@ -53,7 +53,8 @@ class AntiCheatBlockBreakingModule : AntiCheatModule {
                 this.handleStartBreak(player, server, blockPosition)
             }
 
-            if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() &&
+            if (this.getHelper().getConfig().isBlockBreakingDetectionEnabled() && player.getGameMode() != GameMode.ADVENTURE &&
+                player.getGameMode() != GameMode.SPECTATOR &&
                 (((lastBlockAction == null && playerAction.action != PlayerActionType.START_BREAK) || (lastBlockAction != null &&
                         !player.isBreakingBlock() && lastBlockAction.action == this.endActionForGameMode[player.getGameMode()] &&
                         playerAction.action != PlayerActionType.START_BREAK)) || ((player.getGameMode() == GameMode.CREATIVE && playerAction.action == PlayerActionType.ABORT_BREAK)) ||
