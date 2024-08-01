@@ -405,7 +405,7 @@ class JukeboxPlayer(
     override fun setOperator(value: Boolean) {
         this.adventureSettings.set(AdventureSettings.Type.OPERATOR, value)
         this.adventureSettings.update()
-        if (value) this.server.getOperators().add(this.getName()) else this.server.getWhitelist().remove(this.getName())
+        if (value) this.server.getOperators().add(this.getName()) else this.server.getOperators().remove(this.getName())
         this.sendAvailableCommands()
     }
 
